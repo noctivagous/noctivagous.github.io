@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--- NOCTIVAGOUS TABLET PC KEYBOARD -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOCTIVAGOUS Tablet PC Keyboard</title>
+    <style>
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        #keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            
+
+        }
+
+        button {
+            padding: 15px;
+            font-size: 30px;
+            width: 75px;
+            height: 75px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            border-radius: 0;
+            text-align: center;
+        }
+
+        #output {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 90%;
+            font-size: 20px;
+            height: 100px;
+        }
+
+        .f_spacebar{
+            width:220px;
+        }
+
+        .f_delete{
+            width:120px;
+        }
+
+        .func
+        {
+            font-size:20px;
+            background-color: gray;
+            color:white;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        
+        }
+
+
+
+        body {
+  touch-action: manipulation; /* Disable double-tap zoom but allow other interactions */
+}
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <textarea id="output" readonly></textarea>
+        <div id="keyboard"></div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            const keyRows =
+                [['y', 'o', 'u', 'r', 'f', 'p', ', ', 'f_delete'],
+                ['g', 'h', 't', 'd', 'j', 'q', '! '],
+                ['th', 'w', 'wh', 'a', 'l', 'b', '‘s ' ],
+                ['er', 'e', 'i', 's', 'c', 'x', '? '],
+                ['r', 'm', 'n', 'k', 'v', 'z', 'f_spacebar'],
+                ['ch', 'sh', 'g', 't', 'o', 'y','. ',],
+                [ 'f_clear']];
+
+
+            const keyboardContainer = document.getElementById('keyboard');
+
+            keyRows.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+
+                row.forEach(key => {
+                    const btn = document.createElement('button');
+
+
+                    if (key.startsWith('f_')) {
+
+                        btn.classList.add('func');
+                        btn.classList.add(key);
+                        btn.setAttribute('funcName', key);
+
+
+                        btn.addEventListener('click', function () {
+
+                            const retrievedFuncName = btn.getAttribute('funcName');
+
+                            if (typeof window[retrievedFuncName] === 'function') {
+                            window[retrievedFuncName]();
+                        }
+
+                        });
+                        /*
+                        if (typeof window[functionName] === 'function') {
+                            window[functionName]();
+                        }
+                        */
+
+                        // Remove 'f_' prefix
+                        btn.innerText = key.substring(2);
+                    }
+                    else {
+
+                        btn.innerText = key;
+
+                        const containsSpace = btn.innerText.includes(" ");
+
+                        if(containsSpace)
+                        {
+                            btn.innerText = btn.innerText.replace(/\s/g, "_");
+
+                        }
+
+                        btn.addEventListener('click', function () {
+                            document.getElementById('output').value += key;
+
+                        });
+
+                        // Check if the key text is a,e,i,o,u,y and set background to light blue
+                        if (['a', 'e', 'i', 'o', 'u',].includes(key)) {
+                            btn.style.backgroundColor = 'lightblue';
+                        }
+
+                    }
+                    rowDiv.appendChild(btn);
+
+
+
+                });
+
+                keyboardContainer.appendChild(rowDiv);
+            });
+        }
+
+        function f_spacebar() {
+            document.getElementById('output').value += ' ';
+
+        }
+
+        function f_delete() {
+            // Get a reference to the textarea element
+            const textarea = document.getElementById('output');
+
+            // Get the current content of the textarea
+            let content = textarea.value;
+
+            // Remove the trailing character
+            if (content.length > 0) {
+                content = content.slice(0, -1);
+            }
+
+            // Update the textarea's value with the modified content
+            textarea.value = content;
+        }
+
+        function f_clear()
+        {
+            const textarea = document.getElementById('output');
+            textarea.value = "";
+        }
+
+    </script>
+</body>
+
+</html>

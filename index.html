@@ -268,27 +268,41 @@ height:400px;
   <p style="font-family:monospace">Last updated on October 6, 2023</p>
 
   <h2>Introduction</h2>
-  <p>This page provides demos and plans to make upgraded UI features for a code editor, ones which adapt
-    plain text code to modern GUI conventions.  Subconsciously, this is already
-    happening in the average IDE in response to the limitations of plain text:
+  
+  
+  <p>The plain text file format can only provide a single, vertical
+    column of information. Contrast this with a magazine or newspaper layout in which
+    there are multiple columns.  In the usual case, half of the widescreen display's space
+    is completely wasted during editing of a code file:
+
+    <p style="text-align:center">
+    <img src="img/singleleftalignedcode.png">
+  </p>
+  <p>
+    For the purpose of providing improved information organization
+    and better use of screen space, code, currently made out of plain text, can be reshaped into multiple columns.
+    This page provides demos and plans to make such UI features for a code editor. 
+  </p>
+  <p><!-- The strategy
+    is to insert user interface text areas into the editor's document view wherever there are distinct
+     containers in the plain text code, such as a function body.
+  -->
+    The purpose is to adapt plain text code to modern GUI conventions.  Subconsciously, this is already
+    the trend inside the average IDE in response to the limitations of plain text;
     code completion boxes appear when a person types, and there is usually
     code-folding GUI functionality that allows collapsing or expanding 
-    sections of a file.  A vertical thumbnail is also generated to the side of the code.
-    Thus, whether recognized or not, the mainstream software programmer desires much more
-    from code than unprocessed plain text.
+    sections of a file.  A large, vertical thumbnail image is also generated to the side of the code.
+    Thus, whether recognized or not, the mainstream software programming community desires much more
+    from code than unprocessed plain text.  Mainstream AI programmers, including those at OpenAI, 
+    are making active use of Jupyter Notebook, which provides an interactive Python code "notebook".
+</p>
+
+<p>
     If this situation is approached in a more deliberate way than what has occurred up until now, 
-    the following features will make large volumes of code much easier to work with.
+    the following features will make large quantities of code much easier to work with.  It will be
+    possible to traverse, inspect, and edit code in a more normal way.
   </p>
   
-  <p>First, it should be pointed out that the plain text file format can only provide a single, vertical
-    column of information. Contrast this with a magazine or newspaper layout in which
-    there are multiple columns.  For the purpose of providing improved information organization
-    and better use of screen space,
-    user interface controls can be inserted into the editor's document view
-    The code, currently made out of plain text, can be reshaped to serve the programmer,
-    and that is what this is about.
-
-  </p>
  
   <h2>Demos</h2>
   <h3>1. Grouping Functions Into Tab Views</h3>

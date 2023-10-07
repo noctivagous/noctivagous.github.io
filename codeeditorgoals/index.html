@@ -1,0 +1,1686 @@
+
+<html>
+    <head>
+
+      <meta charset="UTF-8">
+
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap" rel="stylesheet">
+
+
+<style>
+body
+{
+font-size:2em;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+p {
+color:#333;
+text-align: justify;
+
+}
+
+h1
+{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+ 
+h3{
+margin-top: 2em;
+
+}
+
+h2,h3,h4,h5,h6
+{
+font-family: Arial, Helvetica, sans-serif;
+color:#333;
+}
+</style>
+
+<style>
+
+code, pre {
+font-family: 'Source Sans Pro','Menlo', Courier,monospace;
+color:#ccff33;
+font-size: :16px;
+margin:0px;
+
+}
+p code, h3 code, li code{
+font-family:Courier,monospace;
+}
+
+
+.ideCodeArea code, .ideCodeArea code pre
+{
+font-size:20px;
+}
+
+.ideCodeArea
+{
+font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	background-color:gray;
+	padding:10px;
+   color:#ccff33;
+   
+   margin-top:60px;
+   margin-bottom:60px;
+  box-shadow: 5px 5px 5px #222;
+border-right:1px solid #333;
+border-bottom:1px solid #333;
+margin-right:40px;
+font-size:20px;
+}
+.editableTextAreaDiv
+{
+	background-color:#333;
+	width:100%;
+	border:2px solid black;
+	padding-left:6px;
+	outline: none;
+}
+
+div.editableTextAreaDiv:hover
+{
+	background-color:#555;
+	border:4px solid black;
+}
+
+span.codeInText
+{
+	font-size:1em;
+	font-family:monospace;
+	color:#336600;
+}
+
+span.codekeyword{
+	color:#ff3399;
+}
+
+
+.funcSignatureStyling
+{
+color:#ccff33;
+
+}
+
+.funcKeywordStyling{
+color:orange;
+}
+
+.commentsKeywordStyling{
+color:#6600cc;
+}
+
+.commentsKeywordStyling2{
+color:#9966ff;
+}
+
+
+.variableKeywordStyling{
+color:#993333;
+}
+
+.variableNameStyling{
+color:lightGreen;
+}
+
+.code{
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	font-size:16px;
+	
+}
+
+kbd {
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	color:white;
+	font-size:17px;
+	padding:3px;
+	padding-top:2px;
+	padding-bottom:2px;
+	border:1px solid gray;
+	border-radius:5px;
+	background-color:#bbb;
+	  box-shadow: 2px 2px grey;
+	  margin-right:3px;
+
+}
+
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #333;
+  
+  
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: #555;
+  
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color:orange;
+  font-weight:bold;
+  font-family:'Source Sans Pro','Menlo',Courier;
+  border-right:1px solid black;
+  font-weight:normal;
+  border-top-left-radius	:10px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #333;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #111;
+}
+.tabcontent h3{
+margin-top:0px;
+padding-top:0px;
+
+}
+
+.tab button.tablinks2{color:lightBlue}
+
+/* Style the tab content */
+.tabCContainer {
+	font-family:'Source Sans Pro','Menlo',Courier;
+  display: none;
+  margin-top:0px;
+  border: 2px solid #333;
+  /*border-bottom: 3px solid #333;*/
+  
+  font-size:14pt;
+/*  background-color:#555;*/
+
+}
+
+.tablinks4a.active, .tablinks2.active{
+background-color: black;
+}
+
+.tabCContainer.navgridtabcontent
+{
+border:0px;
+}
+
+
+.tabCContainer.navgridtabcontent .tabCContainer
+{
+background-color:#111;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+
+.tabcontent2 {
+padding-top:10px;
+padding-bottom:10px;
+}
+
+.tabContentCodeArea
+{
+height:400px;
+
+}
+
+.tabContentCodeArea:focus 
+{ 
+    outline: none; 
+} 
+
+</style>
+
+
+    </head>
+    <body>
+
+
+
+
+<div style="width:90%;max-width:1200px;margin:auto;">
+
+
+  <h1>Code Editor Features With Web Demos</h1>
+
+  <p style="font-family:monospace">Last updated on October 6, 2023</p>
+
+  <br/><br/>
+  <h2>Introduction</h2>
+  <p>This page provides plans to make upgraded UI features for a code editor, ones which adapt
+    plain text code to modern GUI conventions.  Subconsciously, this is already
+    happening in the average IDE in response to the limitations of plain text:
+    code completion boxes appear when a person types and there is usually
+    code-folding GUI functionality that allows collapsing or expanding 
+    sections of a file.  A vertical thumbnail is also generated to the side of the code.
+    Thus, whether recognized or not, the mainstream software programmer desires more
+    than code that sits on the screen as unprocessed plain text.
+    If this situation is approached in a more deliberate way than what has occurred up until now, 
+    the following features are proposed.
+  </p>
+  <p>First, it should be pointed out that the plain text file format can only provide a single, vertical
+    column of information. Contrast this with a magazine or newspaper layout in which
+    there are multiple columns.  For the purpose of providing improved information organization
+    and better use of screen space,
+    user interface controls can be inserted into the editor's document view to make the plain text 
+    code experience much better than it currently is.
+    <!--The code, currently made out of plain text, can be manipulated to serve the programmer.-->
+  </p>
+  <br/>
+  
+  <br/>
+  <h3>1. Grouping Functions Into Tab Views</h3>
+  
+  <p>In this IDE feature, the programmer has the option to take a group of 
+    functions and place them into a tab view.</p>
+
+    <p>The benefits include:</p>
+  <ul>
+    <li>reduced vertical scrolling.</li>
+    <li>the opportunity to group related functions.</li>
+    <li>a better navigation experience than examining function names generated in a dropdown list.
+    </li>
+  </ul>
+
+  <p>In this demo, mouse hover activates the tabs:</p>
+  
+
+    <!-- START ideCodeArea-->
+    <div class="ideCodeArea" contenteditable="false" >
+    
+        <code>
+        <pre>
+<span class="commentsKeywordStyling">// A group of event functions turned into tabs:</span>
+        </pre>
+        </code>
+        
+    
+        
+        <div class="tab">
+      
+          <button class="tablinks active" onmouseover="openTab(event, this,'tablinks','tabcontent')">func <span class="funcSignatureStyling">mouseDown()</span></button>
+          <button class="tablinks" onmouseover="openTab(event, this,'tablinks','tabcontent')">func <span class="funcSignatureStyling">mouseDragged()</span></button>
+          <button class="tablinks" onmouseover="openTab(event, this,'tablinks','tabcontent')">func <span class="funcSignatureStyling">mouseUp()</span></button>
+          <button class="tablinks" onmouseover="openTab(event, this,'tablinks','tabcontent')">func <span class="funcSignatureStyling">keyDown()</span></button>
+          <button class="tablinks" onmouseover="openTab(event, this,'tablinks','tabcontent')">func <span class="funcSignatureStyling">keyUp()</span></button>
+
+        </div>
+        
+        <div id="A" class="tabCContainer tabcontent">
+        <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+           <span class="commentsKeywordStyling">// do a hit test to see if shapes have been hit.</span>
+    
+           <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">didHitAShape</span> = hitTestOnPage();
+           
+           <span class="variableNameStyling">mouseDown</span> = true;
+           
+           
+        </DIV>}</pre></code></div>
+        
+        <div id="B" class="tabCContainer tabcontent" >
+        
+    <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+           <span class="commentsKeywordStyling">// drag any shapes being dragged.</span>
+           
+           if(<span class="variableNameStyling">mouseDown</span>)
+           {
+    
+    
+           }
+    
+           if(<span class="variableNameStyling">shapesAreBeingDragged</span>)
+           {
+    
+    
+           }
+           
+           
+    </DIV>}</pre></code></div>
+        
+        <div id="C" class="tabCContainer tabcontent" >
+        
+        <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+           <span class="commentsKeywordStyling">// reset the mouse down to detect dragging.</span>
+           <span class="variableNameStyling">mouseDown</span> = false;
+           
+           
+           
+    </DIV>}</pre></code></div>
+        
+    <div id="D" class="tabCContainer tabcontent" >
+        
+        <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+            <span class="commentsKeywordStyling">// send the keydown event to the KeyboardEventSupervisor.</span>
+            KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+           
+           
+    </DIV>}</pre></code></div>
+    
+    <div id="E" class="tabCContainer tabcontent" >
+        
+        <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+           <span class="commentsKeywordStyling">// send the keyup event to the KeyboardEventSupervisor.</span>
+           KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+           
+           
+           
+    </DIV>}</pre></code></div>
+    
+    
+        <code>
+        <pre>
+        </pre>
+        </code>
+        
+        </div>
+        <!-- END ideCodeArea-->
+
+          
+        <!--
+        <p>
+        (Our code is still in plain text, we just set up some interactive containers to mitigate the situation).
+       </p>-->
+
+    
+
+<div style="width:100%;border:0px solid rebeccapurple;margin:auto">
+  <h3>2. Multi-Column Layout for Functions</h3>
+
+  <p>As mentioned, plain text allows traversing just a single column of functions,
+    and this is an inadequate use of screen space.
+
+
+  </p>
+
+<p>The following example shows how a programmer would benefit by organizing some
+  functions in multiple columns, just like how a newspaper has more than one.
+
+
+</p>
+
+            <!-- START ideCodeArea -->
+        <div class="ideCodeArea" contenteditable="true" spellcheck="false">
+            <code class="code"><pre>// Two columns of functions: </pre><table width="100%;" cellspacing="15">
+            <tr>
+                <td style="vertical-align:top">	<div contenteditable="true"  spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv"><pre><span class="funcKeywordStyling">func</span> makeRectangle()
+{
+               
+               
+            <span class="commentsKeywordStyling2">   // try editing here.</span>
+               
+
+
+}</pre>
+                </div>
+                </td>
+                <td style="vertical-align:top">
+                <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv">
+            <pre><span class="funcKeywordStyling">func</span> makeCircle()
+{
+               
+               
+            <span class="commentsKeywordStyling2">   // try editing here.</span>
+               
+
+
+}</pre>
+
+
+        
+                </div>
+                </td>
+            </tr>
+            <tr>
+              <td style="vertical-align:top">	<div contenteditable="true"  spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv"><pre><span class="funcKeywordStyling">func</span> emptyArray()
+{
+             
+             
+          <span class="commentsKeywordStyling2">   // try editing here.</span>
+             
+
+
+}</pre>
+              </div>
+              </td>
+              <td style="vertical-align:top">
+              <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv">
+          <pre><span class="funcKeywordStyling">func</span> moveShape()
+{
+             
+             
+          <span class="commentsKeywordStyling2">   // try editing here.</span>
+             
+
+
+}</pre>
+
+
+      
+              </div>
+              </td>
+          </tr>  
+          </table>
+
+
+        </code>
+            </div><!-- END ideCodeArea -->
+        
+            </div><!-- END ideCodeArea cont-->
+
+          
+
+            <h3> 3. Two Tab Groups Side By Side</h3>
+            
+            <p>Building on the first example, two related but separate groups of functions
+              can be placed side by side on a widescreen display.  This is
+              a great savings in terms of screen space and enhances navigability.
+              
+            </p>
+
+            <p>In this example, the left group of functions are mouse events and
+              the right group of functions are callbacks for when some related events have occurred.
+            </p>
+
+            <p>Once again, mouse hover activates the tabs.</p>
+            <div style="width:100%;border:0px solid rebeccapurple;margin:auto">
+          
+            </div></div>
+
+
+            
+
+
+        
+
+            <table cellpadding="0" cellspacing="0" style="width:100%;">
+
+<tr>
+<td>
+  <!-- START ideCodeArea-->
+  <div class="ideCodeArea" contenteditable="false" style="margin:0px" >
+  
+      <code>
+      <pre>
+<span class="commentsKeywordStyling">// A group of event functions turned into tabs:</span>
+      </pre>
+      </code>
+      
+  
+      
+      <div class="tab">
+    
+        <button class="tablinks5 active" onmouseover="openTab(event, this,'tablinks5','tabcontent5')">func <span class="funcSignatureStyling">mouseDown()</span></button>
+        <button class="tablinks5" onmouseover="openTab(event, this,'tablinks5','tabcontent5')">func <span class="funcSignatureStyling">mouseDragged()</span></button>
+        <button class="tablinks5" onmouseover="openTab(event, this,'tablinks5','tabcontent5')">func <span class="funcSignatureStyling">mouseUp()</span></button>
+        <button class="tablinks5" onmouseover="openTab(event, this,'tablinks5','tabcontent5')">func <span class="funcSignatureStyling">keyDown()</span></button>
+        <button class="tablinks5" onmouseover="openTab(event, this,'tablinks5','tabcontent5')">func <span class="funcSignatureStyling">keyUp()</span></button>
+
+      </div>
+      
+      <div class="tabCContainer tabcontent5"  style="display:block">
+      <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// do a hit test to see if shapes have been hit.</span>
+  
+         <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">didHitAShape</span> = hitTestOnPage();
+         
+         <span class="variableNameStyling">mouseDown</span> = true;
+         
+         
+      </DIV>}</pre></code></div>
+      
+      <div id="B" class="tabCContainer tabcontent5" >
+      
+  <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// drag any shapes being dragged.</span>
+         
+         if(<span class="variableNameStyling">mouseDown</span>)
+         {
+  
+  
+         }
+  
+         if(<span class="variableNameStyling">shapesAreBeingDragged</span>)
+         {
+  
+  
+         }
+         
+         
+  </DIV>}</pre></code></div>
+      
+      <div id="C" class="tabCContainer tabcontent5" >
+      
+      <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// reset the mouse down to detect dragging.</span>
+         <span class="variableNameStyling">mouseDown</span> = false;
+         
+         
+         
+  </DIV>}</pre></code></div>
+      
+  <div id="D" class="tabCContainer tabcontent5" >
+      
+      <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+          <span class="commentsKeywordStyling">// send the keydown event to the KeyboardEventSupervisor.</span>
+          KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+         
+         
+  </DIV>}</pre></code></div>
+  
+  <div id="E" class="tabCContainer tabcontent5" >
+      
+      <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// send the keyup event to the KeyboardEventSupervisor.</span>
+         KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+         
+         
+         
+  </DIV>}</pre></code></div>
+  
+  
+      <code>
+      <pre>
+      </pre>
+      </code>
+      
+      </div>
+      <!-- END ideCodeArea-->
+
+</td>
+
+<td>
+  <!-- START ideCodeArea-->
+  <div class="ideCodeArea" contenteditable="false" style="margin:0px" >
+  
+      <code>
+      <pre>
+<span class="commentsKeywordStyling">// A group of callback functions turned into tabs:</span>
+      </pre>
+      </code>
+      
+  
+      
+      <div class="tab">
+    
+        <button class="tablinks6 active" onmouseover="openTab(event, this,'tablinks6','tabcontent6')">func <span class="funcSignatureStyling">cursorDidChange()</span></button>
+        <button class="tablinks6" onmouseover="openTab(event, this,'tablinks6','tabcontent6')">func <span class="funcSignatureStyling">mouseStateDidChange()</span></button>
+        <button class="tablinks6" onmouseover="openTab(event, this,'tablinks6','tabcontent6')">func <span class="funcSignatureStyling">controlWasActivatedByKey()</span></button>
+        <button class="tablinks6" onmouseover="openTab(event, this,'tablinks6','tabcontent6')">func <span class="funcSignatureStyling">clearViewport()</span></button>
+        <button class="tablinks6" onmouseover="openTab(event, this,'tablinks6','tabcontent6')">func <span class="funcSignatureStyling">exportViewport()</span></button>
+
+      </div>
+      
+      <div class="tabCContainer tabcontent6" style="display:block">
+      <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// do a hit test to see if shapes have been hit.</span>
+  
+         <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">didHitAShape</span> = hitTestOnPage();
+         
+         <span class="variableNameStyling">mouseDown</span> = true;
+         
+         
+      </DIV>}</pre></code></div>
+      
+      <div id="B" class="tabCContainer tabcontent6" >
+      
+  <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// drag any shapes being dragged.</span>
+         
+         if(<span class="variableNameStyling">mouseDown</span>)
+         {
+  
+  
+         }
+  
+         if(<span class="variableNameStyling">shapesAreBeingDragged</span>)
+         {
+  
+  
+         }
+         
+         
+  </DIV>}</pre></code></div>
+      
+      <div id="C" class="tabCContainer tabcontent6" >
+      
+      <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// reset the mouse down to detect dragging.</span>
+         <span class="variableNameStyling">mouseDown</span> = false;
+         
+         
+         
+  </DIV>}</pre></code></div>
+      
+  <div id="D" class="tabCContainer tabcontent6" >
+      
+      <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+          <span class="commentsKeywordStyling">// send the keydown event to the KeyboardEventSupervisor.</span>
+          KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+         
+         
+  </DIV>}</pre></code></div>
+  
+  <div id="E" class="tabCContainer tabcontent6" >
+      
+      <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+         <span class="commentsKeywordStyling">// send the keyup event to the KeyboardEventSupervisor.</span>
+         KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+         
+         
+         
+  </DIV>}</pre></code></div>
+  
+  
+      <code>
+      <pre>
+      </pre>
+      </code>
+      
+      </div>
+      <!-- END ideCodeArea-->
+
+</td>
+
+</tr>
+
+            </table>
+
+     </div>
+
+
+      
+       <div style="width:90%;max-width:1200px;margin:auto;">
+ 
+
+      <h3>4. Organizing Variables Into a Grid Layout</h3>
+
+    <p>Long lists of declarations, including import statements, can be displayed in grids.</p>
+    
+
+<!-- START ideCodeArea -->
+<div class="ideCodeArea" contenteditable="true" spellcheck="false"><code class="code"><pre><!--// Convert the same two functions seen above  // to editable text containers that sit side by side.--> <span class="commentsKeywordStyling">
+    // A group of related array variables placed into a three-column grid.  </span></pre>
+    <table width="100%;">
+    <tr>
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfRectangles</span> = [];</pre>
+        </div>
+        </td>
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfCircles</span> = [];</pre>
+        </div>
+        </td>
+    
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfTriangles</span> = [];</pre>
+        </div>
+        </td>	
+            
+    </tr>
+    
+    <tr>
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfPentagons</span> = [];</pre>
+        </div>
+        </td>
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfHexagons</span> = [];</pre>
+        </div>
+        </td>
+    
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfSeptagons</span> = [];</pre>
+        </div>
+        </td>	
+            
+    </tr>
+    
+    <tr>
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfOctagons</span> = [];</pre>
+        </div>
+        </td>
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfNonagons</span> = [];</pre>
+        </div>
+        </td>
+    
+        <td style="vertical-align:top">	
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfDecagons</span> = [];</pre>
+        </div>
+        </td>	
+            
+    </tr>
+    <tr>
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfStars</span> = [];</pre>
+      </div>
+      </td>
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfOvals</span> = [];</pre>
+      </div>
+      </td>
+  
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfSquares</span> = [];</pre>
+      </div>
+      </td>	
+          
+  </tr>
+  
+  <tr>
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfDiamonds</span> = [];</pre>
+      </div>
+      </td>
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfEllipses</span> = [];</pre>
+      </div>
+      </td>
+  
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfParallelograms</span> = [];</pre>
+      </div>
+      </td>	
+          
+  </tr>
+  
+  <tr>
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfHearts</span> = [];</pre>
+      </div>
+      </td>
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfCrescents</span> = [];</pre>
+      </div>
+      </td>
+  
+      <td style="vertical-align:top">	
+      <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:20px;" class="code editableTextAreaDiv"><pre><span class="variableKeywordStyling">var</span> <span class="variableNameStyling">arrayOfCrosses</span> = [];</pre>
+      </div>
+      </td>	
+          
+  </tr>
+  
+    
+    </table>
+    <pre>
+    <span class="commentsKeywordStyling">
+
+    </span></pre></code>
+    </div><!-- END ideCodeArea -->
+    
+
+    <h3> 5. Custom Tabs with Custom Labels</h3>
+
+    <p>Fortunately there is a place where markup can be
+      placed in a file of plain text code and that is the comments (//).
+    In this example, markup is provided in the comments (//) to make a GUI control. 
+      It makes two tabs: the first three properties are placed in first tab and
+      the app's text field that change their values are placed in the second tab.</p>
+      
+<!-- START ideCodeArea -->
+<div class="ideCodeArea" contenteditable="false" >
+
+  <code>
+  <pre>
+  <span class="commentsKeywordStyling">// --TABIFY_START</span>
+  
+      <span class="commentsKeywordStyling">// --TAB_START:Document Settings Window Variables</span>
+          <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">defaultFontSizePt</span>  = 14.0;
+          <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentWidthPt</span>  = 612.0;
+          <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentHeightPt</span>  = 792.0;
+          
+      <span class="commentsKeywordStyling">// --TAB_END</span>
+  
+  
+      <span class="commentsKeywordStyling">// --TAB_START:Document Settings Window Controls</span>
+          <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">fontSizeTextField</span>  = TextField();
+          <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">widthTextField</span>  = TextField();
+          <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">heightTextField</span> = TextField();
+          
+      <span class="commentsKeywordStyling">// --TAB_END</span>
+  
+      
+  <span class="commentsKeywordStyling">// --TABIFY_END</span>
+  
+  </pre>
+  </code>
+  
+  </div>
+  <!-- END ideCodeArea -->
+  
+  
+
+  <p>The result of the custom tab commands above is the tab view below.</p>
+  
+  <!-- START ideCodeArea-->
+  <div class="ideCodeArea" contenteditable="false" >
+  
+  <code>
+  <pre>
+  <span class="commentsKeywordStyling">// --TABIFY_START</span>
+  </pre>
+  </code>
+  
+  
+  
+  <div class="tab">
+  
+    <button class="tablinks2 active" onmouseover="openTab(event, this,'tablinks2','tabcontent2')">Document Settings Window Variables</button>
+    <button class="tablinks2"  onmouseover="openTab(event, this,'tablinks2','tabcontent2')">Document Settings Window Controls</button>
+  
+  </div>
+  
+  <div id="tabContentsCustomA" class="tabCContainer tabcontent2" style="display:block">
+  
+  <code><pre>
+  <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">defaultFontSizePt</span>  = 14.0;
+  <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentWidthPt</span>  = 612.0;
+  <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentHeightPt</span>  = 792.0;</pre></code></div>
+  
+  <div id="tabContentsCustomB" class="tabCContainer tabcontent2">
+  
+  <code><pre>
+  <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">fontSizeTextField</span>  = TextField();
+  <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">widthTextField</span>  = TextField();
+  <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">heightTextField</span>  = TextField();</pre></code></div>
+  
+  
+  
+  <code>
+  <pre><span class="commentsKeywordStyling">
+  // --TABIFY_END</span>
+  </pre>
+  </code>
+  
+  </div>
+  <!-- END ideCodeArea-->
+
+  
+<p>This is how all GUI controls can be placed in the backwards-compatible text files.
+  It's how all previous examples could work.  Example commands include <code style="color:black">// --TABIFY_NEXT(5)_FUNCTIONS</code>.
+
+</p>
+
+  
+
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: 100px auto;
+    gap: 10px;
+/*    background-color: #2196F3;*/
+    padding: 10px;
+height: 780px;
+    margin-bottom:10px;
+  }
+  
+  .grid-container > div:nth-of-type(1) {
+    background-color:#999;
+  }
+  .grid-container > div:nth-of-type(2) {
+    background-color:#ccc;
+    height:100%;
+    /*background-color: rgba(255, 255, 255, 0.8);*/
+    border: 1px solid black;
+    font-size: 30px;
+    padding: 10px;
+  }
+
+  .tabcontent2 .tabcontent2{
+    background-color:gray;
+  }
+
+
+  .navgrid-container {
+width:90px;
+color: #111;
+  display: grid;
+  grid-template-columns: auto;
+    grid-template-rows:90px 90px 90px 90px 90px;
+  gap: 10px;
+  background-color: #2196F3;
+  padding: 10px;
+  height: 100%;
+}
+
+.navgrid-container > div.navgridtab {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid black;
+  text-align: center;
+  font-size: 30px;
+}
+
+.navgrid-container > div.navgridtab.active {
+background-color: #111;
+color:white;
+}
+
+.navgridtabcontent
+{
+
+}
+
+ </style>
+
+<style>
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 90px;
+    height: 34px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 40px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #8998a3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #6d7e8b;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(35px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  </style>
+
+
+
+
+<h3>6. Organizable Albums For the Code</h3>
+
+<p>This example ties together previous ones
+  to make a box of organized code.
+  Entire collections of code, or albums,
+  can be made like the following, with distinct
+  sections.
+</p>
+<!--
+<p>For the most part, a file of computer code 
+  has never benefitted from pagination.
+  But at the same time, it has never had
+  options to organize. 
+</p>-->
+
+<p>Hover over the page numbers with the mouse.</p>
+
+
+  <!-- START ideCodeArea-->
+  <div class="ideCodeArea" style="height:800px;padding-bottom:30px" contenteditable="false" >
+  
+    <!-- grid container start -->
+    <div class="grid-container">
+      
+      <!-- grid container leftnav start -->
+      
+      <div class="navgrid-container">
+        <div class="navgridtab active"  onmouseover="openTab(event, this,'navgridtab','navgridtabcontent')">1</div>
+        <div class="navgridtab"  onmouseover="openTab(event, this,'navgridtab','navgridtabcontent')">2</div>
+          <div class="navgridtab"  onmouseover="openTab(event, this,'navgridtab','navgridtabcontent')">3</div>
+        <div class="navgridtab"  onmouseover="openTab(event, this,'navgridtab','navgridtabcontent')">4</div>
+          <div class="navgridtab"  onmouseover="openTab(event, this,'navgridtab','navgridtabcontent')">5</div>
+      
+
+         
+          <!--
+          <label class="switch">
+                       
+            <input type="checkbox">
+            
+            <div class="slider">🔒</div>
+             🔓
+          </label>
+        -->
+          
+      
+      </div>
+
+      <!-- grid container leftnav end -->
+
+
+      <!-- grid container code start -->
+      <div>
+
+
+        <div class="tabCContainer navgridtabcontent"  style="display:block;"><!-- navgridtabcontent 1 start -->
+    <code>
+    <pre><span class="commentsKeywordStyling">// --TABIFY_START</span>
+    </pre>
+    </code>
+    
+    
+    
+    <!-- BEGIN TABS WITH CONTAINER -->
+    
+    <div class="tab">
+    
+      <button class="tablinks3 active" onmouseover="openTab(event, this,'tablinks3','tabcontent3')">Document Settings Window Variables</button>
+      <button class="tablinks3" onmouseover="openTab(event, this,'tablinks3','tabcontent3')">Document Settings Window Controls</button>
+    
+    </div>
+    
+    <div class="tabCContainer tabcontent3" style="display:block;">
+    
+    <code><pre>
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">defaultFontSizePt</span>  = 14.0;
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentWidthPt</span>  = 612.0;
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentHeightPt</span>  = 792.0;</pre></code></div>
+    
+    <div class="tabCContainer tabcontent3">
+    
+    <code><pre>
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">fontSizeTextField</span>  = TextField();
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">widthTextField</span>  = TextField();
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">heightTextField</span>  = TextField();</pre></code></div>
+    
+    
+    
+    <!-- END TABS WITH CONTAINER -->
+    
+    <code>
+    
+    <br/>  <pre><span class="commentsKeywordStyling">// --TABIFY_END</span>
+    </pre>
+    </code>
+    
+  </div><!-- END navgridtabcontent -->
+
+
+
+
+
+  <div class="tabCContainer navgridtabcontent"><!-- navgridtabcontent 2 start -->
+    
+
+    <div class="tab">
+      
+
+      <button class="tablinks4a active" onmouseover="openTab(event, this,'tablinks4a','tabcontent4a')">func <span class="funcSignatureStyling">mouseDown()</span></button>
+      <button class="tablinks4a" onmouseover="openTab(event, this,'tablinks4a','tabcontent4a')">func <span class="funcSignatureStyling">mouseDragged()</span></button>
+      <button class="tablinks4a" onmouseover="openTab(event, this,'tablinks4a','tabcontent4a')">func <span class="funcSignatureStyling">mouseUp()</span></button>
+      <button class="tablinks4a" onmouseover="openTab(event, this,'tablinks4a','tabcontent4a')">func <span class="funcSignatureStyling">keyDown()</span></button>
+      <button class="tablinks4a" onmouseover="openTab(event, this,'tablinks4a','tabcontent4a')">func <span class="funcSignatureStyling">keyUp()</span></button>
+
+    </div>
+    
+    <div class="tabCContainer tabcontent4a" style="display: block;">
+    <code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+       <span class="commentsKeywordStyling">// do a hit test to see if shapes have been hit.</span>
+
+       <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">didHitAShape</span> = hitTestOnPage();
+       
+       <span class="variableNameStyling">mouseDown</span> = true;
+       
+       
+    </DIV>}</pre></code></div>
+    
+    <div  class="tabCContainer tabcontent4a" >
+    
+<code><pre>{<DIV  class="tabContentCodeArea" contenteditable="true">
+       <span class="commentsKeywordStyling">// drag any shapes being dragged.</span>
+       
+       if(<span class="variableNameStyling">mouseDown</span>)
+       {
+
+
+       }
+
+       if(<span class="variableNameStyling">shapesAreBeingDragged</span>)
+       {
+
+
+       }
+       
+       
+</DIV>}</pre></code></div>
+    
+    <div  class="tabCContainer tabcontent4a" >
+    
+    <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+       <span class="commentsKeywordStyling">// reset the mouse down to detect dragging.</span>
+       <span class="variableNameStyling">mouseDown</span> = false;
+       
+       
+       
+</DIV>}</pre></code></div>
+    
+<div  class="tabCContainer tabcontent4a" >
+    
+    <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+        <span class="commentsKeywordStyling">// send the keydown event to the KeyboardEventSupervisor.</span>
+        KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+       
+       
+</DIV>}</pre></code></div>
+
+<div  class="tabCContainer tabcontent4a" >
+    
+    <code><pre>{<DIV class="tabContentCodeArea" contenteditable="true">
+       <span class="commentsKeywordStyling">// send the keyup event to the KeyboardEventSupervisor.</span>
+       KeyboardEventSupervisor(<span class="variableNameStyling">event</span>);
+       
+       
+       
+</DIV>}</pre></code></div>
+
+
+    </div><!-- END navgridtabcontent -->
+  
+
+
+
+  
+
+
+
+    <div class="tabCContainer navgridtabcontent"><!-- navgridtabcontent 3 start -->
+      // Two columns of functions: </pre><table width="100%;" cellspacing="15">
+        <tr>
+            <td style="vertical-align:top">	<div contenteditable="true"  spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv"><pre><span class="funcKeywordStyling">func</span> setup()
+{
+           
+           
+        <span class="commentsKeywordStyling2">   // try editing here.</span>
+           
+
+
+}</pre>
+            </div>
+            </td>
+            <td style="vertical-align:top">
+            <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv">
+        <pre><span class="funcKeywordStyling">func</span> resetAllStates()
+{
+           
+           
+        <span class="commentsKeywordStyling2">   // try editing here.</span>
+           
+
+
+}</pre>
+
+
+    
+            </div>
+            </td>
+        </tr>
+
+        <tr>
+          <td style="vertical-align:top">	<div contenteditable="true"  spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv"><pre><span class="funcKeywordStyling">func</span> openSelectedEntry()
+{
+         
+         
+      <span class="commentsKeywordStyling2">   // try editing here.</span>
+         
+
+
+}</pre>
+          </div>
+          </td>
+          <td style="vertical-align:top;width:50%;">
+           <!-- BEGIN TABS WITH CONTAINER -->
+    
+           <!--
+    <div class="tab">
+    
+      <button class="tablinks3 active" onmouseover="openTab(event, this,'tablinks3','tabcontent3')" style="font-size: 10px">Document Settings Window Variables</button>
+      <button class="tablinks3" onmouseover="openTab(event, this,'tablinks3','tabcontent3')" style="font-size: 10px">Document Settings Window Controls</button>
+    
+    </div>
+    
+    
+    <div class="tabCContainer tabcontent3" style="display:block;width:auto;">
+    
+    <code><pre>
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">defaultFontSizePt</span>  = 14.0;
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentWidthPt</span>  = 612.0;
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">documentHeightPt</span>  = 792.0;
+  
+  </pre></code></div>
+    
+    <div class="tabCContainer tabcontent3">
+    
+    <code><pre>
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">fontSizeTextField</span>  = TextField();
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">widthTextField</span>  = TextField();
+    <span class="variableKeywordStyling">var</span> <span class="variableNameStyling">heightTextField</span>  = TextField();
+  
+  </pre></code></div>
+-->
+    
+    <!-- END TABS WITH CONTAINER -->
+
+
+            <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv">
+      <pre><span class="funcKeywordStyling">func</span> addEntry()
+{
+         
+         
+      <span class="commentsKeywordStyling2">   // try editing here.</span>
+         
+
+
+}</pre>
+
+
+  
+          </div>
+          </td>
+      </tr>
+
+      <tr>
+        <td style="vertical-align:top">	<div contenteditable="true"  spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv"><pre><span class="funcKeywordStyling">func</span> addColumn()
+{
+       
+       
+    <span class="commentsKeywordStyling2">   // try editing here.</span>
+       
+
+
+}</pre>
+        </div>
+        </td>
+        <td style="vertical-align:top">
+        <div contenteditable="true" spellcheck="false" style="height:100%;width:100%;min-height:100px;" class="code editableTextAreaDiv">
+    <pre><span class="funcKeywordStyling">func</span> addRow()
+{
+       
+       
+    <span class="commentsKeywordStyling2">   // try editing here.</span>
+       
+
+
+}</pre>
+
+
+
+        </div>
+        </td>
+    </tr>
+
+        </table>
+    
+    </div><!-- END navgridtabcontent -->
+  
+    <div class="tabCContainer navgridtabcontent"><!-- navgridtabcontent 4 start -->
+
+      
+      <style>
+        
+        input.dataInputList.num{
+          font-family:Arial, Helvetica, sans-serif;
+        }
+        input.dataInputList {
+
+  
+font-size:20px;
+padding:5px;
+text-align: center;
+background-color: rgb(30, 30, 30);
+
+color:whitesmoke;
+
+width:100%;
+}
+
+      </style>
+
+      <div contenteditable="true"  spellcheck="false" style="height:100%;width:100%;min-height:100px;" >
+
+
+
+
+      <table style="color:green;font-size:20px;" cellpadding="0">
+<tr>
+<td><span class="variableKeywordStyling">var</span> numbersArray[] = </td> 
+
+<td>
+
+
+ 
+
+  <table>
+    
+    <tr>
+    <td><input value="40.4" onmouseover="this.focus();this.select()"  onmouseleave="this.blur()" class="dataInputList num"></td>
+    </tr>
+
+    <tr>
+      <td><input value="25.6" onmouseover="this.focus();this.select()" onmouseleave="this.blur()" class="dataInputList"></td>
+      </tr>
+
+      <tr>
+        <td><input value="25.6" onmouseover="this.focus();this.select()" onmouseleave="this.blur()" class="dataInputList"></td>
+        </tr>
+
+        <tr>
+          <td><input value="25.6" onmouseover="this.focus();this.select()" onmouseleave="this.blur()" class="dataInputList"></td>
+          </tr>
+
+    <tr>
+      <td><input value="25.6" onmouseover="this.focus();this.select()" onmouseleave="this.blur()" class="dataInputList"></td>
+      </tr>
+      
+      <tr>
+        <td><input value="49.4" onmouseover="this.focus();this.select()" onmouseleave="this.blur()" class="dataInputList"></td>
+        </tr>
+        
+        <tr>
+          <td><input value="88.2" onmouseover="this.focus();this.select()" class="dataInputList"></td>
+          </tr>
+          
+          <tr>
+            <td><input value="4" onmouseover="this.focus();this.select()" class="dataInputList"></td>
+            </tr>          
+
+      </table>
+  
+</td>
+
+</tr>
+
+      </table>
+    
+  <br/><br/><br/>
+
+      <table style="color:green;font-size:20px;" >
+        <tr>
+        <td><span class="variableKeywordStyling">var</span></td> 
+
+        <td valign="middle">states[]</td>
+<td>=</td>
+
+        <td valign="middle">
+        
+          <style>
+            .Sgrid-container {
+              display: grid;
+              grid-template-columns: 200px 200px 200px 200px;
+              gap: 10px;
+              
+              padding: 0px;
+            }
+            
+            .Sgrid-container > div {
+              background-color: rgba(255, 255, 255, 0.8);
+              border: 1px solid black;
+              text-align: center;
+              font-size: 30px;
+            }
+            </style>
+
+            <div class="Sgrid-container">
+
+            </div>
+
+
+              <div class="Sgrid-container">
+
+          <div>
+            <input value="open" onmouseover="this.focus();this.select()"  onmouseleave="this.blur()" class="dataInputList">
+          </div>
+          <div>
+            <input value="receiving" onmouseover="this.focus();this.select()"  onmouseleave="this.blur()" class="dataInputList">
+          </div>
+          <div>
+            <input value="received" onmouseover="this.focus();this.select()"  onmouseleave="this.blur()" class="dataInputList">
+          </div>
+          <div>
+            <input value="closed" onmouseover="this.focus();this.select()"  onmouseleave="this.blur()" class="dataInputList">
+          </div>
+
+        </div>
+
+        </td>
+        
+        </tr>
+        
+              </table>
+          
+    </div>
+      
+    </div><!-- END navgridtabcontent -->
+  
+      
+    <div class="tabCContainer navgridtabcontent galtab"><!-- navgridtabcontent 5 start -->
+
+      <style>
+        .galtab {
+          box-sizing: border-box;
+          
+        }
+        
+     
+        
+        /* The grid: Four equal columns that floats next to each other */
+        .column {
+          float: left;
+          width: 25%;
+          padding: 10px;
+        }
+        
+        /* Style the images inside the grid */
+        .column img {
+          opacity: 0.8; 
+          cursor: pointer; 
+          box-shadow: 2px 2px 2px rgb(185, 185, 185);
+          width:120px;
+          float:Right;
+        }
+        
+        .column img:hover {
+          opacity: 1;
+        }
+        
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+        
+        /* The expanding image container */
+        .container {
+          position: relative;
+          display: none;
+          overflow: hidden;
+          margin: 10px;
+        }
+        
+        /* Expanding image text */
+        #imgtext {
+          position: absolute;
+          bottom: 15px;
+          left: 15px;
+          color: white;
+          font-size: 20px;
+        }
+        
+        /* Closable button inside the expanded image */
+        .closebtn {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          color: white;
+          font-size: 35px;
+          cursor: pointer;
+        }
+        </style>
+<p>./ProjectResources/Images/LandscapeImages/</p>
+      <div class="row">
+        <div class="column">
+          <img src="img/img_nature.jpg" alt="Nature.jpg"  onmouseover="galleryImgShow(this);">
+        </div>
+        <div class="column">
+          <img src="img/img_snow.jpg" alt="Snow.jpg"  onmouseover="galleryImgShow(this);">
+        </div>
+        <div class="column">
+          <img src="img/img_mountains.jpg" alt="Mountains.jpg"  onmouseover="galleryImgShow(this);">
+        </div>
+        <div class="column">
+          <img src="img/img_lights.jpg" alt="Lights.jpg"  onmouseover="galleryImgShow(this);">
+        </div>
+      </div>
+
+      <div class="container" style="display: block">
+        <img id="expandedImg" style="width:100%;max-height:400px;" src="img/img_lights.jpg">
+        <div id="imgtext"></div>
+      </div>
+      
+
+      <script>
+        function galleryImgShow(imgs) {
+          var expandImg = document.getElementById("expandedImg");
+          var imgText = document.getElementById("imgtext");
+          expandImg.src = imgs.src;
+          imgText.innerHTML = imgs.alt;
+          expandImg.parentElement.style.display = "block";
+        }
+        </script>
+
+    </div><!-- END navgridtabcontent -->
+  
+  
+
+
+
+    <!-- grid container code end div--></div><!-- grid container code end -->
+
+    
+</div><!-- grid container code end -->
+
+
+    </div><!-- END ideCodeArea-->
+
+
+
+
+
+<p>This pagination could be automatically generated
+  for a file of code, allowing the programmer to browse
+  a code file by hovering over the page controls.  
+  Alternatively, the page number boxes
+  could be labeled, acting as section markers for
+  an album of code, which allows organizing the software.
+</p>
+
+
+</div><!-- end container-->
+
+
+<script>
+
+   // TAB CODE IS TEMPORARILY ALL MANUAL
+
+   function openTab(event, tabElement,tabLinksClassString,tabContentClassString) 
+    {
+
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName(tabContentClassString);
+      
+      var indexOfTab = 0;
+
+      tablinks = document.getElementsByClassName(tabLinksClassString);
+      for (i = 0; i < tablinks.length; i++) 
+      {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+
+        if (tabElement == tablinks[i])
+        {
+           indexOfTab = i;
+        }
+
+      
+      }
+
+
+
+      for (i = 0; i < tabcontent.length; i++) 
+      {
+        tabcontent[i].style.display = "none";
+  
+      }
+    
+      tabcontent[indexOfTab].style.display = "block";
+
+//      document.getElementById(tabId).style.display = "block";
+      
+//      evt.currentTarget.className += " active";
+      
+      tablinks[indexOfTab].className += " active";
+
+    }
+
+    
+
+    document.getElementById("A").style.display = "block";
+    document.getElementById("tabA").className += " active";
+    
+    document.getElementById("tabCustomA").className += " active";
+    document.getElementById("tabContentsCustomA").style.display = "block";
+     
+    document.getElementById("tabCustomC").className += " active";
+    document.getElementById("tabContentsCustomC").style.display = "block";
+     
+    </script>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

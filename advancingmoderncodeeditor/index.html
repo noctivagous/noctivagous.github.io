@@ -273,7 +273,7 @@ height:400px;
   
   <p>The plain text file format can only provide a single, vertical
     column of information. Contrast this with a magazine or newspaper layout in which
-    there are multiple columns.  In the usual case, half of the widescreen display's space
+    there are multiple columns.  In the usual case, half of the widescreen display
     is completely wasted during editing of a code file:
 
     <p style="text-align:center">
@@ -288,8 +288,8 @@ height:400px;
     is to insert user interface text areas into the editor's document view wherever there are distinct
      containers in the plain text code, such as a function body.
   -->
-    Plain text code can be adapted lightly and carefully to modern GUI conventions.  Subconsciously, this is already
-    the trend inside the average IDE, in response to the limitations of plain text.
+    Plain text code can be adapted lightly and carefully to incorporate modern GUI conventions.  Subconsciously, this is already
+    the trend inside the average IDE in response to the limitations of plain text.
     Code completion boxes appear when a person types, and there is usually
     code-folding GUI functionality provided that allows collapsing or expanding 
     sections of a file.  A large, vertical thumbnail image is also generated to the side of the code.
@@ -1686,12 +1686,48 @@ width:100%;
 </p>
 
 
-<h2>Conclusion</h2>
+<h2>The Next Step</h2>
 
 These features are designed to serve as an intermediate step
 before the next evolution in computer code's form, which is to base
 the code files on an XML document file format instead of plain text, rendering
-the editable document from XML just as a web page is rendered from HTML.
+the code document from XML just as a web page is rendered from HTML.  The
+code, of course, will look much more modern or, to some, "futuristic."
+
+<ol>
+<li>
+Structured Data: Representing a programming language in XML ensures a clear hierarchical structure. 
+Since elements and attributes are explicitly defined, it will 
+significantly simplify the parsing process, even though the rendered view in the editor is a completely
+different representation.
+</li>
+
+<li>
+Elimination of Ambiguity: Even though developers interact with the 
+rendered view in the code editor, the underlying XML representation 
+means there's no ambiguity in the code's data structure. 
+This can make both parsing and tooling (like auto-formatters or linters) more straightforward.
+</li>
+
+<li>
+Enhanced Tooling: With a standardized XML representation, 
+developing tools that analyze, transform, or validate code 
+can be more straightforward. These tools can operate on the XML layer, 
+regardless of how it's rendered in the editor.
+</li>
+
+<li>
+Consistency and Validation: Since XML can be validated against schemas, 
+it's possible to ensure that the code adheres to specific structural rules, 
+catching potential errors before they become runtime issues.
+</li>
+
+<li>
+Flexible Rendering: An XML-based representation can allow for multiple renderings 
+based on user preference or context. For example, a "simplified view" and a "detailed view" 
+in the editor are possible, all backed by the same XML data representation (.xml).
+</li>
+</ol>
 
 
 

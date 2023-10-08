@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+  <style>
+
+html,
+body {
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Scale canvas with resize attribute to full size */
+canvas[resize] {
+    width: 100%;
+    height: 100%;
+}
+
+
+    body{
+margin:0px;
+padding:0px;
+    }
+
+    #canvas {
+      
+      height:800px;
+background-color:#F8F8F8;
+      
+      max-width:100%;
+    }
+
+    canvas[resize] {
+    
+   }
+   
+   #intro{
+   padding:10px;
+   }
+   
+</style>
+
+
+
+<script type="text/javascript" src="paper-full.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+
+
+<script  type="text/javascript" src="https://dfork.news/wp-content/themes/darknews-pro/assets/paper-full.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+<div id="intro">
+
+<h1>The Key-Click UI</h1>
+<p>The key-click UI is an improved software user interface for the desktop computer.  
+
+<br><br>A software program that implements the key-click UI ignores the click buttons of the mouse.  
+All clicks occur with key presses on the keyboard.  
+
+ </p>
+
+
+<h1>Demo</h1>
+<!-- wp:paragraph -->
+<p>This demo lets you draw vector lines (lines with multiple straight segments).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>The gray rectangular area below accepts key presses:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul><!-- wp:list-item -->
+<li>— Press the "F" key after placing the cursor in the gray area.  Then move the mouse.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>— Press "F" again to add another point.  You then move the mouse again.  Keep adding points as needed.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>— To end drawing of the polyline, press one of three keys: "A", "E", or "R".</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>— Press "V" to thicken the stroke and "C" to thin the stroke of the polyline.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+</div>
+
+  <div id="canvasContainer">
+  <canvas id="canvas" resize></canvas>
+  </div>
+ 
+  <!-- wp:html -->
+<style>
+  #canvas {
+    border: 0px solid #000;
+    height:800px;
+background-color:#cccccc;
+    max-width:100%;
+  }
+  canvas[resize] {
+  
+ }
+</style>
+<!-- /wp:html -->
+
+<!-- wp:html -->
+<script type="text/paperscript" canvas="canvas">
+
+  var globalStrokeWidth = 1.0;
+  var maxStrokeWidth = 20.0;
+  var isDrawing = false;
+
+  var mousePt;
+  var path;
+
+      var textItem1 = new PointText({
+        content: 'POLYLINE DRAWING DEMO FOR KEY-CLICK UI  (noctivagous)',
+        point: new Point(10, 40),
+        fillColor: "#333333",
+        fontSize: '20pt',
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        
+    });
+
+   
+
+      var textItem2 = new PointText({
+        content: '\nKEYS:\n\n  F - start drawing polyline, add points.\n\n  A - end drawing polyline.\n  E - end drawing polyline and fill its shape.\n  R - end drawing polyline and stroke its shape.\n\n  V - thicken stroke\n  C - thin stroke',
+        point: new Point(10, 80),
+        fillColor: 'black',
+        fontSize: '18pt',
+        
+    });
+
+    /*
+    var textItem3 = new PointText({
+      content: 'pen stroke width: 1.0',
+      point: new Point(400, 40),
+      fillColor: 'black',
+      fontSize: '18pt',
+      
+  });*/
+
+      
+
+
+      view.onMouseLeave =
+      function (event)
+      {
+        if(isDrawing)
+        {
+            endShape();
+        }
+
+      }
+      
+      function onMouseMove(event)
+      {
+
+        mousePt = event.point;
+
+        mousePt.x = mousePt.x - 0;
+        
+        if(isDrawing)
+        {
+
+          if(path.segments.length == 1)
+          {
+            path.add(mousePt);
+
+
+          }
+
+          if(path.segments.length > 1 )
+          {
+          
+            path.removeSegment(path.segments.length - 1);
+            path.add(mousePt);
+
+          }
+
+        }
+
+      }
+
+ function onKeyDown(event) {
+
+
+
+if (event.key == 'f') {
+
+ polyLineKC();
+  
+}
+
+if (event.key == 'j') {
+  changeStrokeWidth(1);
+}
+if (event.key == 'k') {
+  changeStrokeWidth(2);
+}
+if (event.key == 'l') {
+  changeStrokeWidth(3);
+}
+if (event.key == ';') {
+  changeStrokeWidth(4);
+}
+
+if (event.key == 'c') {
+  thinStrokeWidth();
+}
+if (event.key == 'v') {
+  thickenStrokeWidth();
+}
+
+if(isDrawing)
+{
+// close and end shape
+if( event.key == 'r'){
+
+  closeShapeAndEnd();
+}
+
+// close and end shape
+if( event.key == 'e'){
+  closeShapeAndEndWithFill();
+
+
+}
+
+// close and end shape
+if( event.key == 'a'){
+  endShape();
+
+
+}
+
+}
+
+}
+
+
+function changeStrokeWidth(strokeVal)
+{
+var localStrokeVal = strokeVal;
+
+if(localStrokeVal < 1)
+{
+  localStrokeVal = 1;
+}
+if(localStrokeVal > maxStrokeWidth)
+{
+  localStrokeVal = maxStrokeWidth;
+}
+
+globalStrokeWidth = localStrokeVal;
+
+if(path)
+{
+  path.strokeWidth = localStrokeVal;
+}
+}
+
+function thinStrokeWidth()
+{
+changeStrokeWidth(globalStrokeWidth - 1);
+
+}
+
+function thickenStrokeWidth()
+{
+changeStrokeWidth(globalStrokeWidth + 1);
+}
+
+function endShape()
+{
+if (path) {
+   path.selected = false;
+   project.activeLayer.addChild(path);
+
+   path = null;
+  }
+}
+
+function closeShapeAndEnd()
+{
+
+  if (path) {
+    path.closed = true;
+    path.selected = false;
+    project.activeLayer.addChild(path);
+    path = null;
+   }
+
+}
+
+function closeShapeAndEndWithFill()
+{
+
+  if (path) {
+    path.closed = true;
+    path.selected = false;
+    path.fillColor = new Color(0, 0, 0);
+    project.activeLayer.addChild(path);
+    path = null;
+   }
+
+
+}
+
+
+
+  function polyLineKC() 
+  {
+
+    if(!path)
+    {
+          // Create a new path and set its stroke color to black:
+          path = new Path({
+              segments: [mousePt],
+              strokeColor: 'black',
+              strokeWidth: globalStrokeWidth,
+              // Select the path, so we can see its segment points:
+              fullySelected: true
+          });
+      }
+      else
+      {
+        path.add(mousePt);
+      }
+
+     if(isDrawing == false)
+     {
+         isDrawing = true;
+      }
+
+  }
+
+      function onMouseDown(event) {
+
+   
+      
+     }
+
+
+
+      // While the user drags the mouse, points are added to the path
+      // at the position of the mouse:
+      function onMouseDrag(event) {
+   
+      }
+
+      // When the mouse is released, we simplify the path:
+      function onMouseUp(event) {
+     
+      }
+  </script>
+<!-- /wp:html -->
+
+<div>
+  
+</div>
+
+</body>
+
+</html>

@@ -13,17 +13,28 @@ body {
     height: 100%;
 }
 
-/* Scale canvas with resize attribute to full size */
+/* Scale canvas with resize attribute to full size*/
+/*
+
 canvas[resize] {
     width: 100%;
     height: 100%;
 }
+*/
 
 
     body{
-margin:0px;
+margin:10px;
 padding:0px;
+overflow-y: scroll;
     }
+
+    body
+{
+font-size:2em;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
 
     #canvas {
       
@@ -33,10 +44,7 @@ background-color:#F8F8F8;
       max-width:100%;
     }
 
-    canvas[resize] {
-    
-   }
-   
+
    #intro{
    padding:10px;
    }
@@ -65,13 +73,19 @@ background-color:#F8F8F8;
 <p>The key-click UI is an improved software user interface for the desktop computer.  
 
 <br><br>A software program that implements the key-click UI treats the keys 
-on a keyboard as the click buttons.  The mouse buttons are entirely ignored.
+on a keyboard as click buttons.  The mouse buttons are entirely ignored.
 Before proceeding, try out the demo below.
 
 <p>
-The concept is that, and real world use has shown, there is currently too much of a burden placed
-on the mouse hand.  Compared to the key-click UI: the mouse hand is currently overstressed because it has to do two
-things at once: coordinate the position of the cursor and click the buttons with the fingers.  
+The concept is that-- and real world use of the key-click UI has shown-- 
+there is currently too much work given to the mouse hand.  
+Compared to the key-click UI, the mouse hand is currently overstressed. 
+It has to do two
+things at once: coordinate the position of the cursor <i>and</i> click the buttons with the fingers.
+In a vector-drawing program especially, this is excessive, as the
+computer's basic mouse software interface is supposed to stand in for a properly designed
+mechanical or physical setup.  It's actually that the mouse shouldn't be used
+for drawing vectors without special care given to how it is used.
 
 
 <!--
@@ -91,8 +105,7 @@ things at once: coordinate the position of the cursor and click the buttons with
   dynamic with the desktop computer because previously there was never such alternation possible between
   two hands (move, click, move, click).
  </p>
- <p>2. 
- </p>
+
 
 
 <h1>Demo</h1>

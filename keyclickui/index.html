@@ -107,33 +107,24 @@ for drawing vectors without modifying the interface.
 
 <h1>Vector-Drawing Demo</h1>
 <!-- wp:paragraph -->
-<p>This demo lets you draw vector lines (lines with multiple straight segments).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p><strong>The gray rectangular area below accepts key presses:</strong></p>
+<strong>The gray rectangular area below accepts key presses.  
+
+  <p>
+    Move the cursor into the gray area.
+    Press the <kbd>F</kbd> key to deposit a point.
+ <br/>  Then move the mouse.  <br/>
+  Press the <kbd>F</kbd> key
+  again to deposit another point.
+  <br/>
+  Repeat until
+  it is desired to press an end key (<kbd>A</kbd>,<kbd>E</kbd>,<kbd>R</kbd>).
+</strong></p>
 <!-- /wp:paragraph -->
 
-<!-- wp:list -->
-<ul><!-- wp:list-item -->
-<li>— Press the "F" key after placing the cursor in the gray area.  Then move the mouse.</li>
-<!-- /wp:list-item -->
 
-<!-- wp:list-item -->
-<li>— Press "F" again to add another point.  You then move the mouse again.  Keep adding points as needed.</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li>— To end drawing of the polyline, press one of three keys: "A", "E", or "R".</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li>— Press "V" to thicken the stroke and "C" to thin the stroke of the polyline.</li>
-<!-- /wp:list-item --></ul>
-<!-- /wp:list -->
-
-<!-- wp:paragraph -->
-</div>
 
   <div id="canvasContainer">
   <canvas id="canvas" resize></canvas>
@@ -149,6 +140,10 @@ background-color:#cccccc;
   }
   canvas[resize] {
   
+ }
+
+ kbd{
+  display: inline-block;border:1px solid black;border-radius: 3pt;padding:5px
  }
 </style>
 <!-- /wp:html -->
@@ -176,7 +171,7 @@ background-color:#cccccc;
    
 
       var textItem2 = new PointText({
-        content: '\nKEYS:\n\n  F - start drawing polyline, add points.\n\n  A - end drawing polyline.\n  E - end drawing polyline and fill its shape.\n  R - end drawing polyline and stroke its shape.\n\n  V - thicken stroke\n  C - thin stroke',
+        content: '\nKEYS:\n\n  F - (start drawing polyline) press to add point, then move mouse, repeat.\n\n  A - end drawing polyline.\n  E - end drawing polyline and fill its shape.\n  R - end drawing polyline and stroke its shape.\n\n  V - thicken the stroke\n  C - thin the stroke',
         point: new Point(10, 80),
         fillColor: 'black',
         fontSize: '18pt',

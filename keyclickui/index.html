@@ -51,12 +51,9 @@ background-color:#F8F8F8;
 
 
 
-<script type="text/javascript" src="paper-full.js"></script>
+<!--<script type="text/javascript" src="paper-full.js"></script>-->
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
-
-
-<script  type="text/javascript" src="https://dfork.news/wp-content/themes/darknews-pro/assets/paper-full.js"></script>
 
 
 
@@ -97,11 +94,13 @@ for drawing vectors without modifying the interface.
 
  <p>Separating the click from the mouse divides the labor of
   manipulating the cursor, to two hands instead of one. This leads to a leap in possible dexterity.
-  Each hand has its own role.  The mouse hand just moves the cursor and
+  Each hand has been given its own role.  The mouse hand just moves the cursor and
   the clicking hand just clicks with keys.  This opens up a totally different interactive 
   dynamic with the desktop computer, because previously there was never such alternation occuring between
   two hands (move, click, move, click).
  </p>
+
+
 
 
 
@@ -110,7 +109,8 @@ for drawing vectors without modifying the interface.
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<strong>The gray rectangular area below accepts key presses.  
+<strong>
+
 
   <p>
     Move the cursor into the gray area.
@@ -403,8 +403,41 @@ function closeShapeAndEndWithFill()
   </script>
 <!-- /wp:html -->
 
-<div>
-  
+<h1>Implementing Drag and Drop in The Key-Click UI</h1>
+
+<p>
+
+  The following is not yet available in the web demo above but can be in the future:
+
+  <p>
+
+  To select an individual object, you press the
+  <kbd>tab</kbd> key, and it is selected immediately
+  as if you had pressed <kbd>shift</kbd>+<kbd>left mouse button</kbd>. The
+
+  <kbd>tab</kbd> key
+  selects and de-selects. It is the <i>selection
+    click</i>).
+
+  <p>Though any key could be used for this,  <kbd>tab</kbd>
+  is chosen because of its location on the keyboard.
+It has been paired with <kbd>spacebar</kbd> to move
+objects around on the screen.</p>
+
+  <p>
+  To drag an object, you press
+  the <kbd>spacebar</kbd> key after the object has been selected (using <kbd>tab</kbd> click), and the
+  object moves in lock   step with the cursor. In other words, this is a drag lock, affixing objects to the
+  cursor. To release the drag lock, press the <kbd>spacebar</kbd> key again
+  and the object is dropped where it is. This is called
+  "carting" by Noctivagous. It is named as such because a cart moves its contents
+  briskly using wheels on the ground whereas dragging something on the ground has lots of friction.
+  That is what using carting is like.  It can also be called a drag lock, however.
+</p>
+
+
+
+
 </div>
 
 </body>

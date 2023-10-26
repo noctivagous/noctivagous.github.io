@@ -403,36 +403,50 @@ function closeShapeAndEndWithFill()
   </script>
 <!-- /wp:html -->
 
-<h1>Implementing Drag and Drop in The Key-Click UI</h1>
+<h1>Implementing Dragging of Objects in The Key-Click UI</h1>
 
 <p>
 
-  The following is not yet available in the web demo above but can be in the future:
+  The following is not yet available in the web demo above but will be 
+  in the future.  It is part of Floating Marker, a vector-drawing app.
 
   <p>
 
   To select an individual object, you press the
-  <kbd>tab</kbd> key, and it is selected immediately
+  <kbd>tab</kbd> key, and it is selected immediately underneath the cursor
   as if you had pressed <kbd>shift</kbd>+<kbd>left mouse button</kbd>. The
 
   <kbd>tab</kbd> key
   selects and de-selects. It is the <i>selection
-    click</i>).
+    click</i>.
+
+
 
   <p>Though any key could be used for this,  <kbd>tab</kbd>
   is chosen because of its location on the keyboard.
 It has been paired with <kbd>spacebar</kbd> to move
-objects around on the screen.</p>
+objects around on the screen.
+
+The purpose of assigning <kbd>shift</kbd>+<kbd>left mouse button</kbd>
+to <kbd>tab</kbd> is that the key-click UI works better with the <kbd>shift</kbd> modifier most of the time.
+Little modifications like this are needed to make the key-click UI translate existing conventions.
+For one, it is far easier to select multiple objects at a time with the key-click UI, so
+<kbd>shift</kbd> is necessary.
+</p>
 
   <p>
   To drag an object, you press
   the <kbd>spacebar</kbd> key after the object has been selected (using <kbd>tab</kbd> click), and the
-  object moves in lock   step with the cursor. In other words, this is a drag lock, affixing objects to the
-  cursor. To release the drag lock, press the <kbd>spacebar</kbd> key again
-  and the object is dropped where it is. This is called
-  "carting" by Noctivagous. It is named as such because a cart moves its contents
-  briskly using wheels on the ground whereas dragging something on the ground has lots of friction.
-  That is what using carting is like.  It can also be called a drag lock, however.
+  object moves in lock step with the cursor. In other words, this is a drag lock, affixing objects to the
+  cursor relative to their existing position. To release the drag lock, press the <kbd>spacebar</kbd> key again
+  and then the object is  left at its present location.  More than one object can be part
+  of a drag lock at a time. 
+  
+  <p>
+    For ease of communication this is called a drag lock, but it is called
+  "carting" by Noctivagous, in place of "dragging". It is named as such because a cart moves its contents
+  briskly using wheels on the ground whereas dragging something on the ground makes lots of noise.
+  That is what using carting is like, that's the difference in UI.
 </p>
 
 

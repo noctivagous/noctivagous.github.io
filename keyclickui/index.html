@@ -404,13 +404,15 @@ function closeShapeAndEndWithFill()
   </script>
 <!-- /wp:html -->
 
-<h1>Implementing Dragging of Objects in The Key-Click UI</h1>
+<h1>Implementing Selection And Dragging of Objects in The Key-Click UI</h1>
 
 <p>
 
   The following is not yet available in the web demo above but will be 
   in the future.  It is part of Floating Marker, a vector-drawing app.
 
+
+  <h2>The <kbd>Tab</kbd> Key Is Used for The Selection Click</h2>
   <p>
 
   To select an individual object, you press the
@@ -429,12 +431,14 @@ It has been paired with <kbd>spacebar</kbd> to move
 objects around on the screen.
 
 The purpose of assigning <kbd>shift</kbd>+<kbd>left mouse button</kbd>
-to <kbd>tab</kbd> is that the key-click UI works better with the <kbd>shift</kbd> modifier most of the time.
-Little modifications like this are needed to make the key-click UI translate existing conventions.
+to the <kbd>tab</kbd> key is that the key-click UI works better with the <kbd>shift</kbd> modifier for selections 
+most of the time.
+Tweaks and modifications like this are needed to make the key-click UI translate existing conventions.
 For one, it is far easier to select multiple objects at a time with the key-click UI, so
-<kbd>shift</kbd> is necessary.
+<kbd>shift</kbd> is implemented.  Just like before, clicking outside of the selection de-selects everything.
 </p>
 
+<h2>The <kbd>Spacebar</kbd> Implements a Drag-Lock on The Current Selection</h2>
   <p>
   To drag an object, you press
   the <kbd>spacebar</kbd> key after the object has been selected (using <kbd>tab</kbd> click), and the
@@ -449,6 +453,16 @@ For one, it is far easier to select multiple objects at a time with the key-clic
   briskly using wheels on the ground whereas dragging something on the ground makes lots of noise.
   That is what using carting is like, that's the difference in UI.
 </p>
+
+<h2>The <kbd>Escape</kbd> Key Cancels All Operations And Selections</h2>
+
+<p>If the  <kbd>Escape</kbd> is pressed and there is any drag lock occurring, it will
+be canceled.   The current selection will be canceled as well.
+This is not only a convenience, it fits into the whole of using of the keyboard
+to click when using the key-click UI.</p>
+
+
+
 
 
 

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Durer's Magic Square and Lo Shu Square</title>
+
+    <style>
+body{
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-size:18pt;
+}
+
+#mainContainer{
+margin:auto;
+max-width:800px;
+}
+
+h1,h2,h3,h4{
+text-transform: capitalize;
+}
+    </style>
+</head>
+<body>
+
+<div id="mainContainer">
+
+    <div>
+        <h1>Luoshu Square</h1>
+
+<p>The cells of the Luoshu square below have been shaded according
+    to their value (relative to the highest number in the square, 9).
+    <!-- (This is not common practice but can reveal some properties of the square.)-->
+</p>
+        <center>
+    <canvas id="luoshuCanvas" width="300" height="300"></canvas>
+</center>
+
+
+<h2>The Sum Is 15</h2>
+    <p>
+        The first property discussed about this square is that
+    the sum of the numbers in each row, each column, and each of the two 
+    main diagonals are the same.
+</p>
+    <ul>
+<li>Each of the three rows adds up to 15.</li>
+<li>Each of the three columns adds up to 15.</li>
+<li>Each of the two diagonals adds up to 15.</li>
+</ul>
+
+
+<h2>Other properties of the square</h2>
+
+
+<h3>Four Arithmetic Sequences</h3>
+<p>The diagonal {4,5,6} is an arithmetic sequence because the difference between
+    each number is constant (d = 1).  There are three other arithmetic sequences
+    like this, and they can be ordered like the following:
+    
+<!--    An arithmetic sequence is a sequence of numbers in which the difference between consecutive terms is constant. -->
+    <!-- This constant difference is known as the "common difference," usually denoted by d.-->
+
+</p>
+<!--<p>
+    The numbers in each of the two main diagonals, 
+    the middle row, and the middle column form individual arithmetic sequences. 
+    The common differences for these sequences are unique to each set: 1 for one diagonal, 2 for the middle row, 3 for the other diagonal, and 4 for the middle column.
+
+</p>
+-->
+
+<ul>
+<li>
+Diagonal from top-left to bottom-right: 4, 5, 6 (difference of 1)
+</li>
+<li>
+    Middle row: 3, 5, 7 (difference of 2)
+    </li>
+<li>
+Diagonal from top-right to bottom-left: 2, 5, 8 (difference of 3)
+</li>
+
+<li>
+Middle column: 9, 5, 1 (difference of 4)
+</li>
+</ul>
+
+<h3>Symmetrical Differences and Factor Relationships in the Lo Shu Square</h3>
+
+<ul>
+    <li><strong>Opposing Row Differences:</strong> In the Luoshu Square, the differences between opposing cells in each row are 2, 4, and 2.
+      <ul>
+        <li>Example: For the first row, 4 - 2 = 2; for the second row, 7 - 3 = 4; for the third row, 8 - 6 = 2.</li>
+      </ul>
+    </li>
+    <li><strong>Opposing Column Differences:</strong> The differences between opposing cells in each column are 4, 8, and 4.
+      <ul>
+        <li>Example: For the first column, 8 - 4 = 4; for the second column, 9 - 1 = 8; for the third column, 6 - 2 = 4.</li>
+      </ul>
+    </li>
+    <li><strong>Factor Relationship:</strong> The differences in each column are exactly twice the differences in each corresponding row.
+      <ul>
+        <li>Example: The differences in the columns (4, 8, 4) are each twice the differences in the rows (2, 4, 2).</li>
+      </ul>
+    </li>
+  </ul>
+  
+
+
+</div>
+
+<div>
+    <h1>Dürer Square</h1>
+
+    <center>
+    <canvas id="durerMagicSquareCanvas" width="400" height="400"></canvas>
+</center>
+</div>
+
+
+
+    <script>
+        var luoshuCanvas = document.getElementById('luoshuCanvas');
+        var durerMagicSquareCanvas = document.getElementById('durerMagicSquareCanvas');
+        var ctx1 = luoshuCanvas.getContext('2d');
+        var ctx2 = durerMagicSquareCanvas.getContext('2d');
+
+        // Dürer's magic square
+        var durerSquare = [
+            [16, 3, 2, 13],
+            [5, 10, 11, 8],
+            [9, 6, 7, 12],
+            [4, 15, 14, 1]
+        ];
+
+        // Lo Shu Square
+        var luoShuSquare = [
+            [4, 9, 2],
+            [3, 5, 7],
+            [8, 1, 6]
+        ];
+
+        // Dimensions of each cell
+        var cellWidth = 100;
+        var cellHeight = 100;
+
+        // Draw a square
+        function drawSquare(square, xOffset, ctx) {
+            for(var i = 0; i < square.length; i++) {
+                for(var j = 0; j < square[i].length; j++) {
+                    // Calculate the grayscale color
+                    var maxVal = Math.max(...square.flat());
+                    var grayValue = 255 - Math.floor((square[i][j] / maxVal) * 255);
+                    var grayColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
+
+                    // Draw the cell
+                    ctx.fillStyle = grayColor;
+                    ctx.fillRect(j * cellWidth + xOffset, i * cellHeight, cellWidth, cellHeight);
+
+                    // Annotate the cell with its value
+                    ctx.fillStyle = "white";
+                    ctx.font = "30px Arial";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(square[i][j], j * cellWidth + cellWidth / 2 + xOffset, i * cellHeight + cellHeight / 2);
+                }
+            }
+        }
+
+        // Draw Durer's Square starting at x = 0
+        drawSquare(durerSquare, 0,ctx2);
+
+        // Draw Lo Shu Square 
+        drawSquare(luoShuSquare, 0,ctx1);
+    </script>
+</div>
+</body>
+</html>

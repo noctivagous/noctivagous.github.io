@@ -14,8 +14,17 @@ margin:auto;
 max-width:800px;
 }
 
+h2{
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 h1,h2,h3,h4{
 text-transform: capitalize;
+margin-top:2em;
+}
+
+h3,h4{
+color:#444;
 }
     </style>
 </head>
@@ -35,26 +44,52 @@ text-transform: capitalize;
 </center>
 
 
-<h2>The Sum Is 15</h2>
-    <p>
-        The first property discussed about this square is that
-    the sum of the numbers in each row, each column, and each of the two 
-    main diagonals are the same.
-</p>
-    <ul>
-<li>Each of the three rows adds up to 15.</li>
-<li>Each of the three columns adds up to 15.</li>
-<li>Each of the two diagonals adds up to 15.</li>
-</ul>
+<h2>The Constant Sum Property of the Lo Shu Square: All Rows, Columns, and Main Diagonals Sum to 15</h2>
+   
+
+<ul>
+    <li>Each of the three rows {4, 9, 2}, {3, 5, 7}, and {8, 1, 6} adds up to 15.</li>
+    <li>Each of the three columns {4, 3, 8}, {9, 5, 1}, and {2, 7, 6} adds up to 15.</li>
+    <li>Each of the two main diagonals {4, 5, 6} and {2, 5, 8} adds up to 15.</li>
+  </ul>
+  
 
 
 <h2>Other properties of the square</h2>
 
+<h3>Alternation of Odd And Even Numbers Around The Square</h3>
+<p>
+
+    The center number (5) is
+    surrounded by alternating Yin and Yang numbers (even and odd).
+
+
+</p>
+
+<h3>Reflective Symmetry</h3>
+
+The Lo Shu Square also has reflective symmetry along its main diagonal from the top-left to the bottom-right.
+ If you flip the numbers across this diagonal, you get the same constant sum for each row, column, diagonal (15).
+
+ <pre>
+    Original:
+
+    4  9  2
+    3  5  7
+    8  1  6
+    
+    Reflected along main diagonal:
+
+    4  3  8
+    9  5  1
+    2  7  6
+ </pre>
+
 
 <h3>Four Arithmetic Sequences</h3>
-<p>The diagonal {4,5,6} is an arithmetic sequence because the difference between
+<p>The diagonal {4,5,6} is considered an arithmetic sequence because the difference between
     each number is constant (d = 1).  There are three other arithmetic sequences
-    like this, and they can be ordered like the following:
+    like this:
     
 <!--    An arithmetic sequence is a sequence of numbers in which the difference between consecutive terms is constant. -->
     <!-- This constant difference is known as the "common difference," usually denoted by d.-->
@@ -70,17 +105,17 @@ text-transform: capitalize;
 
 <ul>
 <li>
-Diagonal from top-left to bottom-right: 4, 5, 6 (difference of 1)
+Diagonal from top-left to bottom-right: {4, 5, 6} (<b>difference of 1</b>)
 </li>
 <li>
-    Middle row: 3, 5, 7 (difference of 2)
+    Middle row: {3, 5, 7} (<b>difference of 2</b>)
     </li>
 <li>
-Diagonal from top-right to bottom-left: 2, 5, 8 (difference of 3)
+Diagonal from top-right to bottom-left: {2, 5, 8} (<b>difference of 3</b>)
 </li>
 
 <li>
-Middle column: 9, 5, 1 (difference of 4)
+Middle column: {9, 5, 1} (<b>difference of 4</b>)
 </li>
 </ul>
 
@@ -98,11 +133,30 @@ Middle column: 9, 5, 1 (difference of 4)
       </ul>
     </li>
     <li><strong>Factor Relationship:</strong> The differences in each column are exactly twice the differences in each corresponding row.
+        <!-- The differences between opposing cells in the columns are twice the differences in the rows.-->
       <ul>
         <li>Example: The differences in the columns (4, 8, 4) are each twice the differences in the rows (2, 4, 2).</li>
       </ul>
     </li>
   </ul>
+  
+
+  <h3>Descending Products of Corner and Center Adjacent Cells</h3>
+
+  <p>The products of the corner and center-adjacent numbers result in descending values:</p>
+ 
+  <pre>
+    <b>4</b>  <b>9</b>  2
+    <b>3</b>  <b>5</b>  7
+    <b>8</b>  <b>1</b>  6
+    </pre>
+  <ul>
+    <li>The top-left and top-right corners {4, 9} yield a product of (4 &times; 9 = 36).</li>
+    <li>The center and its top-adjacent cell {3, 5} give a product of (3 &times; 5 = 15).</li>
+    <li>The bottom-left and bottom-right corners {1, 8} result in a product of (1 &times; 8 = 8).</li>
+  </ul>
+  
+  <p>These products—36, 15, and 8—are in descending order.</p>
   
 
 

@@ -61,7 +61,7 @@ color:#444;
 <p>
 
     The center number (5) is
-    surrounded by alternating Yin and Yang numbers (even and odd).
+    surrounded by alternating even and odd numbers (yin and yang).
 
 
 </p>
@@ -158,12 +158,23 @@ Middle column: {9, 5, 1} (<b>difference of 4</b>)
   
   <p>These products—36, 15, and 8—are in descending order.</p>
   
+  <p>Continuing this, if you subtract the number from the rightmost corner column from the product of the diagonal corners, you get an even number:</p>
 
+  <ul>
+    <li>Subtracting 2 from the product of 4 and 9: (4 &times; 9 - 2 = 36 - 2 = 34)</li>
+    <li>Subtracting 7 from the product of 3 and 5: (3 &times; 5 - 7 = 15 - 7 = 8)</li>
+    <li>Subtracting 6 from the product of 1 and 8: (1 &times; 8 - 6 = 8 - 6 = 2)</li>
+  </ul>
+  
+  <p>These results—34, 8, and 2—are all even numbers.</p>
 
 </div>
 
 <div>
     <h1>Dürer Square</h1>
+<p>Again, the cells of the magic square 
+    below have been shaded according to their value (relative to the highest number in the square, 16).
+</p>
 
     <center>
     <canvas id="durerMagicSquareCanvas" width="400" height="400"></canvas>

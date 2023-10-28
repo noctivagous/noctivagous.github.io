@@ -12,6 +12,7 @@ font-size:18pt;
 #mainContainer{
 margin:auto;
 max-width:800px;
+margin-bottom: 100px;
 }
 
 h2{
@@ -303,6 +304,11 @@ China has also been dubbed the "Middle Kingdom".
 
 <div>
     <h2>Dürer Square</h2>
+    
+    <p>
+    This is discussing Albrecht Dürer's 4x4 magic square, as seen in his engraving "Melancholia I".
+  </p>
+
 <p>Again, the cells of the magic square 
     below have been shaded according to their value (relative to the highest number in the square, 16).
 </p>
@@ -310,7 +316,26 @@ China has also been dubbed the "Middle Kingdom".
     <center>
     <canvas id="durerMagicSquareCanvas" width="400" height="400"></canvas>
 </center>
+
+
+<section>
+  <h2>Absolute Differences in Top and Bottom Rows, and Outer Columns of Durer's Magic Square</h2>
+  <p>The absolute differences between the cells in the top row {16,3,2,13} and bottom row {4,15,14,1}, as well as between 
+    the cells in the far-left 
+    {16,5,9,4}
+    and far-right columns {13,8,12,1}, form a consistent pattern.</p>
+  
+    <p>Absolute difference between each cell in the top row and its corresponding cell in the bottom row: |16 - 4|, |3 - 15|, |2 - 14|, |13 - 1| all yield a difference of 12.</p>
+  
+    <p>Absolute difference between each cell in the far-left column and its corresponding cell in the far-right column: |16 - 13|, |5 - 8|, |9 - 12|, |4 - 1| all yield a difference of 3.</p>
+  
+   
+
+</section>
+
 </div>
+
+
 
 
 

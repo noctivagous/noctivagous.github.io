@@ -5,56 +5,64 @@
 
 
   <style>
-
-html,
-body {
-    margin: 0;
-    height: 100%;
-}
-
-/* Scale canvas with resize attribute to full size*/
-
-
-canvas[resize] {
-    width: 100%;
-    height: 100%;
-    cursor:crosshair;
-}
-
-
-
-    body{
-margin:10px;
-padding:0px;
+    html,
+    body {
+      margin: 0;
+      height: 100%;
     }
 
-    body
-{
-font-size:2em;
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* Scale canvas with resize attribute to full size*/
 
-}
+
+    canvas[resize] {
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+
+
+    body {
+      margin: 10px;
+      padding: 0px;
+    }
+
+    body {
+      font-size: 2em;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    }
 
     #canvas {
-      
-      height:800px;
-background-color:#F8F8F8;
-      
-      max-width:100%;
+
+      height: 800px;
+      background-color: #F8F8F8;
+
+      max-width: 100%;
     }
 
 
-   #intro{
-   padding:10px;
-   }
-   
-</style>
+    #intro {
+      padding: 10px;
+    }
+  </style>
 
 
 
-<!--<script type="text/javascript" src="paper-full.js"></script>-->
+  <script>
+    window.addEventListener('keydown', function (event) {
+      if (event.key === ' ' || event.key === 'Tab') {
+        event.preventDefault();
+      }
+    });
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+
+
+  </script>
+  <!--<script type="text/javascript" src="paper-full.js"></script>-->
+
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
 
 
 
@@ -63,29 +71,30 @@ background-color:#F8F8F8;
 
 <body>
 
-<div id="intro">
+  <div id="intro">
 
-<h1>The Key-Click UI</h1>
-<p>The key-click UI is an improved software user interface for the desktop computer.  
+    <h1>The Key-Click UI</h1>
+    <p>The key-click UI is an improved software user interface for the desktop computer.
 
-<br><br>A software program that implements the key-click UI treats the keys 
-on a keyboard as click buttons.  The mouse buttons are entirely ignored.
-Although this can be explained, before reading further, please try out the vector-drawing demo below.
+      <br><br>A software program that implements the key-click UI treats the keys
+      on a keyboard as click buttons. The mouse buttons are entirely ignored.
+      Although this can be explained, before reading further, please try out the vector-drawing demo below.
 
-<p>
-The concept is that&mdash; and real-world use of the key-click UI has shown&mdash;
-there is currently too much work assigned to an individual hand.  
-Compared to the key-click UI, the hand is currently burdened. 
-It has to do two things at once: coordinate the position of the cursor <i>and</i> click the buttons with the index finger.
-In a vector-drawing program, especially, this is too much; the
-standard mouse interface is too simplistic for drawing vectors.  Thus, to
-establish a normal situation for 
-drawing vectors with a mouse, it's important first to modify the overall interface,
-and that is the key-click UI.  It later is applied to other parts of the desktop UI,
-outside of vector-drawing.
+    <p>
+      The concept is that&mdash; and real-world use of the key-click UI has shown&mdash;
+      there is currently too much work assigned to an individual hand.
+      Compared to the key-click UI, the hand is currently burdened.
+      It has to do two things at once: coordinate the position of the cursor <i>and</i> click the buttons with the index
+      finger.
+      In a vector-drawing program, especially, this is too much; the
+      standard mouse interface is too simplistic for drawing vectors. Thus, to
+      establish a normal situation for
+      drawing vectors with a mouse, it's important first to modify the overall interface,
+      and that is the key-click UI. It later is applied to other parts of the desktop UI,
+      outside of vector-drawing.
 
 
-<!--
+      <!--
 <p>The key-click UI is not in contradiction with the history of the mouse, as Douglas Engelbart's
   1968 demo of the mouse in fact also featured a .  During the demo, to the left of his keyboard
   he was using a five-key device in tandem with the mouse, which also had click buttons.  
@@ -95,100 +104,137 @@ outside of vector-drawing.
 
 
 
- <p>Separating the click from the mouse divides the labor of
-  manipulating cursor activity to two hands instead of one. This leads to a leap in possible dexterity.
-  Each hand has been given its own role: the mouse hand just moves the cursor and
-  the clicking hand just clicks with keys.  This opens up a totally different interactive 
-  dynamic with the desktop computer, because previously there was never such alternation occuring between
-  two hands (move, click, move, click).
- </p>
+    <p>Separating the click from the mouse divides the labor of
+      manipulating cursor activity to two hands instead of one. This leads to a leap in possible dexterity.
+      Each hand has been given its own role: the mouse hand just moves the cursor and
+      the clicking hand just clicks with keys. This opens up a totally different interactive
+      dynamic with the desktop computer, because previously there was never such alternation occuring between
+      two hands (move, click, move, click).
+    </p>
 
 
 
 
 
-<h1>Vector-Drawing Demo</h1>
-<!-- wp:paragraph -->
-<!-- /wp:paragraph -->
+    <h1>Vector-Drawing Demo</h1>
+    <!-- wp:paragraph -->
+    <!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
-<strong>
-
-
-  <p>
-    Move the cursor into the gray area.
-    Press the <kbd>F</kbd> key to deposit a point.
- <br/>  Then move the mouse.  <br/>
-  Press the <kbd>F</kbd> key
-  again to deposit another point.
-  <br/>
-  Repeat until
-  it is desired to press an end key (<kbd>A</kbd>,<kbd>E</kbd>,<kbd>R</kbd>).
-</strong></p>
-<!-- /wp:paragraph -->
+    <!-- wp:paragraph -->
+    
 
 
+      
+        Move the cursor into the gray area.
 
-  <div id="canvasContainer">
-  <canvas id="canvas" resize></canvas>
-  </div>
+        
+        <div style="border: 1px solid black;font-size: 80%;margin-bottom: 10px;margin-top:10px;">
+          <table cellspacing="40">
+            <tr><td style="vertical-align: top;">   <h3 style="margin-top: 0px;">DRAWING</h3>
+              1. Press the <kbd>F</kbd> key to deposit a point.
+              <br /> 2. Then move the mouse. <br />
+              3. Press the <kbd>F</kbd> key
+              again to deposit another point.
+              <br />
+              <p></p>
+              4. Repeat until
+              it is desired to press an END key:
+              <br/>
+              <br/>&nbsp;&nbsp;&nbsp;<kbd>A</kbd> - END the stroke.
+              <br/>&nbsp;&nbsp;&nbsp;<kbd>E</kbd> - END and fill the shape.
+              <br/>&nbsp;&nbsp;&nbsp;<kbd>R</kbd> - END and stroke the shape.</td>
+              
+              
+              <td style="vertical-align: top;">    <h3 style="margin-top: 0px;">SELECTING AND DRAGGING</h3>
+              <p>1.Select objects with <kbd>Tab</kbd>.  </p>
+          
+              2.To drag the selection, turn on the drag-lock with <kbd>SPACEBAR</kbd>.
+              <!-- /wp:paragraph -->
+<p>
+              3. Stamp a selection with <kbd>E</kbd>.
+          
+              <p>3. The <kbd>Esc</kbd> key will also cancel the selection and dragging.</p>
+          </td></tr>
+          </table>
+       
  
-  <!-- wp:html -->
-<style>
-  #canvas {
-    border: 0px solid #000;
-    height:800px;
-background-color:#cccccc;
-    max-width:100%;
-  }
-  canvas[resize] {
   
- }
+  
+    </div>
 
- kbd{
-  display: inline-block;border:1px solid black;border-radius: 3pt;padding:5px
- }
-</style>
-<!-- /wp:html -->
+    <div id="canvasContainer">
+      
+      <canvas id="canvas" resize></canvas>
+    </div>
 
-<!-- wp:html -->
-<script type="text/paperscript" canvas="canvas">
+    <!-- wp:html -->
+    <style>
+      #canvas {
+        border: 0px solid #000;
+        height: 800px;
+        background-color: #cccccc;
+        max-width: 100%;
+      }
+
+      canvas[resize] {}
+
+      kbd {
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 3pt;
+        padding: 5px;
+        background-color: #333;
+        color:white;
+        font-family: 'Courier New', Courier, monospace;
+      }
+    </style>
+    <!-- /wp:html -->
+
+    <!-- wp:html -->
+    <script type="text/paperscript" canvas="canvas">
 
   var globalStrokeWidth = 1.0;
   var maxStrokeWidth = 20.0;
   var isDrawing = false;
 
   var mousePt;
+  var lastMousePt = null;
+
   var path;
+  
 
-      var textItem1 = new PointText({
-        content: 'POLYLINE DRAWING DEMO FOR KEY-CLICK UI  (noctivagous)',
-        point: new Point(10, 40),
-        fillColor: "#333333",
-        fontSize: '20pt',
-        fontWeight: 'bold',
-        fontFamily: 'Arial',
+
+  // Variables to track selected items and drag-lock status
+	var selectedItems = [];
+
+  var _isInDragLock = false;
+
+// Create a property with a setter for _isInDragLock
+
+function setIsInDragLock(status) {
+  _isInDragLock = status;
+  updateTextContent();
+}
+
+
+
+var textItem1 = new PointText({
+  content: 'Selected Objects: 0\nDrag-Lock: Off',
+  point: new Point(10, 40),
+  fillColor: "#333333",
+  fontSize: '20pt',
+  fontWeight: 'bold',
+  fontFamily: 'Arial',
         
-    });
+});
 
-   
 
-      var textItem2 = new PointText({
-        content: '\nKEYS:\n\n  F - (start drawing polyline) press to add point, then move mouse, repeat.\n\n  A - end drawing polyline.\n  E - end drawing polyline and fill its shape.\n  R - end drawing polyline and stroke its shape.\n\n  V - thicken the stroke\n  C - thin the stroke',
-        point: new Point(10, 80),
-        fillColor: 'black',
-        fontSize: '18pt',
-        
-    });
 
-    /*
-    var textItem3 = new PointText({
-      content: 'pen stroke width: 1.0',
-      point: new Point(400, 40),
-      fillColor: 'black',
-      fontSize: '18pt',
-      
-  });*/
+function updateTextContent() {
+  var selectedCount = selectedItems.length;
+  textItem1.content = 'Selected Objects: ' + selectedCount + '\n';
+  textItem1.content += 'Drag-Lock: ' + (_isInDragLock ? 'On' : 'Off');
+}
 
       
 
@@ -206,14 +252,19 @@ background-color:#cccccc;
       function onMouseMove(event)
       {
 
+
+
         mousePt = event.point;
 
-        mousePt.x = mousePt.x - 0;
+        
         
         if(isDrawing)
         {
 
-          if(path.segments.length == 1)
+          if(path)
+          {
+         
+            if(path.segments.length == 1)
           {
             path.add(mousePt);
 
@@ -227,8 +278,42 @@ background-color:#cccccc;
             path.add(mousePt);
 
           }
+        
+         }
 
         }
+        
+  
+
+          // Implement drag-lock functionality
+          if (_isInDragLock) {
+             
+            // If lastMousePt is null, initialize it
+            if (lastMousePt === null) {
+              lastMousePt = mousePt;
+            }
+
+
+            // Calculate the delta
+            var delta = mousePt.subtract(lastMousePt);
+        
+
+          
+        // Apply the delta to the position of all selected items
+          for (var i = 0; i < selectedItems.length; i++) {
+          selectedItems[i].position = selectedItems[i].position.add(delta);
+        }
+
+        // Update lastMousePt for the next onMouseMove event
+        lastMousePt = mousePt;
+
+          } else {
+            // Reset lastMousePt when drag lock is off
+            lastMousePt = null;
+          }
+          
+
+
 
       }
 
@@ -262,6 +347,11 @@ if (event.key == 'v') {
   thickenStrokeWidth();
 }
 
+if (event.key === 'e' && _isInDragLock) {
+  stampItems(selectedItems);
+}
+
+
 if(isDrawing)
 {
 // close and end shape
@@ -286,7 +376,50 @@ if( event.key == 'a'){
 
 }
 
-}
+
+
+  // Tab key for selecting object under cursor
+  if (event.key === 'tab') {
+    // Hit test to find object under cursor
+    var hitResult = project.hitTest(mousePt);
+
+    if (hitResult && hitResult.item) {
+      // Check if this item is already selected
+      var alreadySelected = selectedItems.indexOf(hitResult.item) !== -1;
+
+      if (alreadySelected) {
+        hitResult.item.selected = false;
+        selectedItems.splice(selectedItems.indexOf(hitResult.item), 1);
+      } else {
+        hitResult.item.selected = true;
+        selectedItems.push(hitResult.item);
+      }
+    } else {
+      // If nothing is underneath the cursor, clear the selection
+      for (var i = 0; i < selectedItems.length; i++) {
+        selectedItems[i].selected = false;
+      }
+      selectedItems = [];
+    }
+  }
+
+  // Spacebar for drag-lock
+  if (event.key === 'space' && (selectedItems.length > 0)) {
+    setIsInDragLock(!_isInDragLock); // Toggle drag-lock status
+  }
+
+  // Escape key for cancelling all
+  if (event.key === 'escape') {
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].selected = false;
+    }
+    selectedItems = [];
+    setIsInDragLock(false);
+  }
+
+  updateTextContent();
+
+}// END keydown
 
 
 function changeStrokeWidth(strokeVal)
@@ -308,6 +441,7 @@ if(path)
 {
   path.strokeWidth = localStrokeVal;
 }
+g
 }
 
 function thinStrokeWidth()
@@ -321,14 +455,33 @@ function thickenStrokeWidth()
 changeStrokeWidth(globalStrokeWidth + 1);
 }
 
+
+function stampItems(itemsToStamp)
+{
+
+  if(itemsToStamp === null)
+  {
+    return;
+  }
+
+  for (var i = 0; i < itemsToStamp.length; i++) {
+    var clone = itemsToStamp[i].clone();
+    clone.selected = false; // Optionally deselect the clone
+    project.activeLayer.addChild(clone);
+  }
+}
+
+
 function endShape()
 {
 if (path) {
    path.selected = false;
    project.activeLayer.addChild(path);
 
+   isDrawing = false;
    path = null;
   }
+
 }
 
 function closeShapeAndEnd()
@@ -338,6 +491,7 @@ function closeShapeAndEnd()
     path.closed = true;
     path.selected = false;
     project.activeLayer.addChild(path);
+    isDrawing = false;
     path = null;
    }
 
@@ -351,6 +505,7 @@ function closeShapeAndEndWithFill()
     path.selected = false;
     path.fillColor = new Color(0, 0, 0);
     project.activeLayer.addChild(path);
+    isDrawing = false;
     path = null;
    }
 
@@ -403,108 +558,109 @@ function closeShapeAndEndWithFill()
       function onMouseUp(event) {
      
       }
+
+
+
   </script>
-<!-- /wp:html -->
-
-<p>
- A single vector line can be used by the program as:
-<ul>
-  <li>the diameter of a circle.</li>
-  <li>the radius of a circle.</li>
-  <li>the diagonal of a rectangle.</li>
-  <li>the circumradius of a regular polygon.</li>
-  <li>etc.</li>
-</ul>
-</p>
-
-
-<h1>Implementing Selection And Dragging of Objects in The Key-Click UI</h1>
-
-<p>
-
-  The following is not yet available in the web demo above but will be 
-  in the future.  It is part of Floating Marker, a vector-drawing app.
-
-
-  <h2>The <kbd>Tab</kbd> Key Is Used for The Selection Click</h2>
-  <p>
-
-  To select an individual object, you press the
-  <kbd>tab</kbd> key, and it is selected immediately underneath the cursor
-  as if you had pressed <kbd>shift</kbd>+<kbd>left mouse button</kbd>. The
-
-  <kbd>tab</kbd> key
-  selects and de-selects. It is the <i>selection
-    click</i>.
-
-
-
-  <p>Though any key could be used for this,  <kbd>tab</kbd>
-  has been chosen because of its location on the keyboard.
-
-
-The purpose of assigning <kbd>shift</kbd>+<kbd>left mouse button</kbd>
-to the <kbd>tab</kbd> key is that the key-click UI works better with the <kbd>shift</kbd> modifier for selections 
-most of the time. For one, it is far easier to select multiple objects at a time with the key-click UI, so
-<kbd>shift</kbd> is implemented.
-Tweaks and modifications like this are needed to make the key-click UI translate existing conventions.
-  Just like before, clicking outside of the selection de-selects everything.
-</p>
-
-<h2>The <kbd>Spacebar</kbd> Implements a Drag-Lock on The Current Selection</h2>
-  <p>
-    In a convention specific to the key-click UI, the <kbd>tab</kbd> key has been paired with the <kbd>spacebar</kbd> 
-    key to move objects around the screen.
+    <!-- /wp:html -->
 
     <p>
-  To drag an object, you press
-  the <kbd>spacebar</kbd> key after the object has been selected (using <kbd>tab</kbd> click), and the
-  object moves in lock step with the cursor. In other words, this is a drag lock, affixing objects to the
-  cursor relative to their position at the time of the drag lock. To release the drag lock, press the <kbd>spacebar</kbd> key again
-  and then the objects are left at their location.
-  
-  <p>
-    For ease of terminology this is called a drag lock, but it is also called
-  "carting" by Noctivagous, in place of "dragging". It is named as such because a cart moves its contents
-  briskly using wheels on the ground whereas the act of dragging something on the ground makes lots of noise.
-  That is what using carting is like, that's the difference in UI improvement.
-</p>
-
-<h2>The <kbd>Escape</kbd> Key Cancels All Drag Locks And Selections</h2>
-
-<p>If the  <kbd>Escape</kbd> is pressed and there is any drag lock occurring, it will
-be turned off.  The current selection will be canceled as well.
-Using the <kbd>Escape</kbd> for this is not only a convenience, it fits into the whole 
-of using of the keyboard to click when using the key-click UI.</p>
+      A single vector line can be used by the program as:
+    <ul>
+      <li>the diameter of a circle.</li>
+      <li>the radius of a circle.</li>
+      <li>the diagonal of a rectangle.</li>
+      <li>the circumradius of a regular polygon.</li>
+      <li>etc.</li>
+    </ul>
+    </p>
 
 
-<h2>The Opportunities That Arise When The Drag Lock Is Used</h2>
+    <h1>Implementing Selection And Dragging of Objects in The Key-Click UI</h1>
 
-<p>Moving objects around on screen is very smooth when a drag lock is
-  used in the way described above.  But in addition to this, it provides
-  opportunities to operate with the selection or apply functions to it.
-</p>
+    <p>
 
-<p>In a vector-drawing program, the selection is be scaled up or down with
-  the bracket keys (<kbd>[</kbd> and <kbd>]</kbd>). 
-  
-  The two keys below the bracket keys (<kbd>;</kbd> and <kbd>'</kbd>)
-  rotate the selection by an increment of 15 degrees clockwise and counterclockwise.
 
-  The selection can be stamped 
-  with the <kbd>E</kbd> key.  So this means that transformed copies of
-  the dragged selection can occur in real time.  This is how Floating Marker works.
+    <h2>The <kbd>Tab</kbd> Key Is Used for The Selection Click</h2>
+    <p>
 
-</p>
+      To select an individual object, you press the
+      <kbd>tab</kbd> key, and it is selected immediately underneath the cursor
+      as if you had pressed <kbd>shift</kbd>+<kbd>left mouse button</kbd>. The
 
-<!--For example, in a desktop user interface, if the <kbd>K</kbd> key
+      <kbd>tab</kbd> key
+      selects and de-selects. It is the <i>selection
+        click</i>.
+
+
+
+    <p>Though any key could be used for this, <kbd>tab</kbd>
+      has been chosen because of its location on the keyboard.
+
+
+      The purpose of assigning <kbd>shift</kbd>+<kbd>left mouse button</kbd>
+      to the <kbd>tab</kbd> key is that the key-click UI works better with the <kbd>shift</kbd> modifier for selections
+      most of the time. For one, it is far easier to select multiple objects at a time with the key-click UI, so
+      <kbd>shift</kbd> is implemented.
+      Tweaks and modifications like this are needed to make the key-click UI translate existing conventions.
+      Just like before, clicking outside of the selection de-selects everything.
+    </p>
+
+    <h2>The <kbd>Spacebar</kbd> Implements a Drag-Lock on The Current Selection</h2>
+    <p>
+      In a convention specific to the key-click UI, the <kbd>tab</kbd> key has been paired with the <kbd>spacebar</kbd>
+      key to move objects around the screen.
+
+    <p>
+      To drag an object, you press
+      the <kbd>spacebar</kbd> key after the object has been selected (using <kbd>tab</kbd> click), and the
+      object moves in lock step with the cursor. In other words, this is a drag lock, affixing objects to the
+      cursor relative to their position at the time of the drag lock. To release the drag lock, press the
+      <kbd>spacebar</kbd> key again
+      and then the objects are left at their location.
+
+    <p>
+      For ease of providing terminology this is called a drag-lock, but it is also called
+      "carting" by Noctivagous, in place of "dragging". It is named as such because a cart moves its contents
+      briskly using wheels on the ground whereas the dragging of something on the ground makes lots of noise.
+      That is the degree of UI improvement that carting provides.
+    </p>
+
+    <h2>The <kbd>Escape</kbd> Key Cancels All Drag Locks And Selections</h2>
+
+    <p>If the <kbd>Escape</kbd> is pressed and there is any drag lock occurring, it will
+      be turned off. The current selection will be canceled as well.
+      Using the <kbd>Escape</kbd> for this is not only a convenience, it fits into the whole
+      of using of the keyboard to click when using the key-click UI.</p>
+
+
+    <h2>The Opportunities That Arise When The Drag Lock Is Used</h2>
+
+    <p>Moving objects around on screen is very smooth when a drag lock is
+      used in the way described above. But in addition to this, it provides
+      opportunities to operate with the selection or apply functions to it.
+    </p>
+
+    <p>In a vector-drawing program, the selection is be scaled up or down with
+      the bracket keys (<kbd>[</kbd> and <kbd>]</kbd>).
+
+      The two keys below the bracket keys (<kbd>;</kbd> and <kbd>'</kbd>)
+      rotate the selection by an increment of 15 degrees clockwise and counterclockwise.
+
+      The selection can be stamped
+      with the <kbd>E</kbd> key. So this means that transformed copies of
+      the dragged selection can occur in real time. This is how Floating Marker works.
+
+    </p>
+
+    <!--For example, in a desktop user interface, if the <kbd>K</kbd> key
 is used for copying an object into multiple folders.</p>-->
 
 
 
 
 
-</div>
+  </div>
 
 </body>
 

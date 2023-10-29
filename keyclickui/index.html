@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -116,23 +117,14 @@
 
 
 
-    <h1 id="drawingDemo">Vector-Drawing Demo</h1>
-    <!-- wp:paragraph -->
-    <!-- /wp:paragraph -->
-
-    <!-- wp:paragraph -->
-    
-
-
-      
-        Move the cursor into the gray area.
-
+    <h1 id="drawingDemo" style="margin-bottom: 10px;">Vector-Drawing Demo</h1>
         
-        <div style="border: 1px solid black;font-size: 80%;margin-bottom: 10px;margin-top:10px;">
-          <table cellspacing="40">
+        <div style="border: 1px solid black;font-size: 70%;margin-bottom: 10px;margin-top:0px;">
+          <div style="padding-left:10px;padding-top:10px;">Move your cursor into the gray area below, then use the following keys.</div>
+          <table cellspacing="30">
             <tr><td style="vertical-align: top;">   <h3 style="margin-top: 0px;">DRAWING</h3>
               1. Press the <kbd>F</kbd> key to deposit a point.
-              <br /> 2. Then move the mouse. <br />
+              <br /> 2. Move the mouse. <br />
               3. Press the <kbd>F</kbd> key
               again to deposit another point.
               <br />
@@ -216,6 +208,11 @@
 
   var path;
   
+var isCapsLockOn = false;
+var selectionRect = null;
+var selectionRectangleStartPoint = null;
+var selectionRectangleEndPoint = null;
+var selectedItems = [];
 
 
   // Variables to track selected items and drag-lock status
@@ -343,7 +340,26 @@ function updateTextContent() {
         }
         return bounds;
       }
+
+      // When adding an item to selectedItems
+function addItemToSelection(item) {
+  item.selected = true;
+  selectedItems.push(item);
+  //addGlow(item);
+}
+//
       
+      // When removing an item from selectedItems
+      function removeItemFromSelection(item) {
+        var index = selectedItems.indexOf(item);
+        if (index !== -1) {
+          item.selected = false;
+          selectedItems.splice(index, 1);
+          //removeGlow(item);
+        }
+      }
+
+
       function collectiveCenter(selectedItems) {
         var bounds = collectiveBounds(selectedItems);
         return bounds ? bounds.center : new paper.Point(0, 0);
@@ -430,7 +446,14 @@ if (event.key === 'e' && _isInDragLock) {
     }
   }
 
-
+  if (event.key === 'backspace') {
+    for (var i = selectedItems.length - 1; i >= 0; i--) { // Loop in reverse to avoid array index issues
+      var item = selectedItems[i];
+      removeItemFromSelection(item); // Assuming you have a function to remove the glow and other selection properties
+      item.remove(); // This removes the item from the Paper.js project
+    }
+    selectedItems = []; // Clear the selection array
+  }
 
 
 if(isDrawing)
@@ -472,15 +495,14 @@ if( event.key == 'a'){
         hitResult.item.selected = false;
         selectedItems.splice(selectedItems.indexOf(hitResult.item), 1);
       } else {
-        hitResult.item.selected = true;
-        selectedItems.push(hitResult.item);
+
+        addItemToSelection(hitResult.item);
+        //hitResult.item.selected = true;
+        //selectedItems.push(hitResult.item);
       }
     } else {
       // If nothing is underneath the cursor, clear the selection
-      for (var i = 0; i < selectedItems.length; i++) {
-        selectedItems[i].selected = false;
-      }
-      selectedItems = [];
+      clearOutSelection();
     }
   }
 
@@ -500,8 +522,20 @@ if( event.key == 'a'){
 
   updateTextContent();
 
+
+  
 }// END keydown
 
+
+function clearOutSelection()
+{
+  // If nothing is underneath the cursor, clear the selection
+  for (var i = 0; i < selectedItems.length; i++) {
+    selectedItems[i].selected = false;
+  }
+  selectedItems = [];
+
+}
 
 function changeStrokeWidth(strokeVal)
 {
@@ -534,6 +568,12 @@ changeStrokeWidth(globalStrokeWidth - 1);
 function thickenStrokeWidth()
 {
 changeStrokeWidth(globalStrokeWidth + 1);
+}
+
+// When adding an item to selectedItems
+function addItemToSelection(item) {
+  item.selected = true;
+  selectedItems.push(item);
 }
 
 

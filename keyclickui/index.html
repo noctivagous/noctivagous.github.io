@@ -353,8 +353,21 @@ function addItemToSelection(item) {
   selectedItems.push(item);
   //addGlow(item);
 }
-//
+
+
+function removeAllSelectedItemsAndReset()
+{
+  for (var i = selectedItems.length - 1; i >= 0; i--) { // Loop in reverse to avoid array index issues
+    var item = selectedItems[i];
+    removeItemFromSelection(item); // Assuming you have a function to remove the glow and other selection properties
+    item.remove(); // This removes the item from the Paper.js project
+  }
+  selectedItems = []; // Clear the selection array
+  setIsInDragLock(false);
+}
       
+
+
       // When removing an item from selectedItems
       function removeItemFromSelection(item) {
         var index = selectedItems.indexOf(item);
@@ -453,12 +466,7 @@ if (event.key === 'e' && _isInDragLock) {
   }
 
   if (event.key === 'backspace') {
-    for (var i = selectedItems.length - 1; i >= 0; i--) { // Loop in reverse to avoid array index issues
-      var item = selectedItems[i];
-      removeItemFromSelection(item); // Assuming you have a function to remove the glow and other selection properties
-      item.remove(); // This removes the item from the Paper.js project
-    }
-    selectedItems = []; // Clear the selection array
+    removeAllSelectedItemsAndReset();
   }
 
 

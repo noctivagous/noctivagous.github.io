@@ -158,7 +158,11 @@
               <br/>
               3. Stamp a selection with <kbd>E</kbd>.
               <br/>
-              4. The <kbd>Esc</kbd> key will also cancel the selection and dragging.
+              4. Scale a selection down and up  with <kbd>[</kbd> and <kbd>]</kbd>.
+              <br/>
+              5. Rotate a selection forwards and backwards by 15 degrees with <kbd>;</kbd> and <kbd>'</kbd>.
+              <br/>
+              6. The <kbd>Esc</kbd> key will also cancel the selection and dragging.
 
               <h3>STROKE WIDTH</h3>
               1. To thin or thicken the stroke, use <kbd>C</kbd> and <kbd>V</kbd>.  
@@ -327,6 +331,26 @@ function updateTextContent() {
 
       }
 
+
+      function collectiveBounds(selectedItems) {
+        var bounds = null;
+        for (var i = 0; i < selectedItems.length; i++) {
+          if (bounds === null) {
+            bounds = selectedItems[i].bounds.clone();
+          } else {
+            bounds = bounds.unite(selectedItems[i].bounds);
+          }
+        }
+        return bounds;
+      }
+      
+      function collectiveCenter(selectedItems) {
+        var bounds = collectiveBounds(selectedItems);
+        return bounds ? bounds.center : new paper.Point(0, 0);
+      }
+
+
+
  function onKeyDown(event) {
 
 
@@ -336,6 +360,8 @@ if (event.key == 'f') {
  polyLineKC();
   
 }
+
+/*
 
 if (event.key == 'j') {
   changeStrokeWidth(1);
@@ -349,6 +375,7 @@ if (event.key == 'l') {
 if (event.key == ';') {
   changeStrokeWidth(4);
 }
+*/
 
 if (event.key == 'c') {
   thinStrokeWidth();
@@ -360,6 +387,50 @@ if (event.key == 'v') {
 if (event.key === 'e' && _isInDragLock) {
   stampItems(selectedItems);
 }
+
+
+
+
+
+  if (event.key === '[') {
+
+    var center = collectiveCenter(selectedItems);
+
+
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].scale(0.9, center);
+    }
+  }
+
+  if (event.key === ']') {
+
+    var center = collectiveCenter(selectedItems);
+
+
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].scale(1.1, center);
+    }
+  }
+
+  if (event.key === ';') {
+
+    var center = collectiveCenter(selectedItems);
+
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].rotate(-15, center);
+    }
+  }
+
+  if (event.key === "'") {
+
+    var center = collectiveCenter(selectedItems);
+
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].rotate(15, center);
+    }
+  }
+
+
 
 
 if(isDrawing)

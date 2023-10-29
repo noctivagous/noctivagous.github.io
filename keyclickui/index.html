@@ -119,22 +119,22 @@
 
     <h1 id="drawingDemo" style="margin-bottom: 10px;">Vector-Drawing Demo</h1>
         
-        <div style="border: 1px solid black;font-size: 70%;margin-bottom: 10px;margin-top:0px;">
+        <div style="border: 1px solid black;font-size: 80%;margin-bottom: 10px;margin-top:0px;">
           <div style="padding-left:10px;padding-top:10px;">Move your cursor into the gray area below, then use the following keys.</div>
-          <table cellspacing="30">
-            <tr><td style="vertical-align: top;">   <h3 style="margin-top: 0px;">DRAWING</h3>
-              1. Press the <kbd>F</kbd> key to deposit a point.
+          <table cellspacing="10">
+            <tr><td style="vertical-align: top; background-color: #000; color:rgb(146, 106, 106);padding: 10px;">   <h3 style="margin-top: 0px;">DRAWING:</h3>
+              1. Press the <kbd style="color:greenyellow">F</kbd> key to deposit a point.
               <br /> 2. Move the mouse. <br />
-              3. Press the <kbd>F</kbd> key
+              3. Press the <kbd style="color:greenyellow">F</kbd> key
               again to deposit another point.
               <br />
-              <p></p>
+              
               4. Repeat until
               it is desired to press an END key:
               <br/>
-              <br/>&nbsp;&nbsp;&nbsp;<kbd>A</kbd> - END the stroke.
-              <br/>&nbsp;&nbsp;&nbsp;<kbd>E</kbd> - END and fill the shape.
-              <br/>&nbsp;&nbsp;&nbsp;<kbd>R</kbd> - END and stroke the shape.
+              <br/>&nbsp;&nbsp;&nbsp;<kbd style="color:red">A</kbd> - END the stroke.
+              <br/>&nbsp;&nbsp;&nbsp;<kbd style="color:red">E</kbd> - END and fill the shape.
+              <br/>&nbsp;&nbsp;&nbsp;<kbd style="color:red">R</kbd> - END and stroke the shape.
             
             
             </td>
@@ -142,10 +142,10 @@
               
               
               <td style="vertical-align: top;">    
-                <h3 style="margin-top: 0px;">SELECTING AND DRAGGING</h3>
+                <h3 style="margin-top: 0px;">SELECTING AND DRAGGING:</h3>
               1.Select objects with <kbd>Tab</kbd>.  <br/>
           
-              2.To drag the selection, turn on the drag-lock with <kbd>SPACEBAR</kbd>.
+              2.To drag the selection, turn on the drag-lock with <kbd>SPACEBAR</kbd>. (Press it again to turn it off.)
               <!-- /wp:paragraph -->
               <br/>
               3. Stamp a selection with <kbd>E</kbd>.
@@ -156,7 +156,7 @@
               <br/>
               6. The <kbd>Esc</kbd> key will also cancel the selection and dragging.
 
-              <h3>STROKE WIDTH</h3>
+              <h3>ADJUSTING STROKE WIDTH:</h3>
               1. To thin or thicken the stroke, use <kbd>C</kbd> and <kbd>V</kbd>.  
 
 
@@ -230,7 +230,7 @@ function setIsInDragLock(status) {
 
 
 var textItem1 = new PointText({
-  content: 'Selected Objects: 0\nDrag-Lock: Off',
+  content: 'Stroke Width: ' + globalStrokeWidth + 'pt',
   point: new Point(10, 40),
   fillColor: "#333333",
   fontSize: '20pt',
@@ -243,8 +243,11 @@ var textItem1 = new PointText({
 
 function updateTextContent() {
   var selectedCount = selectedItems.length;
-  textItem1.content = 'Selected Objects: ' + selectedCount + '\n';
-  textItem1.content += 'Drag-Lock: ' + (_isInDragLock ? 'On' : 'Off');
+  textItem1.content = 'Stroke Width: ' + globalStrokeWidth + 'pt';
+  textItem1.content += selectedCount ? '\nSelected Objects: ' + selectedCount : '';
+  textItem1.content += _isInDragLock ? '\nDrag-Lock On' : '';
+  
+  
 }
 
       
@@ -555,8 +558,9 @@ globalStrokeWidth = localStrokeVal;
 if(path)
 {
   path.strokeWidth = localStrokeVal;
+  updateTextContent();
 }
-g
+
 }
 
 function thinStrokeWidth()

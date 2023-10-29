@@ -119,7 +119,7 @@
               <br/>
               3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">E</kbd>.
               <br/>
-              4. Scale a selection down and up  with <kbd style="color:rgb(142, 139, 205)">[</kbd> and < style="color:rgb(142, 139, 205)"kbd>]</kbd>.
+              4. Scale a selection down and up  with <kbd style="color:rgb(142, 139, 205)">[</kbd> and <kbd style="color:rgb(142, 139, 205)">]</kbd>.
               <br/>
               5. Rotate a selection forwards and backwards by 15 degrees with <kbd style="color:rgb(142, 139, 205)">;</kbd> and <kbd style="color:rgb(142, 139, 205)">'</kbd>.
               <br/>
@@ -388,7 +388,7 @@ if (event.key == 'v') {
   thickenStrokeWidth();
 }
 
-if (event.key === 'e' && _isInDragLock) {
+if (event.key === 'e')/* && _isInDragLock */ {
   stampItems(selectedItems);
 }
 

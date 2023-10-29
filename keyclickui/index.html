@@ -92,9 +92,9 @@
           <div style="padding-left:10px;padding-top:10px;">Move your cursor into the gray area below, then use the following keys.</div>
           <table cellspacing="10">
             <tr><td style="vertical-align: top; color:rgb(146, 106, 106);padding: 10px;">   <h3 style="margin-top: 0px;">DRAWING:</h3>
-              1. Press the <kbd style="color:greenyellow">F</kbd> key to deposit a point.
+              1. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key to deposit a point.
               <br /> 2. Move the mouse. <br />
-              3. Press the <kbd style="color:greenyellow">F</kbd> key
+              3. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key
               again to deposit another point.
               <br />
               
@@ -112,22 +112,22 @@
               
               <td style="vertical-align: top;  color:rgb(104, 102, 148);padding: 10px;">    
                 <h3 style="margin-top: 0px;">SELECTING AND DRAGGING:</h3>
-              1.Select objects with <kbd>Tab</kbd>.  <br/>
+              1.Select objects with <kbd style="color:rgb(142, 139, 205)">Tab</kbd>.  <br/>
           
-              2.To drag the selection, turn on the drag-lock with <kbd>SPACEBAR</kbd>. (Press it again to turn it off.)
+              2.To drag the selection, turn on the drag-lock with <kbd style="color:rgb(142, 139, 205)">SPACEBAR</kbd>. (Press it again to turn it off.)
               <!-- /wp:paragraph -->
               <br/>
-              3. Stamp a selection with <kbd>E</kbd>.
+              3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">E</kbd>.
               <br/>
-              4. Scale a selection down and up  with <kbd>[</kbd> and <kbd>]</kbd>.
+              4. Scale a selection down and up  with <kbd style="color:rgb(142, 139, 205)">[</kbd> and < style="color:rgb(142, 139, 205)"kbd>]</kbd>.
               <br/>
-              5. Rotate a selection forwards and backwards by 15 degrees with <kbd>;</kbd> and <kbd>'</kbd>.
+              5. Rotate a selection forwards and backwards by 15 degrees with <kbd style="color:rgb(142, 139, 205)">;</kbd> and <kbd style="color:rgb(142, 139, 205)">'</kbd>.
               <br/>
-              6. The <kbd>Esc</kbd> key will also cancel the selection and dragging.
+              6. The <kbd style="color:rgb(142, 139, 205)">Esc</kbd> key will also cancel the selection and dragging.
 
               <div style="color:rgb(102, 148, 116);">
               <h3>ADJUSTING STROKE WIDTH:</h3> 
-              1. To thin or thicken the stroke, use <kbd>C</kbd> and <kbd>V</kbd>.  
+              1. To thin or thicken the stroke, use <kbd style="color:rgb(148, 212, 167);">C</kbd> and <kbd style="color:rgb(148, 212, 167);">V</kbd>.  
             </div>
 
           </td></tr>
@@ -468,7 +468,14 @@ if( event.key == 'a'){
   // Tab key for selecting object under cursor
   if (event.key === 'tab') {
     // Hit test to find object under cursor
-    var hitResult = project.hitTest(mousePt);
+    
+
+    var hitResult = project.hitTest(mousePt, {
+      segments: true,
+      stroke: true,
+      fill: true,
+      tolerance: 5 // Tolerance in points
+    });
 
     if (hitResult && hitResult.item) {
       // Check if this item is already selected

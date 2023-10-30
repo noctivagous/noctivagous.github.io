@@ -1,53 +1,10 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
 
-
-  <style>
-    html,
-    body {
-      margin: 0;
-      height: 100%;
-    }
-
-    /* Scale canvas with resize attribute to full size*/
-
-
-    canvas[resize] {
-      width: 100%;
-      height: 100%;
-      cursor: crosshair;
-    }
-
-
-
-    body {
-      margin: 10px;
-      padding: 0px;
-    }
-
-    body {
-      font-size: 2em;
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
-    }
-
-    #canvas {
-
-      height: 800px;
-      background-color: #F8F8F8;
-
-      max-width: 100%;
-    }
-
-
-    #intro {
-      padding: 10px;
-    }
-  </style>
-
+  <link rel="stylesheet" href="main.css?v=0.3151433">
+  <link rel="stylesheet" href="keyboard.css?v=0.3151433">
 
 
   <script>
@@ -56,11 +13,8 @@
         event.preventDefault();
       }
     });
-
-
-
   </script>
-  <!--<script type="text/javascript" src="paper-full.js"></script>-->
+
 
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
@@ -75,611 +29,279 @@
   <div id="intro">
 
     <h1>The Key-Click UI</h1>
-   
-<p>The conventional mouse interface is too simplistic for drawing vectors.
-  Try out the demo below to experience a completely different setup for vector drawing
-  that uses the keys to click, instead of using mouse buttons.
 
-  <!--
+    <p>The conventional mouse interface is too simplistic for drawing vectors.
+      Try out the demo below to experience a completely different setup for vector drawing
+      that uses the keys to click, instead of using mouse buttons.
+
+      <!--
   It's important first to modify the setup for vector-drawing.  This is what the key-click UI is about.
   Try out the demo below to experience it.  A software program that implements the key-click UI treats the keys
   on a keyboard as click buttons. The mouse buttons are entirely ignored.</p>
---> 
+-->
 
     <h2 id="drawingDemo" style="margin-bottom: 10px;">Vector-Drawing Demo</h2>
-        
-        <div style="border: 1px solid black;font-size: 80%;margin-bottom: 10px;margin-top:0px;">
-          <div style="padding-left:10px;padding-top:10px;">Move your cursor into the gray area below, then use the following keys.</div>
-          <table cellspacing="10">
-            <tr><td style="vertical-align: top; color:rgb(146, 106, 106);padding: 10px;">   <h3 style="margin-top: 0px;">DRAWING:</h3>
-              1. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key to deposit a point.
-              <br /> 2. Move the mouse. <br />
-              3. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key
-              again to deposit another point.
-              <br />
-              
-              4. Repeat until
-              it is desired to press an END key:
-              <br/>
-              <br/>&nbsp;&nbsp;&nbsp;<kbd style="color:red">A</kbd> - END the stroke.
-              <br/>&nbsp;&nbsp;&nbsp;<kbd style="color:red">E</kbd> - END and fill the shape.
-              <br/>&nbsp;&nbsp;&nbsp;<kbd style="color:red">R</kbd> - END and stroke the shape.
-            
-            
-            </td>
-              
-              
-              
-              <td style="vertical-align: top;  color:rgb(104, 102, 148);padding: 10px;">    
-                <h3 style="margin-top: 0px;">SELECTING AND DRAGGING:</h3>
-              1.Select objects with <kbd style="color:rgb(142, 139, 205)">Tab</kbd>.  <br/>
-          
-              2.To drag the selection, turn on the drag-lock with <kbd style="color:rgb(142, 139, 205)">SPACEBAR</kbd>. (Press it again to turn it off.)
-              <!-- /wp:paragraph -->
-              <br/>
-              3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">E</kbd>.
-              <br/>
-              4. Scale a selection down and up  with <kbd style="color:rgb(142, 139, 205)">[</kbd> and <kbd style="color:rgb(142, 139, 205)">]</kbd>.
-              <br/>
-              5. Rotate a selection forwards and backwards by 15 degrees with <kbd style="color:rgb(142, 139, 205)">;</kbd> and <kbd style="color:rgb(142, 139, 205)">'</kbd>.
-              <br/>
-              6. The <kbd style="color:rgb(142, 139, 205)">Esc</kbd> key will also cancel the selection and dragging.
 
-              <div style="color:rgb(102, 148, 116);">
-              <h3>ADJUSTING STROKE WIDTH:</h3> 
-              1. To thin or thicken the stroke, use <kbd style="color:rgb(148, 212, 167);">C</kbd> and <kbd style="color:rgb(148, 212, 167);">V</kbd>.  
+
+    <div style="border: 1px solid black;font-size: 80%;margin-bottom: 10px;margin-top:0px;">
+      <div style="padding-left:10px;padding-top:10px;">Move your cursor into the gray drawing area below, then use the following
+        keys. 
+        <br/>
+        There is also an interactive keyboard inside the drawing area that shows what keys can be pressed.</div>
+      <table cellspacing="10">
+        <tr>
+          <td style="vertical-align: top; color:rgb(146, 106, 106);padding: 10px;">
+            <h3 style="margin-top: 0px;">DRAWING:</h3>
+            1. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key to deposit a point.
+            <br /> 2. Move the mouse. <br />
+            3. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key
+            again to deposit another point.
+            <br />
+
+            4. Repeat until
+            it is desired to press an END key:
+            <br />
+            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">A</kbd> - END the stroke.
+            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">E</kbd> - END and fill the shape.
+            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">R</kbd> - END and stroke the shape.
+
+
+          </td>
+
+
+
+          <td style="vertical-align: top;  color:rgb(104, 102, 148);padding: 10px;">
+            <h3 style="margin-top: 0px;">SELECTING AND DRAGGING:</h3>
+            1.Select objects with <kbd style="color:rgb(142, 139, 205)">Tab</kbd>. <br />
+
+            2.To drag the selection, turn on the drag-lock with <kbd style="color:rgb(142, 139, 205)">SPACEBAR</kbd>.
+            (Press it again to turn it off.)
+            <br />
+            3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">E</kbd>.
+            <br />
+            4. Scale a selection down and up with <kbd style="color:rgb(142, 139, 205)">[</kbd> and <kbd
+              style="color:rgb(142, 139, 205)">]</kbd>.
+            <br />
+            5. Rotate a selection forwards and backwards by 15 degrees with <kbd
+              style="color:rgb(142, 139, 205)">;</kbd> and <kbd style="color:rgb(142, 139, 205)">'</kbd>.
+            <br />
+            6. The <kbd style="color:rgb(142, 139, 205)">Esc</kbd> key will also cancel the selection and dragging.
+
+            <div style="color:rgb(102, 148, 116);">
+              <h3>ADJUSTING STROKE WIDTH:</h3>
+              1. To thin or thicken the stroke, use <kbd style="color:rgb(148, 212, 167);">C</kbd> and <kbd
+                style="color:rgb(148, 212, 167);">V</kbd>.
             </div>
 
-          </td></tr>
-          </table>
-       
- 
-  
-  
+          </td>
+        </tr>
+      </table>
+
+
+
+
     </div>
+
 
     <div id="canvasContainer">
-      
-      <canvas id="canvas" resize></canvas>
+
+      <div style="z-index: 1;">
+        <canvas id="nibgliderCanvas" tabindex="0" resize></canvas>
+      </div>
+      <div class="corner-div">
+        
+        
+
+        <div id="keyboardContainer">
+
+          <div id="keyboardKeysContainer">
+
+
+
+            <!-- 
+                █████████████████████ BEGIN TOP ROW:█████████████████████
+                esc F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 F13 F14
+              -->
+
+            <!--
+              
+              <button tabindex="-1" id="Escape" class="escKey keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F1" class="f1Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F2"  class="f2Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F3"  class="f3Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F4"  class="f4Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F5"  class="f5Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F6"  class="f6Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F7"  class="f7Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F8"  class="f8Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F9"  class="f9Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F10"  class="f10Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F11"  class="f11Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F12"  class="f12Key keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F13"  class="f13Key keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F14"  class="f14Key keyboardkey functionRow"></button>
+    
+            -->
+
+            <!-- 
+                END TOP ROW 
+              -->
+
+
+
+
+
+
+
+
+            <!-- 
+                ██████████████BEGIN SECOND ROW: █████████████████████
+                      tab Q W E R T Y U I O P [ ] \ 
+              -->
+
+            <button tabindex="-1" data-key="tab" id="Tab" class="keyboardkey tabKey OtherKey enabledButton">Select Objects</button>
+
+            <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey "></button>
+            <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey"></button>
+            <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey operationButton enabledButton">stamp</button>
+            <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey endButton"><b>END:</b><br />close
+              stroke</button>
+            <button data-key="t" tabindex="-1" id="KeyT" class="keyboardkey tKey"></button>
+            <button data-key="y" tabindex="-1" id="KeyY" class="keyboardkey yKey "></button>
+            <button data-key="u" tabindex="-1" id="KeyU" class="keyboardkey uKey "></button>
+
+            <button data-key="i" tabindex="-1" id="KeyI" class="keyboardkey iKey "></button>
+            <button data-key="o" tabindex="-1" id="KeyO" class="keyboardkey oKey "></button>
+            <button data-key="p" tabindex="-1" id="KeyP" class="keyboardkey pKey "></button>
+
+
+            <button data-key="[" tabindex="-1" id="BracketLeft"
+              class="keyboardkey  bracketLeftKey operationButton enabledButton">scale
+              -</button>
+            <button data-key="]" tabindex="-1" id="BracketRight"
+              class="keyboardkey  bracketRightKey operationButton enabledButton">scale
+              +</button>
+            <button data-key="\" tabindex="-1" id="Backslash" class="keyboardkey  backslashKey"></button>
+            <!-- 
+                END SECOND ROW 
+              -->
+
+
+
+
+            <!-- 
+              ██████████████  BEGIN THIRD ROW: ██████████████
+                   capslock a s d f g h j k l ; '
+              -->
+
+            <button data-key="capslock" tabindex="-1" id="CapsLock"
+              class="keyboardkey capsLockKey OtherKey hidden"></button>
+
+
+            <button data-key="a" tabindex="-1" id="KeyA" class="keyboardkey KeyA endButton"
+              style="transform: translate(-27%, 0%)"><b>END:</b><br />stroke path</button>
+            <button data-key="s" tabindex="-1" id="KeyS" class="keyboardkey sKey endButton"
+              style="transform: translate(-27%, 0%)"><b>END:</b> <br />fill
+              <br />only</button>
+            <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey endButton"
+              style="transform: translate(-27%, 0%)"><b>END:</b><br />fill &
+              stroke</button>
+            <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"
+              style="transform: translate(-27%, 0%)">add</br>point</button>
+            <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey"
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="h" tabindex="-1" id="KeyH" class="keyboardkey hKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="j" tabindex="-1" id="KeyJ" class="keyboardkey jKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="k" tabindex="-1" id="KeyK" class="keyboardkey kKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="l" tabindex="-1" id="KeyL" class="keyboardkey lKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key=";" tabindex="-1" id="Semicolon" class="keyboardkey semicolonKey operationButton enabledButton"
+              style="transform: translate(-27%, 0%)">rotate <span style="font-size:30px">⥀</span></button>
+            <button data-key="'" tabindex="-1" id="Quote" class="keyboardkey  singleQuoteKey operationButton enabledButton"
+              style="transform: translate(-27%, 0%)">rotate <span style="font-size:30px">⥁</span></button>
+            <button data-key="return" tabindex="-1" id="Enter" class="keyboardkey returnKey OtherKey hidden"
+              style="transform: translate(-5%, 0%)">return</button>
+
+
+
+            <!-- 
+                END THIRD ROW 
+              -->
+
+
+
+
+            <!-- 
+                ██████████████ BEGIN FOURTH ROW: █████████████████████
+                shiftleft Z X C V B N M , . / shiftright
+              -->
+            <button data-key="shift" tabindex="-1" id="ShiftLeft"
+              class="keyboardkey shiftKeyLeft OtherKey hidden"></button>
+
+            <button data-key="z" tabindex="-1" id="KeyZ" class="keyboardkey KeyZ "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="x" tabindex="-1" id="KeyX" class="keyboardkey xKey "
+              style="transform: translate(38%, 0%)"></button>
+
+            <button data-key="c" tabindex="-1" id="KeyC" class="keyboardkey cKey stepper1Decrement enabledButton"
+              style="transform: translate(38%, 0%)">-
+              <br />stroke<br />width</button>
+
+
+
+            <button data-key="v" tabindex="-1" id="KeyV" class="keyboardkey vKey stepper1Increment enabledButton"
+              style="transform: translate(38%, 0%)">+
+              <br />stroke<br />width</button>
+            <button data-key="b" tabindex="-1" id="KeyB" class="keyboardkey bKey "
+              style="transform: translate(38%, 0%)">
+              </button>
+            <button data-key="n" tabindex="-1" id="KeyN" class="keyboardkey nKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="m" tabindex="-1" id="KeyM" class="keyboardkey mKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="," tabindex="-1" id="Comma" class="keyboardkey commaKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="." tabindex="-1" id="Period" class="keyboardkey periodKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="/" tabindex="-1" id="Slash" class="keyboardkey forwardSlashKey OtherKey"
+              style="transform: translate(38%, 0%)"></button>
+
+            <button data-key="shift" tabindex="-1" id="ShiftRight" class="keyboardkey shiftKeyRight OtherKey hidden"
+              style="transform: translate(15%, 0%)"></button>
+
+            <!-- 
+                END FOURTH ROW 
+              -->
+
+
+
+
+            <!-- 
+                BEGIN FIFTH ROW:
+                █████████████████████ spacebarKey █████████████████████
+               -->
+
+            <button tabindex="-1" data-key="spacebar" id="Space"
+              class="keyboardkey spacebarKey OtherKey enabledButton">Drag Lock</button>
+
+            <!-- END FIFTH ROW -->
+
+
+          </div>
+        </div><!-- END keyboardContainer-->
+
+      </div>
     </div>
 
-    <!-- wp:html -->
-    <style>
-      #canvas {
-        border: 0px solid #000;
-        height: 800px;
-        background-color: #cccccc;
-        max-width: 100%;
-      }
 
-      canvas[resize] {}
-
-      kbd {
-        display: inline-block;
-        border: 1px solid black;
-        border-radius: 3pt;
-        padding: 5px;
-        background-color: #333;
-        color:white;
-        font-family:  monospace;
-        margin:1px;
-        font-weight: bold;
-      }
-    </style>
-    <!-- /wp:html -->
-
-    <!-- wp:html -->
-    <script type="text/paperscript" canvas="canvas">
-
-  var globalStrokeWidth = 1.0;
-  var maxStrokeWidth = 20.0;
-  var isDrawing = false;
-
-  var mousePt;
-  var lastMousePt = null;
-
-  var path;
-  
-var isCapsLockOn = false;
-var selectionRect = null;
-var selectionRectangleStartPoint = null;
-var selectionRectangleEndPoint = null;
-var selectedItems = [];
-
-
-  // Variables to track selected items and drag-lock status
-	var selectedItems = [];
-
-  var _isInDragLock = false;
-
-// Create a property with a setter for _isInDragLock
-
-function setIsInDragLock(status) {
-  _isInDragLock = status;
-  updateTextContent();
-}
-
-
-
-var textItem1 = new PointText({
-  content: 'Stroke Width: ' + globalStrokeWidth + 'pt',
-  point: new Point(10, 40),
-  fillColor: "#333333",
-  fontSize: '20pt',
-  fontWeight: 'bold',
-  fontFamily: 'Arial',
-        
-});
-
-
-
-function updateTextContent() {
-  var selectedCount = selectedItems.length;
-  textItem1.content = 'Stroke Width: ' + globalStrokeWidth + 'pt';
-  textItem1.content += selectedCount ? '\nSelected Objects: ' + selectedCount : '';
-  textItem1.content += _isInDragLock ? '\nDrag-Lock On' : '';
-  
-  
-}
-
-      
-
-
-      view.onMouseLeave =
-      function (event)
-      {
-        if(isDrawing)
-        {
-            endShape();
-        }
-
-      }
-      
-      function onMouseMove(event)
-      {
-
-
-
-        mousePt = event.point;
-
-        
-        
-        if(isDrawing)
-        {
-
-          if(path)
-          {
-         
-            if(path.segments.length == 1)
-          {
-            path.add(mousePt);
-
-
-          }
-
-          if(path.segments.length > 1 )
-          {
-          
-            path.removeSegment(path.segments.length - 1);
-            path.add(mousePt);
-
-          }
-        
-         }
-
-        }
-        
-  
-
-          // Implement drag-lock functionality
-          if (_isInDragLock) {
-             
-            // If lastMousePt is null, initialize it
-            if (lastMousePt === null) {
-              lastMousePt = mousePt;
-            }
-
-
-            // Calculate the delta
-            var delta = mousePt.subtract(lastMousePt);
-        
-
-          
-        // Apply the delta to the position of all selected items
-          for (var i = 0; i < selectedItems.length; i++) {
-          selectedItems[i].position = selectedItems[i].position.add(delta);
-        }
-
-        // Update lastMousePt for the next onMouseMove event
-        lastMousePt = mousePt;
-
-          } else {
-            // Reset lastMousePt when drag lock is off
-            lastMousePt = null;
-          }
-          
-
-
-
-      }
-
-
-      function collectiveBounds(selectedItems) {
-        var bounds = null;
-        for (var i = 0; i < selectedItems.length; i++) {
-          if (bounds === null) {
-            bounds = selectedItems[i].bounds.clone();
-          } else {
-            bounds = bounds.unite(selectedItems[i].bounds);
-          }
-        }
-        return bounds;
-      }
-
-      // When adding an item to selectedItems
-function addItemToSelection(item) {
-  item.selected = true;
-  selectedItems.push(item);
-  //addGlow(item);
-}
-
-
-function removeAllSelectedItemsAndReset()
-{
-  for (var i = selectedItems.length - 1; i >= 0; i--) { // Loop in reverse to avoid array index issues
-    var item = selectedItems[i];
-    removeItemFromSelection(item); // Assuming you have a function to remove the glow and other selection properties
-    item.remove(); // This removes the item from the Paper.js project
-  }
-  selectedItems = []; // Clear the selection array
-  setIsInDragLock(false);
-}
-      
-
-
-      // When removing an item from selectedItems
-      function removeItemFromSelection(item) {
-        var index = selectedItems.indexOf(item);
-        if (index !== -1) {
-          item.selected = false;
-          selectedItems.splice(index, 1);
-          //removeGlow(item);
-        }
-      }
-
-
-      function collectiveCenter(selectedItems) {
-        var bounds = collectiveBounds(selectedItems);
-        return bounds ? bounds.center : new paper.Point(0, 0);
-      }
-
-
-
- function onKeyDown(event) {
-
-
-
-if (event.key == 'f') {
-
- polyLineKC();
-  
-}
-
-/*
-
-if (event.key == 'j') {
-  changeStrokeWidth(1);
-}
-if (event.key == 'k') {
-  changeStrokeWidth(2);
-}
-if (event.key == 'l') {
-  changeStrokeWidth(3);
-}
-if (event.key == ';') {
-  changeStrokeWidth(4);
-}
-*/
-
-if (event.key == 'c') {
-  thinStrokeWidth();
-}
-if (event.key == 'v') {
-  thickenStrokeWidth();
-}
-
-if (event.key === 'e')/* && _isInDragLock */ {
-  stampItems(selectedItems);
-}
-
-
-
-
-
-  if (event.key === '[') {
-
-    var center = collectiveCenter(selectedItems);
-
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].scale(0.9, center);
-    }
-  }
-
-  if (event.key === ']') {
-
-    var center = collectiveCenter(selectedItems);
-
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].scale(1.1, center);
-    }
-  }
-
-  if (event.key === ';') {
-
-    var center = collectiveCenter(selectedItems);
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].rotate(-15, center);
-    }
-  }
-
-  if (event.key === "'") {
-
-    var center = collectiveCenter(selectedItems);
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].rotate(15, center);
-    }
-  }
-
-  if (event.key === 'backspace') {
-    removeAllSelectedItemsAndReset();
-  }
-
-
-if(isDrawing)
-{
-// close and end shape
-if( event.key == 'r'){
-
-  closeShapeAndEnd();
-}
-
-// close and end shape
-if( event.key == 'e'){
-  closeShapeAndEndWithFill();
-
-
-}
-
-// close and end shape
-if( event.key == 'a'){
-  endShape();
-
-
-}
-
-}
-
-
-
-  // Tab key for selecting object under cursor
-  if (event.key === 'tab') {
-    // Hit test to find object under cursor
-    
-
-    var hitResult = project.hitTest(mousePt, {
-      segments: true,
-      stroke: true,
-      fill: true,
-      tolerance: 5 // Tolerance in points
-    });
-
-    if (hitResult && hitResult.item) {
-      // Check if this item is already selected
-      var alreadySelected = selectedItems.indexOf(hitResult.item) !== -1;
-
-      if (alreadySelected) {
-        hitResult.item.selected = false;
-        selectedItems.splice(selectedItems.indexOf(hitResult.item), 1);
-      } else {
-
-        addItemToSelection(hitResult.item);
-        //hitResult.item.selected = true;
-        //selectedItems.push(hitResult.item);
-      }
-    } else {
-      // If nothing is underneath the cursor, clear the selection
-      clearOutSelection();
-    }
-  }
-
-  // Spacebar for drag-lock
-  if (event.key === 'space' && (selectedItems.length > 0)) {
-    setIsInDragLock(!_isInDragLock); // Toggle drag-lock status
-  }
-
-  // Escape key for cancelling all
-  if (event.key === 'escape') {
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].selected = false;
-    }
-    selectedItems = [];
-    setIsInDragLock(false);
-  }
-
-  updateTextContent();
-
-
-  
-}// END keydown
-
-
-function clearOutSelection()
-{
-  // If nothing is underneath the cursor, clear the selection
-  for (var i = 0; i < selectedItems.length; i++) {
-    selectedItems[i].selected = false;
-  }
-  selectedItems = [];
-
-}
-
-function changeStrokeWidth(strokeVal)
-{
-var localStrokeVal = strokeVal;
-
-if(localStrokeVal < 1)
-{
-  localStrokeVal = 1;
-}
-if(localStrokeVal > maxStrokeWidth)
-{
-  localStrokeVal = maxStrokeWidth;
-}
-
-globalStrokeWidth = localStrokeVal;
-
-if(path)
-{
-  path.strokeWidth = localStrokeVal;
-  updateTextContent();
-}
-
-}
-
-function thinStrokeWidth()
-{
-changeStrokeWidth(globalStrokeWidth - 1);
-
-}
-
-function thickenStrokeWidth()
-{
-changeStrokeWidth(globalStrokeWidth + 1);
-}
-
-// When adding an item to selectedItems
-function addItemToSelection(item) {
-  item.selected = true;
-  selectedItems.push(item);
-}
-
-
-function stampItems(itemsToStamp)
-{
-
-  if(itemsToStamp === null)
-  {
-    return;
-  }
-
-  for (var i = 0; i < itemsToStamp.length; i++) {
-    var clone = itemsToStamp[i].clone();
-    clone.selected = false; // Optionally deselect the clone
-    project.activeLayer.addChild(clone);
-  }
-}
-
-
-function endShape()
-{
-if (path) {
-   path.selected = false;
-   project.activeLayer.addChild(path);
-
-   isDrawing = false;
-   path = null;
-  }
-
-}
-
-function closeShapeAndEnd()
-{
-
-  if (path) {
-    path.closed = true;
-    path.selected = false;
-    project.activeLayer.addChild(path);
-    isDrawing = false;
-    path = null;
-   }
-
-}
-
-function closeShapeAndEndWithFill()
-{
-
-  if (path) {
-    path.closed = true;
-    path.selected = false;
-    path.fillColor = new Color(0, 0, 0);
-    project.activeLayer.addChild(path);
-    isDrawing = false;
-    path = null;
-   }
-
-
-}
-
-
-
-  function polyLineKC() 
-  {
-
-    if(!path)
-    {
-          // Create a new path and set its stroke color to black:
-          path = new Path({
-              segments: [mousePt],
-              strokeColor: 'black',
-              strokeWidth: globalStrokeWidth,
-              // Select the path, so we can see its segment points:
-              fullySelected: true
-          });
-      }
-      else
-      {
-        path.add(mousePt);
-      }
-
-     if(isDrawing == false)
-     {
-         isDrawing = true;
-      }
-
-  }
-
-      function onMouseDown(event) {
-
-   
-      
-     }
-
-
-
-      // While the user drags the mouse, points are added to the path
-      // at the position of the mouse:
-      function onMouseDrag(event) {
-   
-      }
-
-      // When the mouse is released, we simplify the path:
-      function onMouseUp(event) {
-     
-      }
-
-
-
-  </script>
-    <!-- /wp:html -->
 
     <h2>The Vector Line</h2>
 
     <p>
-      Only straight segments were drawn above.  However, a single vector line can be used by the program as:
+      Only straight segments were drawn above. However, a single vector line can be used by the program as:
     <ul>
       <li>the diameter of a circle.</li>
       <li>the radius of a circle.</li>
@@ -689,7 +311,7 @@ function closeShapeAndEndWithFill()
     </ul>
     </p>
 
-    
+
     <h2>More Information</h2>
 
 
@@ -697,8 +319,8 @@ function closeShapeAndEndWithFill()
 
       <br><br>A software program that implements the key-click UI treats the keys
       on a keyboard as click buttons. The mouse buttons are entirely ignored.
-     
-     <!-- Although this can be explained, before reading further, please try out the vector-drawing demo below.
+
+      <!-- Although this can be explained, before reading further, please try out the vector-drawing demo below.
       -->
 
     <p>
@@ -819,6 +441,12 @@ is used for copying an object into multiple folders.</p>-->
 
 
   </div>
+
+
+  <script src="nibglider.js"></script>
+  <script src="keyboard.js"></script>
+  <script src="nibgliderKeyCommands.js"></script>
+
 
 </body>
 

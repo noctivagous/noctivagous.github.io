@@ -265,7 +265,7 @@ document.addEventListener('keydown', function (event) {
   }
 
     // close and end shape
-    if (event.key == 'd') {
+    if (event.key == 'w') {
 
       stampItems(selectedItems);
 

@@ -76,7 +76,7 @@
             2.To drag the selection, turn on the drag-lock with <kbd style="color:rgb(142, 139, 205)">SPACEBAR</kbd>,
             then move the mouse. (Press it again to turn it off.)
             <br />
-            3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">D</kbd> while dragging.
+            3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">W</kbd> while dragging.
             <br />
             4. Scale a selection down and up with <kbd style="color:rgb(142, 139, 205)">[</kbd> and <kbd
               style="color:rgb(142, 139, 205)">]</kbd>.
@@ -158,10 +158,10 @@
                       tab Q W E R T Y U I O P [ ] \ 
               -->
 
-            <button tabindex="-1" data-key="tab" id="Tab" class="keyboardkey tabKey OtherKey enabledButton">Select Objects</button>
+            <button tabindex="-1" data-key="tab" id="Tab" class="keyboardkey tabKey OtherKey enabledButton selectionButton">Select Objects</button>
 
             <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey "></button>
-            <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey"></button>
+            <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey operationButton enabledButton">stamp</button>
             <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey endButton">              <b>END:</b> <br />fill
             </button>
             <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey endButton"><b>END:</b><br />close
@@ -204,8 +204,8 @@
               style="transform: translate(-27%, 0%)">
            
               <b>END:</b><br/>fill & stroke</button>
-            <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey operationButton enabledButton"
-              style="transform: translate(-27%, 0%)">stamp</button>
+            <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey "
+              style="transform: translate(-27%, 0%)"></button>
             <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"
               style="transform: translate(-27%, 0%)">add</br>point</button>
             <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey"
@@ -285,7 +285,7 @@
                -->
 
             <button tabindex="-1" data-key="spacebar" id="Space"
-              class="keyboardkey spacebarKey OtherKey enabledButton">Drag Lock</button>
+              class="keyboardkey spacebarKey OtherKey enabledButton selectionButton">Drag Lock</button>
 
             <!-- END FIFTH ROW -->
 

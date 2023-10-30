@@ -11,13 +11,13 @@ paper.setup(canvas);
 // Attach a mousemove event to the canvas
 canvas.addEventListener('mousemove', function () {
   // Set focus to the canvas
-  this.focus();
+  // this.focus();
 });
 
 // Attach a mousemove event to the containing div if needed
 canvas.addEventListener('mousemove', function () {
   // Set focus to the canvas within the div
-  document.getElementById('nibgliderCanvas').focus();
+//  document.getElementById('nibgliderCanvas').focus();
 });
 
 

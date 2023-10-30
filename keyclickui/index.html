@@ -61,9 +61,9 @@
             4. Repeat until you wish to press an END key:
             <br />
             <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">A</kbd> - END the stroke path.
-            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">S</kbd> - END and fill the shape.
+            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">E</kbd> - END and fill the shape.
             <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">R</kbd> - END and stroke the shape.
-            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">D</kbd> - END and fill+stroke the shape.
+            <br />&nbsp;&nbsp;&nbsp;<kbd style="color:red">S</kbd> - END and fill+stroke the shape.
 
           </td>
 
@@ -76,7 +76,7 @@
             2.To drag the selection, turn on the drag-lock with <kbd style="color:rgb(142, 139, 205)">SPACEBAR</kbd>,
             then move the mouse. (Press it again to turn it off.)
             <br />
-            3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">E</kbd> while dragging.
+            3. Stamp a selection with <kbd style="color:rgb(142, 139, 205)">D</kbd> while dragging.
             <br />
             4. Scale a selection down and up with <kbd style="color:rgb(142, 139, 205)">[</kbd> and <kbd
               style="color:rgb(142, 139, 205)">]</kbd>.
@@ -162,7 +162,8 @@
 
             <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey "></button>
             <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey"></button>
-            <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey operationButton enabledButton">stamp</button>
+            <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey endButton">              <b>END:</b> <br />fill
+            </button>
             <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey endButton"><b>END:</b><br />close
               stroke</button>
             <button data-key="t" tabindex="-1" id="KeyT" class="keyboardkey tKey"></button>
@@ -200,11 +201,11 @@
             <button data-key="a" tabindex="-1" id="KeyA" class="keyboardkey KeyA endButton"
               style="transform: translate(-27%, 0%)"><b>END:</b><br />stroke path</button>
             <button data-key="s" tabindex="-1" id="KeyS" class="keyboardkey sKey endButton"
-              style="transform: translate(-27%, 0%)"><b>END:</b> <br />fill
-              <br />only</button>
-            <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey endButton"
-              style="transform: translate(-27%, 0%)"><b>END:</b><br />fill &
-              stroke</button>
+              style="transform: translate(-27%, 0%)">
+           
+              <b>END:</b><br/>fill & stroke</button>
+            <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey operationButton enabledButton"
+              style="transform: translate(-27%, 0%)">stamp</button>
             <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"
               style="transform: translate(-27%, 0%)">add</br>point</button>
             <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey"

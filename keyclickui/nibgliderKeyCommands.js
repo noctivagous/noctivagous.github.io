@@ -51,7 +51,7 @@ function cancelCurrentDrawingOperation()
 
 }
 
-function endShape() {
+function endPathAsStroke() {
   if (path) {
     path.selected = false;
     project.activeLayer.addChild(path);

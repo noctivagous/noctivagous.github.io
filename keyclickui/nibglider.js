@@ -68,7 +68,7 @@ function handleImageDrop(event) {
 
 
 // Your existing variables and code with paper. as a prefix where needed
-var globalStrokeWidth = 1.0;
+var globalStrokeWidth = 4.0;
 var maxStrokeWidth = 40.0;
 var isDrawing = false;
 var mousePt;
@@ -264,6 +264,15 @@ document.addEventListener('keydown', function (event) {
     setIsInDragLock(false);
   }
 
+    // close and end shape
+    if (event.key == 'd') {
+
+      stampItems(selectedItems);
+
+
+
+    }
+
 
   if (event.key == 'f') {
 
@@ -291,10 +300,6 @@ document.addEventListener('keydown', function (event) {
     thickenStrokeWidth();
   }
 
-  if (event.key === 'e')/* && _isInDragLock)*/ {
-    stampItems(selectedItems);
-  }
-
 
   if (isDrawing) {
     // close and end shape
@@ -303,23 +308,24 @@ document.addEventListener('keydown', function (event) {
       closeShapeAndEnd();
     }
 
-    // close and end shape
-    if (event.key == 'd') {
-      closeShapeAndEndWithFillStroke();
 
 
-    }
+  if (event.key === 'e')/* && _isInDragLock)*/ {
+    
+    closeShapeAndEndWithFillOnly();
+  }
 
         // close and end shape
         if (event.key == 's') {
-          closeShapeAndEndWithFillOnly();
+          closeShapeAndEndWithFillStroke();
+
     
     
         }
 
-    // close and end shape
+    // close path and end
     if (event.key == 'a') {
-      endShape();
+      endPathAsStroke();
 
 
     }
@@ -401,6 +407,5 @@ paper.view.onMouseDrag = function(event) {
 function onMouseUp(event) {
 
 }
-
 
 

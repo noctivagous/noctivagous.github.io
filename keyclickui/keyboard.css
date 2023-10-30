@@ -183,11 +183,15 @@ button {
 
 
 .endButton {
-    background-color: rgb(210, 48, 30) !important;
+    background-color: rgb(134, 37, 26) !important;
     box-shadow: #333 !important;
     box-shadow: 1pt 1pt 0px #333 !important;
-
+color:rgb(210, 115, 115) !important;
     opacity: 1.0 !important;
+
+}
+
+.endButton b{
 
 }
 

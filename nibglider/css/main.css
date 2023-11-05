@@ -1,0 +1,77 @@
+/*  PAPERJS  */
+
+body {
+  font-size: 18pt;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+/* Scale canvas with resize attribute to full size*/
+
+
+canvas[resize] {
+  width: 100%;
+  height: 100%;
+  cursor: none;
+}
+
+
+#canvasContainer{
+  position: absolute;
+  top:0;
+   bottom:0;
+   left:0;
+   right:0;  
+   z-index: 0;
+  box-sizing: border-box;
+}
+
+canvas#nibgliderCanvas {
+  height: 100%;
+  width:100%;
+
+  background-color: #ae9090;
+  
+  position: absolute;
+  top:0;
+   bottom:0;
+   left:0;
+   right:0;  
+   z-index: 0;
+
+}
+
+#nibgliderCanvas:focus {
+  outline: none;
+}
+
+
+
+   
+
+button {
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
+kbd {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 3pt;
+  padding: 5px;
+  background-color: #333;
+  color:white;
+  font-family:  monospace;
+  margin:1px;
+  font-weight: bold;
+}
+
+
+

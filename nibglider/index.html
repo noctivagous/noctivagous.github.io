@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/keyboard.css">
+
+
+  <script>
+    window.addEventListener('keydown', function (event) {
+      if (event.key === ' ' || event.key === 'Tab') {
+        event.preventDefault();
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+  <div id="mainContainer">
+
+    
+
+    <div id="canvasContainer">
+
+      <div style="z-index: 1;">
+        <canvas id="nibgliderCanvas" tabindex="0" resize></canvas>
+      </div>
+      <div class="corner-div">
+        
+        
+
+        <div id="keyboardPanel">
+
+          <div id="keyboardKeysGrid">
+
+
+
+            <!-- 
+                █████████████████████ BEGIN TOP ROW:█████████████████████
+                esc F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 F13 F14
+              -->
+
+            <!--
+              
+              <button tabindex="-1" id="Escape" class="escKey keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F1" class="f1Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F2"  class="f2Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F3"  class="f3Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F4"  class="f4Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F5"  class="f5Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F6"  class="f6Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F7"  class="f7Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F8"  class="f8Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F9"  class="f9Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F10"  class="f10Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F11"  class="f11Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F12"  class="f12Key keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F13"  class="f13Key keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F14"  class="f14Key keyboardkey functionRow"></button>
+    
+            -->
+
+            <!-- 
+                END TOP ROW 
+              -->
+
+
+
+
+
+
+
+
+            <!-- 
+                ██████████████BEGIN SECOND ROW: █████████████████████
+                      tab Q W E R T Y U I O P [ ] \ 
+              -->
+
+            <button tabindex="-1" data-key="tab" id="Tab" class="keyboardkey tabKey OtherKey enabledButton selectionButton">Select Objects</button>
+
+            <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey "></button>
+            <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey operationButton enabledButton">stamp</button>
+            <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey endButton">              <b>END:</b> <br />fill
+            </button>
+            <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey endButton"><b>END:</b><br />close
+              stroke</button>
+            <button data-key="t" tabindex="-1" id="KeyT" class="keyboardkey tKey"></button>
+            <button data-key="y" tabindex="-1" id="KeyY" class="keyboardkey yKey "></button>
+            <button data-key="u" tabindex="-1" id="KeyU" class="keyboardkey uKey "></button>
+
+            <button data-key="i" tabindex="-1" id="KeyI" class="keyboardkey iKey "></button>
+            <button data-key="o" tabindex="-1" id="KeyO" class="keyboardkey oKey "></button>
+            <button data-key="p" tabindex="-1" id="KeyP" class="keyboardkey pKey "></button>
+
+
+            <button data-key="[" tabindex="-1" id="BracketLeft"
+              class="keyboardkey  bracketLeftKey operationButton enabledButton">scale
+              -</button>
+            <button data-key="]" tabindex="-1" id="BracketRight"
+              class="keyboardkey  bracketRightKey operationButton enabledButton">scale
+              +</button>
+            <button data-key="\" tabindex="-1" id="Backslash" class="keyboardkey  backslashKey"></button>
+            <!-- 
+                END SECOND ROW 
+              -->
+
+
+
+
+            <!-- 
+              ██████████████  BEGIN THIRD ROW: ██████████████
+                   capslock a s d f g h j k l ; '
+              -->
+
+            <button data-key="capslock" tabindex="-1" id="CapsLock"
+              class="keyboardkey capsLockKey OtherKey hidden"></button>
+
+
+            <button data-key="a" tabindex="-1" id="KeyA" class="keyboardkey KeyA endButton"
+              style="transform: translate(-27%, 0%)"><b>END:</b><br />stroke path</button>
+            <button data-key="s" tabindex="-1" id="KeyS" class="keyboardkey sKey endButton"
+              style="transform: translate(-27%, 0%)">
+           
+              <b>END:</b><br/>fill & stroke</button>
+            <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"
+              style="transform: translate(-27%, 0%)">add</br>point</button>
+            <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey"
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="h" tabindex="-1" id="KeyH" class="keyboardkey hKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="j" tabindex="-1" id="KeyJ" class="keyboardkey jKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="k" tabindex="-1" id="KeyK" class="keyboardkey kKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key="l" tabindex="-1" id="KeyL" class="keyboardkey lKey "
+              style="transform: translate(-27%, 0%)"></button>
+            <button data-key=";" tabindex="-1" id="Semicolon" class="keyboardkey semicolonKey operationButton enabledButton"
+              style="transform: translate(-27%, 0%)">rotate <span style="font-size:30px">⥀</span></button>
+            <button data-key="'" tabindex="-1" id="Quote" class="keyboardkey  singleQuoteKey operationButton enabledButton"
+              style="transform: translate(-27%, 0%)">rotate <span style="font-size:30px">⥁</span></button>
+            <button data-key="return" tabindex="-1" id="Enter" class="keyboardkey returnKey OtherKey hidden"
+              style="transform: translate(-5%, 0%)">return</button>
+
+
+
+            <!-- 
+                END THIRD ROW 
+              -->
+
+
+
+
+            <!-- 
+                ██████████████ BEGIN FOURTH ROW: █████████████████████
+                shiftleft Z X C V B N M , . / shiftright
+              -->
+            <button data-key="shift" tabindex="-1" id="ShiftLeft"
+              class="keyboardkey shiftKeyLeft OtherKey hidden"></button>
+
+            <button data-key="z" tabindex="-1" id="KeyZ" class="keyboardkey KeyZ "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="x" tabindex="-1" id="KeyX" class="keyboardkey xKey "
+              style="transform: translate(38%, 0%)"></button>
+
+            <button data-key="c" tabindex="-1" id="KeyC" class="keyboardkey cKey stepper1Decrement enabledButton"
+              style="transform: translate(38%, 0%)">-
+              <br />stroke<br />width</button>
+
+
+
+            <button data-key="v" tabindex="-1" id="KeyV" class="keyboardkey vKey stepper1Increment enabledButton"
+              style="transform: translate(38%, 0%)">+
+              <br />stroke<br />width</button>
+            <button data-key="b" tabindex="-1" id="KeyB" class="keyboardkey bKey "
+              style="transform: translate(38%, 0%)">
+              </button>
+            <button data-key="n" tabindex="-1" id="KeyN" class="keyboardkey nKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="m" tabindex="-1" id="KeyM" class="keyboardkey mKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="," tabindex="-1" id="Comma" class="keyboardkey commaKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="." tabindex="-1" id="Period" class="keyboardkey periodKey "
+              style="transform: translate(38%, 0%)"></button>
+            <button data-key="/" tabindex="-1" id="Slash" class="keyboardkey forwardSlashKey OtherKey"
+              style="transform: translate(38%, 0%)"></button>
+
+            <button data-key="shift" tabindex="-1" id="ShiftRight" class="keyboardkey shiftKeyRight OtherKey hidden"
+              style="transform: translate(15%, 0%)"></button>
+
+            <!-- 
+                END FOURTH ROW 
+              -->
+
+
+
+
+            <!-- 
+                BEGIN FIFTH ROW:
+                █████████████████████ spacebarKey █████████████████████
+               -->
+
+            <button tabindex="-1" data-key="spacebar" id="Space"
+              class="keyboardkey spacebarKey OtherKey enabledButton selectionButton">Drag Lock</button>
+
+            <!-- END FIFTH ROW -->
+
+
+          </div>
+        </div><!-- END keyboardPanel-->
+
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+
+  <script src="js/nibglider.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script src="js/nibgliderKeyCommands.js"></script>
+
+  <script src="js/KeyboardMappingManager.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+             /* Removes margin in default browser styling */
+          /*    background: #ece9e9; Optional: canvas background color */
+            margin:auto;
+            
+        }
+    </style>
+    <title>NibGlider-CK</title>
+</head>
+<body>
+    <canvas id="canvas" width=1500 height=800></canvas>
+
+    <!-- LOCAL canvaskit:-->
+    <!--  <script src="js/canvaskit/canvaskit.js"></script>-->
+
+    <script type="text/javascript"
+  src="https://unpkg.com/canvaskit-wasm@0.19.0/bin/canvaskit.js"></script>
+
+
+    <script src="js/third-party/rbush.js"></script>
+    <script src="js/Drawable.js"></script>
+    <script src="js/LayerManager.js"></script>
+  
+    <script  type="module" src="js/NibGliderApp.js"></script>
+    <script  type="module" src="js/NGUtils.js"></script>
+<!--
+
+    Skia has multiple backends which receive SkCanvas drawing commands. 
+    Each backend has a unique way of creating a SkCanvas. 
+    This page gives an example for each:
+
+    Raster ---- 
+    The raster backend draws to a block of memory. This memory can be managed by Skia or by the client.
+
+    The recommended way of creating a canvas for the Raster and Ganesh backends is to 
+    use a SkSurface, which is an object that manages the memory into which the canvas commands are drawn.
+
+    SkSurface is an object that manages the memory into which the canvas commands are drawn.
+
+    Get a canvas (SkCanvas) from the surface.  
+    
+    SkCanvas* rasterCanvas = rasterSurface->getCanvas();
+
+
+    SkPDF ----
+    The SkPDF backend uses SkDocument instead of SkSurface, since a document must include multiple pages.
+
+    SkPicture ----
+    The SkPicture backend uses SkPictureRecorder instead of SkSurface.
+
+    SkXPS ----
+    The (still experimental) SkXPS canvas writes into an XPS document.
+
+    SkSVG ----
+    The (still experimental) SkSVG canvas writes into an SVG document.
+
+
+
+    SkCanvas is the drawing context for Skia. 
+    It knows where to direct the drawing (i.e. where the screen of offscreen pixels are), 
+    and maintains a stack of matrices and clips. Note however, that unlike similar contexts 
+    in other APIs like postscript, cairo, or awt, Skia does not store any other drawing 
+    attributes in the context (e.g. color, pen size). Rather, these are specified explicitly 
+    in each draw call, via a SkPaint.
+
+
+-->
+
+</body>
+</html>

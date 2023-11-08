@@ -64,6 +64,12 @@ class NibGliderApp {
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
+    window.addEventListener('keydown', function (event) {
+      if (event.key === ' ' || event.key === 'Tab') {
+        event.preventDefault();
+      }
+    });
+
   }
 
 

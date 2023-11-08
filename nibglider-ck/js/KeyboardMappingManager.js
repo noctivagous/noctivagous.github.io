@@ -46,8 +46,10 @@ class KeyboardMappingManager {
   // sent from InputManager
   handleKeyPress(key) {
     const event = this.mapKeyToEvent(key);
+  
+    //this.drawingEntityManager.currentEntity.stateMachine.send(event);
     // The event is sent to the active drawing entity's state machine.
-    activeDrawingEntity.stateMachine.send(event);
+    
   }
 
   mapKeyToEvent(key) {

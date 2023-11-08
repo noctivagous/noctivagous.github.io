@@ -1,5 +1,6 @@
 // Manage the drawing states
 
+
 class DrawingEntityManager {
   constructor(app) {
     this.app = app;

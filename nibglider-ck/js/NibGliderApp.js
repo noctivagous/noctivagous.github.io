@@ -3,17 +3,15 @@ import CursorManager from './CursorManager.js';
 import KeyboardMappingManager from './KeyboardMappingManager.js';
 import EventManager from './EventManager.js';
 import DrawingEntityManager from './DrawingEntityManager.js';
-// Inside NibGliderApp.js
-//import { DrawingEntityManager } from './drawing/DrawingEntityManager.js';
 
 
 export var CanvasKit = null;
 export default CanvasKit;
 
 class NibGliderApp {
-  constructor(canvasId) {
-    this.canvasId = canvasId;
-    this.canvas = null;
+  constructor(htmlCanvasId) {
+    this.htmlCanvasId = htmlCanvasId;
+    this.htmlCanvas = null;
     this.skSurface = null;
     this.skCanvas = null;
     this.context = null;
@@ -22,7 +20,7 @@ class NibGliderApp {
     this.layerManager = null;
     this.cursorManager = null;
     this.keyboardMappingManager = null;
-    
+
     this.surface = null;
     this.CanvasKit = null;
 
@@ -30,62 +28,63 @@ class NibGliderApp {
     this.mouseX = -1000;
     this.mouseY = -1000;
 
-  
-    this.appBackgroundColor = null; 
+
+    this.appBackgroundColor = null;
     this.appBackgroundColorPaint = null;
-    this.appState = null;
+    this.appStateManager = null;
   }
 
-setupAppBackgroundColor()
-{
-  this.setAppBackgroundColor(CanvasKit.Color(0, 255, 255, 1.0));
-}
+  setupAppBackgroundColor() {
+    this.setAppBackgroundColor(CanvasKit.Color(0, 255, 255, 1.0));
+  }
 
-  setAppBackgroundColor(bgColor)
-  {
-    if(this.appBackgroundColorPaint)
-    {
+  setAppBackgroundColor(bgColor) {
+    if (this.appBackgroundColorPaint) {
       this.appBackgroundColorPaint.delete();
     }
 
     this.appBackgroundColor = bgColor;
     this.appBackgroundColorPaint = new CanvasKit.Paint();
-        this.appBackgroundColorPaint.setColor(this.appBackgroundColor); // RGBA for blue
-        this.appBackgroundColorPaint.setStyle(CanvasKit.PaintStyle.Fill);
+    this.appBackgroundColorPaint.setColor(this.appBackgroundColor); // RGBA for blue
+    this.appBackgroundColorPaint.setStyle(CanvasKit.PaintStyle.Fill);
   }
 
-  setupManagers()
-  {
-  this.layerManager = new LayerManager(this);
-  this.cursorManager = new CursorManager(this);
+  setupManagers() {
+    
+    this.layerManager = new LayerManager(this);
+    const l = this.layerManager;
+    console.log(l.currentLayer);
+    
+    this.cursorManager = new CursorManager(this);
 
-  this.drawingEntityManager = new DrawingEntityManager(this);
-  this.pathManipulator = new PathManipulator(this);
-  this.paintManager = new PaintManager(this);
-  this.keyboardMappingManager = new KeyboardMappingManager(this,this.drawingEntityManager);
-  this.eventManager = new EventManager(this,this.keyboardMappingManager, this.drawingEntityManager);
+    this.drawingEntityManager = new DrawingEntityManager(this);
+    this.pathManipulator = new PathManipulator(this);
+    this.paintManager = new PaintManager(this);
+    this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
+    this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
   }
 
 
-  setupAppState()
-  {
-  this.appState = new AppState(this);
+  setupAppStateManager() {
+    this.appStateManager = new AppStateManager(this);
   }
 
   async init() {
-    
+
     await this.initializeCanvasKit();
 
-    this.setupAppState();
+    this.setupAppStateManager();
 
-    this.setupManagers(); 
 
     // SETUP PAINT
     this.setupPaint();
-    this.setupEventListeners();
 
     this.setupCanvasSurface();
+
+    this.setupManagers();
+
+    this.setupEventListeners();
 
     this.setupAppBackgroundColor();
 
@@ -96,7 +95,7 @@ setupAppBackgroundColor()
     this.skCanvas = this.skSurface.getCanvas();
 
 
-    
+
 
     this.skSurface.requestAnimationFrame(this.draw);
 
@@ -110,28 +109,27 @@ setupAppBackgroundColor()
 
   }
 
-  async initializeCanvasKit()
-  {
+  async initializeCanvasKit() {
 
     CanvasKit = await CanvasKitInit({
       locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.19.0/bin/' + file,
-      
+
       //LOCAL CANVASKIT:
       //locateFile: (file) => 'js/canvaskit' + file,
-      
+
     });
 
-// Assigning to global window object for global access
-window.CanvasKit = CanvasKit;
+    // Assigning to global window object for global access
+    window.CanvasKit = CanvasKit;
 
-// Also keeping a reference in the class if needed for class methods
-this.CanvasKit = CanvasKit;
+    // Also keeping a reference in the class if needed for class methods
+    this.CanvasKit = CanvasKit;
 
 
-    
 
-    this.canvas = document.getElementById(this.canvasId);
-    if (!this.canvas) {
+
+    this.htmlCanvas = document.getElementById(this.htmlCanvasId);
+    if (!this.htmlCanvas) {
       alert('Canvas element not found');
       console.error('Canvas element not found');
       return;
@@ -139,14 +137,13 @@ this.CanvasKit = CanvasKit;
 
   }
 
-  fillWithBackgroundColor()
-  {
+  fillWithBackgroundColor() {
     fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
   }
 
   draw = () => {
     //this.fillWithBackgroundColor();
-    this.skCanvas.drawPaint(this.appBackgroundColorPaint);
+   // this.skCanvas.drawPaint(this.appBackgroundColorPaint);
 
     this.dirtyRects.forEach((rect) => {
 
@@ -157,34 +154,40 @@ this.CanvasKit = CanvasKit;
       this.skCanvas.save();
       const rectToClip = rect;
       this.skCanvas.clipRect(rectToClip, this.CanvasKit.ClipOp.Intersect, true);
-      
 
-      
-      this.cursorManager.drawCursor(this.skCanvas,this.appState);
+
+      if(this.layerManager)
+      {
+         this.layerManager.drawRectOnAllLayers(this.skCanvas, rect);
+
+      }
+
+
+      this.cursorManager.drawCursor(this.skCanvas, this.appStateManager);
 
       this.skCanvas.restore();
     });
 
-   
-   /* 
-   if (this.dirtyRects.some(rect => rect.width === this.canvas.width && rect.height === this.canvas.height)) {
-      // Additional drawing logic for when the entire canvas is dirty
-      this.layerManager.drawRectOnAllLayers(this.skCanvas, skRectFloat32Array);
 
-    }
-    */
+    /* 
+    if (this.dirtyRects.some(rect => rect.width === this.htmlCanvas.width && rect.height === this.htmlCanvas.height)) {
+       // Additional drawing logic for when the entire canvas is dirty
+       this.layerManager.drawRectOnAllLayers(this.skCanvas, skRectFloat32Array);
+ 
+     }
+     */
 
     // After drawing all dirty rects, reset the list
     this.dirtyRects = [];
     this.drawingInProgress = false;
-  
-  
+
+
   };
 
 
   setupEventListeners() {
     // update on mouseMove
-    this.canvas.addEventListener('pointermove', (e) => {
+    this.htmlCanvas.addEventListener('pointermove', (e) => {
       /* if (!e.pressure) {
          return;
        }*/
@@ -197,13 +200,12 @@ this.CanvasKit = CanvasKit;
 
   }
 
-  mouseDidMove()
-  {
-    this.cursorManager.updateMousePosition(this.mouseX,this.mouseY);
+  mouseDidMove() {
+    this.cursorManager.updateMousePosition(this.mouseX, this.mouseY);
   }
 
   setupPaint() {
-   
+
   }
 
   setupResizeHandling() {
@@ -219,12 +221,12 @@ this.CanvasKit = CanvasKit;
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    this.canvas.width = width;
-    this.canvas.height = height;
+    this.htmlCanvas.width = width;
+    this.htmlCanvas.height = height;
 
     if (!this.setupCanvasSurface()) {
       return;
-  
+
     }
 
     this.invalidateEntireCanvas();
@@ -234,7 +236,7 @@ this.CanvasKit = CanvasKit;
 
 
   setupCanvasSurface() {
-    this.skSurface = this.CanvasKit.MakeCanvasSurface(this.canvasId) || this.CanvasKit.MakeWebGLCanvasSurface(this.canvasId);
+    this.skSurface = this.CanvasKit.MakeCanvasSurface(this.htmlCanvasId) || this.CanvasKit.MakeWebGLCanvasSurface(this.htmlCanvasId);
     if (!this.skSurface) {
       alert('Could not make CanvasKit canvas surface');
       console.error('Could not make CanvasKit canvas surface');
@@ -250,28 +252,28 @@ this.CanvasKit = CanvasKit;
   startDrawingIfNeeded() {
     if (this.dirtyRects.length > 0 && !this.drawingInProgress) {
       this.drawingInProgress = true;
-  //    this.skSurface.drawOnce(this.draw);
-//      this.skSurface.drawOnce(this.draw);
+      //    this.skSurface.drawOnce(this.draw);
+      //      this.skSurface.drawOnce(this.draw);
       this.skSurface.requestAnimationFrame(this.draw);
     }
   }
 
 
   invalidateRect(rect) {
-    
+
     this.dirtyRects.push(rect);
     this.startDrawingIfNeeded();
   }
 
   invalidateEntireCanvas() {
-    this.invalidateRect(this.CanvasKit.XYWHRect(0, 0, this.canvas.width, this.canvas.height));
+    this.invalidateRect(this.CanvasKit.XYWHRect(0, 0, this.htmlCanvas.width, this.htmlCanvas.height));
   }
 
-  entireCanvasRect(){
-    return this.CanvasKit.XYWHRect(0, 0, this.canvas.width, this.canvas.height) 
+  entireCanvasRect() {
+    return this.CanvasKit.XYWHRect(0, 0, this.htmlCanvas.width, this.htmlCanvas.height)
   }
 
-  
+
 
 
 
@@ -283,7 +285,7 @@ nibGliderApp.init();
 
 
 // App State Manager
-class AppState {
+class AppStateManager {
   constructor(app) {
     this.app = app;
     this.cursorVisible = true;
@@ -298,3 +300,4 @@ class AppState {
     this.functionRegistry = {}; // Stores functions for key events
   }
 }
+

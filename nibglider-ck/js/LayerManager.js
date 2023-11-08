@@ -2,76 +2,153 @@
 
 class LayerManager {
   constructor(app) {
-    var layer1 = new Layer();
-    this.allLayers = [layer1];
-    this.currentLayer = layer1;
+    this.layer1 = new Layer(window.CanvasKit);
+    this.allLayers = [this.layer1];
+    this.currentLayer = this.layer1;
     this.backgroundColor = null;
     this.app = app;
+
+    this.layer1.generateRandomShapes();
+
+
   }
 
-  appDidLoad()
-  {
+  appDidLoad() {
     this.backgroundColor = CanvasKit.Color(255, 0, 0, 1.0);
     this.setLayerManagerBackgroundColor(this.backgroundColor);
   }
-  
-  setLayerManagerBackgroundColor(bgColor)
-  {
+
+  setLayerManagerBackgroundColor(bgColor) {
     this.backgroundColor = bgColor;
-        // Create a new paint object with color blue
-        this.backgroundColorPaint = new CanvasKit.Paint();
-        paint.setColor(bgColor); // RGBA 
-        paint.setStyle(CanvasKit.PaintStyle.Fill);
+    // Create a new paint object with color blue
+    this.backgroundColorPaint = new CanvasKit.Paint();
+    paint.setColor(bgColor); // RGBA 
+    paint.setStyle(CanvasKit.PaintStyle.Fill);
   }
 
 
   drawRectOnAllLayers(skCanvas, skRectFloat32Array) {
-  
-    //skCanvas.drawPaint();  
-      skCanvas.drawRect(skRectFloat32Array, this.backgroundColorPaint);
 
+    //skCanvas.drawPaint();  
+    if(this.backgroundColorPaint)
+    {
+    //skCanvas.drawRect(skRectFloat32Array, this.backgroundColorPaint);
+    }
+    else
+    {
+     //   console.log('f');
+    }
+//    alert('drawAlllayers');
 
     this.allLayers.forEach(layer => {
-      layer.drawLayer(skCanvas);
+      layer.drawLayer(skCanvas, skRectFloat32Array);
     });
+    
   }
 
 }
 
 
-class Layer{
-    constructor() {
-        this.rBush = new rbush(); // Initialize the rbush tree
-        this.drawableObjects = []; // Keep a reference list of drawable objects
-    
-      this.backgroundColor = null;
-      this.backgroundColorPaint = null;
-    }
-  
-    
-    setLayerManagerBackgroundColor(bgColor)
-    {
-      this.backgroundColor = bgColor;
-          // Create a new paint object with color blue
-          this.backgroundColorPaint = new CanvasKit.Paint();
-          paint.setColor(bgColor); // RGBA 
-          paint.setStyle(CanvasKit.PaintStyle.Fill);
-    
-        }
+class Layer {
+  constructor(canvasKit) {
+    this.canvasKit = canvasKit; // Store the CanvasKit instance
 
-        // Method to draw all objects in the layer
-        drawLayer(skCanvas) {
-          console.log("layer draw");
-            // Perform drawing with CanvasKit on the skCanvas
-            this.drawableObjects.forEach(drawable => {
-              drawable.draw(skCanvas);
-            });
-          }
+    this.rBush = new rbush(); // Initialize the rbush tree
+    this.drawableObjects = []; // Keep a reference list of drawable objects
+
+    this.backgroundColor = null;
+    this.backgroundColorPaint = null;
+  }
+
+  // Method to generate random shapes
+  generateRandomShapes(numberOfShapes = 10) {
+
+
+    for (let i = 0; i < numberOfShapes; i++) {
+      const shapeType = Math.floor(Math.random() * 3); // Randomly choose a shape type
+      let drawable;
+      switch (shapeType) {
+        case 0: // Rectangle
+          drawable = Drawable.createRectangle(
+            this.canvasKit,
+            Math.random() * 500, // Random x
+            Math.random() * 500, // Random y
+            Math.random() * 100 + 20, // Random width
+            Math.random() * 100 + 20 // Random height
+          );
+          break;
+        case 1: // Circle
+          drawable = Drawable.createCircle(
+            this.canvasKit,
+            Math.random() * 500, // Random x for center
+            Math.random() * 500, // Random y for center
+            Math.random() * 50 + 10 // Random radius
+          );
+          break;
+        case 2: // Line
+          drawable = Drawable.createLine(
+            this.canvasKit,
+            Math.random() * 500, // Random x1
+            Math.random() * 500, // Random y1
+            Math.random() * 500, // Random x2
+            Math.random() * 500 // Random y2
+          );
+          break;
+        // Add more shapes if needed
+      }
+      this.addObject(drawable);
+    }
+  }
+
+
+  setLayerManagerBackgroundColor(bgColor) {
+    this.backgroundColor = bgColor;
+    // Create a new paint object with color blue
+    this.backgroundColorPaint = new CanvasKit.Paint();
+    paint.setColor(bgColor); // RGBA 
+    paint.setStyle(CanvasKit.PaintStyle.Fill);
+
+  }
+
+  // Method to draw all objects in the layer
+  drawLayer(skCanvas, skRectFloat32) {
+    console.log("layer draw");
+    // Perform drawing with CanvasKit on the skCanvas
+    this.drawableObjects.forEach(drawable => {
+      drawable.draw(skCanvas);
+    });
+  }
+
+
+  /*
+   // Method to draw all objects in the layer
+          //In this code, searchBounds is expected to be an array 
+          // of the format [minX, minY, maxX, maxY], representing 
+          // the area to draw. If skRectFloat32 is in a different 
+          // format, you'll need to adjust the searchArea call accordingly.
+          drawLayer(skCanvas, searchBounds) {
+            console.log("layer draw");
+              
+                // Get all drawable objects in the search area
+      const drawableObjectsInArea = this.searchArea({
+        x: searchBounds[0],
+        y: searchBounds[1],
+        width: searchBounds[2] - searchBounds[0],
+        height: searchBounds[3] - searchBounds[1],
+      });
+  
+      // Perform drawing with CanvasKit on the skCanvas
+      drawableObjectsInArea.forEach(drawable => {
+        drawable.draw(skCanvas);
+      });
+    }
+    */
+
 
   // Function to add objects to the rbush tree
   addObject(drawable) {
     // Calculate the item's bounding box (assuming drawable has a getBounds method)
-    const item = this.convertDrawableToBoundsItem(drawable);
+    const item =  drawable.getBounds();//this.convertDrawableToBoundsItem(drawable);
     // Add the item to the rbush tree
     this.rBush.insert(item);
     // Keep a reference to the drawable object
@@ -98,6 +175,7 @@ class Layer{
     this.addObject(drawable);
   }
 
+  /*
   // Helper function to convert a drawable object to an rbush item
   convertDrawableToBoundsItem(drawable) {
     const bounds = drawable.getBounds(); // Your method to get drawable bounds
@@ -108,7 +186,7 @@ class Layer{
       maxY: bounds.bottom,
       drawable: drawable // Store reference to the drawable for later retrieval
     };
-  }
+  }*/
 
   // Function to search the rbush tree
   searchArea(area) {

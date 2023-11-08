@@ -12,7 +12,7 @@ class CursorManager {
     this.mouseY = 0;
     this.currentDrawingPoint = [0.0,0.0]; //CanvasKit: export type Point = number[];
     this.app = app;
-    this.appState = app.appState;
+    this.appStateManager = app.appStateManager;
     CanvasKit = app.CanvasKit;
 
     this.cursorBoxPaint = new app.CanvasKit.Paint();
@@ -64,9 +64,9 @@ class CursorManager {
   }
 
   // Draws the cursor on the canvas
-  drawCursor(skCanvas,appState) {
+  drawCursor(skCanvas,appStateManager) {
     // Use currentDrawingPoint as the position for the cursor
-    if (appState.cursorVisible) {
+    if (appStateManager.cursorVisible) {
       // Cursor drawing logic goes here
       // For example, drawing a simple circle at the currentDrawingPoint:
       const paint = new CanvasKit.Paint();
@@ -81,7 +81,7 @@ class CursorManager {
       
       // Optionally, you can also draw the snapping effect or change the cursor appearance based on the state
       // For example, if it's a snapping state, you might want to draw the cursor differently
-      if (appState.isSnapping) {
+      if (appStateManager.isSnapping) {
         paint.setColor(0xFF00FF00); // Change color to green to indicate snapping
         skCanvas.drawCircle(this.currentDrawingPoint.x, this.currentDrawingPoint.y, 7, paint);
       }

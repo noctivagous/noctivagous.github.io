@@ -3,19 +3,52 @@ class EventManager {
     constructor(app,keyboardMappingManager, drawingEntityManager) {
       this.keyboardMappingManager = keyboardMappingManager;
       this.drawingEntityManager = drawingEntityManager;
-    //  this.bindEvents();
+      this.layerManager = app.layerManager;
+    
+      this.htmlCanvas = app.htmlCanvas;
+
+//      this.drawables = this.layerManager.getCurrentLayerDrawables(); // This is an array or another data structure containing all drawable objects
+ 
+this.attachEventListeners();
+//  this.bindEvents();
+
     }
-  /*
-    bindEvents() {
-      // Bind mouse events
-      canvas.addEventListener('mousedown', (event) => this.drawingEntityManager.onMouseDown(event));
-      canvas.addEventListener('mousemove', (event) => this.drawingEntityManager.onMouseDrag(event));
-      canvas.addEventListener('mouseup', (event) => this.drawingEntityManager.onMouseUp(event));
+
+attachEventListeners() {
   
-      // Bind keyboard events
-      document.addEventListener('keydown', (event) => this.keyboardMappingManager.handleKeyPress(event));
+  // Listen for events on the canvas, not individual drawables
+  this.htmlCanvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+  this.htmlCanvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+  this.htmlCanvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+
+  // Bind keyboard events
+  document.addEventListener('keydown', (event) => this.keyboardMappingManager.handleKeyPress(event));
+}
+
+handleMouseDown(event) {
+  const hitDrawable = this.detectHit(event.offsetX, event.offsetY);
+  if (hitDrawable) {
+    // Initiate dragging logic here
+  }
+}
+
+handleMouseMove(event) {
+  // This would be called only if dragging is in progress
+}
+
+handleMouseUp(event) {
+  // This would end the dragging process
+}
+
+detectHit(x, y) {
+  for (const drawable of this.drawables) {
+    if (drawable.isHit(x, y)) {
+      return drawable;
     }
-*/
+  }
+  return null;
+}
+
 
 
      handleImageDrop(event) {
@@ -64,5 +97,7 @@ class EventManager {
       }
       
   }
+
+  
 
 export default EventManager;  

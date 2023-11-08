@@ -8,9 +8,18 @@ class LayerManager {
     this.backgroundColor = null;
     this.app = app;
 
-    this.layer1.generateRandomShapes();
+     this.layer1.generateRandomShapes(30,1500,900);
+    
+    // Create the offscreen canvases for each layer
+    this.allLayers.forEach(layer => layer.createBackingStore(app.canvasWidth, app.canvasHeight));
+ 
+    this.layerManagerDidFinishInit();
 
+  }
 
+  layerManagerDidFinishInit()
+  {
+    this.app.onResize();
   }
 
   appDidLoad() {
@@ -41,6 +50,10 @@ class LayerManager {
 //    alert('drawAlllayers');
 
     this.allLayers.forEach(layer => {
+      // skRectFloat32Array is placeholder
+      // for future optimization (dirtyRect on top of with backingstore).
+      //  It is partially ready now, with clipRect clipping to the passed dirtyRects,
+      // but the query is not coming from the rBush (r-tree) yet for each layer.
       layer.drawLayer(skCanvas, skRectFloat32Array);
     });
     
@@ -58,10 +71,18 @@ class Layer {
 
     this.backgroundColor = null;
     this.backgroundColorPaint = null;
+  
+    this.offscreenCanvas = null;
+    this.offscreenContext = null;
+  
+  }
+
+  createBackingStore(width, height) {
+    // future optimization
   }
 
   // Method to generate random shapes
-  generateRandomShapes(numberOfShapes = 10) {
+  generateRandomShapes(numberOfShapes = 10,widthRange,heightRange) {
 
 
     for (let i = 0; i < numberOfShapes; i++) {
@@ -71,10 +92,10 @@ class Layer {
         case 0: // Rectangle
           drawable = Drawable.createRectangle(
             this.canvasKit,
-            Math.random() * 500, // Random x
-            Math.random() * 500, // Random y
-            Math.random() * 100 + 20, // Random width
-            Math.random() * 100 + 20 // Random height
+            Math.random() * widthRange, // Random x
+            Math.random() * heightRange, // Random y
+            Math.random() * 200 + 20, // Random width
+            Math.random() * 400 + 20 // Random height
           );
           break;
         case 1: // Circle
@@ -111,8 +132,16 @@ class Layer {
   }
 
   // Method to draw all objects in the layer
-  drawLayer(skCanvas, skRectFloat32) {
-    console.log("layer draw");
+  
+  drawLayer(skCanvas, skRectFloat32Array) {
+  
+      // skRectFloat32Array is placeholder
+      // for future optimization (dirtyRect on top of with backingstore).
+      //  It is partially ready now, with clipRect in the
+      //  app draw function clipping only to the passed dirtyRects,
+      // but the layer's query for intersections is not implemented.
+      //  it is is not coming from the rBush (r-tree) yet for each layer.
+
     // Perform drawing with CanvasKit on the skCanvas
     this.drawableObjects.forEach(drawable => {
       drawable.draw(skCanvas);
@@ -202,3 +231,5 @@ class Layer {
   }
 
 }
+
+export { Layer, LayerManager };

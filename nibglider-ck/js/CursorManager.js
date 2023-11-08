@@ -70,20 +70,22 @@ class CursorManager {
       // Cursor drawing logic goes here
       // For example, drawing a simple circle at the currentDrawingPoint:
       const paint = new CanvasKit.Paint();
-      paint.setColor(CanvasKit.BLUE); // Black color for the cursor
+      paint.setColor(CanvasKit.BLACK); // Black color for the cursor
       //console.log(paint);
-      paint.setStyle(CanvasKit.PaintStyle.Fill);
+      paint.setStrokeWidth(2.0);
+      paint.setStyle(CanvasKit.PaintStyle.Stroke);
+      paint.setBlendMode
       paint.setAntiAlias(true);
 
-      skCanvas.drawCircle(this.mouseX, this.mouseY, 15, paint);
+      skCanvas.drawCircle(this.mouseX, this.mouseY, 25, paint);
 
-      this.debugDraw(skCanvas);
+     // this.debugDraw(skCanvas);
       
       // Optionally, you can also draw the snapping effect or change the cursor appearance based on the state
       // For example, if it's a snapping state, you might want to draw the cursor differently
       if (appStateManager.isSnapping) {
         paint.setColor(0xFF00FF00); // Change color to green to indicate snapping
-        skCanvas.drawCircle(this.currentDrawingPoint.x, this.currentDrawingPoint.y, 7, paint);
+        skCanvas.drawCircle(this.currentDrawingPoint.x, this.currentDrawingPoint.y, 17, paint);
       }
     
       paint.delete();

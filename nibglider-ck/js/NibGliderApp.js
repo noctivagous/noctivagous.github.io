@@ -3,6 +3,7 @@ import CursorManager from './CursorManager.js';
 import KeyboardMappingManager from './KeyboardMappingManager.js';
 import EventManager from './EventManager.js';
 import DrawingEntityManager from './DrawingEntityManager.js';
+import { Layer, LayerManager } from './LayerManager.js';
 
 
 export var CanvasKit = null;
@@ -32,6 +33,8 @@ class NibGliderApp {
     this.appBackgroundColor = null;
     this.appBackgroundColorPaint = null;
     this.appStateManager = null;
+
+
   }
 
   setupAppBackgroundColor() {
@@ -49,12 +52,10 @@ class NibGliderApp {
     this.appBackgroundColorPaint.setStyle(CanvasKit.PaintStyle.Fill);
   }
 
-  setupManagers() {
-    
+  async setupManagers() {
+
     this.layerManager = new LayerManager(this);
-    const l = this.layerManager;
-    console.log(l.currentLayer);
-    
+
     this.cursorManager = new CursorManager(this);
 
     this.drawingEntityManager = new DrawingEntityManager(this);
@@ -82,7 +83,10 @@ class NibGliderApp {
 
     this.setupCanvasSurface();
 
-    this.setupManagers();
+    await this.setupManagers();
+
+    this.setupCanvasSurface();
+
 
     this.setupEventListeners();
 
@@ -102,10 +106,14 @@ class NibGliderApp {
     // resize the canvas
     this.onResize();
 
+    this.skSurface.requestAnimationFrame(this.draw);
+
     var resizeTimer = null;
 
 
     this.startDrawingIfNeeded();
+
+    this.mouseDidMove();
 
   }
 
@@ -142,30 +150,42 @@ class NibGliderApp {
   }
 
   draw = () => {
-    //this.fillWithBackgroundColor();
-   // this.skCanvas.drawPaint(this.appBackgroundColorPaint);
 
+    // in the future, use this to render the backingstore image
+    //this.fillWithBackgroundColor();
+
+
+    // this.skCanvas.drawPaint(this.appBackgroundColorPaint);
+
+    // dirtyRect setup works but needs to be adapted to CanvasKit
+    // in whatever way is possible in the lib.
     this.dirtyRects.forEach((rect) => {
 
 
-      //this.debugDraw();
 
-      //console.log(rect);
-      this.skCanvas.save();
-      const rectToClip = rect;
-      this.skCanvas.clipRect(rectToClip, this.CanvasKit.ClipOp.Intersect, true);
+      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
 
 
-      if(this.layerManager)
-      {
-         this.layerManager.drawRectOnAllLayers(this.skCanvas, rect);
+//      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
+
+      
+      //this.skCanvas.save();
+      //const rectToClip = rect;
+
+      // for optimiziation when backingstore is made:
+      // this.skCanvas.clipRect(rectToClip, this.CanvasKit.ClipOp.Intersect, true);
+
+
+      if (this.layerManager) {
+        this.layerManager.drawRectOnAllLayers(this.skCanvas, rect);
 
       }
 
-
       this.cursorManager.drawCursor(this.skCanvas, this.appStateManager);
 
-      this.skCanvas.restore();
+      //   this.skCanvas.restore();
+
+
     });
 
 

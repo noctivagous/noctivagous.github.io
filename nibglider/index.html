@@ -16,8 +16,6 @@
   </script>
 
 
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
 
 
 
@@ -35,11 +33,50 @@
       <div style="z-index: 1;">
         <canvas id="nibgliderCanvas" tabindex="0" resize></canvas>
       </div>
+      
+      <div id="topRow">
+      <div id="number-row" class="keyboardKeysOverlayContainer">
+        <!-- 
+               BEGIN FIRST ROW:
+               ` 1 2 3 4 5 6 7 8 9 0 - = backspace 
+             -->
+             <button data-key="`" tabindex="-1" id="Backquote" class="keyboardkey backquoteKey OtherKey">toggle top
+               row</button>
+             <button data-key="1" tabindex="-1" id="Digit1" class="keyboardkey Digit1 OtherKey">
+               stroke <input type="color" id="fillColor" name="head" value="#000000" style="height:50px;width:50px">
+             </button>
+             <button data-key="2" tabindex="-1" id="Digit2" class="keyboardkey twoKey OtherKey">fill
+               <input type="color" id="fillColor" name="head" value="#cccccc" style="height:50px;width:50px">
+       
+             </button>
+             <button data-key="3" tabindex="-1" id="Digit3" class="keyboardkey threeKey  OtherKey"><span id="strokeWidthSpan">1
+                 pt</span><br />
+               <span id="lineCapSpan">buttcap</span>
+               <span id="lineCapSpan">miterjoin</span>
+             </button>
+             <button data-key="4" tabindex="-1" id="Digit4" class="keyboardkey fourKey OtherKey "></button>
+             <button data-key="5" tabindex="-1" id="Digit5" class="keyboardkey fiveKey  OtherKey"></button>
+             <button data-key="6" tabindex="-1" id="Digit6" class="keyboardkey sixKey OtherKey"></button>
+             <button data-key="7" tabindex="-1" id="Digit7" class="keyboardkey sevenKey OtherKey"></button>
+             <button data-key="8" tabindex="-1" id="Digit8" class="keyboardkey eightKey  OtherKey"></button>
+             <button data-key="9" tabindex="-1" id="Digit9" class="keyboardkey nineKey  OtherKey"></button>
+             <button data-key="0" tabindex="-1" id="Digit0" class="keyboardkey zeroKey  OtherKey"></button>
+             <button data-key="-" tabindex="-1" id="Minus" class="keyboardkey minusKey OtherKey "></button>
+             <button data-key="=" tabindex="-1" id="Equal" class="keyboardkey equalsKey OtherKey"></button>
+             <button data-key="delete" tabindex="-1" id="Backspace" class="keyboardkey deleteKey OtherKey"></button>
+             <!-- 
+                 END FIRST ROW 
+               -->
+           </div>
+          </div>
+      
+      
       <div class="corner-div">
         
-        
+      
 
-        <div id="keyboardPanel">
+
+        <div id="keyboardPanel" class="keyboardKeysOverlayContainer">
 
           <div id="keyboardKeysGrid">
 
@@ -229,12 +266,24 @@
 
   </div>
 
+  <script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
 
-  <script src="js/nibglider.js"></script>
-  <script src="js/keyboard.js"></script>
-  <script src="js/nibgliderKeyCommands.js"></script>
+  <!--<script src="https://unpkg.com/xstate/dist/xstate.web.js"></script>-->
 
+  <script src="js/PaintManager.js"></script>
+  <script src="js/PathManipulator.js"></script>
   <script src="js/KeyboardMappingManager.js"></script>
+  <script src="js/DrawingEntityManager.js"></script>
+  <script src="js/DrawingEntity.js"></script>
+  <script src="js/InputManager.js"></script>
+
+  <script src="js/NibGliderApp.js"></script>
+
+  <script src="js/Keyboard.js"></script>
+  <script src="js/NibGliderKeyCommands.js"></script>
+
+  
 
 </body>
 

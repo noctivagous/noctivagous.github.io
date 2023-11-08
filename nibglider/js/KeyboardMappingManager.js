@@ -1,55 +1,25 @@
+// ------------------------------
+// KEYBOARD MAPPING MANAGER
+// ------------------------------
+// - Loads key names and definitions.
+// - Reflects keypress states on the virtual keyboard within the canvas.
+// - Dispatches events or commands to appropriate managers/entities based on keypress.
+//
+//
+// isCapsLockOn()
+// keyEventFlags()
+// var keyConfig = {}
+// var functionRegistry = {}
 
-function isCapsLockOn(event) {
-    if (event.key.length === 1 && event.key >= 'A' && event.key <= 'Z') {
-        return !event.shiftKey;
-    } else if (event.key.length === 1 && event.key >= 'a' && event.key <= 'z') {
-        return event.shiftKey;
-    }
-    return false;
-  }
-  
-  function keyEventFlags(event){
-  
-     var capsLockOn = isCapsLockOn(event);
-  
-      var flags = '';
-  
-      // Cocoa-like shorthand flags
-      if (event.shiftKey || capsLockOn) flags += '$'; // Shift
-      if (event.ctrlKey)  flags += '^'; // Control
-      if (event.altKey)   flags += '~'; // Alt/Option
-      if (event.metaKey)  flags += '@'; // Command (Meta on PCs)
-  
-      return flags;
+
+
+
+class KeyboardMappingManager {
+  constructor(drawingEntityManager) {
+    this.drawingEntityManager = drawingEntityManager;
     
-  }
-
-var keyConfig = {
-  "48": {
-    "name": "End",
-    "buttonName": "End",
-    "functionString": "endKeyPress",
-    "description": "Deposits any drawing that is taking place onto the drawing page.",
-    "buttonBackgroundColor": "148,17,0",
-    "buttonBackgroundImage": "endKbImg",
-    "buttonFontColor": "255,64,255"
-  }
-  // ... Other key configurations
-};
-
-var functionRegistry = {
-    endKeyPress: function() {
-      console.log("End key pressed.");
-      // Implement the function's logic here
-    },
-    pushPaletteToSelectedKeyPress: function() {
-      console.log("Palette settings pushed to selected objects.");
-      // Implement the function's logic here
-    }
-    // ... Other functions can be added here in a similar manner
-  };
-
-
+  
+  /*
   document.addEventListener('keydown', function(event) {
     var keyCode = event.code;
     var keyData = keyConfig[keyCode];
@@ -69,60 +39,85 @@ var functionRegistry = {
     }
   });
   
-  
+  */
 
 
-// KeyboardInputManager
 
-// - Loads key names and definitions.
-// - Reflects keypress states on the virtual keyboard within the canvas.
-// - Dispatches events or commands to appropriate managers/entities based on keypress.
-//
-class KeyboardInputManager {
-    constructor() {
-      // Initialize
+  }
+
+  // sent from InputManager
+  handleKeyPress(key) {
+    const event = this.mapKeyToEvent(key);
+    // The event is sent to the active drawing entity's state machine.
+    activeDrawingEntity.stateMachine.send(event);
+  }
+
+  mapKeyToEvent(key) {
+    // Logic to convert a key press to a state machine event.
+  }
+
+  // Additional methods
+
+ isCapsLockOn(event) {
+    if (event.key.length === 1 && event.key >= 'A' && event.key <= 'Z') {
+        return !event.shiftKey;
+    } else if (event.key.length === 1 && event.key >= 'a' && event.key <= 'z') {
+        return event.shiftKey;
     }
-    registerKeyPress(key) {
-      // Logic for key press
-      // Dispatch to appropriate manager/entity
-    }
-    // Additional methods
+    return false;
   }
   
+   keyEventFlags(event){
+  
+     var capsLockOn = this.isCapsLockOn(event);
+  
+      var flags = '';
+  
+      // Cocoa-like shorthand flags
+      if (event.shiftKey || capsLockOn) flags += '$'; // Shift
+      if (event.ctrlKey)  flags += '^'; // Control
+      if (event.altKey)   flags += '~'; // Alt/Option
+      if (event.metaKey)  flags += '@'; // Command (Meta on PCs)
+  
+      return flags;
+    
+  }
+
+keyConfig = {
+  "48": {
+    "name": "End",
+    "buttonName": "End",
+    "functionString": "endKeyPress",
+    "description": "Deposits any drawing that is taking place onto the drawing page.",
+    "buttonBackgroundColor": "148,17,0",
+    "buttonBackgroundImage": "endKbImg",
+    "buttonFontColor": "255,64,255"
+  }
+  // ... Other key configurations
+};
+
+ functionRegistry = {
+    endKeyPress: function() {
+      console.log("End key pressed.");
+      // Implement the function's logic here
+    },
+    pushPaletteToSelectedKeyPress: function() {
+      console.log("Palette settings pushed to selected objects.");
+      // Implement the function's logic here
+    }
+    // ... Other functions can be added here in a similar manner
+  };
 
 
-  class PaintManager {
-    constructor() {
-      // Initialize SKPaint
-    }
-    setStrokeWidth(width) {
-      // Logic to set stroke width
-    }
-    // Additional methods
-  }
+    // Define key mappings
+    keyMappings = {
+      'F': () => { /* ... */ },
+      'A': () => { /* ... */ },
+      // Define other key mappings...
+    };
   
-  class PathManipulator {
-    constructor() {
-      // Initialize
-    }
-    addPoint(point) {
-      // Add point to path
-    }
-    // Additional methods
-  }
-  
-  class DrawingEntity {
-    // Common properties and methods
-  }
-  
-  class RectangleDrawingEntity extends DrawingEntity {
-    // Rectangle-specific logic
-  }
-  
-  class CustomSpline {
-    constructor() {
-      // Initialize points
-    }
-    // Additional methods for spline logic
-  }
-  
+
+    
+
+}
+

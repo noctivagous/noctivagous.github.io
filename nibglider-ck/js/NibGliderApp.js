@@ -1,6 +1,14 @@
 import { createCenteredRect, fillRect } from "./NGUtils.js";
+import CursorManager from './CursorManager.js';
+import KeyboardMappingManager from './KeyboardMappingManager.js';
+import EventManager from './EventManager.js';
+import DrawingEntityManager from './DrawingEntityManager.js';
+// Inside NibGliderApp.js
+//import { DrawingEntityManager } from './drawing/DrawingEntityManager.js';
 
-var CanvasKit = null;
+
+export var CanvasKit = null;
+export default CanvasKit;
 
 class NibGliderApp {
   constructor(canvasId) {
@@ -10,34 +18,68 @@ class NibGliderApp {
     this.skCanvas = null;
     this.context = null;
     this.dirtyRects = [];
+
     this.layerManager = null;
+    this.cursorManager = null;
+    this.keyboardMappingManager = null;
+    
     this.surface = null;
     this.CanvasKit = null;
 
     this.offset = 0;
     this.mouseX = -1000;
     this.mouseY = -1000;
-    
+
+  
+    this.appBackgroundColor = null; 
+    this.appBackgroundColorPaint = null;
+    this.appState = null;
+  }
+
+setupAppBackgroundColor()
+{
+  this.setAppBackgroundColor(CanvasKit.Color(0, 255, 255, 1.0));
+}
+
+  setAppBackgroundColor(bgColor)
+  {
+    if(this.appBackgroundColorPaint)
+    {
+      this.appBackgroundColorPaint.delete();
+    }
+
+    this.appBackgroundColor = bgColor;
+    this.appBackgroundColorPaint = new CanvasKit.Paint();
+        this.appBackgroundColorPaint.setColor(this.appBackgroundColor); // RGBA for blue
+        this.appBackgroundColorPaint.setStyle(CanvasKit.PaintStyle.Fill);
+  }
+
+  setupManagers()
+  {
+  this.layerManager = new LayerManager(this);
+  this.cursorManager = new CursorManager(this);
+
+  this.drawingEntityManager = new DrawingEntityManager(this);
+  this.pathManipulator = new PathManipulator(this);
+  this.paintManager = new PaintManager(this);
+  this.keyboardMappingManager = new KeyboardMappingManager(this,this.drawingEntityManager);
+  this.eventManager = new EventManager(this,this.keyboardMappingManager, this.drawingEntityManager);
+
+  }
+
+
+  setupAppState()
+  {
+  this.appState = new AppState(this);
   }
 
   async init() {
-    CanvasKit = await CanvasKitInit({
-      locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.19.0/bin/' + file,
-      
-      //LOCAL CANVASKIT:
-      //locateFile: (file) => 'js/canvaskit' + file,
-      
-    });
+    
+    await this.initializeCanvasKit();
 
-    this.CanvasKit = CanvasKit;
-    this.appBackgroundColor = CanvasKit.Color(0, 0, 255, 1.0);
+    this.setupAppState();
 
-    this.canvas = document.getElementById(this.canvasId);
-    if (!this.canvas) {
-      alert('Canvas element not found');
-      console.error('Canvas element not found');
-      return;
-    }
+    this.setupManagers(); 
 
     // SETUP PAINT
     this.setupPaint();
@@ -45,17 +87,16 @@ class NibGliderApp {
 
     this.setupCanvasSurface();
 
+    this.setupAppBackgroundColor();
+
     this.setupResizeHandling();
 
-    this.layerManager = new LayerManager();
-    
     //this.invalidateEntireCanvas();
-
 
     this.skCanvas = this.skSurface.getCanvas();
 
 
-    this.layerManager = new LayerManager();
+    
 
     this.skSurface.requestAnimationFrame(this.draw);
 
@@ -66,6 +107,36 @@ class NibGliderApp {
 
 
     this.startDrawingIfNeeded();
+
+  }
+
+  async initializeCanvasKit()
+  {
+
+    CanvasKit = await CanvasKitInit({
+      locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.19.0/bin/' + file,
+      
+      //LOCAL CANVASKIT:
+      //locateFile: (file) => 'js/canvaskit' + file,
+      
+    });
+
+// Assigning to global window object for global access
+window.CanvasKit = CanvasKit;
+
+// Also keeping a reference in the class if needed for class methods
+this.CanvasKit = CanvasKit;
+
+
+    
+
+    this.canvas = document.getElementById(this.canvasId);
+    if (!this.canvas) {
+      alert('Canvas element not found');
+      console.error('Canvas element not found');
+      return;
+    }
+
   }
 
   fillWithBackgroundColor()
@@ -74,7 +145,8 @@ class NibGliderApp {
   }
 
   draw = () => {
-    this.fillWithBackgroundColor();
+    //this.fillWithBackgroundColor();
+    this.skCanvas.drawPaint(this.appBackgroundColorPaint);
 
     this.dirtyRects.forEach((rect) => {
 
@@ -86,9 +158,9 @@ class NibGliderApp {
       const rectToClip = rect;
       this.skCanvas.clipRect(rectToClip, this.CanvasKit.ClipOp.Intersect, true);
       
-      // Add your drawing code here (draw layers, etc.)
-      this.debugDraw();
 
+      
+      this.cursorManager.drawCursor(this.skCanvas,this.appState);
 
       this.skCanvas.restore();
     });
@@ -97,7 +169,7 @@ class NibGliderApp {
    /* 
    if (this.dirtyRects.some(rect => rect.width === this.canvas.width && rect.height === this.canvas.height)) {
       // Additional drawing logic for when the entire canvas is dirty
-      this.layerManager.drawAllLayers(this.skCanvas);
+      this.layerManager.drawRectOnAllLayers(this.skCanvas, skRectFloat32Array);
 
     }
     */
@@ -119,22 +191,19 @@ class NibGliderApp {
       this.mouseX = e.offsetX;
       this.mouseY = e.offsetY;
 
-      this.invalidateRect(createCenteredRect(this.CanvasKit, this.mouseX, this.mouseY, 320, 370));
-      this.invalidateRect(createCenteredRect(this.CanvasKit, this.mouseX+ 500, this.mouseY, 320, 370));
-  //   this.invalidateEntireCanvas();
-
+      this.mouseDidMove();
 
     });
 
   }
 
-  setupPaint() {
-    this.paint = new this.CanvasKit.Paint();
-    this.paint.setColor(this.CanvasKit.Color4f(0.9, 0, 0, 1.0));
-    this.paint.setStrokeWidth(10);
-    this.paint.setStyle(this.CanvasKit.PaintStyle.Stroke);
-    this.paint.setAntiAlias(true);
+  mouseDidMove()
+  {
+    this.cursorManager.updateMousePosition(this.mouseX,this.mouseY);
+  }
 
+  setupPaint() {
+   
   }
 
   setupResizeHandling() {
@@ -204,30 +273,28 @@ class NibGliderApp {
 
   
 
-  debugDraw() {
-    // -----
-    // DEBUG
-
-    //this.skCanvas.clear(this.CanvasKit.BLUE);
-
-    //CanvasKit.XYWHRect(centerX - halfWidth, centerY - halfHeight, width, height)
-
-    if (this.CanvasKit != null) {
-      const rr = this.CanvasKit.RRectXY(        //this.CanvasKit.XYWHRect(this.mouseX - 150, this.mouseY - 150, 300, 300),
-        createCenteredRect(this.CanvasKit, this.mouseX, this.mouseY, 300, 300),
-        //this.CanvasKit.LTRBRect(this.mouseX, this.mouseY, this.mouseX + 280, this.mouseY + 260),
-        15,
-        15
-      );
-
-      this.skCanvas.drawRRect(rr, this.paint);
-
-    }
-
-  }
 
 
 }
 
 const nibGliderApp = new NibGliderApp('canvas');
 nibGliderApp.init();
+
+
+
+// App State Manager
+class AppState {
+  constructor(app) {
+    this.app = app;
+    this.cursorVisible = true;
+    this.isInDrawing = false; // Whether the app is in drawing mode
+    this.liveSelectionOccurring = false; // Whether a selection is currently being made
+    this.dragging = false; // Whether an item is being dragged
+    // Other states
+    this.isSnapping = false;
+    this.activeDrawingEntity = null; // The currently active DrawingEntity
+    this.keyboardPanelState = {}; // Reflects the current state of the keyboard panel
+    this.keyboardMap = {}; // Stores keyboard configurations
+    this.functionRegistry = {}; // Stores functions for key events
+  }
+}

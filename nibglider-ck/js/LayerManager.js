@@ -1,16 +1,36 @@
 
 
 class LayerManager {
-  constructor() {
+  constructor(app) {
     var layer1 = new Layer();
     this.allLayers = [layer1];
     this.currentLayer = layer1;
+    this.backgroundColor = null;
+    this.app = app;
+  }
 
-    
+  appDidLoad()
+  {
+    this.backgroundColor = CanvasKit.Color(255, 0, 0, 1.0);
+    this.setLayerManagerBackgroundColor(this.backgroundColor);
   }
   
-  drawAllLayers(skCanvas) {
+  setLayerManagerBackgroundColor(bgColor)
+  {
+    this.backgroundColor = bgColor;
+        // Create a new paint object with color blue
+        this.backgroundColorPaint = new CanvasKit.Paint();
+        paint.setColor(bgColor); // RGBA 
+        paint.setStyle(CanvasKit.PaintStyle.Fill);
+  }
+
+
+  drawRectOnAllLayers(skCanvas, skRectFloat32Array) {
   
+    //skCanvas.drawPaint();  
+      skCanvas.drawRect(skRectFloat32Array, this.backgroundColorPaint);
+
+
     this.allLayers.forEach(layer => {
       layer.drawLayer(skCanvas);
     });
@@ -24,8 +44,21 @@ class Layer{
         this.rBush = new rbush(); // Initialize the rbush tree
         this.drawableObjects = []; // Keep a reference list of drawable objects
     
-      }
- 
+      this.backgroundColor = null;
+      this.backgroundColorPaint = null;
+    }
+  
+    
+    setLayerManagerBackgroundColor(bgColor)
+    {
+      this.backgroundColor = bgColor;
+          // Create a new paint object with color blue
+          this.backgroundColorPaint = new CanvasKit.Paint();
+          paint.setColor(bgColor); // RGBA 
+          paint.setStyle(CanvasKit.PaintStyle.Fill);
+    
+        }
+
         // Method to draw all objects in the layer
         drawLayer(skCanvas) {
           console.log("layer draw");

@@ -1,4 +1,5 @@
 
+import { Drawable } from "./drawing/Drawable.js";
 
 class LayerManager {
   constructor(app) {
@@ -35,6 +36,28 @@ class LayerManager {
     paint.setStyle(CanvasKit.PaintStyle.Fill);
   }
 
+  detectHitOnCurrentLayer(x, y) {
+    
+    // this.currentLayer.detectHit(x,y)
+    // returns the following:
+    // [didHit,hitDrawable,boundsForRedraw];
+    var hitDrawableArray = this.currentLayer.detectHit(x,y);
+
+    if (hitDrawableArray[0] === true) {
+      
+      let hitDrawable = hitDrawableArray[1];
+      hitDrawable.toggleIsSelected();
+      this.app.invalidateRect(hitDrawableArray[2])
+      // Initiate dragging logic here
+    }
+    else
+    {
+     // alert('no hit');
+    }
+    
+
+    
+  }
 
   drawRectOnAllLayers(skCanvas, skRectFloat32Array) {
 
@@ -146,7 +169,21 @@ class Layer {
     this.drawableObjects.forEach(drawable => {
       drawable.draw(skCanvas);
     });
+  
   }
+
+  detectHit(x, y) {
+    for (let i = this.drawableObjects.length - 1; i >= 0; i--) {
+      const drawable = this.drawableObjects[i];
+      const didHit = drawable.hitTest(x, y);
+  
+      if (didHit === true) {
+        return [true, drawable, drawable.getPaddedBounds()]; // Don't forget to call the function getPaddedBounds with ()
+      }
+    }
+    return [false, null, null];
+  }
+  
 
 
   /*

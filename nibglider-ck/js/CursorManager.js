@@ -79,7 +79,11 @@ class CursorManager {
 
       skCanvas.drawCircle(this.mouseX, this.mouseY, 25, paint);
 
-     // this.debugDraw(skCanvas);
+      paint.setStyle(CanvasKit.PaintStyle.Fill);
+
+      skCanvas.drawCircle(this.mouseX, this.mouseY, 3, paint);
+
+      // this.debugDraw(skCanvas);
       
       // Optionally, you can also draw the snapping effect or change the cursor appearance based on the state
       // For example, if it's a snapping state, you might want to draw the cursor differently

@@ -6,7 +6,8 @@ class EventManager {
       this.layerManager = app.layerManager;
     
       this.htmlCanvas = app.htmlCanvas;
-
+      this.app = app;
+      
 //      this.drawables = this.layerManager.getCurrentLayerDrawables(); // This is an array or another data structure containing all drawable objects
  
 this.attachEventListeners();
@@ -15,7 +16,7 @@ this.attachEventListeners();
     }
 
 attachEventListeners() {
-  
+
   // Listen for events on the canvas, not individual drawables
   this.htmlCanvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
   this.htmlCanvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
@@ -26,10 +27,8 @@ attachEventListeners() {
 }
 
 handleMouseDown(event) {
-  const hitDrawable = this.detectHit(event.offsetX, event.offsetY);
-  if (hitDrawable) {
-    // Initiate dragging logic here
-  }
+  this.layerManager.detectHitOnCurrentLayer(event.offsetX, event.offsetY);
+
 }
 
 handleMouseMove(event) {
@@ -40,14 +39,7 @@ handleMouseUp(event) {
   // This would end the dragging process
 }
 
-detectHit(x, y) {
-  for (const drawable of this.drawables) {
-    if (drawable.isHit(x, y)) {
-      return drawable;
-    }
-  }
-  return null;
-}
+
 
 
 

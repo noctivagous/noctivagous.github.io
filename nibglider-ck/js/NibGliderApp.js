@@ -5,6 +5,8 @@ import EventManager from './EventManager.js';
 import DrawingEntityManager from './DrawingEntityManager.js';
 import { Layer, LayerManager } from './LayerManager.js';
 
+import { Drawable } from './drawing/Drawable.js';
+
 
 export var CanvasKit = null;
 export default CanvasKit;
@@ -285,9 +287,9 @@ class NibGliderApp {
   }
 
 
-  invalidateRect(rect) {
+  invalidateRect(skRectFloat32Array) {
 
-    this.dirtyRects.push(rect);
+    this.dirtyRects.push(skRectFloat32Array);
     this.startDrawingIfNeeded();
   }
 

@@ -49,7 +49,10 @@ class KeyboardMappingManager {
   
     //this.drawingEntityManager.currentEntity.stateMachine.send(event);
     // The event is sent to the active drawing entity's state machine.
-    
+  
+    this.app.layerManager.detectHitOnCurrentLayer(this.app.mouseX, this.app.mouseY);
+
+
   }
 
   mapKeyToEvent(key) {

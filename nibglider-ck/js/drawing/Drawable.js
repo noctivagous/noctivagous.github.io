@@ -84,8 +84,8 @@ export class Drawable {
       localY = point.fY;
     }
 
-    // Check if the point is inside the path bounds first as a quick rejection test
-    const bounds = this.getPathBounds();
+    // Check if the point is inside the padded path bounds first as a quick rejection test.
+    const bounds = this.getPaddedBounds();
     if (localX < bounds[0] || localX > bounds[2] || localY > bounds[3] || localY < bounds[1]) {
       return false;
     }
@@ -97,42 +97,42 @@ export class Drawable {
 
     }
     else {
-     // console.log(this.paintStyle);
-      return this.hitTestStroke(this.path,this.skPaint,x,y);
+      // console.log(this.paintStyle);
+      return this.hitTestStroke(this.path, this.skPaint, x, y);
     }
 
 
   }
 
   hitTestStroke(path, paint, x, y) {
-    // Make a copy of the path to avoid modifying the original
-    const pathCopy = path.copy();
-  
-    // Assuming strokeStyle is an object that contains the properties needed for stroking
-    const strokeStyle = {
-      width: paint.getStrokeWidth() + 7,
-      miter_limit: paint.getStrokeMiter(),
-      cap: paint.getStrokeCap(),
-      join: paint.getStrokeJoin(),
-      style: CanvasKit.PaintStyle.Stroke,
-      antiAlias: true,
-      color: paint.getColor(), // You'll need a method to get the color from paint object
-      //blendMode: paint.getBlendMode(), // You'll need a method to get the blend mode from paint object
-      //dash: [10, 5] // Example for dash pattern: 10 units of stroke and 5 units of space
-    };
     
+    // Make a copy of the path to avoid modifying the original.
+    const pathCopy = path.copy();
+
+    // Define your stroke options
+    let strokeOptions = {
+      width: paint.getStrokeWidth() + 7,
+      miter_limit: 10,
+      precision: 0.5,
+      join: CanvasKit.StrokeJoin.Miter,
+      cap: CanvasKit.StrokeCap.Round
+    };
+
     // Apply the stroke to the copy of the path
-    const strokedPath = pathCopy.stroke(strokeStyle);
-  
+    const strokedPath = pathCopy.stroke(strokeOptions);
+
+
+   
+
     // Use the contains method to check if the point is within the stroked path
     const hit = strokedPath.contains(x, y);
-  
+
     // Clean up the copied path to prevent memory leaks
     pathCopy.delete();
-  
+
     return hit;
   }
-  
+
 
 
   getBounds() {

@@ -276,6 +276,15 @@ class NibGliderApp {
 
   invalidateEntireCanvas() {
     
+    
+  if(this.layerManager)
+  {
+    this.layerManager.updateAllLayersBackingStores();
+  }
+  else
+  {
+    console.log('this.layerManager null in invalidateEntireCanvas');
+  }
     this.invalidateRect(this.CanvasKit.XYWHRect(0, 0, this.htmlCanvas.width, this.htmlCanvas.height));
   }
 

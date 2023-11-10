@@ -36,9 +36,11 @@ var _isInDragLock = false;
 
   updateAllLayersBackingStores() {
 
-    this.allLayers.forEach(layer =>
-      layer.updateBackingStoreImage()
-    );
+    this.allLayers.forEach(function(layer) {
+      layer.updateTheBackingStoreForResizeEvent = true;
+      layer.updateBackingStoreImage();
+    });
+    
   }
 
   setIsInDragLock(status) {
@@ -125,7 +127,7 @@ class Layer {
     this.offscreenContext = null;
 
     this.backingStoreImage = null; // Property to hold the captured image
-
+    this.updateTheBackingStoreForResizeEvent = false;
   }
 
 
@@ -135,19 +137,30 @@ class Layer {
     this.offscreenSurface = window.CanvasKit.MakeSurface(width, height);
   }
 
+
   updateBackingStoreImage() {
     // Ensure the offscreen canvas is created
-    if (!this.offscreenSurface) {
+    if (!this.offscreenSurface || this.updateTheBackingStoreForResizeEvent) {
 
-      this.offscreenSurface = window.CanvasKit.MakeSurface(width, height);
+      if (this.updateTheBackingStoreForResizeEvent) {
+        this.offscreenSurface.delete();
+      }  
+      
+
+      this.offscreenSurface = window.CanvasKit.MakeSurface(window.innerWidth, window.innerHeight);
 
       if (!this.offscreenSurface) {
-
         console.error('Offscreen surface not created.');
         return;
       }
 
+      this.updateTheBackingStoreForResizeEvent = false;
+
     }
+
+   
+   
+
     // Get the offscreen canvas
     const offscreenCanvas = this.offscreenSurface.getCanvas();
 

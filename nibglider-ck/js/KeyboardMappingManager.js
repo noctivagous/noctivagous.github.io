@@ -15,54 +15,75 @@ class KeyboardMappingManager {
   constructor(app, drawingEntityManager) {
     this.app = app;
     this.drawingEntityManager = drawingEntityManager;
- //   this.eventManager = eventManager;
-  
-  /*
-  document.addEventListener('keydown', function(event) {
-    var keyCode = event.code;
-    var keyData = keyConfig[keyCode];
-    if (keyData) {
-      // Display key information
-      var keyElement = document.getElementById('keyDisplayPanel');
-      keyElement.textContent = keyData.name;
-      keyElement.style.backgroundColor = 'rgb(' + keyData.buttonBackgroundColor + ')';
-      keyElement.style.backgroundImage = 'url(' + keyData.buttonBackgroundImage + ')';
-      keyElement.style.color = 'rgb(' + keyData.buttonFontColor + ')';
-      
-      // Execute the function
-      var functionToExecute = functionRegistry[keyData.functionString];
-      if (functionToExecute) {
-        functionToExecute();
+    this.layerManager = this.app.layerManager;
+    //   this.eventManager = eventManager;
+
+    /*
+    document.addEventListener('keydown', function(event) {
+      var keyCode = event.code;
+      var keyData = keyConfig[keyCode];
+      if (keyData) {
+        // Display key information
+        var keyElement = document.getElementById('keyDisplayPanel');
+        keyElement.textContent = keyData.name;
+        keyElement.style.backgroundColor = 'rgb(' + keyData.buttonBackgroundColor + ')';
+        keyElement.style.backgroundImage = 'url(' + keyData.buttonBackgroundImage + ')';
+        keyElement.style.color = 'rgb(' + keyData.buttonFontColor + ')';
+        
+        // Execute the function
+        var functionToExecute = functionRegistry[keyData.functionString];
+        if (functionToExecute) {
+          functionToExecute();
+        }
       }
-    }
-  });
-  
-  */
+    });
+    
+    */
 
 
 
   }
 
-  // sent from InputManager
-  handleKeyPress(key) {
-    const event = this.mapKeyToEvent(key);
-  
+  // sent from EventManager
+  handleKeyPress(keyEvent) {
+    const event = this.mapKeyToEvent(keyEvent);
+
     //this.drawingEntityManager.currentEntity.stateMachine.send(event);
     // The event is sent to the active drawing entity's state machine.
-  
 
-    
+    var flags = this.keyEventFlags(keyEvent);
+
+    this.eventKeyCodeWithFlag = keyEvent.code;
+
+    if (flags != null) {
+      this.eventKeyCodeWithFlag = flags + keyEvent.code;
+    }
 
     // using the keyMap dictionary,
     // this will be mapped to the Tab key
     // but is a placeholder for now:
-    this.selection();
+    this.tempKeyProcessor(keyEvent);
+
+    /*
+
+    ------
+    NOTES 
+    
+    The ` key (~) can act as the broader selection hit key, above Tab.  
+    It can hit with a tolerance of 15px, for hitting lines.
+
+    The '1' key can act as a panning drag-lock (via the two-point vector line).
+    The vector line for panning will be visible.
+    ------
+
+*/
 
   }
 
-  selection()
-  {
-    this.app.layerManager.selectionHitTestOnCurrentLayer(this.app.mouseX, this.app.mouseY);
+
+  select() {
+    this.layerManager.select();
+
 
     //The ` key (~) can act as the broader selection hit key, sitting above the Tab key.  
     //It hits with a tolerance of 15px, for hitting lines.
@@ -70,56 +91,72 @@ class KeyboardMappingManager {
 
   }
 
+
+  cart() {
+    this.layerManager.cart();
+  }
+
+  escape() {
+    if(this.layerManager.currentLayerHasSelection())
+    {
+      this.layerManager.cancel();
+    }
+
+
+  }
+
+  // KEY MAPPING
+
   mapKeyToEvent(key) {
     // Logic to convert a key press to a state machine event.
   }
 
   // Additional methods
 
- isCapsLockOn(event) {
+  isCapsLockOn(event) {
     if (event.key.length === 1 && event.key >= 'A' && event.key <= 'Z') {
-        return !event.shiftKey;
+      return !event.shiftKey;
     } else if (event.key.length === 1 && event.key >= 'a' && event.key <= 'z') {
-        return event.shiftKey;
+      return event.shiftKey;
     }
     return false;
   }
-  
-   keyEventFlags(event){
-  
-     var capsLockOn = this.isCapsLockOn(event);
-  
-      var flags = '';
-  
-      // Cocoa-like shorthand flags
-      if (event.shiftKey || capsLockOn) flags += '$'; // Shift
-      if (event.ctrlKey)  flags += '^'; // Control
-      if (event.altKey)   flags += '~'; // Alt/Option
-      if (event.metaKey)  flags += '@'; // Command (Meta on PCs)
-  
-      return flags;
-    
+
+  keyEventFlags(event) {
+
+    var capsLockOn = this.isCapsLockOn(event);
+
+    var flags = '';
+
+    // Cocoa-like shorthand flags
+    if (event.shiftKey || capsLockOn) flags += '$'; // Shift
+    if (event.ctrlKey) flags += '^'; // Control
+    if (event.altKey) flags += '~'; // Alt/Option
+    if (event.metaKey) flags += '@'; // Command (Meta on PCs)
+
+    return flags;
+
   }
 
-keyConfig = {
-  "48": {
-    "name": "End",
-    "buttonName": "End",
-    "functionString": "endKeyPress",
-    "description": "Deposits any drawing that is taking place onto the drawing page.",
-    "buttonBackgroundColor": "148,17,0",
-    "buttonBackgroundImage": "endKbImg",
-    "buttonFontColor": "255,64,255"
-  }
-  // ... Other key configurations
-};
+  keyConfig = {
+    "48": {
+      "name": "End",
+      "buttonName": "End",
+      "functionString": "endKeyPress",
+      "description": "Deposits any drawing that is taking place onto the drawing page.",
+      "buttonBackgroundColor": "148,17,0",
+      "buttonBackgroundImage": "endKbImg",
+      "buttonFontColor": "255,64,255"
+    }
+    // ... Other key configurations
+  };
 
- functionRegistry = {
-    endKeyPress: function() {
+  functionRegistry = {
+    endKeyPress: function () {
       console.log("End key pressed.");
       // Implement the function's logic here
     },
-    pushPaletteToSelectedKeyPress: function() {
+    pushPaletteToSelectedKeyPress: function () {
       console.log("Palette settings pushed to selected objects.");
       // Implement the function's logic here
     }
@@ -127,16 +164,61 @@ keyConfig = {
   };
 
 
-    // Define key mappings
-    keyMappings = {
-      'F': () => { /* ... */ },
-      'A': () => { /* ... */ },
-      // Define other key mappings...
-    };
-  
+  // Define key mappings
+  keyMappings = {
+    'F': () => { /* ... */ },
+    'A': () => { /* ... */ },
+    // Define other key mappings...
+  };
 
-    
+
+  tempKeyProcessor(keyEvent) {
+
+
+    if (keyEvent.code == 'Tab') {
+      this.select();
+    }
+
+    // Spacebar for drag-lock
+    if ((this.eventKeyCodeWithFlag === "Space")) {
+      this.cart();
+
+    }
+
+    if (keyEvent.key === 'Backspace') {
+      removeAllSelectedItemsAndReset();
+    }
+
+
+    // Escape key for cancelling all
+    if (keyEvent.key === 'Escape') {
+
+      //alert(this.layerManager.currentLayerHasSelection());
+      
+      this.drawingEntityManager.cancelOperations();      
+      this.layerManager.cancel();
+      
+
+    }
+
+
+    // close and end shape
+    if (keyEvent.key == 'w') {
+
+      layerManager.stampSelectedItems();
+
+
+    }
+
+
+  }
+
+
+
 
 }
+
+
+
 
 export default KeyboardMappingManager;

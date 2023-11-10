@@ -10,7 +10,20 @@ class DrawingEntityManager {
       // Add other entities...
     };
     this.currentEntity = null; // The entity currently being used
+
+    this.isInDrawing = false;
   }
+
+
+  cancelOperations()
+  {
+    if (this.isInDrawing) {
+      
+    }
+  }
+
+
+
 
   switchEntity(entityName) {
     if (this.entities[entityName]) {

@@ -3,15 +3,13 @@ import { Drawable } from "./drawing/Drawable.js";
 
 class LayerManager {
   constructor(app) {
-    this.layer1 = new Layer(window.CanvasKit,this);
+    this.layer1 = new Layer(window.CanvasKit, this);
     this.allLayers = [this.layer1];
     this.currentLayer = this.layer1;
     this.backgroundColor = null;
     this.app = app;
 
     this.offscreenSurface = null;
-
-
 
 
     this.layer1.generateRandomShapes(30, window.innerWidth, window.innerHeight);
@@ -32,58 +30,79 @@ class LayerManager {
 
   updateAllLayersBackingStores() {
 
-    this.allLayers.forEach(function(layer) {
+    this.allLayers.forEach(function (layer) {
       layer.updateTheBackingStoreForResizeEvent = true;
       layer.updateBackingStoreImage();
     });
-    
+
   }
 
+  select() {
+    this.selectionHitTestOnCurrentLayer(this.app.mouseX, this.app.mouseY);
+  }
+
+  cart() {
+    this.currentLayer.cart();
+  }
+
+  cancel() {
+    this.clearOutSelection();
+  }
+
+  currentLayerHasSelection() {
+
+    return this.currentLayer.hasSelectedItems();
+  }
+
+  currentLayerIsInDragLock() {
+
+    return this.currentLayer.isInDragLock;
+  }
+
+  handleMouseMove(event) {
+    this.currentLayer.handleMouseMove(event);
+
+  }
 
   // SELECTING OBJECTS FROM CURRENT LAYER
-  getSelectedItems()
-  {
+  getSelectedItems() {
     return this.currentLayer.selectedItems;
   }
 
-  clearOutSelection()
-  {
+  clearOutSelection() {
     this.currentLayer.clearOutSelection();
   }
 
-  setIsInDragLock(status) {
-    _isInDragLock = status;
-   // updateTextContent();
-  }
-  
+
   selectionHitTestOnCurrentLayer(x, y) {
 
-    this.currentLayer.selectionHitTestUnderCursor(x,y);
+    this.currentLayer.selectionHitTestUnderCursor(x, y);
 
 
-/*
-    // this.currentLayer.detectHit(x,y)
-    // returns the following:
-    // [didHit,hitDrawable,boundsForRedraw];
-    var hitDrawableArray = this.currentLayer.detectHit(x, y);
 
-
-    var didHitDrawable = (hitDrawableArray[0] === true);
+    /*
+        // this.currentLayer.detectHit(x,y)
+        // returns the following:
+        // [didHit,hitDrawable,boundsForRedraw];
+        var hitDrawableArray = this.currentLayer.detectHit(x, y);
     
-    if (didHitDrawable) {
-
-      let hitDrawable = hitDrawableArray[1];
-      hitDrawable.toggleIsSelected();
-      //this.app.invalidateRect(hitDrawableArray[2])
-      this.currentLayer.updateBackingStoreImage();
-      this.app.invalidateEntireCanvas();
-      // Initiate dragging logic here
-    }
-    else {
-      this.currentLayer.clearOutSelection();
-      // alert('no hit');
-    }
-*/
+    
+        var didHitDrawable = (hitDrawableArray[0] === true);
+        
+        if (didHitDrawable) {
+    
+          let hitDrawable = hitDrawableArray[1];
+          hitDrawable.toggleIsSelected();
+          //this.app.invalidateRect(hitDrawableArray[2])
+          this.currentLayer.updateBackingStoreImage();
+          this.app.invalidateEntireCanvas();
+          // Initiate dragging logic here
+        }
+        else {
+          this.currentLayer.clearOutSelection();
+          // alert('no hit');
+        }
+    */
   }
 
 
@@ -102,7 +121,13 @@ class LayerManager {
 
   }
 
-  
+
+  stampSelectedItems() {
+
+  }
+
+
+
   appDidLoad() {
     this.backgroundColor = CanvasKit.Color(255, 0, 0, 1.0);
     this.setLayerManagerBackgroundColor(this.backgroundColor);
@@ -116,7 +141,8 @@ class LayerManager {
     paint.setStyle(CanvasKit.PaintStyle.Fill);
   }
 
-  
+
+
 
   drawRectOnAllLayers(skCanvas, skRectFloat32Array) {
 
@@ -146,7 +172,7 @@ class LayerManager {
 
 
 class Layer {
-  constructor(canvasKit,layerManager) {
+  constructor(canvasKit, layerManager) {
     this.canvasKit = canvasKit; // Store the CanvasKit instance
     this.layerManager = layerManager;
 
@@ -165,9 +191,113 @@ class Layer {
 
     // Variables to track selected items and drag-lock status
     this.selectedItems = [];
-    this._isInDragLock = false;
+    this.isInDragLock = false;
+    this.lastMousePt = null;
+  }
+
+  hasSelectedItems() {
+    return (this.selectedItems.length > 0)
+  }
+
+
+  // These function names are like 
+  // general command names that indicate
+  // a certain button was pressed but
+  // are not specific
+  cart() {
+    if (this.hasSelectedItems()) {
+      this.setIsInDragLock(!this.isInDragLock);
+    }
+
+    /*
+    if (this.hasSelectedItems() && (this.isInDragLock == false)) 
+    {
+      this.setIsInDragLock(true);
+    }
+    else if (this.hasSelectedItems() && (this.isInDragLock == true)) 
+    {
+      this.setIsInDragLock(false);
+    }
+    */
 
   }
+
+  setIsInDragLock(status) {
+    this.isInDragLock = status;
+    //    console.log(status);
+    /*
+    var oldValue = this.isInDragLock;
+    var newValue = status;
+    this.isInDragLock = status;
+    
+
+    console.log("setIsInDragLock");
+    if((oldValue == true) && (newValue == false))
+    {
+      this.invalidateCanvasAndUpdateBackingStoreImage();
+      console.log('cart off');
+    }
+    else if((newValue == false) && (oldValue == true))
+    {
+      console.log('cart on');
+    }
+*/
+    // updateTextContent();
+  }
+
+
+  stamp() {
+
+  }
+
+
+  handleMouseMove(event) {
+    if (this.isInDragLock) {
+
+      this.handleDragLock(event);
+
+    }
+
+  }
+
+  
+
+  handleDragLock(event) {
+    const mousePt = { x: event.offsetX, y: event.offsetY }; // Update mousePt with plain object
+  
+    // Implement drag-lock functionality
+    if (this.isInDragLock) {
+  
+      // If lastMousePt is null, initialize it
+      if (this.lastMousePt === null) {
+        this.lastMousePt = mousePt;
+      }
+  
+      // Calculate the delta
+      var delta = {
+        x: mousePt.x - this.lastMousePt.x,
+        y: mousePt.y - this.lastMousePt.y
+      };
+  
+      // Apply the delta to the position of all selected items
+      for (var i = 0; i < this.selectedItems.length; i++) {
+        this.selectedItems[i].translate(delta.x, delta.y);
+      }
+
+      this.updateBackingStoreImage();
+      //this.layerManager.app.
+      //this.selectedItemsDidChange("carting");
+      
+  
+      // Update this.lastMousePt for the next event
+      this.lastMousePt = mousePt;
+  
+    } else {
+      // Reset this.lastMousePt when drag lock is off
+      this.lastMousePt = null;
+    }
+  }
+  
 
 
   createBackingStore(width, height) {
@@ -177,15 +307,19 @@ class Layer {
   }
 
 
-  updateBackingStoreImage() {
+  async updateBackingStoreImage() {
     // Ensure the offscreen canvas is created
     if (!this.offscreenSurface || this.updateTheBackingStoreForResizeEvent) {
 
       if (this.updateTheBackingStoreForResizeEvent) {
+        if(this.offscreenSurface)
+        {
         this.offscreenSurface.delete();
-      }  
-      
+        }
+      }
 
+
+      
       this.offscreenSurface = window.CanvasKit.MakeSurface(window.innerWidth, window.innerHeight);
 
       if (!this.offscreenSurface) {
@@ -197,8 +331,8 @@ class Layer {
 
     }
 
-   
-   
+
+
 
     // Get the offscreen canvas
     const offscreenCanvas = this.offscreenSurface.getCanvas();
@@ -306,25 +440,25 @@ class Layer {
 
 
   drawObjectsInSearchedArea(searchBoundsSkRect, skCanvas) {
-  /*  
+    /*  
+    
+      // Get all drawable objects in the search area
+      const drawableObjectsInArea = this.searchArea(searchBoundsSkRect);
   
-    // Get all drawable objects in the search area
-    const drawableObjectsInArea = this.searchArea(searchBoundsSkRect);
-
-
-    // Perform drawing with CanvasKit on the skCanvas
-    drawableObjectsInArea.forEach(drawable => {
-      console.log('drobj');
-      drawable.draw(skCanvas);
-    });
-*/
-/*
-    for (let i = drawableObjectsInArea.length - 1; i >= 0; i--) {
-      const drawable = drawableObjectsInArea[i];
-     // console.log('drobj');
-      drawable.draw(skCanvas);
-    }
-    */
+  
+      // Perform drawing with CanvasKit on the skCanvas
+      drawableObjectsInArea.forEach(drawable => {
+        console.log('drobj');
+        drawable.draw(skCanvas);
+      });
+  */
+    /*
+        for (let i = drawableObjectsInArea.length - 1; i >= 0; i--) {
+          const drawable = drawableObjectsInArea[i];
+         // console.log('drobj');
+          drawable.draw(skCanvas);
+        }
+        */
 
 
 
@@ -358,11 +492,10 @@ class Layer {
     return [false, null, null];
   }
 
-// this is a hit test
-// that alters the section array
-  selectionHitTestUnderCursor(x,y)
-  {
-    
+  // this is a hit test
+  // that alters the section array
+  selectionHitTestUnderCursor(x, y) {
+
     var objectWasHit = false;
     var hitResultDrawable = null;
 
@@ -379,7 +512,7 @@ class Layer {
     }
 
     if (objectWasHit === true) {
-      
+
 
       // Check if this item is already selected
       var alreadySelected = this.selectedItems.indexOf(hitResultDrawable) !== -1;
@@ -389,7 +522,7 @@ class Layer {
         this.removeItemFromSelection(hitResultDrawable);
       } else {
         hitResultDrawable.setIsSelected(true);
-      
+
         this.addItemToSelection(hitResultDrawable);
 
       }
@@ -405,20 +538,19 @@ class Layer {
   // -------------------
   // SELECTION
   // -------------------
- selectionIsPresent()
-{
-  return (this.selectedItems.length > 0);
-}
+  selectionIsPresent() {
+    return (this.selectedItems.length > 0);
+  }
 
-// When adding an item to selectedItems
- addItemToSelection(item) {
+  // When adding an item to selectedItems
+  addItemToSelection(item) {
     item.setIsSelected(true);
     this.selectedItems.push(item);
     this.selectedItemsDidChange("addItemToSelection " + this.selectedItems.length);
   }
-  
+
   // When removing an item from selectedItems
-   removeItemFromSelection(item) {
+  removeItemFromSelection(item) {
     const index = this.selectedItems.indexOf(item);
     if (index !== -1) {
       item.setIsSelected(false);
@@ -428,12 +560,11 @@ class Layer {
 
   }
 
-  selectedItemsDidChange(string)
-  {
+  selectedItemsDidChange(string) {
     this.invalidateCanvasAndUpdateBackingStoreImage();
-   // console.log(string);
+    // console.log(string);
   }
-  
+
   collectiveBounds(selectedItems) {
     let left, top, right, bottom;
     selectedItems.forEach(item => {
@@ -446,7 +577,7 @@ class Layer {
     return left !== undefined ? CanvasKit.LTRBRect(left, top, right, bottom) : null;
   }
 
-  
+
   collectiveCenter(selectedItems) {
     const bounds = this.collectiveBounds(selectedItems);
     if (bounds) {
@@ -456,10 +587,10 @@ class Layer {
     }
     return [0, 0];
   }
-  
-  
 
-   clearOutSelection() {
+
+
+  clearOutSelection() {
     // If nothing is underneath the cursor, clear the selection
     for (var i = 0; i < this.selectedItems.length; i++) {
       this.selectedItems[i].setIsSelected(false);
@@ -469,17 +600,16 @@ class Layer {
 
     this.selectedItemsDidChange("clearOutSelection " + this.selectedItems.length);
 
-    
+
 
   }
 
-  invalidateCanvasAndUpdateBackingStoreImage()
-  {
+  invalidateCanvasAndUpdateBackingStoreImage() {
     this.updateBackingStoreImage();
     this.layerManager.app.invalidateEntireCanvas();
   }
 
-  
+
   /*
   // to be converted to rbush searchArea
   hitTestUnderCursor() {
@@ -557,15 +687,15 @@ class Layer {
     this.addObject(drawable);
   }
 
-  
-  
 
 
-     // Method to draw all objects in the layer
-          //In this code, searchBounds is expected to be an array 
-          // of the format [minX, minY, maxX, maxY], representing 
-          // the area to draw. If skRectFloat32 is in a different 
-          // format, you'll need to adjust the searchArea call accordingly.
+
+
+  // Method to draw all objects in the layer
+  //In this code, searchBounds is expected to be an array 
+  // of the format [minX, minY, maxX, maxY], representing 
+  // the area to draw. If skRectFloat32 is in a different 
+  // format, you'll need to adjust the searchArea call accordingly.
   // Function to search the rbush tree
   searchArea(skRectFloat32Array) {
     // Convert search area to rbush format

@@ -8,8 +8,8 @@ class CursorManager {
     // CanvasKit:
     // export type Point = number[];
 
-    this.mouseX = 0;
-    this.mouseY = 0;
+    this.mouseX = -300;
+    this.mouseY = -300;
     this.currentDrawingPoint = [0.0,0.0]; //CanvasKit: export type Point = number[];
     this.app = app;
     this.appStateManager = app.appStateManager;
@@ -25,13 +25,26 @@ class CursorManager {
     this.cursorCircleBoxHeight = 30;
     this.cursorInnerDotDiameter = 3;
 
+    
+    this.setCursorTypeToNone();
+
+  }
+
+
+  setCursorTypeToNone()
+  {
+    document.body.style.cursor = 'none';
+
   }
 
   // Updates the mouse coordinates
   updateCursorPosition(x, y) {
+
+    
     this.mouseX = x;
     this.mouseY = y;
     
+
     // Depending on the app state or other conditions, compute snapping
     this.updateCurrentDrawingPoint(x, y);
 

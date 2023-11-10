@@ -63,6 +63,9 @@ export class Drawable {
 
     skCanvas.drawPath(this.path, this.skPaint);//this.skPaint);
 
+    if(this.isSelected)
+    {
+    }
 
     if (this.matrix) {
       skCanvas.restore();
@@ -72,19 +75,19 @@ export class Drawable {
   }
 
   // Draw a selection effect such as a shadow under the object
-drawSelectionEffect(canvas) {
+drawSelectionEffect(skCanvas) {
   if (this.isSelected) {
     // Create a shadow paint object or similar effect as per the graphics API
     const shadowPaint = this.skPaint.copy();//new CanvasKit.Paint();
-    shadowPaint.setColor(CanvasKit.Color4f(0, 0, 0, 0.5)); // Example semi-transparent black color
+    shadowPaint.setColor(CanvasKit.Color4f(0, 0, 0, 0.8)); // Example semi-transparent black color
     shadowPaint.setMaskFilter(CanvasKit.MaskFilter.MakeBlur(CanvasKit.BlurStyle.Normal, 7, true));
 
     // Draw the shadow slightly offset from the path
-    const shadowOffsetMatrix = CanvasKit.Matrix.translated(5, 5); // Offset by 5 units in x and y direction
-    canvas.save();
-    canvas.concat(shadowOffsetMatrix);
-    canvas.drawPath(this.path, shadowPaint);
-    canvas.restore();
+    const shadowOffsetMatrix = CanvasKit.Matrix.translated(3, 3); // Offset by 5 units in x and y direction
+    skCanvas.save();
+    skCanvas.concat(shadowOffsetMatrix);
+    skCanvas.drawPath(this.path, shadowPaint);
+    skCanvas.restore();
 
     // Additionally, you might want to draw a border or handles to indicate selection
     // Create a paint object for the selection border
@@ -93,13 +96,15 @@ drawSelectionEffect(canvas) {
     selectionPaint.setStrokeWidth(2);
     selectionPaint.setAntiAlias(true);
     selectionPaint.setColor(CanvasKit.Color4f(0, 1, 1, 1)); // Example color for selection outline
-    canvas.drawPath(this.path, selectionPaint);
+    skCanvas.drawPath(this.path, selectionPaint);
 
     selectionPaint.delete();
     shadowPaint.delete();
 
   }
 }
+
+
 
 
 
@@ -226,7 +231,7 @@ drawSelectionEffect(canvas) {
     const paddedBounds = this.getPaddedBounds();
     // InvalidateRect function would be implemented depending on how the rendering loop is set up
     // This is a placeholder for where you would tell the rendering system to redraw this region
-    InvalidateRect(paddedBounds);
+    //InvalidateRect(paddedBounds);
   }
 
 
@@ -276,13 +281,17 @@ drawSelectionEffect(canvas) {
       console.warn('Drawable is locked and cannot be moved.');
       return;
     }
+    
+    let translationMatrix = CanvasKit.Matrix.translated(dx, dy);
+    this.path.transform(translationMatrix);
+
     // Use CanvasKit's SkMatrix to create a translation matrix
-    let translationMatrix = window.CanvasKit.SkMatrix.identity();
-    translationMatrix = window.CanvasKit.SkMatrix.postTranslate(translationMatrix, dx, dy);
+    //let translationMatrix = window.CanvasKit.SkMatrix.identity();
+    //translationMatrix = window.CanvasKit.SkMatrix.postTranslate(translationMatrix, dx, dy);
 
     // Apply the translation matrix to the current matrix
-    this.matrix = window.CanvasKit.SkMatrix.multiply(this.matrix, translationMatrix);
-    this.updatePath(); // Assuming you have a method to apply the matrix to the path
+//    this.matrix = window.CanvasKit.SkMatrix.multiply(this.matrix, translationMatrix);
+  //  this.updatePath(); // Assuming you have a method to apply the matrix to the path
   }
 
   rotate(angle, cx = 0, cy = 0) {

@@ -51,11 +51,22 @@ class KeyboardMappingManager {
     // The event is sent to the active drawing entity's state machine.
   
 
+    
+
     // using the keyMap dictionary,
     // this will be mapped to the Tab key
     // but is a placeholder for now:
+    this.selection();
+
+  }
+
+  selection()
+  {
     this.app.layerManager.selectionHitTestOnCurrentLayer(this.app.mouseX, this.app.mouseY);
 
+    //The ` key (~) can act as the broader selection hit key, sitting above the Tab key.  
+    //It hits with a tolerance of 15px, for hitting lines.
+    // It can use a Rectangle of 10px x 10px instead of a point.
 
   }
 

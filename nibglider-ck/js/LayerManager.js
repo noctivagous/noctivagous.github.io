@@ -431,7 +431,7 @@ class Layer {
   selectedItemsDidChange(string)
   {
     this.invalidateCanvasAndUpdateBackingStoreImage();
-    console.log(string);
+   // console.log(string);
   }
   
   collectiveBounds(selectedItems) {
@@ -463,8 +463,6 @@ class Layer {
     // If nothing is underneath the cursor, clear the selection
     for (var i = 0; i < this.selectedItems.length; i++) {
       this.selectedItems[i].setIsSelected(false);
-      console.log(this.selectedItems[i]);
-      //this.removeItemFromSelection(item);
     }
     this.selectedItems = [];
 

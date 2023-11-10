@@ -261,7 +261,7 @@ const union = unionOfRects(rect1, rect2); // [50, 50, 200, 200]
 // ---
 // COLOR
 // getColorComponents: function() {},
-
+// CanvasKit.Color = function(r, g, b, a)
 
 // ---
 // PATHEFFECT
@@ -284,6 +284,18 @@ const union = unionOfRects(rect1, rect2); // [50, 50, 200, 200]
 // Create a PathEffect that transforms a path using a 2D matrix and a source path.
 // PathEffect.MakePath2D(matrix, path);
 
+/*
+Matrix: {
+  identity: function() {},
+  invert: function() {},
+  mapPoints: function() {},
+  multiply: function() {},
+  rotated: function() {},
+  scaled: function() {},
+  skewed: function() {},
+  translated: function() {},
+},
+*/
 
 // ---
 // SHADER FUNCTIONS

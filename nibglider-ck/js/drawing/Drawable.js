@@ -59,6 +59,7 @@ export class Drawable {
       skCanvas.concat(this.matrix);
     }
 
+    this.drawSelectionEffect(skCanvas);
 
     skCanvas.drawPath(this.path, this.skPaint);//this.skPaint);
 
@@ -67,9 +68,41 @@ export class Drawable {
       skCanvas.restore();
     }
 
-    this.drawSelectionEffect(skCanvas);
 
   }
+
+  // Draw a selection effect such as a shadow under the object
+drawSelectionEffect(canvas) {
+  if (this.isSelected) {
+    // Create a shadow paint object or similar effect as per the graphics API
+    const shadowPaint = this.skPaint.copy();//new CanvasKit.Paint();
+    shadowPaint.setColor(CanvasKit.Color4f(0, 0, 0, 0.5)); // Example semi-transparent black color
+    shadowPaint.setMaskFilter(CanvasKit.MaskFilter.MakeBlur(CanvasKit.BlurStyle.Normal, 7, true));
+
+    // Draw the shadow slightly offset from the path
+    const shadowOffsetMatrix = CanvasKit.Matrix.translated(5, 5); // Offset by 5 units in x and y direction
+    canvas.save();
+    canvas.concat(shadowOffsetMatrix);
+    canvas.drawPath(this.path, shadowPaint);
+    canvas.restore();
+
+    // Additionally, you might want to draw a border or handles to indicate selection
+    // Create a paint object for the selection border
+    const selectionPaint = this.skPaint.copy();//new CanvasKit.Paint();
+    selectionPaint.setStyle(CanvasKit.PaintStyle.Stroke);
+    selectionPaint.setStrokeWidth(2);
+    selectionPaint.setAntiAlias(true);
+    selectionPaint.setColor(CanvasKit.Color4f(0, 1, 1, 1)); // Example color for selection outline
+    canvas.drawPath(this.path, selectionPaint);
+
+    selectionPaint.delete();
+    shadowPaint.delete();
+
+  }
+}
+
+
+
 
   // Method to determine if a point is inside the path
   hitTest(x, y) {
@@ -196,31 +229,6 @@ export class Drawable {
     InvalidateRect(paddedBounds);
   }
 
-  // Draw a selection effect such as a shadow under the object
-  drawSelectionEffect(canvas) {
-    if (this.isSelected) {
-      // Create a shadow paint object or similar effect as per the graphics API
-      const shadowPaint = new CanvasKit.Paint();
-      shadowPaint.setColor(0x66000000); // Example semi-transparent black color
-
-      shadowPaint.setMaskFilter(CanvasKit.MaskFilter.MakeBlur(CanvasKit.BlurStyle.Normal, 10, true));
-
-      // Draw the shadow slightly offset from the path
-      const shadowOffsetMatrix = new DOMMatrix().translateSelf(5, 5);
-      canvas.save();
-      canvas.concat(shadowOffsetMatrix);
-      canvas.drawPath(this.path, shadowPaint);
-      canvas.restore();
-
-      // Additionally, you might want to draw a border or handles to indicate selection
-      // Create a paint object for the selection border
-      const selectionPaint = new CanvasKit.Paint();
-      selectionPaint.setStyle(CanvasKit.PaintStyle.Stroke);
-      selectionPaint.setStrokeWidth(2);
-      selectionPaint.setColor(0xFF0000FF); // Example blue color for selection outline
-      canvas.drawPath(this.path, selectionPaint);
-    }
-  }
 
   // BOUNDS RELATED
   // Method to set the origin of the drawable to its center
@@ -359,6 +367,7 @@ export class Drawable {
   setIsSelected(bool) {
     this.isSelected = bool;
 
+    /*
     if (this.isSelected) {
       this.skPaint.setColor(CanvasKit.Color4f(0, 0, 1, 1));
     }
@@ -366,7 +375,7 @@ export class Drawable {
     {
       this.skPaint.setColor(CanvasKit.Color4f(0, 0, 0, 1));
 
-    }
+    }*/
   }
 
 

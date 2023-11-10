@@ -1,4 +1,4 @@
-import { createCenteredRect } from "./NGUtils.js";
+import NGUtils from "./NGUtils.js";
 
 var CanvasKit = null;
 
@@ -21,30 +21,36 @@ class CursorManager {
     this.cursorBoxPaint.setStyle(app.CanvasKit.PaintStyle.Stroke);
     this.cursorBoxPaint.setAntiAlias(true);
 
+    this.cursorCircleBoxWidth = 30;
+    this.cursorCircleBoxHeight = 30;
+    this.cursorInnerDotDiameter = 3;
+
   }
 
   // Updates the mouse coordinates
-  updateMousePosition(x, y) {
+  updateCursorPosition(x, y) {
     this.mouseX = x;
     this.mouseY = y;
-    this.currentDrawingPoint = [x,y];
+    
     // Depending on the app state or other conditions, compute snapping
     this.updateCurrentDrawingPoint(x, y);
 
    // console.log(this.app.CanvasKit);
     
-    this.app.invalidateRect(createCenteredRect(this.app.CanvasKit, this.mouseX, this.mouseY, 320, 370));
+    // this.app.invalidateRect(NGUtils.createCenteredRect(this.app.CanvasKit, this.mouseX, this.mouseY, 320, 370));
+    //console.log(NGUtils.rectW(this.cursorSkRect()));
+    this.app.invalidateRect( this.cursorSkRect() );
   }
 
   // Computes the current drawing point, considering snapping to paths or segments
   updateCurrentDrawingPoint(x, y) {
-
-    // Placeholder for snapping logic
-    // Check if the (x, y) is near any significant points like path nodes or segment midpoints
+    // Placeholder for snapping logic. Check if the (x, y) is near any significant points like path nodes or segment midpoints
     // If so, adjust this.currentDrawingPoint to that snap point
     // Otherwise, set it to the mouse coordinates
     // This would involve querying the drawing paths and other geometric elements
     // to determine if the cursor is near a point that should act as a snap point
+    this.currentDrawingPoint = [x,y];
+
 
     // If snapping occurred:
     // this.currentDrawingPoint = { x: snapX, y: snapY };
@@ -55,11 +61,11 @@ class CursorManager {
   // Returns a Float32Array representing the four corners of the cursor rectangle
   cursorSkRect() {
     // Assuming a 10x10 cursor for simplicity; adjust size as needed
-    const halfSize = 5;
-    const left = this.currentDrawingPoint.x - halfSize;
-    const top = this.currentDrawingPoint.y - halfSize;
-    const right = this.currentDrawingPoint.x + halfSize;
-    const bottom = this.currentDrawingPoint.y + halfSize;
+    const halfSize = this.cursorCircleBoxWidth / 2;
+    const left = this.mouseX - halfSize;
+    const top = this.mouseY - halfSize;
+    const right = this.mouseX + halfSize;
+    const bottom = this.mouseY + halfSize;
     return new Float32Array([left, top, right, bottom]);
   }
 
@@ -77,11 +83,12 @@ class CursorManager {
       paint.setBlendMode
       paint.setAntiAlias(true);
 
-      skCanvas.drawCircle(this.mouseX, this.mouseY, 25, paint);
+      // console.log(this.mouseX);
+      skCanvas.drawCircle(this.mouseX, this.mouseY, this.cursorCircleBoxWidth, paint);
 
       paint.setStyle(CanvasKit.PaintStyle.Fill);
 
-      skCanvas.drawCircle(this.mouseX, this.mouseY, 3, paint);
+      skCanvas.drawCircle(this.mouseX, this.mouseY, this.cursorInnerDotDiameter, paint);
 
       // this.debugDraw(skCanvas);
       
@@ -109,7 +116,7 @@ class CursorManager {
 
     if (CanvasKit != null) {
      
-        const cursorBox = createCenteredRect(CanvasKit, this.app.mouseX, this.app.mouseY, 300, 300);
+        const cursorBox = NGUtils.createCenteredRect(CanvasKit, this.app.mouseX, this.app.mouseY, 300, 300);
 
         const rr = CanvasKit.RRectXY(        //this.CanvasKit.XYWHRect(this.mouseX - 150, this.mouseY - 150, 300, 300),
         cursorBox,

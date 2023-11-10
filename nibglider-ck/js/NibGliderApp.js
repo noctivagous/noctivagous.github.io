@@ -1,4 +1,4 @@
-import { createCenteredRect, fillRect } from "./NGUtils.js";
+import NGUtils from "./NGUtils.js";
 import CursorManager from './CursorManager.js';
 import KeyboardMappingManager from './KeyboardMappingManager.js';
 import EventManager from './EventManager.js';
@@ -66,11 +66,7 @@ class NibGliderApp {
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
-    window.addEventListener('keydown', function (event) {
-      if (event.key === ' ' || event.key === 'Tab') {
-        event.preventDefault();
-      }
-    });
+   
 
   }
 
@@ -91,12 +87,11 @@ class NibGliderApp {
 
     this.setupCanvasSurface();
 
-    await this.setupManagers();
-
-    this.setupCanvasSurface();
+await    this.setupManagers();
 
 
-    this.setupEventListeners();
+
+    //this.setupEventListeners();
 
     this.setupAppBackgroundColor();
 
@@ -121,7 +116,7 @@ class NibGliderApp {
 
     this.startDrawingIfNeeded();
 
-    this.mouseDidMove();
+    
 
   }
 
@@ -154,7 +149,7 @@ class NibGliderApp {
   }
 
   fillWithBackgroundColor() {
-    fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
+    NGUtils.fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
   }
 
   draw = () => {
@@ -171,13 +166,13 @@ class NibGliderApp {
 
 
 
-      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
+      NGUtils.fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
 
 
 //      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
 
       
-      //this.skCanvas.save();
+      this.skCanvas.save();
       //const rectToClip = rect;
 
       // for optimiziation when backingstore is made:
@@ -213,24 +208,6 @@ class NibGliderApp {
   };
 
 
-  setupEventListeners() {
-    // update on mouseMove
-    this.htmlCanvas.addEventListener('pointermove', (e) => {
-      /* if (!e.pressure) {
-         return;
-       }*/
-      this.mouseX = e.offsetX;
-      this.mouseY = e.offsetY;
-
-      this.mouseDidMove();
-
-    });
-
-  }
-
-  mouseDidMove() {
-    this.cursorManager.updateMousePosition(this.mouseX, this.mouseY);
-  }
 
   setupPaint() {
 
@@ -294,6 +271,7 @@ class NibGliderApp {
   }
 
   invalidateEntireCanvas() {
+    
     this.invalidateRect(this.CanvasKit.XYWHRect(0, 0, this.htmlCanvas.width, this.htmlCanvas.height));
   }
 

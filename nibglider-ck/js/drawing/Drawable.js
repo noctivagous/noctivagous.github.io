@@ -233,6 +233,11 @@ export class Drawable {
     this.translate(dx, dy);
   }
 
+
+  // TRANSFORMATION--
+  // TRANSFORMATION OPERATIONS WILL RETURN AN UPDATE
+  // RECT THAT IS THE UNION OF THE OLD PADDED BOUNDS
+  // WITH THE TRANSFORMED BOUNDS.
   translate(dx, dy) {
     if (this.isLocked) {
       console.warn('Drawable is locked and cannot be moved.');

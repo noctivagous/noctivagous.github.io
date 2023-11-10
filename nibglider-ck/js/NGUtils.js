@@ -1,57 +1,59 @@
+export default class NGUtils {
+  static makeColoredFillPaint(CanvasKit, color) {
+    const paint = new CanvasKit.Paint();
+    paint.setColor(color);
+    paint.setStyle(CanvasKit.PaintStyle.Fill);
+    paint.setAntiAlias(true);
+    return paint;
+  }
 
+  static createCenteredRect(CanvasKit, centerX, centerY, width, height) {
+    if (!CanvasKit) {
+      alert('CanvasKit is null');
+      return;
+    }
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
+    return CanvasKit.XYWHRect(centerX - halfWidth, centerY - halfHeight, width, height);
+  }
 
+  static fillRect(CanvasKit, skCanvas, fillColor, skRectFloat32Array) {
+    const paint = NGUtils.makeColoredFillPaint(CanvasKit, fillColor);
+    skCanvas.drawRect(skRectFloat32Array, paint);
+    paint.delete();
+  }
 
-export function makeColoredFillPaint(color)
-{
-      const paint = new CanvasKit.Paint();
-      paint.setColor(color); // Black color for the cursor
-      //console.log(paint);
-      paint.setStyle(CanvasKit.PaintStyle.Fill);
-      paint.setAntiAlias(true);
+  static doRectsIntersect(rectA, rectB) {
+    const [leftA, topA, rightA, bottomA] = rectA;
+    const [leftB, topB, rightB, bottomB] = rectB;
+    return !(rightA < leftB || leftA > rightB || topA > bottomB || bottomA < topB);
+  }
 
-      return paint;
+  static intersectionOfRects(rectA, rectB) {
+    if (!NGUtils.doRectsIntersect(rectA, rectB)) {
+      return null;
+    }
+    const [leftA, topA, rightA, bottomA] = rectA;
+    const [leftB, topB, rightB, bottomB] = rectB;
+    const left = Math.max(leftA, leftB);
+    const top = Math.max(topA, topB);
+    const right = Math.min(rightA, rightB);
+    const bottom = Math.min(bottomA, bottomB);
+    return [left, top, right, bottom];
+  }
+
+  static rectW(rect) {
+    return rect[2] - rect[0]; // right - left
+  }
+
+  static rectH(rect) {
+    return rect[3] - rect[1]; // bottom - top
+  }
 
 }
 
+// Export the class
 
-export function createCenteredRect(CanvasKitToUse, centerX, centerY, width, height) {
-  if(CanvasKitToUse == null)
-  {
-     alert('canvaskit null');
-      return;
-  }
-    const halfWidth = width / 2;
-    const halfHeight = height / 2;
-   // alert(CanvasKit);
-
-    const skRectFloat32 = CanvasKitToUse.XYWHRect(centerX - halfWidth, centerY - halfHeight, width, height); 
-    
-   // XYWHRect is "flipped" coordinates for a rectangle
-    return skRectFloat32;
-  }
-
-
-
-
- 
-  // fillRect(CanvasKit, skCanvas, fillColor, skRectFloat32Array) 
-  // makes the paint when passed the color.
-  // can also be achieved with skCanvas.drawRect(rrect, paint);
-  export function fillRect(CanvasKit, skCanvas, fillColor, skRectFloat32Array) {
-    
-    // Create a new paint object with color blue
-    const paint = new CanvasKit.Paint();
-    paint.setColor(fillColor); // RGBA for blue
-    paint.setStyle(CanvasKit.PaintStyle.Fill);
-    paint.setAntiAlias(true);
-
-  
-    // Draw the rectangle on the canvas with the paint
-    skCanvas.drawRect(skRectFloat32Array, paint);
-  
-    // Dispose of the paint object to avoid memory leaks
-    paint.delete();
-  }
   // */
 
   // You can add more utility functions here if needed
@@ -187,6 +189,7 @@ export function createCenteredRect(CanvasKitToUse, centerX, centerY, width, heig
 
 // LTRBRect(): Creates a rectangle using Left, Top, Right, and Bottom coordinates
 // Rect.LTRBRect(left, top, right, bottom);
+//    ( also viewed as (x1,y1,x2,y2) )
 
 // XYWHRect(): Creates a rectangle using X and Y coordinates for the top-left corner and Width and Height for dimensions
 // Rect.XYWHRect(x, y, width, height);
@@ -200,6 +203,21 @@ export function createCenteredRect(CanvasKitToUse, centerX, centerY, width, heig
 // RRectXY(): Creates a rounded rectangle with X and Y coordinates defining its position and possibly also specifying the width, height, and radius for the corners
 // Rect.RRectXY(x, y, width, height, rx, ry);
 
+
+/*
+// Example usage:
+const rect1 = [50, 50, 150, 150]; // [left, top, right, bottom]
+const rect2 = [100, 100, 200, 200];
+
+// Check if rectangles intersect
+const intersects = doRectsIntersect(rect1, rect2); // true if they intersect
+
+// Get the intersection of two rectangles
+const intersection = intersectionOfRects(rect1, rect2); // [100, 100, 150, 150] if they intersect
+
+// Create a union of two rectangles
+const union = unionOfRects(rect1, rect2); // [50, 50, 200, 200]
+*/
 
 
 // ---

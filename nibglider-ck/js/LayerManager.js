@@ -1,4 +1,4 @@
-
+import NGUtils from "./NGUtils.js";
 import { Drawable } from "./drawing/Drawable.js";
 
 class LayerManager {
@@ -9,11 +9,15 @@ class LayerManager {
     this.backgroundColor = null;
     this.app = app;
 
-     this.layer1.generateRandomShapes(30,1500,900);
-    
-    // Create the offscreen canvases for each layer
-    this.allLayers.forEach(layer => layer.createBackingStore(app.canvasWidth, app.canvasHeight));
- 
+    this.offscreenSurface = null;
+
+     this.layer1.generateRandomShapes(30,window.innerWidth,window.innerHeight);
+     this.allLayers.forEach(layer => 
+      layer.createBackingStore(window.innerWidth,window.innerHeight)
+      );
+
+      this.updateAllLayersBackingStores();
+
     this.layerManagerDidFinishInit();
 
   }
@@ -21,6 +25,15 @@ class LayerManager {
   layerManagerDidFinishInit()
   {
     this.app.onResize();
+    // Create the offscreen canvases for each layer
+  }
+
+  updateAllLayersBackingStores()
+  {
+
+    this.allLayers.forEach(layer => 
+      layer.updateBackingStoreImage()
+      );
   }
 
   appDidLoad() {
@@ -47,7 +60,9 @@ class LayerManager {
       
       let hitDrawable = hitDrawableArray[1];
       hitDrawable.toggleIsSelected();
-      this.app.invalidateRect(hitDrawableArray[2])
+      //this.app.invalidateRect(hitDrawableArray[2])
+      this.currentLayer.updateBackingStoreImage();
+      this.app.invalidateEntireCanvas();
       // Initiate dragging logic here
     }
     else
@@ -98,10 +113,39 @@ class Layer {
     this.offscreenCanvas = null;
     this.offscreenContext = null;
   
+    this.backingStoreImage = null; // Property to hold the captured image
+
   }
 
+
   createBackingStore(width, height) {
-    // future optimization
+    
+    // Create an off-screen SkSurface with the same dimensions
+    this.offscreenSurface = window.CanvasKit.MakeSurface(width, height);
+  //  console.log(this.offscreenSurface);
+  }
+
+  updateBackingStoreImage() {
+    // Ensure the offscreen canvas is created
+    if (!this.offscreenSurface) {
+
+      this.offscreenSurface = window.CanvasKit.MakeSurface(width, height);
+
+      if (!this.offscreenSurface) {
+
+      console.error('Offscreen surface not created.');
+      return;
+      }
+
+    }
+    // Get the offscreen canvas
+    const offscreenCanvas = this.offscreenSurface.getCanvas();
+
+    // Draw all drawable objects onto the offscreen canvas
+    this.drawAllObjectsOnLayer(offscreenCanvas);
+
+    // Capture the drawing as an image
+    this.backingStoreImage = this.offscreenSurface.makeImageSnapshot();
   }
 
   // Method to generate random shapes
@@ -155,22 +199,45 @@ class Layer {
   }
 
   // Method to draw all objects in the layer
+  // that intersect with the skRectFloat32Array 
   
+
   drawLayer(skCanvas, skRectFloat32Array) {
-  
+    // If there's a backing store image, draw it first
+    if (this.backingStoreImage) {
+      skCanvas.drawImage(this.backingStoreImage, 0, 0,null);
+    } else {
+      // If the backing store is not created or updated, call updateBackingStoreImage
+      this.updateBackingStoreImage();
+    }
+
+
       // skRectFloat32Array is placeholder
       // for future optimization (dirtyRect on top of with backingstore).
       //  It is partially ready now, with clipRect in the
       //  app draw function clipping only to the passed dirtyRects,
       // but the layer's query for intersections is not implemented.
       //  it is is not coming from the rBush (r-tree) yet for each layer.
+      this.drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array,skCanvas);
 
-    // Perform drawing with CanvasKit on the skCanvas
-    this.drawableObjects.forEach(drawable => {
-      drawable.draw(skCanvas);
-    });
-  
   }
+
+  drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas) {
+    for (let i = this.drawableObjects.length - 1; i >= 0; i--) {
+      const drawable = this.drawableObjects[i];
+      if (NGUtils.doRectsIntersect(drawable.getPaddedBounds(), skRectFloat32Array)) {
+        drawable.draw(skCanvas); // Draw only if there's an intersection
+      }
+    }
+  }
+  
+  drawAllObjectsOnLayer(skCanvas) {
+    for (let i = this.drawableObjects.length - 1; i >= 0; i--) {
+      const drawable = this.drawableObjects[i];
+      drawable.draw(skCanvas); // Draw all objects
+    }
+  }
+  
 
   detectHit(x, y) {
     for (let i = this.drawableObjects.length - 1; i >= 0; i--) {

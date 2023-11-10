@@ -50,9 +50,18 @@ class CursorManager {
 
    // console.log(this.app.CanvasKit);
     
+    // old:
     // this.app.invalidateRect(NGUtils.createCenteredRect(this.app.CanvasKit, this.mouseX, this.mouseY, 320, 370));
     //console.log(NGUtils.rectW(this.cursorSkRect()));
-    this.app.invalidateRect( this.cursorSkRect() );
+    
+    // dirty rect ver:
+    //this.app.invalidateRect( this.cursorSkRect() );
+    this.app.invalidateEntireCanvas();
+
+
+    // ensures that the cursor is always invisible
+    // after coming back from another app or window.
+    document.body.style.cursor = 'none';
   }
 
   // Computes the current drawing point, considering snapping to paths or segments

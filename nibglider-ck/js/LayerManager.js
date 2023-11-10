@@ -17,7 +17,7 @@ class LayerManager {
       layer.createBackingStore(window.innerWidth, window.innerHeight)
     );
 
-    this.updateAllLayersBackingStores();
+  //  this.updateAllLayersBackingStores();
 
     this.layerManagerDidFinishInit();
 
@@ -47,6 +47,10 @@ class LayerManager {
 
   cancel() {
     this.clearOutSelection();
+  }
+
+  stamp(){
+      this.currentLayer.stampSelectedItems();
   }
 
   currentLayerHasSelection() {
@@ -122,10 +126,7 @@ class LayerManager {
   }
 
 
-  stampSelectedItems() {
-
-  }
-
+ 
 
 
   appDidLoad() {
@@ -224,6 +225,14 @@ class Layer {
 
   setIsInDragLock(status) {
     this.isInDragLock = status;
+
+    if(this.isInDragLock == false)
+    {
+      this.lastMousePt = null;
+    }
+
+    this.layerManager.app.invalidateEntireCanvas();
+
     //    console.log(status);
     /*
     var oldValue = this.isInDragLock;
@@ -246,7 +255,15 @@ class Layer {
   }
 
 
-  stamp() {
+  stampSelectedItems() {
+
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      const copyForStamp = this.selectedItems[i].copy();
+      
+      this.addObject(copyForStamp);
+    }
+
+    this.layerManager.app.invalidateEntireCanvas();
 
   }
 
@@ -286,7 +303,7 @@ class Layer {
 
       this.updateBackingStoreImage();
       //this.layerManager.app.
-      //this.selectedItemsDidChange("carting");
+      this.selectedItemsDidChange("carting");
       
   
       // Update this.lastMousePt for the next event
@@ -310,40 +327,44 @@ class Layer {
   async updateBackingStoreImage() {
     // Ensure the offscreen canvas is created
     if (!this.offscreenSurface || this.updateTheBackingStoreForResizeEvent) {
-
-      if (this.updateTheBackingStoreForResizeEvent) {
+  
+      // Delete existing surface if needed
+      if (this.updateTheBackingStoreForResizeEvent && this.offscreenSurface) {
+        this.offscreenSurface.delete();
+        this.offscreenSurface = null;
+      }
+ 
+  
+      try {
         if(this.offscreenSurface)
         {
-        this.offscreenSurface.delete();
+          this.offscreenSurface.delete();
         }
+        // Create the surface
+        this.offscreenSurface = window.CanvasKit.MakeSurface(window.innerWidth, window.innerHeight);
+        if (!this.offscreenSurface) {
+          throw new Error('Offscreen surface not created.');
+        }
+        this.updateTheBackingStoreForResizeEvent = false;
+  
+        // Get the offscreen canvas and perform drawing operations
+        const offscreenCanvas = this.offscreenSurface.getCanvas();
+        this.drawAllObjectsOnLayer(offscreenCanvas);
+  
+        
+        if(this.backingStoreImage)
+        {
+          this.backingStoreImage.delete();
+        }
+        // Capture the drawing as an image
+        this.backingStoreImage = this.offscreenSurface.makeImageSnapshot();
+  
+      } catch (error) {
+        console.error('Error creating surface:', error);
       }
-
-
-      
-      this.offscreenSurface = window.CanvasKit.MakeSurface(window.innerWidth, window.innerHeight);
-
-      if (!this.offscreenSurface) {
-        console.error('Offscreen surface not created.');
-        return;
-      }
-
-      this.updateTheBackingStoreForResizeEvent = false;
-
     }
-
-
-
-
-    // Get the offscreen canvas
-    const offscreenCanvas = this.offscreenSurface.getCanvas();
-
-    // Draw all drawable objects onto the offscreen canvas
-    this.drawAllObjectsOnLayer(offscreenCanvas);
-
-    // Capture the drawing as an image
-    this.backingStoreImage = this.offscreenSurface.makeImageSnapshot();
   }
-
+  
   // Method to generate random shapes
   generateRandomShapes(numberOfShapes = 10, widthRange, heightRange) {
 
@@ -407,14 +428,16 @@ class Layer {
 
 
   drawLayer(skCanvas, skRectFloat32Array) {
+   
+    /*
     // If there's a backing store image, draw it first
     if (this.backingStoreImage) {
-      skCanvas.drawImage(this.backingStoreImage, 0, 0, null);
+     skCanvas.drawImage(this.backingStoreImage, 0, 0, null);
     } else {
       // If the backing store is not created or updated, call updateBackingStoreImage
       this.updateBackingStoreImage();
     }
-
+    */
 
     // skRectFloat32Array is placeholder
     // for future optimization (dirtyRect on top of with backingstore).
@@ -422,19 +445,30 @@ class Layer {
     //  app draw function clipping only to the passed dirtyRects,
     // but the layer's query for intersections is not implemented.
     //  it is is not coming from the rBush (r-tree) yet for each layer.
-    //   this.drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas);
+    
+     this.drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas);
 
-    this.drawObjectsInSearchedArea(skRectFloat32Array, skCanvas)
+    //this.drawObjectsInSearchedArea(skRectFloat32Array, skCanvas)
 
   }
 
   drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas) {
+
+     //  skCanvas.save();
+     // const rectToClip = skRectFloat32Array;
+
+      // for optimiziation when backingstore is made:
+     //  skCanvas.clipRect(rectToClip, window.CanvasKit.ClipOp.Intersect, true);
+
     for (let i = 0; i < this.drawableObjects.length; i++) {
       const drawable = this.drawableObjects[i];
       if (NGUtils.doRectsIntersect(drawable.getPaddedBounds(), skRectFloat32Array)) {
         drawable.draw(skCanvas); // Draw only if there's an intersection
       }
     }
+
+   // skCanvas.restore();
+  
   }
 
 
@@ -600,12 +634,15 @@ class Layer {
 
     this.selectedItemsDidChange("clearOutSelection " + this.selectedItems.length);
 
-
+    if(this.isInDragLock)
+    {
+    this.setIsInDragLock(false);
+    }
 
   }
 
   invalidateCanvasAndUpdateBackingStoreImage() {
-    this.updateBackingStoreImage();
+    // this.updateBackingStoreImage();
     this.layerManager.app.invalidateEntireCanvas();
   }
 

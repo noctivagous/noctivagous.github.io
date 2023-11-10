@@ -25,6 +25,13 @@ export class Drawable {
 
   }
 
+
+  copy()
+  {
+    return new Drawable(this.skPaint.copy(),this.path.copy(), this.paintStyle);
+  }
+
+
   setStyle(style) {
     this.skPaint.setStyle(CanvasKit.PaintStyle[style]);
     this.paintStyle = style; // Keep track of the style within your Drawable object

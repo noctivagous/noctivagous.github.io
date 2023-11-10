@@ -157,7 +157,13 @@ class NibGliderApp {
     // in the future, use this to render the backingstore image
     //this.fillWithBackgroundColor();
 
+    NGUtils.fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
 
+    if (this.layerManager) {
+
+      this.layerManager.drawRectOnAllLayers(this.skCanvas, this.entireCanvasRect());
+
+    }
     // this.skCanvas.drawPaint(this.appBackgroundColorPaint);
 
     // dirtyRect setup works but needs to be adapted to CanvasKit
@@ -166,7 +172,6 @@ class NibGliderApp {
 
 
 
-      NGUtils.fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
 
 
 //      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
@@ -270,16 +275,20 @@ class NibGliderApp {
 
   invalidateRect(skRectFloat32Array) {
 
+    
     this.dirtyRects.push(skRectFloat32Array);
     this.startDrawingIfNeeded();
   }
+
+
+
 
   invalidateEntireCanvas() {
     
     
   if(this.layerManager)
   {
-    this.layerManager.updateAllLayersBackingStores();
+   // this.layerManager.updateAllLayersBackingStores();
   }
   else
   {

@@ -96,6 +96,10 @@ class KeyboardMappingManager {
     this.layerManager.cart();
   }
 
+  stamp(){
+    this.layerManager.stamp();
+  }
+
   escape() {
     if(this.layerManager.currentLayerHasSelection())
     {
@@ -185,6 +189,15 @@ class KeyboardMappingManager {
 
     }
 
+    
+        // Spacebar for drag-lock
+        if ((this.eventKeyCodeWithFlag === "KeyW")) {
+    
+          
+          this.stamp();
+    
+        }
+
     if (keyEvent.key === 'Backspace') {
       removeAllSelectedItemsAndReset();
     }
@@ -202,13 +215,6 @@ class KeyboardMappingManager {
     }
 
 
-    // close and end shape
-    if (keyEvent.key == 'w') {
-
-      layerManager.stampSelectedItems();
-
-
-    }
 
 
   }

@@ -53,7 +53,12 @@ class EventManager {
 
   
   handleMouseDown(event) {
-    this.layerManager.detectHitOnCurrentLayer(event.offsetX, event.offsetY);
+
+    // in the future,
+    // different keys for selecting points on objects vs. 
+    // the objects themselves.
+    // and also different uses of a hitTest on the currentLayer
+    this.layerManager.selectionHitTestOnCurrentLayer(event.offsetX, event.offsetY);
 
 
   }

@@ -107,7 +107,7 @@ export class Drawable {
   }
 
   hitTestStroke(path, paint, x, y) {
-    
+
     // Make a copy of the path to avoid modifying the original.
     const pathCopy = path.copy();
 
@@ -124,7 +124,7 @@ export class Drawable {
     const strokedPath = pathCopy.stroke(strokeOptions);
 
 
-   
+
 
     // Use the contains method to check if the point is within the stroked path
     const hit = strokedPath.contains(x, y);
@@ -137,30 +137,29 @@ export class Drawable {
 
 
 
- 
+
 
   // LTRBRect(): Creates a rectangle using Left, Top, Right, and Bottom coordinates
-// Rect.LTRBRect(left, top, right, bottom);
-//    ( also viewed as (x1,y1,x2,y2) )
+  // Rect.LTRBRect(left, top, right, bottom);
+  //    ( also viewed as (x1,y1,x2,y2) )
 
-getRBushBounds() {
-  const bounds = this.getBounds(); // Your method to get drawable bounds
-  return {
-    minX: NGUtils.minX(bounds),
-    minY: NGUtils.minY(bounds),
-    maxX: NGUtils.maxX(bounds),
-    maxY: NGUtils.maxY(bounds),
-    drawable: this // Store reference to the drawable for later retrieval
-  };
-}
+  getRBushBounds() {
+    const bounds = this.getBounds(); // Your method to get drawable bounds
+    return {
+      minX: NGUtils.minX(bounds),
+      minY: NGUtils.minY(bounds),
+      maxX: NGUtils.maxX(bounds),
+      maxY: NGUtils.maxY(bounds),
+      drawable: this // Store reference to the drawable for later retrieval
+    };
+  }
 
   // Get the bounds of the path
   getPathBounds() {
     var bounds = this.path.getBounds();
 
-    if(!bounds)
-    {
-      return [0,0,0,0];
+    if (!bounds) {
+      return [0, 0, 0, 0];
     }
 
     return bounds;
@@ -357,9 +356,17 @@ getRBushBounds() {
     this.skPaint.setColor(CanvasKit.Color4f(0, 0, 1, 1));
   }
 
-  setIsSelected(bool)
-  {
+  setIsSelected(bool) {
     this.isSelected = bool;
+
+    if (this.isSelected) {
+      this.skPaint.setColor(CanvasKit.Color4f(0, 0, 1, 1));
+    }
+    else
+    {
+      this.skPaint.setColor(CanvasKit.Color4f(0, 0, 0, 1));
+
+    }
   }
 
 

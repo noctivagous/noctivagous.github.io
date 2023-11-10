@@ -50,7 +50,11 @@ class KeyboardMappingManager {
     //this.drawingEntityManager.currentEntity.stateMachine.send(event);
     // The event is sent to the active drawing entity's state machine.
   
-    this.app.layerManager.detectHitOnCurrentLayer(this.app.mouseX, this.app.mouseY);
+
+    // using the keyMap dictionary,
+    // this will be mapped to the Tab key
+    // but is a placeholder for now:
+    this.app.layerManager.selectionHitTestOnCurrentLayer(this.app.mouseX, this.app.mouseY);
 
 
   }

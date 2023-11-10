@@ -1,5 +1,7 @@
 //import CanvasKit from "../NibGliderApp";
 
+import NGUtils from "../NGUtils.js";
+
 export class Drawable {
   constructor(skPaint, path, paintStyle) {
 
@@ -135,13 +137,37 @@ export class Drawable {
 
 
 
-  getBounds() {
-    return this.getPathBounds();
-  }
+ 
+
+  // LTRBRect(): Creates a rectangle using Left, Top, Right, and Bottom coordinates
+// Rect.LTRBRect(left, top, right, bottom);
+//    ( also viewed as (x1,y1,x2,y2) )
+
+getRBushBounds() {
+  const bounds = this.getBounds(); // Your method to get drawable bounds
+  return {
+    minX: NGUtils.minX(bounds),
+    minY: NGUtils.minY(bounds),
+    maxX: NGUtils.maxX(bounds),
+    maxY: NGUtils.maxY(bounds),
+    drawable: this // Store reference to the drawable for later retrieval
+  };
+}
 
   // Get the bounds of the path
   getPathBounds() {
-    return this.path.getBounds();
+    var bounds = this.path.getBounds();
+
+    if(!bounds)
+    {
+      return [0,0,0,0];
+    }
+
+    return bounds;
+  }
+
+  getBounds() {
+    return this.getPathBounds();
   }
 
 
@@ -331,6 +357,12 @@ export class Drawable {
     this.skPaint.setColor(CanvasKit.Color4f(0, 0, 1, 1));
   }
 
+  setIsSelected(bool)
+  {
+    this.isSelected = bool;
+  }
+
+
   // Toggle visibility
   toggleVisibility() {
     this.visible = !this.visible;
@@ -370,7 +402,7 @@ export class Drawable {
     paint.setColor(canvasKit.Color4f(0, 0, 0, 1)); // Black color
     paint.setStyle(canvasKit.PaintStyle.Stroke); // Stroke style
     paint.setStrokeWidth(3); // Stroke width
-
+    paint.setAntiAlias(true);
     return new Drawable(paint, rectPath, canvasKit.PaintStyle.Stroke);
   }
 
@@ -382,7 +414,7 @@ export class Drawable {
     const paint = new canvasKit.Paint();
     paint.setColor(canvasKit.Color4f(1, 0, 0, 1)); // Red color
     paint.setStyle(canvasKit.PaintStyle.Fill); // Fill style
-
+    paint.setAntiAlias(true);
     return new Drawable(paint, circlePath, canvasKit.PaintStyle.Fill);
   }
 
@@ -396,7 +428,7 @@ export class Drawable {
     paint.setColor(canvasKit.Color4f(0, 0, 1, 1)); // Blue color
     paint.setStyle(canvasKit.PaintStyle.Stroke); // Stroke style
     paint.setStrokeWidth(2); // Stroke width
-
+    paint.setAntiAlias(true);
     return new Drawable(paint, linePath, canvasKit.PaintStyle.Stroke);
   }
 

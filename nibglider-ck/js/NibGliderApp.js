@@ -87,7 +87,7 @@ class NibGliderApp {
 
     this.setupCanvasSurface();
 
-await    this.setupManagers();
+   await this.setupManagers();
 
 
 
@@ -172,7 +172,7 @@ await    this.setupManagers();
 //      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
 
       
-      this.skCanvas.save();
+     // this.skCanvas.save();
       //const rectToClip = rect;
 
       // for optimiziation when backingstore is made:
@@ -180,11 +180,15 @@ await    this.setupManagers();
 
 
       if (this.layerManager) {
+
         this.layerManager.drawRectOnAllLayers(this.skCanvas, rect);
 
       }
 
+      
       this.cursorManager.drawCursor(this.skCanvas, this.appStateManager);
+      
+      
 
       //   this.skCanvas.restore();
 

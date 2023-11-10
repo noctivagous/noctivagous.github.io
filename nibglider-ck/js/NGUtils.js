@@ -50,6 +50,44 @@ export default class NGUtils {
     return rect[3] - rect[1]; // bottom - top
   }
 
+
+
+  // LTRBRect(): Creates a rectangle using Left, Top, Right, and Bottom coordinates
+// Rect.LTRBRect(left, top, right, bottom);
+//    ( also viewed as (x1,y1,x2,y2) )
+
+// [Left, Top, Right,  Bottom ]
+// minX(skRectFloat32Array): Returns the left coordinate of the rectangle, which is the minimum x-value.
+  static minX(skRectFloat32Array) {
+    return skRectFloat32Array[0];
+}
+
+// minY(skRectFloat32Array): Returns the top coordinate of the rectangle, which is the minimum y-value.
+static minY(skRectFloat32Array) {
+    return skRectFloat32Array[1];
+}
+
+// maxX(skRectFloat32Array): Returns the right coordinate of the rectangle, which is the maximum x-value.
+static maxX(skRectFloat32Array) {
+    return skRectFloat32Array[2];
+}
+// maxY(skRectFloat32Array): Returns the bottom coordinate of the rectangle, which is the maximum y-value.
+static maxY(skRectFloat32Array) {
+    return skRectFloat32Array[3];
+}
+
+//centerX(skRectFloat32Array): Computes the center x-value of the rectangle by averaging the left and right coordinates.
+static centerX(skRectFloat32Array) {
+    return (skRectFloat32Array[0] + skRectFloat32Array[2]) / 2;
+}
+
+// centerY(skRectFloat32Array): Computes the center y-value of the rectangle by averaging the top and bottom coordinates.
+static centerY(skRectFloat32Array) {
+    return (skRectFloat32Array[1] + skRectFloat32Array[3]) / 2;
+}
+
+
+
 }
 
 // Export the class

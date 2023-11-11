@@ -298,10 +298,13 @@
 
 
 
-    <h2>The Vector Line</h2>
+    <h2>More Than Just A Vector Line, More Than Just for Graphics</h2>
 
     <p>
-      Only straight segments were drawn above. However, a single vector line can be used by the program as:
+      Only straight segments were drawable above.  Curves have been implemented
+      with these straight segments through the b-spline (similar to Bezier paths).
+      
+      For graphics, a single vector line can be used by a program as:
     <ul>
       <li>the diameter of a circle.</li>
       <li>the radius of a circle.</li>
@@ -309,26 +312,39 @@
       <li>the circumradius of a regular polygon.</li>
       <li>etc.</li>
     </ul>
+
+    <p>For the desktop UI, the vector line can serve as</p>
+    <ul>
+      <li>the means of connecting nodes in node-based programming.</li>
+      <li>the diagonal of the live selection rectangle.</li>
+    </ul>
+
+    <p>In the same way, the drag-lock can be used to move windows
+      on the screen, with the scale buttons letting the user shrink them, etc.
+      <b>It is possible to implement an entire desktop UI in the key-click UI,
+      with no mouse clicks.</b>
     </p>
+    
 
 
-    <h2>More Information</h2>
+    <h2>Full Description of the Key-Click UI</h2>
 
 
     <p>The key-click UI is an improved software user interface for the desktop computer.
 
       <br><br>A software program that implements the key-click UI treats the keys
-      on a keyboard as click buttons. The mouse buttons are entirely ignored.
+      on a keyboard as click buttons. The mouse buttons are ignored.
 
       <!-- Although this can be explained, before reading further, please try out the vector-drawing demo below.
       -->
 
     <p>
       The concept is that&mdash; and real-world use of the key-click UI has shown&mdash;
-      there is currently too much work assigned to an individual hand.
-      Compared to the key-click UI, the hand is currently burdened.
+      there is currently too much work assigned to an individual mouse hand.
+      Compared to the key-click UI, the mouse hand is currently burdened.
       It has to do two things at once: coordinate the position of the cursor <i>and</i> click the buttons with the index
       finger.
+      <p>
       In a vector-drawing program, especially, this is too much; the
       standard mouse interface is too simplistic for drawing vectors. Thus, to
       establish a normal situation for

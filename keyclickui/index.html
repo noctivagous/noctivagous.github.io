@@ -391,13 +391,16 @@
 
 
     <p>Though any key could be used for this, <kbd>tab</kbd>
-      has been chosen because of its location on the keyboard.
+      has been chosen because of its location on the keyboard
+      that makes the keyboard behave as live controls instead
+      of character entry for a program.
 
-
+      <p>
       The purpose of assigning <kbd>shift</kbd>+<kbd>left mouse button</kbd>
       to the <kbd>tab</kbd> key is that the key-click UI works better with the <kbd>shift</kbd> modifier for selections
-      most of the time. For one, it is far easier to select multiple objects at a time with the key-click UI, so
-      <kbd>shift</kbd> is implemented.
+      most of the time. The interactive dynamic has changed, and it is far easier to select 
+      multiple objects at a time with the key-click UI.
+      <!-- <kbd>shift</kbd> is implemented.-->
       Tweaks and modifications like this are needed to make the key-click UI translate existing conventions.
       Just like before, clicking outside of the selection de-selects everything.
     </p>
@@ -405,21 +408,22 @@
     <h2>The <kbd>Spacebar</kbd> Implements a Drag-Lock on The Current Selection</h2>
     <p>
       In a convention specific to the key-click UI, the <kbd>tab</kbd> key has been paired with the <kbd>spacebar</kbd>
-      key to move objects around the screen.
+      key to move objects around the screen.  It is possible to use any combination of keys, but
+      these are very large and they will be tapped frequently as buttons of a machine.    
 
     <p>
-      To drag an object, you press
+      To drag an object,  press
       the <kbd>spacebar</kbd> key after the object has been selected (using <kbd>tab</kbd> click), and the
-      object moves in lock step with the cursor. In other words, this is a drag lock, affixing objects to the
+      object moves in lock step with the cursor. This is a drag lock, affixing objects to the
       cursor relative to their position at the time of the drag lock. To release the drag lock, press the
       <kbd>spacebar</kbd> key again
       and then the objects are left at their location.
 
     <p>
-      For ease of providing terminology this is called a drag-lock, but it is also called
+      For ease of providing upfront terminology this is called a drag-lock, but it is also called
       "carting" by Noctivagous, in place of "dragging". It is named as such because a cart moves its contents
-      briskly using wheels on the ground whereas the dragging of something on the ground makes lots of noise.
-      That is the degree of UI improvement that carting provides.
+      smoothly using wheels on the ground whereas the dragging of something on the ground makes lots of noise.
+      That is the degree of UI improvement that carting (a drag-lock) provides.
     </p>
 
     <h2>The <kbd>Escape</kbd> Key Cancels All Drag Locks And Selections</h2>
@@ -434,18 +438,20 @@
 
     <p>Moving objects around on screen is very smooth when a drag lock is
       used in the way described above. But in addition to this, it provides
-      opportunities to operate with the selection or apply functions to it.
+      opportunities to operate with the selection or apply functions to it
+      in real time.
     </p>
 
-    <p>In a vector-drawing program, the selection is be scaled up or down with
+    <p>In a vector-drawing program, the drag-locked selection can be scaled up or down with
       the bracket keys (<kbd>[</kbd> and <kbd>]</kbd>).
 
-      The two keys below the bracket keys (<kbd>;</kbd> and <kbd>'</kbd>)
+      In the demo, the two keys below the bracket keys (<kbd>;</kbd> and <kbd>'</kbd>)
       rotate the selection by an increment of 15 degrees clockwise and counterclockwise.
 
       The selection can be stamped
-      with the <kbd>E</kbd> key. So this means that transformed copies of
-      the dragged selection can occur in real time. This is how Floating Marker works.
+      with the <kbd>E</kbd> key during the drag-lock. So this means that transformed copies of
+      the dragged selection can occur in real time. This is what Floating Marker uses for
+      its vector-drawing user interface.
 
     </p>
 

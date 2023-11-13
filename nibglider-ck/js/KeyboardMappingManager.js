@@ -179,8 +179,17 @@ class KeyboardMappingManager {
   tempKeyProcessor(keyEvent) {
 
 
-    if (keyEvent.code == 'Tab') {
+    if ((this.eventKeyCodeWithFlag === "Tab")) {
       this.select();
+    }
+
+
+    if ((this.eventKeyCodeWithFlag === "KeyF")) {
+      this.drawingEntityManager.hardCorner();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "KeyA")) {
+      this.drawingEntityManager.end();
     }
 
     // Spacebar for drag-lock

@@ -21,11 +21,17 @@ class LayerManager {
 
     this.layerManagerDidFinishInit();
 
+    this.selectionJustChanged = false;
   }
 
   layerManagerDidFinishInit() {
     this.app.onResize();
     // Create the offscreen canvases for each layer
+  }
+
+  addDrawableToCurrentLayer(drawable)
+  {
+    this.currentLayer.addObject(drawable);
   }
 
   updateAllLayersBackingStores() {
@@ -210,17 +216,6 @@ class Layer {
       this.setIsInDragLock(!this.isInDragLock);
     }
 
-    /*
-    if (this.hasSelectedItems() && (this.isInDragLock == false)) 
-    {
-      this.setIsInDragLock(true);
-    }
-    else if (this.hasSelectedItems() && (this.isInDragLock == true)) 
-    {
-      this.setIsInDragLock(false);
-    }
-    */
-
   }
 
   setIsInDragLock(status) {
@@ -233,39 +228,28 @@ class Layer {
 
     this.layerManager.app.invalidateEntireCanvas();
 
-    //    console.log(status);
-    /*
-    var oldValue = this.isInDragLock;
-    var newValue = status;
-    this.isInDragLock = status;
-    
-
-    console.log("setIsInDragLock");
-    if((oldValue == true) && (newValue == false))
-    {
-      this.invalidateCanvasAndUpdateBackingStoreImage();
-      console.log('cart off');
-    }
-    else if((newValue == false) && (oldValue == true))
-    {
-      console.log('cart on');
-    }
-*/
-    // updateTextContent();
   }
 
 
   stampSelectedItems() {
+    // Assuming this.selectedItems is your original array
 
-    for (var i = 0; i < this.selectedItems.length; i++) {
-      const copyForStamp = this.selectedItems[i].copy();
-      
-      this.addObject(copyForStamp);
+    // Create a shallow copy of the array
+    let shallowCopy = [...this.selectedItems];
+
+    // Sort the shallow copy
+    shallowCopy.sort((a, b) => a.drawingOrder - b.drawingOrder);
+
+    // Iterate over the sorted shallow copy
+    for (var i = 0; i < shallowCopy.length; i++) {
+        const copyForStamp = shallowCopy[i].copy(); // Copying the object from the sorted array
+        this.addObject(copyForStamp); // Adding the copied object
     }
 
+    // Invalidate the canvas to reflect changes
     this.layerManager.app.invalidateEntireCanvas();
+}
 
-  }
 
 
   handleMouseMove(event) {
@@ -301,8 +285,8 @@ class Layer {
         this.selectedItems[i].translate(delta.x, delta.y);
       }
 
-      this.updateBackingStoreImage();
-      //this.layerManager.app.
+      //this.updateBackingStoreImage();
+      
       this.selectedItemsDidChange("carting");
       
   
@@ -474,7 +458,7 @@ class Layer {
 
 
   drawObjectsInSearchedArea(searchBoundsSkRect, skCanvas) {
-    /*  
+    
     
       // Get all drawable objects in the search area
       const drawableObjectsInArea = this.searchArea(searchBoundsSkRect);
@@ -482,10 +466,10 @@ class Layer {
   
       // Perform drawing with CanvasKit on the skCanvas
       drawableObjectsInArea.forEach(drawable => {
-        console.log('drobj');
+       // console.log('drobj');
         drawable.draw(skCanvas);
       });
-  */
+  
     /*
         for (let i = drawableObjectsInArea.length - 1; i >= 0; i--) {
           const drawable = drawableObjectsInArea[i];
@@ -592,11 +576,40 @@ class Layer {
     }
     this.selectedItemsDidChange("removeItemFromSelection " + this.selectedItems.length);
 
+    
+  }
+
+  rotateSelectedItems(degrees)
+  {
+      // Apply the delta to the position of all selected items
+      for (var i = 0; i < this.selectedItems.length; i++) {
+        this.selectedItems[i].rotate(degrees);
+      }
   }
 
   selectedItemsDidChange(string) {
-    this.invalidateCanvasAndUpdateBackingStoreImage();
-    // console.log(string);
+
+    
+    // invalidate canvas when the 
+    // selectedItems begins to exist or ends because
+    // it usually is invalidated on mouse move.
+    // if it is invalidated again during
+    // carting in this func, it will double draw the shadows.
+    if(string != 'carting')
+    {
+      
+      this.layerManager.selectionJustChanged = true;
+      const now = Date.now();
+      // for preventing flicker that occurs from
+      // multiple draw calls on the same frame,
+      // which darkens shadow because of <1 opacity of shadow 
+      // being drawn more than once.
+      if((now - this.layerManager.app.cursorManager.lastCursorUpdateTime) > 20)
+      {
+        this.invalidateCanvasAndUpdateBackingStoreImage();
+      }
+
+    }
   }
 
   collectiveBounds(selectedItems) {
@@ -693,15 +706,42 @@ class Layer {
   }
 
  */
+  
+
+   
+
+
+reorderDrawableObjectsIndices() {
+  for (let i = 0; i < this.drawableObjects.length; i++) {
+    this.drawableObjects[i].drawingOrder = i;
+  }
+}
 
   // Function to add objects to the rbush tree
-  addObject(drawable) {
+  addObject(drawable, indexForInsertion = -1) {
+
+
+    if(indexForInsertion > -1)
+    {
+    // Using splice to insert the object
+  // splice(index, number_of_elements_to_remove, item_to_insert)
+      this.drawableObjects.splice(indexForInsertion, 0, drawable);
+    }
+    else
+    {
+      this.drawableObjects.push(drawable);
+    }
+
+    this.reorderDrawableObjectsIndices();
     // Calculate the item's bounding box (assuming drawable has a getBounds method)
-    const item = drawable.getRBushBounds();
+    let item = drawable.getRBushBounds();
+
+    // add the drawingOrder index to the rBush item.
+    // item.drawingOrder = drawable.drawingOrder;
     // Add the item to the rbush tree
     this.rBush.insert(item);
     // Keep a reference to the drawable object
-    this.drawableObjects.push(drawable);
+    
   }
 
   // Function to remove objects from the rbush tree
@@ -712,6 +752,7 @@ class Layer {
     this.rBush.remove(item);
     // Remove the drawable object from the reference list
     this.drawableObjects = this.drawableObjects.filter(obj => obj !== drawable);
+    this.reorderDrawableObjectsIndices();
   }
 
   // Function to update the position of objects in the rbush tree
@@ -743,7 +784,15 @@ class Layer {
       maxY: NGUtils.maxY(skRectFloat32Array)
     };
     // Perform the search on the rbush tree
-    return this.rBush.search(searchBounds).map(item => item.drawable);
+    let searchResults = this.rBush.search(searchBounds).map(item => item.drawable);
+
+    // Reorder searchResults according to the drawingOrder value
+    searchResults.sort((a, b) => {
+        return a.drawingOrder - b.drawingOrder;
+    });
+
+
+    return searchResults;
   }
 
 }

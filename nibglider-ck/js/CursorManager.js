@@ -28,13 +28,15 @@ class CursorManager {
     
     this.setCursorTypeToNone();
 
+    this.lastCursorUpdateTime = 0;
   }
 
 
   setCursorTypeToNone()
   {
+    
     document.body.style.cursor = 'none';
-
+    this.app.htmlCanvas.style.cursor = 'none';
   }
 
   // Updates the mouse coordinates
@@ -56,7 +58,28 @@ class CursorManager {
     
     // dirty rect ver:
     //this.app.invalidateRect( this.cursorSkRect() );
-    this.app.invalidateEntireCanvas();
+    
+    
+    if(this.app.layerManager.selectionJustChanged === false)
+    {
+     this.app.invalidateEntireCanvas();
+    }
+    else
+    {
+      this.app.layerManager.selectionJustChanged = false;
+    }
+
+    
+    const now = Date.now();
+    this.lastCursorUpdateTime = now;
+    
+    //const timeSinceLastCursorUpdateTime = now - this.lastCursorUpdateTime;
+
+    // Check if a certain amount of time has passed
+    //if (timeSinceLastDraw > desiredInterval) {
+      
+      //  return true;
+    //}
 
 
     // ensures that the cursor is always invisible

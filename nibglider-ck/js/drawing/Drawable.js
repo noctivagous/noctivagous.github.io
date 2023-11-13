@@ -7,12 +7,15 @@ export class Drawable {
 
     this.skPaint = skPaint || this.defaultSkPaint();
     this.skPaint.setAntiAlias(true);
-    this.path = path;
+    this.path = path || new window.CanvasKit.Path();
     this.matrix = null;
     this.isSelected = false;
     this.isVisible = true;
     this.isLocked = false; // Initial state is unlocked
     this.pivot = null; // No pivot point by default
+    this.frameCount = 0;
+
+    this.drawingOrder = 0;
 
     if (paintStyle) {
       // Set the paint style if one is provided
@@ -33,8 +36,9 @@ export class Drawable {
 
 
   setStyle(style) {
-    this.skPaint.setStyle(CanvasKit.PaintStyle[style]);
+    console.log(style);
     this.paintStyle = style; // Keep track of the style within your Drawable object
+    this.skPaint.setStyle(style);
   }
 
   getStyle() {
@@ -81,9 +85,15 @@ export class Drawable {
 
   }
 
+
+
   // Draw a selection effect such as a shadow under the object
 drawSelectionEffect(skCanvas) {
   if (this.isSelected) {
+
+    //console.log(`Draw called at ${new Date().toISOString()}`);
+    //console.log(`Draw called for object ${this.id} on frame: ${this.frameCount}`);
+
     // Create a shadow paint object or similar effect as per the graphics API
     const shadowPaint = this.skPaint.copy();//new CanvasKit.Paint();
     shadowPaint.setColor(CanvasKit.Color4f(0, 0, 0, 0.8)); // Example semi-transparent black color
@@ -309,13 +319,17 @@ drawSelectionEffect(skCanvas) {
     // Convert the angle from degrees to radians for CanvasKit
     const radians = angle * Math.PI / 180;
 
+    let translationMatrix = CanvasKit.Matrix.rotated(angle);
+    this.path.transform(translationMatrix);
+
+
     // Create a rotation matrix around a point (cx, cy)
-    let rotationMatrix = window.CanvasKit.SkMatrix.identity();
-    rotationMatrix = window.CanvasKit.SkMatrix.preRotate(rotationMatrix, radians, cx, cy);
+  //  let rotationMatrix = window.CanvasKit.SkMatrix.identity();
+//    rotationMatrix = window.CanvasKit.SkMatrix.preRotate(rotationMatrix, radians, cx, cy);
 
     // Apply the rotation matrix to the current matrix
-    this.matrix = window.CanvasKit.SkMatrix.multiply(this.matrix, rotationMatrix);
-    this.updatePath(); // Assuming you have a method to apply the matrix to the path
+    //this.matrix = window.CanvasKit.SkMatrix.multiply(this.matrix, rotationMatrix);
+    //this.updatePath(); // Assuming you have a method to apply the matrix to the path
   }
 
   scale(sx, sy = sx) {
@@ -416,11 +430,12 @@ drawSelectionEffect(skCanvas) {
 
   // Default paint setup
   defaultSkPaint() {
-    window.CanvasKit;
-    let paint = new CanvasKit.Paint();
-    paint.setColor(CanvasKit.Color4f(0, 0, 1, 1)); // Default to blue
-    paint.setStyle(CanvasKit.PaintStyle.Fill);
-    this.setStyle(CanvasKit.PaintStyle.Fill);
+    //let CanvasKit = window.CanvasKit;
+    
+    let paint = new window.CanvasKit.Paint();
+    paint.setColor(window.CanvasKit.Color4f(0, 0, 1, 1)); // Default to blue
+    paint.setStyle(window.CanvasKit.PaintStyle.Fill);
+    //this.setStyle(window.CanvasKit.PaintStyle.Fill);
     paint.setAntiAlias(true);
     return paint;
   }

@@ -8,11 +8,12 @@ class PaintManager {
     this.nibGliderPaint = new app.CanvasKit.Paint();
     this.initializeDefaultNibGliderPaint();
     this.selectedObjectsPaint = new Map(); // Stores the paint for each selected object.
+    
   }
 
   initializeDefaultNibGliderPaint() {
     this.nibGliderPaint.setStyle(this.app.CanvasKit.PaintStyle.Fill);
-    this.nibGliderPaint.setColor(this.app.CanvasKit.Color4f(0, 0, 0, 1)); // Default to black
+    this.nibGliderPaint.setColor(this.app.CanvasKit.Color4f(1, 1, 1, 1)); //  white
     this.nibGliderPaint.setAntiAlias(true);
   }
 
@@ -185,3 +186,5 @@ class PaintManager {
   }
 
 }
+
+export default PaintManager;

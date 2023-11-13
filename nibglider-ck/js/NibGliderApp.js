@@ -2,10 +2,18 @@ import NGUtils from "./NGUtils.js";
 import CursorManager from './CursorManager.js';
 import KeyboardMappingManager from './KeyboardMappingManager.js';
 import EventManager from './EventManager.js';
-import DrawingEntityManager from './DrawingEntityManager.js';
+
+import DrawingEntityManager from './drawing/DrawingEntityManager.js';
+import { Drawable } from './drawing/Drawable.js';
+
+import  PaintManager   from './drawing/PaintManager.js';
+import  {PathManipulator, NGPath}  from './drawing/PathManipulator.js';
+import GridManager from './drawing/GridManager.js';
+import SnappingManager from './drawing/SnappingManager.js';
+
+
 import { Layer, LayerManager } from './LayerManager.js';
 
-import { Drawable } from './drawing/Drawable.js';
 
 
 export var CanvasKit = null;
@@ -23,6 +31,11 @@ class NibGliderApp {
     this.layerManager = null;
     this.cursorManager = null;
     this.keyboardMappingManager = null;
+
+    this.gridManager = null;
+    this.snappingManager = null;
+
+    this.pathManipulator = null;
 
     this.surface = null;
     this.CanvasKit = null;
@@ -61,10 +74,16 @@ class NibGliderApp {
     this.cursorManager = new CursorManager(this);
 
     this.drawingEntityManager = new DrawingEntityManager(this);
-    this.pathManipulator = new PathManipulator(this);
+    
     this.paintManager = new PaintManager(this);
+    this.pathManipulator = new PathManipulator(this);
+
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
+
+    this.snappingManager = new SnappingManager(this);
+
+    this.gridManager = new GridManager(this);
 
    
 
@@ -184,12 +203,7 @@ class NibGliderApp {
       // this.skCanvas.clipRect(rectToClip, this.CanvasKit.ClipOp.Intersect, true);
 
 
-      if (this.layerManager) {
-
-        this.layerManager.drawRectOnAllLayers(this.skCanvas, rect);
-
-      }
-
+      this.drawingEntityManager.draw(this.skCanvas);
       
       this.cursorManager.drawCursor(this.skCanvas, this.appStateManager);
       

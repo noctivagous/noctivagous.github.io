@@ -71,9 +71,10 @@ class NibGliderApp {
 
     this.layerManager = new LayerManager(this);
 
+    this.drawingEntityManager = new DrawingEntityManager(this);
+    
     this.cursorManager = new CursorManager(this);
 
-    this.drawingEntityManager = new DrawingEntityManager(this);
     
     this.paintManager = new PaintManager(this);
     this.pathManipulator = new PathManipulator(this);
@@ -306,7 +307,10 @@ class NibGliderApp {
   }
   else
   {
-    console.log('this.layerManager null in invalidateEntireCanvas');
+    
+   // console.log('this.layerManager null in invalidateEntireCanvas');
+    return;
+   
   }
     this.invalidateRect(this.CanvasKit.XYWHRect(0, 0, this.htmlCanvas.width, this.htmlCanvas.height));
   }

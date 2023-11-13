@@ -14,6 +14,7 @@ class CursorManager {
     this.app = app;
     this.appStateManager = app.appStateManager;
     CanvasKit = app.CanvasKit;
+    this.drawingEntityManager = app.drawingEntityManager
 
     this.cursorBoxPaint = new app.CanvasKit.Paint();
     this.cursorBoxPaint.setColor(app.CanvasKit.Color4f(0.9, 0, 0, 1.0));
@@ -96,6 +97,7 @@ class CursorManager {
     // to determine if the cursor is near a point that should act as a snap point
     this.currentDrawingPoint = [x,y];
 
+    this.drawingEntityManager.currentPointDidUpdate(this.currentDrawingPoint);
 
     // If snapping occurred:
     // this.currentDrawingPoint = { x: snapX, y: snapY };

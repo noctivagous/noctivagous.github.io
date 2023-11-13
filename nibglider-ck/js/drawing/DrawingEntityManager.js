@@ -18,6 +18,15 @@ class DrawingEntityManager {
   }
 
 
+  // called by cursormanager
+  currentPointDidUpdate(newCurrentPoint)
+  {
+    if(this.isInDrawing)
+    {
+      this.pathManipulator.currentPointDidUpdate(newCurrentPoint);
+    }
+  }
+
 setIsInDrawing(bool)
 {
   this.isInDrawing = bool;
@@ -36,6 +45,18 @@ end()
     this.pathManipulator.addLivePathToCurrentLayer();
     this.setIsInDrawing(false);
   }
+
+}
+
+closePathAndEnd()
+{
+  if(this.isInDrawing)
+  {
+    this.pathManipulator.closePath();
+    this.pathManipulator.addLivePathToCurrentLayer();
+    this.setIsInDrawing(false);
+  }
+
 
 }
 

@@ -5,14 +5,23 @@
 class PaintManager {
   constructor(app) {
     this.app = app;
-    this.nibGliderPaint = new app.CanvasKit.Paint();
-    this.initializeDefaultNibGliderPaint();
+    
     this.selectedObjectsPaint = new Map(); // Stores the paint for each selected object.
     
+    this.nibGliderStrokeWidth = 4;
+
+    this.nibGliderPaint = new app.CanvasKit.Paint();
+    this.nibGliderPaintStyle = window.CanvasKit.PaintStyle.Fill;
+    
+
+    this.initializeDefaultNibGliderPaint();
   }
 
+  
   initializeDefaultNibGliderPaint() {
-    this.nibGliderPaint.setStyle(this.app.CanvasKit.PaintStyle.Fill);
+    
+    this.nibGliderPaint.setStyle(this.nibGliderPaintStyle);
+    this.nibGliderPaint.setStrokeWidth(this.nibGliderStrokeWidth);
     this.nibGliderPaint.setColor(this.app.CanvasKit.Color4f(1, 1, 1, 1)); //  white
     this.nibGliderPaint.setAntiAlias(true);
   }

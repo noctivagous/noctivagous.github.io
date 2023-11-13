@@ -192,6 +192,10 @@ class KeyboardMappingManager {
       this.drawingEntityManager.end();
     }
 
+    if ((this.eventKeyCodeWithFlag === "KeyR")) {
+      this.drawingEntityManager.closePathAndEnd();
+    }
+
     // Spacebar for drag-lock
     if ((this.eventKeyCodeWithFlag === "Space")) {
       this.cart();

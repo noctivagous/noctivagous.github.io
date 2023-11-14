@@ -295,6 +295,42 @@ class KeyboardMappingManager {
       "selectionStateText": "copy selected obj",
     },
 
+    '^KeyF': {
+      "defaultText": "Bring Selection to Front",
+      "defaultFunctionString": "bringSelectionToFront",
+      "defaultDescription": "Bring selected objects to the front",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Bring selected objects to the front",
+    },
+    '^KeyB': {
+      "defaultText": "Send Selection to Back",
+      "defaultFunctionString": "sendSelectionToBack",
+      "defaultDescription": "Send selected objects to the back",
+      "defaultButtonBackgroundColor": "0,148,17",
+      "defaultFontColor": "64,255,64",
+      "selectionStateText": "Send selected objects to the back",
+    },
+    '^KeyUp': {
+      "defaultText": "Bring Selection Forward",
+      "defaultFunctionString": "bringSelectionForward",
+      "defaultDescription": "Bring selected objects forward by one step",
+      "defaultButtonBackgroundColor": "17,0,148",
+      "defaultFontColor": "64,64,255",
+      "selectionStateText": "Bring selected objects forward by one step",
+    },
+    '^KeyDown': {
+      "defaultText": "Send Selection Backward",
+      "defaultFunctionString": "sendSelectionBackward",
+      "defaultDescription": "Send selected objects backward by one step",
+      "defaultButtonBackgroundColor": "148,148,148",
+      "defaultFontColor": "0,0,0",
+      "selectionStateText": "Send selected objects backward by one step",
+    },
+
+    
+
+
 
     'Mac@KeyV': {
       "defaultText": "Paste",
@@ -811,6 +847,26 @@ class KeyboardMappingManager {
     paste: () => {
       this.eventManager.paste();
      },
+
+    bringSelectionToFront: () => {
+      // Call the function to bring selected objects to the front
+      this.drawingEntityManager.bringSelectionToFront();
+    },
+  
+    sendSelectionToBack: () => {
+      // Call the function to send selected objects to the back
+      this.drawingEntityManager.sendSelectionToBack();
+    },
+  
+    bringSelectionForward: () => {
+      // Call the function to bring selected objects forward by one step
+      this.drawingEntityManager.bringSelectionForward();
+    },
+  
+    sendSelectionBackward: () => {
+      // Call the function to send selected objects backward by one step
+      this.drawingEntityManager.sendSelectionBackward();
+    },
 
     cart: () => {
       this.cart();

@@ -17,7 +17,7 @@ class LayerManager {
       layer.createBackingStore(window.innerWidth, window.innerHeight)
     );
 
-  //  this.updateAllLayersBackingStores();
+    //  this.updateAllLayersBackingStores();
 
     this.layerManagerDidFinishInit();
 
@@ -28,8 +28,7 @@ class LayerManager {
     // Create the offscreen canvases for each layer
   }
 
-  addDrawableToCurrentLayer(drawable)
-  {
+  addDrawableToCurrentLayer(drawable) {
     this.currentLayer.addObject(drawable);
   }
 
@@ -42,8 +41,7 @@ class LayerManager {
 
   }
 
-  removeAllSelectedItemsAndReset()
-  {
+  removeAllSelectedItemsAndReset() {
     this.currentLayer.removeAllSelectedItemsAndReset();
   }
 
@@ -59,43 +57,60 @@ class LayerManager {
     this.clearOutSelection();
   }
 
-  stamp(){
-      this.currentLayer.stampSelectedItems();
+  stamp() {
+    this.currentLayer.stampSelectedItems();
   }
 
-  scaleCurrentSelection(scaleFactor,scalePoint)
-  {
+
+
+
+  bringSelectionToFront() {
+    this.currentLayer.bringSelectionToFront();
+  }
+
+  sendSelectionToBack() {
+    this.currentLayer.sendSelectionToBack();
+  }
+
+  bringSelectionForward() {
+    this.currentLayer.bringSelectionForward();
+  }
+
+  sendSelectionBackward() {
+    this.currentLayer.sendSelectionBackward();
+  }
+
+
+
+
+  scaleCurrentSelection(scaleFactor, scalePoint) {
     var pointForScale = this.currentLayer.collectiveCenterOfSelectedItems();
 
-    if(this.currentLayerHasSelection())
-    {
-      this.currentLayer.startScalingAnimation(scaleFactor,pointForScale);
+    if (this.currentLayerHasSelection()) {
+      this.currentLayer.startScalingAnimation(scaleFactor, pointForScale);
     }
   }
 
-  moveCurrentSelection(angleDegrees, distance)
-  {
-    if(this.currentLayerHasSelection())
-    {
-      this.currentLayer.startTranslateAnimation(angleDegrees,distance);
-      
+  moveCurrentSelection(angleDegrees, distance) {
+    if (this.currentLayerHasSelection()) {
+      this.currentLayer.startTranslateAnimation(angleDegrees, distance);
+
     }
   }
 
-  rotateCurrentSelection(angleDegrees,rotationPoint) {
+  rotateCurrentSelection(angleDegrees, rotationPoint) {
 
     var pointForRotation = this.currentLayer.collectiveCenterOfSelectedItems();
 
-    if(this.currentLayerHasSelection())
-    {
+    if (this.currentLayerHasSelection()) {
       let finalAngleDegrees = angleDegrees;
       this.currentLayer.startRotationAnimation(finalAngleDegrees, pointForRotation);//rotateCurrentSelection(angleDegrees,pointForRotation);
-      
+
 
     }
 
-    
-}
+
+  }
 
 
 
@@ -172,7 +187,7 @@ class LayerManager {
   }
 
 
- 
+
 
 
   appDidLoad() {
@@ -284,11 +299,11 @@ class Layer {
     this.currentFrame = 0; // Current frame counter
     this.constantScaleFactor = Math.pow(finalScaleFactor, 1 / this.totalFrames); // Constant scale factor per frame
     this.scaleStartTime = null;
-    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
-        this.animateScaleCurrentSelection(Date.now(), scalePoint));
-}
+    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) =>
+      this.animateScaleCurrentSelection(Date.now(), scalePoint));
+  }
 
-animateScaleCurrentSelection(timestamp, scalePoint) {
+  animateScaleCurrentSelection(timestamp, scalePoint) {
     if (!this.scaleStartTime) this.scaleStartTime = timestamp;
     this.currentFrame++;
 
@@ -296,33 +311,34 @@ animateScaleCurrentSelection(timestamp, scalePoint) {
     this.scaleCurrentSelection(this.constantScaleFactor, scalePoint);
 
     if (this.currentFrame < this.totalFrames) {
-        this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
-            this.animateScaleCurrentSelection(newTimestamp, scalePoint));
+      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) =>
+        this.animateScaleCurrentSelection(newTimestamp, scalePoint));
     } else {
-        this.scaleStartTime = null; // Reset for the next animation
-        this.currentFrame = 0; // Reset the frame counter
+      this.scaleStartTime = null; // Reset for the next animation
+      this.currentFrame = 0; // Reset the frame counter
+      this.updateSelectedRBushItems();
     }
-}
+  }
 
 
 
-  scaleCurrentSelection(scaleFactor,scalePoint) {
+  scaleCurrentSelection(scaleFactor, scalePoint) {
 
-      for (var i = 0; i < this.selectedItems.length; i++) {
-              this.selectedItems[i].scaleUniform(scaleFactor,scalePoint[0],scalePoint[1]);
-      }
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      this.selectedItems[i].scaleUniform(scaleFactor, scalePoint[0], scalePoint[1]);
+    }
 
-      this.layerManager.app.invalidateEntireCanvas();
+    this.layerManager.app.invalidateEntireCanvas();
 
   }
 
 
-  rotateCurrentSelection(angleDegrees,rotationPoint) {
-    
-      for (var i = 0; i < this.selectedItems.length; i++) {
-              this.selectedItems[i].rotate(angleDegrees,rotationPoint[0],rotationPoint[1]);
-      }
-      this.layerManager.app.invalidateEntireCanvas();
+  rotateCurrentSelection(angleDegrees, rotationPoint) {
+
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      this.selectedItems[i].rotate(angleDegrees, rotationPoint[0], rotationPoint[1]);
+    }
+    this.layerManager.app.invalidateEntireCanvas();
 
   }
 
@@ -334,86 +350,88 @@ animateScaleCurrentSelection(timestamp, scalePoint) {
     this.constantRotationIncrement = finalAngleDegrees / this.totalFrames; // Rotation increment per frame
     this.currentRotation = 0; // Current cumulative rotation
     this.rotationStartTime = null;
-    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
-        this.animateRotationCurrentSelection(Date.now(), rotationPoint));
-}
+    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) =>
+      this.animateRotationCurrentSelection(Date.now(), rotationPoint));
+  }
 
 
 
-animateRotationCurrentSelection(timestamp, rotationPoint) {
-  if (!this.rotationStartTime) this.rotationStartTime = timestamp;
-  
-  // Calculate new rotation
-  let newRotation = this.currentRotation + this.constantRotationIncrement;
-  
-  // Check if the final angle is passed in the rotation direction
-  let isFinalRotationReached = this.finalAngleDegrees >= 0 ? 
-      newRotation >= this.finalAngleDegrees : 
+  animateRotationCurrentSelection(timestamp, rotationPoint) {
+    if (!this.rotationStartTime) this.rotationStartTime = timestamp;
+
+    // Calculate new rotation
+    let newRotation = this.currentRotation + this.constantRotationIncrement;
+
+    // Check if the final angle is passed in the rotation direction
+    let isFinalRotationReached = this.finalAngleDegrees >= 0 ?
+      newRotation >= this.finalAngleDegrees :
       newRotation <= this.finalAngleDegrees;
 
-  if (isFinalRotationReached) {
+    if (isFinalRotationReached) {
       newRotation = this.finalAngleDegrees; // Align to final rotation angle
-  }
-  
-  // Apply rotation increment
-  this.rotateCurrentSelection(newRotation - this.currentRotation, rotationPoint);
-  this.currentRotation = newRotation;
+    }
 
-  this.currentFrame++;
-  if (this.currentFrame < this.totalFrames && !isFinalRotationReached) {
-      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
-          this.animateRotationCurrentSelection(newTimestamp, rotationPoint));
-  } else {
+    // Apply rotation increment
+    this.rotateCurrentSelection(newRotation - this.currentRotation, rotationPoint);
+    this.currentRotation = newRotation;
+
+    this.currentFrame++;
+    if (this.currentFrame < this.totalFrames && !isFinalRotationReached) {
+      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) =>
+        this.animateRotationCurrentSelection(newTimestamp, rotationPoint));
+    } else {
       this.rotationStartTime = null; // Reset for the next animation
       this.currentFrame = 0; // Reset the frame counter
+      this.updateSelectedRBushItems();
+    }
   }
-}
 
 
 
-startTranslateAnimation(angleDegrees, distanceToMove) {
-  console.log(angleDegrees);
-  this.angleDegrees = angleDegrees;
-  this.distanceToMove = distanceToMove;
-  this.translationDuration = 60; // Duration of the animation in milliseconds
-  this.totalFrames = this.translationDuration / (1000 / 60); // Number of frames for 60 FPS
-  this.currentFrame = 0; // Current frame counter
+  startTranslateAnimation(angleDegrees, distanceToMove) {
+    console.log(angleDegrees);
+    this.angleDegrees = angleDegrees;
+    this.distanceToMove = distanceToMove;
+    this.translationDuration = 60; // Duration of the animation in milliseconds
+    this.totalFrames = this.translationDuration / (1000 / 60); // Number of frames for 60 FPS
+    this.currentFrame = 0; // Current frame counter
 
-  // Convert angle to radians and calculate deltas per frame
-  let angleRadians = angleDegrees * Math.PI / 180;
-  this.deltaXPerFrame = (distanceToMove * Math.cos(angleRadians)) / this.totalFrames;
-  this.deltaYPerFrame = (distanceToMove * Math.sin(angleRadians)) / this.totalFrames;
+    // Convert angle to radians and calculate deltas per frame
+    let angleRadians = angleDegrees * Math.PI / 180;
+    this.deltaXPerFrame = (distanceToMove * Math.cos(angleRadians)) / this.totalFrames;
+    this.deltaYPerFrame = (distanceToMove * Math.sin(angleRadians)) / this.totalFrames;
 
-  this.translationStartTime = null;
-  this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
+    this.translationStartTime = null;
+    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) =>
       this.animateTranslationCurrentSelection(timestamp));
-}
+  }
 
 
-animateTranslationCurrentSelection(timestamp) {
-  if (!this.translationStartTime) this.translationStartTime = timestamp;
+  animateTranslationCurrentSelection(timestamp) {
+    if (!this.translationStartTime) this.translationStartTime = timestamp;
 
-  // Apply delta translation to the current selection
-  this.translateCurrentSelectionBy(this.deltaXPerFrame, this.deltaYPerFrame);
+    // Apply delta translation to the current selection
+    this.translateCurrentSelectionBy(this.deltaXPerFrame, this.deltaYPerFrame);
 
-  this.currentFrame++;
-  if (this.currentFrame < this.totalFrames) {
-      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
-          this.animateTranslationCurrentSelection(newTimestamp));
-  } else {
+    this.currentFrame++;
+    if (this.currentFrame < this.totalFrames) {
+      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) =>
+        this.animateTranslationCurrentSelection(newTimestamp));
+    } else {
       this.translationStartTime = null; // Reset for the next animation
       this.currentFrame = 0; // Reset the frame counter
+
+      this.updateSelectedRBushItems();
+    }
   }
-}
 
 
-  translateCurrentSelectionBy(deltaX,deltaY)
-  {
+  translateCurrentSelectionBy(deltaX, deltaY) {
 
     for (var i = 0; i < this.selectedItems.length; i++) {
       this.selectedItems[i].translate(deltaX, deltaY);
-      }
-      this.layerManager.app.invalidateEntireCanvas();
+    }
+    this.layerManager.app.invalidateEntireCanvas();
 
   }
 
@@ -421,9 +439,16 @@ animateTranslationCurrentSelection(timestamp) {
   setIsInDragLock(status) {
     this.isInDragLock = status;
 
-    if(this.isInDragLock == false)
-    {
+    if (this.isInDragLock == false) {
       this.lastMousePt = null;
+    }
+
+    if (this.hasSelectedItems()) {
+      // Apply the delta to the position of all selected items
+      for (var i = 0; i < this.selectedItems.length; i++) {
+        this.selectedItems[i].isInDragLock = this.isInDragLock;
+      }
+
     }
 
     this.layerManager.app.invalidateEntireCanvas();
@@ -442,13 +467,13 @@ animateTranslationCurrentSelection(timestamp) {
 
     // Iterate over the sorted shallow copy
     for (var i = 0; i < shallowCopy.length; i++) {
-        const copyForStamp = shallowCopy[i].copy(); // Copying the object from the sorted array
-        this.addObject(copyForStamp); // Adding the copied object
+      const copyForStamp = shallowCopy[i].copy(); // Copying the object from the sorted array
+      this.addObject(copyForStamp); // Adding the copied object
     }
 
     // Invalidate the canvas to reflect changes
     this.layerManager.app.invalidateEntireCanvas();
-}
+  }
 
 
 
@@ -461,44 +486,44 @@ animateTranslationCurrentSelection(timestamp) {
 
   }
 
-  
+
 
   handleDragLock(event) {
     const mousePt = { x: event.offsetX, y: event.offsetY }; // Update mousePt with plain object
-  
+
     // Implement drag-lock functionality
     if (this.isInDragLock) {
-  
+
       // If lastMousePt is null, initialize it
       if (this.lastMousePt === null) {
         this.lastMousePt = mousePt;
       }
-  
+
       // Calculate the delta
       var delta = {
         x: mousePt.x - this.lastMousePt.x,
         y: mousePt.y - this.lastMousePt.y
       };
-  
+
       // Apply the delta to the position of all selected items
       for (var i = 0; i < this.selectedItems.length; i++) {
         this.selectedItems[i].translate(delta.x, delta.y);
       }
 
       //this.updateBackingStoreImage();
-      
+
       this.selectedItemsDidChange("carting");
-      
-  
+
+
       // Update this.lastMousePt for the next event
       this.lastMousePt = mousePt;
-  
+
     } else {
       // Reset this.lastMousePt when drag lock is off
       this.lastMousePt = null;
     }
   }
-  
+
 
 
   createBackingStore(width, height) {
@@ -511,17 +536,16 @@ animateTranslationCurrentSelection(timestamp) {
   async updateBackingStoreImage() {
     // Ensure the offscreen canvas is created
     if (!this.offscreenSurface || this.updateTheBackingStoreForResizeEvent) {
-  
+
       // Delete existing surface if needed
       if (this.updateTheBackingStoreForResizeEvent && this.offscreenSurface) {
         this.offscreenSurface.delete();
         this.offscreenSurface = null;
       }
- 
-  
+
+
       try {
-        if(this.offscreenSurface)
-        {
+        if (this.offscreenSurface) {
           this.offscreenSurface.delete();
         }
         // Create the surface
@@ -530,25 +554,24 @@ animateTranslationCurrentSelection(timestamp) {
           throw new Error('Offscreen surface not created.');
         }
         this.updateTheBackingStoreForResizeEvent = false;
-  
+
         // Get the offscreen canvas and perform drawing operations
         const offscreenCanvas = this.offscreenSurface.getCanvas();
         this.drawAllObjectsOnLayer(offscreenCanvas);
-  
-        
-        if(this.backingStoreImage)
-        {
+
+
+        if (this.backingStoreImage) {
           this.backingStoreImage.delete();
         }
         // Capture the drawing as an image
         this.backingStoreImage = this.offscreenSurface.makeImageSnapshot();
-  
+
       } catch (error) {
         console.error('Error creating surface:', error);
       }
     }
   }
-  
+
   // Method to generate random shapes
   generateRandomShapes(numberOfShapes = 10, widthRange, heightRange) {
 
@@ -612,7 +635,7 @@ animateTranslationCurrentSelection(timestamp) {
 
 
   drawLayer(skCanvas, skRectFloat32Array) {
-   
+
     /*
     // If there's a backing store image, draw it first
     if (this.backingStoreImage) {
@@ -629,8 +652,8 @@ animateTranslationCurrentSelection(timestamp) {
     //  app draw function clipping only to the passed dirtyRects,
     // but the layer's query for intersections is not implemented.
     //  it is is not coming from the rBush (r-tree) yet for each layer.
-    
-     this.drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas);
+
+    this.drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas);
 
     //this.drawObjectsInSearchedArea(skRectFloat32Array, skCanvas)
 
@@ -638,11 +661,11 @@ animateTranslationCurrentSelection(timestamp) {
 
   drawAllObjectsOnLayerThatIntersectRect(skRectFloat32Array, skCanvas) {
 
-     //  skCanvas.save();
-     // const rectToClip = skRectFloat32Array;
+    //  skCanvas.save();
+    // const rectToClip = skRectFloat32Array;
 
-      // for optimiziation when backingstore is made:
-     //  skCanvas.clipRect(rectToClip, window.CanvasKit.ClipOp.Intersect, true);
+    // for optimiziation when backingstore is made:
+    //  skCanvas.clipRect(rectToClip, window.CanvasKit.ClipOp.Intersect, true);
 
     for (let i = 0; i < this.drawableObjects.length; i++) {
       const drawable = this.drawableObjects[i];
@@ -651,25 +674,25 @@ animateTranslationCurrentSelection(timestamp) {
       }
     }
 
-   // skCanvas.restore();
-  
+    // skCanvas.restore();
+
   }
 
 
 
   drawObjectsInSearchedArea(searchBoundsSkRect, skCanvas) {
-    
-    
-      // Get all drawable objects in the search area
-      const drawableObjectsInArea = this.searchArea(searchBoundsSkRect);
-  
-  
-      // Perform drawing with CanvasKit on the skCanvas
-      drawableObjectsInArea.forEach(drawable => {
-       // console.log('drobj');
-        drawable.draw(skCanvas);
-      });
-  
+
+
+    // Get all drawable objects in the search area
+    const drawableObjectsInArea = this.searchArea(searchBoundsSkRect);
+
+
+    // Perform drawing with CanvasKit on the skCanvas
+    drawableObjectsInArea.forEach(drawable => {
+      // console.log('drobj');
+      drawable.draw(skCanvas);
+    });
+
     /*
         for (let i = drawableObjectsInArea.length - 1; i >= 0; i--) {
           const drawable = drawableObjectsInArea[i];
@@ -776,28 +799,26 @@ animateTranslationCurrentSelection(timestamp) {
     }
     this.selectedItemsDidChange("removeItemFromSelection " + this.selectedItems.length);
 
-    
+
   }
 
-  rotateSelectedItems(degrees)
-  {
-      // Apply the delta to the position of all selected items
-      for (var i = 0; i < this.selectedItems.length; i++) {
-        this.selectedItems[i].rotate(degrees);
-      }
+  rotateSelectedItems(degrees) {
+    // Apply the delta to the position of all selected items
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      this.selectedItems[i].rotate(degrees);
+    }
   }
 
   selectedItemsDidChange(string) {
 
-    
+
     // invalidate canvas when the 
     // selectedItems begins to exist or ends because
     // it usually is invalidated on mouse move.
     // if it is invalidated again during
     // carting in this func, it will double draw the shadows.
-    if(string != 'carting')
-    {
-       
+    if (string != 'carting') {
+
       this.invalidateCanvasAndUpdateBackingStoreImage();
 
     }
@@ -822,7 +843,7 @@ animateTranslationCurrentSelection(timestamp) {
 
   collectiveCenter(selectedItems) {
     const bounds = this.collectiveBounds(selectedItems);
-  
+
     if (bounds) {
       const centerX = (bounds[0] + bounds[2]) / 2;
       const centerY = (bounds[1] + bounds[3]) / 2;
@@ -837,16 +858,15 @@ animateTranslationCurrentSelection(timestamp) {
     // If nothing is underneath the cursor, clear the selection
     for (var i = 0; i < this.selectedItems.length; i++) {
       this.selectedItems[i].setIsSelected(false);
+      this.selectedItems[i].isInDragLock = false;
     }
     this.selectedItems = [];
 
+    this.setIsInDragLock(false);
 
     this.selectedItemsDidChange("clearOutSelection " + this.selectedItems.length);
 
-    if(this.isInDragLock)
-    {
-    this.setIsInDragLock(false);
-    }
+    this.layerManager.app.invalidateEntireCanvas();
 
   }
 
@@ -902,29 +922,27 @@ animateTranslationCurrentSelection(timestamp) {
   }
 
  */
-  
-
-   
 
 
-reorderDrawableObjectsIndices() {
-  for (let i = 0; i < this.drawableObjects.length; i++) {
-    this.drawableObjects[i].drawingOrder = i;
+
+
+
+  reorderDrawableObjectsIndices() {
+    for (let i = 0; i < this.drawableObjects.length; i++) {
+      this.drawableObjects[i].drawingOrder = i;
+    }
   }
-}
 
   // Function to add objects to the rbush tree
   addObject(drawable, indexForInsertion = -1) {
 
 
-    if(indexForInsertion > -1)
-    {
-    // Using splice to insert the object
-  // splice(index, number_of_elements_to_remove, item_to_insert)
+    if (indexForInsertion > -1) {
+      // Using splice to insert the object
+      // splice(index, number_of_elements_to_remove, item_to_insert)
       this.drawableObjects.splice(indexForInsertion, 0, drawable);
     }
-    else
-    {
+    else {
       this.drawableObjects.push(drawable);
     }
 
@@ -937,9 +955,9 @@ reorderDrawableObjectsIndices() {
     // Add the item to the rbush tree
     this.rBush.insert(item);
     // Keep a reference to the drawable object
-    
+
   }
-  
+
 
   // Function to remove objects from the rbush tree
   removeObject(drawable) {
@@ -957,14 +975,14 @@ reorderDrawableObjectsIndices() {
   removeArrayOfObjects(drawableArray) {
 
     for (let i = 0; i < drawableArray.length; i++) {
-      this.removeObject(drawableArray[i],false);
+      this.removeObject(drawableArray[i], false);
       // Find the item in the rbush tree
       const item = drawableArray[i].getRBushBounds();
       // Remove the item from the rbush tree
       this.rBush.remove(item);
       // Remove the drawable object from the reference list
       this.drawableObjects = this.drawableObjects.filter(obj => obj !== drawableArray[i]);
-  
+
     }
 
 
@@ -972,29 +990,36 @@ reorderDrawableObjectsIndices() {
   }
 
 
-  removeAllSelectedItemsAndReset()
-  {
-   this.removeArrayOfObjects(this.selectedItems);
+  removeAllSelectedItemsAndReset() {
+    this.removeArrayOfObjects(this.selectedItems);
 
     this.clearOutSelection();
 
     this.layerManager.app.invalidateEntireCanvas();
 
-    
+
 
   }
+
 
   // Function to update the position of objects in the rbush tree
-  moveObject(drawable, newPosition) {
-    // First remove the old item
-    this.removeObject(drawable);
-    // Update the drawable's position
-    drawable.position = newPosition;
+  updateRBushObject(drawable) {
+
+    // Find the item in the rbush tree
+    const item = drawable.getRBushBounds();
+    // Remove the item from the rbush tree
+    this.rBush.remove(item);
+
     // Re-add the updated drawable to the rbush tree
-    this.addObject(drawable);
+    this.rBush.insert(item);
+
   }
 
-
+  updateSelectedRBushItems() {
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      this.updateRBushObject(this.selectedItems[i]);
+    }
+  }
 
 
 
@@ -1017,12 +1042,113 @@ reorderDrawableObjectsIndices() {
 
     // Reorder searchResults according to the drawingOrder value
     searchResults.sort((a, b) => {
-        return a.drawingOrder - b.drawingOrder;
+      return a.drawingOrder - b.drawingOrder;
     });
 
 
     return searchResults;
   }
+
+
+  bringSelectionToFront() {
+    // Sort selected items by drawingOrder in descending order
+    this.selectedItems.sort((a, b) => b.drawingOrder - a.drawingOrder);
+
+    // Find the highest drawingOrder in the entire list
+    const highestDrawingOrder = this.drawableObjects.reduce(
+      (maxOrder, obj) => Math.max(maxOrder, obj.drawingOrder),
+      -1
+    );
+
+    // Update the drawingOrder for selected items and move them to the top
+    for (const item of this.selectedItems) {
+      highestDrawingOrder++;
+      item.drawingOrder = highestDrawingOrder;
+    }
+
+    // Reorder drawableObjects and update RBush tree
+    this.reorderDrawableObjectsIndices();
+
+    this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+  sendSelectionToBack() {
+    // Sort selected items by drawingOrder in ascending order
+    this.selectedItems.sort((a, b) => a.drawingOrder - b.drawingOrder);
+
+    // Find the lowest drawingOrder in the entire list
+    const lowestDrawingOrder = this.drawableObjects.reduce(
+      (minOrder, obj) => Math.min(minOrder, obj.drawingOrder),
+      Number.MAX_SAFE_INTEGER
+    );
+
+    // Update the drawingOrder for selected items and move them to the bottom
+    for (const item of this.selectedItems) {
+      lowestDrawingOrder--;
+      item.drawingOrder = lowestDrawingOrder;
+    }
+
+    // Reorder drawableObjects and update RBush tree
+    this.reorderDrawableObjectsIndices();
+
+    this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+  bringSelectionForward() {
+    // Sort selected items by drawingOrder in ascending order
+    this.selectedItems.sort((a, b) => a.drawingOrder - b.drawingOrder);
+
+    // Find the index of the first selected item in drawableObjects
+    const firstSelectedIndex = this.drawableObjects.indexOf(this.selectedItems[0]);
+
+    // Check if the first selected item is not at the top already
+    if (firstSelectedIndex > 0) {
+      // Swap the drawingOrder values of the selected item and the one above it
+      const selectedAbove = this.drawableObjects[firstSelectedIndex - 1];
+      for (const item of this.selectedItems) {
+        const temp = item.drawingOrder;
+        item.drawingOrder = selectedAbove.drawingOrder;
+        selectedAbove.drawingOrder = temp;
+      }
+
+      // Reorder drawableObjects and update RBush tree
+      this.reorderDrawableObjectsIndices();
+    }
+
+    this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+  sendSelectionBackward() {
+    // Sort selected items by drawingOrder in descending order
+    this.selectedItems.sort((a, b) => b.drawingOrder - a.drawingOrder);
+
+    // Find the index of the last selected item in drawableObjects
+    const lastSelectedIndex = this.drawableObjects.indexOf(
+      this.selectedItems[this.selectedItems.length - 1]
+    );
+
+    // Check if the last selected item is not at the bottom already
+    if (lastSelectedIndex < this.drawableObjects.length - 1) {
+      // Swap the drawingOrder values of the selected item and the one below it
+      const selectedBelow = this.drawableObjects[lastSelectedIndex + 1];
+      for (const item of this.selectedItems) {
+        const temp = item.drawingOrder;
+        item.drawingOrder = selectedBelow.drawingOrder;
+        selectedBelow.drawingOrder = temp;
+      }
+
+      // Reorder drawableObjects and update RBush tree
+      this.reorderDrawableObjectsIndices();
+    }
+
+    this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+
 
 }
 

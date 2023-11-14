@@ -18,6 +18,13 @@ class DrawingEntityManager {
     this.isInDrawing = false;
   }
 
+  switchEntity(entityName) {
+    if (this.entities[entityName]) {
+      this.currentEntity = this.entities[entityName];
+    } else {
+      console.error(`Drawing entity ${entityName} not found`);
+    }
+  }
 
   // called by cursormanager
   currentPointDidUpdate(newCurrentPoint)
@@ -334,14 +341,25 @@ closePathAndEnd()
   }
 
 
-  switchEntity(entityName) {
-    if (this.entities[entityName]) {
-      this.currentEntity = this.entities[entityName];
-    } else {
-      console.error(`Drawing entity ${entityName} not found`);
-    }
+  
+
+  bringSelectionToFront() {
+    this.layerManager.bringSelectionToFront();
   }
 
+  sendSelectionToBack() {
+    this.layerManager.sendSelectionToBack();
+  }
+
+  bringSelectionForward() {
+    this.layerManager.bringSelectionForward();
+  }
+
+  sendSelectionBackward() {
+    this.layerManager.sendSelectionBackward();
+  }
+
+  
   makePaintStyleFill()
   {
     this.paintManager.makePaintStyleFill();

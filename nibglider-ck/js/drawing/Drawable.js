@@ -5,16 +5,14 @@ import NGUtils from "../NGUtils.js";
 export class Drawable {
   constructor(skPaint, path, paintStyle) {
 
-
-    
     this.fillStrokeSetting = 1; // 0 = stroke, 1 = fill, 2, fillstroke;
-
 
     this.skPaint = skPaint || this.defaultSkPaint();
     this.skPaint.setAntiAlias(true);
     this.path = path || new window.CanvasKit.Path();
     this.matrix = null;
     this.isSelected = false;
+    this.isInDragLock = false;
     this.isVisible = true;
     this.isLocked = false; // Initial state is unlocked
     this.pivot = null; // No pivot point by default
@@ -75,9 +73,13 @@ export class Drawable {
       skCanvas.concat(this.matrix);
     }
 
+    
     this.drawSelectionEffect(skCanvas);
 
     skCanvas.drawPath(this.path, this.skPaint);//this.skPaint);
+
+    this.drawDragLockEffect(skCanvas);
+
 
     if(this.isSelected)
     {
@@ -123,6 +125,55 @@ drawSelectionEffect(skCanvas) {
     selectionPaint.delete();
     shadowPaint.delete();
 
+  }
+}
+
+
+// Draw a drag lock effect such as a rotated green square
+drawDragLockEffect(skCanvas) {
+  if (this.isInDragLock) {
+    // Get the path bounds to find the center
+    const bounds = this.getPathBounds();
+    const centerX = (bounds[0] + bounds[2]) / 2;
+    const centerY = (bounds[1] + bounds[3]) / 2;
+
+    // Define the size of the square and create its path
+    const squareSize = 30; // Adjust size as needed
+    const squarePath = new window.CanvasKit.Path();
+    squarePath.addRect(
+      [centerX - squareSize / 2, 
+      centerY - squareSize / 2, 
+      centerX + squareSize / 2, 
+      centerY + squareSize / 2]
+    );
+
+    // Create a green paint with 0.5 opacity
+    const squarePaint = new CanvasKit.Paint();
+    squarePaint.setColor(CanvasKit.Color4f(0, 1, 0, 0.3)); // RGBA green with 0.3 opacity
+    squarePaint.setStyle(CanvasKit.PaintStyle.Fill);
+
+    // Rotate the canvas by 45 degrees around the center of the square
+    skCanvas.save();
+    skCanvas.translate(centerX, centerY);
+    skCanvas.rotate( 45,0,0); // 45 degrees in radians
+    skCanvas.translate(-centerX, -centerY);
+
+    // Draw the square
+    skCanvas.drawPath(squarePath, squarePaint);
+
+
+    squarePaint.setColor(CanvasKit.Color4f(0, 0, 1, 0.5)); // RGBA green with 0.5 opacity
+    squarePaint.setStyle(CanvasKit.PaintStyle.Stroke);
+    squarePaint.setStrokeWidth(2);
+    skCanvas.drawPath(squarePath, squarePaint);
+
+
+    // Restore the canvas to its original state
+    skCanvas.restore();
+
+    // Clean up
+    squarePath.delete();
+    squarePaint.delete();
   }
 }
 
@@ -339,7 +390,7 @@ drawSelectionEffect(skCanvas) {
     this.path.transform(translateToOriginMatrix);
  
     // Create a scaling matrix
-    let rotationMatrix = window.CanvasKit.Matrix.rotated(radians);
+    let rotationMatrix = window.CanvasKit.Matrix.rotated(radians,0,0);
 
     this.path.transform(rotationMatrix);
   

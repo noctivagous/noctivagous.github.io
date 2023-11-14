@@ -142,18 +142,6 @@ class KeyboardMappingManager {
 
   }
 
-  keyConfig = {
-    "48": {
-      "name": "End",
-      "buttonName": "End",
-      "functionString": "endKeyPress",
-      "description": "Deposits any drawing that is taking place onto the drawing page.",
-      "buttonBackgroundColor": "148,17,0",
-      "buttonBackgroundImage": "endKbImg",
-      "buttonFontColor": "255,64,255"
-    }
-    // ... Other key configurations
-  };
 
   getOperatingSystem() {
     if (navigator.userAgentData && navigator.userAgentData.platform) {
@@ -180,17 +168,6 @@ class KeyboardMappingManager {
 
 
 
-  functionRegistry = {
-    endKeyPress: function () {
-      console.log("End key pressed.");
-      // Implement the function's logic here
-    },
-    pushPaletteToSelectedKeyPress: function () {
-      console.log("Palette settings pushed to selected objects.");
-      // Implement the function's logic here
-    }
-    // ... Other functions can be added here in a similar manner
-  };
 
 
 
@@ -211,26 +188,7 @@ class KeyboardMappingManager {
   };
   */
 
-  /*
-  “KeyA“: {
-    "name": "End",
-    "buttonName": "End",
-     “defaultText”:”End”,
-
-    “selectionStateText”: “End”,
-    “dragLockStateText”: “End”,
-    “drawingStateText”: “End”,
-    “defaultFunctionString": "endKeyPress",
-     “selectionFunctionString”: “clearOutSelection”,
-    “dragLockFunctionString: “clearOutSelection”,
-
-    "description": "Deposits any drawing that is taking place onto the drawing page.",
-    “defaultButtonBackgroundColor": "148,17,0",
-    "defaultBackgroundImage": "endKbImg",
-    "defaultBontColor": "255,64,255”,
-
-  }*/
-
+  
 
 
   tempKeyProcessor(keyEvent) {
@@ -427,7 +385,7 @@ class KeyboardMappingManager {
     },
     'KeyA': {
       "defaultText": "End",
-      "defaultFunctionString": "endKeyPress",
+      "defaultFunctionString": "end",
       "description": "End current drawing or selection",
       "defaultButtonBackgroundColor": "148,17,0",
       "defaultFontColor": "255,64,255",
@@ -436,15 +394,25 @@ class KeyboardMappingManager {
 
     },
     'KeyF': {
-
-      "defaultText": "End",
-      "defaultFunctionString": "end",
-      "defaultDescription": "Deposits any drawing that is taking place onto the drawing page.",
+      "defaultText": "Hard Corner",
+      "defaultFunctionString": "hardCorner",
+      "defaultDescription": "Perform hard corner action",
       "defaultButtonBackgroundColor": "148,17,0",
       "defaultFontColor": "255,64,255",
-      "selectionStateText": "End Selection",
-
+      "selectionStateText": "Hard Corner Selection",
     },
+    'KeyR': {
+      "defaultText": "Close Path End",
+      "defaultFunctionString": "closePathEnd",
+      "defaultDescription": "close live path",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "close live path",
+    },
+
+    
+
+
     'BracketRight': {
 
       "defaultText": "Scale Up",
@@ -490,6 +458,22 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
       "selectionStateText": "Tilde + Bracket Right Selection",
 
+    },
+    '^BracketRight': {
+      "defaultText": "Live X Or Y Scaling",
+      "defaultFunctionString": "liveXOrYScaling",
+      "defaultDescription": "Perform live X or Y scaling",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Live X/Y Scaling Selection",
+    },
+    '^BracketLeft': {
+      "defaultText": "Live Shearing",
+      "defaultFunctionString": "liveShearing",
+      "defaultDescription": "Perform live shearing action",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Live Shearing Selection",
     },
     'Semicolon': {
       "defaultText": "Rotate Counterclockwise",
@@ -674,8 +658,14 @@ class KeyboardMappingManager {
       this.drawingEntityManager.makePaintStyleStroke();
     },
     end: () => {
-      this.end();
+      this.drawingEntityManager.end();
     },
+    closePathEnd: () => {
+      this.drawingEntityManager.closePathAndEnd();
+    },
+
+
+
     closePathAndEnd: () => {
       this.drawingEntityManager.closePathAndEnd();
     }

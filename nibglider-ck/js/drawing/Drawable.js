@@ -258,7 +258,8 @@ drawSelectionEffect(skCanvas) {
     const bounds = this.getPathBounds(); // getPathBounds should return a Float32Array
     const cx = (bounds[0] + bounds[2]) / 2;
     const cy = (bounds[1] + bounds[3]) / 2;
-    this.setMatrix(this.matrix.translate(-cx, -cy));
+    return [cx,cy];
+   // this.setMatrix(this.matrix.translate(-cx, -cy));
   }
 
   // Convenience function to calculate the bounds' width
@@ -311,25 +312,39 @@ drawSelectionEffect(skCanvas) {
   //  this.updatePath(); // Assuming you have a method to apply the matrix to the path
   }
 
+
+
   rotate(angle, cx = 0, cy = 0) {
     if (this.isLocked) {
-      console.warn('Drawable is locked and cannot be rotated.');
+      console.warn('Drawable is locked and cannot be scaled.');
       return;
     }
+
     // Convert the angle from degrees to radians for CanvasKit
-    const radians = angle * Math.PI / 180;
+   const radians = angle * Math.PI / 180;
 
-    let translationMatrix = CanvasKit.Matrix.rotated(angle);
-    this.path.transform(translationMatrix);
+  
+    let bPoint = this.boundsCenterOrigin();
+  
+    let rotationPoint = bPoint;
 
+    // Create a translation matrix to move to origin
+    let translateToOriginMatrix = window.CanvasKit.Matrix.translated(-1 * rotationPoint[0], -1 * rotationPoint[1]);
+ 
+    this.path.transform(translateToOriginMatrix);
+ 
+    // Create a scaling matrix
+    let rotationMatrix = window.CanvasKit.Matrix.rotated(radians);
 
-    // Create a rotation matrix around a point (cx, cy)
-  //  let rotationMatrix = window.CanvasKit.SkMatrix.identity();
-//    rotationMatrix = window.CanvasKit.SkMatrix.preRotate(rotationMatrix, radians, cx, cy);
+    this.path.transform(rotationMatrix);
+  
+    // Create a translation matrix to move back
+    let translateBackMatrix = window.CanvasKit.Matrix.translated(bPoint[0], bPoint[1]);
+  
+    this.path.transform(translateBackMatrix);
 
-    // Apply the rotation matrix to the current matrix
-    //this.matrix = window.CanvasKit.SkMatrix.multiply(this.matrix, rotationMatrix);
-    //this.updatePath(); // Assuming you have a method to apply the matrix to the path
+    
+    
   }
 
   scale(sx, sy = sx) {
@@ -337,15 +352,29 @@ drawSelectionEffect(skCanvas) {
       console.warn('Drawable is locked and cannot be scaled.');
       return;
     }
+  
+    let bPoint = this.boundsCenterOrigin();
+  
+    // Create a translation matrix to move to origin
+    let translateToOriginMatrix = window.CanvasKit.Matrix.translated(-1 * bPoint[0], -1 * bPoint[1]);
+ 
+    this.path.transform(translateToOriginMatrix);
+ 
+    // Create a scaling matrix
+    let scaleMatrix = window.CanvasKit.Matrix.scaled(sx, sy);
 
-    // Use CanvasKit's SkMatrix to create a scaling matrix
-    let scaleMatrix = window.CanvasKit.SkMatrix.identity();
-    scaleMatrix = window.CanvasKit.SkMatrix.preScale(scaleMatrix, sx, sy);
+    this.path.transform(scaleMatrix);
+  
+    // Create a translation matrix to move back
+    let translateBackMatrix = window.CanvasKit.Matrix.translated(bPoint[0], bPoint[1]);
+  
+    this.path.transform(translateBackMatrix);
 
-    // Apply the scaling matrix to the current matrix
-    this.matrix = window.CanvasKit.SkMatrix.multiply(this.matrix, scaleMatrix);
-    this.updatePath(); // Assuming you have a method to apply the matrix to the path
+    
+    
   }
+  
+  
 
   // Helper function to get the current position of the Drawable
   getCurrentPosition() {

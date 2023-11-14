@@ -36,7 +36,103 @@ setIsInDrawing(bool)
   }
 }
   
+scaleUp()
+{
+  
+  this.layerManager.scaleCurrentSelection(1.1);
+}
 
+scaleDown()
+{
+  this.layerManager.scaleCurrentSelection(1/1.1);
+
+}
+
+
+scaleUpUpper1()
+{
+  
+  this.layerManager.scaleCurrentSelection(1.6);
+}
+
+scaleDownUpper1()
+{
+  this.layerManager.scaleCurrentSelection(1/1.6);
+
+}
+
+scaleUpLower1()
+{
+  
+  this.layerManager.scaleCurrentSelection(1.05);
+}
+
+scaleDownLower1()
+{
+  this.layerManager.scaleCurrentSelection(1/1.05);
+
+}
+
+scaleUpLower2()
+{
+  
+  this.layerManager.scaleCurrentSelection(1.02);
+}
+
+scaleDownLower2()
+{
+  this.layerManager.scaleCurrentSelection(1/1.02);
+
+}
+
+
+rotateClockwise()
+{
+  this.layerManager.rotateCurrentSelection(15);
+}
+
+
+rotateCounterclockwise()
+{
+  this.layerManager.rotateCurrentSelection(-15);
+
+}
+
+rotateClockwiseUpper1()
+{
+  this.layerManager.rotateCurrentSelection(45);
+}
+
+
+rotateCounterclockwiseUpper1()
+{
+  this.layerManager.rotateCurrentSelection(-45);
+
+}
+
+rotateClockwiseLower1()
+{
+  this.layerManager.rotateCurrentSelection(5);
+}
+
+
+rotateCounterclockwiseLower1()
+{
+  this.layerManager.rotateCurrentSelection(-5);
+
+}
+
+rotateClockwiseLower2()
+{
+  this.layerManager.rotateCurrentSelection(1);
+}
+
+
+rotateCounterclockwiseLower2()
+{
+  this.layerManager.rotateCurrentSelection(-1);
+
+}
 
 end()
 {

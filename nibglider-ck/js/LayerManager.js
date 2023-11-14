@@ -59,6 +59,25 @@ class LayerManager {
       this.currentLayer.stampSelectedItems();
   }
 
+  scaleCurrentSelection(scaleFactor)
+  {
+    if(this.currentLayerHasSelection())
+    {
+      this.currentLayer.scaleCurrentSelection(scaleFactor);
+    }
+  }
+
+  rotateCurrentSelection(angleDegrees) {
+    
+    if(this.currentLayerHasSelection())
+    {
+      this.currentLayer.rotateCurrentSelection(angleDegrees);
+    
+    }
+
+    
+}
+
   currentLayerHasSelection() {
 
     return this.currentLayer.hasSelectedItems();
@@ -217,6 +236,37 @@ class Layer {
     }
 
   }
+
+  scaleCurrentSelection(scaleFactor) {
+
+      for (var i = 0; i < this.selectedItems.length; i++) {
+              this.selectedItems[i].scale(scaleFactor);
+      }
+
+      this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+  rotateCurrentSelection(angleDegrees) {
+    
+      for (var i = 0; i < this.selectedItems.length; i++) {
+              this.selectedItems[i].rotate(angleDegrees);
+      }
+      this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+
+  translateCurrentSelection(deltaX,deltaY)
+  {
+
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      this.selectedItems[i].translate(deltaX, deltaY);
+      }
+      this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
 
   setIsInDragLock(status) {
     this.isInDragLock = status;

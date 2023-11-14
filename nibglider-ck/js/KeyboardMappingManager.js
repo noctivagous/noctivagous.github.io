@@ -188,9 +188,85 @@ class KeyboardMappingManager {
       this.drawingEntityManager.hardCorner();
     }
 
+    if ((this.eventKeyCodeWithFlag === "BracketLeft")) {
+      this.drawingEntityManager.scaleDown();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "BracketRight")) {
+      this.drawingEntityManager.scaleUp();
+    }
+
+
+    if ((this.eventKeyCodeWithFlag === "$BracketLeft")) {
+      this.drawingEntityManager.scaleDownUpper1();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "$BracketRight")) {
+      this.drawingEntityManager.scaleUpUpper1();
+    }
+
+
+    if ((this.eventKeyCodeWithFlag === "~BracketLeft")) {
+      this.drawingEntityManager.scaleDownLower1();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "~BracketRight")) {
+      this.drawingEntityManager.scaleUpLower1();
+    }
+
+
+    
+    if ((this.eventKeyCodeWithFlag === "^~BracketLeft")) {
+      this.drawingEntityManager.scaleDownLower2();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "^~BracketRight")) {
+      this.drawingEntityManager.scaleUpLower2();
+    }
+
+
+
+
+    if ((this.eventKeyCodeWithFlag === "Semicolon")) {
+      this.drawingEntityManager.rotateCounterclockwise();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "Quote")) {
+      this.drawingEntityManager.rotateClockwise();
+    }
+
+    
+
+    if ((this.eventKeyCodeWithFlag === "$Semicolon")) {
+      this.drawingEntityManager.rotateCounterclockwiseUpper1();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "$Quote")) {
+      this.drawingEntityManager.rotateClockwiseUpper1();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "~Semicolon")) {
+      this.drawingEntityManager.rotateCounterclockwiseLower1();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "~Quote")) {
+      this.drawingEntityManager.rotateClockwiseLower1();
+    }
+
+
+    if ((this.eventKeyCodeWithFlag === "^~Semicolon")) {
+      this.drawingEntityManager.rotateCounterclockwiseLower2();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "^~Quote")) {
+      this.drawingEntityManager.rotateClockwiseLower2();
+    }
+
+
     if ((this.eventKeyCodeWithFlag === "KeyA")) {
       this.drawingEntityManager.end();
     }
+
 
     if ((this.eventKeyCodeWithFlag === "KeyR")) {
       this.drawingEntityManager.closePathAndEnd();

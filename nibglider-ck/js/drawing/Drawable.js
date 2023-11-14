@@ -5,6 +5,11 @@ import NGUtils from "../NGUtils.js";
 export class Drawable {
   constructor(skPaint, path, paintStyle) {
 
+
+    
+    this.fillStrokeSetting = 1; // 0 = stroke, 1 = fill, 2, fillstroke;
+
+
     this.skPaint = skPaint || this.defaultSkPaint();
     this.skPaint.setAntiAlias(true);
     this.path = path || new window.CanvasKit.Path();

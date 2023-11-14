@@ -323,6 +323,15 @@ closePathAndEnd()
   }
 
 
+  thickenStroke()
+  {
+    this.paintManager.thickenStroke()
+  }
+
+  thinStroke()
+  {
+    this.paintManager.thinStroke()
+  }
 
 
   switchEntity(entityName) {

@@ -49,6 +49,10 @@ export class PathManipulator {
 
 
   currentPointDidUpdate(newPoint) {
+
+    // will be sent to current drawing entity
+    // instead of here.
+
     if (this.pathDrawable.path) {
       var cmds = this.pathDrawable.path.toCmds();
 
@@ -86,10 +90,16 @@ export class PathManipulator {
 
 
   addLivePathToCurrentLayer() {
-    
+    this.finishPrepByDrawingEntity();
     this.pathDrawable.paintStyle = this.paintManager.nibGliderPaintStyle;
     this.pathDrawable.skPaint = this.paintManager.nibGliderPaint.copy();
     this.layerManager.addDrawableToCurrentLayer(this.pathDrawable);
+
+  }
+
+  finishPrepByDrawingEntity()
+  {
+
 
   }
 

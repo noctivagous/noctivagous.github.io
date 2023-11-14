@@ -14,6 +14,7 @@
 class KeyboardMappingManager {
   constructor(app, drawingEntityManager) {
     this.app = app;
+    this.eventManager = app.eventManager;
     this.drawingEntityManager = drawingEntityManager;
     this.layerManager = this.app.layerManager;
 
@@ -48,10 +49,6 @@ class KeyboardMappingManager {
 
   // sent from EventManager
   handleKeyPress(keyEvent) {
-    const event = this.mapKeyToEvent(keyEvent);
-
-    //this.drawingEntityManager.currentEntity.stateMachine.send(event);
-    // The event is sent to the active drawing entity's state machine.
 
     var flags = this.keyEventFlags(keyEvent);
 
@@ -62,20 +59,23 @@ class KeyboardMappingManager {
     }
 
     // using the keyMap dictionary,
-    // this will be mapped to the Tab key
-    // but is a placeholder for now:
-    this.tempKeyProcessor2(keyEvent);
+    this.keyProcessor(keyEvent);
 
     /*
 
     ------
     NOTES 
     
+    Larger Area Selection Key
     The ` key (~) can act as the broader selection hit key, above Tab.  
     It can hit with a tolerance of 15px, for hitting lines.
 
+    Panning Drag-Lock
     The '1' key can act as a panning drag-lock (via the two-point vector line).
     The vector line for panning will be visible.
+
+
+
     ------
 
 */
@@ -188,45 +188,15 @@ class KeyboardMappingManager {
   };
   */
 
-  
+ 
+  keyProcessor(keyEvent) {
+    
+    const operatingSys = this.app.operatingSystem;
 
-
-  tempKeyProcessor(keyEvent) {
-
-
-    if ((this.eventKeyCodeWithFlag === "^~BracketLeft")) {
-      this.drawingEntityManager.scaleDownLower2();
-    }
-
-    if ((this.eventKeyCodeWithFlag === "^LiveXOrYScaling")) {
-      this.drawingEntityManager.liveXOrYScaling();
-    }
-
-
-    if ((this.eventKeyCodeWithFlag === "^BracketLeft")) {
-      this.drawingEntityManager.liveShearing();
-    }
-
-    if ((this.eventKeyCodeWithFlag === "^BracketRight")) {
-      this.drawingEntityManager.scaleUpLower2();
-    }
-
-    if ((this.eventKeyCodeWithFlag === "Digit1")) {
-      this.drawingEntityManager.makePaintStyleFill();
-    }
-
-    if ((this.eventKeyCodeWithFlag === "Digit1")) {
-      this.drawingEntityManager.makePaintStyleStroke();
-    }
-
-
-  }
-
-  tempKeyProcessor2(keyEvent) {
     const keyCodeWithFlag = this.eventKeyCodeWithFlag;
-    const keyMapEntry = this.keyMappings[keyCodeWithFlag];
+    const keyCodeWithFlagWithOS = operatingSys + this.eventKeyCodeWithFlag;
+    const keyMapEntry = this.keyMappings[keyCodeWithFlag] || this.keyMappings[keyCodeWithFlagWithOS];
   
-    console.log(keyCodeWithFlag);
 
     if (keyMapEntry) {
       // Update the onscreen key panel (you can implement this part)
@@ -240,6 +210,8 @@ class KeyboardMappingManager {
         this.functionRegistry[functionString]();
       }
     }
+    
+
   }
   
   updateOnscreenKeyPanel(keyMapEntry) {
@@ -286,7 +258,61 @@ class KeyboardMappingManager {
       "selectionStateText": "close live path",
     },
 
+    'KeyC': {
+      "defaultText": "Thin Stroke",
+      "defaultFunctionString": "thinStroke",
+      "defaultDescription": "thin stroke",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "thin stroke",
+    },
+
+    'KeyV': {
+      "defaultText": "Thicken Stroke",
+      "defaultFunctionString": "thickenStroke",
+      "defaultDescription": "thicken stroke",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "thicken stroke",
+    },
+
+
+    'Mac@KeyC': {
+      "defaultText": "Copy Selected",
+      "defaultFunctionString": "copy",
+      "defaultDescription": "copy selected obj",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "copy selected obj",
+    },
     
+    'PC^KeyC': {
+      "defaultText": "Copy Selected",
+      "defaultFunctionString": "copy",
+      "defaultDescription": "copy selected obj",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "copy selected obj",
+    },
+
+
+    'Mac@KeyV': {
+      "defaultText": "Paste",
+      "defaultFunctionString": "paste",
+      "defaultDescription": "paste",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "paste",
+    },
+    
+    'PC^KeyV': {
+      "defaultText": "Paste",
+      "defaultFunctionString": "paste",
+      "defaultDescription": "paste",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "paste",
+    },
 
 
     'BracketRight': {
@@ -770,7 +796,22 @@ class KeyboardMappingManager {
     rotateClockwiseLower2: () => {
       this.drawingEntityManager.rotateClockwiseLower2();
     },
+
+    thinStroke: () => {
+      this.drawingEntityManager.thinStroke();
+    },
+
+    thickenStroke: () => {
+      this.drawingEntityManager.thickenStroke();
+    },
     
+    copy: () => {
+      this.eventManager.copy();
+    },
+    paste: () => {
+      this.eventManager.paste();
+     },
+
     cart: () => {
       this.cart();
     },

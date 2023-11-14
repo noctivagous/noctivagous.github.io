@@ -13,6 +13,7 @@ import SnappingManager from './drawing/SnappingManager.js';
 
 
 import { Layer, LayerManager } from './LayerManager.js';
+import GUIManager from "./drawing/GUIManager.js";
 
 
 
@@ -84,18 +85,18 @@ getOperatingSystem() {
         let platform = navigator.userAgentData.platform.toLowerCase();
 
         if (platform.includes('mac')) {
-            return 'MacOS';
+            return 'Mac';
         } else {
-            return 'PC/Linux';
+            return 'PC';
         }
     } else {
         // Fallback to the older userAgent string
         let userAgent = navigator.userAgent.toLowerCase();
 
         if (userAgent.includes('mac os')) {
-            return 'MacOS';
+            return 'Mac';
         } else {
-            return 'PC/Linux';
+            return 'PC';
         }
     }
 }
@@ -130,6 +131,8 @@ getOperatingSystem() {
 
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
+
+    this.guiManager = new GUIManager(this);
 
     this.snappingManager = new SnappingManager(this);
 
@@ -256,6 +259,9 @@ getOperatingSystem() {
 
       this.drawingEntityManager.draw(this.skCanvas);
       
+
+      this.guiManager.drawGUI(this.skCanvas);
+
       this.cursorManager.drawCursor(this.skCanvas, this.appStateManager);
       
       

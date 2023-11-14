@@ -6,6 +6,13 @@ class PaintManager {
   constructor(app) {
     this.app = app;
     
+
+    this.nibGliderFillStrokeSetting = 1; // 0 = stroke, 1 = fill, 2, fillstroke;
+
+    //this.selectedObjectsFillStrokeSetting = null; // 0 = stroke, 1 = fill, 2, fillstroke;
+
+
+
     this.selectedObjectsPaint = new Map(); // Stores the paint for each selected object.
     
     this.nibGliderStrokeWidth = 4;
@@ -24,6 +31,17 @@ class PaintManager {
     this.nibGliderPaint.setStrokeWidth(this.nibGliderStrokeWidth);
     this.nibGliderPaint.setColor(this.app.CanvasKit.Color4f(1, 1, 1, 1)); //  white
     this.nibGliderPaint.setAntiAlias(true);
+  }
+
+
+  thickenStroke()
+  {
+    // set activePaint stroke to more
+  }
+
+  thinStroke()
+  {
+    // set activePaint stroke to less
   }
 
   makeColoredFillPaint(color) {

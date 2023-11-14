@@ -68,6 +68,16 @@ class EventManager {
 
   }
 
+  copy(){
+
+
+  }
+
+  paste()
+  {
+
+
+  }
 
 
   handleMouseDown(event) {

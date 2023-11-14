@@ -69,8 +69,16 @@ class LayerManager {
 
     if(this.currentLayerHasSelection())
     {
-      this.currentLayer.startScalingAnimation(scaleFactor,pointForScale);//.animateScaleCurrentSelection(Date.now(), scaleFactor,pointForScale);
-     // this.currentLayer.scaleCurrentSelection(scaleFactor,pointForScale);
+      this.currentLayer.startScalingAnimation(scaleFactor,pointForScale);
+    }
+  }
+
+  moveCurrentSelection(angleDegrees, distance)
+  {
+    if(this.currentLayerHasSelection())
+    {
+      this.currentLayer.startTranslateAnimation(angleDegrees,distance);
+      
     }
   }
 
@@ -297,6 +305,7 @@ animateScaleCurrentSelection(timestamp, scalePoint) {
 }
 
 
+
   scaleCurrentSelection(scaleFactor,scalePoint) {
 
       for (var i = 0; i < this.selectedItems.length; i++) {
@@ -362,9 +371,43 @@ animateRotationCurrentSelection(timestamp, rotationPoint) {
 
 
 
-  
+startTranslateAnimation(angleDegrees, distanceToMove) {
+  console.log(angleDegrees);
+  this.angleDegrees = angleDegrees;
+  this.distanceToMove = distanceToMove;
+  this.translationDuration = 60; // Duration of the animation in milliseconds
+  this.totalFrames = this.translationDuration / (1000 / 60); // Number of frames for 60 FPS
+  this.currentFrame = 0; // Current frame counter
 
-  translateCurrentSelection(deltaX,deltaY)
+  // Convert angle to radians and calculate deltas per frame
+  let angleRadians = angleDegrees * Math.PI / 180;
+  this.deltaXPerFrame = (distanceToMove * Math.cos(angleRadians)) / this.totalFrames;
+  this.deltaYPerFrame = (distanceToMove * Math.sin(angleRadians)) / this.totalFrames;
+
+  this.translationStartTime = null;
+  this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
+      this.animateTranslationCurrentSelection(timestamp));
+}
+
+
+animateTranslationCurrentSelection(timestamp) {
+  if (!this.translationStartTime) this.translationStartTime = timestamp;
+
+  // Apply delta translation to the current selection
+  this.translateCurrentSelectionBy(this.deltaXPerFrame, this.deltaYPerFrame);
+
+  this.currentFrame++;
+  if (this.currentFrame < this.totalFrames) {
+      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
+          this.animateTranslationCurrentSelection(newTimestamp));
+  } else {
+      this.translationStartTime = null; // Reset for the next animation
+      this.currentFrame = 0; // Reset the frame counter
+  }
+}
+
+
+  translateCurrentSelectionBy(deltaX,deltaY)
   {
 
     for (var i = 0; i < this.selectedItems.length; i++) {

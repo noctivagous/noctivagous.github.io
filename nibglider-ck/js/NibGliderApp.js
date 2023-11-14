@@ -49,8 +49,57 @@ class NibGliderApp {
     this.appBackgroundColorPaint = null;
     this.appStateManager = null;
 
+    // User's environment
+    this.screenWidth = 0;
+    this.screenHeight = 0;
+    this.operatingSystem = '';
+    this.devicePixelRatio = 0; // for detecting high resolution (e.g. 2 pixels per pixel displays).
 
   }
+
+detectUserEnvironment(logResults = false) {
+    // Detect screen width and height
+    this.screenWidth = screen.width;
+    this.screenHeight = screen.height;
+
+    // Detect device pixel ratio
+    this.devicePixelRatio = window.devicePixelRatio;
+
+    // Detect Operating System
+    this.operatingSystem = this.getOperatingSystem();
+
+    if(logResults)
+    {
+      console.log("Screen Width:", myApp.screenWidth);
+      console.log("Screen Height:", myApp.screenHeight);
+      console.log("Operating System:", myApp.operatingSystem);
+      console.log("Device Pixel Ratio:", myApp.devicePixelRatio);
+    }
+
+}
+
+getOperatingSystem() {
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+        // New User-Agent Client Hints API
+        let platform = navigator.userAgentData.platform.toLowerCase();
+
+        if (platform.includes('mac')) {
+            return 'MacOS';
+        } else {
+            return 'PC/Linux';
+        }
+    } else {
+        // Fallback to the older userAgent string
+        let userAgent = navigator.userAgent.toLowerCase();
+
+        if (userAgent.includes('mac os')) {
+            return 'MacOS';
+        } else {
+            return 'PC/Linux';
+        }
+    }
+}
+
 
   setupAppBackgroundColor() {
     this.setAppBackgroundColor(CanvasKit.Color(0, 255, 255, 1.0));
@@ -97,7 +146,11 @@ class NibGliderApp {
 
   async init() {
 
+    this.detectUserEnvironment();
+
     await this.initializeCanvasKit();
+
+    
 
     this.setupAppStateManager();
 

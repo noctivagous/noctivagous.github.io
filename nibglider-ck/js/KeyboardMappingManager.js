@@ -288,7 +288,7 @@ class KeyboardMappingManager {
         }
 
     if (keyEvent.key === 'Backspace') {
-      removeAllSelectedItemsAndReset();
+      this.layerManager.removeAllSelectedItemsAndReset();
     }
 
 

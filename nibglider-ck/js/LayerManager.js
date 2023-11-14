@@ -42,6 +42,11 @@ class LayerManager {
 
   }
 
+  removeAllSelectedItemsAndReset()
+  {
+    
+  }
+
   select() {
     this.selectionHitTestOnCurrentLayer(this.app.mouseX, this.app.mouseY);
   }
@@ -64,7 +69,8 @@ class LayerManager {
 
     if(this.currentLayerHasSelection())
     {
-      this.currentLayer.scaleCurrentSelection(scaleFactor,pointForScale);
+      this.currentLayer.startScalingAnimation(scaleFactor,pointForScale);//.animateScaleCurrentSelection(Date.now(), scaleFactor,pointForScale);
+     // this.currentLayer.scaleCurrentSelection(scaleFactor,pointForScale);
     }
   }
 
@@ -74,8 +80,10 @@ class LayerManager {
 
     if(this.currentLayerHasSelection())
     {
-      this.currentLayer.rotateCurrentSelection(angleDegrees,pointForRotation);
-    
+      let finalAngleDegrees = angleDegrees;
+      this.currentLayer.startRotationAnimation(finalAngleDegrees, pointForRotation);//rotateCurrentSelection(angleDegrees,pointForRotation);
+      
+
     }
 
     
@@ -224,7 +232,25 @@ class Layer {
     this.selectedItems = [];
     this.isInDragLock = false;
     this.lastMousePt = null;
+
+
+    // Animation properties
+    this.startRotation = 0;
+    this.endRotation = 90;
+    this.rotationDuration = 100;
+    this.rotationStartTime = null;
+
+    this.startScale = 1; // Starting scale factor
+    this.endScale = 2; // Ending scale factor
+    this.scaleDuration = 100; // Duration in milliseconds
+    this.scaleStartTime = null;
+
+    this.animateScaleCurrentSelection = this.animateScaleCurrentSelection.bind(this);
+
   }
+
+
+
 
   hasSelectedItems() {
     return (this.selectedItems.length > 0)
@@ -242,6 +268,35 @@ class Layer {
 
   }
 
+  startScalingAnimation(finalScaleFactor, scalePoint) {
+    this.finalScaleFactor = finalScaleFactor;
+    this.scaleDuration = 60; // Duration of the animation in milliseconds
+    this.fps = 60;
+    this.totalFrames = this.scaleDuration / (1000 / this.fps); // Number of frames for 60 FPS
+    this.currentFrame = 0; // Current frame counter
+    this.constantScaleFactor = Math.pow(finalScaleFactor, 1 / this.totalFrames); // Constant scale factor per frame
+    this.scaleStartTime = null;
+    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
+        this.animateScaleCurrentSelection(Date.now(), scalePoint));
+}
+
+animateScaleCurrentSelection(timestamp, scalePoint) {
+    if (!this.scaleStartTime) this.scaleStartTime = timestamp;
+    this.currentFrame++;
+
+    // Apply constant cumulative scaling to the path at scalePoint
+    this.scaleCurrentSelection(this.constantScaleFactor, scalePoint);
+
+    if (this.currentFrame < this.totalFrames) {
+        this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
+            this.animateScaleCurrentSelection(newTimestamp, scalePoint));
+    } else {
+        this.scaleStartTime = null; // Reset for the next animation
+        this.currentFrame = 0; // Reset the frame counter
+    }
+}
+
+
   scaleCurrentSelection(scaleFactor,scalePoint) {
 
       for (var i = 0; i < this.selectedItems.length; i++) {
@@ -252,6 +307,7 @@ class Layer {
 
   }
 
+
   rotateCurrentSelection(angleDegrees,rotationPoint) {
     
       for (var i = 0; i < this.selectedItems.length; i++) {
@@ -261,6 +317,34 @@ class Layer {
 
   }
 
+  startRotationAnimation(finalAngleDegrees, rotationPoint) {
+    this.finalAngleDegrees = finalAngleDegrees;
+    this.rotationDuration = 60; // Duration of the animation in milliseconds
+    this.totalFrames = this.rotationDuration / (1000 / 60); // Number of frames for 60 FPS
+    this.currentFrame = 0; // Current frame counter
+    this.constantRotationIncrement = finalAngleDegrees / this.totalFrames; // Rotation increment per frame
+    this.rotationStartTime = null;
+    this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
+        this.animateRotationCurrentSelection(Date.now(), rotationPoint));
+}
+
+animateRotationCurrentSelection(timestamp, rotationPoint) {
+  if (!this.rotationStartTime) this.rotationStartTime = timestamp;
+  this.currentFrame++;
+
+  // Apply constant cumulative rotation to the current selection
+  this.rotateCurrentSelection(this.constantRotationIncrement, rotationPoint);
+
+  if (this.currentFrame < this.totalFrames) {
+      this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
+          this.animateRotationCurrentSelection(newTimestamp, rotationPoint));
+  } else {
+      this.rotationStartTime = null; // Reset for the next animation
+      this.currentFrame = 0; // Reset the frame counter
+  }
+}
+
+  
 
   translateCurrentSelection(deltaX,deltaY)
   {

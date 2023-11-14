@@ -159,6 +159,50 @@ class PaintManager {
     return this.selectedObjectsPaint.get(objectID) || null;
   }
 
+
+  // ----------------
+  // ACTIVE PAINT
+  // ----------------
+  // active paint is contingent on
+  // whether there are selectedObjects (selectedObjectsPaint)
+  // or there are no selectedObjects (then nibGliderPaint)
+  getActivePaint()
+  {
+    if(this.app.layerManager.currentLayerHasSelection())
+    {
+
+    }
+    else
+    {
+
+    }
+  }
+
+  
+  makeActivePaintStyleFill()
+  {
+    if(this.app.layerManager.currentLayerHasSelection())
+    {
+
+    }
+    else
+    {
+
+    }
+  }
+
+  makeActivePaintStyleFill()
+  {
+    if(this.app.layerManager.currentLayerHasSelection())
+    {
+
+    }
+    else
+    {
+
+    }
+  }
+
   // Utility Functions
   // -----------------
 

@@ -16,6 +16,8 @@ class KeyboardMappingManager {
     this.app = app;
     this.drawingEntityManager = drawingEntityManager;
     this.layerManager = this.app.layerManager;
+
+    this.keyboardMappingManager = this;
     //   this.eventManager = eventManager;
 
     /*
@@ -62,7 +64,7 @@ class KeyboardMappingManager {
     // using the keyMap dictionary,
     // this will be mapped to the Tab key
     // but is a placeholder for now:
-    this.tempKeyProcessor(keyEvent);
+    this.tempKeyProcessor2(keyEvent);
 
     /*
 
@@ -84,7 +86,6 @@ class KeyboardMappingManager {
   select() {
     this.layerManager.select();
 
-
     //The ` key (~) can act as the broader selection hit key, sitting above the Tab key.  
     //It hits with a tolerance of 15px, for hitting lines.
     // It can use a Rectangle of 10px x 10px instead of a point.
@@ -96,13 +97,12 @@ class KeyboardMappingManager {
     this.layerManager.cart();
   }
 
-  stamp(){
+  stamp() {
     this.layerManager.stamp();
   }
 
   escape() {
-    if(this.layerManager.currentLayerHasSelection())
-    {
+    if (this.layerManager.currentLayerHasSelection()) {
       this.layerManager.cancel();
     }
 
@@ -155,6 +155,31 @@ class KeyboardMappingManager {
     // ... Other key configurations
   };
 
+  getOperatingSystem() {
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+      // New User-Agent Client Hints API
+      let platform = navigator.userAgentData.platform.toLowerCase();
+
+      if (platform.includes('mac')) {
+        return 'Mac';
+      } else {
+        return 'Windows';
+      }
+    } else {
+      // Fallback to the older userAgent string
+      let userAgent = navigator.userAgent.toLowerCase();
+
+      if (userAgent.includes('mac os')) {
+        return 'Mac';
+      } else {
+        return 'Windows';
+      }
+    }
+  }
+
+
+
+
   functionRegistry = {
     endKeyPress: function () {
       console.log("End key pressed.");
@@ -168,12 +193,44 @@ class KeyboardMappingManager {
   };
 
 
+
+
+
+
+
+
+
+  /*
+
+  /*
   // Define key mappings
   keyMappings = {
-    'F': () => { /* ... */ },
-    'A': () => { /* ... */ },
+    'Windows$KeyF': () => {  },
+    'Mac$KeyA': () => { },
     // Define other key mappings...
   };
+  */
+
+  /*
+  “KeyA“: {
+    "name": "End",
+    "buttonName": "End",
+     “defaultText”:”End”,
+
+    “selectionStateText”: “End”,
+    “dragLockStateText”: “End”,
+    “drawingStateText”: “End”,
+    “defaultFunctionString": "endKeyPress",
+     “selectionFunctionString”: “clearOutSelection”,
+    “dragLockFunctionString: “clearOutSelection”,
+
+    "description": "Deposits any drawing that is taking place onto the drawing page.",
+    “defaultButtonBackgroundColor": "148,17,0",
+    "defaultBackgroundImage": "endKbImg",
+    "defaultBontColor": "255,64,255”,
+
+  }*/
+
 
 
   tempKeyProcessor(keyEvent) {
@@ -215,12 +272,21 @@ class KeyboardMappingManager {
     }
 
 
-    
+
     if ((this.eventKeyCodeWithFlag === "^~BracketLeft")) {
       this.drawingEntityManager.scaleDownLower2();
     }
 
-    if ((this.eventKeyCodeWithFlag === "^~BracketRight")) {
+    if ((this.eventKeyCodeWithFlag === "^LiveXOrYScaling")) {
+      this.drawingEntityManager.liveXOrYScaling();
+    }
+
+
+    if ((this.eventKeyCodeWithFlag === "^BracketLeft")) {
+      this.drawingEntityManager.liveShearing();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "^BracketRight")) {
       this.drawingEntityManager.scaleUpLower2();
     }
 
@@ -235,7 +301,7 @@ class KeyboardMappingManager {
       this.drawingEntityManager.rotateClockwise();
     }
 
-    
+
 
     if ((this.eventKeyCodeWithFlag === "$Semicolon")) {
       this.drawingEntityManager.rotateCounterclockwiseUpper1();
@@ -278,14 +344,14 @@ class KeyboardMappingManager {
 
     }
 
-    
-        // Spacebar for drag-lock
-        if ((this.eventKeyCodeWithFlag === "KeyW")) {
-    
-          
-          this.stamp();
-    
-        }
+
+    // Spacebar for drag-lock
+    if ((this.eventKeyCodeWithFlag === "KeyW")) {
+
+      //alert('a');
+      this.stamp();
+
+    }
 
     if (keyEvent.key === 'Backspace') {
       this.layerManager.removeAllSelectedItemsAndReset();
@@ -296,22 +362,330 @@ class KeyboardMappingManager {
     if (keyEvent.key === 'Escape') {
 
       //alert(this.layerManager.currentLayerHasSelection());
-      
-      this.drawingEntityManager.cancelOperations();      
+
+      this.drawingEntityManager.cancelOperations();
       this.layerManager.cancel();
-      
+
 
     }
+
+    if ((this.eventKeyCodeWithFlag === "Digit1")) {
+      this.drawingEntityManager.makePaintStyleFill();
+    }
+
+    if ((this.eventKeyCodeWithFlag === "Digit1")) {
+      this.drawingEntityManager.makePaintStyleStroke();
+    }
+
+    /*
+    if ((this.eventKeyCodeWithFlag === "Digit1")) {
+      this.drawingEntityManager.makePaintFillStroke();
+    }
+*/
+
 
 
 
 
   }
 
+  tempKeyProcessor2(keyEvent) {
+    const keyCodeWithFlag = this.eventKeyCodeWithFlag;
+    const keyMapEntry = this.keyMappings[keyCodeWithFlag];
+  
 
+    if (keyMapEntry) {
+      // Update the onscreen key panel (you can implement this part)
+      this.updateOnscreenKeyPanel(keyMapEntry);
+  
+      // Get the corresponding function string from the key map entry
+      const functionString = keyMapEntry.defaultFunctionString;
+  
+      // Execute the function from functionRegistry if it exists
+      if (this.functionRegistry[functionString]) {
+        this.functionRegistry[functionString]();
+      }
+    }
+  }
+  
+  updateOnscreenKeyPanel(keyMapEntry) {
+    // Implement the logic to update the onscreen key panel here
+    // You can use keyMapEntry to access information about the key and its function
+  }
+  
+
+  keyMappings = {
+    'Tab': {
+      "defaultText": "Select",
+      "defaultFunctionString": "select",
+      "defaultDescription": "Select an item",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+
+      "selectionStateText": "Tab Selection",
+
+    },
+    'KeyA': {
+      "defaultText": "End",
+      "defaultFunctionString": "endKeyPress",
+      "description": "End current drawing or selection",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+
+      "selectionStateText": "Tab Selection",
+
+    },
+    'KeyF': {
+
+      "defaultText": "End",
+      "defaultFunctionString": "end",
+      "defaultDescription": "Deposits any drawing that is taking place onto the drawing page.",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "End Selection",
+
+    },
+    'BracketRight': {
+
+      "defaultText": "Scale Up",
+      "defaultFunctionString": "scaleUp",
+      "defaultDescription": "Scale up an object",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Scale up selection",
+
+    },
+    'BracketLeft': {
+
+      "defaultText": "Scale Down",
+      "defaultFunctionString": "scaleDown",
+      "defaultDescription": "Scale down an object",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Scale down selection",
+
+    },
+    '$BracketLeft': {
+      "defaultText": "Scale Down Upper1",
+      "defaultFunctionString": "scaleDownUpper1",
+      "defaultDescription": "Scale down an object with Shift",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Shift + Bracket Left Selection",
+
+    },
+    '~BracketLeft': {
+      "defaultText": "Scale Down Lower1",
+      "defaultFunctionString": "scaleDownLower1",
+      "defaultDescription": "Scale down an object by a smaller amount.",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Tilde + Bracket Left Selection",
+    },
+    '~BracketRight': {
+      "defaultText": "Scale Up Lower1",
+      "defaultFunctionString": "scaleUpLower1",
+      "defaultDescription": "Scale up an object with Tilde",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Tilde + Bracket Right Selection",
+
+    },
+    'Semicolon': {
+      "defaultText": "Rotate Counterclockwise",
+      "defaultFunctionString": "rotateCounterclockwise",
+      "defaultDescription": "Rotate counterclockwise",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Semicolon Selection",
+    },
+    'Quote': {
+      "defaultText": "Rotate Clockwise",
+      "defaultFunctionString": "rotateClockwise",
+      "defaultDescription": "Rotate clockwise",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Quote Selection",
+    },
+    '$Semicolon': {
+      "defaultText": "Rotate Counterclockwise Upper1",
+      "defaultFunctionString": "rotateCounterclockwiseUpper1",
+      "defaultDescription": "Rotate counterclockwise with Shift",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Shift + Semicolon Selection",
+    },
+    '$Quote': {
+      "defaultText": "Rotate Clockwise Upper1",
+      "defaultFunctionString": "rotateClockwiseUpper1",
+      "defaultDescription": "Rotate clockwise with Shift",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Shift + Quote Selection",
+    },
+    '~Semicolon': {
+      "defaultText": "Rotate Counterclockwise Lower1",
+      "defaultFunctionString": "rotateCounterclockwiseLower1",
+      "defaultDescription": "Rotate counterclockwise by a smaller amount.",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Tilde + Semicolon Selection",
+    },
+    '~Quote': {
+      "defaultText": "Rotate Clockwise Lower1",
+      "defaultFunctionString": "rotateClockwiseLower1",
+      "defaultDescription": "Rotate clockwise by a smaller amount.",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Tilde + Quote Selection",
+    },
+    '^~Semicolon': {
+      "defaultText": "Rotate Counterclockwise Lower2",
+      "defaultFunctionString": "rotateCounterclockwiseLower2",
+      "defaultDescription": "Rotate counterclockwise by a smaller amount with Ctrl+Shift",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Ctrl+Shift + Semicolon Selection",
+    },
+    '^~Quote': {
+      "defaultText": "Rotate Clockwise Lower2",
+      "defaultFunctionString": "rotateClockwiseLower2",
+      "defaultDescription": "Rotate clockwise by a smaller amount with Ctrl+Shift",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Ctrl+Shift + Quote Selection",
+    },
+    'Space': {
+      "defaultText": "Cart",
+      "defaultFunctionString": "cart",
+      "description": "Perform cart action",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Space Selection"
+    },
+    'KeyW': {
+      "defaultText": "Stamp",
+      "defaultFunctionString": "stamp",
+      "defaultDescription": "Perform stamp action",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "KeyW Selection"
+    },
+    'Backspace': {
+      "defaultText": "Remove All Selected",
+      "defaultFunctionString": "removeAllSelectedItemsAndReset",
+      "defaultDescription": "Remove all selected items and reset",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Backspace Selection"
+    },
+    'Escape': {
+      "defaultText": "Cancel",
+      "defaultFunctionString": "cancelOperations",
+      "description": "Cancel operations",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Escape Selection"
+    },
+    'Digit1': {
+      "defaultText": "Make Paint Style Fill",
+      "defaultFunctionString": "makePaintStyleFill",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Digit1 Selection"
+    },
+
+  };
+
+
+  functionRegistry = {
+    select: () => {
+      this.select();
+    },
+    hardCorner: () => {
+      this.drawingEntityManager.hardCorner();
+    },
+    scaleDown: () => {
+      this.drawingEntityManager.scaleDown();
+    },
+    scaleUp: () => {
+      this.drawingEntityManager.scaleUp();
+    },
+    scaleDownUpper1: () => {
+      this.drawingEntityManager.scaleDownUpper1();
+    },
+    scaleUpUpper1: () => {
+      this.drawingEntityManager.scaleUpUpper1();
+    },
+    scaleDownLower1: () => {
+      this.drawingEntityManager.scaleDownLower1();
+    },
+    scaleUpLower1: () => {
+      this.drawingEntityManager.scaleUpLower1();
+    },
+    scaleDownLower2: () => {
+      this.drawingEntityManager.scaleDownLower2();
+    },
+    liveXOrYScaling: () => {
+      this.drawingEntityManager.liveXOrYScaling();
+    },
+    liveShearing: () => {
+      this.drawingEntityManager.liveShearing();
+    },
+    rotateCounterclockwise: () => {
+      this.drawingEntityManager.rotateCounterclockwise();
+    },
+    rotateClockwise: () => {
+      this.drawingEntityManager.rotateClockwise();
+    },
+    rotateCounterclockwiseUpper1: () => {
+      this.drawingEntityManager.rotateCounterclockwiseUpper1();
+    },
+    rotateClockwiseUpper1: () => {
+      this.drawingEntityManager.rotateClockwiseUpper1();
+    },
+    rotateCounterclockwiseLower1: () => {
+      this.drawingEntityManager.rotateCounterclockwiseLower1();
+    },
+    rotateClockwiseLower1: () => {
+      this.drawingEntityManager.rotateClockwiseLower1();
+    },
+    rotateCounterclockwiseLower2: () => {
+      this.drawingEntityManager.rotateCounterclockwiseLower2();
+    },
+    cart: () => {
+      this.cart();
+    },
+    stamp: () => {
+      this.stamp();
+    },
+    removeAllSelectedItemsAndReset: () => {
+      this.layerManager.removeAllSelectedItemsAndReset();
+    },
+    cancelOperations: () => {
+      this.drawingEntityManager.cancelOperations();
+      this.layerManager.cancel();
+    },
+    makePaintStyleFill: () => {
+      this.drawingEntityManager.makePaintStyleFill();
+    },
+    makePaintStyleStroke: () => {
+      this.drawingEntityManager.makePaintStyleStroke();
+    },
+    end: () => {
+      this.end();
+    },
+    closePathAndEnd: () => {
+      this.drawingEntityManager.closePathAndEnd();
+    }
+    // ... Other functions can be added here in a similar manner
+  };
+  
 
 
 }
+
 
 
 

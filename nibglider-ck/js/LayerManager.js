@@ -44,7 +44,7 @@ class LayerManager {
 
   removeAllSelectedItemsAndReset()
   {
-    
+    this.currentLayer.removeAllSelectedItemsAndReset();
   }
 
   select() {
@@ -320,22 +320,38 @@ animateScaleCurrentSelection(timestamp, scalePoint) {
   startRotationAnimation(finalAngleDegrees, rotationPoint) {
     this.finalAngleDegrees = finalAngleDegrees;
     this.rotationDuration = 60; // Duration of the animation in milliseconds
-    this.totalFrames = this.rotationDuration / (1000 / 60); // Number of frames for 60 FPS
+    this.totalFrames = Math.ceil(this.rotationDuration / (1000 / 60)); // Round up to ensure enough frames
     this.currentFrame = 0; // Current frame counter
     this.constantRotationIncrement = finalAngleDegrees / this.totalFrames; // Rotation increment per frame
+    this.currentRotation = 0; // Current cumulative rotation
     this.rotationStartTime = null;
     this.layerManager.app.skSurface.requestAnimationFrame((timestamp) => 
         this.animateRotationCurrentSelection(Date.now(), rotationPoint));
 }
 
+
+
 animateRotationCurrentSelection(timestamp, rotationPoint) {
   if (!this.rotationStartTime) this.rotationStartTime = timestamp;
+  
+  // Calculate new rotation
+  let newRotation = this.currentRotation + this.constantRotationIncrement;
+  
+  // Check if the final angle is passed in the rotation direction
+  let isFinalRotationReached = this.finalAngleDegrees >= 0 ? 
+      newRotation >= this.finalAngleDegrees : 
+      newRotation <= this.finalAngleDegrees;
+
+  if (isFinalRotationReached) {
+      newRotation = this.finalAngleDegrees; // Align to final rotation angle
+  }
+  
+  // Apply rotation increment
+  this.rotateCurrentSelection(newRotation - this.currentRotation, rotationPoint);
+  this.currentRotation = newRotation;
+
   this.currentFrame++;
-
-  // Apply constant cumulative rotation to the current selection
-  this.rotateCurrentSelection(this.constantRotationIncrement, rotationPoint);
-
-  if (this.currentFrame < this.totalFrames) {
+  if (this.currentFrame < this.totalFrames && !isFinalRotationReached) {
       this.layerManager.app.skSurface.requestAnimationFrame((newTimestamp) => 
           this.animateRotationCurrentSelection(newTimestamp, rotationPoint));
   } else {
@@ -343,6 +359,8 @@ animateRotationCurrentSelection(timestamp, rotationPoint) {
       this.currentFrame = 0; // Reset the frame counter
   }
 }
+
+
 
   
 
@@ -878,6 +896,7 @@ reorderDrawableObjectsIndices() {
     // Keep a reference to the drawable object
     
   }
+  
 
   // Function to remove objects from the rbush tree
   removeObject(drawable) {
@@ -887,7 +906,39 @@ reorderDrawableObjectsIndices() {
     this.rBush.remove(item);
     // Remove the drawable object from the reference list
     this.drawableObjects = this.drawableObjects.filter(obj => obj !== drawable);
+
     this.reorderDrawableObjectsIndices();
+  }
+
+  // Function to remove objects from the rbush tree
+  removeArrayOfObjects(drawableArray) {
+
+    for (let i = 0; i < drawableArray.length; i++) {
+      this.removeObject(drawableArray[i],false);
+      // Find the item in the rbush tree
+      const item = drawableArray[i].getRBushBounds();
+      // Remove the item from the rbush tree
+      this.rBush.remove(item);
+      // Remove the drawable object from the reference list
+      this.drawableObjects = this.drawableObjects.filter(obj => obj !== drawableArray[i]);
+  
+    }
+
+
+    this.reorderDrawableObjectsIndices();
+  }
+
+
+  removeAllSelectedItemsAndReset()
+  {
+   this.removeArrayOfObjects(this.selectedItems);
+
+    this.clearOutSelection();
+
+    this.layerManager.app.invalidateEntireCanvas();
+
+    
+
   }
 
   // Function to update the position of objects in the rbush tree

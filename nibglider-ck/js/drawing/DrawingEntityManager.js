@@ -6,6 +6,7 @@ class DrawingEntityManager {
   constructor(app) {
     this.app = app;
     this.pathManipulator = app.pathManipulator;
+    this.paintManager = app.paintManager;
     this.layerManager = app.layerManager;
     this.entities = {
       rectangle: new RectangleDrawingEntity(),
@@ -82,6 +83,16 @@ scaleUpLower2()
 scaleDownLower2()
 {
   this.layerManager.scaleCurrentSelection(1/1.02);
+
+}
+
+liveXOrYScaling()
+{
+  
+}
+
+liveShearing()
+{
 
 }
 
@@ -173,6 +184,16 @@ closePathAndEnd()
     } else {
       console.error(`Drawing entity ${entityName} not found`);
     }
+  }
+
+  makePaintStyleFill()
+  {
+    this.paintManager.makePaintStyleFill();
+  }
+
+  makePaintStyleStroke()
+  {
+    this.paintManager.makePaintStyleStroke();
   }
 
   // Entity event handlers that delegate to the current entity

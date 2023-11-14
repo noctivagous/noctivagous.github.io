@@ -323,10 +323,10 @@ drawSelectionEffect(skCanvas) {
     // Convert the angle from degrees to radians for CanvasKit
    const radians = angle * Math.PI / 180;
 
+
+//    let bPoint = this.boundsCenterOrigin();
   
-    let bPoint = this.boundsCenterOrigin();
-  
-    let rotationPoint = bPoint;
+    let rotationPoint = [cx,cy];
 
     // Create a translation matrix to move to origin
     let translateToOriginMatrix = window.CanvasKit.Matrix.translated(-1 * rotationPoint[0], -1 * rotationPoint[1]);
@@ -339,7 +339,7 @@ drawSelectionEffect(skCanvas) {
     this.path.transform(rotationMatrix);
   
     // Create a translation matrix to move back
-    let translateBackMatrix = window.CanvasKit.Matrix.translated(bPoint[0], bPoint[1]);
+    let translateBackMatrix = window.CanvasKit.Matrix.translated(rotationPoint[0], rotationPoint[1]);
   
     this.path.transform(translateBackMatrix);
 
@@ -347,16 +347,25 @@ drawSelectionEffect(skCanvas) {
     
   }
 
-  scale(sx, sy = sx) {
+  scaleUniform(s, cx,cy)
+  {
+    this.scale(s,s,cx,cy);
+  }
+
+  scale(sx, sy = sx, cx,cy) {
     if (this.isLocked) {
       console.warn('Drawable is locked and cannot be scaled.');
       return;
     }
   
-    let bPoint = this.boundsCenterOrigin();
-  
+    
+    //let bPoint = this.boundsCenterOrigin();
+    let scalePoint = [cx,cy];
+
+    
+
     // Create a translation matrix to move to origin
-    let translateToOriginMatrix = window.CanvasKit.Matrix.translated(-1 * bPoint[0], -1 * bPoint[1]);
+    let translateToOriginMatrix = window.CanvasKit.Matrix.translated(-1 * scalePoint[0], -1 * scalePoint[1]);
  
     this.path.transform(translateToOriginMatrix);
  
@@ -366,10 +375,9 @@ drawSelectionEffect(skCanvas) {
     this.path.transform(scaleMatrix);
   
     // Create a translation matrix to move back
-    let translateBackMatrix = window.CanvasKit.Matrix.translated(bPoint[0], bPoint[1]);
+    let translateBackMatrix = window.CanvasKit.Matrix.translated(scalePoint[0], scalePoint[1]);
   
     this.path.transform(translateBackMatrix);
-
     
     
   }

@@ -21,7 +21,6 @@ class LayerManager {
 
     this.layerManagerDidFinishInit();
 
-    this.selectionJustChanged = false;
   }
 
   layerManagerDidFinishInit() {
@@ -59,24 +58,30 @@ class LayerManager {
       this.currentLayer.stampSelectedItems();
   }
 
-  scaleCurrentSelection(scaleFactor)
+  scaleCurrentSelection(scaleFactor,scalePoint)
   {
+    var pointForScale = this.currentLayer.collectiveCenterOfSelectedItems();
+
     if(this.currentLayerHasSelection())
     {
-      this.currentLayer.scaleCurrentSelection(scaleFactor);
+      this.currentLayer.scaleCurrentSelection(scaleFactor,pointForScale);
     }
   }
 
-  rotateCurrentSelection(angleDegrees) {
-    
+  rotateCurrentSelection(angleDegrees,rotationPoint) {
+
+    var pointForRotation = this.currentLayer.collectiveCenterOfSelectedItems();
+
     if(this.currentLayerHasSelection())
     {
-      this.currentLayer.rotateCurrentSelection(angleDegrees);
+      this.currentLayer.rotateCurrentSelection(angleDegrees,pointForRotation);
     
     }
 
     
 }
+
+
 
   currentLayerHasSelection() {
 
@@ -237,20 +242,20 @@ class Layer {
 
   }
 
-  scaleCurrentSelection(scaleFactor) {
+  scaleCurrentSelection(scaleFactor,scalePoint) {
 
       for (var i = 0; i < this.selectedItems.length; i++) {
-              this.selectedItems[i].scale(scaleFactor);
+              this.selectedItems[i].scaleUniform(scaleFactor,scalePoint[0],scalePoint[1]);
       }
 
       this.layerManager.app.invalidateEntireCanvas();
 
   }
 
-  rotateCurrentSelection(angleDegrees) {
+  rotateCurrentSelection(angleDegrees,rotationPoint) {
     
       for (var i = 0; i < this.selectedItems.length; i++) {
-              this.selectedItems[i].rotate(angleDegrees);
+              this.selectedItems[i].rotate(angleDegrees,rotationPoint[0],rotationPoint[1]);
       }
       this.layerManager.app.invalidateEntireCanvas();
 
@@ -647,17 +652,8 @@ class Layer {
     // carting in this func, it will double draw the shadows.
     if(string != 'carting')
     {
-      
-      this.layerManager.selectionJustChanged = true;
-      const now = Date.now();
-      // for preventing flicker that occurs from
-      // multiple draw calls on the same frame,
-      // which darkens shadow because of <1 opacity of shadow 
-      // being drawn more than once.
-      if((now - this.layerManager.app.cursorManager.lastCursorUpdateTime) > 20)
-      {
-        this.invalidateCanvasAndUpdateBackingStoreImage();
-      }
+       
+      this.invalidateCanvasAndUpdateBackingStoreImage();
 
     }
   }
@@ -665,7 +661,7 @@ class Layer {
   collectiveBounds(selectedItems) {
     let left, top, right, bottom;
     selectedItems.forEach(item => {
-      const rect = item.rect;
+      const rect = item.getBounds();
       if (!left || rect[0] < left) left = rect[0];
       if (!top || rect[1] < top) top = rect[1];
       if (!right || rect[2] > right) right = rect[2];
@@ -675,8 +671,13 @@ class Layer {
   }
 
 
+  collectiveCenterOfSelectedItems() {
+    return this.collectiveCenter(this.selectedItems);
+  }
+
   collectiveCenter(selectedItems) {
     const bounds = this.collectiveBounds(selectedItems);
+  
     if (bounds) {
       const centerX = (bounds[0] + bounds[2]) / 2;
       const centerY = (bounds[1] + bounds[3]) / 2;

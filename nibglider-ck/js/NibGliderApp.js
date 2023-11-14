@@ -184,6 +184,7 @@ class NibGliderApp {
       this.layerManager.drawRectOnAllLayers(this.skCanvas, this.entireCanvasRect());
 
     }
+   
     // this.skCanvas.drawPaint(this.appBackgroundColorPaint);
 
     // dirtyRect setup works but needs to be adapted to CanvasKit
@@ -191,12 +192,8 @@ class NibGliderApp {
     this.dirtyRects.forEach((rect) => {
 
 
-
-
-
 //      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
-
-      
+     
      // this.skCanvas.save();
       //const rectToClip = rect;
 

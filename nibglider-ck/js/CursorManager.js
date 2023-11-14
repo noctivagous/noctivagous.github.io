@@ -61,14 +61,8 @@ class CursorManager {
     //this.app.invalidateRect( this.cursorSkRect() );
     
     
-    if(this.app.layerManager.selectionJustChanged === false)
-    {
      this.app.invalidateEntireCanvas();
-    }
-    else
-    {
-      this.app.layerManager.selectionJustChanged = false;
-    }
+   
 
     
     const now = Date.now();

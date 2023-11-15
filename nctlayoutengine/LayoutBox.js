@@ -1,21 +1,37 @@
 class LayoutBox {
-    constructor(parentWidthPassed, parentHeightPassed) {
+    constructor(parentWidthPassed, parentHeightPassed, guiControl = null, parent = null) {
         this.parentWidth = parentWidthPassed;
         this.parentHeight = parentHeightPassed;
 
-        this.initialInsets = null; // { "topEdgeRatio": 0.33, "leftEdgeFixedPt": 10 }
-        // { "allEdgesFixedPt": 10 } for a uniform margin
-        this.dimensionsByInsetting = null; // { "fromTopEdgeRatio": 0.33, "fromLeftEdgeFixedPt": 300 }
+        this.insetStarts = null; // { "topEdgeRatio": 0.33, "leftEdgePt": 10 }
+        // { "allEdgesPt": 10 } for a uniform margin
+        this.extrude = null; // { "fromTopEdgeRatio": 0.33, "fromLeftEdgePt": 300 }
         this.adhereToEdges = []; // ["right", "left"]
         this.adhereToCorners = []; // ["bottomLeft", "bottomRight"]
 
+        this.guiControl = guiControl;
+        this.children = [];
+        this.parent = parent;
     }
 
 
-    updateDimensions(parentWidthPassed,parentHeightPassed)
-    {
+    // Method to associate a GUIControl
+    setGUIControl(guiControl) {
+        this.guiControl = guiControl;
+    }
+
+    updateDimensions(parentWidthPassed, parentHeightPassed) {
         this.parentWidth = parentWidthPassed;
         this.parentHeight = parentHeightPassed;
+
+        // Recalculate dimensions based on new parent size
+        this.calculateDimensions(this.parentWidth, this.parentHeight);
+
+        // Callback to the associated GUIControl
+        if (this.guiControl) {
+            this.guiControl.layoutBoxDidUpdate(this);
+        }
+
     }
 
     calculateDimensions(parentWidth, parentHeight) {
@@ -23,68 +39,80 @@ class LayoutBox {
         let isStretched = false;
 
         // Calculate initial insets
-        if (this.initialInsets) {
-            // Top edge
-            if (this.initialInsets.topEdgeRatio !== undefined) {
-                y += parentHeight * this.initialInsets.topEdgeRatio;
-                height -= parentHeight * this.initialInsets.topEdgeRatio;
-            } else if (this.initialInsets.topEdgeFixedPt !== undefined) {
-                y += this.initialInsets.topEdgeFixedPt;
-                height -= this.initialInsets.topEdgeFixedPt;
-            }
+        if (this.insetStarts) {
+            // Handle uniform insets for all edges
+            if (this.insetStarts.allEdgesPt !== undefined) {
+                x = y = this.insetStarts.allEdgesPt;
+                width -= this.insetStarts.allEdgesPt * 2;
+                height -= this.insetStarts.allEdgesPt * 2;
+            } else if (this.insetStarts.allEdgesRatio !== undefined) {
+                const insetVal = parentWidth * this.insetStarts.allEdgesRatio;
+                x = y = insetVal;
+                width -= insetVal * 2;
+                height -= insetVal * 2;
+            } else {
+                // Top edge
+                if (this.insetStarts.topEdgeRatio !== undefined) {
+                    y += parentHeight * this.insetStarts.topEdgeRatio;
+                    height -= parentHeight * this.insetStarts.topEdgeRatio;
+                } else if (this.insetStarts.topEdgePt !== undefined) {
+                    y += this.insetStarts.topEdgePt;
+                    height -= this.insetStarts.topEdgePt;
+                }
 
-            // Right edge
-            if (this.initialInsets.rightEdgeRatio !== undefined) {
-                width -= parentWidth * this.initialInsets.rightEdgeRatio;
-            } else if (this.initialInsets.rightEdgeFixedPt !== undefined) {
-                width -= this.initialInsets.rightEdgeFixedPt;
-            }
+                // Right edge
+                if (this.insetStarts.rightEdgeRatio !== undefined) {
+                    width -= parentWidth * this.insetStarts.rightEdgeRatio;
+                } else if (this.insetStarts.rightEdgePt !== undefined) {
+                    width -= this.insetStarts.rightEdgePt;
+                }
 
-            // Bottom edge
-            if (this.initialInsets.bottomEdgeRatio !== undefined) {
-                height -= parentHeight * this.initialInsets.bottomEdgeRatio;
-            } else if (this.initialInsets.bottomEdgeFixedPt !== undefined) {
-                height -= this.initialInsets.bottomEdgeFixedPt;
-            }
+                // Bottom edge
+                if (this.insetStarts.bottomEdgeRatio !== undefined) {
+                    height -= parentHeight * this.insetStarts.bottomEdgeRatio;
+                } else if (this.insetStarts.bottomEdgePt !== undefined) {
+                    height -= this.insetStarts.bottomEdgePt;
+                }
 
-            // Left edge
-            if (this.initialInsets.leftEdgeRatio !== undefined) {
-                x += parentWidth * this.initialInsets.leftEdgeRatio;
-                width -= parentWidth * this.initialInsets.leftEdgeRatio;
-            } else if (this.initialInsets.leftEdgeFixedPt !== undefined) {
-                x += this.initialInsets.leftEdgeFixedPt;
-                width -= this.initialInsets.leftEdgeFixedPt;
+                // Left edge
+                if (this.insetStarts.leftEdgeRatio !== undefined) {
+                    x += parentWidth * this.insetStarts.leftEdgeRatio;
+                    width -= parentWidth * this.insetStarts.leftEdgeRatio;
+                } else if (this.insetStarts.leftEdgePt !== undefined) {
+                    x += this.insetStarts.leftEdgePt;
+                    width -= this.insetStarts.leftEdgePt;
+                }
             }
         }
 
-        // Calculate width and height based on dimensionsByInsetting
-        if (this.dimensionsByInsetting) {
+        // Calculate width and height based on extrude
+        if (this.extrude) {
             // Top edge
-            if (this.dimensionsByInsetting.fromTopEdgeRatio !== undefined) {
-                height *= this.dimensionsByInsetting.fromTopEdgeRatio;
-            } else if (this.dimensionsByInsetting.fromTopEdgeFixedPt !== undefined) {
-                height = this.dimensionsByInsetting.fromTopEdgeFixedPt;
+            if (this.extrude.fromTopEdgeRatio !== undefined) {
+                height *= this.extrude.fromTopEdgeRatio;
+            } else if (this.extrude.fromTopEdgePt !== undefined) {
+                height = this.extrude.fromTopEdgePt;
             }
 
             // Right edge
-            if (this.dimensionsByInsetting.fromRightEdgeRatio !== undefined) {
-                width = parentWidth * (1 - this.dimensionsByInsetting.fromRightEdgeRatio);
-            } else if (this.dimensionsByInsetting.fromRightEdgeFixedPt !== undefined) {
-                width = parentWidth - this.dimensionsByInsetting.fromRightEdgeFixedPt;
+            if (this.extrude.fromRightEdgeRatio !== undefined) {
+                width = parentWidth * (1 - this.extrude.fromRightEdgeRatio);
+            } else if (this.extrude.fromRightEdgePt !== undefined) {
+                width = parentWidth - this.extrude.fromRightEdgePt;
             }
 
             // Bottom edge
-            if (this.dimensionsByInsetting.fromBottomEdgeRatio !== undefined) {
-                height = parentHeight * (1 - this.dimensionsByInsetting.fromBottomEdgeRatio);
-            } else if (this.dimensionsByInsetting.fromBottomEdgeFixedPt !== undefined) {
-                height = parentHeight - this.dimensionsByInsetting.fromBottomEdgeFixedPt;
+            if (this.extrude.fromBottomEdgeRatio !== undefined) {
+                height = parentHeight * (1 - this.extrude.fromBottomEdgeRatio);
+            } else if (this.extrude.fromBottomEdgePt !== undefined) {
+                height = parentHeight - this.extrude.fromBottomEdgePt;
             }
 
             // Left edge
-            if (this.dimensionsByInsetting.fromLeftEdgeRatio !== undefined) {
-                width *= this.dimensionsByInsetting.fromLeftEdgeRatio;
-            } else if (this.dimensionsByInsetting.fromLeftEdgeFixedPt !== undefined) {
-                width = this.dimensionsByInsetting.fromLeftEdgeFixedPt;
+            if (this.extrude.fromLeftEdgeRatio !== undefined) {
+                width *= this.extrude.fromLeftEdgeRatio;
+            } else if (this.extrude.fromLeftEdgePt !== undefined) {
+                width = this.extrude.fromLeftEdgePt;
             }
         }
 
@@ -185,8 +213,8 @@ class LayoutBox {
     // Full Stretch
     // A function to make the box stretch fully to the parent container's bounds.
     setFullStretch() {
-        this.initialInsets = { "allEdgesFixedPt": 0 };
-        this.dimensionsByInsetting = null; // Use parent's full dimensions
+        this.insetStarts = { "allEdgesPt": 0 };
+        this.extrude = null; // Use parent's full dimensions
         this.adhereToEdges = [];
         this.adhereToCorners = [];
     }
@@ -194,8 +222,8 @@ class LayoutBox {
     // Center Box
     // A function to place the box at the center of the parent container with specified width and height.
     setCenterBox(width, height) {
-        this.initialInsets = null;
-        this.dimensionsByInsetting = { "fromTopEdgeFixedPt": height, "fromLeftEdgeFixedPt": width };
+        this.insetStarts = null;
+        this.extrude = { "fromTopEdgePt": height, "fromLeftEdgePt": width };
         this.adhereToEdges = [];
         this.adhereToCorners = [];
     }
@@ -203,8 +231,8 @@ class LayoutBox {
     //Align to a Specific Corner (Fixed Box Dimensions)
     // A function to align the box to a specified corner with given width and height.
     alignToCornerFixedDims(corner, width, height) {
-        this.initialInsets = null;
-        this.dimensionsByInsetting = { "fromTopEdgeFixedPt": height, "fromLeftEdgeFixedPt": width };
+        this.insetStarts = null;
+        this.extrude = { "fromTopEdgePt": height, "fromLeftEdgePt": width };
         this.adhereToEdges = [];
         this.adhereToCorners = [corner];
     }
@@ -213,10 +241,43 @@ class LayoutBox {
     // Fixed Margin Box
     // A function to create a box with fixed margins from all sides.
     setFixedMarginBox(margin) {
-        this.initialInsets = { "allEdgesFixedPt": margin };
-        this.dimensionsByInsetting = null; // Adjust based on margins
+        this.insetStarts = { "allEdgesPt": margin };
+        this.extrude = null; // Adjust based on margins
         this.adhereToEdges = [];
         this.adhereToCorners = [];
+    }
+
+
+
+
+
+    // Add a child LayoutBox
+    addChild(child) {
+        child.parent = this;
+        this.children.push(child);
+    }
+
+    // Remove a child LayoutBox
+    removeChild(child) {
+        const index = this.children.indexOf(child);
+        if (index > -1) {
+            child.parent = null;
+            this.children.splice(index, 1);
+        }
+    }
+
+    // Handle mouse click events
+    handleClick(event) {
+        // Handle click event for this box
+        // Propagate to children if necessary
+        this.children.forEach(child => child.handleClick(event));
+    }
+
+    // Handle key events
+    handleKey(event) {
+        // Handle key event for this box
+        // Propagate to children if necessary
+        this.children.forEach(child => child.handleKey(event));
     }
 
 

@@ -3,8 +3,14 @@ import LayoutBox from './LayoutBox.js';
 
 var arrayOfLayoutBoxes = [];
 
-let parentWidth = window.innerWidth;
-let parentHeight = window.innerHeight;
+const canvas = document.getElementById('guiCanvas');
+
+
+var parentWidth = window.innerWidth;
+var parentHeight = window.innerHeight;
+
+canvas.width = parentWidth;
+canvas.height = parentHeight;
 
 /*
 A GUI control carries its own LayoutBox or
@@ -18,30 +24,44 @@ find what they are in a registry made from it
 
 // Create instances of LayoutBox with desired settings
 let box1 = new LayoutBox(parentWidth,parentHeight);
-box1.initialInsets = { "topEdgeFixedPt": 10, "leftEdgeFixedPt": 20 };
-box1.dimensionsByInsetting = { "fromTopEdgeFixedPt": 200, "fromLeftEdgeFixedPt": 300 };
+box1.insetStarts = { "topEdgePt": 0, "leftEdgePt": 20 };
+box1.extrude = { "fromTopEdgePt": 200, "fromLeftEdgePt": 300 };
 arrayOfLayoutBoxes.push(box1);
 
 let box2 = new LayoutBox(parentWidth,parentHeight);
-box2.initialInsets = { "topEdgeRatio": 0.1, "leftEdgeRatio": 0.2 };
-box2.dimensionsByInsetting = { "fromTopEdgeRatio": 0.5, "fromLeftEdgeRatio": 0.4 };
+box2.insetStarts = { "topEdgeRatio": 0.1, "leftEdgeRatio": 0.2 };
+box2.extrude = { "fromTopEdgeRatio": 0.5, "fromLeftEdgeRatio": 0.4 };
 arrayOfLayoutBoxes.push(box2);
 
 let box3 = new LayoutBox(parentWidth,parentHeight);
-box3.initialInsets = { "topEdgeFixedPt": 15, "leftEdgeRatio": 0.25 };
-box3.dimensionsByInsetting = { "fromTopEdgeRatio": 0.6, "fromLeftEdgeFixedPt": 250 };
+box3.insetStarts = { "topEdgePt": 15, "leftEdgeRatio": 0.25 };
+box3.extrude = { "fromTopEdgeRatio": 0.6, "fromLeftEdgePt": 250 };
 arrayOfLayoutBoxes.push(box3);
 
 let box4 = new LayoutBox(parentWidth,parentHeight);
-box4.initialInsets = { "topEdgeRatio": 0.05, "leftEdgeFixedPt": 30 };
-box4.dimensionsByInsetting = { "fromTopEdgeFixedPt": 180, "fromLeftEdgeRatio": 0.3 };
+box4.insetStarts = { "topEdgeRatio": 0.05, "leftEdgePt": 30 };
+box4.extrude = { "fromTopEdgePt": 180, "fromLeftEdgeRatio": 0.3 };
 arrayOfLayoutBoxes.push(box4);
 
-let hStackBox = new GridLayoutBox();
-hStackBox.setHorizontalStack(5, 10)
-//grid1.setGridWithRatios([[1, 2, 1], [3, 4, 5], [6, 1]], parentWidth, parentHeight, { horizontal: 10, vertical: 15 }); // Creates a grid with specified ratios
-
+let hStackBox = new GridLayoutBox(parentWidth,parentHeight);
+hStackBox.insetStarts = { "allEdgesPt": 15 };//.insetStarts = { "topEdgeRatio": 0.01};
+hStackBox.setHorizontalStack(6, 20);
 arrayOfLayoutBoxes.push(hStackBox);
+
+
+let twGrid = new GridLayoutBox(parentWidth,parentHeight);
+twGrid.insetStarts = { "allEdgesPt": 15 };//.insetStarts = { "topEdgeRatio": 0.01};
+twGrid.setGrid(9, 9, 5, 5);
+//arrayOfLayoutBoxes.push(twGrid);
+
+
+// for a box of buttons:
+//.setGrid(30, 30, 3, 3);
+
+
+//arrayOfLayoutBoxes.push(grid1);
+
+
 
 /*
 
@@ -91,8 +111,8 @@ function draw() {
         const ctx = canvas.getContext('2d');
 
         // Resize canvas to full window size
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        //canvas.width = window.innerWidth;
+        //canvas.height = window.innerHeight;
 
     // Iterate through arrayOfLayoutBoxes and draw each box
     for (let i = 0; i < arrayOfLayoutBoxes.length; i++) {
@@ -104,10 +124,19 @@ function draw() {
 
 // Function to update dimensions of each box based on window size
 function updateParentDimensions() {
+
+
+
+    const canvas = document.getElementById('guiCanvas');
+    if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+
+    }
+
     for (let i = 0; i < arrayOfLayoutBoxes.length; i++) {
         // Assuming each box has a method `updateDimensions` 
         // that takes the new parent dimensions
-        arrayOfLayoutBoxes[i].updateDimensions(window.innerWidth, window.innerHeight);
+        arrayOfLayoutBoxes[i].updateDimensions(canvas.width, canvas.height);
     }
 }
 
@@ -119,6 +148,8 @@ window.onload = function () {
 
 // Add event listener for window resize
 window.onresize = function () {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     updateParentDimensions();
     draw();
 };

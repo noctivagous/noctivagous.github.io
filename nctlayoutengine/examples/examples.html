@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+ <!--   <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>GUI Layout Debugging</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center; /* Center the content horizontally */
+        }
+        canvas {
+            display: block;
+            background-color: #f0f0f0;
+            border: 2px solid black;
+     
+            resize: both;
+      overflow: auto;
+            margin: 0 auto; /* Center the canvas within the container */
+        }
+
+           /* Style the resize handle */
+           .resize-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            cursor: nwse-resize;
+            bottom: 0;
+            right: 0;
+        }
+
+        .canvas-container {
+      resize: both;
+      overflow: auto;
+     
+      border: 0px solid #ccc;*/
+    }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Create separate canvases for each LayoutBox and GridLayoutBox -->
+        <div>
+            <h2>Canvas for Box 1</h2>
+            <div class="canvas-container
+            "><canvas id="box1Canvas" width="700" height=500"></canvas>
+        
+            <div class="resize-handle" id="resizeHandle"></div>
+
+        </div>
+                
+            <pre>
+                <code>
+                    &lt;LayoutBox 
+
+                    insetStart="
+                    topEdgePt:10;
+                    leftEdgePt:20" 
+                    
+                    extrude="
+                    fromTopEdgePt:200;
+                    fromLeftEdgePt:300
+                    "&gt;
+                    &lt;/LayoutBox&gt;                </code>
+            </pre>
+        </div>
+
+        <script>
+            // Variables for resizing
+            let isResizing = false;
+            let lastX, lastY;
+    
+            // Canvas and resize handle elements
+            const canvasContainer = document.getElementById('canvasContainer');
+            const canvas = document.getElementById('myCanvas');
+            const resizeHandle = document.getElementById('resizeHandle');
+    
+            // Function to handle mouse down event on resize handle
+            resizeHandle.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                lastX = e.clientX;
+                lastY = e.clientY;
+
+                resizeCanvas();
+                
+
+            });
+    
+            // Function to handle mouse up event
+            window.addEventListener('mouseup', () => {
+                isResizing = false;
+            });
+    
+            // Function to handle mouse move event
+            window.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+    
+                const deltaX = e.clientX - lastX;
+                const deltaY = e.clientY - lastY;
+    
+                // Adjust the container size based on mouse movement
+                canvasContainer.style.width = `${canvasContainer.clientWidth + deltaX}px`;
+                canvasContainer.style.height = `${canvasContainer.clientHeight + deltaY}px`;
+    
+                // Update canvas size
+                canvas.width = canvasContainer.clientWidth;
+                canvas.height = canvasContainer.clientHeight;
+               
+
+                // Update last position
+                lastX = e.clientX;
+                lastY = e.clientY;
+            });
+        </script>
+
+        <div>
+            <h2>Canvas for Box 2</h2>
+            <canvas id="box2Canvas" width="500" height=500"></canvas>
+            <pre>
+                <code>
+                    &lt;LayoutBox 
+
+                    insetStart="
+                    topEdgeRatio:0.1;
+                    leftEdgeRatio:0.2" 
+                    
+                    extrude="
+                    fromTopEdgeRatio:0.5;
+                    fromLeftEdgeRatio:0.4 
+                    "&gt;
+                    &lt;/LayoutBox&gt;                 </code>
+            </pre>
+        </div>
+
+
+        <div>
+            <h2>Canvas for Box 3</h2>
+            <canvas id="box3Canvas" width="500" height=500"></canvas>
+            <pre>
+                <code>
+                    &lt;LayoutBox 
+
+                    insetStart="
+                    topEdgePt:15;
+                    leftEdgeRatio:0.25" 
+                    
+                    extrude="
+                    fromTopEdgeRatio:0.6;
+                    fromLeftEdgePt:250 
+                    "&gt;
+                    &lt;/LayoutBox&gt; 
+                                    </code>
+            </pre>
+        </div>
+
+
+        <div>
+            <h2>Canvas for Box 4</h2>
+            <canvas id="box4Canvas" width="500" height=500"></canvas>
+            <pre>
+                <code>
+                    &lt;LayoutBox 
+
+                    insetStart="
+                    topEdgeRatio:0.05;
+                    leftEdgePt:35;
+                    " 
+                    
+                    extrude="
+                    fromTopEdgePt:180;
+                    fromLeftEdgeRatio:0.3 
+                    "&gt;
+                    &lt;/LayoutBox&gt;
+                                    </code>
+            </pre>
+        </div>
+
+
+        <div>
+            <h2>Canvas for HStackBox</h2>
+            <canvas id="hStackBoxCanvas" width="500" height=500"></canvas>
+            <pre>
+                <code>
+    &lt;HStackBox 
+
+                    insetStart="
+                    allEdgesPt:15;
+                    " 
+                                       
+                    controlCount="6" gutterSizePt="20" 
+                    "&gt;
+                    &lt;/HStackBox&gt;
+                                </code>
+            </pre>
+        </div>
+        <div>
+            <h2>Canvas for TwGrid</h2>
+            <canvas id="twGridCanvas" width="500" height=500"></canvas>
+            <pre>
+                <code>
+                    &lt;GridBox 
+
+                    insetStarts="allEdgesPt:15"
+
+                    rows="9" 
+                    columns="9" 
+                    horizontalGutterSize="5" 
+                    verticalGutterSize="5"
+
+                    
+                    "&gt;
+                    &lt;/GridBox&gt;              
+                
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <script type="module" src="../LayoutBox.js"></script>
+    <script type="module" src="../GridLayoutBox.js"></script>
+
+    <script type="module" src="./examplesSetup.js"></script>
+
+
+
+       
+    
+</body>
+</html>
+

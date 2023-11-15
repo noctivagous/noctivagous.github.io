@@ -2,7 +2,8 @@ import LayoutBox from './LayoutBox.js';
 
 class GridLayoutBox extends LayoutBox {
 
-    constructor(parentWidthPassed, parentHeightPassed) {
+    constructor(parentWidthPassed, parentHeightPassed, guiControl = null, parent = null) {
+        
         super(parentWidthPassed, parentHeightPassed);
 
         // Grid configuration properties
@@ -15,6 +16,7 @@ class GridLayoutBox extends LayoutBox {
         // Flexible sizing (example: using ratios)
         this.cellSizeRatios = []; // Array of size ratios for each cell
 
+        this.children = null;
 
     }
 
@@ -37,8 +39,8 @@ class GridLayoutBox extends LayoutBox {
         const topInset = (cellHeight + gutterSize.vertical) * row;
 
         return new GridLayoutBox({
-            initialInsets: { "topEdgeFixedPt": topInset, "leftEdgeFixedPt": leftInset },
-            dimensionsByInsetting: { "fromTopEdgeFixedPt": cellHeight, "fromLeftEdgeFixedPt": cellWidth }
+            insetStarts: { "topEdgePt": topInset, "leftEdgePt": leftInset },
+            extrude: { "fromTopEdgePt": cellHeight, "fromLeftEdgePt": cellWidth }
         });
     }
 
@@ -50,8 +52,8 @@ class GridLayoutBox extends LayoutBox {
         const controlsProperties = [];
         for (let i = 0; i < controlCount; i++) {
             controlsProperties.push(new GridLayoutBox({
-                initialInsets: { "leftEdgeFixedPt": (controlWidth + gutterSize) * i, "topEdgeFixedPt": 0 },
-                dimensionsByInsetting: { "fromTopEdgeFixedPt": controlHeight, "fromLeftEdgeFixedPt": controlWidth }
+                insetStarts: { "leftEdgePt": (controlWidth + gutterSize) * i, "topEdgePt": 0 },
+                extrude: { "fromTopEdgePt": controlHeight, "fromLeftEdgePt": controlWidth }
             }));
         }
         return controlsProperties;
@@ -65,8 +67,8 @@ class GridLayoutBox extends LayoutBox {
         const controlsProperties = [];
         for (let i = 0; i < controlCount; i++) {
             controlsProperties.push(new GridLayoutBox({
-                initialInsets: { "topEdgeFixedPt": (controlHeight + gutterSize) * i, "leftEdgeFixedPt": 0 },
-                dimensionsByInsetting: { "fromTopEdgeFixedPt": controlHeight, "fromLeftEdgeFixedPt": controlWidth }
+                insetStarts: { "topEdgePt": (controlHeight + gutterSize) * i, "leftEdgePt": 0 },
+                extrude: { "fromTopEdgePt": controlHeight, "fromLeftEdgePt": controlWidth }
             }));
         }
         return controlsProperties;
@@ -95,8 +97,8 @@ class GridLayoutBox extends LayoutBox {
                 const topInset = (cellHeight + this.verticalGutterSize) * row;
 
                 controlsProperties.push(new GridLayoutBox({
-                    initialInsets: { "topEdgeFixedPt": topInset, "leftEdgeFixedPt": leftInset },
-                    dimensionsByInsetting: { "fromTopEdgeFixedPt": cellHeight, "fromLeftEdgeFixedPt": cellWidth }
+                    insetStarts: { "topEdgePt": topInset, "leftEdgePt": leftInset },
+                    extrude: { "fromTopEdgePt": cellHeight, "fromLeftEdgePt": cellWidth }
                 }));
             }
         }
@@ -134,22 +136,35 @@ class GridLayoutBox extends LayoutBox {
     }
 
     drawOutline(context) {
-        if (this.isGridOrStack()) {
+        this.drawOutlineRecursive(context, this);
+    }
+
+    drawOutlineRecursive(context, layoutBox) {
+        if (layoutBox.isGridOrStack()) {
             // Get the dimensions of each cell or stack element
-            const elements = this.calculateDimensions(this.parentWidth, this.parentHeight);
+            const elements = layoutBox.calculateDimensions(layoutBox.parentWidth, layoutBox.parentHeight);
 
             // Iterate over the elements and draw each one's outline
             elements.forEach((elem) => {
                 context.strokeStyle = 'black';
                 context.strokeRect(elem.x, elem.y, elem.width, elem.height);
             });
+
+            if(layoutBox.children)
+         {
+         layoutBox.children.forEach(child => {
+            this.drawOutlineRecursive(context, child);
+        });
+        }
+           
         } else {
-            console.error("Not a grid or stack");
             // Draw a single outline for non-grid instances
-            const dims = this.calculateDimensions(this.parentWidth, this.parentHeight);
+            const dims = layoutBox.calculateDimensions(layoutBox.parentWidth, layoutBox.parentHeight);
             context.strokeStyle = 'black';
             context.strokeRect(dims.x, dims.y, dims.width, dims.height);
         }
+
+
     }
 
     // Helper method to determine if the layout is a grid or a stack
@@ -173,7 +188,6 @@ class GridLayoutBox extends LayoutBox {
     }
  
 
-
 // CONVENIENCE FUNCTIONS
 
 /*
@@ -194,6 +208,12 @@ gridBox.setGrid(3, 3, 10, 10); // 3x3 grid with 10px gutters
 // Horizontal Stack (hstack)
 // This method will set up a horizontal stack layout, distributing controls equally across the horizontal space.
 setHorizontalStack(controlCount, gutterSize) {
+
+    if(controlCount < 2)
+    {
+        controlCount = 2;
+    }
+
     this.gridRows = 1;
     this.gridColumns = controlCount;
     this.horizontalGutterSize = gutterSize;
@@ -220,57 +240,6 @@ setGrid(rows, columns, horizontalGutterSize, verticalGutterSize) {
     this.verticalGutterSize = verticalGutterSize;
     this.cellSizeRatios = []; // Equal sizing by default or can be customized
 }
-
-
-
-
-
-
-/*
-
-USAGE
-
-setGridWithRatios
-
-This function will create a grid layout 
-where the size of each cell is determined 
-by the ratio in the passed 2D array.
-
-
-let gridRow = new GridLayoutBox();
-gridRow.setRowWithProportions([3, 1, 2], parentWidth, parentHeight, 10); // Creates a row with proportions 3:1:2
-
-let grid = new GridLayoutBox();
-grid.setGridWithRatios([[1, 2, 1], [3, 4, 5], [6, 1]], parentWidth, parentHeight, { horizontal: 10, vertical: 15 }); // Creates a grid with specified ratios
-
-*/
-
-setGridWithRatios(ratios, parentWidth, parentHeight, gutterSize) {
-    const totalWidthRatio = ratios[0].reduce((a, b) => a + b, 0);
-    const totalHeightRatio = ratios.length;
-    const cellWidth = (parentWidth - gutterSize.horizontal * (ratios[0].length - 1)) / totalWidthRatio;
-    const cellHeight = (parentHeight - gutterSize.vertical * (ratios.length - 1)) / totalHeightRatio;
-
-    let gridLayouts = [];
-    let topPosition = 0;
-
-    for (let row = 0; row < ratios.length; row++) {
-        let leftPosition = 0;
-        for (let column = 0; column < ratios[row].length; column++) {
-            const width = cellWidth * ratios[row][column];
-            const layout = new LayoutBox();
-            layout.initialInsets = { "leftEdgeFixedPt": leftPosition, "topEdgeFixedPt": topPosition };
-            layout.dimensionsByInsetting = { "fromLeftEdgeFixedPt": width, "fromTopEdgeFixedPt": cellHeight };
-
-            leftPosition += width + gutterSize.horizontal;
-            gridLayouts.push(layout);
-        }
-        topPosition += cellHeight + gutterSize.vertical;
-    }
-
-    this.children = gridLayouts;
-}
-
 
 
 }

@@ -355,6 +355,9 @@ class KeyboardMappingManager {
             square.style.fontSize = '90%';
             square.style.textShadow = '0 0 3px #ccc';  // White text shadow
             square.style.fontWeight = 'bold';
+            square.style.fontStyle = 'italic';
+            square.style.fontFamily = 'DraughtsmanARegular';
+            square.style.marginRight = '1pt';
 
             // Extract the character from the keyToChar mapping
             let char = this.keyToChar[button.id] || ''; // Fallback to empty string if no match
@@ -1352,8 +1355,7 @@ class KeyboardMappingManager {
     F10: 'F10',
     F11: 'F11',
     F12: 'F12',
-    Enter: 'Enter',
-    Shift: 'Shift',
+    Enter: 'Return',
     Space: 'Space',
     BracketLeft: '[',
     BracketRight: ']',
@@ -1362,6 +1364,10 @@ class KeyboardMappingManager {
     Comma: ',',
     Period: '.',
     Slash: '/',
+    Tab: 'Tab',
+    ShiftLeft: 'Shift',
+    ShiftRight: 'Shift',
+    CapsLock: 'CapsLock',
     Tab: 'Tab',
 
     Quote: "'",

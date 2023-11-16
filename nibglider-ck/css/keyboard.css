@@ -1,5 +1,19 @@
 /* KEYBOARD KEYS CONTAINER CSS 2.0 "GRID" TEMPLATE AREAS */
 
+@font-face {
+    font-family: 'DraughtsmanARegular';
+    src: url('../DraughtsmanARegular.ttf') format('ttf'),
+         url('../DraughtsmanAItalic.ttf') format('ttf');
+  }
+
+@font-face {
+    font-family: 'OPTIFranklinGothicMedium';
+    src: url('../OPTIFranklinGothic-Medium.otf') format('otf'),
+    url('../OPTIFranklinGothic-MediumIt.otf') format('otf');
+  }
+
+
+  
 
 #keyboardPanel {
     position: absolute;
@@ -36,8 +50,8 @@
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: #333;
-    font-family: 'DDINExpRegular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+/*    font-family: 'DDINExpRegular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+    font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
     font-weight: normal;
     
 
@@ -198,6 +212,11 @@
     overflow: hidden;
 }
 
+/*
+.shiftKeyLeft .minikeylettersquare, .shiftKeyRight .minikeylettersquare,
+.capsLockKey .minikeylettersquare, .returnKey .minikeylettersquare{
+color:rgb(28, 28, 28) !important;
+}*/
 
 
 .keyboardKeysOverlayContainer button:hover {
@@ -279,12 +298,12 @@
 
 .tabKey {
     grid-area: tabKey;
-    width: 75%;
+    width: 78%;
 }
 
 .shiftKeyLeft {
     grid-area: shiftKeyLeft;
-    width: 115%;
+    width: 117%;
 }
 
 .forwardSlashKey {
@@ -355,6 +374,7 @@
 
 .backslashKey {
     grid-area: backslashKey;
+    margin-left:-2pt;
     width: 140%;
 }
 
@@ -400,7 +420,7 @@
 
 .returnKey {
     grid-area: returnKey;
-    width: 105%;
+    width: 109%;
 }
 
 .zKey {
@@ -573,16 +593,33 @@
     visibility: hidden;
     background-color: #000;
     color: #fff;
-    width: 100%;
-    height: 100%;
+    width: 101%;
+    height: 101%;
     vertical-align: middle;
     padding: 0px;
     font-size: 20pt;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    border-radius: 2px;
+    font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 0px;
     z-index: 2;
     transition: opacity 0.2s ease, visibility 0.5s ease;
 }
+
+.returnKey::after, .capsLockKey::after {
+border-radius: 4pt;
+}
+
+.shiftKeyLeft, .shiftKeyRight{
+    border-radius: 3pt !important;
+
+
+}
+
+.shiftKeyLeft::after, .shiftKeyRight::after{
+    border-radius: 5pt !important;
+
+
+}
+
 
 .capsLockKey::after{
 font-size:19px;

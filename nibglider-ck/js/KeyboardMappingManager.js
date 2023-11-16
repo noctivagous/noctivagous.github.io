@@ -64,21 +64,22 @@ class KeyboardMappingManager {
     // update the keyboardpanel
     this.loadKeyboardKeysAccordingToFlags(keyEvent,flags);
 
-    // using the keyMap dictionary,
-    this.keyProcessor(keyEvent);
 
-
-    var elementLookup = document.getElementById(String(keyEvent.code))
-
-    //console.log(elementLookup);
+    var buttonLookup = document.getElementById(keyEvent.code)
 
     // highlight the key with active state
     // if it is non-alphanumeric.
-    if ((elementLookup != null) && (keyEvent.metaKey == false)) {
+    if ((buttonLookup != null) && (keyEvent.metaKey == false)) {
 
-      elementLookup.classList.add('active');
+      // adds the overlay that is provided
+      // by the data attribute.
+      buttonLookup.classList.add('active');
     }
   
+
+    // using the keyMap dictionary,
+    this.keyProcessor(keyEvent);
+
 
     /*
 
@@ -279,8 +280,9 @@ class KeyboardMappingManager {
    updateButtonStyle(button, keyMapping) {
     if (button) {
       
-      button.textContent = keyMapping.defaultText;
-      button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
+      
+
+     button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
       button.style.color = `rgb(${keyMapping.defaultFontColor})`;
       button.textContent = keyMapping.defaultText;
 
@@ -790,7 +792,7 @@ class KeyboardMappingManager {
     },
 
     'Space': {
-      "defaultText": "Cart",
+      "defaultText": "Drag Lock",
       "defaultFunctionString": "cart",
       "description": "Perform cart action",
       "defaultButtonBackgroundColor": "148,17,0",

@@ -127,6 +127,7 @@ getOperatingSystem() {
 
     
     this.paintManager = new PaintManager(this);
+    this.drawingEntityManager.paintManager = this.paintManager;
     this.pathManipulator = new PathManipulator(this);
 
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);

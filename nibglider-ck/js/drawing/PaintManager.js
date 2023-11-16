@@ -145,6 +145,17 @@ class PaintManager {
     this.nibGliderPaint.setBlendMode(this.app.CanvasKit.BlendMode[blendMode]);
   }
 
+
+  thickenStroke()
+  {
+
+  }
+
+  thickenStroke()
+  {
+
+  }
+
   // Accessor Functions
   // ------------------
 

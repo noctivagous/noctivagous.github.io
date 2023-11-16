@@ -332,12 +332,12 @@ closePathAndEnd()
 
   thickenStroke()
   {
-    this.paintManager.thickenStroke()
+    this.paintManager.thickenStroke();
   }
 
   thinStroke()
   {
-    this.paintManager.thinStroke()
+    this.paintManager.thinStroke();
   }
 
 

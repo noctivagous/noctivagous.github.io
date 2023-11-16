@@ -44,13 +44,13 @@ box4.extrude = { "fromTopEdgeByPt": 180, "fromLeftEdgeByFrac": 0.3 };
 arrayOfLayoutBoxes.push(box4);
 
 let hStackBox = new GridLayoutBox(parentWidth,parentHeight);
-hStackBox.pullAwayFromEdges = { "allEdgesPt": 15 };//.pullAwayFromEdges = { "topEdgeByFrac": 0.01};
+hStackBox.pullAwayFromEdges = { "allEdgesByPt": 15 };//.pullAwayFromEdges = { "topEdgeByFrac": 0.01};
 hStackBox.setHorizontalStack(6, 20);
 arrayOfLayoutBoxes.push(hStackBox);
 
 
 let twGrid = new GridLayoutBox(parentWidth,parentHeight);
-twGrid.pullAwayFromEdges = { "allEdgesPt": 15 };//.pullAwayFromEdges = { "topEdgeByFrac": 0.01};
+twGrid.pullAwayFromEdges = { "allEdgesByPt": 15 };//.pullAwayFromEdges = { "topEdgeByFrac": 0.01};
 twGrid.setGrid(9, 9, 5, 5);
 //arrayOfLayoutBoxes.push(twGrid);
 

@@ -2,7 +2,7 @@
 
 //let grid1 = new GridLayoutBox(parentWidth,parentHeight);
 //grid1.setGridWithFracs([[1, 2, 1], [1, 4, 5], [6, 1]], parentWidth, parentHeight, { horizontal: 10, vertical: 15 }); // Creates a grid with specified ratios
-// grid1.pullAwayFromEdges = { "allEdgesPt": 10};
+// grid1.pullAwayFromEdges = { "allEdgesByPt": 10};
 /*
 
 USAGE

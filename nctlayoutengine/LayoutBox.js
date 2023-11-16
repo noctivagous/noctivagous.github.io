@@ -4,7 +4,7 @@ class LayoutBox {
         this.parentHeight = parentHeightPassed;
 
         this.pullAwayFromEdges = null; // { "topEdgeByFrac": 0.33, "leftEdgeByPt": 10 }
-        // { "allEdgesPt": 10 } for a uniform margin
+        // { "allEdgesByPt": 10 } for a uniform margin
         this.extrude = null; // { "fromTopEdgeBy": 0.33, "fromLeftEdgeByPt": 300 }
         this.adhereToEdges = []; // ["rightEdge", "leftEdge"]
         this.adhereToCorners = []; // ["bottomLeftCorner", "bottomRightCorner"]
@@ -20,8 +20,7 @@ class LayoutBox {
         this.guiControl = guiControl;
     }
 
-    updateDimensions(parentWidthPassed, parentHeightPassed) 
-    {
+    updateDimensions(parentWidthPassed, parentHeightPassed) {
         this.parentWidth = parentWidthPassed;
         this.parentHeight = parentHeightPassed;
 
@@ -45,21 +44,28 @@ class LayoutBox {
 
         var xyWHRectAsObj = { x, y, width, height };
 
-        xyWHRectAsObj = this.calculateDimensionsFromPullAwayFromEdges(xyWHRectAsObj,parentWidth,parentHeight);
+        if (this.pullAwayFromEdges) {
+            xyWHRectAsObj = this.calculateDimensionsFromPullAwayFromEdges(xyWHRectAsObj, parentWidth, parentHeight);
+        }
 
-        xyWHRectAsObj = this.calculateDimensionsFromExtrude(xyWHRectAsObj,parentWidth,parentHeight);
+        if (this.extrude) {
+            xyWHRectAsObj = this.calculateDimensionsFromExtrude(xyWHRectAsObj, parentWidth, parentHeight);
+        }
 
-        xyWHRectAsObj = this.calculateDimensionsFromAdhereToEdges(xyWHRectAsObj,parentWidth,parentHeight);
+        if (this.adhereToEdges) {
+            xyWHRectAsObj = this.calculateDimensionsFromAdhereToEdges(xyWHRectAsObj, parentWidth, parentHeight);
+        }
 
-        xyWHRectAsObj = this.calculateDimensionsAdhereToCorners(xyWHRectAsObj,parentWidth,parentHeight);
-
+        if (this.adhereToCorners) {
+            xyWHRectAsObj = this.calculateDimensionsAdhereToCorners(xyWHRectAsObj, parentWidth, parentHeight);
+        }
 
 
         return [xyWHRectAsObj];
     }
 
 
-    calculateDimensionsFromPullAwayFromEdges(xyWHRectAsObj,parentWidth,parentHeight) {
+    calculateDimensionsFromPullAwayFromEdges(xyWHRectAsObj, parentWidth, parentHeight) {
 
         let x = xyWHRectAsObj.x;
         let y = xyWHRectAsObj.y;
@@ -69,12 +75,12 @@ class LayoutBox {
         // Calculate initial insets
         if (this.pullAwayFromEdges) {
             // Handle uniform insets for all edges
-            if (this.pullAwayFromEdges.allEdgesPt !== undefined) {
-                x = y = this.pullAwayFromEdges.allEdgesPt;
-                width -= this.pullAwayFromEdges.allEdgesPt * 2;
-                height -= this.pullAwayFromEdges.allEdgesPt * 2;
-            } else if (this.pullAwayFromEdges.allEdgesFrac !== undefined) {
-                const insetVal = parentWidth * this.pullAwayFromEdges.allEdgesFrac;
+            if (this.pullAwayFromEdges.allEdgesByPt !== undefined) {
+                x = y = this.pullAwayFromEdges.allEdgesByPt;
+                width -= this.pullAwayFromEdges.allEdgesByPt * 2;
+                height -= this.pullAwayFromEdges.allEdgesByPt * 2;
+            } else if (this.pullAwayFromEdges.allEdgeByFrac !== undefined) {
+                const insetVal = parentWidth * this.pullAwayFromEdges.allEdgeByFrac;
                 x = y = insetVal;
                 width -= insetVal * 2;
                 height -= insetVal * 2;
@@ -117,7 +123,7 @@ class LayoutBox {
     }
 
 
-    calculateDimensionsFromExtrude(xyWHRectAsObj,parentWidth,parentHeight) {
+    calculateDimensionsFromExtrude(xyWHRectAsObj, parentWidth, parentHeight) {
 
         let x = xyWHRectAsObj.x;
         let y = xyWHRectAsObj.y;
@@ -162,7 +168,7 @@ class LayoutBox {
     }
 
 
-    calculateDimensionsFromAdhereToEdges(xyWHRectAsObj,parentWidth,parentHeight) {
+    calculateDimensionsFromAdhereToEdges(xyWHRectAsObj, parentWidth, parentHeight) {
 
 
         let x = xyWHRectAsObj.x;
@@ -201,7 +207,7 @@ class LayoutBox {
 
     }
 
-    calculateDimensionsAdhereToCorners(xyWHRectAsObj,parentWidth,parentHeight) {
+    calculateDimensionsAdhereToCorners(xyWHRectAsObj, parentWidth, parentHeight) {
 
         let isStretched = false;
 
@@ -277,6 +283,9 @@ class LayoutBox {
 
     }
 
+
+
+
     drawOutline(context, parentWidthSpecified = 0, parentHeightSpecified = 0) {
         const elements = this.calculateDimensions(this.parentWidth, this.parentHeight);
 
@@ -297,7 +306,7 @@ class LayoutBox {
     // Full Stretch
     // A function to make the box stretch fully to the parent container's bounds.
     setFullStretch() {
-        this.pullAwayFromEdges = { "allEdgesPt": 0 };
+        this.pullAwayFromEdges = { "allEdgesByPt": 0 };
         this.extrude = null; // Use parent's full dimensions
         this.adhereToEdges = [];
         this.adhereToCorners = [];
@@ -325,7 +334,7 @@ class LayoutBox {
     // Fixed Margin Box
     // A function to create a box with fixed margins from all sides.
     setFixedMarginBox(margin) {
-        this.pullAwayFromEdges = { "allEdgesPt": margin };
+        this.pullAwayFromEdges = { "allEdgesByPt": margin };
         this.extrude = null; // Adjust based on margins
         this.adhereToEdges = [];
         this.adhereToCorners = [];

@@ -55,14 +55,14 @@ box4LayoutBoxes.push(box4);
 
 
 let hStackBox = new GridLayoutBox(parentWidth,parentHeight);
-hStackBox.pullAwayFromEdges = { "allEdgesPt": 15 };
+hStackBox.pullAwayFromEdges = { "allEdgesByPt": 15 };
 hStackBox.setHorizontalStack(6, 20);
 hStackBoxes.push(hStackBox);
 
 
 
 let twGrid = new GridLayoutBox(parentWidth,parentHeight);
-twGrid.pullAwayFromEdges = { "allEdgesPt": 15 };
+twGrid.pullAwayFromEdges = { "allEdgesByPt": 15 };
 twGrid.setGrid(9, 9, 5, 5);
 twBoxes.push(twGrid);
 

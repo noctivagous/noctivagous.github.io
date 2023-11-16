@@ -1,0 +1,121 @@
+
+-- The NCTLayoutEngine is general purpose
+for layout out bounding boxes in an XML
+format.
+
+The way to understand it is how it came
+about.  It started with the need to make three bounding rectangles 
+for the first three components of a vector drawing
+program : the canvas viewport for where the
+the vector drawing takes place and the right and bottom
+scroll bars.  From there, other cases were added
+to the layout engine.
+
+NCTLayoutEngine does not define layout boxes' dimensions 
+in terms of their width and height directly.  
+We will explain with this example of the vector drawing program.
+In NCTLayoutEngine, the first thing that happens is that a person
+is provided the bounds of the window's
+content view.  For the program, we make three separate <LayoutBox/>
+tags that inherit from the root tage. The attributes of
+our <LayoutBox/> tag have power in order.  Their operations accumulate
+and the later ones override the previous.
+If you do nothing and leave an empty <LayoutBox/>, you inherit the parent 
+tag's full bounds.
+
+The goal of the engine is to provide the user multiple
+approaches for doing the same thing, according to what
+is most natural at the time.
+
+----- For our example of the vector-drawing program,
+to make the viewport (canvas) rectangle that spans most of the height and width of the
+window's content view except for the right
+and bottom scrollbars that take up 15pt, 
+we only have to use the first layout operation, the pullAwayFromEdges attribute:
+
+<LayoutBox pullAwayFromEdges="fromBottomByPt:15;fromRightByPt:15;" guiControl="canvas"/>
+
+With this we have subtracted the bottom and right portions,
+leaving only what the canvas has.
+
+Next, we do the two scrollbars.  For these, we only have to use
+the extrude operation, from the bottom edge for the bottom scrollbar 
+for its <LayoutBox/>, and from the right edge for the right scrollbar
+for its <LayoutBox/>:
+
+<LayoutBox extrude="fromBottomEdgeByPt:15;" guiControl="horizScrollbar"/>
+
+<LayoutBox extrude="fromRightEdgeByPt:15;" guiControl="vertScrollbar"/>
+
+What if you did both operations, pullAwayFromEdges, and extrude?
+They are conflicting operations.   NCTLayoutEngine is designed such that there is
+an official order of operations, even though these operations are attributes in XML tags. 
+Each subsequent operation will override the previous ones if there
+is any conflict.
+
+Layout Options
+
+The order is:
+
+1. pullAwayFromEdges: Supports fixed length and fractional margin settings.
+2. extrude: Offers fixed length and fractional extrusion from edges.
+3. adhereToEdges: Allows adherence to specific edges of the parent container.
+4. adhereToCorners: Enables positioning at specific corners of the parent container.
+
+
+-- pullAwayFromEdges
+options:
+   fixed length in points: allEdgesByByPt, topEdgeByPt,  rightEdgeByPt, bottomEdgeByPt, leftEdgeByPt
+   a fraction of the parent rect: allEdgesByFrac, topEdgeByFrac,  rightEdgeByFrac, bottomEdgeByFrac, leftEdgeByFrac
+
+-- extrude
+options:
+  fixed length in points: fromBottomEdgeByPt,fromRightEdgeByPt,fromLeftEdgeByPt,
+fromTopEdgeByPt
+  a fraction of the parent rectangle's X or Y dimension: 
+  fromBottomEdgeByFrac,fromRightEdgeByFrac,fromLeftEdgeByFrac,
+fromTopEdgeByFrac
+
+-- adhereToEdges
+options: topEdge, rightEdge,bottomEdge ,leftEdge
+
+-- adhereToCorners
+options:topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner.
+
+
+For example, if pullAwayFromEdges 
+creates a margin but adhereToEdges specifies 
+adherence to an edge, the adherence rule 
+would override the margin for that particular edge.
+
+
+Convenience attributes for LayoutBox
+
+The options provided let you do many common situations.
+But NCTLayoutEngine also provides some convenience attributes.
+
+centerBoxPt:
+
+Center the box on the screen some width and height pt away from
+the edges.
+<LayoutBox centerBoxPt="width:15;height:15"/>
+
+which is the same as
+
+<LayoutBox pullAwayFromEdges="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>
+
+
+
+
+Layout Carries GUI Objects
+
+Since layout is primary in a GUI, LayoutBoxes carry the GUI control
+as their own property, and they send bounding rect updates to their control.
+The NCTLayoutEngine is comprised of a layout tree of LayoutBoxes.
+Mouse and key events are analyzed by the LayoutBox and sent to the GUI
+control if needed.
+
+
+<Layer width="1920" height="1080">
+<LayoutBox />
+</Layer>

@@ -405,7 +405,7 @@ class KeyboardMappingManager {
 
   keyMappings = {
     'Tab': {
-      "defaultText": "Select",
+      "defaultText": "Select Objects",
       "defaultFunctionString": "select",
       "defaultDescription": "Select an item",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -437,6 +437,23 @@ class KeyboardMappingManager {
       "defaultFunctionString": "hardCorner",
       "defaultDescription": "Perform hard corner action",
       "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Hard Corner Selection",
+    },
+    'KeyL': {
+      "defaultText": "Lasso",
+      "defaultFunctionString": "hardCorner",
+      "defaultDescription": "Perform hard corner action",
+      "defaultButtonBackgroundColor": "100,100,100",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Hard Corner Selection",
+    },
+
+    'CapsLock': {
+      "defaultText": "Colorpicker Keyboard Mode",
+      "defaultFunctionString": "hardCorner",
+      "defaultDescription": "Perform hard corner action",
+      "defaultButtonBackgroundColor": "100,100,100",
       "defaultFontColor": "255,64,255",
       "selectionStateText": "Hard Corner Selection",
     },
@@ -1356,7 +1373,7 @@ class KeyboardMappingManager {
     F11: 'F11',
     F12: 'F12',
     Enter: 'Return',
-    Space: 'Space',
+    Space: 'Spacebar',
     BracketLeft: '[',
     BracketRight: ']',
     Semicolon: ';',
@@ -1368,7 +1385,6 @@ class KeyboardMappingManager {
     ShiftLeft: 'Shift',
     ShiftRight: 'Shift',
     CapsLock: 'CapsLock',
-    Tab: 'Tab',
 
     Quote: "'",
     // Add more keys and their values as needed

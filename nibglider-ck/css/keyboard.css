@@ -212,6 +212,20 @@
     overflow: hidden;
 }
 
+.capsLockKey .minikeylettersquare{
+margin-right:13px !important;
+}
+
+.returnKey .minikeylettersquare{
+    margin-right:6px !important;
+    }
+
+    .spacebarKey{
+padding-left:2pt;
+    }
+.spacebarKey .minikeylettersquare{
+    margin-right:-22pt !important;
+    }
 /*
 .shiftKeyLeft .minikeylettersquare, .shiftKeyRight .minikeylettersquare,
 .capsLockKey .minikeylettersquare, .returnKey .minikeylettersquare{

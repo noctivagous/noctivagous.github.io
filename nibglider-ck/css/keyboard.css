@@ -1,0 +1,608 @@
+/* KEYBOARD KEYS CONTAINER CSS 2.0 "GRID" TEMPLATE AREAS */
+
+
+#keyboardPanel {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 9999;
+
+    pointer-events: none;
+    /*border: 1px solid black;*/
+
+    border-radius: 1vmin;
+
+    /*pointer-events: none;*/
+
+
+    text-shadow: 0.1vh 0.1vh #fff;
+
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.keyboardKeysOverlayContainer button {
+    pointer-events: all;
+    font-size: clamp(10px, 1.5vw, 15px); /* Adjust values as needed */
+     
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: #333;
+    font-family: 'DDINExpRegular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+
+    cursor: pointer;
+
+    border: 2px solid #333;
+    position: relative;
+    border-radius: 3pt;
+    /*border-radius: .8vmin;*/
+    /*box-shadow: .2vmin .2vmin;*/
+
+    background-color: rgb(93, 91, 91);
+    opacity: 0.4;
+    color: rgb(247, 242, 242);
+
+    cursor: pointer;
+
+
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+
+
+
+#keyboardKeysGrid {
+
+    display: grid;
+    /*    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;*/
+    grid-template-columns: 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt;
+    grid-template-rows: 45pt 45pt 45pt 45pt;
+    gap: .5vmin .5vmin;
+    grid-auto-flow: row;
+    grid-template-areas:
+
+
+        "tabKey tabKey KeyQ wKey eKey rKey tKey yKey uKey iKey oKey pKey bracketLeftKey bracketRightKey backslashKey"
+
+        "capsLockKey capsLockKey KeyA sKey dKey fKey gKey hKey jKey kKey lKey semicolonKey singleQuoteKey returnKey returnKey"
+
+        "shiftKeyLeft shiftKeyLeft zKey xKey cKey vKey bKey nKey mKey commaKey periodKey forwardSlashKey shiftKeyRight shiftKeyRight ."
+
+        ". . . spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey . . . .";
+
+    width: 100%;
+    height: 100%;
+
+    align-content: end;
+}
+
+/* Medium-sized devices (e.g., small laptops) */
+@media screen and (max-width: 1024px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+
+    
+}
+
+@media screen and (max-height: 900px) {
+
+    #keyboardKeysGrid {
+        grid-template-columns: 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt;
+        grid-template-rows: 40pt 40pt 40pt 40pt;
+        gap: .4vmin .4vmin;
+    }
+
+    #keyboardPanel{
+    bottom: 6px;
+    left: 6px;
+    }
+
+    .keyboardKeysOverlayContainer button {
+font-size:14px;
+    }
+
+}
+
+@media screen and (max-height: 800px) {
+
+    #keyboardKeysGrid {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+
+    #keyboardPanel{
+    bottom: 6px;
+    left: 6px;
+    }
+
+}
+
+
+/* Small-sized devices (e.g., tablets) */
+@media screen and (max-width: 768px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt;
+        grid-template-rows: 25pt 25pt 25pt 25pt;
+        gap: .3vmin .3vmin;
+    }
+
+    #keyboardPanel{
+        bottom: 6px;
+        left: 6px;
+        }
+}
+
+/* Extra small devices (e.g., phones) */
+@media screen and (max-width: 576px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt;
+        grid-template-rows: 20pt 20pt 20pt 20pt;
+        gap: .2vmin .2vmin;
+    }
+}
+
+
+.keyboardKeysOverlayContainer button.hidden {
+    visibility: hidden;
+}
+
+
+.keyboardKeysOverlayContainer button.functionRow {
+    background-color: darkGray;
+}
+
+
+.keyboardKeysOverlayContainer .keyboardkey {
+    overflow: hidden;
+}
+
+
+
+.keyboardKeysOverlayContainer button:hover {
+    background-color: darkGray;
+}
+
+.keyboardKeysOverlayContainer button:active,
+.keyboardKeysOverlayContainer button.active {
+    background-color: #333;
+    color: silver;
+}
+
+
+
+.keyboardKeysOverlayContainer *:after {
+    /*  content:attr(class);*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+.endButton {
+    background-color: rgb(134, 37, 26) !important;
+    box-shadow: #333 !important;
+    box-shadow: 1pt 1pt 0px #333 !important;
+    color: rgb(210, 115, 115) !important;
+    opacity: 1.0 !important;
+
+}
+
+.endButton b {}
+
+.drawingButton {
+    background-color: rgb(130, 244, 29) !important;
+    box-shadow: 1pt 1pt 0px #333 !important;
+    opacity: 1.0 !important;
+    color: green !important;
+}
+
+.enabledButton {
+    opacity: 1.0 !important;
+}
+
+
+.operationButton {
+    background-color: rgb(169, 29, 184) !important;
+    color: rgb(226, 86, 241) !important;
+    box-shadow: 1pt 1pt 0px #333 !important;
+}
+
+.selectionButton {
+    background-color: rgb(91, 15, 100) !important;
+    color: white;
+    box-shadow: 1pt 1pt 0px #333 !important;
+    opacity: 1.0 !important;
+    color: rgb(186, 30, 203) !important;
+
+}
+
+/* SPECIFIC KEYBOARD KEYS */
+
+.spacebarKey {
+    grid-area: spacebarKey;
+}
+
+.tabKey {
+    grid-area: tabKey;
+    width: 75%;
+}
+
+.shiftKeyLeft {
+    grid-area: shiftKeyLeft;
+    width: 115%;
+}
+
+.forwardSlashKey {
+    grid-area: forwardSlashKey;
+}
+
+.capsLockKey {
+    grid-area: capsLockKey;
+    width: 85%;
+}
+
+.KeyA {
+    grid-area: KeyA;
+}
+
+.shiftKeyRight {
+    grid-area: shiftKeyRight;
+    width: 130%;
+}
+
+.KeyQ {
+    grid-area: KeyQ;
+}
+
+.wKey {
+    grid-area: wKey;
+}
+
+.eKey {
+    grid-area: eKey;
+}
+
+.rKey {
+    grid-area: rKey;
+}
+
+.tKey {
+    grid-area: tKey;
+}
+
+.yKey {
+    grid-area: yKey;
+}
+
+.uKey {
+    grid-area: uKey;
+}
+
+.iKey {
+    grid-area: iKey;
+}
+
+.oKey {
+    grid-area: oKey;
+}
+
+.pKey {
+    grid-area: pKey;
+}
+
+.bracketLeftKey {
+    grid-area: bracketLeftKey;
+}
+
+.bracketRightKey {
+    grid-area: bracketRightKey;
+}
+
+.backslashKey {
+    grid-area: backslashKey;
+    width: 140%;
+}
+
+.sKey {
+    grid-area: sKey;
+}
+
+.dKey {
+    grid-area: dKey;
+}
+
+.fKey {
+    grid-area: fKey;
+}
+
+.gKey {
+    grid-area: gKey;
+}
+
+.hKey {
+    grid-area: hKey;
+}
+
+.jKey {
+    grid-area: jKey;
+}
+
+.kKey {
+    grid-area: kKey;
+}
+
+.lKey {
+    grid-area: lKey;
+}
+
+.semicolonKey {
+    grid-area: semicolonKey;
+}
+
+.singleQuoteKey {
+    grid-area: singleQuoteKey;
+}
+
+.returnKey {
+    grid-area: returnKey;
+    width: 105%;
+}
+
+.zKey {
+    grid-area: zKey;
+}
+
+.xKey {
+    grid-area: xKey;
+}
+
+.cKey {
+    grid-area: cKey;
+}
+
+.vKey {
+    grid-area: vKey;
+}
+
+.bKey {
+    grid-area: bKey;
+}
+
+.nKey {
+    grid-area: nKey;
+}
+
+.mKey {
+    grid-area: mKey;
+}
+
+.commKeyA {
+    grid-area: commKeyA;
+}
+
+.periodKey {
+    grid-area: periodKey;
+}
+
+.backquoteKey {
+    grid-area: backquoteKey;
+}
+
+.Digit1 {
+    grid-area: Digit1;
+}
+
+.twoKey {
+    grid-area: twoKey;
+}
+
+.threeKey {
+    grid-area: threeKey;
+}
+
+.fourKey {
+    grid-area: fourKey;
+}
+
+.fiveKey {
+    grid-area: fiveKey;
+}
+
+.sixKey {
+    grid-area: sixKey;
+}
+
+.sevenKey {
+    grid-area: sevenKey;
+}
+
+.eightKey {
+    grid-area: eightKey;
+}
+
+.nineKey {
+    grid-area: nineKey;
+}
+
+.zeroKey {
+    grid-area: zeroKey;
+}
+
+.minusKey {
+    grid-area: minusKey;
+}
+
+.equalsKey {
+    grid-area: equalsKey;
+}
+
+.deleteKey {
+    grid-area: deleteKey;
+    width: 100% !important;
+}
+
+
+#KeyQ {
+    transform: translate(-45%, 0%)
+}
+
+#KeyW {
+    transform: translate(-45%, 0%)
+}
+
+#KeyE {
+    transform: translate(-45%, 0%)
+}
+
+#KeyR {
+    transform: translate(-45%, 0%)
+}
+
+#KeyT {
+    transform: translate(-45%, 0%)
+}
+
+#KeyY {
+    transform: translate(-45%, 0%)
+}
+
+#KeyU {
+    transform: translate(-45%, 0%)
+}
+
+#KeyI {
+    transform: translate(-45%, 0%)
+}
+
+#KeyO {
+    transform: translate(-45%, 0%)
+}
+
+#KeyP {
+    transform: translate(-45%, 0%)
+}
+
+#BracketLeft {
+    transform: translate(-45%, 0%)
+}
+
+#BracketRight {
+    transform: translate(-45%, 0%)
+}
+
+#Backslash {
+    transform: translate(-31%, 0%)
+}
+
+/* For presentation only, no need to copy the code below */
+
+
+
+
+.keyboardkey {
+    position: relative;
+    z-index: 1;
+    content: attr(data-key);
+
+}
+
+.keyboardkey::after {
+    text-transform: capitalize;
+    font-weight: bold;
+    content: attr(data-key);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    background-color: #000;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    padding: 0px;
+    font-size: 20pt;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 2px;
+    z-index: 2;
+    transition: opacity 0.2s ease, visibility 0.5s ease;
+}
+
+
+.keyboardkey:hover::after,
+.keyboardkey.active::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+
+
+/* TOP ROWS */
+
+/* 
+UNUSED:
+"escKey f1Key f2Key f3Key f4Key f5Key f6Key f7Key f8Key f9Key f10Key f11Key f12Key f13Key f14Key" 
+*/
+
+#topRow {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 55px;
+
+}
+
+#number-row {
+    padding: 10px;
+
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: .5vmin .5vmin;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "backquoteKey Digit1 twoKey threeKey fourKey fiveKey sixKey sevenKey eightKey nineKey zeroKey minusKey equalsKey deleteKey deleteKey";
+    width: 100%;
+    height: 100%;
+
+
+}

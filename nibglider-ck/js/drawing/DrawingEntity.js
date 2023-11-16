@@ -20,6 +20,18 @@ class DrawingEntity {
 }
 
 // Specific drawing entity
+class LineDrawingEntity extends DrawingEntity {
+  constructor() {
+    super();
+    // Rectangle-specific properties
+  }
+
+  // Rectangle-specific methods...
+}
+
+
+
+// Specific drawing entity
 class RectangleDrawingEntity extends DrawingEntity {
   constructor() {
     super();

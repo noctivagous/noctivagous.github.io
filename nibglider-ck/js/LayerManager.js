@@ -786,6 +786,10 @@ class Layer {
   // When adding an item to selectedItems
   addItemToSelection(item) {
     item.setIsSelected(true);
+    if(this.isInDragLock)
+    {
+      item.isInDragLock = true;
+    }
     this.selectedItems.push(item);
     this.selectedItemsDidChange("addItemToSelection " + this.selectedItems.length);
   }
@@ -795,9 +799,17 @@ class Layer {
     const index = this.selectedItems.indexOf(item);
     if (index !== -1) {
       item.setIsSelected(false);
+      this.setIsInDragLock(false);
       this.selectedItems.splice(index, 1);
     }
+    
+  
     this.selectedItemsDidChange("removeItemFromSelection " + this.selectedItems.length);
+
+    if(!this.hasSelectedItems())
+    {
+      this.clearOutSelection();
+    }
 
 
   }
@@ -809,8 +821,23 @@ class Layer {
     }
   }
 
-  selectedItemsDidChange(string) {
+  clearOutSelection() {
+    // If nothing is underneath the cursor, clear the selection
+    for (var i = 0; i < this.selectedItems.length; i++) {
+      this.selectedItems[i].setIsSelected(false);
+      this.selectedItems[i].isInDragLock = false;
+    }
+    this.selectedItems = [];
 
+    this.setIsInDragLock(false);
+
+    this.selectedItemsDidChange("clearOutSelection " + this.selectedItems.length);
+
+    this.layerManager.app.invalidateEntireCanvas();
+
+  }
+
+  selectedItemsDidChange(string) {
 
     // invalidate canvas when the 
     // selectedItems begins to exist or ends because
@@ -821,7 +848,9 @@ class Layer {
 
       this.invalidateCanvasAndUpdateBackingStoreImage();
 
+      //console.log(string);
     }
+    
   }
 
   collectiveBounds(selectedItems) {
@@ -854,21 +883,7 @@ class Layer {
 
 
 
-  clearOutSelection() {
-    // If nothing is underneath the cursor, clear the selection
-    for (var i = 0; i < this.selectedItems.length; i++) {
-      this.selectedItems[i].setIsSelected(false);
-      this.selectedItems[i].isInDragLock = false;
-    }
-    this.selectedItems = [];
-
-    this.setIsInDragLock(false);
-
-    this.selectedItemsDidChange("clearOutSelection " + this.selectedItems.length);
-
-    this.layerManager.app.invalidateEntireCanvas();
-
-  }
+ 
 
   invalidateCanvasAndUpdateBackingStoreImage() {
     // this.updateBackingStoreImage();

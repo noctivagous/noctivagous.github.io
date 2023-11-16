@@ -11,8 +11,6 @@ class PaintManager {
 
     //this.selectedObjectsFillStrokeSetting = null; // 0 = stroke, 1 = fill, 2, fillstroke;
 
-
-
     this.selectedObjectsPaint = new Map(); // Stores the paint for each selected object.
     
     this.nibGliderStrokeWidth = 4;

@@ -325,42 +325,50 @@ class KeyboardMappingManager {
 
   
 
-   insertMiniLetterSquaresIntoKeys(keyButtons) {
+  insertMiniLetterSquaresIntoKeys(keyButtons) {
     keyButtons.forEach(button => {
-        // Create a square div
-        let square = document.createElement('div');
 
-        // Get the dimensions of the button
-        let buttonWidth = button.offsetWidth;
-        let buttonHeight = button.offsetHeight;
+        // Check if the button already has a mini key letter square
+      
+        if (!button.querySelector('.minikeylettersquare')) {
+            // Create a square div
+            let square = document.createElement('div');
+            square.classList.add('minikeylettersquare'); // Add class to the square
 
-        // Set the size and style of the square
-        square.style.width = `${buttonWidth / 4.2}px`;
-        square.style.height = `${buttonHeight / 4.2}px`;
-        square.style.position = 'absolute';
-        square.style.bottom = '0';   // Align to bottom
-        square.style.right = '0';    // Align to right
-        square.style.backgroundColor = 'rgba(200, 200, 200, 0.0)'; // Semi-transparent grey
-        square.style.display = 'flex';
-        square.style.textTransform = 'uppercase';
-        square.style.alignItems = 'center';
-        square.style.color = 'rgba(255, 255, 255, 0.8)';
-        square.style.justifyContent = 'center';
-        square.style.zIndex = '100';
-        square.style.fontSize = '90%';
-        square.style.textShadow = '0 0 3px #ccc';  // White text shadow
+            // Get the dimensions of the button
+            let buttonWidth = button.offsetWidth;
+            let buttonHeight = button.offsetHeight;
 
-        // Extract the character from the keyToChar mapping
-        let char = this.keyToChar[button.id] || ''; // Fallback to empty string if no match
+            // Set the size and style of the square
+            square.style.width = `${buttonWidth / 4.2}px`;
+            square.style.height = `${buttonHeight / 4.2}px`;
+            square.style.position = 'absolute';
+            square.style.bottom = '0';   // Align to bottom
+            square.style.right = '0';    // Align to right
+            square.style.backgroundColor = 'rgba(200, 200, 200, 0.0)'; // Semi-transparent grey
+            square.style.display = 'flex';
+            square.style.textTransform = 'uppercase';
+            square.style.alignItems = 'center';
+            square.style.color = 'rgba(255, 255, 255, 0.8)';
+            square.style.justifyContent = 'center';
+            square.style.zIndex = '100';
+            square.style.fontSize = '90%';
+            square.style.textShadow = '0 0 3px #ccc';  // White text shadow
+            square.style.fontWeight = 'bold';
 
-        // Set the text inside the square
-        square.textContent = char;
+            // Extract the character from the keyToChar mapping
+            let char = this.keyToChar[button.id] || ''; // Fallback to empty string if no match
 
-        // Append the square to the button
-        button.style.position = 'relative'; // Ensure the button can act as a container
-        button.appendChild(square);
+            // Set the text inside the square
+            square.textContent = char;
+
+            // Append the square to the button
+            button.style.position = 'relative'; // Ensure the button can act as a container
+            button.appendChild(square);
+        }
     });
 }
+
 
 
   updateButtonStyle(button, keyMapping) {
@@ -1347,10 +1355,16 @@ class KeyboardMappingManager {
     Enter: 'Enter',
     Shift: 'Shift',
     Space: 'Space',
-    OpenBracket: '[',
-    CloseBracket: ']',
+    BracketLeft: '[',
+    BracketRight: ']',
     Semicolon: ';',
-    SingleQuote: "'",
+    Backslash: '\\',
+    Comma: ',',
+    Period: '.',
+    Slash: '/',
+    Tab: 'Tab',
+
+    Quote: "'",
     // Add more keys and their values as needed
   };
   

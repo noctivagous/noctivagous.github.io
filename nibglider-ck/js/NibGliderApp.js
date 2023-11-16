@@ -135,6 +135,7 @@ getOperatingSystem() {
 
     // load the loadKeyboardKeysAccordingToFlags
     this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags('');
+    
 
 
     this.guiManager = new GUIManager(this);

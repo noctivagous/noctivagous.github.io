@@ -24,33 +24,33 @@ find what they are in a registry made from it
 
 // Create instances of LayoutBox with desired settings
 let box1 = new LayoutBox(parentWidth,parentHeight);
-box1.insetStarts = { "topEdgePt": 0, "leftEdgePt": 20 };
-box1.extrude = { "fromTopEdgePt": 200, "fromLeftEdgePt": 300 };
+box1.pullAwayFromEdges = { "topEdgeByPt": 0, "leftEdgeByPt": 20 };
+box1.extrude = { "fromTopEdgeByPt": 200, "fromLeftEdgeByPt": 300 };
 arrayOfLayoutBoxes.push(box1);
 
 let box2 = new LayoutBox(parentWidth,parentHeight);
-box2.insetStarts = { "topEdgeRatio": 0.1, "leftEdgeRatio": 0.2 };
-box2.extrude = { "fromTopEdgeRatio": 0.5, "fromLeftEdgeRatio": 0.4 };
+box2.pullAwayFromEdges = { "topEdgeByFrac": 0.1, "leftEdgeByFrac": 0.2 };
+box2.extrude = { "fromTopEdgeByFrac": 0.5, "fromLeftEdgeByFrac": 0.4 };
 arrayOfLayoutBoxes.push(box2);
 
 let box3 = new LayoutBox(parentWidth,parentHeight);
-box3.insetStarts = { "topEdgePt": 15, "leftEdgeRatio": 0.25 };
-box3.extrude = { "fromTopEdgeRatio": 0.6, "fromLeftEdgePt": 250 };
+box3.pullAwayFromEdges = { "topEdgeByPt": 15, "leftEdgeByFrac": 0.25 };
+box3.extrude = { "fromTopEdgeByFrac": 0.6, "fromLeftEdgeByPt": 250 };
 arrayOfLayoutBoxes.push(box3);
 
 let box4 = new LayoutBox(parentWidth,parentHeight);
-box4.insetStarts = { "topEdgeRatio": 0.05, "leftEdgePt": 30 };
-box4.extrude = { "fromTopEdgePt": 180, "fromLeftEdgeRatio": 0.3 };
+box4.pullAwayFromEdges = { "topEdgeByFrac": 0.05, "leftEdgeByPt": 30 };
+box4.extrude = { "fromTopEdgeByPt": 180, "fromLeftEdgeByFrac": 0.3 };
 arrayOfLayoutBoxes.push(box4);
 
 let hStackBox = new GridLayoutBox(parentWidth,parentHeight);
-hStackBox.insetStarts = { "allEdgesPt": 15 };//.insetStarts = { "topEdgeRatio": 0.01};
+hStackBox.pullAwayFromEdges = { "allEdgesPt": 15 };//.pullAwayFromEdges = { "topEdgeByFrac": 0.01};
 hStackBox.setHorizontalStack(6, 20);
 arrayOfLayoutBoxes.push(hStackBox);
 
 
 let twGrid = new GridLayoutBox(parentWidth,parentHeight);
-twGrid.insetStarts = { "allEdgesPt": 15 };//.insetStarts = { "topEdgeRatio": 0.01};
+twGrid.pullAwayFromEdges = { "allEdgesPt": 15 };//.pullAwayFromEdges = { "topEdgeByFrac": 0.01};
 twGrid.setGrid(9, 9, 5, 5);
 //arrayOfLayoutBoxes.push(twGrid);
 
@@ -82,16 +82,16 @@ let grid2Cells = grid2.calculateGridCellPropertiesWithFlexibleSizing(parentWidth
 let grid3 = new GridLayoutBox();
 grid3.gridRows = 2;
 grid3.gridColumns = 4;
-grid3.cellSizeRatios = [
-    { widthRatio: 0.25, heightRatio: 0.5 },
-    { widthRatio: 0.25, heightRatio: 0.5 },
-    { widthRatio: 0.25, heightRatio: 0.5 },
-    { widthRatio: 0.25, heightRatio: 0.5 },
+grid3.cellSizeFracs = [
+    { widthFrac: 0.25, heightFrac: 0.5 },
+    { widthFrac: 0.25, heightFrac: 0.5 },
+    { widthFrac: 0.25, heightFrac: 0.5 },
+    { widthFrac: 0.25, heightFrac: 0.5 },
     // Second row cells
-    { widthRatio: 0.15, heightRatio: 0.5 },
-    { widthRatio: 0.35, heightRatio: 0.5 },
-    { widthRatio: 0.25, heightRatio: 0.5 },
-    { widthRatio: 0.25, heightRatio: 0.5 }
+    { widthFrac: 0.15, heightFrac: 0.5 },
+    { widthFrac: 0.35, heightFrac: 0.5 },
+    { widthFrac: 0.25, heightFrac: 0.5 },
+    { widthFrac: 0.25, heightFrac: 0.5 }
 ];
 let grid3Cells = grid3.calculateGridCellPropertiesWithFlexibleSizing(parentWidth, parentHeight);
 

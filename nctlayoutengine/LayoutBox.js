@@ -3,9 +3,9 @@ class LayoutBox {
         this.parentWidth = parentWidthPassed;
         this.parentHeight = parentHeightPassed;
 
-        this.pullAwayFromEdges = null; // { "topEdgeByRatio": 0.33, "leftEdgeByPt": 10 }
+        this.pullAwayFromEdges = null; // { "topEdgeByFrac": 0.33, "leftEdgeByPt": 10 }
         // { "allEdgesPt": 10 } for a uniform margin
-        this.extrude = null; // { "fromTopEdgeByRatio": 0.33, "fromLeftEdgeByPt": 300 }
+        this.extrude = null; // { "fromTopEdgeBy": 0.33, "fromLeftEdgeByPt": 300 }
         this.adhereToEdges = []; // ["rightEdge", "leftEdge"]
         this.adhereToCorners = []; // ["bottomLeftCorner", "bottomRightCorner"]
 
@@ -20,7 +20,8 @@ class LayoutBox {
         this.guiControl = guiControl;
     }
 
-    updateDimensions(parentWidthPassed, parentHeightPassed) {
+    updateDimensions(parentWidthPassed, parentHeightPassed) 
+    {
         this.parentWidth = parentWidthPassed;
         this.parentHeight = parentHeightPassed;
 
@@ -57,6 +58,7 @@ class LayoutBox {
         return [xyWHRectAsObj];
     }
 
+
     calculateDimensionsFromPullAwayFromEdges(xyWHRectAsObj,parentWidth,parentHeight) {
 
         let x = xyWHRectAsObj.x;
@@ -71,39 +73,39 @@ class LayoutBox {
                 x = y = this.pullAwayFromEdges.allEdgesPt;
                 width -= this.pullAwayFromEdges.allEdgesPt * 2;
                 height -= this.pullAwayFromEdges.allEdgesPt * 2;
-            } else if (this.pullAwayFromEdges.allEdgesRatio !== undefined) {
-                const insetVal = parentWidth * this.pullAwayFromEdges.allEdgesRatio;
+            } else if (this.pullAwayFromEdges.allEdgesFrac !== undefined) {
+                const insetVal = parentWidth * this.pullAwayFromEdges.allEdgesFrac;
                 x = y = insetVal;
                 width -= insetVal * 2;
                 height -= insetVal * 2;
             } else {
                 // Top edge
-                if (this.pullAwayFromEdges.topEdgeByRatio !== undefined) {
-                    y += parentHeight * this.pullAwayFromEdges.topEdgeByRatio;
-                    height -= parentHeight * this.pullAwayFromEdges.topEdgeByRatio;
+                if (this.pullAwayFromEdges.topEdgeByFrac !== undefined) {
+                    y += parentHeight * this.pullAwayFromEdges.topEdgeByFrac;
+                    height -= parentHeight * this.pullAwayFromEdges.topEdgeByFrac;
                 } else if (this.pullAwayFromEdges.topEdgeByPt !== undefined) {
                     y += this.pullAwayFromEdges.topEdgeByPt;
                     height -= this.pullAwayFromEdges.topEdgeByPt;
                 }
 
                 // Right edge
-                if (this.pullAwayFromEdges.rightEdgeByRatio !== undefined) {
-                    width -= parentWidth * this.pullAwayFromEdges.rightEdgeByRatio;
+                if (this.pullAwayFromEdges.rightEdgeByFrac !== undefined) {
+                    width -= parentWidth * this.pullAwayFromEdges.rightEdgeByFrac;
                 } else if (this.pullAwayFromEdges.rightEdgeByPt !== undefined) {
                     width -= this.pullAwayFromEdges.rightEdgeByPt;
                 }
 
                 // Bottom edge
-                if (this.pullAwayFromEdges.bottomEdgeByRatio !== undefined) {
-                    height -= parentHeight * this.pullAwayFromEdges.bottomEdgeByRatio;
+                if (this.pullAwayFromEdges.bottomEdgeByFrac !== undefined) {
+                    height -= parentHeight * this.pullAwayFromEdges.bottomEdgeByFrac;
                 } else if (this.pullAwayFromEdges.bottomEdgeByPt !== undefined) {
                     height -= this.pullAwayFromEdges.bottomEdgeByPt;
                 }
 
                 // Left edge
-                if (this.pullAwayFromEdges.leftEdgeByRatio !== undefined) {
-                    x += parentWidth * this.pullAwayFromEdges.leftEdgeByRatio;
-                    width -= parentWidth * this.pullAwayFromEdges.leftEdgeByRatio;
+                if (this.pullAwayFromEdges.leftEdgeByFrac !== undefined) {
+                    x += parentWidth * this.pullAwayFromEdges.leftEdgeByFrac;
+                    width -= parentWidth * this.pullAwayFromEdges.leftEdgeByFrac;
                 } else if (this.pullAwayFromEdges.leftEdgeByPt !== undefined) {
                     x += this.pullAwayFromEdges.leftEdgeByPt;
                     width -= this.pullAwayFromEdges.leftEdgeByPt;
@@ -126,29 +128,29 @@ class LayoutBox {
         // Calculate width and height based on extrude
         if (this.extrude) {
             // Top edge
-            if (this.extrude.fromTopEdgeByRatio !== undefined) {
-                height *= this.extrude.fromTopEdgeByRatio;
+            if (this.extrude.fromTopEdgeByFrac !== undefined) {
+                height *= this.extrude.fromTopEdgeByFrac;
             } else if (this.extrude.fromTopEdgeByPt !== undefined) {
                 height = this.extrude.fromTopEdgeByPt;
             }
 
             // Right edge
-            if (this.extrude.fromRightEdgeByRatio !== undefined) {
-                width = parentWidth * (1 - this.extrude.fromRightEdgeByRatio);
+            if (this.extrude.fromRightEdgeByFrac !== undefined) {
+                width = parentWidth * (1 - this.extrude.fromRightEdgeByFrac);
             } else if (this.extrude.fromRightEdgeByPt !== undefined) {
                 width = parentWidth - this.extrude.fromRightEdgeByPt;
             }
 
             // Bottom edge
-            if (this.extrude.fromBottomEdgeByRatio !== undefined) {
-                height = parentHeight * (1 - this.extrude.fromBottomEdgeByRatio);
+            if (this.extrude.fromBottomEdgeByFrac !== undefined) {
+                height = parentHeight * (1 - this.extrude.fromBottomEdgeByFrac);
             } else if (this.extrude.fromBottomEdgeByPt !== undefined) {
                 height = parentHeight - this.extrude.fromBottomEdgeByPt;
             }
 
             // Left edge
-            if (this.extrude.fromLeftEdgeByRatio !== undefined) {
-                width *= this.extrude.fromLeftEdgeByRatio;
+            if (this.extrude.fromLeftEdgeByFrac !== undefined) {
+                width *= this.extrude.fromLeftEdgeByFrac;
             } else if (this.extrude.fromLeftEdgeByPt !== undefined) {
                 width = this.extrude.fromLeftEdgeByPt;
             }

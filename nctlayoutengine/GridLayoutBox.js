@@ -14,7 +14,7 @@ class GridLayoutBox extends LayoutBox {
         this.stretchToFit = false;
 
         // Flexible sizing (example: using ratios)
-        this.cellSizeRatios = []; // Array of size ratios for each cell
+        this.cellSizeFracs = []; // Array of size ratios for each cell
 
         this.children = null;
 
@@ -39,8 +39,8 @@ class GridLayoutBox extends LayoutBox {
         const topInset = (cellHeight + gutterSize.vertical) * row;
 
         return new GridLayoutBox({
-            insetStarts: { "topEdgePt": topInset, "leftEdgePt": leftInset },
-            extrude: { "fromTopEdgePt": cellHeight, "fromLeftEdgePt": cellWidth }
+            pullAwayFromEdges: { "topEdgeByPt": topInset, "leftEdgeByPt": leftInset },
+            extrude: { "fromTopEdgeByPt": cellHeight, "fromLeftEdgeByPt": cellWidth }
         });
     }
 
@@ -52,8 +52,8 @@ class GridLayoutBox extends LayoutBox {
         const controlsProperties = [];
         for (let i = 0; i < controlCount; i++) {
             controlsProperties.push(new GridLayoutBox({
-                insetStarts: { "leftEdgePt": (controlWidth + gutterSize) * i, "topEdgePt": 0 },
-                extrude: { "fromTopEdgePt": controlHeight, "fromLeftEdgePt": controlWidth }
+                pullAwayFromEdges: { "leftEdgeByPt": (controlWidth + gutterSize) * i, "topEdgeByPt": 0 },
+                extrude: { "fromTopEdgeByPt": controlHeight, "fromLeftEdgeByPt": controlWidth }
             }));
         }
         return controlsProperties;
@@ -67,8 +67,8 @@ class GridLayoutBox extends LayoutBox {
         const controlsProperties = [];
         for (let i = 0; i < controlCount; i++) {
             controlsProperties.push(new GridLayoutBox({
-                insetStarts: { "topEdgePt": (controlHeight + gutterSize) * i, "leftEdgePt": 0 },
-                extrude: { "fromTopEdgePt": controlHeight, "fromLeftEdgePt": controlWidth }
+                pullAwayFromEdges: { "topEdgeByPt": (controlHeight + gutterSize) * i, "leftEdgeByPt": 0 },
+                extrude: { "fromTopEdgeByPt": controlHeight, "fromLeftEdgeByPt": controlWidth }
             }));
         }
         return controlsProperties;
@@ -83,10 +83,10 @@ class GridLayoutBox extends LayoutBox {
                 let cellWidth, cellHeight;
 
                 // Calculate cell size based on content or predefined ratios
-                if (this.cellSizeRatios.length > 0) {
-                    const ratio = this.cellSizeRatios[row * this.gridColumns + column];
-                    cellWidth = parentWidth * ratio.widthRatio;
-                    cellHeight = parentHeight * ratio.heightRatio;
+                if (this.cellSizeFracs.length > 0) {
+                    const ratio = this.cellSizeFracs[row * this.gridColumns + column];
+                    cellWidth = parentWidth * ratio.widthFrac;
+                    cellHeight = parentHeight * ratio.heightFrac;
                 } else {
                     // Default to equal sizing
                     cellWidth = (parentWidth - this.horizontalGutterSize * (this.gridColumns - 1)) / this.gridColumns;
@@ -97,8 +97,8 @@ class GridLayoutBox extends LayoutBox {
                 const topInset = (cellHeight + this.verticalGutterSize) * row;
 
                 controlsProperties.push(new GridLayoutBox({
-                    insetStarts: { "topEdgePt": topInset, "leftEdgePt": leftInset },
-                    extrude: { "fromTopEdgePt": cellHeight, "fromLeftEdgePt": cellWidth }
+                    pullAwayFromEdges: { "topEdgeByPt": topInset, "leftEdgeByPt": leftInset },
+                    extrude: { "fromTopEdgeByPt": cellHeight, "fromLeftEdgeByPt": cellWidth }
                 }));
             }
         }
@@ -115,10 +115,10 @@ class GridLayoutBox extends LayoutBox {
                 let cellWidth, cellHeight, x, y;
 
                 // Calculate cell size based on content or predefined ratios within overall bounds
-                if (this.cellSizeRatios && this.cellSizeRatios.length > 0) {
-                    const ratio = this.cellSizeRatios[row * this.gridColumns + column];
-                    cellWidth = overallBounds.width * ratio.widthRatio;
-                    cellHeight = overallBounds.height * ratio.heightRatio;
+                if (this.cellSizeFracs && this.cellSizeFracs.length > 0) {
+                    const ratio = this.cellSizeFracs[row * this.gridColumns + column];
+                    cellWidth = overallBounds.width * ratio.widthFrac;
+                    cellHeight = overallBounds.height * ratio.heightFrac;
                 } else {
                     // Default to equal sizing within overall bounds
                     cellWidth = (overallBounds.width - this.horizontalGutterSize * (this.gridColumns - 1)) / this.gridColumns;
@@ -218,7 +218,7 @@ setHorizontalStack(controlCount, gutterSize) {
     this.gridColumns = controlCount;
     this.horizontalGutterSize = gutterSize;
     this.verticalGutterSize = 0; // No vertical gutter for horizontal stack
-    this.cellSizeRatios = []; // Equal sizing by default
+    this.cellSizeFracs = []; // Equal sizing by default
 }
 
 //Vertical Stack (vstack)
@@ -228,7 +228,7 @@ setVerticalStack(controlCount, gutterSize) {
     this.gridColumns = 1;
     this.horizontalGutterSize = 0; // No horizontal gutter for vertical stack
     this.verticalGutterSize = gutterSize;
-    this.cellSizeRatios = []; // Equal sizing by default
+    this.cellSizeFracs = []; // Equal sizing by default
 }
 
 // Grid
@@ -238,7 +238,7 @@ setGrid(rows, columns, horizontalGutterSize, verticalGutterSize) {
     this.gridColumns = columns;
     this.horizontalGutterSize = horizontalGutterSize;
     this.verticalGutterSize = verticalGutterSize;
-    this.cellSizeRatios = []; // Equal sizing by default or can be customized
+    this.cellSizeFracs = []; // Equal sizing by default or can be customized
 }
 
 

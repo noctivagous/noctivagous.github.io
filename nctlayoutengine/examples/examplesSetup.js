@@ -9,12 +9,12 @@ let parentHeight = 500;
 
 /*<LayoutBox 
 insetStart="
-topEdgePt:10;
-leftEdgePt:20" 
+topEdgeByPt:10;
+leftEdgeByPt:20" 
 
 extrude="
-fromTopEdgePt:200;
-fromLeftEdgePt:300
+fromTopEdgeByPt:200;
+fromLeftEdgeByPt:300
 ">
 </LayoutBox>*/
 
@@ -28,41 +28,41 @@ var twBoxes = [];
 
 // Create instances of LayoutBox with desired settings
 let box1 = new LayoutBox(parentWidth,parentHeight);
-box1.insetStarts = { "topEdgePt": 10, "leftEdgePt": 20 };
-box1.extrude = { "fromTopEdgePt": 200, "fromLeftEdgePt": 300 };
+box1.pullAwayFromEdges = { "topEdgeByPt": 10, "leftEdgeByPt": 20 };
+box1.extrude = { "fromTopEdgeByPt": 200, "fromLeftEdgeByPt": 300 };
 box1LayoutBoxes.push(box1);
 
 let box2 = new LayoutBox(parentWidth,parentHeight);
-box2.insetStarts = { "topEdgeRatio": 0.1, "leftEdgeRatio": 0.2 };
-box2.extrude = { "fromTopEdgeRatio": 0.5, "fromLeftEdgeRatio": 0.4 };
+box2.pullAwayFromEdges = { "topEdgeByFrac": 0.1, "leftEdgeByFrac": 0.2 };
+box2.extrude = { "fromTopEdgeByFrac": 0.5, "fromLeftEdgeByFrac": 0.4 };
 box2LayoutBoxes.push(box2);
 
 
 
 let box3 = new LayoutBox(parentWidth,parentHeight);
-box3.insetStarts = { "topEdgePt": 15, "leftEdgeRatio": 0.25 };
-box3.extrude = { "fromTopEdgeRatio": 0.6, "fromLeftEdgePt": 50 };
+box3.pullAwayFromEdges = { "topEdgeByPt": 15, "leftEdgeByFrac": 0.25 };
+box3.extrude = { "fromTopEdgeByFrac": 0.6, "fromLeftEdgeByPt": 50 };
 box3LayoutBoxes.push(box3);
 
 
 
 let box4 = new LayoutBox(parentWidth,parentHeight);
-box4.insetStarts = { "topEdgeRatio": 0.05, "leftEdgePt": 30 };
-box4.extrude = { "fromTopEdgePt": 180, "fromLeftEdgeRatio": 0.3 };
+box4.pullAwayFromEdges = { "topEdgeByFrac": 0.05, "leftEdgeByPt": 30 };
+box4.extrude = { "fromTopEdgeByPt": 180, "fromLeftEdgeByFrac": 0.3 };
 box4LayoutBoxes.push(box4);
 
 
 
 
 let hStackBox = new GridLayoutBox(parentWidth,parentHeight);
-hStackBox.insetStarts = { "allEdgesPt": 15 };
+hStackBox.pullAwayFromEdges = { "allEdgesPt": 15 };
 hStackBox.setHorizontalStack(6, 20);
 hStackBoxes.push(hStackBox);
 
 
 
 let twGrid = new GridLayoutBox(parentWidth,parentHeight);
-twGrid.insetStarts = { "allEdgesPt": 15 };
+twGrid.pullAwayFromEdges = { "allEdgesPt": 15 };
 twGrid.setGrid(9, 9, 5, 5);
 twBoxes.push(twGrid);
 

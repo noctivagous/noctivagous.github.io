@@ -39,7 +39,7 @@
     font-family: 'DDINExpRegular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: normal;
-    font-style: normal;
+    
 
     cursor: pointer;
 
@@ -247,8 +247,7 @@
 
 .drawingButton {
     background-color: rgb(130, 244, 29) !important;
-    box-shadow: 1pt 1pt 0px #333 !important;
-    opacity: 1.0 !important;
+    
     color: green !important;
 }
 
@@ -647,5 +646,7 @@ button {
         justify-content: flex-start; /* Aligns children to the start (left) */
     
     
+        box-shadow: 1pt 1pt 0px #333 !important;
+    opacity: 1.0 !important;
     }
     

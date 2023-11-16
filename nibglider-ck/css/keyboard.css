@@ -1,15 +1,15 @@
 /* KEYBOARD KEYS CONTAINER CSS 2.0 "GRID" TEMPLATE AREAS */
 
 @font-face {
-    font-family: 'DraughtsmanARegular';
-    src: url('../DraughtsmanARegular.ttf') format('ttf'),
-         url('../DraughtsmanAItalic.ttf') format('ttf');
+    font-family: 'Draughtsman A';
+    src: url('../fonts/DraughtsmanARegular.ttf') format('truetype'),
+         url('../fonts/DraughtsmanAItalic.ttf') format('truetype');
   }
-
+  
 @font-face {
     font-family: 'OPTIFranklinGothicMedium';
-    src: url('../OPTIFranklinGothic-Medium.otf') format('otf'),
-    url('../OPTIFranklinGothic-MediumIt.otf') format('otf');
+    src: url('../fonts/OPTIFranklinGothic-Medium.otf') format('otf'),
+    url('../fonts/OPTIFranklinGothic-MediumIt.otf') format('otf');
   }
 
 
@@ -127,7 +127,12 @@
         gap: .4vmin .4vmin;
     }
 
-    
+    .keyboardKeysOverlayContainer button {
+
+     
+        padding:1pt;
+
+    }
 }
 
 @media screen and (max-height: 900px) {
@@ -146,6 +151,7 @@
     .keyboardKeysOverlayContainer button {
 
         font-size:12px;
+        padding:1pt;
 
     }
 
@@ -169,7 +175,7 @@
     .keyboardKeysOverlayContainer button {
 
         font-size:12px;
-
+        padding:1pt;
     }
 }
 
@@ -212,6 +218,10 @@
     overflow: hidden;
 }
 
+.minikeylettersquare
+{
+    font-family: 'Draughtsman A', sans-serif !important;
+}
 .capsLockKey .minikeylettersquare{
 margin-right:13px !important;
 }
@@ -388,8 +398,8 @@ color:rgb(28, 28, 28) !important;
 
 .backslashKey {
     grid-area: backslashKey;
-    margin-left:-2pt;
-    width: 140%;
+    margin-left:-1pt;
+    width: 135%;
 }
 
 .sKey {
@@ -699,5 +709,7 @@ button {
     
         box-shadow: 1pt 1pt 0px #333 !important;
     opacity: 1.0 !important;
+    padding:1pt;
+
     }
     

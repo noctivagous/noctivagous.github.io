@@ -354,9 +354,8 @@ class KeyboardMappingManager {
             square.style.zIndex = '100';
             square.style.fontSize = '90%';
             square.style.textShadow = '0 0 3px #ccc';  // White text shadow
-            square.style.fontWeight = 'bold';
             square.style.fontStyle = 'italic';
-            square.style.fontFamily = 'DraughtsmanARegular';
+            /*square.style.fontFamily = 'Draughtsman A';*/
             square.style.marginRight = '1pt';
 
             // Extract the character from the keyToChar mapping

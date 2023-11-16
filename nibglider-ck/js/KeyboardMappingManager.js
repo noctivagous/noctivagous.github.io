@@ -21,6 +21,7 @@ class KeyboardMappingManager {
     this.keyboardMappingManager = this;
     //   this.eventManager = eventManager;
 
+    this.flags = null
     /*
     document.addEventListener('keydown', function(event) {
       var keyCode = event.code;
@@ -52,14 +53,32 @@ class KeyboardMappingManager {
 
     var flags = this.keyEventFlags(keyEvent);
 
+    this.flags = this.keyEventFlags(keyEvent);
+
     this.eventKeyCodeWithFlag = keyEvent.code;
 
     if (flags != null) {
       this.eventKeyCodeWithFlag = flags + keyEvent.code;
     }
 
+    // update the keyboardpanel
+    this.loadKeyboardKeysAccordingToFlags(keyEvent,flags);
+
     // using the keyMap dictionary,
     this.keyProcessor(keyEvent);
+
+
+    var elementLookup = document.getElementById(String(keyEvent.code))
+
+    //console.log(elementLookup);
+
+    // highlight the key with active state
+    // if it is non-alphanumeric.
+    if ((elementLookup != null) && (keyEvent.metaKey == false)) {
+
+      elementLookup.classList.add('active');
+    }
+  
 
     /*
 
@@ -81,6 +100,17 @@ class KeyboardMappingManager {
 */
 
   }
+
+    // sent from EventManager
+    handleKeyUp(keyEvent) {
+
+
+      var elementLookup = document.getElementById(keyEvent.code)
+      if (elementLookup != null) {
+        elementLookup.classList.remove('active');
+      }
+
+    }
 
 
   select() {
@@ -191,6 +221,8 @@ class KeyboardMappingManager {
  
   keyProcessor(keyEvent) {
     
+    this.flags = this.keyEventFlags(keyEvent);
+
     const operatingSys = this.app.operatingSystem;
 
     const keyCodeWithFlag = this.eventKeyCodeWithFlag;
@@ -200,8 +232,11 @@ class KeyboardMappingManager {
 
     if (keyMapEntry) {
       // Update the onscreen key panel (you can implement this part)
-      this.updateOnscreenKeyPanel(keyMapEntry);
+     // this.updateOnscreenKeyPanel(keyMapEntry);
   
+
+     
+
       // Get the corresponding function string from the key map entry
       const functionString = keyMapEntry.defaultFunctionString;
   
@@ -213,6 +248,55 @@ class KeyboardMappingManager {
     
 
   }
+
+
+
+
+   loadKeyboardKeysAccordingToFlags(flags) {
+    // Query all key buttons
+    const keyButtons = document.querySelectorAll('.keyboardkey');
+  
+    keyButtons.forEach(button => {
+      // Derive key code from the button id or another attribute
+      let keyCode = button.id; // Adjust this based on your actual button id format
+  
+      // Append current flags to the key code
+      const keyIdentifier = flags + keyCode;
+      const os = this.operatingSys;
+
+      // Get the keyMapping for this identifier or fall back to default if not present
+      const keyMapping = this.keyMappings[os + keyIdentifier] || this.keyMappings[keyIdentifier] || this.keyMappings[keyCode];
+  
+      if (keyMapping) {
+        // Update the button's style and text
+        this.updateButtonStyle(button, keyMapping);
+        
+      }
+    });
+  }
+
+
+   updateButtonStyle(button, keyMapping) {
+    if (button) {
+      
+      button.textContent = keyMapping.defaultText;
+      button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
+      button.style.color = `rgb(${keyMapping.defaultFontColor})`;
+      button.textContent = keyMapping.defaultText;
+
+    }
+  }
+  
+  /*
+   activateFunction(functionName) {
+    // Assuming you have functions defined elsewhere that match the function names in keyMappings
+    if (typeof window[functionName] === 'function') {
+      window[functionName](); // Call the function
+    }
+  }
+  */
+
+
   
   updateOnscreenKeyPanel(keyMapEntry) {
     // Implement the logic to update the onscreen key panel here
@@ -311,7 +395,7 @@ class KeyboardMappingManager {
       "defaultFontColor": "64,255,64",
       "selectionStateText": "Send selected objects to the back",
     },
-    '^KeyUp': {
+    '^ArrowUp': {
       "defaultText": "Bring Selection Forward",
       "defaultFunctionString": "bringSelectionForward",
       "defaultDescription": "Bring selected objects forward by one step",
@@ -319,7 +403,7 @@ class KeyboardMappingManager {
       "defaultFontColor": "64,64,255",
       "selectionStateText": "Bring selected objects forward by one step",
     },
-    '^KeyDown': {
+    '^ArrowDown': {
       "defaultText": "Send Selection Backward",
       "defaultFunctionString": "sendSelectionBackward",
       "defaultDescription": "Send selected objects backward by one step",

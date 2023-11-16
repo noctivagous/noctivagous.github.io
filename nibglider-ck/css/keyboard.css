@@ -24,7 +24,7 @@
 
 .keyboardKeysOverlayContainer button {
     pointer-events: all;
-    font-size: clamp(10px, 1.5vw, 15px); /* Adjust values as needed */
+    font-size: clamp(10px, 1.5vw, 14px); /* Adjust values as needed */
      
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

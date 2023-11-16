@@ -30,9 +30,11 @@ class EventManager {
 
     document.addEventListener('keydown', (event) => this.keyboardMappingManager.handleKeyPress(event));
 
+    document.addEventListener('keyup', (event) => this.keyboardMappingManager.handleKeyUp(event));
+
     // Wheel event listener for handling scroll wheel interactions
     //this.htmlCanvas.addEventListener('wheel', this.handleWheelEvent.bind(this));
-    this.htmlCanvas.addEventListener('wheel', this.handleTrackpadGesture.bind(this));
+    //this.htmlCanvas.addEventListener('wheel', this.handleTrackpadGesture.bind(this));
 
 
     /*

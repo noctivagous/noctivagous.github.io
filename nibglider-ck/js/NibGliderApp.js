@@ -132,6 +132,10 @@ getOperatingSystem() {
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
+    // load the loadKeyboardKeysAccordingToFlags
+    this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags('');
+
+
     this.guiManager = new GUIManager(this);
 
     this.snappingManager = new SnappingManager(this);

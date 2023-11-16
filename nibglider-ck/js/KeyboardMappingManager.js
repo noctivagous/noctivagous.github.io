@@ -48,6 +48,21 @@ class KeyboardMappingManager {
 
   }
 
+     // sent from EventManager
+     handleKeyUp(keyEvent) {
+
+
+      var elementLookup = document.getElementById(keyEvent.code)
+      if (elementLookup != null) {
+        elementLookup.classList.remove('active');
+      }
+
+      var flags = this.keyEventFlags(keyEvent);
+
+      this.loadKeyboardKeysAccordingToFlags(keyEvent,flags);
+
+    }
+
   // sent from EventManager
   handleKeyPress(keyEvent) {
 
@@ -102,16 +117,41 @@ class KeyboardMappingManager {
 
   }
 
-    // sent from EventManager
-    handleKeyUp(keyEvent) {
+  toggleKeyboardPanel()
+  {
+    
+      const keyboardPanel = document.getElementById('keyboardPanel');
 
-
-      var elementLookup = document.getElementById(keyEvent.code)
-      if (elementLookup != null) {
-        elementLookup.classList.remove('active');
+      if (keyboardPanel) {
+        if (keyboardPanel.classList.contains('slide-down')) {
+          // Faster transition for sliding up
+          keyboardPanel.style.transition = 'bottom 0.2s'; // Quicker transition
+          keyboardPanel.classList.remove('slide-down');
+          keyboardPanel.classList.add('slide-up');
+        } else {
+          // Slower transition for sliding down
+          keyboardPanel.style.transition = 'bottom 0.3s'; // Slower transition
+          keyboardPanel.classList.remove('slide-up');
+          keyboardPanel.classList.add('slide-down');
+        }
       }
 
-    }
+      /*
+      if (keyboardPanel) {
+        
+        if (keyboardPanel.classList.contains('slide-down')) {
+          keyboardPanel.classList.remove('slide-down');
+          keyboardPanel.classList.add('slide-up');
+        } else {
+          console.log('1');
+          keyboardPanel.classList.remove('slide-up');
+          keyboardPanel.classList.add('slide-down');
+        }
+      }
+      */
+    
+  
+  }
 
 
   select() {
@@ -253,10 +293,11 @@ class KeyboardMappingManager {
 
 
 
-   loadKeyboardKeysAccordingToFlags(flags) {
+   loadKeyboardKeysAccordingToFlags(keyEvent, flags) {
     // Query all key buttons
     const keyButtons = document.querySelectorAll('.keyboardkey');
   
+
     keyButtons.forEach(button => {
       // Derive key code from the button id or another attribute
       let keyCode = button.id; // Adjust this based on your actual button id format
@@ -268,6 +309,8 @@ class KeyboardMappingManager {
       // Get the keyMapping for this identifier or fall back to default if not present
       const keyMapping = this.keyMappings[os + keyIdentifier] || this.keyMappings[keyIdentifier] || this.keyMappings[keyCode];
   
+      
+
       if (keyMapping) {
         // Update the button's style and text
         this.updateButtonStyle(button, keyMapping);
@@ -284,7 +327,7 @@ class KeyboardMappingManager {
 
      button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
       button.style.color = `rgb(${keyMapping.defaultFontColor})`;
-      button.textContent = keyMapping.defaultText;
+      button.innerHTML = keyMapping.defaultText;
 
     }
   }
@@ -315,6 +358,14 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
 
       "selectionStateText": "Tab Selection",
+
+    },
+    'Backslash': {
+      "defaultText": "Hide/Show Keyboard",
+      "defaultFunctionString": "toggleKeyboardPanel",
+      "defaultDescription": "Slides the keyboard off and on screen",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "155,155,155",
 
     },
     'KeyA': {
@@ -389,6 +440,46 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
       "selectionStateText": "Bring selected objects to the front",
     },
+    'KeyZ': {
+      "defaultText": "Arc By Three Points",
+      "defaultFunctionString": "arcByThreePoints",
+      "defaultDescription": "Make an arc from three points",
+      "defaultButtonBackgroundColor": "0,148,17",
+      "defaultFontColor": "64,255,64",
+      
+    },
+    'KeyD': {
+      "defaultText": "Round Corner",
+      "defaultFunctionString": "roundCorner",
+      "defaultDescription": "Make roundCorner point",
+      "defaultButtonBackgroundColor": "0,148,17",
+      "defaultFontColor": "64,255,64",
+      "selectionStateText": "",
+    },
+    'KeyB': {
+      "defaultText": "BSpline",
+      "defaultFunctionString": "bspline",
+      "defaultDescription": "Make bspline point",
+      "defaultButtonBackgroundColor": "0,148,17",
+      "defaultFontColor": "64,255,64",
+      
+    },
+    'KeyN': {
+      "defaultText": "Nozzle Subtract",
+      "defaultFunctionString": "nozzleSubtract",
+      "defaultDescription": "Subtract",
+      "defaultButtonBackgroundColor": "0,148,17",
+      "defaultFontColor": "64,255,64",
+      
+    },
+    'KeyM': {
+      "defaultText": "Nozzle Add",
+      "defaultFunctionString": "nozzleAdd",
+      "defaultDescription": "Activate nozzle and add (e.g. particles)",
+      "defaultButtonBackgroundColor": "0,148,17",
+      "defaultFontColor": "64,255,64",
+      
+    },
     '^KeyB': {
       "defaultText": "Send Selection to Back",
       "defaultFunctionString": "sendSelectionToBack",
@@ -439,7 +530,7 @@ class KeyboardMappingManager {
 
     'BracketRight': {
 
-      "defaultText": "Scale Up",
+      "defaultText": "Scale Up <br/>10%",
       "defaultFunctionString": "scaleUp",
       "defaultDescription": "Scale up an object",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -449,7 +540,7 @@ class KeyboardMappingManager {
     },
     'BracketLeft': {
 
-      "defaultText": "Scale Down",
+      "defaultText": "Scale Down <br/>10%",
       "defaultFunctionString": "scaleDown",
       "defaultDescription": "Scale down an object",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -458,7 +549,7 @@ class KeyboardMappingManager {
 
     },
     '$BracketLeft': {
-      "defaultText": "Scale Down Upper1",
+      "defaultText": "Scale Down 30%",
       "defaultFunctionString": "scaleDownUpper1",
       "defaultDescription": "Scale down an object with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -467,7 +558,7 @@ class KeyboardMappingManager {
 
     },
     '$BracketRight': {
-      "defaultText": "Scale Up Upper1",
+      "defaultText": "Scale Up 30%",
       "defaultFunctionString": "scaleUpUpper1",
       "defaultDescription": "Scale up an object with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -476,7 +567,7 @@ class KeyboardMappingManager {
 
     },
     '$^BracketLeft': {
-      "defaultText": "Scale Down Upper2",
+      "defaultText": "Scale Down 40%",
       "defaultFunctionString": "scaleDownUpper2",
       "defaultDescription": "Scale down an object with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -485,7 +576,7 @@ class KeyboardMappingManager {
 
     },
     '$^BracketRight': {
-      "defaultText": "Scale Up Upper2",
+      "defaultText": "Scale Up 40%",
       "defaultFunctionString": "scaleUpUpper2",
       "defaultDescription": "Scale up an object with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -494,7 +585,7 @@ class KeyboardMappingManager {
 
     },
     '~BracketLeft': {
-      "defaultText": "Scale Down Lower1",
+      "defaultText": "Scale Down <br/>5%",
       "defaultFunctionString": "scaleDownLower1",
       "defaultDescription": "Scale down an object by a smaller amount.",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -502,7 +593,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Tilde + Bracket Left Selection",
     },
     '~BracketRight': {
-      "defaultText": "Scale Up Lower1",
+      "defaultText": "Scale Up <br/>5%",
       "defaultFunctionString": "scaleUpLower1",
       "defaultDescription": "Scale up an object with Tilde",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -511,6 +602,14 @@ class KeyboardMappingManager {
 
     },
     '^BracketRight': {
+      "defaultText": "Live Scaling",
+      "defaultFunctionString": "liveScaling",
+      "defaultDescription": "Perform live X or Y scaling",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+      "selectionStateText": "Live X/Y Scaling Selection",
+    },
+    '$~BracketRight': {
       "defaultText": "Live X Or Y Scaling",
       "defaultFunctionString": "liveXOrYScaling",
       "defaultDescription": "Perform live X or Y scaling",
@@ -527,7 +626,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Live Shearing Selection",
     },
     '^~BracketLeft': {
-      "defaultText": "Scale Down Lower2",
+      "defaultText": "Scale Down <br/>1.5%",
       "defaultFunctionString": "scaleDownLower2",
       "defaultDescription": "Scale down an object ",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -535,7 +634,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Scale Down Lower2",
     },
     '^~BracketRight': {
-      "defaultText": "Scale Up Lower2",
+      "defaultText": "Scale Up <br/>1.5%",
       "defaultFunctionString": "scaleUpLower2",
       "defaultDescription": "Scale up an object ",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -543,7 +642,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Scale up Lower2",
     },
     'Semicolon': {
-      "defaultText": "Rotate Counterclockwise",
+      "defaultText": "Rotate -15°",
       "defaultFunctionString": "rotateCounterclockwise",
       "defaultDescription": "Rotate counterclockwise",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -551,7 +650,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Semicolon Selection",
     },
     'Quote': {
-      "defaultText": "Rotate Clockwise",
+      "defaultText": "Rotate  <br/>15°",
       "defaultFunctionString": "rotateClockwise",
       "defaultDescription": "Rotate clockwise",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -559,7 +658,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Quote Selection",
     },
     '$Semicolon': {
-      "defaultText": "Rotate Counterclockwise Upper1",
+      "defaultText": "Rotate <br/>-45°",
       "defaultFunctionString": "rotateCounterclockwiseUpper1",
       "defaultDescription": "Rotate counterclockwise with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -567,7 +666,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Shift + Semicolon Selection",
     },
     '$Quote': {
-      "defaultText": "Rotate Clockwise Upper1",
+      "defaultText": "Rotate 45°",
       "defaultFunctionString": "rotateClockwiseUpper1",
       "defaultDescription": "Rotate clockwise with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -576,7 +675,7 @@ class KeyboardMappingManager {
     },
 
     '$^Semicolon': {
-      "defaultText": "Rotate Counterclockwise Upper2",
+      "defaultText": "Rotate -90°",
       "defaultFunctionString": "rotateCounterclockwiseUpper2",
       "defaultDescription": "Rotate counterclockwise with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -584,7 +683,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Shift + Semicolon Selection",
     },
     '$^Quote': {
-      "defaultText": "Rotate Clockwise Upper2",
+      "defaultText": "Rotate 90°",
       "defaultFunctionString": "rotateClockwiseUpper2",
       "defaultDescription": "Rotate clockwise with Shift",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -593,7 +692,7 @@ class KeyboardMappingManager {
     },
 
     '~Semicolon': {
-      "defaultText": "Rotate Counterclockwise Lower1",
+      "defaultText": "Rotate -5°",
       "defaultFunctionString": "rotateCounterclockwiseLower1",
       "defaultDescription": "Rotate counterclockwise by a smaller amount.",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -601,7 +700,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Tilde + Semicolon Selection",
     },
     '~Quote': {
-      "defaultText": "Rotate Clockwise Lower1",
+      "defaultText": "Rotate 5°",
       "defaultFunctionString": "rotateClockwiseLower1",
       "defaultDescription": "Rotate clockwise by a smaller amount.",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -609,7 +708,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Tilde + Quote Selection",
     },
     '^~Semicolon': {
-      "defaultText": "Rotate Counterclockwise Lower2",
+      "defaultText": "Rotate -1°",
       "defaultFunctionString": "rotateCounterclockwiseLower2",
       "defaultDescription": "Rotate counterclockwise by a smaller amount with Ctrl+Alt",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -617,7 +716,7 @@ class KeyboardMappingManager {
       "selectionStateText": "Ctrl+Shift + Semicolon Selection",
     },
     '^~Quote': {
-      "defaultText": "Rotate Clockwise Lower2",
+      "defaultText": "Rotate 1°",
       "defaultFunctionString": "rotateClockwiseLower2",
       "defaultDescription": "Rotate clockwise by a smaller amount with Ctrl+Alt",
       "defaultButtonBackgroundColor": "148,17,0",
@@ -846,6 +945,9 @@ class KeyboardMappingManager {
 
 
   functionRegistry = {
+    toggleKeyboardPanel: () => {
+      this.toggleKeyboardPanel();
+    },
     select: () => {
       this.select();
     },
@@ -881,6 +983,9 @@ class KeyboardMappingManager {
     },
     scaleUpLower2: () => {
       this.drawingEntityManager.scaleUpLower2();
+    },
+    liveScaling: () => {
+      this.drawingEntityManager.liveScaling();
     },
     liveXOrYScaling: () => {
       this.drawingEntityManager.liveXOrYScaling();

@@ -19,13 +19,22 @@
 
     text-align: center;
     vertical-align: middle;
+    transition: bottom 0.25s;
 
 }
 
+#keyboardPanel.slide-down {
+    bottom: -100%; /* Adjust this value depending on the size of your keyboard panel */
+  }
+  
+#keyboardPanel.slide-up {
+    bottom: 10pt;
+  }
+
 .keyboardKeysOverlayContainer button {
     pointer-events: all;
-    font-size: clamp(10px, 1.5vw, 15px); /* Adjust values as needed */
-     
+    font-size: clamp(10px, 1.5vw, 14px); /* Adjust values as needed */
+    text-align: center;
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: #333;
@@ -70,11 +79,15 @@
 
 #keyboardKeysGrid {
 
+
     display: grid;
     /*    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;*/
-    grid-template-columns: 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt;
-    grid-template-rows: 45pt 45pt 45pt 45pt;
+    /*
+    grid-template-columns: 40pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt;
+    grid-template-rows: 45pt 45pt 45pt 45pt;*/
+    grid-template-columns: 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt;
+    grid-template-rows: 40pt 40pt 40pt 40pt;
     gap: .5vmin .5vmin;
     grid-auto-flow: row;
     grid-template-areas:
@@ -108,8 +121,8 @@
 @media screen and (max-height: 900px) {
 
     #keyboardKeysGrid {
-        grid-template-columns: 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt;
-        grid-template-rows: 40pt 40pt 40pt 40pt;
+        grid-template-columns: 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt;
+        grid-template-rows: 37pt 37pt 37pt 37pt;
         gap: .4vmin .4vmin;
     }
 
@@ -120,7 +133,7 @@
 
     .keyboardKeysOverlayContainer button {
 
-        font-size:13px;
+        font-size:12px;
 
     }
 

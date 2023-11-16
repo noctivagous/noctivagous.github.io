@@ -48,20 +48,20 @@ class KeyboardMappingManager {
 
   }
 
-     // sent from EventManager
-     handleKeyUp(keyEvent) {
+  // sent from EventManager
+  handleKeyUp(keyEvent) {
 
 
-      var elementLookup = document.getElementById(keyEvent.code)
-      if (elementLookup != null) {
-        elementLookup.classList.remove('active');
-      }
-
-      var flags = this.keyEventFlags(keyEvent);
-
-      this.loadKeyboardKeysAccordingToFlags(keyEvent,flags);
-
+    var elementLookup = document.getElementById(keyEvent.code)
+    if (elementLookup != null) {
+      elementLookup.classList.remove('active');
     }
+
+    var flags = this.keyEventFlags(keyEvent);
+
+    this.loadKeyboardKeysAccordingToFlags(keyEvent, flags);
+
+  }
 
   // sent from EventManager
   handleKeyPress(keyEvent) {
@@ -77,7 +77,7 @@ class KeyboardMappingManager {
     }
 
     // update the keyboardpanel
-    this.loadKeyboardKeysAccordingToFlags(keyEvent,flags);
+    this.loadKeyboardKeysAccordingToFlags(keyEvent, flags);
 
 
     var buttonLookup = document.getElementById(keyEvent.code)
@@ -90,7 +90,7 @@ class KeyboardMappingManager {
       // by the data attribute.
       buttonLookup.classList.add('active');
     }
-  
+
 
     // using the keyMap dictionary,
     this.keyProcessor(keyEvent);
@@ -117,40 +117,39 @@ class KeyboardMappingManager {
 
   }
 
-  toggleKeyboardPanel()
-  {
-    
-      const keyboardPanel = document.getElementById('keyboardPanel');
+  toggleKeyboardPanel() {
 
-      if (keyboardPanel) {
-        if (keyboardPanel.classList.contains('slide-down')) {
-          // Faster transition for sliding up
-          keyboardPanel.style.transition = 'bottom 0.2s'; // Quicker transition
-          keyboardPanel.classList.remove('slide-down');
-          keyboardPanel.classList.add('slide-up');
-        } else {
-          // Slower transition for sliding down
-          keyboardPanel.style.transition = 'bottom 0.3s'; // Slower transition
-          keyboardPanel.classList.remove('slide-up');
-          keyboardPanel.classList.add('slide-down');
-        }
-      }
+    const keyboardPanel = document.getElementById('keyboardPanel');
 
-      /*
-      if (keyboardPanel) {
-        
-        if (keyboardPanel.classList.contains('slide-down')) {
-          keyboardPanel.classList.remove('slide-down');
-          keyboardPanel.classList.add('slide-up');
-        } else {
-          console.log('1');
-          keyboardPanel.classList.remove('slide-up');
-          keyboardPanel.classList.add('slide-down');
-        }
+    if (keyboardPanel) {
+      if (keyboardPanel.classList.contains('slide-down')) {
+        // Faster transition for sliding up
+        keyboardPanel.style.transition = 'bottom 0.2s'; // Quicker transition
+        keyboardPanel.classList.remove('slide-down');
+        keyboardPanel.classList.add('slide-up');
+      } else {
+        // Slower transition for sliding down
+        keyboardPanel.style.transition = 'bottom 0.3s'; // Slower transition
+        keyboardPanel.classList.remove('slide-up');
+        keyboardPanel.classList.add('slide-down');
       }
-      */
-    
-  
+    }
+
+    /*
+    if (keyboardPanel) {
+      
+      if (keyboardPanel.classList.contains('slide-down')) {
+        keyboardPanel.classList.remove('slide-down');
+        keyboardPanel.classList.add('slide-up');
+      } else {
+        console.log('1');
+        keyboardPanel.classList.remove('slide-up');
+        keyboardPanel.classList.add('slide-down');
+      }
+    }
+    */
+
+
   }
 
 
@@ -259,9 +258,9 @@ class KeyboardMappingManager {
   };
   */
 
- 
+
   keyProcessor(keyEvent) {
-    
+
     this.flags = this.keyEventFlags(keyEvent);
 
     const operatingSys = this.app.operatingSystem;
@@ -269,69 +268,113 @@ class KeyboardMappingManager {
     const keyCodeWithFlag = this.eventKeyCodeWithFlag;
     const keyCodeWithFlagWithOS = operatingSys + this.eventKeyCodeWithFlag;
     const keyMapEntry = this.keyMappings[keyCodeWithFlag] || this.keyMappings[keyCodeWithFlagWithOS];
-  
+
 
     if (keyMapEntry) {
       // Update the onscreen key panel (you can implement this part)
-     // this.updateOnscreenKeyPanel(keyMapEntry);
-  
+      // this.updateOnscreenKeyPanel(keyMapEntry);
 
-     
+
+
 
       // Get the corresponding function string from the key map entry
       const functionString = keyMapEntry.defaultFunctionString;
-  
+
       // Execute the function from functionRegistry if it exists
       if (this.functionRegistry[functionString]) {
         this.functionRegistry[functionString]();
       }
     }
-    
+
 
   }
 
 
 
 
-   loadKeyboardKeysAccordingToFlags(keyEvent, flags) {
+  loadKeyboardKeysAccordingToFlags(keyEvent, flags) {
     // Query all key buttons
     const keyButtons = document.querySelectorAll('.keyboardkey');
-  
+
+
 
     keyButtons.forEach(button => {
       // Derive key code from the button id or another attribute
       let keyCode = button.id; // Adjust this based on your actual button id format
-  
+
       // Append current flags to the key code
       const keyIdentifier = flags + keyCode;
       const os = this.operatingSys;
 
       // Get the keyMapping for this identifier or fall back to default if not present
       const keyMapping = this.keyMappings[os + keyIdentifier] || this.keyMappings[keyIdentifier] || this.keyMappings[keyCode];
-  
-      
+
+
 
       if (keyMapping) {
         // Update the button's style and text
         this.updateButtonStyle(button, keyMapping);
-        
+
       }
     });
+  
+    this.insertMiniLetterSquaresIntoKeys(keyButtons);
+
+
   }
 
+  
 
-   updateButtonStyle(button, keyMapping) {
+   insertMiniLetterSquaresIntoKeys(keyButtons) {
+    keyButtons.forEach(button => {
+        // Create a square div
+        let square = document.createElement('div');
+
+        // Get the dimensions of the button
+        let buttonWidth = button.offsetWidth;
+        let buttonHeight = button.offsetHeight;
+
+        // Set the size and style of the square
+        square.style.width = `${buttonWidth / 4.2}px`;
+        square.style.height = `${buttonHeight / 4.2}px`;
+        square.style.position = 'absolute';
+        square.style.bottom = '0';   // Align to bottom
+        square.style.right = '0';    // Align to right
+        square.style.backgroundColor = 'rgba(200, 200, 200, 0.0)'; // Semi-transparent grey
+        square.style.display = 'flex';
+        square.style.textTransform = 'uppercase';
+        square.style.alignItems = 'center';
+        square.style.color = 'rgba(255, 255, 255, 0.8)';
+        square.style.justifyContent = 'center';
+        square.style.zIndex = '100';
+        square.style.fontSize = '90%';
+        square.style.textShadow = '0 0 3px #ccc';  // White text shadow
+
+        // Extract the character from the keyToChar mapping
+        let char = this.keyToChar[button.id] || ''; // Fallback to empty string if no match
+
+        // Set the text inside the square
+        square.textContent = char;
+
+        // Append the square to the button
+        button.style.position = 'relative'; // Ensure the button can act as a container
+        button.appendChild(square);
+    });
+}
+
+
+  updateButtonStyle(button, keyMapping) {
     if (button) {
-      
-      
 
-     button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
+
+
+      button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
       button.style.color = `rgb(${keyMapping.defaultFontColor})`;
       button.innerHTML = keyMapping.defaultText;
 
     }
   }
-  
+
   /*
    activateFunction(functionName) {
     // Assuming you have functions defined elsewhere that match the function names in keyMappings
@@ -342,12 +385,12 @@ class KeyboardMappingManager {
   */
 
 
-  
+
   updateOnscreenKeyPanel(keyMapEntry) {
     // Implement the logic to update the onscreen key panel here
     // You can use keyMapEntry to access information about the key and its function
   }
-  
+
 
   keyMappings = {
     'Tab': {
@@ -396,23 +439,72 @@ class KeyboardMappingManager {
     },
 
     'KeyC': {
-      "defaultText": "Thin Stroke",
+      "defaultText": "Stroke Width -1",
       "defaultFunctionString": "thinStroke",
       "defaultDescription": "thin stroke",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
+      "selectionStateText": "thin stroke",
+    },
+    '~KeyC': {
+      "defaultText": "Stroke Width -0.5",
+      "defaultFunctionString": "thinStroke",
+      "defaultDescription": "thin stroke",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
+      "selectionStateText": "thin stroke",
+    },
+
+
+    '$KeyC': {
+      "defaultText": "Stroke Width -5",
+      "defaultFunctionString": "thinStrokeUpper1",
+      "defaultDescription": "thin stroke",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
+      "selectionStateText": "thin stroke",
+    },
+    '$^KeyC': {
+      "defaultText": "Stroke Width -10",
+      "defaultFunctionString": "thinStrokeUpper2",
+      "defaultDescription": "thin stroke",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
       "selectionStateText": "thin stroke",
     },
 
     'KeyV': {
-      "defaultText": "Thicken Stroke",
+      "defaultText": "Stroke Width +1",
       "defaultFunctionString": "thickenStroke",
       "defaultDescription": "thicken stroke",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "10,10,10",
+      "defaultFontColor": "120,120,120",
       "selectionStateText": "thicken stroke",
     },
-
+    '~KeyV': {
+      "defaultText": "Stroke Width +0.5",
+      "defaultFunctionString": "thickenStroke",
+      "defaultDescription": "thicken stroke",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
+      "selectionStateText": "thin stroke",
+    },
+    '$KeyV': {
+      "defaultText": "Stroke Width +5",
+      "defaultFunctionString": "thinStrokeUpper1",
+      "defaultDescription": "thicken stroke",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
+      "selectionStateText": "thin stroke",
+    },
+    '$^KeyV': {
+      "defaultText": "Stroke Width +10",
+      "defaultFunctionString": "thickenStrokeUpper",
+      "defaultDescription": "thicken stroke",
+      "defaultButtonBackgroundColor": "0,0,0",
+      "defaultFontColor": "120,120,120",
+      "selectionStateText": "thin stroke",
+    },
 
     'Mac@KeyC': {
       "defaultText": "Copy Selected",
@@ -422,7 +514,7 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
       "selectionStateText": "copy selected obj",
     },
-    
+
     'PC^KeyC': {
       "defaultText": "Copy Selected",
       "defaultFunctionString": "copy",
@@ -446,7 +538,7 @@ class KeyboardMappingManager {
       "defaultDescription": "Make an arc from three points",
       "defaultButtonBackgroundColor": "0,148,17",
       "defaultFontColor": "64,255,64",
-      
+
     },
     'KeyD': {
       "defaultText": "Round Corner",
@@ -456,13 +548,13 @@ class KeyboardMappingManager {
       "defaultFontColor": "64,255,64",
       "selectionStateText": "",
     },
-    'KeyB': {
+    'KeyE': {
       "defaultText": "BSpline",
       "defaultFunctionString": "bspline",
       "defaultDescription": "Make bspline point",
       "defaultButtonBackgroundColor": "0,148,17",
       "defaultFontColor": "64,255,64",
-      
+
     },
     'KeyN': {
       "defaultText": "Nozzle Subtract",
@@ -470,7 +562,7 @@ class KeyboardMappingManager {
       "defaultDescription": "Subtract",
       "defaultButtonBackgroundColor": "0,148,17",
       "defaultFontColor": "64,255,64",
-      
+
     },
     'KeyM': {
       "defaultText": "Nozzle Add",
@@ -478,7 +570,7 @@ class KeyboardMappingManager {
       "defaultDescription": "Activate nozzle and add (e.g. particles)",
       "defaultButtonBackgroundColor": "0,148,17",
       "defaultFontColor": "64,255,64",
-      
+
     },
     '^KeyB': {
       "defaultText": "Send Selection to Back",
@@ -505,8 +597,24 @@ class KeyboardMappingManager {
       "selectionStateText": "Send selected objects backward by one step",
     },
 
-    
 
+    'KeyB': {
+      "defaultText": "Bowed Line <br/> &#10226;",
+      "defaultFunctionString": "bowedLineCClockwise",
+      "defaultDescription": "bowed line c",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+
+    },
+
+    'KeyG': {
+      "defaultText": "Bowed Line <br/>&#10227;",
+      "defaultFunctionString": "bowedLineCClockwise",
+      "defaultDescription": "bowed line c",
+      "defaultButtonBackgroundColor": "148,17,0",
+      "defaultFontColor": "255,64,255",
+
+    },
 
 
     'Mac@KeyV': {
@@ -517,7 +625,7 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
       "selectionStateText": "paste",
     },
-    
+
     'PC^KeyV': {
       "defaultText": "Paste",
       "defaultFunctionString": "paste",
@@ -755,7 +863,7 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
       "selectionStateText": "Arrow Right Selection"
     },
-  
+
     '$ArrowUp': {
       "defaultText": "Shift + Arrow Up",
       "defaultFunctionString": "arrowUpUpper1",
@@ -788,7 +896,7 @@ class KeyboardMappingManager {
       "defaultFontColor": "255,64,255",
       "selectionStateText": "Shift + Arrow Right Selection"
     },
-  
+
     '$^ArrowUp': {
       "defaultText": "Shift + Arrow Up",
       "defaultFunctionString": "arrowUpUpper2",
@@ -1025,35 +1133,70 @@ class KeyboardMappingManager {
     },
 
     thinStroke: () => {
-      this.drawingEntityManager.thinStroke();
+      this.drawingEntityManager.thinStroke(2);
     },
 
     thickenStroke: () => {
-      this.drawingEntityManager.thickenStroke();
+      this.drawingEntityManager.thickenStroke(2);
     },
-    
+
+    thinStrokeUpper1: () => {
+      this.drawingEntityManager.thinStroke(5);
+    },
+
+    thickenStrokeUpper1: () => {
+      this.drawingEntityManager.thickenStroke(5);
+    },
+
+    thinStrokeUpper2: () => {
+      this.drawingEntityManager.thinStroke(15);
+    },
+
+    thickenStrokeUpper2: () => {
+      this.drawingEntityManager.thickenStroke(15);
+    },
+
+    thinStrokeLower1: () => {
+      this.drawingEntityManager.thinStroke(2);
+    },
+
+    thickenStrokeLower1: () => {
+      this.drawingEntityManager.thickenStroke(2);
+    },
+
+    thinStrokeLower2: () => {
+      this.drawingEntityManager.thinStroke(1);
+    },
+
+    thickenStrokeLower2: () => {
+      this.drawingEntityManager.thickenStroke(1);
+    },
+
+
+
+
     copy: () => {
       this.eventManager.copy();
     },
     paste: () => {
       this.eventManager.paste();
-     },
+    },
 
     bringSelectionToFront: () => {
       // Call the function to bring selected objects to the front
       this.drawingEntityManager.bringSelectionToFront();
     },
-  
+
     sendSelectionToBack: () => {
       // Call the function to send selected objects to the back
       this.drawingEntityManager.sendSelectionToBack();
     },
-  
+
     bringSelectionForward: () => {
       // Call the function to bring selected objects forward by one step
       this.drawingEntityManager.bringSelectionForward();
     },
-  
+
     sendSelectionBackward: () => {
       // Call the function to send selected objects backward by one step
       this.drawingEntityManager.sendSelectionBackward();
@@ -1150,6 +1293,67 @@ class KeyboardMappingManager {
     }
     // ... Other functions can be added here in a similar manner
   };
+
+
+   keyToChar = {
+    KeyA: 'a',
+    KeyB: 'b',
+    KeyC: 'c',
+    KeyD: 'd',
+    KeyE: 'e',
+    KeyF: 'f',
+    KeyG: 'g',
+    KeyH: 'h',
+    KeyI: 'i',
+    KeyJ: 'j',
+    KeyK: 'k',
+    KeyL: 'l',
+    KeyM: 'm',
+    KeyN: 'n',
+    KeyO: 'o',
+    KeyP: 'p',
+    KeyQ: 'q',
+    KeyR: 'r',
+    KeyS: 's',
+    KeyT: 't',
+    KeyU: 'u',
+    KeyV: 'v',
+    KeyW: 'w',
+    KeyX: 'x',
+    KeyY: 'y',
+    KeyZ: 'z',
+    Digit0: '0',
+    Digit1: '1',
+    Digit2: '2',
+    Digit3: '3',
+    Digit4: '4',
+    Digit5: '5',
+    Digit6: '6',
+    Digit7: '7',
+    Digit8: '8',
+    Digit9: '9',
+    F1: 'F1',
+    F2: 'F2',
+    F3: 'F3',
+    F4: 'F4',
+    F5: 'F5',
+    F6: 'F6',
+    F7: 'F7',
+    F8: 'F8',
+    F9: 'F9',
+    F10: 'F10',
+    F11: 'F11',
+    F12: 'F12',
+    Enter: 'Enter',
+    Shift: 'Shift',
+    Space: 'Space',
+    OpenBracket: '[',
+    CloseBracket: ']',
+    Semicolon: ';',
+    SingleQuote: "'",
+    // Add more keys and their values as needed
+  };
+  
   
 
 

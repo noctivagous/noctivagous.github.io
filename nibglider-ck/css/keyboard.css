@@ -17,8 +17,6 @@
 
     text-shadow: 0.1vh 0.1vh #fff;
 
-    text-align: center;
-    vertical-align: middle;
     transition: bottom 0.25s;
 
 }
@@ -34,7 +32,7 @@
 .keyboardKeysOverlayContainer button {
     pointer-events: all;
     font-size: clamp(10px, 1.5vw, 14px); /* Adjust values as needed */
-    text-align: center;
+    
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: #333;
@@ -223,6 +221,7 @@
     display: grid;
     align-items: center;
     justify-content: center;
+
 }
 
 
@@ -628,3 +627,22 @@ UNUSED:
 
 
 }
+
+
+
+button {
+        text-align: left;       // Align text to the left
+        display: flex;
+        justify-content: flex-start; /* Aligns children (including text) to the start (left) */
+
+        padding-left:5%;
+
+        vertical-align: text-top;
+    
+        display: flex;
+        align-items: flex-start; /* Aligns children to the top */
+        justify-content: flex-start; /* Aligns children to the start (left) */
+    
+    
+    }
+    

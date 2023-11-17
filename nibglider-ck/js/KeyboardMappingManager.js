@@ -79,12 +79,19 @@ class KeyboardMappingManager {
     // update the keyboardpanel
     this.loadKeyboardKeysAccordingToFlags(keyEvent, flags);
 
+    
+    if(!this.app.mouseHasMoved())
+    {
+      console.log('mouse has not moved before first keypress');
+      return;
+    }
 
     var buttonLookup = document.getElementById(keyEvent.code)
 
+    
     // highlight the key with active state
     // if it is non-alphanumeric.
-    if ((buttonLookup != null) && (keyEvent.metaKey == false)) {
+    if ((buttonLookup != null) ) {
 
       // adds the overlay that is provided
       // by the data attribute.
@@ -378,8 +385,8 @@ class KeyboardMappingManager {
 
 
 
-      button.style.backgroundColor = `rgb(${keyMapping.defaultButtonBackgroundColor})`;
-      button.style.color = `rgb(${keyMapping.defaultFontColor})`;
+      button.style.backgroundColor = `${keyMapping.defaultButtonBackgroundColor}`;
+      button.style.color = `${keyMapping.defaultFontColor}`;
       button.innerHTML = keyMapping.defaultText;
 
     }
@@ -407,8 +414,8 @@ class KeyboardMappingManager {
       "defaultText": "Select Objects",
       "defaultFunctionString": "select",
       "defaultDescription": "Select an item",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
 
       "selectionStateText": "Tab Selection",
 
@@ -417,16 +424,16 @@ class KeyboardMappingManager {
       "defaultText": "Hide/Show Keyboard",
       "defaultFunctionString": "toggleKeyboardPanel",
       "defaultDescription": "Slides the keyboard off and on screen",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "155,155,155",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(155,155,155)",
 
     },
     'KeyA': {
       "defaultText": "End",
       "defaultFunctionString": "end",
       "description": "End current drawing or selection",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
 
       "selectionStateText": "Tab Selection",
 
@@ -435,33 +442,33 @@ class KeyboardMappingManager {
       "defaultText": "Hard Corner",
       "defaultFunctionString": "hardCorner",
       "defaultDescription": "Perform hard corner action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-drawingButton-bg)",
+      "defaultFontColor": "var(--color-drawingButton-font)",
       "selectionStateText": "Hard Corner Selection",
     },
-    'KeyL': {
+    'KeyQ': {
       "defaultText": "Lasso",
       "defaultFunctionString": "hardCorner",
       "defaultDescription": "Perform hard corner action",
-      "defaultButtonBackgroundColor": "100,100,100",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectAndDrag-bg)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Hard Corner Selection",
     },
 
     'CapsLock': {
-      "defaultText": "Colorpicker Keyboard Mode",
+      "defaultText": "Paint Palette Keyboard Mode",
       "defaultFunctionString": "hardCorner",
       "defaultDescription": "Perform hard corner action",
-      "defaultButtonBackgroundColor": "100,100,100",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(100,100,100)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Hard Corner Selection",
     },
     'KeyR': {
       "defaultText": "Close Path End",
       "defaultFunctionString": "closePathEnd",
       "defaultDescription": "close live path",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "close live path",
     },
 
@@ -469,16 +476,16 @@ class KeyboardMappingManager {
       "defaultText": "Stroke Width -1",
       "defaultFunctionString": "thinStroke",
       "defaultDescription": "thin stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
     '~KeyC': {
       "defaultText": "Stroke Width -0.5",
       "defaultFunctionString": "thinStroke",
       "defaultDescription": "thin stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
 
@@ -487,16 +494,16 @@ class KeyboardMappingManager {
       "defaultText": "Stroke Width -5",
       "defaultFunctionString": "thinStrokeUpper1",
       "defaultDescription": "thin stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
     '$^KeyC': {
-      "defaultText": "Stroke Width -10",
+      "defaultText": "Stroke Width -10)",
       "defaultFunctionString": "thinStrokeUpper2",
       "defaultDescription": "thin stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
 
@@ -504,32 +511,32 @@ class KeyboardMappingManager {
       "defaultText": "Stroke Width +1",
       "defaultFunctionString": "thickenStroke",
       "defaultDescription": "thicken stroke",
-      "defaultButtonBackgroundColor": "10,10,10",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(10,10,10)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thicken stroke",
     },
     '~KeyV': {
       "defaultText": "Stroke Width +0.5",
       "defaultFunctionString": "thickenStroke",
       "defaultDescription": "thicken stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
     '$KeyV': {
       "defaultText": "Stroke Width +5",
       "defaultFunctionString": "thinStrokeUpper1",
       "defaultDescription": "thicken stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
     '$^KeyV': {
-      "defaultText": "Stroke Width +10",
+      "defaultText": "Stroke Width +10)",
       "defaultFunctionString": "thickenStrokeUpper",
       "defaultDescription": "thicken stroke",
-      "defaultButtonBackgroundColor": "0,0,0",
-      "defaultFontColor": "120,120,120",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(120,120,120)",
       "selectionStateText": "thin stroke",
     },
 
@@ -537,8 +544,8 @@ class KeyboardMappingManager {
       "defaultText": "Copy Selected",
       "defaultFunctionString": "copy",
       "defaultDescription": "copy selected obj",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "copy selected obj",
     },
 
@@ -546,8 +553,8 @@ class KeyboardMappingManager {
       "defaultText": "Copy Selected",
       "defaultFunctionString": "copy",
       "defaultDescription": "copy selected obj",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "copy selected obj",
     },
 
@@ -555,101 +562,103 @@ class KeyboardMappingManager {
       "defaultText": "Bring Selection to Front",
       "defaultFunctionString": "bringSelectionToFront",
       "defaultDescription": "Bring selected objects to the front",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Bring selected objects to the front",
     },
     'KeyZ': {
       "defaultText": "Arc By Three Points",
       "defaultFunctionString": "arcByThreePoints",
       "defaultDescription": "Make an arc from three points",
-      "defaultButtonBackgroundColor": "0,148,17",
-      "defaultFontColor": "64,255,64",
+      "defaultButtonBackgroundColor": "var(--color-drawingButton-bg)",
+      "defaultFontColor": "var(--color-drawingButton-font)",
 
     },
     'KeyD': {
       "defaultText": "Round Corner",
       "defaultFunctionString": "roundCorner",
       "defaultDescription": "Make roundCorner point",
-      "defaultButtonBackgroundColor": "0,148,17",
-      "defaultFontColor": "64,255,64",
+      "defaultButtonBackgroundColor": "var(--color-drawingButton-bg)",
+      "defaultFontColor": "var(--color-drawingButton-font)",
+      
       "selectionStateText": "",
     },
     'KeyE': {
       "defaultText": "BSpline",
       "defaultFunctionString": "bspline",
       "defaultDescription": "Make bspline point",
-      "defaultButtonBackgroundColor": "0,148,17",
-      "defaultFontColor": "64,255,64",
+      "defaultButtonBackgroundColor": "var(--color-drawingButton-bg)",
+      "defaultFontColor": "var(--color-drawingButton-font)",
 
     },
     'KeyN': {
       "defaultText": "Nozzle Subtract",
       "defaultFunctionString": "nozzleSubtract",
       "defaultDescription": "Subtract",
-      "defaultButtonBackgroundColor": "0,148,17",
-      "defaultFontColor": "64,255,64",
+      "defaultButtonBackgroundColor": "rgb(0,148,17",
+      "defaultFontColor": "rgb(64,255,64",
 
     },
     'KeyM': {
       "defaultText": "Nozzle Add",
       "defaultFunctionString": "nozzleAdd",
       "defaultDescription": "Activate nozzle and add (e.g. particles)",
-      "defaultButtonBackgroundColor": "0,148,17",
-      "defaultFontColor": "64,255,64",
+      "defaultButtonBackgroundColor": "rgb(0,148,17",
+      "defaultFontColor": "rgb(64,255,64",
 
     },
     '^KeyB': {
       "defaultText": "Send Selection to Back",
       "defaultFunctionString": "sendSelectionToBack",
       "defaultDescription": "Send selected objects to the back",
-      "defaultButtonBackgroundColor": "0,148,17",
-      "defaultFontColor": "64,255,64",
+      "defaultButtonBackgroundColor": "rgb(0,148,17",
+      "defaultFontColor": "rgb(64,255,64",
       "selectionStateText": "Send selected objects to the back",
     },
     '^ArrowUp': {
       "defaultText": "Bring Selection Forward",
       "defaultFunctionString": "bringSelectionForward",
       "defaultDescription": "Bring selected objects forward by one step",
-      "defaultButtonBackgroundColor": "17,0,148",
-      "defaultFontColor": "64,64,255",
+      "defaultButtonBackgroundColor": "rgb(17,0,148",
+      "defaultFontColor": "rgb(64,64,255)",
       "selectionStateText": "Bring selected objects forward by one step",
     },
     '^ArrowDown': {
       "defaultText": "Send Selection Backward",
       "defaultFunctionString": "sendSelectionBackward",
       "defaultDescription": "Send selected objects backward by one step",
-      "defaultButtonBackgroundColor": "148,148,148",
-      "defaultFontColor": "0,0,0",
+      "defaultButtonBackgroundColor": "rgb(148,148,148",
+      "defaultFontColor": "rgb(0,0,0)",
       "selectionStateText": "Send selected objects backward by one step",
-    },
-
-
-    'KeyB': {
-      "defaultText": "Bowed Line <br/> &#10226;",
-      "defaultFunctionString": "bowedLineCClockwise",
-      "defaultDescription": "bowed line c",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
-
     },
 
     'KeyG': {
       "defaultText": "Bowed Line <br/>&#10227;",
       "defaultFunctionString": "bowedLineCClockwise",
       "defaultDescription": "bowed line c",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-drawingButton-bg)",
+      "defaultFontColor": "var(--color-drawingButton-font)",
 
     },
+
+
+    'KeyH': {
+      "defaultText": "Bowed Line <br/> &#10226;",
+      "defaultFunctionString": "bowedLineCClockwise",
+      "defaultDescription": "bowed line c",
+      "defaultButtonBackgroundColor": "var(--color-drawingButton-bg)",
+      "defaultFontColor": "var(--color-drawingButton-font)",
+
+    },
+
 
 
     'Mac@KeyV': {
       "defaultText": "Paste",
       "defaultFunctionString": "paste",
       "defaultDescription": "paste",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "paste",
     },
 
@@ -657,8 +666,8 @@ class KeyboardMappingManager {
       "defaultText": "Paste",
       "defaultFunctionString": "paste",
       "defaultDescription": "paste",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "paste",
     },
 
@@ -668,8 +677,8 @@ class KeyboardMappingManager {
       "defaultText": "Scale Up <br/>10%",
       "defaultFunctionString": "scaleUp",
       "defaultDescription": "Scale up an object",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Scale up selection",
 
     },
@@ -678,8 +687,8 @@ class KeyboardMappingManager {
       "defaultText": "Scale Down <br/>10%",
       "defaultFunctionString": "scaleDown",
       "defaultDescription": "Scale down an object",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Scale down selection",
 
     },
@@ -687,8 +696,8 @@ class KeyboardMappingManager {
       "defaultText": "Scale Down 30%",
       "defaultFunctionString": "scaleDownUpper1",
       "defaultDescription": "Scale down an object with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Bracket Left Selection",
 
     },
@@ -696,8 +705,8 @@ class KeyboardMappingManager {
       "defaultText": "Scale Up 30%",
       "defaultFunctionString": "scaleUpUpper1",
       "defaultDescription": "Scale up an object with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Bracket Right Selection",
 
     },
@@ -705,8 +714,8 @@ class KeyboardMappingManager {
       "defaultText": "Scale Down 40%",
       "defaultFunctionString": "scaleDownUpper2",
       "defaultDescription": "Scale down an object with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Bracket Left Selection",
 
     },
@@ -714,8 +723,8 @@ class KeyboardMappingManager {
       "defaultText": "Scale Up 40%",
       "defaultFunctionString": "scaleUpUpper2",
       "defaultDescription": "Scale up an object with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Bracket Right Selection",
 
     },
@@ -723,16 +732,16 @@ class KeyboardMappingManager {
       "defaultText": "Scale Down <br/>5%",
       "defaultFunctionString": "scaleDownLower1",
       "defaultDescription": "Scale down an object by a smaller amount.",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Tilde + Bracket Left Selection",
     },
     '~BracketRight': {
       "defaultText": "Scale Up <br/>5%",
       "defaultFunctionString": "scaleUpLower1",
       "defaultDescription": "Scale up an object with Tilde",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Tilde + Bracket Right Selection",
 
     },
@@ -740,72 +749,72 @@ class KeyboardMappingManager {
       "defaultText": "Live Scaling",
       "defaultFunctionString": "liveScaling",
       "defaultDescription": "Perform live X or Y scaling",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Live X/Y Scaling Selection",
     },
     '$~BracketRight': {
       "defaultText": "Live X Or Y Scaling",
       "defaultFunctionString": "liveXOrYScaling",
       "defaultDescription": "Perform live X or Y scaling",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Live X/Y Scaling Selection",
     },
     '^BracketLeft': {
       "defaultText": "Live Shearing",
       "defaultFunctionString": "liveShearing",
       "defaultDescription": "Perform live shearing action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Live Shearing Selection",
     },
     '^~BracketLeft': {
       "defaultText": "Scale Down <br/>1.5%",
       "defaultFunctionString": "scaleDownLower2",
       "defaultDescription": "Scale down an object ",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Scale Down Lower2",
     },
     '^~BracketRight': {
       "defaultText": "Scale Up <br/>1.5%",
       "defaultFunctionString": "scaleUpLower2",
       "defaultDescription": "Scale up an object ",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Scale up Lower2",
     },
     'Semicolon': {
       "defaultText": "Rotate -15°",
       "defaultFunctionString": "rotateCounterclockwise",
       "defaultDescription": "Rotate counterclockwise",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Semicolon Selection",
     },
     'Quote': {
       "defaultText": "Rotate  <br/>15°",
       "defaultFunctionString": "rotateClockwise",
       "defaultDescription": "Rotate clockwise",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Quote Selection",
     },
     '$Semicolon': {
       "defaultText": "Rotate <br/>-45°",
       "defaultFunctionString": "rotateCounterclockwiseUpper1",
       "defaultDescription": "Rotate counterclockwise with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Semicolon Selection",
     },
     '$Quote': {
       "defaultText": "Rotate 45°",
       "defaultFunctionString": "rotateClockwiseUpper1",
       "defaultDescription": "Rotate clockwise with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Quote Selection",
     },
 
@@ -813,16 +822,16 @@ class KeyboardMappingManager {
       "defaultText": "Rotate -90°",
       "defaultFunctionString": "rotateCounterclockwiseUpper2",
       "defaultDescription": "Rotate counterclockwise with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Semicolon Selection",
     },
     '$^Quote': {
       "defaultText": "Rotate 90°",
       "defaultFunctionString": "rotateClockwiseUpper2",
       "defaultDescription": "Rotate clockwise with Shift",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Shift + Quote Selection",
     },
 
@@ -830,64 +839,64 @@ class KeyboardMappingManager {
       "defaultText": "Rotate -5°",
       "defaultFunctionString": "rotateCounterclockwiseLower1",
       "defaultDescription": "Rotate counterclockwise by a smaller amount.",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Tilde + Semicolon Selection",
     },
     '~Quote': {
       "defaultText": "Rotate 5°",
       "defaultFunctionString": "rotateClockwiseLower1",
       "defaultDescription": "Rotate clockwise by a smaller amount.",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Tilde + Quote Selection",
     },
     '^~Semicolon': {
       "defaultText": "Rotate -1°",
       "defaultFunctionString": "rotateCounterclockwiseLower2",
       "defaultDescription": "Rotate counterclockwise by a smaller amount with Ctrl+Alt",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Ctrl+Shift + Semicolon Selection",
     },
     '^~Quote': {
       "defaultText": "Rotate 1°",
       "defaultFunctionString": "rotateClockwiseLower2",
       "defaultDescription": "Rotate clockwise by a smaller amount with Ctrl+Alt",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "Ctrl+Shift + Quote Selection",
     },
     'ArrowUp': {
       "defaultText": "Arrow Up",
       "defaultFunctionString": "arrowUp",
       "defaultDescription": "Perform Arrow Up action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Arrow Up Selection"
     },
     'ArrowDown': {
       "defaultText": "Arrow Down",
       "defaultFunctionString": "arrowDown",
       "defaultDescription": "Perform Arrow Down action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Arrow Down Selection"
     },
     'ArrowLeft': {
       "defaultText": "Arrow Left",
       "defaultFunctionString": "arrowLeft",
       "defaultDescription": "Perform Arrow Left action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Arrow Left Selection"
     },
     'ArrowRight': {
       "defaultText": "Arrow Right",
       "defaultFunctionString": "arrowRight",
       "defaultDescription": "Perform Arrow Right action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Arrow Right Selection"
     },
 
@@ -895,32 +904,32 @@ class KeyboardMappingManager {
       "defaultText": "Shift + Arrow Up",
       "defaultFunctionString": "arrowUpUpper1",
       "defaultDescription": "Perform Shift + Arrow Up action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Up Selection"
     },
     '$ArrowDown': {
       "defaultText": "Shift + Arrow Down",
       "defaultFunctionString": "arrowDownUpper1",
       "defaultDescription": "Perform Shift + Arrow Down action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Down Selection"
     },
     '$ArrowLeft': {
       "defaultText": "Shift + Arrow Left",
       "defaultFunctionString": "arrowLeftUpper1",
       "defaultDescription": "Perform Shift + Arrow Left action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Left Selection"
     },
     '$ArrowRight': {
       "defaultText": "Shift + Arrow Right",
       "defaultFunctionString": "arrowRightUpper1",
       "defaultDescription": "Perform Shift + Arrow Right action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Right Selection"
     },
 
@@ -928,32 +937,32 @@ class KeyboardMappingManager {
       "defaultText": "Shift + Arrow Up",
       "defaultFunctionString": "arrowUpUpper2",
       "defaultDescription": "Perform Shift + Arrow Up action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Up Selection"
     },
     '$^ArrowDown': {
       "defaultText": "Shift + Arrow Down",
       "defaultFunctionString": "arrowDownUpper2",
       "defaultDescription": "Perform Shift + Arrow Down action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Down Selection"
     },
     '$^ArrowLeft': {
       "defaultText": "Shift + Arrow Left",
       "defaultFunctionString": "arrowLeftUpper2",
       "defaultDescription": "Perform Shift + Arrow Left action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Left Selection"
     },
     '$^ArrowRight': {
       "defaultText": "Shift + Arrow Right",
       "defaultFunctionString": "arrowRightUpper2",
       "defaultDescription": "Perform Shift + Arrow Right action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Shift + Arrow Right Selection"
     },
 
@@ -962,32 +971,32 @@ class KeyboardMappingManager {
       "defaultText": "Arrow Up Lower",
       "defaultFunctionString": "arrowUpLower1",
       "defaultDescription": "Perform Option + Arrow Up action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Up Selection"
     },
     '~ArrowDown': {
       "defaultText": "Option + Arrow Down",
       "defaultFunctionString": "arrowDownLower1",
       "defaultDescription": "Perform Option + Arrow Down action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Down Selection"
     },
     '~ArrowLeft': {
       "defaultText": "Option + Arrow Left",
       "defaultFunctionString": "arrowLeftLower1",
       "defaultDescription": "Perform Option + Arrow Left action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Left Selection"
     },
     '~ArrowRight': {
       "defaultText": "Option + Arrow Right",
       "defaultFunctionString": "arrowRightLower1",
       "defaultDescription": "Perform Option + Arrow Right action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Right Selection"
     },
 
@@ -996,32 +1005,32 @@ class KeyboardMappingManager {
       "defaultText": "Arrow Up Lower",
       "defaultFunctionString": "arrowUpLower2",
       "defaultDescription": "Perform Option + Arrow Up action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Up Selection"
     },
     '^~ArrowDown': {
       "defaultText": "Option + Arrow Down",
       "defaultFunctionString": "arrowDownLower2",
       "defaultDescription": "Perform Option + Arrow Down action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Down Selection"
     },
     '^~ArrowLeft': {
       "defaultText": "Option + Arrow Left",
       "defaultFunctionString": "arrowLeftLower2",
       "defaultDescription": "Perform Option + Arrow Left action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Left Selection"
     },
     '^~ArrowRight': {
       "defaultText": "Option + Arrow Right",
       "defaultFunctionString": "arrowRightLower2",
       "defaultDescription": "Perform Option + Arrow Right action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Option + Arrow Right Selection"
     },
 
@@ -1029,40 +1038,40 @@ class KeyboardMappingManager {
       "defaultText": "Drag Lock",
       "defaultFunctionString": "cart",
       "description": "Perform cart action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Space Selection"
     },
     'KeyW': {
       "defaultText": "Stamp",
       "defaultFunctionString": "stamp",
       "defaultDescription": "Perform stamp action",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "var(--color-selectionOp-bg)",
+      "defaultFontColor": "var(--color-selectionOp-font)",
       "selectionStateText": "KeyW Selection"
     },
     'Backspace': {
       "defaultText": "Remove All Selected",
       "defaultFunctionString": "removeAllSelectedItemsAndReset",
       "defaultDescription": "Remove all selected items and reset",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Backspace Selection"
     },
     'Escape': {
       "defaultText": "Cancel",
       "defaultFunctionString": "cancelOperations",
       "description": "Cancel operations",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Escape Selection"
     },
     'Digit1': {
       "defaultText": "Make Paint Style Fill",
       "defaultFunctionString": "makePaintStyleFill",
       "description": "Make paint style fill",
-      "defaultButtonBackgroundColor": "148,17,0",
-      "defaultFontColor": "255,64,255",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Digit1 Selection"
     },
 
@@ -1384,6 +1393,25 @@ class KeyboardMappingManager {
     ShiftLeft: 'Shift',
     ShiftRight: 'Shift',
     CapsLock: 'CapsLock',
+
+    ControlLeft: 'Control',
+    ControlRight: 'Control',
+
+
+    MacMetaLeft: 'Command',
+    MacMetaRight: 'Command',
+    PCMetaLeft: 'Windows',
+    PCMetaRight: 'Windows',
+    MetaLeft: 'Command',
+    MetaRight: 'Command',
+
+
+    MacAltLeft: 'Command',
+    MacAltRight: 'Command',
+    PCAltLeft: 'Alt',
+    PCAltRight: 'Alt',
+    AltLeft: 'Option',
+    AltRight: 'Option',
 
     Quote: "'",
     // Add more keys and their values as needed

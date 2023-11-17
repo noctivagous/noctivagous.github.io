@@ -1,0 +1,47 @@
+/* color reference for */
+/* Defining CSS Variables */
+:root {
+
+    /* Base key */
+
+
+    /* Loaded key with no specific style */
+    --color-default-bg: rgb(0, 0, 0);
+    --color-default-font: rgb(155, 155, 155);
+
+
+    /* Drawing Buttons */
+    --color-drawingButton-bg: rgb(130, 244, 29);
+    --color-drawingButton-font: green;
+
+
+    /* Shape Drawing */
+    --color-shapeDrawing-bg: rgb(0, 148, 17);
+    --color-shapeDrawing-font: rgb(64, 255, 64);
+
+    /* Nozzle Buttons */
+    --color-nozzle-bg: rgb(0, 148, 17);
+    --color-nozzle-font: rgb(64, 255, 64);
+
+
+    /* show-hide key */
+    --color-showHideKb-bg: rgb(0, 0, 0);
+    --color-showHideKb-font: rgb(155, 155, 155);
+
+    /* Select Objects, Lasso, Drag-Lock */
+    --color-selectAndDrag-bg: rgb(91, 15, 100);
+    --color-selectAndDrag-font: rgb(186, 30, 203);
+
+
+
+    /* Scale, Rotate, Stamp, Live Shear, Live Scaling, Live Rotation */
+
+    --color-selectionOp-bg: rgb(169, 29, 184);
+    --color-selectionOp-font: rgb(226, 86, 241);
+
+
+    /* End, Close Path, Bring Line into Shape */
+    --color-endkey-bg: rgb(134, 37, 26);
+    --color-endkey-font: rgb(210, 115, 115);
+
+}

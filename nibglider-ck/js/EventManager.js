@@ -84,6 +84,11 @@ class EventManager {
 
   handleMouseDown(event) {
 
+    this.app.mouseX = event.offsetX;
+    this.app.mouseY = event.offsetY;
+
+    this.cursorManager.updateCursorPosition(this.app.mouseX, this.app.mouseY);
+
     // in the future,
     // different keys for selecting points on objects vs. 
     // the objects themselves.
@@ -96,6 +101,12 @@ class EventManager {
 
   handleMouseUp(event) {
     // This would end the dragging process
+
+    this.app.mouseX = event.offsetX;
+    this.app.mouseY = event.offsetY;
+
+    this.cursorManager.updateCursorPosition(this.app.mouseX, this.app.mouseY);
+
   }
 
 

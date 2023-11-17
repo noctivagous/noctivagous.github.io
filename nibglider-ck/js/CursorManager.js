@@ -8,8 +8,8 @@ class CursorManager {
     // CanvasKit:
     // export type Point = number[];
 
-    this.mouseX = -300;
-    this.mouseY = -300;
+    this.mouseX = 500;
+    this.mouseY = 500;
     this.currentDrawingPoint = [0.0,0.0]; //CanvasKit: export type Point = number[];
     this.app = app;
     this.appStateManager = app.appStateManager;

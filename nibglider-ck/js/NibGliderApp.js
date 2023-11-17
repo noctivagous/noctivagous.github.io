@@ -79,6 +79,11 @@ detectUserEnvironment(logResults = false) {
 
 }
 
+mouseHasMoved()
+{
+  return (this.mouseX != -1000);
+}
+
 getOperatingSystem() {
     if (navigator.userAgentData && navigator.userAgentData.platform) {
         // New User-Agent Client Hints API

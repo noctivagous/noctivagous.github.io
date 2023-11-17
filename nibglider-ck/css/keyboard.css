@@ -3,17 +3,17 @@
 @font-face {
     font-family: 'Draughtsman A';
     src: url('../fonts/DraughtsmanARegular.ttf') format('truetype'),
-         url('../fonts/DraughtsmanAItalic.ttf') format('truetype');
-  }
-  
+        url('../fonts/DraughtsmanAItalic.ttf') format('truetype');
+}
+
 @font-face {
     font-family: 'OPTIFranklinGothicMedium';
     src: url('../fonts/OPTIFranklinGothic-Medium.otf') format('otf'),
-    url('../fonts/OPTIFranklinGothic-MediumIt.otf') format('otf');
-  }
+        url('../fonts/OPTIFranklinGothic-MediumIt.otf') format('otf');
+}
 
 
-  
+
 
 #keyboardPanel {
     position: absolute;
@@ -36,24 +36,26 @@
 }
 
 #keyboardPanel.slide-down {
-    bottom: -100%; /* Adjust this value depending on the size of your keyboard panel */
-  }
-  
+    bottom: -100%;
+    /* Adjust this value depending on the size of your keyboard panel */
+}
+
 #keyboardPanel.slide-up {
     bottom: 10pt;
-  }
+}
 
 .keyboardKeysOverlayContainer button {
     pointer-events: all;
-    font-size: clamp(10px, 1.5vw, 14px); /* Adjust values as needed */
-    
+    font-size: clamp(10px, 1.5vw, 14px);
+    /* Adjust values as needed */
+
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: #333;
-/*    font-family: 'DDINExpRegular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+    /*    font-family: 'DDINExpRegular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
     font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
     font-weight: normal;
-    
+
 
     cursor: pointer;
 
@@ -64,7 +66,7 @@
     /*box-shadow: .2vmin .2vmin;*/
 
     background-color: rgb(93, 91, 91);
-    
+
     color: rgb(247, 242, 242);
 
     cursor: pointer;
@@ -111,7 +113,7 @@
 
         "shiftKeyLeft shiftKeyLeft zKey xKey cKey vKey bKey nKey mKey commaKey periodKey forwardSlashKey shiftKeyRight shiftKeyRight ."
 
-        ". . . spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey . . . .";
+        "controlLeft altLeft metaLeft . spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey metaRight altRight controlRight .";
 
     width: 100%;
     height: 100%;
@@ -129,8 +131,8 @@
 
     .keyboardKeysOverlayContainer button {
 
-     
-        padding:1pt;
+
+        padding: 1pt;
 
     }
 }
@@ -143,15 +145,15 @@
         gap: .4vmin .4vmin;
     }
 
-    #keyboardPanel{
-    bottom: 6px;
-    left: 6px;
+    #keyboardPanel {
+        bottom: 6px;
+        left: 6px;
     }
 
     .keyboardKeysOverlayContainer button {
 
-        font-size:12px;
-        padding:1pt;
+        font-size: 12px;
+        padding: 1pt;
 
     }
 
@@ -167,15 +169,15 @@
         gap: .4vmin .4vmin;
     }
 
-    #keyboardPanel{
-    bottom: 6px;
-    left: 6px;
+    #keyboardPanel {
+        bottom: 6px;
+        left: 6px;
     }
 
     .keyboardKeysOverlayContainer button {
 
-        font-size:12px;
-        padding:1pt;
+        font-size: 12px;
+        padding: 1pt;
     }
 }
 
@@ -188,10 +190,10 @@
         gap: .3vmin .3vmin;
     }
 
-    #keyboardPanel{
+    #keyboardPanel {
         bottom: 6px;
         left: 6px;
-        }
+    }
 }
 
 /* Extra small devices (e.g., phones) */
@@ -218,24 +220,84 @@
     overflow: hidden;
 }
 
-.minikeylettersquare
-{
+.minikeylettersquare {
     font-family: 'Draughtsman A', sans-serif !important;
 }
-.capsLockKey .minikeylettersquare{
-margin-right:13px !important;
+
+.capsLockKey .minikeylettersquare {
+    margin-right: 13px !important;
 }
 
-.returnKey .minikeylettersquare{
-    margin-right:6px !important;
-    }
+.returnKey .minikeylettersquare {
+    margin-right: 6px !important;
+}
 
-    .spacebarKey{
-padding-left:2pt;
-    }
-.spacebarKey .minikeylettersquare{
-    margin-right:-22pt !important;
-    }
+.spacebarKey {
+    padding-left: 2pt;
+}
+
+.spacebarKey .minikeylettersquare {
+    margin-right: -16pt !important;
+}
+
+.metaKey .minikeylettersquare {
+    margin-right: 12pt !important;
+}
+
+.altKey .minikeylettersquare {
+    margin-right: 8pt !important;
+}
+
+.controlKey .minikeylettersquare {
+    margin-right: 8pt !important;
+}
+
+.controlLeft {
+    grid-area: controlLeft;
+    width: 150%;
+
+}
+
+
+.altLeft {
+    grid-area: altLeft;
+    transform: translate(50%, 0%)
+
+}
+
+.metaLeft {
+    grid-area: metaLeft;
+    width: 160%;
+    transform: translate(31%, 0%)
+
+}
+
+.controlRight {
+    grid-area: controlRight;
+    transform: translate(40%, 0%);
+    width: 146%;
+
+}
+
+.altRight {
+    grid-area: altRight;
+    transform: translate(60%, 0%)
+
+}
+
+.metaRight {
+    grid-area: metaRight;
+    width: 160%;
+
+}
+
+.altKey::after, .controlKey::after, .metaKey::after{
+    
+        font-size: 17px !important;
+    
+}
+
+
 /*
 .shiftKeyLeft .minikeylettersquare, .shiftKeyRight .minikeylettersquare,
 .capsLockKey .minikeylettersquare, .returnKey .minikeylettersquare{
@@ -288,11 +350,13 @@ color:rgb(28, 28, 28) !important;
 
 .endButton b {}
 
+/*
 .drawingButton {
     background-color: rgb(130, 244, 29) !important;
     
     color: green !important;
 }
+*/
 
 .enabledButton {
     opacity: 1.0 !important;
@@ -304,6 +368,8 @@ color:rgb(28, 28, 28) !important;
     color: rgb(226, 86, 241) !important;
     box-shadow: 1pt 1pt 0px #333 !important;
 }
+
+
 
 .selectionButton {
     background-color: rgb(91, 15, 100) !important;
@@ -398,7 +464,7 @@ color:rgb(28, 28, 28) !important;
 
 .backslashKey {
     grid-area: backslashKey;
-    margin-left:-1pt;
+    margin-left: -1pt;
     width: 135%;
 }
 
@@ -628,25 +694,28 @@ color:rgb(28, 28, 28) !important;
     transition: opacity 0.2s ease, visibility 0.5s ease;
 }
 
-.returnKey::after, .capsLockKey::after {
-border-radius: 4pt;
+.returnKey::after,
+.capsLockKey::after {
+    border-radius: 4pt;
 }
 
-.shiftKeyLeft, .shiftKeyRight{
+.shiftKeyLeft,
+.shiftKeyRight {
     border-radius: 3pt !important;
 
 
 }
 
-.shiftKeyLeft::after, .shiftKeyRight::after{
+.shiftKeyLeft::after,
+.shiftKeyRight::after {
     border-radius: 5pt !important;
 
 
 }
 
 
-.capsLockKey::after{
-font-size:19px;
+.capsLockKey::after {
+    font-size: 19px;
 }
 
 .keyboardkey:hover::after,
@@ -694,22 +763,24 @@ UNUSED:
 
 
 button {
-        text-align: left;       // Align text to the left
-        display: flex;
-        justify-content: flex-start; /* Aligns children (including text) to the start (left) */
+    text-align: left; // Align text to the left
+    display: flex;
+    justify-content: flex-start;
+    /* Aligns children (including text) to the start (left) */
 
-        padding-left:5%;
+    padding-left: 5%;
 
-        vertical-align: text-top;
-    
-        display: flex;
-        align-items: flex-start; /* Aligns children to the top */
-        justify-content: flex-start; /* Aligns children to the start (left) */
-    
-    
-        box-shadow: 1pt 1pt 0px #333 !important;
+    vertical-align: text-top;
+
+    display: flex;
+    align-items: flex-start;
+    /* Aligns children to the top */
+    justify-content: flex-start;
+    /* Aligns children to the start (left) */
+
+
+    box-shadow: 1pt 1pt 0px #333 !important;
     opacity: 1.0 !important;
-    padding:1pt;
+    padding: 1pt;
 
-    }
-    
+}

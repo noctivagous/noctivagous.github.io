@@ -574,51 +574,75 @@ class Layer {
 
   // Method to generate random shapes
   generateRandomShapes(numberOfShapes = 10, widthRange, heightRange) {
-
-    // starts at black
-    let colorIncrement = 255 / numberOfShapes; // Determine the increment for color.  8.5 for 30.
-
-
+    const shapeTypes = 4; // Rectangle, Circle, Line, and Polygon
+  
     for (let i = 0; i < numberOfShapes; i++) {
-
-      const shapeType = Math.floor(Math.random() * 3); // Randomly choose a shape type
-      let colorValue = Math.floor(colorIncrement * i); // Calculate the color for this step
-      let color = this.canvasKit.Color4f(colorValue / 255, colorValue / 255, colorValue / 255, 1); // Create the color
+      const shapeType = Math.floor(Math.random() * shapeTypes);
+  
+      // Color generation
+      let r = (Math.sin(0.3 * i) + 1) / 2;
+      let g = (Math.cos(0.3 * i) + 1) / 2;
+      let b = ((Math.sin(0.3 * i) + Math.cos(0.3 * i)) / 2);
+      let color = this.canvasKit.Color4f(r, g, b, 1);
+  
+      // Randomize fill or stroke style
+      const isFill = Math.random() > 0.5;
+      const style = isFill ? this.canvasKit.PaintStyle.Fill : this.canvasKit.PaintStyle.Stroke;
+  
+      // Randomize stroke width (1 to 20)
+      const strokeWidth = isFill ? 0 : Math.floor(Math.random() * 20) + 1;
+  
       let drawable;
-
       switch (shapeType) {
         case 0: // Rectangle
           drawable = Drawable.createRectangle(
             this.canvasKit,
-            Math.random() * widthRange, // Random x
-            Math.random() * heightRange, // Random y
-            Math.random() * 200 + 20, // Random width
-            Math.random() * 400 + 20 // Random height
+            Math.random() * widthRange,
+            Math.random() * heightRange,
+            Math.random() * 200 + 20,
+            Math.random() * 400 + 20
           );
           break;
         case 1: // Circle
           drawable = Drawable.createCircle(
             this.canvasKit,
-            Math.random() * 500, // Random x for center
-            Math.random() * 500, // Random y for center
-            Math.random() * 50 + 10 // Random radius
+            Math.random() * widthRange,
+            Math.random() * heightRange,
+            Math.random() * 50 + 10
           );
           break;
         case 2: // Line
           drawable = Drawable.createLine(
             this.canvasKit,
-            Math.random() * 500, // Random x1
-            Math.random() * 500, // Random y1
-            Math.random() * 500, // Random x2
-            Math.random() * 500 // Random y2
+            Math.random() * widthRange,
+            Math.random() * heightRange,
+            Math.random() * widthRange,
+            Math.random() * heightRange
           );
           break;
-        // Add more shapes if needed
+        case 3: // Regular Polygon
+          const numberOfSides = Math.floor(Math.random() * 5) + 3;
+          const radius = Math.random() * 50 + 10;
+          drawable = Drawable.createPolygon(
+            this.canvasKit,
+            Math.random() * widthRange,
+            Math.random() * heightRange,
+            radius,
+            numberOfSides
+          );
+          break;
       }
+  
       drawable.skPaint.setColor(color);
+      drawable.skPaint.setStyle(style);
+      drawable.setStyle(style);
+      drawable.skPaint.setStrokeWidth(strokeWidth);
       this.addObject(drawable);
     }
   }
+  
+
+  
 
 
   setLayerManagerBackgroundColor(bgColor) {

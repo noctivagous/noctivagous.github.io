@@ -1,0 +1,118 @@
+
+/* Medium-sized devices (e.g., small laptops) */
+@media screen and (max-width: 1024px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+
+    .keyboardKeysOverlayContainer button {
+
+
+        padding: 1pt;
+
+    }
+}
+
+@media screen and (max-height: 800px) {
+
+    #keyboardKeysGrid {
+        grid-template-columns: 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt;
+        grid-template-rows: 37pt 37pt 37pt 37pt;
+        gap: .4vmin .4vmin;
+    }
+
+    #keyboardPanel {
+        bottom: 6px;
+        
+    }
+
+    
+   
+
+}
+
+@media screen and (max-height: 800px) {
+
+    #keyboardKeysGrid {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+
+    #keyboardPanel {
+        bottom: 6px;
+        
+
+        
+    }
+
+
+
+    .spacebarKey {
+        width: 98%;
+        transform: translate(1%, 0%);
+    }
+
+    .metaRight {
+width: 164% !important;
+        transform: translate(-4%, 0%);
+    }
+
+    .altRight {
+        
+        transform: translate(20pt, 0%) !important;
+    }
+
+    .spacebarKey .minikeylettersquare {
+        margin-right: -14pt !important;
+    }
+
+
+}
+
+
+/* Small-sized devices (e.g., tablets) */
+@media screen and (max-width: 768px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt;
+        grid-template-rows: 25pt 25pt 25pt 25pt;
+        gap: .3vmin .3vmin;
+    }
+
+    #keyboardPanel {
+        bottom: 6px;
+        left: 6px;
+    }
+}
+
+/* Extra small devices (e.g., phones) */
+@media screen and (max-width: 576px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt;
+        grid-template-rows: 20pt 20pt 20pt 20pt;
+        gap: .2vmin .2vmin;
+    }
+}
+
+
+
+
+@media screen and (max-height: 2000px) {
+
+    #keyboardKeysGrid {
+        grid-template-columns: 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt 37pt;
+        grid-template-rows: 37pt 37pt 37pt 37pt;
+        gap: .4vmin .4vmin;
+    }
+
+    #keyboardPanel {
+        bottom: 6px;
+        
+    }
+
+    
+   
+
+}

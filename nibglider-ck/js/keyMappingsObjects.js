@@ -10,7 +10,7 @@
       "selectionStateText": "Tab Selection",
 
     },
-    'Backslash': {
+    '^Backslash': {
       "defaultText": "Hide/Show Keyboard",
       "defaultFunctionString": "toggleKeyboardPanel",
       "defaultDescription": "Slides the keyboard off and on screen",
@@ -18,7 +18,7 @@
       "defaultFontColor": "rgb(155,155,155)",
 
     },
-    '^Backslash': {
+    'Backslash': {
       "defaultText": "Hide/Show Both Keyboards",
       "defaultFunctionString": "toggleBothKeyboardPanels",
       "defaultDescription": "Slides the keyboard off and on screen",

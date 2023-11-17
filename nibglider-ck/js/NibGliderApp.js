@@ -160,7 +160,7 @@ loadScript(url) {
 
 
   setupAppBackgroundColor() {
-    this.setAppBackgroundColor(CanvasKit.Color(0, 255, 255, 1.0));
+    this.setAppBackgroundColor(CanvasKit.Color(200, 200, 200, 1.0));
   }
 
   setAppBackgroundColor(bgColor) {

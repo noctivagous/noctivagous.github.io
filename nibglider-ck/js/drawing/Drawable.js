@@ -232,13 +232,15 @@ drawDragLockEffect(skCanvas) {
     };
 
     // Apply the stroke to the copy of the path
-    const strokedPath = pathCopy.stroke(strokeOptions);
+    const strokedPath = pathCopy.stroke(strokeOptions);//path.stroke(strokeOptions);
 
 
 
 
     // Use the contains method to check if the point is within the stroked path
     const hit = strokedPath.contains(x, y);
+
+    
 
     // Clean up the copied path to prevent memory leaks
     pathCopy.delete();
@@ -590,7 +592,7 @@ drawDragLockEffect(skCanvas) {
 
   // Factory method for creating a regular polygon shape with default paint
 static createPolygon(canvasKit, centerX, centerY, radius, numberOfSides) {
-  const polygonPath = new canvasKit.Path();
+  const polygonPath = new window.CanvasKit.Path();
   const angleStep = (2 * Math.PI) / numberOfSides;
 
   // Starting point for the polygon
@@ -607,21 +609,18 @@ static createPolygon(canvasKit, centerX, centerY, radius, numberOfSides) {
     );
   }
 
+  polygonPath.close();
+
   const paint = new canvasKit.Paint();
-  paint.setColor(canvasKit.Color4f(0, 1, 0, 1)); // Green color
-  paint.setStyle(canvasKit.PaintStyle.Stroke); // Stroke style
+  paint.setColor(window.CanvasKit.Color4f(0, 1, 0, 1)); // Green color
+  paint.setStyle(window.CanvasKit.PaintStyle.Stroke); // Stroke style
   paint.setStrokeWidth(3); // Stroke width
   paint.setAntiAlias(true);
 
-  return new Drawable(paint, polygonPath, canvasKit.PaintStyle.Stroke);
+  return new Drawable(paint, polygonPath, window.CanvasKit.PaintStyle.Stroke);
 }
 
   
-  generateColor(i, numberOfShapes) {
-    const hueIncrement = 360 / numberOfShapes;
-    const hue = hueIncrement * i;
-    return window.CanvasKit.Color4fFromHSLA(hue, 100, 50, 1);
-  }
   
 
   // SERIALIZATIONS

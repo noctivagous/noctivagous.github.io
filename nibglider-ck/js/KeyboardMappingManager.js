@@ -210,6 +210,10 @@ numberRowKeyboardPanelIsHidden() {
 }
 
 
+help()
+{
+  
+}
   
 
   select() {

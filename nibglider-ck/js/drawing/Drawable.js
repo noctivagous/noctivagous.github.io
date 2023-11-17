@@ -572,6 +572,57 @@ drawDragLockEffect(skCanvas) {
     return new Drawable(paint, linePath, canvasKit.PaintStyle.Stroke);
   }
 
+  static createRegularPolygon(canvasKit, numberOfSides, xRange, yRange, sizeRange) {
+    const centerX = Math.random() * xRange;
+    const centerY = Math.random() * yRange;
+    const radius = Math.random() * sizeRange + 20;
+    const angleStep = (2 * Math.PI) / numberOfSides;
+  
+    let points = [];
+    for (let i = 0; i < numberOfSides; i++) {
+      const x = centerX + radius * Math.cos(i * angleStep);
+      const y = centerY + radius * Math.sin(i * angleStep);
+      points.push(x, y);
+    }
+  
+    return Drawable.createPolygon(canvasKit, points);
+  }
+
+  // Factory method for creating a regular polygon shape with default paint
+static createPolygon(canvasKit, centerX, centerY, radius, numberOfSides) {
+  const polygonPath = new canvasKit.Path();
+  const angleStep = (2 * Math.PI) / numberOfSides;
+
+  // Starting point for the polygon
+  polygonPath.moveTo(
+    centerX + radius * Math.cos(0),
+    centerY + radius * Math.sin(0)
+  );
+
+  // Draw each side of the polygon
+  for (let i = 1; i <= numberOfSides; i++) {
+    polygonPath.lineTo(
+      centerX + radius * Math.cos(i * angleStep),
+      centerY + radius * Math.sin(i * angleStep)
+    );
+  }
+
+  const paint = new canvasKit.Paint();
+  paint.setColor(canvasKit.Color4f(0, 1, 0, 1)); // Green color
+  paint.setStyle(canvasKit.PaintStyle.Stroke); // Stroke style
+  paint.setStrokeWidth(3); // Stroke width
+  paint.setAntiAlias(true);
+
+  return new Drawable(paint, polygonPath, canvasKit.PaintStyle.Stroke);
+}
+
+  
+  generateColor(i, numberOfShapes) {
+    const hueIncrement = 360 / numberOfShapes;
+    const hue = hueIncrement * i;
+    return window.CanvasKit.Color4fFromHSLA(hue, 100, 50, 1);
+  }
+  
 
   // SERIALIZATIONS
 

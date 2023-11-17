@@ -26,6 +26,14 @@
       "defaultFontColor": "rgb(155,155,155)",
 
     },
+    'Slash': {
+      "defaultText": "Help",
+      "defaultFunctionString": "help",
+      "defaultDescription": "Slides the keyboard off and on screen",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(155,155,155)",
+
+    },
     
     'KeyA': {
       "defaultText": "End",
@@ -763,6 +771,9 @@
     },
     toggleBothKeyboardPanels: () => {
       window.app.keyboardMappingManager.toggleBothKeyboardPanels();
+    },
+    help: () => {
+      window.app.keyboardMappingManager.help();
     },
 
     

@@ -64,6 +64,10 @@
     margin-right: 3pt !important;
 }
 
+.deleteKey .minikeylettersquare{
+    margin-right: 10pt !important;
+}
+
 .keyboardKeysOverlayContainer button {
     pointer-events: all;
     font-size: clamp(10px, 1.5vw, 12px);

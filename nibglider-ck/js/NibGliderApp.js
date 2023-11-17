@@ -70,6 +70,9 @@ class NibGliderApp {
         // Detect Operating System
         this.operatingSystem = this.getOperatingSystem();  // Mac or PC
 
+        // The keyboard layout and app functionality is often Mac by default.
+        // Change what is needed, including a pc-specific stylesheet,
+        // a pc-specific js file. 
         if (this.operatingSystem === "PC") {
             // Load the CSS for Windows and Linux
             var link = document.createElement('link');
@@ -79,7 +82,27 @@ class NibGliderApp {
 
             // pc specific changes
             this.loadScript('../js/pc.js'); // Load PC specific script
-        }
+  
+
+            // So that the hover data of each key
+            // is pc-specific, move the data from the pc-data-key attribute
+            // into the utilized data-key attribute.
+
+              // Select all elements with the class 'keyboardkey'
+              var keyboardKeys = document.querySelectorAll('.keyboardkey');
+          
+              // Loop through each element and update attributes
+              keyboardKeys.forEach(function(key) {
+                  if (key.hasAttribute('pc-data-key')) {
+                      // Set the value of 'data-key' attribute from the value of 'pc-data-key' attribute
+                      var pcDataKeyValue = key.getAttribute('pc-data-key');
+                      key.setAttribute('data-key', pcDataKeyValue);
+                  }
+              });
+          
+
+
+          }
 
         if (logResults) {
             console.log("Screen Width:", this.screenWidth);

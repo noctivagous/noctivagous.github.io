@@ -149,83 +149,67 @@ class KeyboardMappingManager {
 
   }
 
-  toggleBothKeyboardPanels() {
-
-    // Identifiers for both keyboard panels
-    const keyboardPanel1 = document.getElementById('keyboardPanel');
-    const keyboardPanel2 = document.getElementById('numberRowKeyboardPanel');
-  
-    // Helper function to toggle a single panel
-    const togglePanel = (panel) => {
-      if (panel) {
-        if (panel.classList.contains('slide-down')) {
-          panel.style.transition = 'bottom 0.2s'; // Faster transition for sliding up
-          panel.classList.remove('slide-down');
-          panel.classList.add('slide-up');
-        } else {
-          panel.style.transition = 'bottom 0.3s'; // Slower transition for sliding down
-          panel.classList.remove('slide-up');
-          panel.classList.add('slide-down');
-        }
-      }
-    };
-  
-    // Determine the action based on the current state of panels
-    if (keyboardPanel1.classList.contains('slide-up') && keyboardPanel2.classList.contains('slide-up')) {
-      // Both are hidden, show both
-      togglePanel(keyboardPanel1);
-      togglePanel(keyboardPanel2);
-    } else if (keyboardPanel1.classList.contains('slide-down') || keyboardPanel2.classList.contains('slide-down')) {
-      // At least one is showing, hide both
-      togglePanel(keyboardPanel1);
-      togglePanel(keyboardPanel2);
-    } else {
-      // Both are showing, hide both
-      togglePanel(keyboardPanel1);
-      togglePanel(keyboardPanel2);
-    }
-  }
-  
-
-
-  toggleKeyboardPanel() {
-
-    const keyboardPanel = document.getElementById('keyboardPanel');
-
-    if (keyboardPanel) {
-      if (keyboardPanel.classList.contains('slide-down')) {
-        // Faster transition for sliding up
-        keyboardPanel.style.transition = 'bottom 0.2s'; // Quicker transition
-        keyboardPanel.classList.remove('slide-down');
-        keyboardPanel.classList.add('slide-up');
-      } else {
-        // Slower transition for sliding down
-        keyboardPanel.style.transition = 'bottom 0.3s'; // Slower transition
-        keyboardPanel.classList.remove('slide-up');
-        keyboardPanel.classList.add('slide-down');
-      }
-    }
-
-
-  }
-
   toggleNumberRowKeyboardPanel() {
-    const numberRowKeyboardPanel = document.getElementById('numberRowKeyboardPanel');
-  
-    if (numberRowKeyboardPanel) {
-      if (numberRowKeyboardPanel.classList.contains('slide-down')) {
-        // Faster transition for sliding up (off-screen)
-        numberRowKeyboardPanel.style.transition = 'top 0.2s'; // Quicker transition
+
+    var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
+    if (numberRowKeyboardPanel.classList.contains('slide-down')) {
+        numberRowKeyboardPanel.style.transform = 'translateY(0)'; // Slide down
         numberRowKeyboardPanel.classList.remove('slide-down');
-        numberRowKeyboardPanel.classList.add('slide-up');
-      } else {
-        // Slower transition for sliding down (on-screen)
-        numberRowKeyboardPanel.style.transition = 'top 0.3s'; // Slower transition
-        numberRowKeyboardPanel.classList.remove('slide-up');
+    } else {
+        numberRowKeyboardPanel.style.transform = 'translateY(-100%)'; // Slide up
         numberRowKeyboardPanel.classList.add('slide-down');
-      }
     }
   }
+
+  
+   toggleKeyboardPanel() {
+    var keyboardPanel = document.getElementById('keyboardKeysGrid');
+    if (keyboardPanel.classList.contains('slide-up')) {
+        keyboardPanel.style.transform = 'translateY(0)'; // Slide down
+        keyboardPanel.classList.remove('slide-up');
+    } else {
+        keyboardPanel.style.transform = 'translateY(100%)'; // Slide up
+        keyboardPanel.classList.add('slide-up');
+    }
+}
+
+keyboardPanelIsHidden() {
+  var keyboardPanel = document.getElementById('keyboardKeysGrid');
+  return keyboardPanel.classList.contains('slide-up');
+}
+
+numberRowKeyboardPanelIsHidden() {
+  var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
+  return numberRowKeyboardPanel.classList.contains('slide-down');
+}
+
+ 
+
+ toggleBothKeyboardPanels() {
+  var keyboardPanel = document.getElementById('keyboardKeysGrid');
+  var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
+
+  var keyboardPanelHidden = keyboardPanel.classList.contains('slide-up');
+  var numberRowPanelHidden = numberRowKeyboardPanel.classList.contains('slide-down');
+
+  if (!keyboardPanelHidden || !numberRowPanelHidden) {
+      // If at least one panel is visible, or both are visible, hide both
+      keyboardPanel.style.transform = 'translateY(100%)'; // Slide up (hide)
+      keyboardPanel.classList.add('slide-up');
+
+      numberRowKeyboardPanel.style.transform = 'translateY(-100%)'; // Slide up (hide)
+      numberRowKeyboardPanel.classList.add('slide-down');
+  } else {
+      // If both panels are hidden, show both
+      keyboardPanel.style.transform = 'translateY(0)'; // Slide down (show)
+      keyboardPanel.classList.remove('slide-up');
+
+      numberRowKeyboardPanel.style.transform = 'translateY(0)'; // Slide down (show)
+      numberRowKeyboardPanel.classList.remove('slide-down');
+  }
+}
+
+
   
 
   select() {

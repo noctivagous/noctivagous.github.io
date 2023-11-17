@@ -702,8 +702,8 @@
     },
     'Backquote': {
       "defaultText": "Toggle Number Row",
-      "defaultFunctionString": "makePaintStyleFill",
-      "description": "Make paint style fill",
+      "defaultFunctionString": "toggleNumberRowKeyboardPanel",
+      "description": "Toggle Number Row Panel",
       "defaultButtonBackgroundColor": "rgb(148,17,0)",
       "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Digit1 Selection"
@@ -755,12 +755,18 @@
 
 
   window.functionRegistry = {
+    toggleNumberRowKeyboardPanel: () => {
+      window.app.keyboardMappingManager.toggleNumberRowKeyboardPanel();
+    },
     toggleKeyboardPanel: () => {
       window.app.keyboardMappingManager.toggleKeyboardPanel();
     },
     toggleBothKeyboardPanels: () => {
       window.app.keyboardMappingManager.toggleBothKeyboardPanels();
     },
+
+    
+
     select: () => {
       window.app.keyboardMappingManager.select();
     },

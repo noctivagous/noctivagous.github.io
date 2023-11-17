@@ -21,6 +21,13 @@ class EventManager {
     this.htmlCanvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.htmlCanvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
 
+//    window.addEventListener('focus', this.handleWindowFocus.bind(this));
+    
+    document.addEventListener('focus', function() {
+        console.log('received focus');
+    });
+    
+
     // Bind keyboard events
     window.addEventListener('keydown', function (event) {
       if (event.key === ' ' || event.key === 'Tab') {
@@ -107,6 +114,12 @@ class EventManager {
 
     this.cursorManager.updateCursorPosition(this.app.mouseX, this.app.mouseY);
 
+  }
+
+  handleWindowFocus(event)
+  {
+    alert('f');
+    this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags(null, '');
   }
 
 

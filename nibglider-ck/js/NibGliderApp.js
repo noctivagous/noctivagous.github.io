@@ -42,8 +42,8 @@ class NibGliderApp {
     this.CanvasKit = null;
 
     this.offset = 0;
-    this.mouseX = -1000;
-    this.mouseY = -1000;
+    this.mouseX = 500;
+    this.mouseY = 500;
 
 
     this.appBackgroundColor = null;
@@ -139,7 +139,7 @@ getOperatingSystem() {
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
     // load the loadKeyboardKeysAccordingToFlags
-    this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags('');
+    this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags(null,'');
     
 
 

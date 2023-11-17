@@ -157,53 +157,12 @@
 
     }
 
-
+    
+   
 
 }
 
-@media screen and (max-height: 800px) {
 
-    #keyboardKeysGrid {
-        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
-        grid-template-rows: 35pt 35pt 35pt 35pt;
-        gap: .4vmin .4vmin;
-    }
-
-    #keyboardPanel {
-        bottom: 6px;
-        left: 6px;
-    }
-
-    .keyboardKeysOverlayContainer button {
-
-        font-size: 12px;
-        padding: 1pt;
-    }
-}
-
-
-/* Small-sized devices (e.g., tablets) */
-@media screen and (max-width: 768px) {
-    #keyboardKeysGrid {
-        grid-template-columns: 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt;
-        grid-template-rows: 25pt 25pt 25pt 25pt;
-        gap: .3vmin .3vmin;
-    }
-
-    #keyboardPanel {
-        bottom: 6px;
-        left: 6px;
-    }
-}
-
-/* Extra small devices (e.g., phones) */
-@media screen and (max-width: 576px) {
-    #keyboardKeysGrid {
-        grid-template-columns: 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt;
-        grid-template-rows: 20pt 20pt 20pt 20pt;
-        gap: .2vmin .2vmin;
-    }
-}
 
 
 .keyboardKeysOverlayContainer button.hidden {
@@ -237,7 +196,7 @@
 }
 
 .spacebarKey .minikeylettersquare {
-    margin-right: -16pt !important;
+    margin-right: -18pt !important;
 }
 
 .metaKey .minikeylettersquare {
@@ -261,15 +220,13 @@
 
 .altLeft {
     grid-area: altLeft;
-    transform: translate(50%, 0%)
-
+    transform: translate(50%, 0%);
 }
 
 .metaLeft {
     grid-area: metaLeft;
     width: 160%;
-    transform: translate(31%, 0%)
-
+    transform: translate(31%, 0%);
 }
 
 .controlRight {
@@ -282,7 +239,6 @@
 .altRight {
     grid-area: altRight;
     transform: translate(60%, 0%)
-
 }
 
 .metaRight {
@@ -291,10 +247,12 @@
 
 }
 
-.altKey::after, .controlKey::after, .metaKey::after{
-    
-        font-size: 17px !important;
-    
+.altKey::after,
+.controlKey::after,
+.metaKey::after {
+
+    font-size: 16px;
+
 }
 
 
@@ -687,7 +645,7 @@ color:rgb(28, 28, 28) !important;
     height: 101%;
     vertical-align: middle;
     padding: 0px;
-    font-size: 20pt;
+    font-size: 19pt;
     font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
     border-radius: 0px;
     z-index: 2;
@@ -783,4 +741,88 @@ button {
     opacity: 1.0 !important;
     padding: 1pt;
 
+}
+
+
+
+@media screen and (max-height: 800px) {
+
+    #keyboardKeysGrid {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+
+    #keyboardPanel {
+        bottom: 6px;
+        left: 6px;
+    }
+
+    .keyboardKeysOverlayContainer button {
+
+        font-size: 12px;
+        padding: 1pt;
+    }
+
+    .capsLockKey::after,
+    .returnKey::after,
+    .shiftKeyLeft::after,
+    .shiftKeyRight::after,
+    .altKey::after,
+    .controlKey::after,
+    .metaKey::after {
+
+        font-size: 14px !important;
+
+    }
+
+    .spacebarKey {
+        width: 98%;
+        transform: translate(1%, 0%);
+    }
+
+    .metaRight {
+width: 164% !important;
+        transform: translate(-4%, 0%);
+    }
+
+    .altRight {
+        
+        transform: translate(20pt, 0%) !important;
+    }
+
+    .spacebarKey .minikeylettersquare {
+        margin-right: -14pt !important;
+    }
+
+    /*
+    .altRight::after{
+        font-size:8pt !important;
+        color:blue !important;
+    }*/
+
+}
+
+
+/* Small-sized devices (e.g., tablets) */
+@media screen and (max-width: 768px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt;
+        grid-template-rows: 25pt 25pt 25pt 25pt;
+        gap: .3vmin .3vmin;
+    }
+
+    #keyboardPanel {
+        bottom: 6px;
+        left: 6px;
+    }
+}
+
+/* Extra small devices (e.g., phones) */
+@media screen and (max-width: 576px) {
+    #keyboardKeysGrid {
+        grid-template-columns: 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt;
+        grid-template-rows: 20pt 20pt 20pt 20pt;
+        gap: .2vmin .2vmin;
+    }
 }

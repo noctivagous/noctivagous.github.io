@@ -153,6 +153,7 @@ loadScript(url) {
 
   async setupManagers() {
 
+    window.app = this;
     this.layerManager = new LayerManager(this);
 
     this.drawingEntityManager = new DrawingEntityManager(this);
@@ -165,6 +166,7 @@ loadScript(url) {
     this.pathManipulator = new PathManipulator(this);
 
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
+    this.keyboardMappingManager.drawingEntityManager = this.drawingEntityManager;
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
     // load the loadKeyboardKeysAccordingToFlags

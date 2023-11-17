@@ -756,250 +756,250 @@
 
   window.functionRegistry = {
     toggleKeyboardPanel: () => {
-      this.toggleKeyboardPanel();
+      window.app.keyboardMappingManager.toggleKeyboardPanel();
     },
     toggleBothKeyboardPanels: () => {
-      this.toggleBothKeyboardPanels();
+      window.app.keyboardMappingManager.toggleBothKeyboardPanels();
     },
     select: () => {
-      this.select();
+      window.app.keyboardMappingManager.select();
     },
     hardCorner: () => {
-      this.drawingEntityManager.hardCorner();
+      window.app.keyboardMappingManager.drawingEntityManager.hardCorner();
     },
     scaleDown: () => {
-      this.drawingEntityManager.scaleDown();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleDown();
     },
     scaleUp: () => {
-      this.drawingEntityManager.scaleUp();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleUp();
     },
     scaleDownUpper1: () => {
-      this.drawingEntityManager.scaleDownUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleDownUpper1();
     },
     scaleUpUpper1: () => {
-      this.drawingEntityManager.scaleUpUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleUpUpper1();
     },
     scaleDownUpper2: () => {
-      this.drawingEntityManager.scaleDownUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleDownUpper2();
     },
     scaleUpUpper2: () => {
-      this.drawingEntityManager.scaleUpUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleUpUpper2();
     },
     scaleDownLower1: () => {
-      this.drawingEntityManager.scaleDownLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleDownLower1();
     },
     scaleUpLower1: () => {
-      this.drawingEntityManager.scaleUpLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleUpLower1();
     },
     scaleDownLower2: () => {
-      this.drawingEntityManager.scaleDownLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleDownLower2();
     },
     scaleUpLower2: () => {
-      this.drawingEntityManager.scaleUpLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.scaleUpLower2();
     },
     liveScaling: () => {
-      this.drawingEntityManager.liveScaling();
+      window.app.keyboardMappingManager.drawingEntityManager.liveScaling();
     },
     liveXOrYScaling: () => {
-      this.drawingEntityManager.liveXOrYScaling();
+      window.app.keyboardMappingManager.drawingEntityManager.liveXOrYScaling();
     },
     liveShearing: () => {
-      this.drawingEntityManager.liveShearing();
+      window.app.keyboardMappingManager.drawingEntityManager.liveShearing();
     },
     rotateCounterclockwise: () => {
-      this.drawingEntityManager.rotateCounterclockwise();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateCounterclockwise();
     },
     rotateClockwise: () => {
-      this.drawingEntityManager.rotateClockwise();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateClockwise();
     },
     rotateCounterclockwiseUpper1: () => {
-      this.drawingEntityManager.rotateCounterclockwiseUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateCounterclockwiseUpper1();
     },
     rotateClockwiseUpper1: () => {
-      this.drawingEntityManager.rotateClockwiseUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateClockwiseUpper1();
     },
     rotateCounterclockwiseUpper2: () => {
-      this.drawingEntityManager.rotateCounterclockwiseUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateCounterclockwiseUpper2();
     },
     rotateClockwiseUpper2: () => {
-      this.drawingEntityManager.rotateClockwiseUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateClockwiseUpper2();
     },
     rotateCounterclockwiseLower1: () => {
-      this.drawingEntityManager.rotateCounterclockwiseLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateCounterclockwiseLower1();
     },
     rotateClockwiseLower1: () => {
-      this.drawingEntityManager.rotateClockwiseLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateClockwiseLower1();
     },
     rotateCounterclockwiseLower2: () => {
-      this.drawingEntityManager.rotateCounterclockwiseLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateCounterclockwiseLower2();
     },
     rotateClockwiseLower2: () => {
-      this.drawingEntityManager.rotateClockwiseLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.rotateClockwiseLower2();
     },
 
     thinStroke: () => {
-      this.drawingEntityManager.thinStroke(2);
+      window.app.keyboardMappingManager.drawingEntityManager.thinStroke(2);
     },
 
     thickenStroke: () => {
-      this.drawingEntityManager.thickenStroke(2);
+      window.app.keyboardMappingManager.drawingEntityManager.thickenStroke(2);
     },
 
     thinStrokeUpper1: () => {
-      this.drawingEntityManager.thinStroke(5);
+      window.app.keyboardMappingManager.drawingEntityManager.thinStroke(5);
     },
 
     thickenStrokeUpper1: () => {
-      this.drawingEntityManager.thickenStroke(5);
+      window.app.keyboardMappingManager.drawingEntityManager.thickenStroke(5);
     },
 
     thinStrokeUpper2: () => {
-      this.drawingEntityManager.thinStroke(15);
+      window.app.keyboardMappingManager.drawingEntityManager.thinStroke(15);
     },
 
     thickenStrokeUpper2: () => {
-      this.drawingEntityManager.thickenStroke(15);
+      window.app.keyboardMappingManager.drawingEntityManager.thickenStroke(15);
     },
 
     thinStrokeLower1: () => {
-      this.drawingEntityManager.thinStroke(2);
+      window.app.keyboardMappingManager.drawingEntityManager.thinStroke(2);
     },
 
     thickenStrokeLower1: () => {
-      this.drawingEntityManager.thickenStroke(2);
+      window.app.keyboardMappingManager.drawingEntityManager.thickenStroke(2);
     },
 
     thinStrokeLower2: () => {
-      this.drawingEntityManager.thinStroke(1);
+      window.app.keyboardMappingManager.drawingEntityManager.thinStroke(1);
     },
 
     thickenStrokeLower2: () => {
-      this.drawingEntityManager.thickenStroke(1);
+      window.app.keyboardMappingManager.drawingEntityManager.thickenStroke(1);
     },
 
 
 
     copyToClipboard: () => {
-      this.app.eventManager.copyToClipboard();
+      window.app.keyboardMappingManager.app.eventManager.copyToClipboard();
     },
     pasteFromClipboard: () => {
-      this.app.eventManager.pasteFromClipboard();
+      window.app.keyboardMappingManager.app.eventManager.pasteFromClipboard();
     },
     undo: () => {
-      this.app.eventManager.undo();
+      window.app.keyboardMappingManager.app.eventManager.undo();
     },
     redo: () => {
-      this.app.eventManager.redo();
+      window.app.keyboardMappingManager.app.eventManager.redo();
     },
 
     bringSelectionToFront: () => {
       // Call the function to bring selected objects to the front
-      this.drawingEntityManager.bringSelectionToFront();
+      window.app.keyboardMappingManager.drawingEntityManager.bringSelectionToFront();
     },
 
     sendSelectionToBack: () => {
       // Call the function to send selected objects to the back
-      this.drawingEntityManager.sendSelectionToBack();
+      window.app.keyboardMappingManager.drawingEntityManager.sendSelectionToBack();
     },
 
     bringSelectionForward: () => {
       // Call the function to bring selected objects forward by one step
-      this.drawingEntityManager.bringSelectionForward();
+      window.app.keyboardMappingManager.drawingEntityManager.bringSelectionForward();
     },
 
     sendSelectionBackward: () => {
       // Call the function to send selected objects backward by one step
-      this.drawingEntityManager.sendSelectionBackward();
+      window.app.keyboardMappingManager.drawingEntityManager.sendSelectionBackward();
     },
 
     cart: () => {
-      this.cart();
+      window.app.keyboardMappingManager.cart();
     },
     stamp: () => {
-      this.stamp();
+      window.app.keyboardMappingManager.stamp();
     },
     removeAllSelectedItemsAndReset: () => {
-      this.layerManager.removeAllSelectedItemsAndReset();
+      window.app.keyboardMappingManager.layerManager.removeAllSelectedItemsAndReset();
     },
     cancelOperations: () => {
-      this.drawingEntityManager.cancelOperations();
-      this.layerManager.cancel();
+      window.app.keyboardMappingManager.drawingEntityManager.cancelOperations();
+      window.app.keyboardMappingManager.layerManager.cancel();
     },
     makePaintStyleFill: () => {
-      this.drawingEntityManager.makePaintStyleFill();
+      window.app.keyboardMappingManager.drawingEntityManager.makePaintStyleFill();
     },
     makePaintStyleStroke: () => {
-      this.drawingEntityManager.makePaintStyleStroke();
+      window.app.keyboardMappingManager.drawingEntityManager.makePaintStyleStroke();
     },
     end: () => {
-      this.drawingEntityManager.end();
+      window.app.keyboardMappingManager.drawingEntityManager.end();
     },
     closePathEnd: () => {
-      this.drawingEntityManager.closePathAndEnd();
+      window.app.keyboardMappingManager.drawingEntityManager.closePathAndEnd();
     },
     'arrowUp': () => {
-      this.drawingEntityManager.arrowUp();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowUp();
     },
     'arrowDown': () => {
-      this.drawingEntityManager.arrowDown();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowDown();
     },
     'arrowLeft': () => {
-      this.drawingEntityManager.arrowLeft();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowLeft();
     },
     'arrowRight': () => {
-      this.drawingEntityManager.arrowRight();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowRight();
     },
     'arrowUpUpper1': () => {
-      this.drawingEntityManager.arrowUpUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowUpUpper1();
     },
     'arrowDownUpper1': () => {
-      this.drawingEntityManager.arrowDownUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowDownUpper1();
     },
     'arrowLeftUpper1': () => {
-      this.drawingEntityManager.arrowLeftUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowLeftUpper1();
     },
     'arrowRightUpper1': () => {
-      this.drawingEntityManager.arrowRightUpper1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowRightUpper1();
     },
     'arrowUpLower1': () => {
-      this.drawingEntityManager.arrowUpLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowUpLower1();
     },
     'arrowDownLower1': () => {
-      this.drawingEntityManager.arrowDownLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowDownLower1();
     },
     'arrowLeftLower1': () => {
-      this.drawingEntityManager.arrowLeftLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowLeftLower1();
     },
     'arrowRightLower1': () => {
-      this.drawingEntityManager.arrowRightLower1();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowRightLower1();
     },
     'arrowUpUpper2': () => {
-      this.drawingEntityManager.arrowUpUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowUpUpper2();
     },
     'arrowDownUpper2': () => {
-      this.drawingEntityManager.arrowDownUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowDownUpper2();
     },
     'arrowLeftUpper2': () => {
-      this.drawingEntityManager.arrowLeftUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowLeftUpper2();
     },
     'arrowRightUpper2': () => {
-      this.drawingEntityManager.arrowRightUpper2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowRightUpper2();
     },
     'arrowUpLower2': () => {
-      this.drawingEntityManager.arrowUpLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowUpLower2();
     },
     'arrowDownLower2': () => {
-      this.drawingEntityManager.arrowDownLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowDownLower2();
     },
     'arrowLeftLower2': () => {
-      this.drawingEntityManager.arrowLeftLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowLeftLower2();
     },
     'arrowRightLower2': () => {
-      this.drawingEntityManager.arrowRightLower2();
+      window.app.keyboardMappingManager.drawingEntityManager.arrowRightLower2();
     },
 
     closePathAndEnd: () => {
-      this.drawingEntityManager.closePathAndEnd();
+      window.app.keyboardMappingManager.drawingEntityManager.closePathAndEnd();
     }
     // ... Other functions can be added here in a similar manner
   };

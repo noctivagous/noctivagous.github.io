@@ -26,7 +26,7 @@ class KeyboardMappingManager {
     this.keyToChar = window.keyToChar;
     this.functionRegistry = window.functionRegistry;
     this.keyMappings = window.keyMappings;
-    
+
     /*
     document.addEventListener('keydown', function(event) {
       var keyCode = event.code;
@@ -102,12 +102,17 @@ class KeyboardMappingManager {
 
     var buttonLookup = document.getElementById(keyEvent.code)
 
+
     
     if (buttonLookup != null) {
       buttonLookup.classList.add('active');
-  
+
+      
+
+      // Every .active keyboardbutton overlay is removed after .8 seconds.
+      // Ensures that no key gets stuck.
       // Check if the key is MetaLeft or MetaRight
-      if (keyEvent.code === 'MetaLeft' || keyEvent.code === 'MetaRight') {
+      //if (keyEvent.code === 'MetaLeft' || keyEvent.code === 'MetaRight') {
         // Set a timer to remove the 'active' class after 2 seconds
         const timerId = setTimeout(() => {
           buttonLookup.classList.remove('active');
@@ -115,7 +120,7 @@ class KeyboardMappingManager {
   
         // Store the timer ID in the element for reference in keyup
         buttonLookup.dataset.timerId = timerId;
-      }
+     // }
     }
 
 
@@ -145,9 +150,10 @@ class KeyboardMappingManager {
   }
 
   toggleBothKeyboardPanels() {
+
     // Identifiers for both keyboard panels
-    const keyboardPanel1 = document.getElementById('keyboardPanel1');
-    const keyboardPanel2 = document.getElementById('keyboardPanel2');
+    const keyboardPanel1 = document.getElementById('keyboardPanel');
+    const keyboardPanel2 = document.getElementById('numberRowKeyboardPanel');
   
     // Helper function to toggle a single panel
     const togglePanel = (panel) => {
@@ -181,6 +187,7 @@ class KeyboardMappingManager {
   }
   
 
+
   toggleKeyboardPanel() {
 
     const keyboardPanel = document.getElementById('keyboardPanel');
@@ -199,23 +206,27 @@ class KeyboardMappingManager {
       }
     }
 
-    /*
-    if (keyboardPanel) {
-      
-      if (keyboardPanel.classList.contains('slide-down')) {
-        keyboardPanel.classList.remove('slide-down');
-        keyboardPanel.classList.add('slide-up');
-      } else {
-        console.log('1');
-        keyboardPanel.classList.remove('slide-up');
-        keyboardPanel.classList.add('slide-down');
-      }
-    }
-    */
-
 
   }
 
+  toggleNumberRowKeyboardPanel() {
+    const numberRowKeyboardPanel = document.getElementById('numberRowKeyboardPanel');
+  
+    if (numberRowKeyboardPanel) {
+      if (numberRowKeyboardPanel.classList.contains('slide-down')) {
+        // Faster transition for sliding up (off-screen)
+        numberRowKeyboardPanel.style.transition = 'top 0.2s'; // Quicker transition
+        numberRowKeyboardPanel.classList.remove('slide-down');
+        numberRowKeyboardPanel.classList.add('slide-up');
+      } else {
+        // Slower transition for sliding down (on-screen)
+        numberRowKeyboardPanel.style.transition = 'top 0.3s'; // Slower transition
+        numberRowKeyboardPanel.classList.remove('slide-up');
+        numberRowKeyboardPanel.classList.add('slide-down');
+      }
+    }
+  }
+  
 
   select() {
     this.layerManager.select();

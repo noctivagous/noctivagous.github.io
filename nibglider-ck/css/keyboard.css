@@ -150,12 +150,13 @@
         left: 6px;
     }
 
+    /*
     .keyboardKeysOverlayContainer button {
 
         font-size: 12px;
         padding: 1pt;
 
-    }
+    }*/
 
     
    
@@ -238,7 +239,7 @@
 
 .altRight {
     grid-area: altRight;
-    transform: translate(60%, 0%)
+    transform: translate(59%, 0%)
 }
 
 .metaRight {
@@ -247,13 +248,7 @@
 
 }
 
-.altKey::after,
-.controlKey::after,
-.metaKey::after {
 
-    font-size: 16px;
-
-}
 
 
 /*
@@ -645,11 +640,22 @@ color:rgb(28, 28, 28) !important;
     height: 101%;
     vertical-align: middle;
     padding: 0px;
-    font-size: 19pt;
-    font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
+
     border-radius: 0px;
     z-index: 2;
     transition: opacity 0.2s ease, visibility 0.5s ease;
+
+
+    font-size: 9pt;
+    font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.keyboardKeysOverlayContainer button:active,
+.keyboardKeysOverlayContainer button.active {
+    background-color: #333;
+    color: silver;
+
+
 }
 
 .returnKey::after,
@@ -672,9 +678,10 @@ color:rgb(28, 28, 28) !important;
 }
 
 
+/*
 .capsLockKey::after {
     font-size: 19px;
-}
+}*/
 
 .keyboardkey:hover::after,
 .keyboardkey.active::after {
@@ -764,6 +771,7 @@ button {
         padding: 1pt;
     }
 
+    /*
     .capsLockKey::after,
     .returnKey::after,
     .shiftKeyLeft::after,
@@ -774,7 +782,7 @@ button {
 
         font-size: 14px !important;
 
-    }
+    }*/
 
     .spacebarKey {
         width: 98%;

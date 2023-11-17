@@ -1,0 +1,72 @@
+#keyboardKeysGrid {
+
+
+    display: grid;
+    /*    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;*/
+    /*
+    grid-template-columns: 40pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt 45pt;
+    grid-template-rows: 45pt 45pt 45pt 45pt;*/
+    grid-template-columns: 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt;
+    grid-template-rows: 40pt 40pt 40pt 40pt;
+    gap: .5vmin .5vmin;
+    grid-auto-flow: row;
+    grid-template-areas:
+
+
+        "tabKey tabKey KeyQ wKey eKey rKey tKey yKey uKey iKey oKey pKey bracketLeftKey bracketRightKey backslashKey"
+
+        "capsLockKey capsLockKey KeyA sKey dKey fKey gKey hKey jKey kKey lKey semicolonKey singleQuoteKey returnKey returnKey"
+
+        "shiftKeyLeft shiftKeyLeft zKey xKey cKey vKey bKey nKey mKey commaKey periodKey forwardSlashKey shiftKeyRight shiftKeyRight ."
+
+        "controlLeft metaLeft altLeft  altLeft spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey  altRight metaRight controlRight .";
+
+    width: 100%;
+    height: 100%;
+
+    align-content: end;
+}
+
+.altLeft {
+    grid-area: altLeft;
+    width:60%;
+    transform: translate(30pt, 0%);
+}
+
+.metaLeft {
+    grid-area: metaLeft;
+    width: 120%;
+    transform: translate(40%, 0%);
+}
+
+
+
+.altRight {
+    grid-area: altRight;
+    width:110%;
+
+    transform: translate(0, 0%)
+}
+
+.metaRight {
+    grid-area: metaRight;
+    width: 130%;
+    transform: translate(10%, 0%)
+
+}
+
+.metaKey .minikeylettersquare {
+    margin-right: 3pt !important;
+}
+
+.altKey .minikeylettersquare {
+    margin-right: 3pt !important;
+}
+
+.keyboardKeysOverlayContainer button {
+    pointer-events: all;
+    font-size: clamp(10px, 1.5vw, 12px);
+    /* Adjust values as needed */
+
+}

@@ -6,8 +6,8 @@ import EventManager from './EventManager.js';
 import DrawingEntityManager from './drawing/DrawingEntityManager.js';
 import { Drawable } from './drawing/Drawable.js';
 
-import  PaintManager   from './drawing/PaintManager.js';
-import  {PathManipulator, NGPath}  from './drawing/PathManipulator.js';
+import PaintManager from './drawing/PaintManager.js';
+import { PathManipulator, NGPath } from './drawing/PathManipulator.js';
 import GridManager from './drawing/GridManager.js';
 import SnappingManager from './drawing/SnappingManager.js';
 
@@ -58,53 +58,82 @@ class NibGliderApp {
 
   }
 
-detectUserEnvironment(logResults = false) {
-    // Detect screen width and height
-    this.screenWidth = screen.width;
-    this.screenHeight = screen.height;
+  detectUserEnvironment(logResults = false) {
+    try {
+        // Detect screen width and height
+        this.screenWidth = screen.width;
+        this.screenHeight = screen.height;
 
-    // Detect device pixel ratio
-    this.devicePixelRatio = window.devicePixelRatio;
+        // Detect device pixel ratio
+        this.devicePixelRatio = window.devicePixelRatio;
 
-    // Detect Operating System
-    this.operatingSystem = this.getOperatingSystem();
+        // Detect Operating System
+        this.operatingSystem = this.getOperatingSystem();  // Mac or PC
 
-    if(logResults)
-    {
-      console.log("Screen Width:", myApp.screenWidth);
-      console.log("Screen Height:", myApp.screenHeight);
-      console.log("Operating System:", myApp.operatingSystem);
-      console.log("Device Pixel Ratio:", myApp.devicePixelRatio);
+        if (this.operatingSystem === "PC") {
+            // Load the CSS for Windows and Linux
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = '../css/pc.css'; // Path to your CSS file
+            document.head.appendChild(link);
+
+            // pc specific changes
+            this.loadScript('../js/pc.js'); // Load PC specific script
+        }
+
+        if (logResults) {
+            console.log("Screen Width:", this.screenWidth);
+            console.log("Screen Height:", this.screenHeight);
+            console.log("Operating System:", this.operatingSystem);
+            console.log("Device Pixel Ratio:", this.devicePixelRatio);
+        }
+    } catch (error) {
+        console.error("Error in detectUserEnvironment:", error);
     }
-
 }
 
-mouseHasMoved()
-{
-  return (this.mouseX != -1000);
+
+loadScript(url) {
+  try {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = url;
+      document.head.appendChild(script);
+
+      // Optionally, handle script load/error events
+      script.onload = () => console.log(url + ' loaded successfully.');
+      script.onerror = () => console.error('Error loading script:', url);
+  } catch (error) {
+      console.error("Error in loadScript:", error);
+  }
 }
 
-getOperatingSystem() {
+
+  mouseHasMoved() {
+    return (this.mouseX != -1000);
+  }
+
+  getOperatingSystem() {
     if (navigator.userAgentData && navigator.userAgentData.platform) {
-        // New User-Agent Client Hints API
-        let platform = navigator.userAgentData.platform.toLowerCase();
+      // New User-Agent Client Hints API
+      let platform = navigator.userAgentData.platform.toLowerCase();
 
-        if (platform.includes('mac')) {
-            return 'Mac';
-        } else {
-            return 'PC';
-        }
+      if (platform.includes('mac')) {
+        return 'Mac';
+      } else {
+        return 'PC';
+      }
     } else {
-        // Fallback to the older userAgent string
-        let userAgent = navigator.userAgent.toLowerCase();
+      // Fallback to the older userAgent string
+      let userAgent = navigator.userAgent.toLowerCase();
 
-        if (userAgent.includes('mac os')) {
-            return 'Mac';
-        } else {
-            return 'PC';
-        }
+      if (userAgent.includes('mac os')) {
+        return 'Mac';
+      } else {
+        return 'PC';
+      }
     }
-}
+  }
 
 
   setupAppBackgroundColor() {
@@ -127,10 +156,10 @@ getOperatingSystem() {
     this.layerManager = new LayerManager(this);
 
     this.drawingEntityManager = new DrawingEntityManager(this);
-    
+
     this.cursorManager = new CursorManager(this);
 
-    
+
     this.paintManager = new PaintManager(this);
     this.drawingEntityManager.paintManager = this.paintManager;
     this.pathManipulator = new PathManipulator(this);
@@ -139,8 +168,8 @@ getOperatingSystem() {
     this.eventManager = new EventManager(this, this.keyboardMappingManager, this.drawingEntityManager);
 
     // load the loadKeyboardKeysAccordingToFlags
-    this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags(null,'');
-    
+    this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags(null, '');
+
 
 
     this.guiManager = new GUIManager(this);
@@ -149,7 +178,7 @@ getOperatingSystem() {
 
     this.gridManager = new GridManager(this);
 
-   
+
 
   }
 
@@ -164,7 +193,7 @@ getOperatingSystem() {
 
     await this.initializeCanvasKit();
 
-    
+
 
     this.setupAppStateManager();
 
@@ -174,7 +203,7 @@ getOperatingSystem() {
 
     this.setupCanvasSurface();
 
-   await this.setupManagers();
+    await this.setupManagers();
 
 
 
@@ -203,7 +232,7 @@ getOperatingSystem() {
 
     this.startDrawingIfNeeded();
 
-    
+
 
   }
 
@@ -251,7 +280,7 @@ getOperatingSystem() {
       this.layerManager.drawRectOnAllLayers(this.skCanvas, this.entireCanvasRect());
 
     }
-   
+
     // this.skCanvas.drawPaint(this.appBackgroundColorPaint);
 
     // dirtyRect setup works but needs to be adapted to CanvasKit
@@ -259,9 +288,9 @@ getOperatingSystem() {
     this.dirtyRects.forEach((rect) => {
 
 
-//      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
-     
-     // this.skCanvas.save();
+      //      fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, rect);
+
+      // this.skCanvas.save();
       //const rectToClip = rect;
 
       // for optimiziation when backingstore is made:
@@ -269,13 +298,13 @@ getOperatingSystem() {
 
 
       this.drawingEntityManager.draw(this.skCanvas);
-      
+
 
       this.guiManager.drawGUI(this.skCanvas);
 
       this.cursorManager.drawCursor(this.skCanvas, this.appStateManager);
-      
-      
+
+
 
       //   this.skCanvas.restore();
 
@@ -357,7 +386,7 @@ getOperatingSystem() {
 
   invalidateRect(skRectFloat32Array) {
 
-    
+
     this.dirtyRects.push(skRectFloat32Array);
     this.startDrawingIfNeeded();
   }
@@ -366,19 +395,17 @@ getOperatingSystem() {
 
 
   invalidateEntireCanvas() {
-    
-    
-  if(this.layerManager)
-  {
-   // this.layerManager.updateAllLayersBackingStores();
-  }
-  else
-  {
-    
-   // console.log('this.layerManager null in invalidateEntireCanvas');
-    return;
-   
-  }
+
+
+    if (this.layerManager) {
+      // this.layerManager.updateAllLayersBackingStores();
+    }
+    else {
+
+      // console.log('this.layerManager null in invalidateEntireCanvas');
+      return;
+
+    }
     this.invalidateRect(this.CanvasKit.XYWHRect(0, 0, this.htmlCanvas.width, this.htmlCanvas.height));
   }
 

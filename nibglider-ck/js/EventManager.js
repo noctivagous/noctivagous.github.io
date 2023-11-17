@@ -28,12 +28,8 @@ class EventManager {
     });
     
 
-    // Bind keyboard events
-    window.addEventListener('keydown', function (event) {
-      if (event.key === ' ' || event.key === 'Tab') {
-        event.preventDefault();
-      }
-    });
+    
+    this.addEventListenersToPreventDefaults();
 
     document.addEventListener('keydown', (event) => this.keyboardMappingManager.handleKeyPress(event));
 
@@ -55,6 +51,27 @@ class EventManager {
    */
   
   }
+
+   addEventListenersToPreventDefaults() {
+    window.addEventListener('keydown', function (event) {
+        // Prevent default action for Space or Tab
+        if (event.key === ' ' || event.key === 'Tab') {
+            event.preventDefault();
+        }
+
+        // Prevent default action for Shift + \
+        if (event.shiftKey && event.key === '\\') {
+            event.preventDefault();
+            console.log('Shift + \\ pressed. Default action prevented.');
+        }
+
+        // Check if the Alt key is pressed
+        if (event.altKey) {
+          event.preventDefault();
+        }
+    });
+}
+
 
 
   handleMouseMove(event) {

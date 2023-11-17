@@ -220,29 +220,6 @@ class KeyboardMappingManager {
   }
 
 
-  getOperatingSystem() {
-    if (navigator.userAgentData && navigator.userAgentData.platform) {
-      // New User-Agent Client Hints API
-      let platform = navigator.userAgentData.platform.toLowerCase();
-
-      if (platform.includes('mac')) {
-        return 'Mac';
-      } else {
-        return 'Windows';
-      }
-    } else {
-      // Fallback to the older userAgent string
-      let userAgent = navigator.userAgent.toLowerCase();
-
-      if (userAgent.includes('mac os')) {
-        return 'Mac';
-      } else {
-        return 'Windows';
-      }
-    }
-  }
-
-
 
 
 
@@ -270,10 +247,10 @@ class KeyboardMappingManager {
 
     this.flags = this.keyEventFlags(keyEvent);
 
-    const operatingSys = this.app.operatingSystem;
+    this.operatingSys = this.app.operatingSystem;
 
     const keyCodeWithFlag = this.eventKeyCodeWithFlag;
-    const keyCodeWithFlagWithOS = operatingSys + this.eventKeyCodeWithFlag;
+    const keyCodeWithFlagWithOS = this.operatingSys + this.eventKeyCodeWithFlag;
     const keyMapEntry = this.keyMappings[keyCodeWithFlag] || this.keyMappings[keyCodeWithFlagWithOS];
 
 
@@ -366,8 +343,9 @@ class KeyboardMappingManager {
             square.style.marginRight = '1pt';
 
             // Extract the character from the keyToChar mapping
-            let char = this.keyToChar[button.id] || ''; // Fallback to empty string if no match
+            let char = this.keyToChar[this.app.operatingSystem + button.id] || this.keyToChar[button.id] || ''; // Fallback to empty string if no match
 
+            
             // Set the text inside the square
             square.textContent = char;
 
@@ -473,7 +451,7 @@ class KeyboardMappingManager {
     },
 
     'KeyC': {
-      "defaultText": "Stroke Width -1",
+      "defaultText": "Stroke Width <br/>-1",
       "defaultFunctionString": "thinStroke",
       "defaultDescription": "thin stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -481,7 +459,7 @@ class KeyboardMappingManager {
       "selectionStateText": "thin stroke",
     },
     '~KeyC': {
-      "defaultText": "Stroke Width -0.5",
+      "defaultText": "Stroke Width <br/>-0.5",
       "defaultFunctionString": "thinStroke",
       "defaultDescription": "thin stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -491,7 +469,7 @@ class KeyboardMappingManager {
 
 
     '$KeyC': {
-      "defaultText": "Stroke Width -5",
+      "defaultText": "Stroke Width <br/>-5",
       "defaultFunctionString": "thinStrokeUpper1",
       "defaultDescription": "thin stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -499,7 +477,7 @@ class KeyboardMappingManager {
       "selectionStateText": "thin stroke",
     },
     '$^KeyC': {
-      "defaultText": "Stroke Width -10)",
+      "defaultText": "Stroke Width <br/>-10",
       "defaultFunctionString": "thinStrokeUpper2",
       "defaultDescription": "thin stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -508,7 +486,7 @@ class KeyboardMappingManager {
     },
 
     'KeyV': {
-      "defaultText": "Stroke Width +1",
+      "defaultText": "Stroke Width <br/>+1",
       "defaultFunctionString": "thickenStroke",
       "defaultDescription": "thicken stroke",
       "defaultButtonBackgroundColor": "rgb(10,10,10)",
@@ -516,7 +494,7 @@ class KeyboardMappingManager {
       "selectionStateText": "thicken stroke",
     },
     '~KeyV': {
-      "defaultText": "Stroke Width +0.5",
+      "defaultText": "Stroke Width <br/>+0.5",
       "defaultFunctionString": "thickenStroke",
       "defaultDescription": "thicken stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -524,7 +502,7 @@ class KeyboardMappingManager {
       "selectionStateText": "thin stroke",
     },
     '$KeyV': {
-      "defaultText": "Stroke Width +5",
+      "defaultText": "Stroke Width <br/>+5",
       "defaultFunctionString": "thinStrokeUpper1",
       "defaultDescription": "thicken stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -532,7 +510,7 @@ class KeyboardMappingManager {
       "selectionStateText": "thin stroke",
     },
     '$^KeyV': {
-      "defaultText": "Stroke Width +10)",
+      "defaultText": "Stroke Width <br/>+10",
       "defaultFunctionString": "thickenStrokeUpper",
       "defaultDescription": "thicken stroke",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -1397,11 +1375,16 @@ class KeyboardMappingManager {
     ControlLeft: 'Control',
     ControlRight: 'Control',
 
+    /*
+    PCControlLeft: 'Ctrl',
+    PCControlRight: 'Ctrl',
+*/
+
 
     MacMetaLeft: 'Command',
     MacMetaRight: 'Command',
-    PCMetaLeft: 'Windows',
-    PCMetaRight: 'Windows',
+    PCMetaLeft: '⊞',
+    PCMetaRight: '⊞',
     MetaLeft: 'Command',
     MetaRight: 'Command',
 

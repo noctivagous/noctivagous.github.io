@@ -24,7 +24,7 @@
 
 <link rel="stylesheet" href="css/color-reference.css">
 <link rel="stylesheet" href="css/keyboard.css">
-
+<link rel="stylesheet" href="css/fontsizes.css">
 
 
 
@@ -32,7 +32,43 @@
     <title>NibGlider-CK</title>
 </head>
 <body>
-    <canvas id="canvas" width=1500 height=800></canvas>
+    
+  
+  <canvas id="canvas" width=1500 height=800></canvas>
+
+
+  <div id="numberRowGridPanel" style="">
+    <div id="numberRowGrid" class="keyboardKeysOverlayContainer">
+      <!-- 
+             BEGIN FIRST ROW:
+             ` 1 2 3 4 5 6 7 8 9 0 - = backspace 
+           -->
+           <button data-key="`" tabindex="-1" id="Backquote" class="keyboardkey backquoteKey OtherKey">
+            </button>
+           <button data-key="1" tabindex="-1" id="Digit1" class="keyboardkey Digit1 OtherKey">
+            
+           </button>
+           <button data-key="2" tabindex="-1" id="Digit2" class="keyboardkey twoKey OtherKey">
+            
+     
+           </button>
+           <button data-key="3" tabindex="-1" id="Digit3" class="keyboardkey threeKey  OtherKey">
+           </button>
+           <button data-key="4" tabindex="-1" id="Digit4" class="keyboardkey fourKey OtherKey "></button>
+           <button data-key="5" tabindex="-1" id="Digit5" class="keyboardkey fiveKey  OtherKey"></button>
+           <button data-key="6" tabindex="-1" id="Digit6" class="keyboardkey sixKey OtherKey"></button>
+           <button data-key="7" tabindex="-1" id="Digit7" class="keyboardkey sevenKey OtherKey"></button>
+           <button data-key="8" tabindex="-1" id="Digit8" class="keyboardkey eightKey  OtherKey"></button>
+           <button data-key="9" tabindex="-1" id="Digit9" class="keyboardkey nineKey  OtherKey"></button>
+           <button data-key="0" tabindex="-1" id="Digit0" class="keyboardkey zeroKey  OtherKey"></button>
+           <button data-key="-" tabindex="-1" id="Minus" class="keyboardkey minusKey OtherKey "></button>
+           <button data-key="=" tabindex="-1" id="Equal" class="keyboardkey equalsKey OtherKey"></button>
+           <button data-key="delete" tabindex="-1" id="Backspace" class="keyboardkey deleteKey OtherKey"></button>
+           <!-- 
+               END FIRST ROW 
+             -->
+         </div>
+        </div>
 
 
 
@@ -77,6 +113,7 @@
 
 
 
+              
 
 
 
@@ -124,7 +161,7 @@
             -->
 
           <button data-key="capslock" tabindex="-1" id="CapsLock"
-            class="keyboardkey capsLockKey OtherKey"></button>
+            class="keyboardkey capsLockKey OtherKey returnOrCharacterModifier"></button>
 
 
           <button data-key="a" tabindex="-1" id="KeyA" class="keyboardkey KeyA endButton"
@@ -151,7 +188,7 @@
             style="transform: translate(-27%, 0%)"></button>
           <button data-key="'" tabindex="-1" id="Quote" class="keyboardkey  singleQuoteKey operationButton enabledButton"
             style="transform: translate(-27%, 0%)"></button>
-          <button data-key="return" tabindex="-1" id="Enter" class="keyboardkey returnKey OtherKey"
+          <button data-key="return" tabindex="-1" id="Enter" class="keyboardkey returnKey OtherKey returnOrCharacterModifier"
             style="transform: translate(-12%, 0%)"></button>
 
 
@@ -168,7 +205,7 @@
               shiftleft Z X C V B N M , . / shiftright
             -->
           <button data-key="shift" tabindex="-1" id="ShiftLeft"
-            class="keyboardkey shiftKeyLeft OtherKey"></button>
+            class="keyboardkey shiftKeyLeft OtherKey returnOrCharacterModifier"></button>
 
           <button data-key="z" tabindex="-1" id="KeyZ" class="keyboardkey KeyZ "
             style="transform: translate(38%, 0%)"></button>
@@ -202,7 +239,7 @@
           <button data-key="/" tabindex="-1" id="Slash" class="keyboardkey forwardSlashKey OtherKey"
             style="transform: translate(38%, 0%)"></button>
 
-          <button data-key="shift" tabindex="-1" id="ShiftRight" class="keyboardkey shiftKeyRight OtherKey"
+          <button data-key="shift" tabindex="-1" id="ShiftRight" class="keyboardkey shiftKeyRight OtherKey returnOrCharacterModifier"
             style="transform: translate(15%, 0%)"></button>
 
           <!-- 
@@ -217,11 +254,11 @@
               █████████████████████ spacebarKey █████████████████████
              -->
 
-             <button tabindex="-1" data-key="control" class="keyboardkey controlLeft controlKey" id="ControlLeft"
+             <button tabindex="-1" data-key="control" class="keyboardkey controlLeft controlKey OtherKey modifierKey" id="ControlLeft"
              ></button>
-             <button tabindex="-1" data-key="option" class="keyboardkey altLeft altKey" id="AltLeft"
+             <button tabindex="-1" data-key="option" class="keyboardkey altLeft altKey OtherKey modifierKey" id="AltLeft"
              ></button>
-             <button tabindex="-1" data-key="command" class="keyboardkey metaLeft metaKey" id="MetaLeft"
+             <button tabindex="-1" data-key="command" class="keyboardkey metaLeft metaKey OtherKey modifierKey" id="MetaLeft"
              ></button>
  
 
@@ -229,13 +266,13 @@
             class="keyboardkey spacebarKey OtherKey enabledButton selectionButton">Drag Lock</button>
 
 
-            <button tabindex="-1" data-key="command" class="keyboardkey metaRight metaKey" id="MetaRight"
+            <button tabindex="-1" data-key="command" class="keyboardkey metaRight metaKey OtherKey modifierKey" id="MetaRight"
             ></button>
 
-            <button tabindex="-1" data-key="option" class="keyboardkey altRight altKey" id="AltRight"
+            <button tabindex="-1" data-key="option" class="keyboardkey altRight altKey OtherKey modifierKey" id="AltRight"
             ></button>
 
-            <button tabindex="-1" data-key="control" class="keyboardkey controlRight controlKey" id="ControlRight"
+            <button tabindex="-1" data-key="control" class="keyboardkey controlRight controlKey OtherKey modifierKey" id="ControlRight"
             class="keyboardkey"></button>
             
             
@@ -255,12 +292,16 @@
     <!-- LOCAL canvaskit:-->
     <!--  <script src="js/canvaskit/canvaskit.js"></script>-->
 
+
+    <script src="js/keyMappingsObjects.js"></script>
+    
     <script type="text/javascript"
   src="https://unpkg.com/canvaskit-wasm@0.19.0/bin/canvaskit.js"></script>
 
 
     <script src="js/third-party/rbush.js"></script>
     
+
     <script type="module" src="js/drawing/Drawable.js?v=2"></script>
     <script type="module" src="js/LayerManager.js"></script>
 

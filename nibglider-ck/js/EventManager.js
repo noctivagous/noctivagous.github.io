@@ -28,7 +28,7 @@ class EventManager {
     });
     
 
-    
+
     this.addEventListenersToPreventDefaults();
 
     document.addEventListener('keydown', (event) => this.keyboardMappingManager.handleKeyPress(event));
@@ -94,12 +94,12 @@ class EventManager {
 
   }
 
-  copy(){
+  copyToClipboard(){
 
 
   }
 
-  paste()
+  pasteFromClipboard()
   {
 
 

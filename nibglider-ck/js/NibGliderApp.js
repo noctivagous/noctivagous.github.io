@@ -101,7 +101,7 @@ loadScript(url) {
       document.head.appendChild(script);
 
       // Optionally, handle script load/error events
-      script.onload = () => console.log(url + ' loaded successfully.');
+      //script.onload = () => console.log(url + ' loaded successfully.');
       script.onerror = () => console.error('Error loading script:', url);
   } catch (error) {
       console.error("Error in loadScript:", error);

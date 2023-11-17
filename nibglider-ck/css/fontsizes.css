@@ -1,0 +1,36 @@
+/* font size */
+
+.keyboardKeysOverlayContainer button {
+    pointer-events: all;
+    font-size: clamp(10px, 1.5vw, 14px);
+}
+
+.keyboardKeysOverlayContainer button {
+    font-size: 12px;
+    padding: 1pt;
+}
+
+
+.keyboardKeysOverlayContainer button.OtherKey::after {
+    font-size: 9pt;
+}
+
+
+.keyboardkey.modifierKey::after {
+    font-size: 10pt;
+}
+
+.keyboardkey::after, .keyboardkey.returnOrCharacterModifier::after {
+    font-size: 15pt;
+}
+
+/*
+.keyboardkey.metaLeft::after {
+    font-size: 10pt;
+
+}
+
+.keyboardkey.metaRight::after {
+    font-size: 10pt;
+
+}*/

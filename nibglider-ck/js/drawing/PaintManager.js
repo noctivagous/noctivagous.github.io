@@ -156,6 +156,8 @@ class PaintManager {
 
   }
 
+
+
   // Accessor Functions
   // ------------------
 
@@ -205,6 +207,15 @@ class PaintManager {
     }
   }
 
+  makePaintStyleFill()
+  {
+    this.makeActivePaintStyleFill();
+  }
+  
+  makePaintStyleStroke()
+  {
+    this.makeActivePaintStyleStroke();
+  }
   
   makeActivePaintStyleFill()
   {
@@ -218,7 +229,7 @@ class PaintManager {
     }
   }
 
-  makeActivePaintStyleFill()
+  makeActivePaintStyleStroke()
   {
     if(this.app.layerManager.currentLayerHasSelection())
     {
@@ -229,6 +240,8 @@ class PaintManager {
 
     }
   }
+
+
 
   // Utility Functions
   // -----------------

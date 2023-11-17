@@ -46,7 +46,7 @@
 
 .keyboardKeysOverlayContainer button {
     pointer-events: all;
-    font-size: clamp(10px, 1.5vw, 14px);
+    
     /* Adjust values as needed */
 
 
@@ -149,14 +149,6 @@
         bottom: 6px;
         left: 6px;
     }
-
-    /*
-    .keyboardKeysOverlayContainer button {
-
-        font-size: 12px;
-        padding: 1pt;
-
-    }*/
 
     
    
@@ -628,6 +620,7 @@ color:rgb(28, 28, 28) !important;
     text-transform: capitalize;
     font-weight: bold;
     content: attr(data-key);
+
     position: absolute;
     top: 50%;
     left: 50%;
@@ -646,9 +639,11 @@ color:rgb(28, 28, 28) !important;
     transition: opacity 0.2s ease, visibility 0.5s ease;
 
 
-    font-size: 9pt;
+
     font-family: 'OPTIFranklinGothicMedium', 'Arial Narrow', Arial, sans-serif;
 }
+
+
 
 .keyboardKeysOverlayContainer button:active,
 .keyboardKeysOverlayContainer button.active {
@@ -678,10 +673,6 @@ color:rgb(28, 28, 28) !important;
 }
 
 
-/*
-.capsLockKey::after {
-    font-size: 19px;
-}*/
 
 .keyboardkey:hover::after,
 .keyboardkey.active::after {
@@ -689,6 +680,12 @@ color:rgb(28, 28, 28) !important;
     visibility: visible;
 }
 
+.keyboardkey:hover::after
+{
+    opacity: 0.6;
+    visibility: visible;
+
+}
 
 
 
@@ -700,7 +697,7 @@ UNUSED:
 "escKey f1Key f2Key f3Key f4Key f5Key f6Key f7Key f8Key f9Key f10Key f11Key f12Key f13Key f14Key" 
 */
 
-#topRow {
+#numberRowGridPanel {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -708,13 +705,13 @@ UNUSED:
 
 }
 
-#number-row {
+#numberRowGrid {
     padding: 10px;
 
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
+    grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+    grid-template-rows: 35pt;
     gap: .5vmin .5vmin;
     grid-auto-flow: row;
     grid-template-areas:
@@ -765,24 +762,7 @@ button {
         left: 6px;
     }
 
-    .keyboardKeysOverlayContainer button {
 
-        font-size: 12px;
-        padding: 1pt;
-    }
-
-    /*
-    .capsLockKey::after,
-    .returnKey::after,
-    .shiftKeyLeft::after,
-    .shiftKeyRight::after,
-    .altKey::after,
-    .controlKey::after,
-    .metaKey::after {
-
-        font-size: 14px !important;
-
-    }*/
 
     .spacebarKey {
         width: 98%;
@@ -803,11 +783,6 @@ width: 164% !important;
         margin-right: -14pt !important;
     }
 
-    /*
-    .altRight::after{
-        font-size:8pt !important;
-        color:blue !important;
-    }*/
 
 }
 

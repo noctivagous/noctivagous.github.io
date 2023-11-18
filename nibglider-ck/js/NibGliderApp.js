@@ -180,13 +180,18 @@ loadScript(url) {
     this.layerManager = new LayerManager(this);
 
     this.drawingEntityManager = new DrawingEntityManager(this);
+    
 
     this.cursorManager = new CursorManager(this);
+    this.drawingEntityManager.cursorManager = this.cursorManager;
 
 
     this.paintManager = new PaintManager(this);
     this.drawingEntityManager.paintManager = this.paintManager;
+    
     this.pathManipulator = new PathManipulator(this);
+    this.drawingEntityManager.pathManipulator = this.pathManipulator;
+    
 
     this.keyboardMappingManager = new KeyboardMappingManager(this, this.drawingEntityManager);
     this.keyboardMappingManager.drawingEntityManager = this.drawingEntityManager;
@@ -203,6 +208,8 @@ loadScript(url) {
 
     this.gridManager = new GridManager(this);
 
+    this.drawingEntityManager.app = this;
+    this.drawingEntityManager.initializeDrawingEntities();
 
 
   }

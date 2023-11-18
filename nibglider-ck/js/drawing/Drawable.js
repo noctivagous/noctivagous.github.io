@@ -39,7 +39,7 @@ export class Drawable {
 
 
   setStyle(style) {
-    console.log(style);
+   
     this.paintStyle = style; // Keep track of the style within your Drawable object
     this.skPaint.setStyle(style);
   }

@@ -81,6 +81,29 @@ class LayerManager {
   }
 
 
+  switchSelectedItemsPaintStyleToFill()
+  {
+    let selectedItems = this.currentLayer.selectedItems;
+
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].setStyle(window.CanvasKit.PaintStyle.Fill);
+    }
+   
+    this.currentLayer.selectedItemsDidChange("PaintStyle");
+
+  }
+
+  switchSelectedItemsPaintStyleToStroke()
+  {
+    let selectedItems = this.currentLayer.selectedItems;
+
+    for (var i = 0; i < selectedItems.length; i++) {
+      selectedItems[i].setStyle(window.CanvasKit.PaintStyle.Stroke);
+    }
+  
+    this.currentLayer.selectedItemsDidChange("PaintStyle");
+    
+  }
 
 
   scaleCurrentSelection(scaleFactor, scalePoint) {
@@ -524,6 +547,7 @@ class Layer {
     }
   }
 
+  
 
 
   createBackingStore(width, height) {

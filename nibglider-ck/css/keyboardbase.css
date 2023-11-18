@@ -1,0 +1,133 @@
+
+/*
+// In JS, for setting the --button-size.
+document.documentElement.style.setProperty('--button-size', `${buttonWidth}px`);
+document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`);
+*/
+
+:root {
+    --button-size: 40pt; /* Default button size */
+    --button-size-large: 45pt; /* Button size for large displays */
+    --grid-gap: .5vmin; /* Gap between grid items */
+    --grid-row-size: 40pt; /* Default grid row size */
+}
+
+.minikeylettersquare {
+    font-family: 'Draughtsman A', sans-serif !important;
+    width: var(--button-size); /* You can use CSS variables for dynamic width */
+    height: calc(var(--button-size) / 4.2); /* Use CSS variables for dynamic height */
+    position: absolute;
+    bottom: 0; /* Align to bottom */
+    right: 0; /* Align to right */
+    background-color: rgba(200, 200, 200, 0.0); /* Semi-transparent grey */
+    display: flex;
+    text-transform: uppercase;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    justify-content: right;
+    z-index: 100;
+    font-size: 90%;
+    text-shadow: 0 0 3px #ccc; /* White text shadow */
+    font-style: italic;
+    text-align: right;
+    margin-right: 2pt;
+}
+
+
+#keyboardKeysGrid {
+    display: grid;
+    grid-template-columns: repeat(15, var(--button-size));
+    grid-template-rows: repeat(4, var(--grid-row-size));
+    gap: var(--grid-gap);
+    outline: 10pt solid rgba(128, 128, 128, 0.408);
+
+
+    background-color: rgba(128, 128, 128, 0.408);
+
+    grid-auto-flow: row;
+    grid-template-areas:
+
+
+        "tabKey tabKey KeyQ wKey eKey rKey tKey yKey uKey iKey oKey pKey bracketLeftKey bracketRightKey backslashKey"
+
+        "capsLockKey capsLockKey KeyA sKey dKey fKey gKey hKey jKey kKey lKey semicolonKey singleQuoteKey returnKey returnKey"
+
+        "shiftKeyLeft shiftKeyLeft zKey xKey cKey vKey bKey nKey mKey commaKey periodKey forwardSlashKey shiftKeyRight shiftKeyRight ."
+
+        "controlLeft altLeft metaLeft . spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey spacebarKey metaRight altRight controlRight .";
+
+    width: 100%;
+    height: 100%;
+
+    align-content: end;
+    padding-bottom: 1pt;
+
+}
+
+#keyboardKeysGrid.bottomRowHidden button.bottomRowKey {
+    display: none;
+}
+
+#keyboardKeysGrid.bottomRowHidden {
+
+    grid-template-columns: 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt;
+    grid-template-rows: 40pt 40pt 40pt;
+    gap: .5vmin .5vmin;
+    grid-auto-flow: row;
+    grid-template-areas:
+
+
+        "tabKey tabKey KeyQ wKey eKey rKey tKey yKey uKey iKey oKey pKey bracketLeftKey bracketRightKey backslashKey"
+
+        "capsLockKey capsLockKey KeyA sKey dKey fKey gKey hKey jKey kKey lKey semicolonKey singleQuoteKey returnKey returnKey"
+
+        "shiftKeyLeft shiftKeyLeft zKey xKey cKey vKey bKey nKey mKey commaKey periodKey forwardSlashKey shiftKeyRight shiftKeyRight .";
+
+
+    width: 100%;
+    height: 100%;
+
+
+    align-content: end;
+
+}
+
+#numberRowGrid {
+
+    
+
+
+    background-color: rgba(128, 128, 128, 0.408);
+
+
+    display: grid;
+    grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+    grid-template-rows: 35pt;
+    gap: .5vmin .5vmin;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "backquoteKey Digit1 twoKey threeKey fourKey fiveKey sixKey sevenKey eightKey nineKey zeroKey minusKey equalsKey deleteKey deleteKey";
+    width: 100%;
+    height: 100%;
+
+    padding:3pt;
+
+}
+
+
+#numberRowKeyboardPanel {
+    position: absolute;
+    left: 100pt;
+    top: 5pt;
+    z-index: 100;
+
+
+    overflow: hidden;
+
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+}
+
+

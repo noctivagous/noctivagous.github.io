@@ -11,15 +11,23 @@
 
     },
     '^Backslash': {
-      "defaultText": "Hide/Show Keyboard",
+      "defaultText": "Toggle Keyboard",
       "defaultFunctionString": "toggleKeyboardPanel",
       "defaultDescription": "Slides the keyboard off and on screen",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
       "defaultFontColor": "rgb(155,155,155)",
 
     },
+    '~Backslash': {
+      "defaultText": "Toggle Bottom Row",
+      "defaultFunctionString": "toggleBottomRowOnKeyboardPanel",
+      "defaultDescription": "Slides the keyboard off and on screen",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(155,155,155)",
+
+    },
     'Backslash': {
-      "defaultText": "Hide/Show Both Keyboards",
+      "defaultText": "Toggle Both Keyboards",
       "defaultFunctionString": "toggleBothKeyboardPanels",
       "defaultDescription": "Slides the keyboard off and on screen",
       "defaultButtonBackgroundColor": "rgb(0,0,0)",
@@ -693,7 +701,15 @@
       "selectionStateText": "KeyW Selection"
     },
     'Backspace': {
-      "defaultText": "Remove All Selected",
+      "defaultText": "Delete Selected",
+      "defaultFunctionString": "removeAllSelectedItemsAndReset",
+      "defaultDescription": "Remove all selected items and reset",
+      "defaultButtonBackgroundColor": "rgb(148,17,0)",
+      "defaultFontColor": "rgb(255,64,255)",
+      "selectionStateText": "Backspace Selection"
+    },
+    'Delete': {
+      "defaultText": "Delete Selected",
       "defaultFunctionString": "removeAllSelectedItemsAndReset",
       "defaultDescription": "Remove all selected items and reset",
       "defaultButtonBackgroundColor": "rgb(148,17,0)",
@@ -712,8 +728,8 @@
       "defaultText": "Toggle Number Row",
       "defaultFunctionString": "toggleNumberRowKeyboardPanel",
       "description": "Toggle Number Row Panel",
-      "defaultButtonBackgroundColor": "rgb(148,17,0)",
-      "defaultFontColor": "rgb(255,64,255)",
+      "defaultButtonBackgroundColor": "rgb(0,0,0)",
+      "defaultFontColor": "rgb(200,200,200)",
       "selectionStateText": "Digit1 Selection"
     },
     'Digit1': {
@@ -769,6 +785,10 @@
     toggleKeyboardPanel: () => {
       window.app.keyboardMappingManager.toggleKeyboardPanel();
     },
+    toggleBottomRowOnKeyboardPanel: () => {
+      window.app.keyboardMappingManager.toggleBottomRowOnKeyboardPanel();
+    },
+
     toggleBothKeyboardPanels: () => {
       window.app.keyboardMappingManager.toggleBothKeyboardPanels();
     },
@@ -1077,7 +1097,7 @@
     MacBackspace: 'Delete',
     PCBackspace: 'Backspace',
     Backspace: 'Delete',
-
+    
     Enter: 'Return',
     Space: 'Spacebar',
     BracketLeft: '[',

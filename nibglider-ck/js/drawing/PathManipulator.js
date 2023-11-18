@@ -179,7 +179,7 @@ You should test this function with your specific use case to ensure it handles a
   addHardCorner(x, y) {
     // adds lineTo and moveTo before it if no lineTo.
     this.addPolylinePoint(x, y);
-
+    alert('f');
   }
 
   addBezierCurve(controlPoint1, controlPoint2, endPoint) {

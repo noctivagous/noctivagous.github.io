@@ -1,9 +1,18 @@
 
+
+
+
 /* Medium-sized devices (e.g., small laptops) */
 @media screen and (max-width: 1024px) {
-    #keyboardKeysGrid {
+    #keyboardKeysGrid, {
         grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
         grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+    
+    #keyboardKeysGrid.bottomRowHidden {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt;
         gap: .4vmin .4vmin;
     }
 
@@ -35,9 +44,15 @@
 
 @media screen and (max-height: 800px) {
 
-    #keyboardKeysGrid {
+    #keyboardKeysGrid  {
         grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
         grid-template-rows: 35pt 35pt 35pt 35pt;
+        gap: .4vmin .4vmin;
+    }
+
+     #keyboardKeysGrid.bottomRowHidden  {
+        grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
+        grid-template-rows: 35pt 35pt 35pt;
         gap: .4vmin .4vmin;
     }
 
@@ -80,6 +95,12 @@ width: 164% !important;
         grid-template-rows: 25pt 25pt 25pt 25pt;
         gap: .3vmin .3vmin;
     }
+    
+    #keyboardKeysGrid.bottomRowHidden {
+        grid-template-columns: 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt 25pt;
+        grid-template-rows: 25pt 25pt 25pt;
+        gap: .3vmin .3vmin;
+    }
 
     #keyboardPanel {
         bottom: 6px;
@@ -89,16 +110,22 @@ width: 164% !important;
 
 /* Extra small devices (e.g., phones) */
 @media screen and (max-width: 576px) {
-    #keyboardKeysGrid {
+    #keyboardKeysGrid{
         grid-template-columns: 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt;
         grid-template-rows: 20pt 20pt 20pt 20pt;
+        gap: .2vmin .2vmin;
+    }
+    
+    #keyboardKeysGrid.bottomRowHidden{
+        grid-template-columns: 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt 20pt;
+        grid-template-rows: 20pt 20pt 20pt;
         gap: .2vmin .2vmin;
     }
 }
 
 
 
-
+/*
 @media screen and (max-height: 2000px) {
 
     #keyboardKeysGrid {
@@ -115,4 +142,4 @@ width: 164% !important;
     
    
 
-}
+}*/

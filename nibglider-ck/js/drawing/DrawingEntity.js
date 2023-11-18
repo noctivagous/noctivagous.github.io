@@ -1,38 +1,45 @@
 // Base class for all drawing entities
-class DrawingEntity {
-  constructor() {
+export class DrawingEntity {
+  constructor(app,drawingEntityManager) {
+    this.app = window.app;
+    this.drawingEntityManager = drawingEntityManager;
+    
+    this.paintManager = window.app.paintManager;
+    this.pathManipulator = window.app.pathManipulator;
+    this.isCurrentEntity = false;
     // Common properties for all drawing entities
   }
 
-  onMouseDown(event) {
+  getCurrentPoint()
+  {
+    return this.drawingEntityManager.getCurrentPoint();
+  }
+
+  mouseMoved()
+  {
+
+  }
+
+  mouseDown(event) {
     // Common mouse down behavior
   }
 
-  onMouseDrag(event) {
+  mouseDrag(event) {
     // Common mouse drag behavior
   }
 
-  onMouseUp(event) {
+  mouseUp(event) {
     // Common mouse up behavior
   }
 
   // Other common methods...
 }
 
-// Specific drawing entity
-class LineDrawingEntity extends DrawingEntity {
-  constructor() {
-    super();
-    // Rectangle-specific properties
-  }
-
-  // Rectangle-specific methods...
-}
 
 
 
 // Specific drawing entity
-class RectangleDrawingEntity extends DrawingEntity {
+export class RectangleDrawingEntity extends DrawingEntity {
   constructor() {
     super();
     // Rectangle-specific properties
@@ -42,7 +49,7 @@ class RectangleDrawingEntity extends DrawingEntity {
 }
 
 // Specific drawing entity
-class ArcDrawingEntity extends DrawingEntity {
+export class ArcDrawingEntity extends DrawingEntity {
     constructor() {
       super();
       // Rectangle-specific properties
@@ -50,3 +57,5 @@ class ArcDrawingEntity extends DrawingEntity {
   
     // Rectangle-specific methods...
   }
+
+  

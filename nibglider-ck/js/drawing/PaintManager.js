@@ -217,10 +217,23 @@ class PaintManager {
     this.makeActivePaintStyleStroke();
   }
   
+  
+  switchSettingToFill()
+  {
+
+  }
+
+  switchSettingToStroke()
+  {
+
+  }
+
   makeActivePaintStyleFill()
   {
     if(this.app.layerManager.currentLayerHasSelection())
     {
+        this.app.layerManager.switchSelectedItemsPaintStyleToFill();
+
 
     }
     else
@@ -233,6 +246,7 @@ class PaintManager {
   {
     if(this.app.layerManager.currentLayerHasSelection())
     {
+      this.app.layerManager.switchSelectedItemsPaintStyleToStroke();
 
     }
     else

@@ -23,9 +23,10 @@
 
 
 <link rel="stylesheet" href="css/color-reference.css">
+<link rel="stylesheet" href="css/keyboardbase.css">
 <link rel="stylesheet" href="css/keyboard.css">
 <link rel="stylesheet" href="css/fontsizes.css">
-<link rel="stylesheet" href="css/media.css">
+
 
 
 
@@ -78,7 +79,7 @@
     
     <div id="keyboardPanel" class="keyboardKeysOverlayContainer" >
 
-        <div id="keyboardKeysGrid">
+        <div id="keyboardKeysGrid" class="bottomRowHidden">
 
 
 
@@ -255,25 +256,25 @@
               █████████████████████ spacebarKey █████████████████████
              -->
 
-             <button tabindex="-1" data-key="control" class="keyboardkey controlLeft controlKey OtherKey modifierKey" id="ControlLeft"
+             <button tabindex="-1" data-key="control" class="keyboardkey controlLeft controlKey OtherKey modifierKey bottomRowKey" id="ControlLeft"
              ></button>
-             <button tabindex="-1" data-key="option" pc-data-key="alt" class="keyboardkey altLeft altKey OtherKey modifierKey" id="AltLeft"
+             <button tabindex="-1" data-key="option" pc-data-key="alt" class="keyboardkey altLeft altKey OtherKey modifierKey bottomRowKey" id="AltLeft"
              ></button>
-             <button tabindex="-1" data-key="command" pc-data-key="⊞" class="keyboardkey metaLeft metaKey OtherKey modifierKey" id="MetaLeft"
+             <button tabindex="-1" data-key="command" pc-data-key="⊞" class="keyboardkey metaLeft metaKey OtherKey modifierKey bottomRowKey" id="MetaLeft"
              ></button>
  
 
           <button tabindex="-1" data-key="spacebar" id="Space"
-            class="keyboardkey spacebarKey OtherKey enabledButton selectionButton">Drag Lock</button>
+            class="keyboardkey spacebarKey OtherKey enabledButton selectionButton bottomRowKey">Drag Lock</button>
 
 
-            <button tabindex="-1" data-key="command"  pc-data-key="⊞" class="keyboardkey metaRight metaKey OtherKey modifierKey" id="MetaRight"
+            <button tabindex="-1" data-key="command"  pc-data-key="⊞" class="keyboardkey metaRight metaKey OtherKey modifierKey bottomRowKey" id="MetaRight"
             ></button>
 
-            <button tabindex="-1" data-key="option"  pc-data-key="alt" class="keyboardkey altRight altKey OtherKey modifierKey" id="AltRight"
+            <button tabindex="-1" data-key="option"  pc-data-key="alt" class="keyboardkey altRight altKey OtherKey modifierKey bottomRowKey" id="AltRight"
             ></button>
 
-            <button tabindex="-1" data-key="control" class="keyboardkey controlRight controlKey OtherKey modifierKey" id="ControlRight"
+            <button tabindex="-1" data-key="control" class="keyboardkey controlRight controlKey OtherKey modifierKey bottomRowKey" id="ControlRight"
             class="keyboardkey"></button>
             
             
@@ -307,7 +308,8 @@
     <script type="module" src="js/LayerManager.js"></script>
 
     
-    <script src="js/drawing/DrawingEntity.js"></script>
+    <script type="module" src="js/drawing/DrawingEntity.js"></script>
+    <script type="module" src="js/drawing/LineDrawingEntity.js"></script>
     <script type="module" src="js/drawing/DrawingEntityManager.js"></script>
     
     <script type="module" src="js/drawing/GUIDrawable.js"></script>

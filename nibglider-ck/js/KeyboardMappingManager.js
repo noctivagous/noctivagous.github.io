@@ -56,19 +56,19 @@ class KeyboardMappingManager {
   // sent from EventManager
   handleKeyUp(keyEvent) {
 
-    
-      var buttonLookup = document.getElementById(keyEvent.code);
-    
-      if (buttonLookup != null && buttonLookup.classList.contains('active')) {
-        buttonLookup.classList.remove('active');
-    
-        // Clear the timer if it exists
-        if (buttonLookup.dataset.timerId) {
-          clearTimeout(buttonLookup.dataset.timerId);
-          delete buttonLookup.dataset.timerId; // Clean up the dataset
-        }
+
+    var buttonLookup = document.getElementById(keyEvent.code);
+
+    if (buttonLookup != null && buttonLookup.classList.contains('active')) {
+      buttonLookup.classList.remove('active');
+
+      // Clear the timer if it exists
+      if (buttonLookup.dataset.timerId) {
+        clearTimeout(buttonLookup.dataset.timerId);
+        delete buttonLookup.dataset.timerId; // Clean up the dataset
       }
-    
+    }
+
 
 
     var flags = this.keyEventFlags(keyEvent);
@@ -93,9 +93,8 @@ class KeyboardMappingManager {
     // update the keyboardpanel
     this.loadKeyboardKeysAccordingToFlags(keyEvent, flags);
 
-    
-    if(!this.app.mouseHasMoved())
-    {
+
+    if (!this.app.mouseHasMoved()) {
       console.log('mouse has not moved before first keypress');
       return;
     }
@@ -103,24 +102,24 @@ class KeyboardMappingManager {
     var buttonLookup = document.getElementById(keyEvent.code)
 
 
-    
+
     if (buttonLookup != null) {
       buttonLookup.classList.add('active');
 
-      
+
 
       // Every .active keyboardbutton overlay is removed after .8 seconds.
       // Ensures that no key gets stuck.
       // Check if the key is MetaLeft or MetaRight
       //if (keyEvent.code === 'MetaLeft' || keyEvent.code === 'MetaRight') {
-        // Set a timer to remove the 'active' class after 2 seconds
-        const timerId = setTimeout(() => {
-          buttonLookup.classList.remove('active');
-        }, 800);
-  
-        // Store the timer ID in the element for reference in keyup
-        buttonLookup.dataset.timerId = timerId;
-     // }
+      // Set a timer to remove the 'active' class after 2 seconds
+      const timerId = setTimeout(() => {
+        buttonLookup.classList.remove('active');
+      }, 800);
+
+      // Store the timer ID in the element for reference in keyup
+      buttonLookup.dataset.timerId = timerId;
+      // }
     }
 
 
@@ -153,68 +152,76 @@ class KeyboardMappingManager {
 
     var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
     if (numberRowKeyboardPanel.classList.contains('slide-down')) {
-        numberRowKeyboardPanel.style.transform = 'translateY(0)'; // Slide down
-        numberRowKeyboardPanel.classList.remove('slide-down');
+      numberRowKeyboardPanel.style.transform = 'translateY(0)'; // Slide down
+      numberRowKeyboardPanel.classList.remove('slide-down');
     } else {
-        numberRowKeyboardPanel.style.transform = 'translateY(-100%)'; // Slide up
-        numberRowKeyboardPanel.classList.add('slide-down');
+      numberRowKeyboardPanel.style.transform = 'translateY(-100%)'; // Slide up
+      numberRowKeyboardPanel.classList.add('slide-down');
     }
   }
 
-  
-   toggleKeyboardPanel() {
+  toggleBottomRowOnKeyboardPanel() {
+    var keyboardKeysGrid = document.getElementById('keyboardKeysGrid');
+    if (keyboardKeysGrid) {
+      keyboardKeysGrid.classList.toggle('bottomRowHidden');
+    }
+
+  }
+
+
+
+  toggleKeyboardPanel() {
     var keyboardPanel = document.getElementById('keyboardKeysGrid');
     if (keyboardPanel.classList.contains('slide-up')) {
-        keyboardPanel.style.transform = 'translateY(0)'; // Slide down
-        keyboardPanel.classList.remove('slide-up');
+      keyboardPanel.style.transform = 'translateY(0)'; // Slide down
+      keyboardPanel.classList.remove('slide-up');
     } else {
-        keyboardPanel.style.transform = 'translateY(100%)'; // Slide up
-        keyboardPanel.classList.add('slide-up');
+      keyboardPanel.style.transform = 'translateY(100%)'; // Slide up
+      keyboardPanel.classList.add('slide-up');
     }
-}
+  }
 
-keyboardPanelIsHidden() {
-  var keyboardPanel = document.getElementById('keyboardKeysGrid');
-  return keyboardPanel.classList.contains('slide-up');
-}
+  keyboardPanelIsHidden() {
+    var keyboardPanel = document.getElementById('keyboardKeysGrid');
+    return keyboardPanel.classList.contains('slide-up');
+  }
 
-numberRowKeyboardPanelIsHidden() {
-  var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
-  return numberRowKeyboardPanel.classList.contains('slide-down');
-}
+  numberRowKeyboardPanelIsHidden() {
+    var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
+    return numberRowKeyboardPanel.classList.contains('slide-down');
+  }
 
- 
 
- toggleBothKeyboardPanels() {
-  var keyboardPanel = document.getElementById('keyboardKeysGrid');
-  var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
 
-  var keyboardPanelHidden = keyboardPanel.classList.contains('slide-up');
-  var numberRowPanelHidden = numberRowKeyboardPanel.classList.contains('slide-down');
+  toggleBothKeyboardPanels() {
+    var keyboardPanel = document.getElementById('keyboardKeysGrid');
+    var numberRowKeyboardPanel = document.getElementById('numberRowGrid');
 
-  if (!keyboardPanelHidden || !numberRowPanelHidden) {
+    var keyboardPanelHidden = keyboardPanel.classList.contains('slide-up');
+    var numberRowPanelHidden = numberRowKeyboardPanel.classList.contains('slide-down');
+
+    if (!keyboardPanelHidden || !numberRowPanelHidden) {
       // If at least one panel is visible, or both are visible, hide both
       keyboardPanel.style.transform = 'translateY(100%)'; // Slide up (hide)
       keyboardPanel.classList.add('slide-up');
 
       numberRowKeyboardPanel.style.transform = 'translateY(-100%)'; // Slide up (hide)
       numberRowKeyboardPanel.classList.add('slide-down');
-  } else {
+    } else {
       // If both panels are hidden, show both
       keyboardPanel.style.transform = 'translateY(0)'; // Slide down (show)
       keyboardPanel.classList.remove('slide-up');
 
       numberRowKeyboardPanel.style.transform = 'translateY(0)'; // Slide down (show)
       numberRowKeyboardPanel.classList.remove('slide-down');
+    }
   }
-}
 
 
-help()
-{
-  
-}
-  
+  help() {
+
+  }
+
 
   select() {
     this.layerManager.select();
@@ -357,60 +364,43 @@ help()
 
       }
     });
-  
+
     this.insertMiniLetterSquaresIntoKeys(keyButtons);
 
 
   }
 
-  
+
 
   insertMiniLetterSquaresIntoKeys(keyButtons) {
     keyButtons.forEach(button => {
 
-        // Check if the button already has a mini key letter square
+      // Check if the button already has a mini key letter square
+
+      if (!button.querySelector('.minikeylettersquare')) {
+        // Create a square div
+        let square = document.createElement('div');
+        square.classList.add('minikeylettersquare'); // Add class to the square
+
+        // Get the dimensions of the button
+        let buttonWidth = button.offsetWidth;
+        let buttonHeight = button.offsetHeight;
+
       
-        if (!button.querySelector('.minikeylettersquare')) {
-            // Create a square div
-            let square = document.createElement('div');
-            square.classList.add('minikeylettersquare'); // Add class to the square
 
-            // Get the dimensions of the button
-            let buttonWidth = button.offsetWidth;
-            let buttonHeight = button.offsetHeight;
+        // Extract the character from the keyToChar mapping
+        let char = this.keyToChar[this.app.operatingSystem + button.id] || this.keyToChar[button.id] || ''; // Fallback to empty string if no match
 
-            // Set the size and style of the square
-            square.style.width = `${buttonWidth / 4.2}px`;
-            square.style.height = `${buttonHeight / 4.2}px`;
-            square.style.position = 'absolute';
-            square.style.bottom = '0';   // Align to bottom
-            square.style.right = '0';    // Align to right
-            square.style.backgroundColor = 'rgba(200, 200, 200, 0.0)'; // Semi-transparent grey
-            square.style.display = 'flex';
-            square.style.textTransform = 'uppercase';
-            square.style.alignItems = 'center';
-            square.style.color = 'rgba(255, 255, 255, 0.8)';
-            square.style.justifyContent = 'center';
-            square.style.zIndex = '100';
-            square.style.fontSize = '90%';
-            square.style.textShadow = '0 0 3px #ccc';  // White text shadow
-            square.style.fontStyle = 'italic';
-            /*square.style.fontFamily = 'Draughtsman A';*/
-            square.style.marginRight = '1pt';
 
-            // Extract the character from the keyToChar mapping
-            let char = this.keyToChar[this.app.operatingSystem + button.id] || this.keyToChar[button.id] || ''; // Fallback to empty string if no match
+        // Set the text inside the square
+        square.textContent = char;
 
-            
-            // Set the text inside the square
-            square.textContent = char;
-
-            // Append the square to the button
-            button.style.position = 'relative'; // Ensure the button can act as a container
-            button.appendChild(square);
-        }
+        // Append the square to the button
+        button.style.position = 'relative'; // Ensure the button can act as a container
+        button.appendChild(square);
+      }
     });
-}
+  }
 
 
 
@@ -443,8 +433,8 @@ help()
   }
 
 
-  
-  
+
+
 
 
 }

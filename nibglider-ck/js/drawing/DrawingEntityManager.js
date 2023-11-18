@@ -1,21 +1,30 @@
 // Manage the drawing states
 
-import  {PathManipulator, NGPath}  from './PathManipulator.js';
-
+import { PathManipulator, NGPath } from './PathManipulator.js';
+import LineDrawingEntity from './LineDrawingEntity.js';
+import { RectangleDrawingEntity, ArcDrawingEntity } from './DrawingEntity.js';
 class DrawingEntityManager {
   constructor(app) {
     this.app = app;
     this.pathManipulator = app.pathManipulator;
     this.paintManager = app.paintManager;
     this.layerManager = app.layerManager;
-    this.entities = {
-      rectangle: new RectangleDrawingEntity(),
-      arc: new ArcDrawingEntity(),
-      // Add other entities...
-    };
+    this.cursorManager = app.cursorManager;
+    this.entities = null
     this.currentEntity = null; // The entity currently being used
 
     this.isInDrawing = false;
+  }
+
+  initializeDrawingEntities()
+  {
+    this.entities = {
+      line: new LineDrawingEntity(app,this),
+      rectangle: new RectangleDrawingEntity(app,this),
+      arc: new ArcDrawingEntity(app.this),
+      // Add other entities...
+    };
+
   }
 
   switchEntity(entityName) {
@@ -26,172 +35,296 @@ class DrawingEntityManager {
     }
   }
 
+  getCurrentPoint() {
+    return this.cursorManager.currentPoint;
+  }
   // called by cursormanager
-  currentPointDidUpdate(newCurrentPoint)
-  {
-    if(this.isInDrawing)
-    {
+  currentPointDidUpdate(newCurrentPoint) {
+    if (this.isInDrawing) {
+
       this.pathManipulator.currentPointDidUpdate(newCurrentPoint);
     }
   }
 
-setIsInDrawing(bool)
-{
-  this.isInDrawing = bool;
-  if(this.isInDrawing = false)
-  {
-    this.pathManipulator.resetPath();
+  setIsInDrawing(bool) {
+    this.isInDrawing = bool;
+    if (this.isInDrawing = false) {
+      this.pathManipulator.resetPath();
+    }
   }
-}
-  
-scaleUp()
-{
-  
-  this.layerManager.scaleCurrentSelection(1.1);
-}
 
-scaleDown()
-{
-  this.layerManager.scaleCurrentSelection(1/1.1);
+  setCurrentDrawingEntity(entity)
+  {
+    this.currentEntity = entity;
+    this.currentEntity.isCurrentEntity = false;
+    entity.isCurrentEntity = true;
+  }
 
-}
+  // ------------------------
+  // line drawing keys
+  // ------------------------
+  hardCorner() {
 
+    if (this.isInDrawing && (this.currentEntity == this.entities.line)) 
+    {
+      this.entities.line.hardCorner();
 
-scaleUpUpper1()
-{
-  
-  this.layerManager.scaleCurrentSelection(1.3);
-}
-
-scaleDownUpper1()
-{
-  this.layerManager.scaleCurrentSelection(1/1.3);
-
-}
-
-
-
-
-scaleUpUpper2()
-{
-  
-  this.layerManager.scaleCurrentSelection(1.4);
-}
-
-scaleDownUpper2()
-{
-  this.layerManager.scaleCurrentSelection(1/1.4);
-
-}
+    }
+    else if (this.isInDrawing && (this.currentEntity != this.entities.line)) 
+    {
+      this.end();
+      this.setIsInDrawing(false);
+     this.setCurrentDrawingEntity(this.entities.line);
+      this.setIsInDrawing(true);
+    }
+    else
+    {
+      this.setCurrentDrawingEntity(this.entities.line);
+      this.setIsInDrawing(true);
+      this.entities.line.hardCorner();
+    }
 
 
+  }
 
 
+  // ------------------------
+  // drawing sequence commands
+  // ------------------------
+  end() {
+    if (this.isInDrawing) {
+      this.pathManipulator.addLivePathToCurrentLayer();
+      this.setIsInDrawing(false);
+    }
+
+  }
+
+  endOperations()
+  {
+    this.end();
+  }
+
+  closePathAndEnd() {
+    if (this.isInDrawing) {
+      this.pathManipulator.closePath();
+      this.pathManipulator.addLivePathToCurrentLayer();
+      this.setIsInDrawing(false);
+    }
 
 
-scaleUpLower1()
-{
-  
-  this.layerManager.scaleCurrentSelection(1.05);
-}
+  }
 
-scaleDownLower1()
-{
-  this.layerManager.scaleCurrentSelection(1/1.05);
+  cancelOperations() {
 
-}
+    if (this.isInDrawing) {
+      setIsInDrawing(false);
+      alert('f');
+      this.pathManipulator.resetPath();
 
-scaleUpLower2()
-{
-  
-  this.layerManager.scaleCurrentSelection(1.015);
-}
-
-scaleDownLower2()
-{
-
-  this.layerManager.scaleCurrentSelection(1/1.015);
-
-}
-
-liveScaling()
-{
-
-}
-
-liveXOrYScaling()
-{
-
-}
-
-liveShearing()
-{
-
-}
+    }
+  }
 
 
-rotateClockwise()
-{
-  this.layerManager.rotateCurrentSelection(15);
-}
+  // ------------------------
+  // Styling commands
+  // ------------------------
+  thickenStroke() {
+    this.paintManager.thickenStroke();
+  }
 
+  thinStroke() {
+    this.paintManager.thinStroke();
+  }
 
-rotateCounterclockwise()
-{
-  this.layerManager.rotateCurrentSelection(-15);
+  makePaintStyleFill() {
+    this.paintManager.makePaintStyleFill();
+  }
 
-}
-
-rotateClockwiseUpper1()
-{
-  this.layerManager.rotateCurrentSelection(45);
-}
-
-
-rotateCounterclockwiseUpper1()
-{
-  this.layerManager.rotateCurrentSelection(-45);
-
-}
+  makePaintStyleStroke() {
+    this.paintManager.makePaintStyleStroke();
+  }
 
 
 
-rotateClockwiseUpper2()
-{
-  this.layerManager.rotateCurrentSelection(90);
-}
+
+  // ------------------------
+  // Drawing order commands
+  // ------------------------
+  bringSelectionToFront() {
+    this.layerManager.bringSelectionToFront();
+  }
+
+  sendSelectionToBack() {
+    this.layerManager.sendSelectionToBack();
+  }
+
+  bringSelectionForward() {
+    this.layerManager.bringSelectionForward();
+  }
+
+  sendSelectionBackward() {
+    this.layerManager.sendSelectionBackward();
+  }
 
 
-rotateCounterclockwiseUpper2()
-{
-  this.layerManager.rotateCurrentSelection(-90);
-
-}
 
 
-rotateClockwiseLower1()
-{
-  this.layerManager.rotateCurrentSelection(5);
-}
+    // ------------------------
+  // Events
+  // ------------------------
+
+  // Entity event handlers that delegate to the current entity
+  onMouseDown(event) {
+    this.currentEntity?.onMouseDown(event);
+  }
+
+  onMouseDrag(event) {
+    this.currentEntity?.onMouseDrag(event);
+  }
+
+  onMouseUp(event) {
+    this.currentEntity?.onMouseUp(event);
+  }
+
+  draw(skCanvas) {
+    if (this.isInDrawing) {
+      this.pathManipulator.drawLivePathDrawable();
+    }
+  }
 
 
-rotateCounterclockwiseLower1()
-{
-  this.layerManager.rotateCurrentSelection(-5);
-
-}
-
-rotateClockwiseLower2()
-{
-  this.layerManager.rotateCurrentSelection(1);
-}
 
 
-rotateCounterclockwiseLower2()
-{
-  this.layerManager.rotateCurrentSelection(-1);
 
-}
+
+  // ------------------------------------------------
+  // TRANSFORMATION OPERATIONS
+  // ------------------------------------------------
+  scaleUp() {
+
+    this.layerManager.scaleCurrentSelection(1.1);
+  }
+
+  scaleDown() {
+    this.layerManager.scaleCurrentSelection(1 / 1.1);
+
+  }
+
+
+  scaleUpUpper1() {
+
+    this.layerManager.scaleCurrentSelection(1.3);
+  }
+
+  scaleDownUpper1() {
+    this.layerManager.scaleCurrentSelection(1 / 1.3);
+
+  }
+
+
+
+
+  scaleUpUpper2() {
+
+    this.layerManager.scaleCurrentSelection(1.4);
+  }
+
+  scaleDownUpper2() {
+    this.layerManager.scaleCurrentSelection(1 / 1.4);
+
+  }
+
+
+
+
+
+
+  scaleUpLower1() {
+
+    this.layerManager.scaleCurrentSelection(1.05);
+  }
+
+  scaleDownLower1() {
+    this.layerManager.scaleCurrentSelection(1 / 1.05);
+
+  }
+
+  scaleUpLower2() {
+
+    this.layerManager.scaleCurrentSelection(1.015);
+  }
+
+  scaleDownLower2() {
+
+    this.layerManager.scaleCurrentSelection(1 / 1.015);
+
+  }
+
+  liveScaling() {
+
+  }
+
+  liveXOrYScaling() {
+
+  }
+
+  liveShearing() {
+
+  }
+
+
+  rotateClockwise() {
+    this.layerManager.rotateCurrentSelection(15);
+  }
+
+
+  rotateCounterclockwise() {
+    this.layerManager.rotateCurrentSelection(-15);
+
+  }
+
+  rotateClockwiseUpper1() {
+    this.layerManager.rotateCurrentSelection(45);
+  }
+
+
+  rotateCounterclockwiseUpper1() {
+    this.layerManager.rotateCurrentSelection(-45);
+
+  }
+
+
+
+  rotateClockwiseUpper2() {
+    this.layerManager.rotateCurrentSelection(90);
+  }
+
+
+  rotateCounterclockwiseUpper2() {
+    this.layerManager.rotateCurrentSelection(-90);
+
+  }
+
+
+  rotateClockwiseLower1() {
+    this.layerManager.rotateCurrentSelection(5);
+  }
+
+
+  rotateCounterclockwiseLower1() {
+    this.layerManager.rotateCurrentSelection(-5);
+
+  }
+
+  rotateClockwiseLower2() {
+    this.layerManager.rotateCurrentSelection(1);
+  }
+
+
+  rotateCounterclockwiseLower2() {
+    this.layerManager.rotateCurrentSelection(-1);
+
+  }
 
   // Move selection up by 10 units
   arrowUp() {
@@ -234,9 +367,6 @@ rotateCounterclockwiseLower2()
   }
 
 
-
-
-
   // Move selection up by 5 units (with Option)
   arrowUpLower1() {
     this.layerManager.moveCurrentSelection(270, 5);
@@ -256,10 +386,6 @@ rotateCounterclockwiseLower2()
   arrowRightLower1() {
     this.layerManager.moveCurrentSelection(0, 5);
   }
-
-
-
-
 
   // Move selection up by 40 units (with Ctrl+Shift)
   arrowUpUpper2() {
@@ -281,9 +407,6 @@ rotateCounterclockwiseLower2()
     this.layerManager.moveCurrentSelection(0, 40);
   }
 
-
-
-
   // Move selection up by 5 units (with Ctrl+Option)
   arrowUpLower2() {
     this.layerManager.moveCurrentSelection(270, 1);
@@ -304,120 +427,7 @@ rotateCounterclockwiseLower2()
     this.layerManager.moveCurrentSelection(0, 1);
   }
 
-end()
-{
-  if(this.isInDrawing)
-  {
-    this.pathManipulator.addLivePathToCurrentLayer();
-    this.setIsInDrawing(false);
-  }
 
-}
-
-closePathAndEnd()
-{
-  if(this.isInDrawing)
-  {
-    this.pathManipulator.closePath();
-    this.pathManipulator.addLivePathToCurrentLayer();
-    this.setIsInDrawing(false);
-  }
-
-
-}
-
-  cancelOperations()
-  {
-    if (this.isInDrawing) {
-      setIsInDrawing(false);
-
-    }
-  }
-
-
-  thickenStroke()
-  {
-    this.paintManager.thickenStroke();
-  }
-
-  thinStroke()
-  {
-    this.paintManager.thinStroke();
-  }
-
-
-  
-
-  bringSelectionToFront() {
-    this.layerManager.bringSelectionToFront();
-  }
-
-  sendSelectionToBack() {
-    this.layerManager.sendSelectionToBack();
-  }
-
-  bringSelectionForward() {
-    this.layerManager.bringSelectionForward();
-  }
-
-  sendSelectionBackward() {
-    this.layerManager.sendSelectionBackward();
-  }
-
-  
-  makePaintStyleFill()
-  {
-    this.paintManager.makePaintStyleFill();
-  }
-
-  makePaintStyleStroke()
-  {
-    this.paintManager.makePaintStyleStroke();
-  }
-
-  // Entity event handlers that delegate to the current entity
-  onMouseDown(event) {
-    this.currentEntity?.onMouseDown(event);
-  }
-
-  onMouseDrag(event) {
-    this.currentEntity?.onMouseDrag(event);
-  }
-
-  onMouseUp(event) {
-    this.currentEntity?.onMouseUp(event);
-  }
-
-  draw(skCanvas)
-  {
-    if (this.isInDrawing) {
-      this.pathManipulator.drawLivePathDrawable(); 
-    }
-  }
-
-
-
-
-  hardCorner()
-  {
-    if (this.isInDrawing) {
-      this.pathManipulator.addHardCorner(this.app.mouseX,this.app.mouseY);
-    }
-    else
-    {
-      if(this.pathManipulator == null)
-      {
-      this.pathManipulator = this.app.pathManipulator
-      }
-      this.isInDrawing = true;
-      this.pathManipulator.resetPath();
-      this.pathManipulator.addHardCorner(this.app.mouseX,this.app.mouseY);
-    }
-    this.app.invalidateEntireCanvas();
-
-  }
-
-  // Other methods...
 }
 
 

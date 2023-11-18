@@ -21,12 +21,12 @@ class EventManager {
     this.htmlCanvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.htmlCanvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
 
-//    window.addEventListener('focus', this.handleWindowFocus.bind(this));
-    
-    document.addEventListener('focus', function() {
-        console.log('received focus');
+    //    window.addEventListener('focus', this.handleWindowFocus.bind(this));
+
+    document.addEventListener('focus', function () {
+      console.log('received focus');
     });
-    
+
 
 
     this.addEventListenersToPreventDefaults();
@@ -49,28 +49,56 @@ class EventManager {
     // Optional: Prevent scrolling when touching the canvas
     this.htmlCanvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
    */
-  
+
   }
 
-   addEventListenersToPreventDefaults() {
-    window.addEventListener('keydown', function (event) {
-        // Prevent default action for Space or Tab
-        if (event.key === ' ' || event.key === 'Tab') {
-            event.preventDefault();
-        }
+  addEventListenersToPreventDefaults() {
 
-        // Prevent default action for Shift + \
-        if (event.shiftKey && event.key === '\\') {
-            event.preventDefault();
-            console.log('Shift + \\ pressed. Default action prevented.');
-        }
-
-        // Check if the Alt key is pressed
-        if (event.altKey) {
-          event.preventDefault();
-        }
+    // Add an event listener to the entire document
+    document.addEventListener('contextmenu', function (event) {
+      // Prevent the default context menu
+      event.preventDefault();
     });
-}
+
+    window.addEventListener('keydown', function (event) {
+      // Prevent default action for Space or Tab
+      if (event.key === ' ' || event.key === 'Tab') {
+        event.preventDefault();
+      }
+
+      // Prevent default action for Shift + \
+      if (event.shiftKey && event.key === '\\') {
+        event.preventDefault();
+        console.log('Shift + \\ pressed. Default action prevented.');
+      }
+
+      // Prevent default action for control + f
+      if (event.controlKey && event.key === 'f') {
+        event.preventDefault();
+        console.log('control + f pressed. Default action prevented.');
+      }
+
+      // Prevent default action for control + g
+      if (event.controlKey && event.key === 'g') {
+        event.preventDefault();
+        console.log('control + g pressed. Default action prevented.');
+      }
+
+      // Prevent default action for control 
+      if (event.controlKey) {
+        event.preventDefault();
+      }
+
+
+      // Check if the Alt key is pressed
+      if (event.altKey) {
+       
+        event.preventDefault();
+      }
+    });
+
+
+  }
 
 
 
@@ -86,21 +114,19 @@ class EventManager {
 
     this.cursorManager.updateCursorPosition(this.app.mouseX, this.app.mouseY);
 
-    if(this.layerManager.handleMouseMove(event))
-    {
+    if (this.layerManager.handleMouseMove(event)) {
 
     }
 
 
   }
 
-  copyToClipboard(){
+  copyToClipboard() {
 
 
   }
 
-  pasteFromClipboard()
-  {
+  pasteFromClipboard() {
 
 
   }
@@ -133,8 +159,7 @@ class EventManager {
 
   }
 
-  handleWindowFocus(event)
-  {
+  handleWindowFocus(event) {
     alert('f');
     this.keyboardMappingManager.loadKeyboardKeysAccordingToFlags(null, '');
   }
@@ -143,8 +168,8 @@ class EventManager {
   handleTrackpadGesture(event) {
     // also could be called handleWheelInteraction
 
-       /*
-    When a user performs a two-finger swipe on a trackpad, the browser interprets this as a scroll action and fires wheel events.
+    /*
+ When a user performs a two-finger swipe on a trackpad, the browser interprets this as a scroll action and fires wheel events.
 
 The properties deltaX, deltaY, and deltaZ of the wheel event object give information about the direction and intensity of the swipe:
 
@@ -169,7 +194,7 @@ The sign (+ or -) of these values indicates direction.
     event.preventDefault();
     // Implement zooming logic here based on event.deltaY
 
-     // Example: Zooming based on deltaY
+    // Example: Zooming based on deltaY
     // You might want to scale these values or implement additional logic for smoother zooming
     if (deltaY < 0) {
       console.log('Zooming in');
@@ -204,7 +229,7 @@ The sign (+ or -) of these values indicates direction.
 
   handleScrollOrPanGesture(event) {
     event.preventDefault();
- 
+
     // Access the scroll delta values
     const deltaX = event.deltaX;
     const deltaY = event.deltaY;
@@ -216,7 +241,7 @@ The sign (+ or -) of these values indicates direction.
   }
 
 
- 
+
 
   // Example handler functions for touch events
   handleTouchStart(event) {

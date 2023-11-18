@@ -1,4 +1,50 @@
 
+LayoutBox has two var sets:
+	parentWidth parentHeight -- for interiorChildren
+		
+
+	globalWidth globalHeight -- for surroundingChildren	
+		-- every surroundingChild LayoutBox
+		is given this variable so that all surroundingChildren
+		at each level of the tree know the bounds of, say,
+		the web browser viewport.
+		
+
+LayoutBox has two children arrays:
+
+	interiorChildren  (inside the bounds)
+		layoutboxes that sit inside the bounds
+
+		which sit inside its own bounds.
+		(a gridbox child will use its bounds
+		for the perimeter of making a grid).
+
+
+
+	surroundingChildren  (outside the bounds)
+		layoutboxes that sit to the side, on top, below, etc.
+
+		relationship: 
+			adjacent (no overlap)
+			adjacent-below (if negative margins)
+			adjacent-above (if negative margins)
+						above (on top)
+			below (below)
+			opposite-side (e.g. flashcard)
+		positioning:
+			edge-on-edge
+			corner
+
+
+		which follow in terms of pageflow,
+		as on a web page.
+		a neighbor can sit to the left
+		or the right of the "parent" and draws itself
+		in relation to the parent.
+
+
+
+-----------------------------------------------------------------
 -- The NCTLayoutEngine is general purpose
 for layout out bounding boxes in an XML
 format.
@@ -98,7 +144,7 @@ centerBoxPt:
 
 Center the box on the screen some width and height pt away from
 the edges.
-<LayoutBox centerBoxPt="width:15;height:15"/>
+<LayoutBox centerBoxPt="pullAwayWidth:15;pullAwayHeight:15"/>
 
 which is the same as
 
@@ -106,6 +152,16 @@ which is the same as
 
 
 
+
+A layout becomes sophisticated easily because
+-- child LayoutBoxes inherit the parent box dimensions,
+meaning that all that has to happen is the subsequent
+dividing up of space at each level of the tree.
+-- Importantly, layout is the primary driver of the engine, not the GUI
+controls.  Typically a GUI control carryies
+its own layout information.  In this case, everything in
+the render tree is a LayoutBox that carries its own guicontrol. 
+It has an array of LayoutBox children.
 
 Layout Carries GUI Objects
 
@@ -119,3 +175,22 @@ control if needed.
 <Layer width="1920" height="1080">
 <LayoutBox />
 </Layer>
+
+
+Versus a Web Site
+
+Boxes in a web page have 
+definable height and width.
+
+and their x and y positions
+can go beneath the parent bounds.
+
+Their dimensions and location 
+are not defined in relation
+to the parent viewport bounds.
+
+If you had a PageLayoutBox you 
+would provide it just parentWidth 
+and it could lay children out
+according to flow rules and
+direction.

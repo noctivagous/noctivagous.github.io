@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Desktop Resolution Frames</title>
+   <style>
+      /* Ensure the canvas stretches fully */
+      body,
+      html {
+         margin: 0;
+         padding: 0;
+         width: 100%;
+         height: 100%;
+      }
+
+      canvas {
+         display: block;
+         /* Removes default margin */
+         background: #f0f0f0;
+         /* Light background for visibility */
+      }
+   </style>
+</head>
+
+<body>
+   <canvas id="resolutionCanvas"></canvas>
+   <script>
+      
+      const resolutions = [
+         { width: 7680, height: 4320, label: "8K UHD" },   // 8K Ultra HD
+         { width: 5120, height: 2880, label: "5K" },       // 5K
+         { width: 3840, height: 2160, label: "4K UHD" },   // 4K Ultra HD
+         { width: 2560, height: 1440, label: "2K QHD" },   // 2K Quad HD
+         { width: 1920, height: 1080, label: "1080p" }, // Full HD
+         { width: 1600, height: 900, label: "900p" },  // HD+
+         { width: 1366, height: 768, label: "768p" },  // Common Laptop
+         { width: 1280, height: 720, label: "720p" },  // HD
+         { width: 1024, height: 600, label: "Netbook" } // Netbook Size
+      ];
+
+      const canvas = document.getElementById('resolutionCanvas');
+      const context = canvas.getContext('2d');
+
+      // Function to adjust canvas size
+      function resizeCanvas() {
+         canvas.width = window.innerWidth;
+         canvas.height = window.innerHeight;
+         drawResolutions();
+         showCurrentResolution();
+
+      }
+
+      // Draw the resolution frames
+      function drawResolutions() {
+         context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+         context.strokeStyle = 'blue';
+         context.lineWidth = 2;
+
+         
+         drawResolutionsLeftTop();
+         
+      }
+
+      function drawCentered() {
+
+         resolutions.forEach(res => {
+            context.beginPath();
+            const x = (canvas.width - res.width) / 2; // Center horizontally
+            const y = (canvas.height - res.height) / 2; // Center vertically
+            context.rect(x, y, res.width, res.height);
+            context.stroke();
+            context.fillText(res.label, x + 5, y + 20); // Label the resolution
+         });
+
+      }
+
+      function showCurrentResolution() {
+      const resolutionText = `Current Viewport Resolution: ${window.innerWidth} x ${window.innerHeight}`;
+      context.font = "16px Arial";
+      context.fillStyle = 'black';
+
+      // Clear the area where the resolution text will be displayed
+      context.clearRect(0, canvas.height - 30, 300, 30);
+
+      // Draw the resolution text in the lower left corner
+      context.fillText(resolutionText, 10, canvas.height - 10);
+   }
+
+      function drawResolutionsLeftTop() {
+         context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+         context.strokeStyle = 'blue';
+         context.lineWidth = 2;
+
+         resolutions.forEach(res => {
+            context.beginPath();
+            // Start from the top-left corner
+            const x = 0;
+            const y = 0;
+            context.rect(x, y, res.width, res.height);
+            context.stroke();
+
+            // Place the label in the upper right corner of the rectangle
+            context.fillText(res.label, x + res.width - context.measureText(res.label).width - 5, y + 20);
+         });
+      }
+
+
+      // Listen to resize events
+      window.addEventListener('resize', resizeCanvas, false);
+
+      // Initial setup
+      resizeCanvas();
+   </script>
+
+</body>
+
+</html>

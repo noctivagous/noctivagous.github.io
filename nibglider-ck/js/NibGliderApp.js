@@ -5,6 +5,7 @@ import EventManager from './EventManager.js';
 
 import DrawingEntityManager from './drawing/DrawingEntityManager.js';
 import { Drawable } from './drawing/Drawable.js';
+import DebugDrawing from './DebugDrawing.js';
 
 import PaintManager from './drawing/PaintManager.js';
 import { PathManipulator, NGPath } from './drawing/PathManipulator.js';
@@ -40,6 +41,8 @@ class NibGliderApp {
 
     this.surface = null;
     this.CanvasKit = null;
+
+    this.debugDrawing = null;
 
     this.offset = 0;
     this.mouseX = 500;
@@ -211,6 +214,7 @@ loadScript(url) {
     this.drawingEntityManager.app = this;
     this.drawingEntityManager.initializeDrawingEntities();
 
+    this.debugDrawing = new DebugDrawing(this);
 
   }
 
@@ -306,6 +310,8 @@ loadScript(url) {
     //this.fillWithBackgroundColor();
 
     NGUtils.fillRect(this.CanvasKit, this.skCanvas, this.appBackgroundColor, this.entireCanvasRect());
+
+   // this.debugDrawing.draw(this.skCanvas);
 
     if (this.layerManager) {
 

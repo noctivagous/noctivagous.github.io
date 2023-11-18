@@ -748,6 +748,95 @@
       "defaultFontColor": "rgb(255,64,255)",
       "selectionStateText": "Digit1 Selection"
     },
+    'Minus': {
+      "defaultText": "Snapping",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    '$Minus': {
+      "defaultText": "Toggle Snapping Mode",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    'Equal': {
+      "defaultText": "Grid",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    '$Equal': {
+      "defaultText": "Toggle Grid Mode",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    'Digit0': {
+      "defaultText": "Corner Rounding",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    'Digit5': {
+      "defaultText": "Nozzle",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    'Digit8': {
+      "defaultText": "Noise",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    '$Digit8': {
+      "defaultText": "Toggle Noise Mode",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    'Digit6': {
+      "defaultText": "Shape Keys",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+
+    'Digit7': {
+      "defaultText": "Combina-<br/>torics",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
+    'Digit9': {
+      "defaultText": "Bowed Line",
+      "defaultFunctionString": "makePaintStyleStroke",
+      "description": "Make paint style fill",
+      "defaultButtonBackgroundColor": "rgb(155,155,155)",
+      "defaultFontColor": "rgb(200,200,200)",
+      "selectionStateText": "Digit1 Selection"
+    },
     '~Digit1': {
       "defaultText": "Pull in Settings",
       "defaultFunctionString": "makePaintStyleFill",

@@ -7,9 +7,10 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
 
 :root {
     --button-size: 40pt; /* Default button size */
+    --grid-row-size: 40pt; /* Default grid row size */
     --button-size-large: 45pt; /* Button size for large displays */
     --grid-gap: .5vmin; /* Gap between grid items */
-    --grid-row-size: 40pt; /* Default grid row size */
+    
 }
 
 .minikeylettersquare {
@@ -34,12 +35,57 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
 }
 
 
+#keyboardKeysGrid,
+#numberRowGrid {
+    transition: transform 0.2s ease-in-out;
+    /* Adjust the timing as needed */
+
+}
+
+#keyboardKeysGrid.slide-up
+{
+margin-bottom:-1px;
+}
+
+
+
+#keyboardPanel {
+    position: absolute;
+    z-index: 100;
+    /* High z-index to keep it on top */
+    pointer-events: none;
+    text-shadow: 0.1vh 0.1vh #fff;
+
+    position: absolute;
+
+
+    bottom: 7pt;
+    overflow: hidden;
+
+    position: absolute;
+    
+
+
+    
+}
+
+.centered
+{
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+
+
+
+
+
 #keyboardKeysGrid {
     display: grid;
     grid-template-columns: repeat(15, var(--button-size));
-    grid-template-rows: repeat(4, var(--grid-row-size));
+    grid-template-rows: repeat(4, var(--button-size));
     gap: var(--grid-gap);
-    outline: 10pt solid rgba(128, 128, 128, 0.408);
+
 
 
     background-color: rgba(128, 128, 128, 0.408);
@@ -60,7 +106,6 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
     height: 100%;
 
     align-content: end;
-    padding-bottom: 1pt;
 
 }
 
@@ -70,8 +115,8 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
 
 #keyboardKeysGrid.bottomRowHidden {
 
-    grid-template-columns: 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt 40pt;
-    grid-template-rows: 40pt 40pt 40pt;
+    grid-template-columns: repeat(15, var(--button-size));
+    grid-template-rows: repeat(3, var(--button-size));
     gap: .5vmin .5vmin;
     grid-auto-flow: row;
     grid-template-areas:
@@ -101,8 +146,8 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
 
 
     display: grid;
-    grid-template-columns: 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt 35pt;
-    grid-template-rows: 35pt;
+    grid-template-columns: repeat(15, var(--button-size));
+    grid-template-rows: repeat(1, var(--button-size));
     gap: .5vmin .5vmin;
     grid-auto-flow: row;
     grid-template-areas:
@@ -117,7 +162,6 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
 
 #numberRowKeyboardPanel {
     position: absolute;
-    left: 100pt;
     top: 5pt;
     z-index: 100;
 
@@ -125,8 +169,7 @@ document.documentElement.style.setProperty('--button-size', `${buttonHeight}px`)
     overflow: hidden;
 
     position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
+    
 
 }
 

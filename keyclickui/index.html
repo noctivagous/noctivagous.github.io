@@ -305,12 +305,14 @@
 
     <h2>The Key-Click UI Comes from <i>Floating Marker</i>, a Vector-Drawing App</h2>
 
-    <p>An app under development called <i>Floating Marker</i> is the origin of
+    <p>An app under development, called <i>Floating Marker</i>, is the origin of
       the key-click UI.  For the benefit of developers who use GitHub,
-      the key-click UI is demonstrated on this page because its applicability
-      extends beyond vector-drawing to software situations of all kinds, including
-      the positioning of windows, manipulation of nodes in node-based programming, 
-      and the manipulation of sliders and other controls.  
+      the key-click UI is demonstrated on this page. Its applicability
+      extends beyond vector-drawing to software situations of all kinds.
+      It can take over the positioning of windows, the dragging of nodes in node-based programming,
+      the connecting of nodes (with lines), and the changing of values in sliders and other controls.  
+
+      <p>
       All desktop computers are equipped with
       keyboard and mouse, and the key-click UI is a convenient upgrade for interactive 
       vector graphics software.
@@ -318,8 +320,8 @@
       <p>Only straight segments were drawable in the basic demo above.  In <i>Floating Marker</i>, 
         curves have been implemented with these straight segments through the 
         b-spline (similar to Bezier paths).  The b-spline has the characteristic
-        that it is rather pliable.  It can be shaped programmatically in combination
-        with the key-click UI.  For example, Noctivagous uses its own data structure
+        that it is rather pliable.  It can be shaped for different purposes
+        programmatically in combination with the key-click UI.  For example, Noctivagous uses its own data structure
         made of composite spline points that bow (bend) the line, as shown in the video below.</p>
     <p>
       <center>
@@ -328,13 +330,8 @@
     </center>  
     </p>
 
-    <h2>More Than Just A Vector Line, More Than Just for Making Vector Graphics</h2>
-
-    
     <p>
- 
-      Other uses of the key-click UI are possible besides making vector-graphics,
-      which we will explain.  But for a vector graphics program, shapes can
+    For a vector graphics program, shapes can
       be drawn because a vector line can be used by a program as:
     <ul>
       <li>the diameter of a circle.</li>
@@ -344,17 +341,27 @@
       <li>etc.</li>
     </ul>
   
-    <p>For the desktop UI, the vector line can serve as</p>
+
+    <h2>More Than Just A Vector Line, More Than Just for Making Vector Graphics</h2>
+    
+    <p>
+      Other uses of the key-click UI are possible besides making vector-graphics.
+    
+      <p>In the same way that vector shapes are dragged, the drag-lock can be used to move windows
+        on the screen, with the scale buttons letting the user shrink them, etc.
+        <b>It is possible to implement an entire desktop UI in the key-click UI,
+        with no mouse clicks.</b>
+
+
+      <p>For the desktop UI, the vector line can serve as:</p>
     <ul>
+      <li>the polyline (shape) causes a selection of objects (whether they are files or something else).</li>
       <li>the means of connecting nodes in node-based programming.</li>
-      <li>the diagonal of the live selection rectangle.</li>
+      <li>the diagonal of the live selection rectangle (such as when selecting files on a desktop).</li>
     </ul>
 
-    <p>In the same way, the drag-lock can be used to move windows
-      on the screen, with the scale buttons letting the user shrink them, etc.
-      <b>It is possible to implement an entire desktop UI in the key-click UI,
-      with no mouse clicks.</b>
-    </p>
+    
+    
     
 
 
@@ -364,24 +371,28 @@
     <p>The key-click UI is an improved software user interface for the desktop computer.
 
       <br><br>A software program that implements the key-click UI treats the keys
-      on a keyboard as click buttons. The mouse buttons are ignored.
+      on a keyboard as click buttons. The mouse buttons are ignored except for
+      the purpose of accommodating the old habits that all users have.
+      After a person becomes accustomed to the key-click UI, he or she will
+      want it implemented across all of desktop user interfaces.
 
       <!-- Although this can be explained, before reading further, please try out the vector-drawing demo below.
       -->
 
     <p>
-      The concept is that&mdash; and real-world use of the key-click UI has shown&mdash;
-      there is currently too much work assigned to an individual mouse hand.
-      Compared to the key-click UI, the mouse hand is currently burdened.
+      The concept is that there is currently too much work assigned to an individual mouse hand.
+      Compared to the key-click UI, the mouse hand is currently overstressed.
       It has to do two things at once: coordinate the position of the cursor <i>and</i> click the buttons with the index
       finger.
+
       <p>
       In a vector-drawing program, especially, this is too much; the
       standard mouse interface is too simplistic for drawing vectors. Thus, to
       establish a normal situation for
-      drawing vectors with a mouse, it's important first to modify the overall interface,
-      and that is the key-click UI. It later is applied to other parts of the desktop UI,
-      outside of vector-drawing.
+      drawing vectors with a mouse, it's important first to modify the overall interface. 
+      
+      <!-- It later is applied to other parts of the desktop UI,
+      outside of vector-drawing.-->
 
 
       <!--
@@ -395,11 +406,12 @@
 
 
     <p>Separating the click from the mouse divides the labor of
-      manipulating cursor activity to two hands instead of one. This leads to a leap in possible dexterity.
+      directing cursor activity to two hands instead of one. This leads to a leap in possible dexterity.
       Each hand has been given its own role: the mouse hand just moves the cursor and
       the clicking hand just clicks with keys. This opens up a totally different interactive
       dynamic with the desktop computer, because previously there was never such alternation occuring between
-      two hands (move, click, move, click).
+      two hands (move, click, move, click).  But importantly, many more "click" buttons are available,
+      because any alphanumeric key can serve as one.
     </p>
 
 
@@ -410,8 +422,7 @@
 
     <h2>The <kbd>Tab</kbd> Key Is Used for The Selection Click</h2>
     <p>
-
-      To select an individual object, you press the
+      As shown in the demo above, to select an individual object, you press the
       <kbd>tab</kbd> key, and it is selected immediately underneath the cursor
       as if you had pressed <kbd>shift</kbd>+<kbd>left mouse button</kbd>. The
 

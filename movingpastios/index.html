@@ -1,0 +1,476 @@
+
+<html>
+    <head>
+
+      <meta charset="UTF-8">
+  
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+      <meta http-equiv='cache-control' content='no-cache'> 
+<meta http-equiv='expires' content='0'> 
+<meta http-equiv='pragma' content='no-cache'>
+
+<style>
+  /* You can add any additional styles here */
+  .non-link {
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
+      color: inherit;
+  }
+
+  h3{ text-transform: capitalize;
+</style>
+
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap" rel="stylesheet">
+
+
+<style>
+body
+{
+font-size:2em;
+font-family: 'Arial Narrow', Arial, sans-serif;
+
+}
+
+p {
+color:#333;
+text-align: justify;
+font-weight:normal;
+}
+
+h1
+{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+ 
+
+h2,h3,h4,h5,h6
+{
+font-family: Arial, Helvetica, sans-serif;
+color:#333;
+margin-top: 2.5em;
+
+}
+
+h2{
+margin-top: 3em;
+
+}
+
+</style>
+
+<style>
+
+code, pre {
+font-family: 'Source Sans Pro','Menlo', Courier,monospace;
+color:#ccff33;
+font-size: :16px;
+margin:0px;
+
+}
+p code, h3 code, li code{
+font-family:Courier,monospace;
+}
+
+
+.ideCodeArea code, .ideCodeArea code pre
+{
+font-size:20px;
+}
+
+.ideCodeArea
+{
+font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	background-color:gray;
+	padding:10px;
+   color:#ccff33;
+   
+   margin-top:60px;
+   margin-bottom:60px;
+  box-shadow: 5px 5px 5px #222;
+border-right:1px solid #333;
+border-bottom:1px solid #333;
+margin-right:40px;
+font-size:20px;
+}
+.editableTextAreaDiv
+{
+	background-color:#333;
+	width:100%;
+	border:2px solid black;
+	padding-left:6px;
+	outline: none;
+}
+
+div.editableTextAreaDiv:hover
+{
+	background-color:#555;
+	border:4px solid black;
+}
+
+span.codeInText
+{
+	font-size:1em;
+	font-family:monospace;
+	color:#336600;
+}
+
+span.codekeyword{
+	color:#ff3399;
+}
+
+
+.funcSignatureStyling
+{
+color:#ccff33;
+
+}
+
+.funcKeywordStyling{
+color:orange;
+}
+
+.commentsKeywordStyling{
+color:#6600cc;
+}
+
+.commentsKeywordStyling2{
+color:#9966ff;
+}
+
+
+.variableKeywordStyling{
+color:#993333;
+}
+
+.variableNameStyling{
+color:lightGreen;
+}
+
+.code{
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	font-size:16px;
+	
+}
+
+kbd {
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	color:white;
+	font-size:17px;
+	padding:3px;
+	padding-top:2px;
+	padding-bottom:2px;
+	border:1px solid gray;
+	border-radius:5px;
+	background-color:#bbb;
+	  box-shadow: 2px 2px grey;
+	  margin-right:3px;
+
+}
+
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #333;
+  
+  
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: #555;
+  margin-top:3px;
+  margin-right:3px;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color:orange;
+  font-weight:bold;
+  font-family:'Source Sans Pro','Menlo',Courier;
+  border-right:1px solid black;
+  font-weight:normal;
+  border-top-left-radius	:10px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #333;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #111;
+}
+.tabcontent h3{
+margin-top:0px;
+padding-top:0px;
+
+}
+
+.tab button.tablinks2{color:lightBlue}
+
+/* Style the tab content */
+.tabCContainer {
+	font-family:'Source Sans Pro','Menlo',Courier;
+  display: none;
+  margin-top:0px;
+  border: 2px solid #333;
+  /*border-bottom: 3px solid #333;*/
+  
+  font-size:14pt;
+/*  background-color:#555;*/
+
+}
+
+.tablinks4a.active, .tablinks2.active{
+background-color: black;
+}
+
+.tabCContainer.navgridtabcontent
+{
+border:0px;
+}
+
+
+.tabCContainer.navgridtabcontent .tabCContainer
+{
+background-color:#111;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+
+.tabcontent2 {
+padding-top:10px;
+padding-bottom:10px;
+}
+
+.tabContentCodeArea
+{
+height:400px;
+
+}
+
+.tabContentCodeArea:focus 
+{ 
+    outline: none; 
+} 
+
+</style>
+
+<style>
+li{
+padding-top:1em;
+}
+
+ol li{
+font-weight:bold;
+}
+
+ol li ol li{
+font-weight:normal;
+}
+
+</style>
+    </head>
+    <body  onload="disableHashLinks()">
+
+
+
+
+<div style="width:90%;max-width:1200px;margin:auto;">
+
+
+<!--  <h1>Code Editor Features With Web Demos</h1>-->
+
+
+
+
+
+<h2>NOCTIVAGOUS</h2>
+
+
+<img src="img/nct_header4.svg" width="100%">
+
+
+
+<ol>
+  <li>
+    <h3>
+    <a href="graphicdesignersandcode/">Future Code Requires The Integration of Graphic Design into Software Development Environments</a>
+  </h3>
+
+  </li>
+
+    <li>
+      <h3>
+      Opportunities to Upgrade Computer Code’s Form inside The Editor
+    </h3>
+
+    <P style="text-align: center;">
+      <img src="img/codeFileFormatUpgrade.webp" width="90%" style="border:1px solid gray"/>
+      
+          </P>
+
+          
+    <p>
+      Programming languages designed for application software development are more capable than a few decades
+      ago, but not by much. Any progress has occurred inside the plain text file format.
+      They haven't been upgraded in a comprehensive way that
+      utilizes the new graphical capabilities of computers.  It's all terminal type.
+      To give an illustrative example that adds to the two shown above, 
+      an object variable should be assignable to an interactive vector field
+      in the code editor.  A UI control embedded in a line of code can do much more than alphanumeric type
+      in complex situations, across a wide range of subjects.  Instructions can someday be expressed semiotically, even,
+      if graphics are embraced as elements inside a line of code.  So far, there has never been
+      a semiotical programming language system.
+      
+      <p>
+        When graphics are included, the resulting depth of command over the operations of a computer
+      will not be matched by any current sequence of plain text.  Small experiments
+      have shown that this is much superior,
+      it's just that there are doubts expressed by some over whether it can match the
+      speed of editing plain text&mdash; in other words the user interface. We address this here.  What seems like an insurmountable
+      obstacle&mdash; making graphical code's interface comparable to plain text in editing power&mdash; is
+      actually a matter of taking a different approach.  Always, previous attempts abandoned 
+      too much of what was in active use in plain text code and tried to come up with something foreign, which means
+      that the code conventions did not match what people try to do when they program.
+      Instead, Noctivagous' plan is to gradually add augmentations to plain text as it exists today.  At later
+      stages, code can break free from plain text and sit inside its own document file format.  
+      So, initially it is that UI and widgets additions are allowed inside plain text code,
+      just like right now when a color can be assigned to a color picker control. 
+      After a color picker has been used in code for a while, it is missed when not available. 
+      In this way, graphical widgets and controls won't only be a matter of convenience.  When they
+      are placed into code, they will be able to 
+      summarize large sequences of computer instructions such that
+      no one will want to go backwards to just typing out regular terminal type (monospaced type).
+      <!--
+          This is a path that makes sense because code's intricacies
+      might be difficult to impose from the outside with an artificial scheme.
+
+    -->
+
+      <p>
+        The importance of this effort can be explained in the following.
+      Producing a competing web browser engine that is as
+       complete as Chromium or WebKit can't be done in a short period
+      of time, and when this isn't possible it represents a dead end for software
+      development.  Those two software projects will never be unseated because
+      there is little incentive to surpass them, as what is written from scratch 
+      with current programming languages will
+      basically end up being the same in outcome.  Even with AI programming
+      assistants, this does not change because those engines have reached
+      the ceiling of what plain text code will produce without an upgrade.
+      
+      </p>
+      It is possible to escape this dead end, and it is by breaking from
+      the fusion of computer code to the typewriter.  For a major upgrade to happen,
+      alterations like the above image have to occur, because code has to look more like
+      the software it produces, not just raw, monospaced type.  It has to be able to express
+      complex operations in terms of signs and symbol someday.
+       Computer science mindsets that refuse collaboration with graphic design
+       won't suffice, then, as software development has stayed inside terminal
+       type all this time.
+      When code is upgraded, the initial subjects of concern turn out to be different;
+      they will have to incorporating graphic design and media design
+      principles.  The areas of expertise involved are often outside of what is 
+      found in mainstream software engineering discussions.
+      
+      <p>
+      As explained in the articles on this page, the obstacle to a deeper level of
+      progress in software development is the confining, primitive offerings of the 
+      file format plain text, that it has been stretched far beyond
+      its bare capabilities to serve increasingly large and complex needs, blowing past 
+      the environment of 1980s computing.
+      
+      This primitive code medium doesn't lend itself to showing up as 
+      a zoomable map like CAD, and it of course by definition cannot accommodate rich text inside the code
+      without adaptations.
+    
+    <p>
+      A collection like an array or 
+      dictionary  is still not
+      editable by way of a data table GUI control.  Instead, the programmer clumsily
+      navigates through commas with the arrow keys.
+      In addition to this, future computer code needs to be editable in multiple newspaper-like columns to
+      make efficient use of screen space.  Plain text is too raw of a file format for programming software in the 21st century,
+      and it doesn't allow inclusion of modern GUI controls for formulating groups of instructions. 
+      
+    </p>
+
+    <p>Noctivagous starts with the plain text code 
+      as programmers work with it today and then adds GUI to that as the first step, continuing
+      the trend of exists today where the value of a color variable is controllable by an inline color picker.
+      It is believed that later the code file should be transformed into a document file format 
+      for truly rich code editing.   Each article below explains these issues.</p>
+ 
+        <ol type="a">
+            <li><a href="advancingmoderncodeeditor/">Advancing the Modern Code Editor By One UI Step</a> (Includes Demos)</li>
+            <li><a href="#">Computer Code Needs A Document File Format</a></li>
+            <li><a href="movingcomputercodeintoadocformat/">Moving Computer Code into a Document File Format</a></li>
+        </ol>
+    </li>
+
+    <li>
+      <h3>The Upgrade of User Interface</h3>
+        <ol type="a">
+            <li><a href="keyclickui/">The Key-Click UI</a> (Demo)</li>
+            <li><a href="#">It’s Difficult for Users to Organize Files on Computers When Provided a Such a Basic File Tree Hierarchy.</a></li>
+            <li><a href="#">Connect Some Windows with Node Wires If You Like. Software Applications Now Operate In Isolation From One Another.</a>
+            
+            <p>Noctivagous will let you wire up application windows as if they are nodes in node-based programming,
+               because the input and outputs will be on the back of the window and it can flip around. 
+               Different applications will interact with each other, providing their complex features to each other, publishing and receiving 
+               data as the user decides. 
+
+            </p>
+            </li>
+            <li><a href="movingpastios/movingpastios.txt">Moving Past The iOS And Android Touchscreen User Interface</a></li>
+        </ol>
+    </li>
+
+    <li><h3>Graphics And File Formats</h3>
+        <ol type="a">
+            <li><a href="#">.NVAD - Noctivagous Vector Authoring. A vector 
+              graphics file format that acknowledges aesthetic needs and concerns 
+              at the code level.</a></li>
+        </ol>
+    </li>
+
+</ol>
+
+</div><!-- end container-->
+
+
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<script>
+  function disableHashLinks() {
+      // Get all anchor tags in the document
+      const links = document.querySelectorAll('a');
+      
+      // Loop through each link
+      links.forEach(link => {
+          if (link.getAttribute('href') === '#') {
+              link.removeAttribute('href');
+              link.classList.add('non-link');
+          }
+      });
+  }
+</script>
+
+</body>
+</html>

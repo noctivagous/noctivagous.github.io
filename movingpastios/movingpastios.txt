@@ -1,5 +1,5 @@
 
-Moving Beyond Apple's iOS to the Future
+--- Moving Beyond Apple's iOS to the Future ---
 
 
 noctivagous.github.io
@@ -50,23 +50,24 @@ Each pair on each row would not be limited to a narrow purpose.  A window is clo
 
 Mode Buttons
 
-On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of its current context.  All apps running on the tablet would be built to work around these buttons as a primary means of interaction with the app's functionality because all complex apps have states or modes.   Again, each of these buttons will be backed by individual LCD screens for flexibility.  The purpose of these mode buttons is to support anything that is a mode.  Most apps have various modes: viewing and editing being the most fundamental for apps that produce data of some sort.  Configuring preferences is another mode.  Other uses of modes include switching on and off special modes of editing or altering the app.  The mod buttons should be able to accommodate anything needed involving modes and submodes.
+On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of its current context.  All apps running on the tablet would utilize these buttons as a primary means of interaction with the app's functionality, because all complex apps have states or modes.   Again, each of these buttons will be backed by individual LCD screens for the software developer's flexibility.  The purpose of these mode buttons is to support anything that is a mode or state.  Most apps have various modes: viewing and editing being the most fundamental for apps that produce data of some sort.  Configuring preferences is another mode.  Other uses of modes include switching on and off special submodes of editing or altering the app.  The mode buttons should be able to accommodate anything needed involving modes, submodes, and states.
 
 
 Separate X and Y Axis Touchpad Strips
 
-Tentatively, another hardware feature that would be included in a Noctivagous tablet is a pair of X and Y axis touchpad strips with pressure sensitivity.  They would sit above and to the left of the screen respectively.  The Y axis (vertical) touchpad strip will sit on the left edge of the screen, separating the Touch Operation buttons and the screen.  These strips that can be actively used by all apps and the benefit is that they constrain movement.  It is natural to select, for example, an app icon by lining up the x and y axes with both fingers and pressing down on the two touchpad strips at the same time.  Apps will be able to use these touchpad strips for horizontally and vertically constrained needs.  For irregular movements the screen itself can be used.
-
-
-
-Scrolling-Averse System Conventions
-
-Noctivagous holds the position that constant vertical scrolling is harmful to the user, is uncomfortable, and is a poor substitute for what should actually exist, which is proper transitioning of content (sliding, for example) that is at all times correctly sized to the device's frame dimensions.  That is, content should generally be swapped in and out carousel-style or otherwise, faded in smoothly.  Content should rarely be clipped and require scrolling.  Laid-out information should be prepared such that it is fitted for the dimensions of the device. "Forward" and  "Backwards" slides or fades in content within the same frame and nothing is moved into the frame of the device through scrolling.  This is especially important for consumption of information.  The web itself should be refitted in this way.
+A hardware feature that is considered for a Noctivagous tablet is a pair of X (horizontal) and Y (vertical) axis touchpad strips with pressure sensitivity.  They would sit above and to the left of the screen respectively and match the lengths of the width and height.  The Y axis (vertical) touchpad strip will sit on the left edge of the screen, sitting between the Touch Operation buttons and the screen.  These strips are available for all apps and the benefit is that they constrain movement.  Apps will be able to use these touchpad strips for horizontally and vertically constrained needs.  For irregular movements the screen itself can be used.  It is natural to select, for example, an app icon by lining up the x and y axes with both fingers and pressing down on the two touchpad strips at the same time.
 
 
 No Confirmation Dialog Boxes Needed Because of Confirmation-Oriented Pathways
 
-If an object is selected and it is of sensitive value for deletion (deleting it could make a problem if done on accident), then the following is how to delete it: "Delete" is held down after the object's selection and that object is tapped three times, with the object darkening with each tap.  On the third tap it is delted. There is no need to display a warning dialog box for the user that asks, "Are you sure you want to delete this?"  The pathway has been set up so that confirmation takes place through the activity.
+If an object is selected and it is of sensitive value for deletion (deleting it could create a problem if done on accident), then the following is how to delete it: "Remove/Delete" is held down after the object has been selected and that object is tapped three times, with the object darkening with each tap.  On the third tap it is deleted. There is in this case no need to display a warning dialog box for the user that asks, "Are you sure you want to delete this?"  The pathway has been set up so that confirmation takes place through the actions.
+
+
+Scrolling-Averse System Conventions
+
+Noctivagous holds the position that constant vertical scrolling is harmful to the user, is uncomfortable, and is a substitute for what should actually exist more often which is proper transitioning of content (sliding, for example) that is at all times correctly sized to the device's frame dimensions.  That is, content should generally be swapped in and out carousel-style or otherwise, faded in smoothly.  Content should less often be clipped and require scrolling.  Laid-out information should be prepared such that it is fitted for the dimensions of the device. "Forward" and  "Backwards" slides or fades in content within the same frame and nothing is moved into the frame of the device through scrolling.  This is especially applicable to consumption of information.  The web itself should be refitted in this way.
+
+
 
 
 

@@ -1,9 +1,11 @@
 
---- Moving Beyond Apple's iOS to the Future ---
+Moving Beyond Apple's iOS to the Future --- (noctivagous)
 
 
 noctivagous.github.io
 
+
+The iOS UI Is Problematic Because of Being Reductive
 
 For tablet computers, iOS (iPadOS) has a major drawback: the simplest tasks are easy to achieve, but anything slightly complicated has to be specifically learned because it is invisible, offscreen, or buried in conventions.  The "user friendly" description only applies to the fundamentals of launching an app, zooming inside a document, and scrolling. After that, the system software interface features are tacked on, one after another.  The consequence is that a user can easily activate one of iOS's side features on accident, and this is a poor state of UI design.  But also, iOS is an undeveloped and prototype-level collection of user interface conventions, incomplete except for simple consumption of media.  Because it strives towards minimalism and commercial accessibility, it is nubby, dumbed down, and limited in professional usefulness.  For controlling the tablet software, Apple (characteristically) insists on withholding from the user any complementary physical controls such as knobs, sliders, and buttons, believing that those were the problem in the first place.
 
@@ -48,7 +50,7 @@ Each pair on each row would not be limited to a narrow purpose.  A window is clo
 "Expand  --- Collapse" is about unfolding and stowing away, a different state dynamic than "Open --- Close", illustrated by how minimizing a window is different from closing (terminating) a window.
 
 
-Mode Buttons
+Mode Buttons Column
 
 On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of its current context.  All apps running on the tablet would utilize these buttons as a primary means of interaction with the app's functionality, because all complex apps have states or modes.   Again, each of these buttons will be backed by individual LCD screens for the software developer's flexibility.  The purpose of these mode buttons is to support anything that is a mode or state.  Most apps have various modes: viewing and editing being the most fundamental for apps that produce data of some sort.  Configuring preferences is another mode.  Other uses of modes include switching on and off special submodes of editing or altering the app.  The mode buttons should be able to accommodate anything needed involving modes, submodes, and states.
 

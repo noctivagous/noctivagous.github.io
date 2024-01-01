@@ -57,9 +57,11 @@ A window is closed with "Close," but "Close" can also be used to turn a switch c
 
 Mode Buttons Column
 
-On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of its selected context.  All apps running on the tablet would utilize these buttons as a primary means of interaction with the app, because all complex apps have states or modes.   Again, each of these buttons will be backed by individual LCD screens to give the software developer's flexibility.  The purpose of these mode buttons is to support anything that is a mode or state.  Most apps have various modes: viewing and editing being the most fundamental for apps that produce data of some sort.  Configuring preferences is another mode and when the user thinks in terms of "mode" because the device is built that way, there is no need for the user to look up specific conventions for opening the settings window.
+On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of a certain context.  All apps running on the tablet would utilize these buttons as a primary means of interaction with the app, because all complex apps have states or modes.   Again, each of these buttons will be backed by individual LCD screens to give the software developer's flexibility.  The purpose of these mode buttons is to support anything that is a mode or state.  Most apps have various modes: viewing and editing being the most fundamental for apps that produce data of some sort.  Configuring preferences is another mode and when both the software developer and the user thinks in terms of "mode," because the device is built that way, there is no need for the user to look up specific conventions for opening the settings window.  (It's also possible to make a "Configure" touch operation button so that with a touch anything on the screen can be configured).
 
-Other uses of modes include switching on and off special submodes of editing in the app.  The mode buttons should be able to accommodate anything needed involving modes, submodes, and states.
+Other uses of modes include switching on and off special submodes of editing in the app.  The mode buttons should be able to accommodate anything needed involving modes, submodes, and states. 
+
+The conceptual internals of an app and computing system are being represented on the outside of this device, around the screen.
 
 
 
@@ -69,20 +71,21 @@ The Undo and Redo buttons will be next to the touch operation buttons because th
 
 
 
-Separate X and Y Axis Touchpad Strips
-
-A hardware feature that is considered for a Noctivagous tablet is a pair of X (horizontal) and Y (vertical) axis touchpad strips with pressure sensitivity.  They would sit above and to the left of the screen respectively and match the lengths of the width and height.  The Y axis (vertical) touchpad strip will sit on the left edge of the screen, sitting between the Touch Operation buttons and the screen.  These strips are available for all apps and the benefit is that they constrain movement.  Apps will be able to use these touchpad strips for horizontally and vertically constrained needs.  For irregular movements the screen itself can be used.  It is natural to select, for example, an app icon by lining up the x and y axes with both fingers and pressing down on the two touchpad strips at the same time.
-
-
-
 No Confirmation Dialog Boxes Needed Because of Confirmation-Oriented Pathways
 
 If an object is selected and it is of sensitive value for deletion (deleting it could create a problem if done on accident), then the following is how to delete it: "Remove/Delete" is held down after the object has been selected and that object is tapped three times, with the object darkening with each tap.  On the third tap it is deleted. There is in this case no need to display a warning dialog box for the user that asks, "Are you sure you want to delete this?"  The pathway has been set up so that confirmation takes place through the action.
 
 
+
 Scrolling-Averse System Conventions
 
 Noctivagous holds the position that constant vertical scrolling is harmful to the user, is uncomfortable, and is a substitute for what should actually exist more often which is proper transitioning of content (sliding, for example) that is at all times correctly sized to the device's frame dimensions.  That is, content should generally be swapped in and out carousel-style or otherwise, faded in smoothly.  Content should less often be clipped and require scrolling.  Laid-out information should be prepared such that it is fitted for the dimensions of the device. "Forward" and  "Backwards" slides or fades in content within the same frame and nothing is moved into the frame of the device through scrolling.  This is especially applicable to consumption of information.  The web itself should be refitted in this way.
+
+
+
+Separate X and Y Axis Touchpad Strips
+
+A hardware feature that is considered but is optional for a Noctivagous tablet is a pair of X (horizontal) and Y (vertical) axis touchpad strips with pressure sensitivity.  They would sit above and to the left of the screen respectively and match the lengths of the width and height.  The Y axis (vertical) touchpad strip will sit on the left edge of the screen, sitting between the Touch Operation buttons and the screen.  These strips are available for all apps and the benefit is that they constrain movement.  Apps will be able to use these touchpad strips for horizontally and vertically constrained needs.  For irregular movements the screen itself can be used.  It is natural to select, for example, an app icon by lining up the x and y axes with both fingers and pressing down on the two touchpad strips at the same time.
 
 
 

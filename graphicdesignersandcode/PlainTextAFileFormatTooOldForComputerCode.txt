@@ -1,0 +1,189 @@
+AI can write code, but the code it writes is
+still in plain text.  So a fundamental problem
+is not solved, that .TXT is not the right medium
+for computer code anymore when computer graphics
+are advanced and code documents can carry rich
+layout.  .TXT does not allow for a schematics
+or CAD view that is zoomable.
+
+
+
+----
+
+Plain Text: A File Format That Is Too Old
+For Programming in The 2020s
+
+http://noctivagous.github.io/
+
+
+Modern software engineering regularly stretches
+the plain text file format beyond a reasonable
+range.  For fields like AI to advance properly,
+computer code should be re-examined from a
+graphic design perspective.  First, computer code's
+file format should be regarded as antiquated
+when computers carry far more sophisticated
+interactive and graphics abilities compared to
+the 1970s.  It was the limitations of
+terminal display technologies that dictated
+that code should exist as monospaced type.
+Pushing programming past plain text (.TXT)
+will provide the best foundation for the future
+in all fields of software engineering.
+
+To begin with, it should be self-evident that plain text
+cannot neatly organize information inside
+a provided viewport (a clipped rectangular
+frame), nor can it provide interactive features
+for navigating large volumes of code.
+Plain text is hindering the programmer and
+subconsciously the software engineering community
+is trying to get away from its limitations by
+pursuing various external add-ons.
+Recent developments in code editor features
+have sought to compensate for the deficiencies
+of using plain text for computer code in the 2020s.
+Nowhere is this the stated objective of the
+companies who produce IDEs, but it is nevertheless
+the phenomenon taking place.
+
+A relevant example is Jupyter Notebook,
+used by AI programmers everywhere. It is a
+kind of programming system; it alternates
+plain text Python programming instructions
+with rich graphical output.  (It’s really that the
+Python instructions should be upgraded in form too,
+not just Python's output.) If it is so valuable
+to have Python set inside an interactive environment,
+then plain text has been negated.  A new system
+should be constructed from the ground up that
+acknowledges this.  At that point, Python will
+obviously take on a different appearance, something
+more interactive and graphical and become something else.
+Jupyter Notebook is a custom use of Python
+and it is, broadly speaking, hacking Python
+into a state that it does not naturally allow.
+Though this app suffices for the time being and
+has helped to establish the contemporary field of AI,
+Jupyter Notebook demonstrates that code
+essentially exists in an inadequate condition overall
+for modern computing (or else Python would be used
+bare).  Additionally, there is
+an unrecognized advantage to upgrading code
+at the individual line, to include graphical controls
+in this instructions. This will produce immense benefits.
+At the code line (the input or instruction), any instructions
+and parameters are actually condensable into a small,
+graphical arrangement.  This will take some participation
+from graphic design specialists.  For the first time,
+diagrams can be the basis of writing
+a program, recognized as the means of instructing a computer
+beyond typed keywords.  Semiotical programming systems will
+finally be able to emerge. There is something crude about
+always typing out everything explicitly and graphics can
+allow more implicit instructions through signs and symbols.
+
+This may seem far away, but what it takes is
+recognizing the existing patterns of software
+features placed into modern IDEs-- what people want
+(to get away from .TXT) versus what they believe they
+are doing ("tweaks").  Jupyter Notebook is not alone
+in this trend of enhancing plain text code, as all
+mainstream IDEs today are undertaking compensatory measures
+in some form, tacking on code completion boxes, code
+folding controls, breakpoint controls, and image thumbnail scrollbars
+to interact with the .TXT, to treat it as something
+other than ASCII characters.  Veneers of all sorts have
+been applied to plain text for programming.
+All of this is unprecedented and did not exist in
+the 2000s and earlier.
+
+In other words, increasingly, modern code editors rely on
+GUI additions to turn modern software development
+into something palatable when size and complexity
+have grown and .TXT is still the medium, when it cannot
+adequately scale.  If the software engineering situation
+has reached this stage, it is the file format that needs
+to be transcended and a document file format is the next step.
+
+Plain text carries major limitations when
+code repositories become as large
+as they are today, when storage and computing power
+are exponentially larger than the 1980s and 1990s
+and numerous collaborators push their changes remotely across
+the Internet through a version control system.
+What worked for simple times of the 1990s should
+not suffice today: code bases are too large now. In
+software engineering there are missing
+conventions in code that are found in other areas
+of engineering, such as zoomable schematics found
+in CAD.  A modern code repository has no overview;
+it offers no map or schematics to provide
+the programmer a means of looking at the whole.
+The only way to survey the contents of a code repository
+is to inspect each file individually from the file system.
+This cannot hold for the future and it isn't serving
+the present well either.
+
+For these sorts of features to exist,
+the plain text file format must be viewed
+as the principal throwback technology for code.
+Enhancements provided by modern IDEs, like code-folding controls and
+"minimap" thumbnails, should be regarded as
+graphically-designed shims and a precursor to the
+next stage, the document file format that naturally
+lends itself to these features and supports
+them in a proper way.  A document file format will
+certainly allow for browsing code via schematics.
+
+First, a new type of code should have its document
+format based in XML,
+which is more robust for this purpose than JSON.
+Underneath what is rendered in the editor, that is,
+the code exists as XML markup.  XML is very easily parsed,
+and it can be rendered in any way desired. But importantly,
+when code is parsed in real time,  systematically,
+a program will possible to write and compile without
+making any typographic errors, without accidentally referencing
+variables or functions that do not exist before
+compilation.  A stray keystroke will not break a program.
+The system simply will not allow entering
+a line of code (beyond a draft state) if it is
+considered invalid for the program, because the IDE
+will know everything about all of the code,
+having parsed every line very well
+in advance of any input entered.  Parsing plain text
+for code is a convoluted and imprecise task whereas parsing
+XML is straightforward.
+
+Too often it is minor human error like making a typo
+and then attempting to compile the program
+that nickel-and-dimes the programmer and makes
+programming a chore.  Increased parsability of
+code will create advanced programming systems for sure
+that eliminate this problem.
+It will also allow different types of programming
+languages to emerge, including those based in semiotics
+rather than typewritten text.
+
+What the computer industry should care about is future code,
+then. Future code is the advancement beyond .TXT
+for computer instructions, whether that is semiotical or
+something else.  To start, future code should carry forward
+in the direction of the now-essential
+inline color picker, in which a color variable
+can be assigned to an unobtrusive color picker control.
+Though this is just a minor addition, it is a quite
+impactful move, hinting at the future.
+When this control is missing for the
+software engineer who works with color variables regularly,
+its absence is felt right away.
+When more computer code has inline
+controls in the same manner as inline color pickers,
+code will begin its genuine advancement.  The most
+natural way to support this type of code environment
+is to base code in an XML or markup file format first.
+
+
+
+NOCTIVAGOUS.GITHUB.IO

@@ -65,6 +65,12 @@ The conceptual internals of an app and computing system are being represented on
 
 
 
+Thumb Input of Words and Characters: Mode Buttons and Touch Operation Buttons Enter a Meta Mode to Replace The Conventional Onscreen Keyboard, Providing an Input Dynamic Through Alternation of Thumb Input
+
+When typing is needed, the LCD-backed buttons on the device enter a meta mode for this purpose.  At the same time, the mode buttons on the right and the touch operation buttons on the left transform into input buttons for a specific word and typing entry system, with each of the two sides able to receive input back and forth in alternation by the thumbs, for the user to enter words and characters.  The two sets of buttons have entered a meta mode for input, repurposed for entering words. What shows up on the LCD screens for each button on both sides can go beyond individual characters of a keyboard, to allow entering words without autocomplete. The entry will be both tactile and accurate because the buttons themselves are physical and it can be the alternation of pressing buttons on both sides that completes words.  The buttons can display anything, including full words and even symbols or images, so meta modes are an expansive area in the case there are other needs for all of the buttons.  What is static on the device are reaction buttons such as "Escape" in the upper lefthand corner" and "Accept/Proceed" in the lower right corner.
+
+
+
 Reaction Buttons Such as "Undo" and "Redo"
 
 One could say that pressing "Undo" is unlike other types of functions activated in that it is a reaction to a mistake, thus this is a reaction type of function or button.   When something relates to reacting, it is a candidate for a physical button instead of space on the touchscreen.  In an app, "Undo" and "Redo" act on a maintained list of user operation history that is most often out of view.  The two "Undo" and "Redo" buttons will not exist as touch operations because they act on the last operation done.  They sit next to the touch operation buttons because they undo or redo what was just done by a touch operation.

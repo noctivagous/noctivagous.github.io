@@ -65,9 +65,15 @@ The conceptual internals of an app and computing system are being represented on
 
 
 
-Thumb Input of Words and Characters: Mode Buttons and Touch Operation Buttons Enter a Meta Mode to Replace The Conventional Onscreen Keyboard, Providing an Input Dynamic Through Alternation of Thumb Input
+Thumb Input for Text Words and Characters: Mode Buttons and Touch Operation Buttons Enter a Meta Mode to Replace The Conventional Onscreen Keyboard, Providing an Input Dynamic Through Alternating Thumb Input from Each Side
 
 When typing is needed, the LCD-backed buttons on the device enter a meta mode for this purpose.  At the same time, the mode buttons on the right and the touch operation buttons on the left transform into input buttons for a specific word and typing entry system, with each of the two sides able to receive input back and forth in alternation by the thumbs, for the user to enter words and characters.  The two sets of buttons have entered a meta mode for input, repurposed for entering words. What shows up on the LCD screens for each button on both sides can go beyond individual characters of a keyboard, to allow entering words without autocomplete. The entry will be both tactile and accurate because the buttons themselves are physical and it can be the alternation of pressing buttons on both sides that completes words.  The buttons can display anything, including full words and even symbols or images, so meta modes are an expansive area in the case there are other needs for all of the buttons.  What is static on the device are reaction buttons such as "Escape" in the upper lefthand corner" and "Accept/Proceed" in the lower right corner.
+
+What is pressed on the buttons can affect what shows up on the left and right sides of the screen vertically, lining up with the buttons themselves, so that the user of the device can see the effects of pressing buttons in alternation on the screen.
+
+A meta mode is available tool for any app for when complex entry of data would benefit from taking over the device's buttons and putting them into a special mode, but it would be utilized less commonly than what is provided.  At all times the "Escape" button on the device would exit such a custom meta mode.
+
+Lastly, it is possible to supplement this data entry meta mode through buttons placed on the underside of the device (as currently found on handheld video game consoles), and it is possible this would be an important part of text entry.
 
 
 

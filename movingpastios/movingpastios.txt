@@ -1,5 +1,5 @@
 
-Moving Beyond Apple's iOS to the Future --- (noctivagous)
+Moving Beyond Apple's iOS to the Future — (noctivagous)
 
 
 noctivagous.github.io
@@ -39,19 +39,19 @@ More touch operation buttons:
 
 -- "Toggle" will turn a touched setting or object on and off, opposite its current state and this can apply to many circumstances.
 
-Fortunately, the touch operation buttons reduce or even eliminate the need for what are currently called "gestures" because even a "Zoom" touch operation button will provide more precise control over the zoom as "Zoom" is being held down, allowing the user to go even slower than today.  Likewise, a "Rotate" touch operation button will provide greater real-time precision for the user. In the case it is still desired to have "gestures," there can be many types of swipe, rotate, or two-finger scrolling according to the touch operation buttons.
+Fortunately, the touch operation buttons reduce the need for what are currently called "gestures" because even a "Zoom" touch operation button will provide more precise control over the zoom as "Zoom" is being held down, allowing the user to go even slower than today.  Likewise, a "Rotate" touch operation button will provide greater real-time precision for the user than a rotate "gesture". In the case it is still desired to have "gestures," there can be many types of swipe, rotate, or two-finger scrolling according to the touch operation buttons. Since zoom, rotate, and pan are such commonly accessed features they may have their own dedicated buttons on the device anyway.   If they do not the remaining advantage of "gestures" is that they do not occupy space in the touch operations columns.
 
-Touch operation buttons should serve to replace digging into menus to find the desired function, as is the current dynamic.  If the labels for these touch operation buttons are categorized and grouped adequately, an increase in the number of operations will not overwhelm the user but instead make it so the user does not need instructions for every task.
+Touch operation buttons should serve to replace digging into menus to find the desired function, which is the current dynamic.  If the labels for these touch operation buttons are categorized and grouped adequately, an increase in the number of operations will not overwhelm the user but instead make it so the user does not need to be provided a tutorial for every task.  In this way, touch operation buttons can be categorized and assigned corresponding background colors on the LCD-backed buttons, allowing the user to know what a touch operation button is for.  The question of how to access more than one group of touch operation buttons on the column of buttons becomes an immediate questions.  Forward and backward arrows are probably not sufficient.  Instead, there is a separate touch operation group grid beneath the column, and each class of touch operation is a button. A class of touch operation buttons can be accessed according to the color and label on this grid of touch operation groups buttons. 
 
 
 
 Opposing Touch Operation Buttons
 
-In this vertical list of physical touch operation buttons on the left side of the scren, it might seem best at first to have just one column.   But often operations exist in opposition to each other (group --- ungroup,  add --- subtract,  generate --- remove, open --- close, show --- hide) .  Two columns of opposing operations might be preferable, doubling the number of available buttons sitting to the left of the screen because they are used together.  Touch modifiers opposing in purpose would sit side by side on each row. 
+In this column of physical touch operation buttons on the left side of the scren, it might seem best at first to have just one column.   But often operations exist in opposition to each other (group --- ungroup,  add --- subtract,  generate --- remove, open --- close, show --- hide).  Two columns of opposing operations might be preferable, doubling the number of available buttons sitting to the left of the screen.
 
-A window is closed with "Close," but "Close" can also be used to turn a switch control to the off position and close just about anything.  Pairs of buttons would have generic names: such as "Open" paired with "Close", which apply to many scenarios of all sorts.
+A window is closed with "Close," but "Close" can also be used to turn a switch control to the off position and close just about anything.  "Open" opens anything in the same way and turns something on.  Pairs of buttons would have generic names: such as "Open" paired with "Close", which apply to many scenarios of all sorts.
 
-"Expand  --- Collapse" is about unfolding and stowing away, a different state dynamic than "Open --- Close".
+"Expand  --- Collapse" is about unfolding and stowing away and applies to windows but also collapsible controls.  That pair of operations addresses a different state dynamic than "Open --- Close".
 
 
 
@@ -99,7 +99,7 @@ Noctivagous takes the position that a large amount of vertical scrolling is harm
 
 Separate X and Y Axis Touchpad Strips
 
-A hardware feature that is considered, but is optional, for a Noctivagous tablet is a pair of X (horizontal) and Y (vertical) axis touchpad strips with pressure sensitivity.  They would sit above and to the left of the screen respectively and match the lengths of the width and height.  The Y axis (vertical) touchpad strip will sit on the left edge of the screen, sitting between the Touch Operation buttons and the screen.  These strips are available for all apps and the benefit is that they constrain movement.  Apps will be able to use these touchpad strips for horizontally and vertically constrained needs.  For irregular movements the screen itself can be used.  It is natural to select, for example, an app icon by lining up the x and y axes with both fingers and pressing down on the two touchpad strips at the same time.
+A hardware feature that is considered, but is optional, for a Noctivagous tablet is a pair of X (horizontal) and Y (vertical) axis touchpad strips with pressure sensitivity.  They would sit above and to the left of the screen respectively and match the lengths of the width and height.  The Y axis (vertical) touchpad strip will sit on the left edge of the screen, sitting between the Touch Operation buttons and the screen.  These strips are available for all apps and the benefit is that they constrain movement.  Apps will be able to use these touchpad strips for horizontally and vertically constrained needs.  For irregular movements the screen itself can be used.  It is natural to select, for example, an app icon by lining up the x and y axes with both fingers as they are sliding along the touchpad and then pressing down on the two touchpad strips at the same time.
 
 
 

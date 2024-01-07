@@ -35,7 +35,7 @@ Importantly, in this scheme the user will always know how to accomplish tasks be
 
 More touch operation buttons:
 
--- "Teleport": instead of dragging, the first touch establishes what object is to be transported to another part of the screen and the second touch moves it to its desired location immediately, thus being teleportation.  So there are only two touches to accomplish what dragging does today.  This is much faster than dragging objects on a touchscreen and will be much more precise.
+-- "Teleport": instead of dragging, the first touch establishes what object is to be transported to another part of the screen (what would be dragged) and the second touch moves it to its desired location immediately, thus the name teleportation.  So there are only two touches to accomplish what dragging does today.  This is much faster than dragging objects on a touchscreen and will be much more precise.  To recap, the "Teleport" touch operation is held down during the first and second touch, then it is released.  This opens the door to other types of multiple taps: if it were "Copy" that were held down, the first touch would establish what is to be copied and the other touches would be copy destinations.  Then after all of the touches, "Copy" is released.
 
 -- "Toggle" will turn a touched setting or object on and off, opposite its current state and this can apply to many circumstances.
 

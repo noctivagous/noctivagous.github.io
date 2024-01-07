@@ -1,67 +1,175 @@
-AI Facilitation vs. AI Takeover of Human Tasks
+AI Facilitation of Work Processes vs. AI Takeover of Human Jobs
+
 
 To facilitate cooking in the home, 
-there is a vegetable-cutting appliance product 
+there can a vegetable-cutting appliance product 
 for the kitchen that will cut or dice any vegetable 
-placed inside its bounds.  The outer dimensions
-are about the size of a larger microwave
-and the end product reaches a price point that is 
-relatively affordable when
-manufactured at scale.  This device can be utilized
-safely by the average citizen for convenient, at-home cooking.
-Its purpose is limited to cutting and peeling of vegetables.
-When the vegetables are taken out of the device
-they should be ready for cooking.  The scraps are placed
-to the side for disposal and the device does not
-need to dispose of anything itself.  
-When the vegetables are taken out of the device
-they should be ready for cooking or assembling into
-cold dishes for refrigeration.  In this way,
-the device does not attempt to take over the entire
-process of cooking but instead addresses an issue,
-that vegetable cutting is a principal 
-impediment to regular cooking at home.
+placed inside its box's bounds.  This would not
+be feasible earlier, before AI, as the device
+would be unable to recognize every type of vegetable
+and how it needs to be peeled or cut.
 
-Contrast this with the typical approaches for
-making a kitchen appliance that incorporate AI: 
-it will be a large scale robot that will have arms, it will cook, 
-Apart from requiring more engineering and
-AI technology than can be affordable for
-the average person, it makes it unfeasible
-for this product to be manufactured in
-a reasonable amount of time, if ever.
-The size of the device will be large, the
-assembly will be complicated, and it will not
-fit in an average household.  Thus the second
-approach, the takeover of the whole process,
-is a poor line of approach for utilizing AI.
-It also stirs a person inside, as the entire
+The dimensions of this device can be about the size 
+of a large microwave with a cost to the consumer that is 
+relatively affordable when manufactured at scale.  
+This device can be utilized safely by the average 
+citizen for convenient, at-home cooking.
+Its purpose is deliberately limited to 
+cutting and peeling of vegetables, which appears
+at first to those who do not cook as an arbitrary
+configuration or use of AI.  But those who cook
+at home know that cutting vegetables is an involved
+process, even if food processors are used, because
+vegetables need to be prepared for the food processor
+and then that appliance, the knives, and the cutting board
+all have to be cleaned afterwards.
+
+When the vegetables are taken out of this AI-driven device
+they are ready for cooking assembling into
+cold dishes for refrigeration.  The scraps are placed, minced,
+to the side of the cut vegetables for easy disposal 
+(or use), and so the device does not need to dispose 
+of anything itself.   
+
+Note that the device does not attempt to take over the entire
+process of cooking but instead addresses an issue that
+cooks encounter that can best be addressed by AI:
+vegetable cutting is a principal impediment to regular 
+cooking at home, because even if people enjoy doing it
+or they don't mind, it creates a hassle that cannot
+be easily overcome because of the work it creates
+as a byproduct.
+
+Contrast this device and its goals with 
+the typical approaches for making a kitchen appliance 
+that incorporate AI: it will be a robot that will have 
+arms and it will cook too. Apart from requiring more 
+far engineering and AI technology than can be affordable 
+for the average person, this robot setup is unlikely
+to be manufactured in a reasonable amount of time,
+and will be a concept product for a very long time,
+limited to restaurants.  The size of the device will be large, the
+assembly will be complicated, safety will be an issue
+with large swinging parts, and it will not necessarily
+fit in an average household kitchen or be worth it
+just to have an extra cook.  Thus the second
+approach, the takeover of the whole process by making
+a partial humanoid, is a poor line of approach for utilizing 
+AI.  It also stirs a person inside, as the entire
 process has been taken over completely, 
 supposedly for the purpose of making everyday
-life easier.  
+life easier.  Though it makes life easier in that way
+it doesn't have to do that and it takes control
+away from the human.
 
 The goal of an AI device should not be to
-make life easy but instead facilitate processes
-that have been made complex because they
-are missing pieces to the puzzle.  This is the
-discussion of AI takeover versus AI facilitation.
-AI takeover is the prevalent mindset at AI
-companies whereas AI facilitation is basically
-missing altogether, an absent topic.
+make life easy to the point no effort has to
+be expended anywhere to make something occur,
+but instead to facilitate existing processes
+that have complicated aspects causing problems 
+because they are missing pieces to the puzzle.
+There are probably only a few parts of making
+a road that could be addressed by an AI machine
+and this would immediately make road construction
+faster and more affordable, whereas the AI community
+would start its product trying to do everything
+from start to finish with a single machine, something
+unnecessary.  This is the discussion of AI takeover 
+of a job versus AI facilitation of stage of the process. 
+AI takeover is undesirable and is the prevalent mindset at AI
+companies, whereas AI facilitation is basically
+unknown, an absent topic.
 
 In the short-term, it would be beneficial to
 have a device that assists road construction
 but does not try to take it all over from
-beginning until end, because when a certain
+the workers, beginning until end, because when a certain
 shortcoming of the process has been addressed,
-the solution provided by the AI will be much
-more powerful, more feasible to actually
-put on the market, and not replace humans.
-It is actually preferable to it replacing
-humans, as in the case of the vegetable cutting 
-device that can sit next to the microwave.
-The purpose of AI has been narrow on purpose
+the solution provided by the AI will appear
+immediately, in the solution will 
+be much more powerful, more feasible to actually
+put on the market, and not replace humans who
+need to direct technology instead be taken over by it.
+For many reasons, addressing individual parts
+of the road construction process is preferable to
+an AI replacing humans, as in the case of the vegetable cutting 
+device that can sit next to the microwave because
+the barrier to entry is extremely low compared to
+being extremely high. The purpose of AI has not 
+been made narrow or confined but rather more rational,
 to deal with what is currently wrong for
-people's process, not push people out of the
-whole activity.
+people's process.  It is an AI philosophy that 
+does not aim to push people out of the
+whole activity, to write the entire paper, to
+make the entire image, to cook the entire meal,
+to make the entire road, and thus the outcome
+will be higher quality and controllable.
+
+This cannot be confused with applying
+AI to just one function of a device, such as
+putting machine learning inside something.
+This involves going through the effort to 
+identify what is missing first.  What is the 
+obstacle in a given activity,
+such as how home cooking is psychologically
+and actually practically impeded by the
+friction of having to peel and cut vegetables and 
+then clean up the scraps afterwards.  By comparison,
+the current intentions of AI research are lazy,
+as they aren't willing examine what is wrong
+in any given set of processes, just
+make a one-size-fits all megamachine that takes
+over everything that people do.
+
+Of course in theory, a personal robot would take care of
+everything from house cleaning to cooking, 
+but in practice that will be expensive for a long time
+and will not appear as a finished consumer product
+for many years to come given the current state of
+technology anyway.  So the first goal is
+to identify this kind of excessive optimism in
+the tech industry that can never deliver such products
+on time and admit that for AI to truly serve people it 
+has to be applied to existing situations such that it lubricates
+the gears of life situations, not usurps entire jobs
+of everyday life.  If something helpful makes people 
+uncomfortable, it isn't worth it and is following 
+the wrong track.
+
+There is also a lack of clarity of purpose of
+something like ChatGPT, because on the surface
+it would be to write papers for people from
+start to finish so that they don't have to
+do anything, or write entire computer programs
+for them from start to finish that compile. 
+That is at first glance what its purpose would be.
+It will be a long time before that happens and in the
+first place it would then be literature that
+is AI-flavored no matter how the AI was constructed.
+It would then be a new culture of AI-directed 
+app programming instead of replacing 
+regular programming.  Then the AI companies
+retreat from this position and say that the GPT
+is a tool for all kinds of tasks (as long as you
+can figure out what they are and how to get it
+to do them), which it certainly can serve as
+quite capably, but that wasn't really how the GPT
+was setup, so there is a misalignment of stated
+product offering and the form that the product
+takes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

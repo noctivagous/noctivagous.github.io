@@ -41,7 +41,7 @@ More touch operation buttons:
 
 -- "Toggle" - This will turn a touched setting or object on and off, opposite its current state and this can apply to many circumstances.
 
--- "Replace" - The object to be replaced is tapped followed by the one that will replace it.  This pairs with "Swap" in which the two objects' positions are swapped after tapping both of them.
+-- "Replace" - The object to be replaced is tapped followed by the one that will replace it.  This pairs "Swap" in which the two objects' positions are swapped after tapping both of them.
 
 
 Fortunately, the touch operation buttons can reduce the need for what are currently called "gestures" because even a replacement "Zoom" touch operation button will provide more precise control over the zoom while "Zoom" is being held down, allowing the user to go even slower than today.  Likewise, a "Rotate" touch operation button will provide greater real-time precision for the user than a rotate "gesture". In the case it is still desired to have "gestures," there can be many types of swipe, rotate, or two-finger scrolling according to the touch operation buttons.  But since zoom, rotate, and pan are such commonly accessed features they may have their own dedicated touch operation buttons on the device anyway.   If they do not, the remaining advantage of accepting "gestures" is that they allow freeing up button space in the touch operations column.
@@ -71,17 +71,19 @@ The touch operation pairs are general purpose.  A window is closed with "Close,"
 
 The "Multiple" Touch Operation Modifier
 
-Like the shift key on the keyboard, the "Multiple" key on the device allows selecting more than one object at a time.  It is a modifier button, which is what the shift key is.  During typing it acts as the shift key, too.  Where this key is placed is not certain at the moment, but could be on the side, where less frequently accessed keys are normally accessed.
+Like the shift key on the keyboard, the "Multiple" key on the device allows selecting more than one object at a time.  It is a modifier button, which is what the shift key is.  During typing would act as the shift key, too.  Where this key is placed is not certain currently, but could be on the side, where less frequently accessed keys are normally accessed.
+
 
 
 
 Mode Buttons Column
 
-On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of a certain context.  All apps running on the tablet would utilize these buttons as a primary means of interaction with the app, because all complex apps have states or modes.   Again, each of these buttons will be backed by individual LCD screens to give the software developer's flexibility.  The purpose of these mode buttons is to support anything that is a mode or state.  Most apps have various modes: viewing and editing being the most fundamental for apps that produce data of some sort.  Configuring preferences is another mode and when both the software developer and the user thinks in terms of "mode," because the device is built that way, there is no need for the user to look up specific conventions for opening the settings window.  (It's also possible to make a "Configure" touch operation button so that with a touch anything on the screen can be configured).
+On the right side of the device's screen can sit mode buttons that are utilized by all apps.  These buttons do not modify the touch but instead the entirety of the app's mode or the mode of a certain context.  All apps running on the tablet would utilize these buttons as a primary interface, because all complex apps have states or modes, a mode generally regarded as a large collection of states and functionality like on any consumer machine.  Modes are not generally discussed as a topic specifically in software development but they are a central aspect, as changing a tool in a photo editor is changing a mode and the toolbar is a collection of modes.  It is just that the names "toolbar" and "tools" were used instead.   Most apps carry a variety of modes, with viewing and editing modes being the most fundamental for apps that produce data of some sort.  When apps can be written around a set of physical mode and state controls, the apps will be higher quality for user interaction. The conceptual internals of an app and computing system are being represented on the outside of this device, next to the screen.
 
-Other uses of modes include switching on and off special submodes of editing in the app.  The mode buttons should be able to accommodate anything needed involving modes, submodes, and states. 
+Again, each of these buttons will be backed by individual LCD screens to give the software developer's flexibility.  The purpose of these mode buttons is to support anything that is a mode or state.   Configuring preferences is another mode, and when both the software developer and the user thinks in terms of "mode," because the device is built that way, there is less need for the user to look up specific conventions, such as for opening the settings window.  (It's also possible to make a "Configure" touch operation button so that with a touch anything on the screen can be configured, but this would not be a mode but more like a way to trigger a configuration popover).
 
-The conceptual internals of an app and computing system are being represented on the outside of this device, around the screen.
+Other uses of modes include switching on and off submodes of editing in the app.  The mode buttons should be able to accommodate anything needed involving modes, submodes, and states.
+
 
 
 
@@ -97,6 +99,7 @@ Lastly, it is possible to supplement this data entry meta mode through buttons p
 
 
 
+
 Reaction Buttons Such as "Undo" and "Redo"
 
 One could say that pressing "Undo" is unlike other types of functions activated in that it is a reaction to a mistake, thus this is a reaction type of function or button.   When something relates to reacting, it is a candidate for a physical button instead of space on the touchscreen.  In an app, "Undo" and "Redo" act on a maintained list of user operation history that is most often out of view.  The two "Undo" and "Redo" buttons will not exist as touch operations because they act on the last operation done.  They sit next to the touch operation buttons because they undo or redo what was just done by a touch operation.
@@ -104,7 +107,9 @@ One could say that pressing "Undo" is unlike other types of functions activated 
 Reaction buttons can be said to be those which are used by the user quickly in response to an immediate change or request from the app. The periphery of the device is a suitable place to place these reaction buttons because the hands are close.  For example, if anything isn't right or should be exited, the user will want to press the "Escape" button in the top left of the device and it takes no time to press it.  If something needs to be confirmed, the user can press the "Accept/Proceed" key in the bottom right corner of the device.  Why include physical buttons when a person can touch the screen itself?  Because the less movement of the hands the better with respect to these types of user actions.
 
 
+
 Union (Add), Subtract, Intersection Buttons
+
 
 
 No Confirmation Dialog Boxes ("Are You Sure?") Needed Because of Implicit Confirmation Pathways
@@ -113,9 +118,11 @@ If an object is selected and it is of sensitive value for deletion (deleting it 
 
 
 
+
 Scrolling-Averse System Conventions
 
 Noctivagous takes the position that a large amount of vertical scrolling is harmful to the user, is uncomfortable, and is a substitute for what should actually exist more often, which is proper transitioning of content (sliding, for example) that is at all times correctly sized to the device's frame dimensions.  That is, content should generally be swapped in and out carousel-style or otherwise, faded in smoothly.  It can be paginated more often and the device itself would carry two buttons for forward and backwards.  Content should be clipped less and therefore require scrolling les.  Information in the future can be prepared and laid out such that it is fitted for the dimensions of the device. "Forward" and  "Backwards" slides or fades in content within the same frame, just like any ebook reader for example, and nothing has to be moved into the frame of the device through scrolling.  This is especially applicable to consumption of information.  The web itself should be refitted in this way for long pages.
+
 
 
 
@@ -126,14 +133,25 @@ A hardware feature that is considered, but is optional, for a Noctivagous tablet
 
 
 
+Future Programming Through Touch Operation Buttons
+
+In many ways, programming involves the insertion of containers of operations, so there is no difficulty changing the purpose of the touch operation buttons to insert various types of operations in a document of code.  In addition, with some touch operation buttons meant for code, the arrows drawn by the touch can represent various types of functionality for the program.
+
+
+
 
 NOCTIVAGOUS.GITHUB.IO
 
 
 
 
+
 ----
 
+
+
+
+---
 
 With touch operations, it is also possible that something is deleted not through the use of a "delete" modifier next to a "close" modifier but instead tapping an object twice with "close," with it darkening as a warning that it will be deleted will be the way to delete something.  Other modifier keys include "route" such as for opening a file in a specific application, because "route" is a very generic keyword that can apply to many situations.
 

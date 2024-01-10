@@ -124,7 +124,7 @@ No Confirmation Dialog Boxes ("Are You Sure?") Needed Because of Implicit Confir
 
 If an object is selected and it is of sensitive value for deletion (deleting it could create a problem if done on accident), then the following is how to delete it: the "Remove" touch operation button is held down and that object is tapped three times, with the object darkening with each tap.  On the third tap it is deleted. Thus, in this case there is no need to display a warning dialog box for the user that asks, "Are you sure you want to delete this?"  The pathway for the actionhas been set up so that confirmation is implicit and takes place through the action.  Many types of confirmation dialog boxes can be eliminated this way, such as through confirmation sequences where two objects are tapped in alternation or in a pattern.
 
-In addition to this, many functions of the hardware can exist in the following way.  The "Close" and "Hide" touch operation buttons are held down at the same time and then the screen is tapped three times to power off the tablet.  If it is tapped two times, it puts the device to sleep.
+In addition to this, many functions of the hardware can exist in the following way.  The "Close" and "Hide" touch operation buttons are held down at the same time and then the screen is tapped three times to put the tablet to sleep.  If it is tapped four times, it powers off the device.  Two times will quit the current app.  So there is a related progression placed inside a category, which is another helpful concept for a new type of tablet UI, to eliminate the proliferation of isolated functions.
 
 
 

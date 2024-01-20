@@ -4,6 +4,13 @@ Examining Mobile App Stores on Tablet Computers and Touchscreen Smartphones
 The Greed of Apple and Google That Is Concealed from The Public by The Technical Conditions; A Deeper Understanding of Apple's iOS and Google's Android, Provided by a Software Developer
 
 
+The Issue of Touch Mobile Software Versus Desktop Software
+
+Previous to Steve Jobs' iPad, which was launched in 2010, the fundamental problem with tablet computers was that the apps and the system UI were left the same as desktop. The required step of converting the user interface from mouse cursor to touches had not been undertaken by anyone, indicating a lack of understanding of UI principles by the industry.  Strangely, after more than a decade Microsoft still has not become aware of this and today ships its Microsoft Surface tablets computers without bundling a separate, touch version of Windows (which would have to be matched with a corresponding SDK for software developers so they can make touch-specific apps).  Instead, on this matter Microsoft laments an isolated and unrelated concern, that its touch-based smartphone did not gain popularity.  This is beside the point.  The entire reason why Microsoft Surface tablets would ever be purchasable today is that Steve Jobs' iPad team carried out the work and converted desktop software conventions to touch.  Why then does Microsoft not offer a touch UI mode for its Windows apps when they are shipped on Microsoft Surface tablets?
+
+It is something this minor that can settle the Android and Apple app store debate: every person who writes application software knows that there nothing essential about a touch UI that dicates fusing it to an app store, as it is merely a reconfiguration of desktop conventions (e.g. making the buttons bigger for touch, removing the system menu at the top, or deciding not to make use of windows).  It takes expertise to this, which is not to be taken lightly, but the tablet isn't an altogether different computer with significantly different OS internals.
+
+
 
 NOCTIVAGOUS.GITHUB.IO
 

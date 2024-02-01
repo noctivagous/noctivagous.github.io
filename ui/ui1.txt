@@ -1,0 +1,21 @@
+
+Many user interface principles for interaction design have gone unrecognized but are present
+in existing products like desktop computers, mobile touchscreen phones,
+and touchscreen tablets.  The following applies to the use of personal
+computers for long periods of time for work.
+
+-- The arms and hands should generally be relaxed and lay flat for long 
+periods of time and the user interface should almost never require lifting the arms up to the screen
+or midair.
+
+
+-- Physical resistance is needed generally for user interfaces and flat, unresponsive
+environments are less than ideal.  A physical button or other control provides
+the necessary sensation of resistance, as does a rotary knob or thumbwheel found
+on the side of a device.  An experience of physical feedback is preferable to the benefits of
+dynamic user interface given by a tablet screen.
+
+-- User interface targets for virtual ("spatial") computing should not be in midair, 
+on flat surfaces repurposed for control.  Instead, interaction 
+hardware should be in use that is multipurpose, carrying a variety of controls.
+

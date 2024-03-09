@@ -1,0 +1,118 @@
+Questions about Generative AI for The Consumer
+
+Intelligent entities made out of machinery
+that carry out jobs for you
+        vs.
+A programmatic tool that you control (traditional software)
+as part of your job
+
+noctivagous.github.io
+
+There is often a marketing claim by a software vendor
+that its application offers "unlimited possibilities" in its
+domain.  This is a common claim in technology and can even appear true at 
+first glance.  Programming with nodes (patches), for example,
+seems to offer boundless possibilities because the program
+is updated in real time with each alteration of the running program, 
+but in actuality there are hidden drawbacks produced by the interface of 
+clicking and dragging the nodes and their connectors, and in addition to this
+there is a loss of granularity of control of the program's design
+compared to typewritten code.  So, while there are
+significant advantages, the downsides have not been enumerated
+enough, which means that the average user and the industry
+as a whole has a vague understanding of the benefits and trade-offs of using
+this kind of programming technology, so it can never improve.  
+Some people are happy to use it while others dislike it strongly, 
+and the causes of either viewpoint aren't discussed.
+Generative AI has produced the same situation in that there
+hasn't been much in the way of identifying what is helpful
+and what is irritating about it, what are its weaknesses; 
+what can it actually do regularly that is helpful as 
+opposed to what it seems like it could do.  It can be made 
+to pull off feats, such as taking an image and turning it 
+into a web page, but these feats are not always in line with 
+how people approach their work, even though they are impressive in demos.
+
+In reality, computer programs (software applications) carry
+tendencies that lead the user down certain paths.  For example, when
+software is used to produce art they are not just art programs 
+the designer is using, but computer programs that necessarily 
+produce works with common characteristics and unintentional aesthetics.  
+Importantly, unlike previous art tools, the software is usually made by people
+in the sciences rather than artists and designers from the art community.
+So, while the software meets many design needs exceptionally,
+there are many aspects that make the artist uncomfortable.  These
+programs will continue to be used anyway because of the overwhelming
+power in certain areas, even as they (just like node-based programming)
+have drawbacks in terms of user interface.
+
+Conventional computer programs provide the user specific
+strengths, usually in the area of repetition
+and precision and sometimes there are major deficiencies.
+In the case of art and design programs, this usually appears
+whenever they attempt to match the experience of
+traditional work processes (e.g. working on a graphic design
+studio table with a cutting knife and mat). 
+It is easy to draw a high-precision circle
+or produce fine typography in a vector-drawing program,
+but usually challenging to produce other types of shapes
+and complex shading as easily on paper in a natural way.
+
+This is an issue that pertains to AI as well, which is
+the matter of the user being provided adequate control over the output 
+and the acknowledgment that the output will carry characteristics
+resulting from AI.
+
+The problem with many software applications, such
+as vector-drawing programs, is that their output is
+often difficult to control even though they can produce
+some types of complex imagery precisely and more quickly and than
+an artist working by hand.  The output of generative AI
+is often difficult to control as well.  This points to a principle:
+when the interface between the person and the machine is
+imprecise such that the results are difficult to control,
+the software feels unsatisfactory or even frustrating but the gains in
+certain areas (e.g. precision, repetition) are so
+significant that the world feels like it cannot go backwards
+or do without the new technology.
+
+Current generative AI products are the same.
+A plain text prompt is often an unsatisfactory interface for
+generative AI and it is imprecise.  In addition, there are 
+other concerns that appear when it is just written words that
+produce output.  If a person prompts the AI to make video with 
+a scene of Tokyo, but the AI does it all for you, what is the point
+when real footage usually needs to be tailored for the production?
+What part of Tokyo?  What season? If you didn't specify, the AI 
+has to fill in these details.  But on your own you have to think 
+of all of these aspects yourself and you won't think of them.
+The text prompt is itself a possible problem because of the following:
+"a picture is worth a thousand words," and in reality 970 words will be made
+up by the AI after you prompt it with 30.  Since 30 out of 970
+is a small proportion of user involvement in the output, the
+generative AI will be regarded as a parlor trick or novelty much of the time.
+Why isn't the technology world swamping Hugging Face and using AI all the time
+right now?  It is because most of what is shown is a parlor trick.
+
+The AI produces its own style when it generates
+an image, video, or text, too.  Is that style always right
+for a project?  At what level is the person allowing the AI to dictate
+the outcome with its own style?  Even though the AI produces
+images based on training data, how it combines and synthesizes
+for an output is idiosyncratic, with stylistic tendencies indicative
+of AI and how it works under the hood.
+
+What will the AI lapse in doing implicitly
+that you want it to do (that a person would always do)?
+Where are people settling for inferior results simply because
+they can get a convenient output?
+
+Also, what does the AI put in the product that you don't want and
+that you have to remove or modify manually afterwards?  The less
+control you have, the more frequently this will happen.
+
+The AI hasn't just been trained on data, it also generates output
+in a specific way characteristic of the AI itself, and this should
+be pointed out regularly.
+
+

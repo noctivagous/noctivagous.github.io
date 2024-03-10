@@ -330,50 +330,58 @@ Many benefits will emerge when code is finally converted to a formal document fo
 
  <p> 
   What is important to note is that for the graphic designer, though not necessarily
-  the typical software engineer, once today's computer code is shown to be completely 
+  the typical software engineer, once today's computer code is explained as completely 
   tied to the basic .TXT file format, all discussions about feature differences existing 
   between the various programming languages are obviously 
  taking place inside a tiny frame of view, which is what can be typed into the .TXT file format,
  a sequence of ASCII or Unicode characters.   
  Consider that in some programming languages, functions start and end 
- with the keywords "define" and "end" while most others use beginning and 
- ending curly braces, all of which is using typographic characters to establish boundaries. 
+ with the keywords "define" and "end" while most others (C++, Java, C#) use beginning and 
+ ending curly braces.  To the graphic designer, all of this is using typographic characters 
+ to establish boundaries. 
  But in a programming language not constrained by .TXT, there will be no beginning and 
- ending keywords (or characters) needed to make the boundaries.  
- Instead, the contents of a function will be enclosed in a graphical bordered box, 
+ ending characters needed to make the boundaries of a body of code.  
+ Instead, the contents of a function or other section of code will be enclosed in a graphical, bordered box, 
  as the file of text will no longer be .TXT but rendered from a document (e.g. rendered from XML).
- At that point, the focus of the user interface will be to allow the programmer to 
- change, add, or remove the graphical boxes rapidly (that enclose the loops, functions, and other bodies of code), 
- and it will involve making use of interactive keyboard commands, not typing out '{' or '}'.
- The user interface principles will have to be more sophisticated than
- what is currently used for code, and so discussed on this page are the key-click UI and
- other user interface concepts.
+ At that point, the focus of the user interface will move away from plain typing to 
+facilitating the modification, adding, or removal the graphical boxes rapidly (that enclose the loops, functions, and other bodies of code). 
+ It will involve making use of interactive keyboard commands, not typing out '{' or '}',
+ and the IDE will take on the form of a media production app, like a vector-drawing program,
+ because the code will be modernized. The user interface principles will have to be more sophisticated than
+ what is currently used for code, which is typing, and so discussed on this page are the key-click UI and
+ other user interface concepts, such as the npsurfer web browsing plug-in that demonstrates
+ a UI, a certain way to access a section of the screen quickly.
 
 
  
  <p>
-  The replacement of curly brace characters with bordered boxes, and the implications that follow
-  such a change, demonstrate why the features of any mainstream programming language  cannot extend 
- outside of what the .TXT file format provides.  It is a debate about what characters should begin
- and end the bounds of a function (curly braces or keywords), but that kind of debate
+  The replacement of curly brace characters with bordered boxes brings with it broad-ranging
+  implications in other areas of code and what it can offer the software engineer. 
+  Just this one change demonstrates how the features of any mainstream programming language are
+  confined to what the .TXT file format provides, as .TXT cannot draw graphical boxes.  
+  Within that file format, it is a debate about what characters should begin
+ and end the bounds of a function (curly braces, line breaks, or keywords), but that kind of debate
  disappears when it is a graphical box enclosing the contents of a function.
- The design decisions that differentiate one programming language from another
+ Thus, the design decisions that differentiate one programming language from another
   exist within this limited and ubiquitous file format, plain text. 
-  Since it is so restrictive, having
-  no structured data inside it, what is actually the case is that the feature
+  Since it is so restrictive, having no structured data inside it and being
+  a 1:1 typographic rendering of the data contents of the file, what is actually the case is that the feature
   differences between programming languages are rather miniscule compared to the open
   vista that a document format provides.  The
   mainstream programming languages all exist within what characters .TXT accepts, but
-  a document format will accept much more than typewritten characters.
+  a document format will extend far beyond lines of monospaced, typewritten characters.
   A programming language can someday manifest as anything that involves
-  a more graphical and interactive state: it can include semiotical diagrams
-  and a line of code can branch out into multiple lines.
+  a more graphical and interactive dynamic: it can include semiotical diagrams, images,
+  multimedia, and a line of code can branch out into multiple lines.  Importantly,
+  the organization of the information on the page will finally include graphic design
+  layout, with a more compact and readable distribution of information and far less scrolling.
 
  </p>
 
- <p>It's also important to note that many software applications today
+ <p>On the topic of software engineering work process, it's 
+  also important to note that many software applications today
   could be written in a live programming environment, but for some
-  odd reason this is only treated as relevant for a web app.  For instance,
+  odd reason this is only treated by the tech industry as relevant for a web app.  For instance,
   a calendar software application is very lightweight for today's computers,
   and there is no reason that an application like that would need to
   be written in code that has to be recompiled for every change.  

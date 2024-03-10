@@ -9,44 +9,51 @@ as part of your job
 noctivagous.github.io
 
 There is often a marketing claim by a software vendor
-that its application offers "unlimited possibilities" in its
+that its app offers "unlimited possibilities" in its
 domain.  This is a common claim in technology and can even appear true at 
 first glance.  Programming with nodes (patches), for example,
 seems to offer boundless possibilities because the program
-is updated in real time with each alteration of the running program, 
-but in actuality there are hidden drawbacks produced by the interface of 
-clicking and dragging the nodes and their connectors, and in addition to this
-there is a loss of granularity of control of the program's design
-compared to typewritten code.  So, while there are
-significant advantages, the downsides have not been enumerated
-enough, which means that the average user and the industry
+is updated in real time with each alteration of the running program.
+In actuality, there are hidden drawbacks produced by the interface of 
+clicking and dragging nodes and their connectors.  It can
+be tedious even though parameters are easily tweaked. In addition to this,
+there sometimes is a loss of granularity of control of the program's design
+compared to typewritten code and many types of software are just
+not feasible.  So, while there are significant advantages, 
+the downsides have not been enumerated by people, 
+which means that the average user and the industry
 as a whole has a vague understanding of the benefits and trade-offs of using
 this kind of programming technology, so it can never improve.  
-Some people are happy to use it while others dislike it strongly, 
-and the causes of either viewpoint aren't discussed.
+Some people are happy to use node-based programming 
+while others dislike it strongly, and the causes of either 
+viewpoint aren't discussed because no one wants to point
+out the downsides.  
+
 Generative AI has produced the same situation in that there
 hasn't been much in the way of identifying what is helpful
-and what is irritating about it, what are its weaknesses; 
-what can it actually do regularly that is helpful as 
-opposed to what it seems like it could do.  It can be made 
-to pull off feats, such as taking an image and turning it 
+and what is irritating about it. Who attempts to describe 
+its weaknesses, what can it actually do regularly that is helpful 
+to the consumer as opposed to what it seems like it could do.  
+It can be made to pull off feats, such as taking an image and turning it 
 into a web page, but these feats are not always in line with 
-how people approach their work, even though they are impressive in demos.
+how people approach their computer work, even though they are impressive in demos.
 
-In reality, computer programs (software applications) carry
-tendencies that lead the user down certain paths.  For example, when
-software is used to produce art they are not just art programs 
-the designer is using, but computer programs that necessarily 
+In reality, all computer programs (software applications), including
+current generative AI, carry tendencies that lead the user down certain paths.  
+For example, when software is used to produce art it is not just an art program
+that the designer is using, but a computer program that necessarily 
 produce works with common characteristics and unintentional aesthetics.  
 Importantly, unlike previous art tools, the software is usually made by people
 in the sciences rather than artists and designers from the art community.
 So, while the software meets many design needs exceptionally,
-there are many aspects that make the artist uncomfortable.  These
+there are other aspects that make the artist uncomfortable.  These
 programs will continue to be used anyway because of the overwhelming
-power in certain areas, even as they (just like node-based programming)
-have drawbacks in terms of user interface.
+benefits in certain areas, even as they (just like node-based programming)
+have drawbacks in terms of user interface and need improvement.
+Text, images, and videos made by AI also have unintended aesthetics
+and they also have drawbacks.
 
-Conventional computer programs provide the user specific
+Conventional computer programs provide the design user specific
 strengths, usually in the area of repetition
 and precision and sometimes there are major deficiencies.
 In the case of art and design programs, this usually appears
@@ -56,19 +63,23 @@ studio table with a cutting knife and mat).
 It is easy to draw a high-precision circle
 or produce fine typography in a vector-drawing program,
 but usually challenging to produce other types of shapes
-and complex shading as easily on paper in a natural way.
+and complex shading as easily on paper in a natural way,
+though an electronic stylus can mitigate the issue.
 
-This is an issue that pertains to AI as well, which is
+All of this discussion pertains to generative AI as well, which is
 the matter of the user being provided adequate control over the output 
 and the acknowledgment that the output will carry characteristics
-resulting from AI.
+resulting from AI.  Generally, the less precise control the user has over 
+a technology the more it takes the appearance of novelty.
+The less it is predictable, the more it will approach a gimmick.
 
 The problem with many software applications, such
 as vector-drawing programs, is that their output is
 often difficult to control even though they can produce
 some types of complex imagery precisely and more quickly and than
 an artist working by hand.  The output of generative AI
-is often difficult to control as well.  This points to a principle:
+is often difficult to control as well and its predictability
+is both variable and vague.  This points to a principle:
 when the interface between the person and the machine is
 imprecise such that the results are difficult to control,
 the software feels unsatisfactory or even frustrating but the gains in

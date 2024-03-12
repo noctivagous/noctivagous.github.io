@@ -315,53 +315,61 @@ Though AI is currently introducing a new paradigm to the world, there is still m
 about computers that needs to be upgraded. First, computer code files should be made out of structured data.  Code 
 files are still made of plain text and in practice this is interpreted and utilized in modern
 software development as if it provides structured data even though it does not. 
-All activities related to programming software are taking on this trend, which is the 
-modernization of code without going about it in a deliberate way. Enhancements to code that improve
-interactivity and user control are being provided by IDEs because they 
+All activities related to programming software are moving in this direction, which is the 
+modernization of code without carrying it out in a deliberate way. Enhancements to code that improve
+interactivity and user control are being provided by IDEs. To do this, they 
 project non-existent structure onto the code file for the benefit of the user, 
-including keyword highlighting, code completion.
-Increasingly, they treat a  file of code (.TXT) as a conventional application document, doing
-user interface gymnastics with this stream of ASCII characters.
+including keyword highlighting (code provides no highlighting hints in the file data), collapsible sections,
+and code completion.  Increasingly, IDEs treat a  file of code (.TXT) as a 
+conventional application document, undertaking user 
+interface gymnastics with this stream of ASCII characters.
 <p>
 Many benefits will emerge when code is finally converted to a formal document format, 
  including a leap in parseability by the compilers and the IDEs themselves, as they will
- be parsing XML or other structure data instead of plain text.  Plain text 
- carries too much ambiguity for live parsing, and deleting a singl curly brace can totally confuse
+ be parsing XML (or other structure data) instead of plain text.  Plain text 
+ carries too much ambiguity for live parsing, and deleting a single curly brace can totally confuse
  the compiler.   When code is finally translated into a document format, which will support interactivity,
- the quality of interaction with code will improve as well.  Many features will become feasible,
- such as the ability to survey a project of code in the format of a map or schematics,
+ the quality of users' interaction with code will improve greatly.  Many features will become feasible,
+ such as the ability to survey a project of code in the format of a map overview or schematics,
  zoomable just like CAD because the code files have formal structure in them.  Especially
- if the code files are made out of XML, the ability to add attributes to the markup will take
- computer code to a new level for sure.
+ if the code files are made out of XML, the ability to add attributes to the underlying markup will take
+ computer code to a new level.  A function will not just show up as &lt;function&gt; in the file, 
+ but allow the insertion of element attributes inside the &lt;function&gt; tag that provide for
+ much broader configuration.
 
  <p> 
-  What is important to note is that for the graphic designer, though not necessarily
-  the typical software engineer, once today's computer code is explained as completely 
+  Resistance to changing the file format of code and modernizing often comes out of
+  a lack of understanding of what the problems are with keeping .TXT as the file format today.
+ For the graphic designer, though not necessarily
+  the typical software engineer, once today's computer code is exposed as completely 
   tied to the basic .TXT file format, all discussions about feature differences existing 
   between the various programming languages are taking place inside a tiny frame of view, 
   which is what can be typed into the .TXT file format, a sequence of ASCII or Unicode characters.   
-The graphic designer knows right away how limiting this is.
+The graphic designer knows immediately how limiting this is because the means of dividing information
+on the page amounts to whitespace and nothing more.
   Consider that in some programming languages, functions start and end 
  with the keywords "define" and "end" while most others (C++, Java, C#) use beginning and 
  ending curly braces.  To the graphic designer, all of this is using typographic characters 
  to establish box boundaries. 
  <p>
  In a programming language that is not constrained by .TXT, there will be no beginning and 
- ending characters needed to establish the boundaries of a body of code.  
+ ending characters typed out for the purpose of establishing the boundaries of a body of code.  
  Instead, the contents of a function or other section will be enclosed in a graphical, bordered box, 
  as the file of text will no longer be .TXT but rendered from a document (e.g. rendered from XML).
  At that point, the focus of the user interface will move away from simple typing to the
 active facilitation of modifying, adding, or removing the bordered graphical boxes rapidly (the ones
 that enclose the loops, functions, and other bodies of code). 
  It will involve making use of interactive keyboard commands, not typing out '{' or '}',
- and the IDE will begin to resemble a media production app, like a vector-drawing program or animation suite,
- because the code will be modernized and the code document will have modern capabilities. 
+ and the IDE will begin to resemble a media production app, like a vector-drawing program or animation program,
+ because the code will be modernized and the code document will have modern software capabilities. 
  The user interface principles will have to be more sophisticated than
  what is currently used for code, which is typing, and so discussed on this page are the key-click UI and
  other user interface concepts such as Noctivagous' npsurfer web browsing extension that demonstrates
- a certain type of UI for accessing a section of the screen quickly without the mouse.
- (Future code interactivity should not be reliant on the mouse unless the mouse is used as part of the key-click UI.)
-
+ a UI for accessing a certain section of the screen quickly without the mouse. In short,
+ future code interactivity should not be reliant on the mouse unless the mouse is used as part of the key-click UI.
+ Reluctance to upgrading code also is frequently a result of the concern by software engineers
+ that the mouse will be the focus instead of the much faster keyboard, which shows its
+ classic strengths in the command line interface.
 
  
  <p>

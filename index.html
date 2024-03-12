@@ -316,17 +316,17 @@ about computers that needs to be upgraded. First, computer code files should be 
 files are still made of plain text and in practice this is interpreted and utilized in modern
 software development as if it provides structured data even though it does not. 
 All activities related to programming software are moving in this direction, which is the 
-modernization of code without carrying it out in a deliberate way. Enhancements to code that improve
-interactivity and user control are being provided by IDEs. To do this, they 
-project non-existent structure onto the code file for the benefit of the user, 
-including keyword highlighting (code provides no highlighting hints in the file data), collapsible sections,
-and code completion.  Increasingly, IDEs treat a  file of code (.TXT) as a 
-conventional application document, undertaking user 
+modernization of code without carrying it out in a deliberate way.  Increasingly, IDEs are
+providing enhancements to code that improve interactivity and user control over the code. To do this, they 
+project non-existent structure onto the code file for the benefit of the user and they analyze it constantly
+to make keyword highlighting (code, of course, provides no highlighting hints in the file data), collapsible sections,
+and code completion.  Increasingly, IDEs treat a single file of code (.TXT) as a 
+conventional application document but it takes place in an unrecognized way, undertaking user 
 interface gymnastics with this stream of ASCII characters.
 <p>
 Many benefits will emerge when code is finally converted to a formal document format, 
  including a leap in parseability by the compilers and the IDEs themselves, as they will
- be parsing XML (or other structure data) instead of plain text.  Plain text 
+ be parsing structure data like XML instead of plain text.  Plain text 
  carries too much ambiguity for live parsing, and deleting a single curly brace can totally confuse
  the compiler.   When code is finally translated into a document format, which will support interactivity,
  the quality of users' interaction with code will improve greatly.  Many features will become feasible,
@@ -334,54 +334,56 @@ Many benefits will emerge when code is finally converted to a formal document fo
  zoomable just like CAD because the code files have formal structure in them.  Especially
  if the code files are made out of XML, the ability to add attributes to the underlying markup will take
  computer code to a new level.  A function will not just show up as &lt;function&gt; in the file, 
- but allow the insertion of element attributes inside the &lt;function&gt; tag that provide for
+ but allow the insertion of custom attributes inside the &lt;function&gt; tag that provide for
  much broader configuration.
 
  <p> 
   Resistance to changing the file format of code and modernizing often comes out of
-  a lack of understanding of what the problems are with keeping .TXT as the file format today.
+  a lack of understanding of the problems that result from keeping .TXT as the file format today.
  For the graphic designer, though not necessarily
-  the typical software engineer, once today's computer code is exposed as completely 
-  tied to the basic .TXT file format, all discussions about feature differences existing 
-  between the various programming languages are taking place inside a tiny frame of view, 
+  the typical software engineer, once today's computer code is revealed as completely 
+  tied to the basic .TXT file format, all discussions about feature differences 
+  between the various programming languages are obviously taking place inside a tiny frame of view, 
   which is what can be typed into the .TXT file format, a sequence of ASCII or Unicode characters.   
 The graphic designer knows immediately how limiting this is because the means of dividing information
-on the page amounts to whitespace and nothing more.
+on the page amounts to line breaks and whitespace and nothing more.
   Consider that in some programming languages, functions start and end 
- with the keywords "define" and "end" while most others (C++, Java, C#) use beginning and 
+ with the keywords "define" and "end" while in most others (C++, Java, C#) there are beginning and 
  ending curly braces.  To the graphic designer, all of this is using typographic characters 
  to establish box boundaries. 
  <p>
- In a programming language that is not constrained by .TXT, there will be no beginning and 
- ending characters typed out for the purpose of establishing the boundaries of a body of code.  
+ In a programming language that is not constrained by .TXT, there will be no typing out of beginning and 
+ ending characters just to establish the box boundaries of a body of code.  
  Instead, the contents of a function or other section will be enclosed in a graphical, bordered box, 
  as the file of text will no longer be .TXT but rendered from a document (e.g. rendered from XML).
- At that point, the focus of the user interface will move away from simple typing to the
-active facilitation of modifying, adding, or removing the bordered graphical boxes rapidly (the ones
+ At that point, the focus of the user interface will move away from simple typing to a more compled dynamic,
+including active facilitation of modifying, adding, or removing the bordered graphical boxes rapidly (the ones
 that enclose the loops, functions, and other bodies of code). 
  It will involve making use of interactive keyboard commands, not typing out '{' or '}',
  and the IDE will begin to resemble a media production app, like a vector-drawing program or animation program,
- because the code will be modernized and the code document will have modern software capabilities. 
+ because the code will be modernized; the code document will have modern software capabilities. 
  The user interface principles will have to be more sophisticated than
  what is currently used for code, which is typing, and so discussed on this page are the key-click UI and
  other user interface concepts such as Noctivagous' npsurfer web browsing extension that demonstrates
  a UI for accessing a certain section of the screen quickly without the mouse. In short,
- future code interactivity should not be reliant on the mouse unless the mouse is used as part of the key-click UI.
+ future code interactivity should not rely on the mouse unless the mouse is used as part of the key-click UI.
  Reluctance to upgrading code also is frequently a result of the concern by software engineers
- that the mouse will be the focus instead of the much faster keyboard, which shows its
- classic strengths in the command line interface.
+ that the clicking mouse will be the focus instead of the much faster keyboard, which shows its
+ strengths in the classic command line interface.
 
  
  <p>
   The replacement of curly brace characters with bordered boxes brings with it broad-ranging
-  implications in other areas of code and what a document of code can offer the software engineer. 
-  Just this one change demonstrates how the features of any mainstream programming language are
+  opportunities in other areas of code and what a document of code can offer the software engineer. 
+  Just this one change demonstrates how the features of any mainstream programming language are currently
   confined to what the .TXT file format provides, as .TXT cannot draw graphical boxes and so it cannot
   draw anything else and is stuck in the early days of mainframe computing.  
-  Speapking within the constraints of that primitive file format, it is a debate about what characters should 
-  define the bounds of a function (will it be curly braces, line breaks, or keywords?), but that kind of debate
- disappears when it is a graphical box enclosing the contents of a function.  Removing a single curly
- brace won't break the entire project of code, as is currently the case.
+  Speaking within the constraints of that primitive file format, it is a debate about what characters should 
+  define the bounds of a function (will it be curly braces, line breaks, or keywords?) and all similar
+  personal preferences, such as whether a line should end in semicolon.  But that kind of debate
+ disappears when it is a graphical box enclosing the contents of a function.  When a line of code
+ is rendered from XML it doesn't need to have semicolons terminating it.  Omitting a semicolon or 
+ removing a single curly brace won't break the entire project of code, as is currently the case.
  <p>
  Thus, the design decisions that differentiate one programming language from another
   exist within this limited and ubiquitous file format, plain text. 

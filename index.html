@@ -335,17 +335,20 @@ font-weight:normal;
   <p>
     Meanwhile, in mainstream software development, IDEs are increasingly 
     providing enhancements to code that improve its interactive capabilities
-     and provide greater control over projects. But to do this, they project 
+     and provide greater control. But to do this, they project 
      non-existent structure onto the code file for the benefit of user 
      interaction: they analyze it constantly in the background to make 
      collapsible sections, dropdown menus of the file's contents, and 
      code completion popovers. This shows that IDEs have begun to treat 
      a single file of code (.TXT) as a conventional application document 
-     but this phenomenon is happening in an unofficial or unrecognized 
+     but this phenomenon is happening in an unrecognized 
      way. The IDEs undertake user interface gymnastics with this stream
       of ASCII characters to implement the code features just mentioned. 
       The most honest picture of how code actually exists is available 
-      by opening it up in a basic text editor like Microsoft's Notepad.  Like it or not, everything else is actually a hack, including keyword coloring (code, of course, provides no coloring markup in the plain text file data).
+      by opening it up in a basic text editor like Microsoft's Notepad. 
+       Like it or not, everything else is actually a hack, 
+       including keyword coloring (code, of course, provides no coloring 
+       markup in the plain text file data).
 
 <p>
   Many benefits will emerge when code is finally converted to a formal document format, 
@@ -359,15 +362,27 @@ font-weight:normal;
    typos will be preventable that entirely halt compilation (such as 
    deleting a single character). Many features will become feasible, 
    such as the ability to survey a project of code in the form of a
-    map or schematics overview.  It will be zoomable just like CAD because the code files have formal structure in them. Especially if the code files are made out of XML, the ability to add attributes to the underlying markup will take computer programming languages to a new level. A function will not just show up in the markup as <function> but allow the insertion of custom attributes inside the <function> tag that provide for much broader configuration that are rendered for the programmer. In addition, an individual line of code will be more powerful because it can contain more complex statements, made out of graphical components and even allowing controls natively like data tables and tab views.  An object variable will be assignable to a tab view control that has many configuration parameters for that object.
-        A spline object variable will be assignable to a spline editor control where it can be edited inside the  the line of code in that code document.
+    map or schematics overview.  It will be zoomable just like CAD
+   because the code files have formal structure in them. 
+   Especially if the code files are made out of XML, 
+   the ability to add attributes to the underlying markup will 
+   take computer programming languages to a new level.
+    A function will not just show up in the markup as
+     <function> but allow the insertion of custom attributes inside the <function> XML element 
+      that provide for much broader configuration that are rendered for the programmer.
+       In addition, an individual line of code will be more powerful
+        because it can contain more complex statements, 
+        made out of graphical components and even allowing 
+        controls natively like data tables and tab views.  An object variable will be assignable to a tab view control that has many configuration parameters for that object.
+        A spline object variable will be assignable to a spline editor control where it can be edited inside 
+       the line of code.
 
 
  <p> 
   Resistance to changing the file format of code and modernizing 
   it often comes out of a lack of understanding of the problems 
-  that result from keeping .TXT as the file format today, and it starts with some discussion about graphic design.
-
+  that result from keeping .TXT as the file format today, and addressing that 
+  starts with some discussion about graphic design.
  For the graphic designer, though not necessarily
   the software engineer, once today's computer code is revealed as completely 
   tied to the rudimentary .TXT file format, all of the feature differences 
@@ -375,21 +390,22 @@ font-weight:normal;
   taking place inside a tiny frame of view, 
   which is what can be typed into the .TXT file format, a sequence of ASCII or Unicode characters.   
 The graphic designer knows immediately how limiting this is because the means of dividing information
-on the page amounts to line breaks and whitespace and nothing more. 
+on the page amounts to manually-typed line breaks and whitespace and nothing more. 
   Consider that in some programming languages, functions start and end 
  with the keywords "define" and "end" while in most others (C++, Java, C#) there are beginning and 
  ending curly braces.  To the graphic designer, all of this is using typographic characters 
  to establish box boundaries. The result is a mess of curly braces scattered
- on the page, and the only provided way to tidy it up is through the tab key.  It's too primitive.
- There is only vertical division of information (line breaks between sections of code) in plain text, not horizontal.
+ down the page, and the only provided way to keep it tidy is through the tab key.  It's too primitive.
+ There is only vertical division of information (line breaks between sections of code) in plain text, 
+ and nothing can flow horizontally.
  <p>
  In a programming language that is not constrained by .TXT, there will be no typing out of beginning and 
  ending curly braces just to establish the box boundaries of a body of code.  This a task the software
  engineer shouldn't have to deal with, the maintenance of box boundaries.   
  Instead, the contents of a function (or other code section) will be enclosed in a graphical, bordered box, 
  as the file of text will no longer be .TXT but rendered from a document format (e.g. rendered from XML).
- The bordered boxes, the containers of code, will not only flow vertically as in plain text but 
- will be flowable horizontally at the same time like a magazine layout.
+ The bordered boxes (the containers for sections of code) will not only flow vertically as in plain text but 
+ will be flowable horizontally at the same time, like how a magazine layout has multiple columns.
  At that point, the focus of the user interface will move away from simple typing to a more complex dynamic.
 <!-- Replacing the curly braces will be the modifying, adding, or removing the bordered graphical boxes rapidly (the ones
 that enclose the loops, functions, and other bodies of code). -->

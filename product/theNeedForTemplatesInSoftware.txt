@@ -29,3 +29,11 @@ building block on both the front end and the back end,
 companies came in like WordPress supplied them for the backend while
 others like Wix and the Bootstrap plugin fill them in
 for the front end.
+
+When the crowdfunding industry began, the first all-or-nothing
+crowdfunding website, Fundable, provided a list of examples
+for users so that they had some guidance for how to use
+the website, as asking the website visitor to apply 
+the abstract all-or-nothing collection model to his or her
+own life was too much to ask and the website would have sat
+there unused.

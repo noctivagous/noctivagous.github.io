@@ -1,89 +1,51 @@
-My browser extension that I prototyped
-just over a year ago, called NPSurfer, 
-passed the iPod test.  I found myself using it 
-every day, and when it was missing I wished it was there.
-
-I call it "The iPod Test" because it is the requirement
-a consumer product can be measured by: 
-do you want to use it regularly because you find it to be helpful?  
-How does it help you? Is it ever something of great value to you?  
+MEASURING THE UTILITY AND COMPLETENESSOF A PRODUCT: The iPod Test - Will You Use It Regularly?
+noctivagous.github.io
+Noctivagous' concept, "The iPod Test" is the requirement that a
+a consumer product is measured by the following questions.It represents the reception of a product by the consumer.-- Do you want to use it regularly because you find it helpful?  
+-- How does it help you? -- Does it eventually become something of great value to you?  
 The electric pressure cooker passes the iPod test
-and, viewing it without having used one, so does 
-the air fryer.
+and the air fryer does so as well because of the cookingconveniences the two appliances provide.  All peoplewho purchase these products recognize their valuefor the kitchen as long as they are people who cook, and there is basically no disagreement aboutthat; it is a given.  So, another requirement is that, whenreceived, the public unquestioningly considers the device tobe of value.  There is never any skepticism from anyone,but when the Apple Watch is brought up people askopenly what the value is.
+The product manufacturer has to carry the objective of helping people with the product.  If the intention is to helppeople just to get something for the company (sales), the product will not meet the iPod test.
 
+Here is the test asked on the iPod itself.
 
-The iPad and iPhone passed this test as well (but not
-just because they carry the same capabilities as the iPod).  
-However, XR devices have not met the standard for this,
-demonstrating the need to discuss the subject.
-
-Discussing each consumer product in terms of answering the question,
-"how does this product help a person and what value
-does it provide him or her?"  The product manufacturer
-has to have the objective of helping people and the intention
-has to be out of benevolence.  If the intention is to help
-people to get something (sales), the product will not
-meet the iPod test.
-
-Here is the question asked on the iPod itself.
-In the 2000s, how does the iPod help a person compared
-to the current situation and what value does it provided him or her?
-	- Currently in the 2000s, the only way to play 
-	albums of music is by carrying around
-	many CDs placing them into a CD player, either
-	portable or stationary, and this is inconvenient
-	because they take up a relatively large amount
-	of space. The iPod makes it possible to carry around
+"In the 2000s, how does the iPod help a person compared
+to the current situation and what value does it provided him or her?"
+	- In the 2000s, the only way to play 
+	albums of music was by carrying around
+	many CDs placing one or more into a CD player, either
+	portable or stationary, and they took up a relatively large amount
+	of space. The iPod made it possible to carry around
 	hundreds of albums in the person's pocket. As a result,
-	the person does not need to worry about losing 
-	an binder of CDs.
+	the person did not need to worry about keep track a binderof CDs.
 	
 What is important to note is that there are many products
 that incidentally or accidentally feature a helpful aspect
-and have become popular anyway. At the same time, 
-this may not be recognized as what truly draws users to the product
-even as the owners of the company are successful financially,
-meaning that the founders don't truly understand what is
-making people use the product they work on and as long as
-they do not remove the inadvertent aspects that are essential
-to people using it, they will continue to benefit financially.  
-So, the product will not be pleasant to use overall but will nevertheless
-carry with it a helpful aspect that makes people use it.
-This can occur because the people who built the software product 
-were engaged in writing a thing in software at all. 
+and have become popular over time, but they are not in the same category.  At the same time, what may not be recognized by the company is what truly draws users to the product
+when it is successful financially--  meaning that the founders don't truly understand what is making people use the product they work on.  And as long as they do not remove the inadvertent aspects that are essential to people using it, they will continue to succeed financially but this is not the same as passing the iPod test.  
+So, the product may not be pleasant to use overall, it may havesome useless gimmicks, but it will nevertheless
+carry with it a helpful aspect that makes people use it, andthe founders may not have realized that helpful aspect wasthere, unlike the devices that are designed to be helpful from the start.
+The people who built a software product might be engaged in writing a thing in software and so somethingcame out of it, but not necessarily something good as a whole. 
 The most prominent example of this is social media,
-where the early histories of these websites started with
-something other than what people find it helpful for.
-In reality, social media helps users track people they know, contact
-people they don't, express their opinions to their audience, and
+where the early histories of these websites started with somethingtrivial, something other than what people find it helpful for today.
+In reality, social media is popular because it helps users track people they know, contact people they don't know, express their opinions to their audience and
 inform their audiences of what they are doing, but none of this was
 a direct and stated founding objective of the founders of any of the most
-popular social media companies in the earliest days when they began, going back to
-the earliest social media websites.  They were not trying to
-do anything for anyone.  An iPod is trying to help the person
-carry around music in a portable and efficient way.  For
-the social media websites, the helpful
-aspects became apparent shortly after the websites were built
-with different intentions.  Thus,
-a crucial aspect of moving from the present, warped and confused 
-technology industry into the future is the recognition that many business 
-successes result from incidental features that were not
-part of the startup plan.  They do not pass the iPod test,
+popular social media companies in the earliest days when they began.Not one had proper intentions from the start and had insteadaccidental success. Going back to the earliest social media websites,the people involved were not trying to do anything for anyone at the outset, they were not intending to provide a product to solve a problem.  An iPod is trying to help the person carry around music in a portable and convenient way.  For the social media websites, the helpfulaspects became apparent shortly after the websites were built and utilized,
+set up with different intentions.  Thus, a crucial aspect of moving from the present warped and confused technology industry into the future is the recognition that many business successes result from incidental features that were not part of the startup plan.  They do not pass the iPod test,
 which ensures that a technology product is solid and complete,
-like the iPhone or iPad.
+like the iPhone or iPad or the all-or-nothing crowdfunding industry.
 
 To pass the iPod test, a product's general usage by the consumer
-has to be predicted ahead of time in  at the
-very beginning.  Of course, it is beneficial that consumers branch
+has to be predicted ahead of time at the outset of the product'sinception.  Of course, it is sometimes interesting when consumers branch
 out into unusual or unexpected uses of a product, but this is seen as
-bonus compared to the importance of the main thesis of a product
-being validated by its reception.  A product has to have a thesis.
+unnecessary.  What is important is that the main thesis of a product
+is validated by its reception.  A product has to have a thesis at the outset.
 Social media did not ever have a thesis (why and how people would
-use it in general) whereas all-or-nothing crowdfunding did.
+use it in general) whereas all-or-nothing crowdfunding did.  Becauseit did not, the public latched onto the useful aspects that were therewhile getting hurt by the whole of the websites and their tendencyto replace purpose with encouraging base social habits in people.
 
 The uses of all-or-nothing crowdfunding were all predicted
 in advance and example use cases were provided to the
-consumers that would guide them into realistic activities
-they would actually find helpful to their goals.
-
+consumers that would guide them into use cases
+that they would actually find helpful for their goals. 
 

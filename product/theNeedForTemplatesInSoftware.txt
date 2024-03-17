@@ -1,0 +1,31 @@
+
+The Importance of Providing Template Resources for the Software User
+
+Going back to Xerox PARC, what we have learned is that 
+software users need presets, templates, and building blocks 
+provided to them in a software product— the equivalent 
+of convenience functions in SDKs or the pre-made primitive 
+shapes in a 3D modeling program.  For example, in Apple's 
+Pages app there is an available library of clip art 
+graphics for the user to make use of in the document.
+
+Without this, the situation is too raw for the public to use the
+product fluidly.  For example, what ChatGPT needs is not just a few
+specific examples to click on such as "Come up with a trip 
+itinerary for me to visit England" but instead a generic 
+use case: "Come up with a ___".  Then these are divided into 
+categories of use as well, such as for programming, daily 
+life, research.
+
+If this isn't provided then there is a blank text
+box where anything can be inserted and it freezes the user
+in front of the computer.  So, there has to be some guidance
+for use that is in the form of presets and templates, but
+preferably ones that are not too specific.  ChatGPT needs 
+to look like a real app, with toolbars and use cases.
+
+Notably, because the WorldWideWeb has always lacked
+building block on both the front end and the back end, 
+companies came in like WordPress supplied them for the backend while
+others like Wix and the Bootstrap plugin fill them in
+for the front end.

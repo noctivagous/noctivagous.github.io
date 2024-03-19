@@ -1,10 +1,13 @@
-MEASURING THE UTILITY AND COMPLETENESSOF A PRODUCT: The iPod Test - Will You Use It Regularly?
+MEASURING THE UTILITY AND COMPLETENESS
+OF A PRODUCT: The iPod Test - Will You Use It Regularly?
 
 noctivagous.github.io
 
 Noctivagous' concept, "The iPod Test" is the requirement that a
 a consumer product is measured by the following questions.
-It represents the reception of a technology product by the consumer.
+This test gauges the reception of a technology product by the consumer
+in such a way that what is measured is its conformance to proper
+technological principles.
 
 -- Do you want to use it regularly because you find it helpful?  
 -- How does it help you? 
@@ -20,25 +23,27 @@ products can be assessed.
 The electric pressure cooker passes The iPod Test (the questions above)
 and the air fryer does so as well because of the cooking
 capabilities the two appliances provide, freeing the person from
-having to monitor the stove.  All people who purchase these products 
-recognize their value for the kitchen as long as they are people who 
-cook, and there is basically no disagreement about that among them; 
-it is a given.  So, another requirement is that, when received, 
-the target audience unanimously considers the device to
-be of value.  There is never any skepticism from anyone who part
-of the demographic.  
+having to monitor the stove in the case of the electric pressure cooker.  
+All people who purchase these products recognize their value for the 
+kitchen as long as they are people who cook, and there is basically no 
+disagreement about that among them; it is a given.  So, another 
+requirement is that, when received, the target audience unanimously 
+considers the device to be of lasting value.  There is never any skepticism 
+from anyone who is part of the demographic.  
 
 When the Apple Watch is brought up, people who would be target consumers 
-sometimes ask openly what the value is.  The Apple Watch doesn't help 
-anyone with anything specifically from the outset but had to find
-a way to help people secondarily; it is a computer inserted into the 
-form of a timepiece (a wristwatch), then the uses for it were 
+sometimes ask openly what the value is.  Thus, it doesn't pass this test
+we have come up with.  The Apple Watch doesn't help 
+anyone with anything specifically from the outset but instead had to find
+a way to help people after the form was chosen.  It is a computer inserted 
+into the form of a timepiece (a wristwatch).  The uses for it were 
 backwards formed from there.  If it had been formed out of a 
-purpose from the outset it might look different than a wristwatch.
-It might be an arm band cuff bracelet.  These products come out
-of the form factor instead of achieving a goal.  It does indeed
-appear superior for the company to make the form follow the function 
-when a product begins its development.
+purpose from the outset it might look different than a wristwatch
+and worn on a different location on the body.  These products come out
+of the form factor instead of developing the form from the goal that
+will be achieved.  It does indeed appear superior for a company to let 
+the product's form follow the product's function when a product 
+begins its development.
 
 The product manufacturer has to carry the objective of 
 helping people with the product from the outset and then it will

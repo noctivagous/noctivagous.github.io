@@ -6,43 +6,54 @@ ChatGPT (GPT4) offers a lot of capabilities but the actual situation
 is that it is just a superficial website gateway-- a plain text box-- 
 for what OpenAI engineered for the computer data centers.   Originally OpenAI was just focused 
 on selling access to that technical API (the API that communicates to the
-LLM in the data centers).  Then it put together this chat format on a web page to interact with the API.
+LLM in the data centers).  Then it put together this chat format on a web page to interact with the API, in which the API responses come in after the user sends out text to the API.
+
 According to official accounts,  ChatGPT is an accidental success; 
-OpenAI originally released it as a research preview. The organization
+OpenAI originally released it as a "research preview". They
 had no intention of marketing it commercially.  But then the public's interest 
 in the interface to GPT3 exceeded expectations.
 
 This ChatGPT type of interface was possible earlier, of course,
 and there were people in previous years requesting an opportunity
 to chat for free with an AI in this way, because all of the available 
-options cost money.  Fortunately, OpenAI offered an opportunity to
-try out interacting with AI for free.  OpenAI also succeeded with ChatGPT because it provided a 
+options cost money.  Fortunately, OpenAI offered an option for people
+interested in AI to try out interacting with their API for free, without
+needing to write a program to make use of the API.  
+OpenAI also succeeded with ChatGPT because it provided a 
 high-quality LLM, GPT3. 
 
 But what OpenAI may not realize is that as an organization it 
 only has hired personnel to work on one side of the situation, the 
 engineering of the AI in the data centers, and they do not have a team that intent on completing 
-the ChatGPT app into something resembling an iLife app, such as GarageBand,
-but for interacting with an LLM.  That is, it isn't a suite a tools and stopped at the text box.
+the ChatGPT app into something resembling a completed suite of features like an iLife app (such as GarageBand).  The natural evolution of ChatGPT would be this but for interacting with an LLM.  That is, ChatGPT isn't a suite a tools and OpenAI stopped at the text box that send API responses,
+with the page stacking them as a "chat".
 
 ChatGPT just provides a simple interface to the GPT's raw API that, previously,
-few people except experienced programmers could use.  The research preview
+few people except experienced programmers could use.  The "research preview"
 transformed the situation by satisfying lay demand for free access to AI, but it wasn't built out,
 it isn't a complete software package with a full, developed app experience, with ways to access
-all of the use case scenarios of the LLM.  There are no nodes (patches) a person
-can wire up to control it (such as Unreal Engine's Blueprints). Some people in the AI 
+all of the use case scenarios of an LLM.  There are no nodes (patches) a person
+can wire up to control its responses (such as Unreal Engine's Blueprints). Some people in the AI 
 community have come up with their own independent apps with this feature for interfacing
 to LLMs.
  
-Apart from a text box, there is nothing guiding the user for ChatGPT.
+Apart from a text box, there is nothing guiding the user for how to use ChatGPT.
 When we say that ChatGPT needs to be built into an app we
 are saying that ChatGPT doesn't have any menus, toolbars, panels,
-presets, templates, or generic prompts.  It isn't a finished app, it 
+presets, templates, or generic prompts.  It isn't a finished app because it 
 isn't a lifestyle app. So, there is no way the public can find this tool 
 useful for very long unless OpenAI finishes the software.
 
-What ChatGPT needs is not just a few
+At the most basic level, what ChatGPT needs is not just a few
 specific examples to click on such as "Come up with a trip itinerary for me to visit
-____" but instead a generic prompts: "Come up with a ___".  
+____" but instead a generic prompts: "Come up with a ___" or "Make an outline for ___".  
 Then these would be divided into categories of use as well, such as 
 for daily life, research, quizzing, etc.
+
+Finally, typing text is not always the strongest means of controlling an LLM
+at all times, because it depends on the use case.  If it is Dall-E, then there should
+be preconfigured controls (such as the node-based programming nodes) with
+adjustable parameters.
+
+
+

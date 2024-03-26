@@ -1,48 +1,48 @@
-ChatGPT Isn't a Finished Software Application; It's Just a Simple Interface to an API
+ChatGPT Isn't Finished as a Software Application; It's a Simple Textbox Interface to an API
 
 noctivagous.github.io
 
 ChatGPT (GPT4) offers a lot of capabilities but the actual situation
 is that it is just a superficial website gateway-- a plain text box-- 
-for what OpenAI engineered for the computer data centers.   Originally OpenAI was just focused 
-on selling access to that technical API (what communicates to the
-data centers).  Then it put together this chat format on a web page to interact with it.
-According to official accounts,  ChatGPT is an accidental success; 
-OpenAI originally released it as a research preview and the organization
-had no intention of marketing it commercially.  But then the public's interest 
-in the interface to GPT3 was far more than expected.  
+for what OpenAI engineered for the computer data centers.   Originally OpenAI was just focused 
+on selling access to that technical API (the API that communicates to the
+LLM in the data centers).  Then it put together this chat format on a web page to interact with the API.
+According to official accounts,  ChatGPT is an accidental success; 
+OpenAI originally released it as a research preview. The organization
+had no intention of marketing it commercially.  But then the public's interest 
+in the interface to GPT3 exceeded expectations.
 
-This ChatGPT type of interface was possible earlier
+This ChatGPT type of interface was possible earlier, of course,
 and there were people in previous years requesting an opportunity
 to chat for free with an AI in this way, because all of the available 
-options cost money.  Fortunately, OpenAI offered a free opportunity to
-use AI.  OpenAI also succeeded with ChatGPT because it provided a 
+options cost money.  Fortunately, OpenAI offered an opportunity to
+try out interacting with AI for free.  OpenAI also succeeded with ChatGPT because it provided a 
 high-quality LLM, GPT3. 
 
 But what OpenAI may not realize is that as an organization it 
 only has hired personnel to work on one side of the situation, the 
-engineering of the AI in the data centers, and they do not have a team that will complete 
+engineering of the AI in the data centers, and they do not have a team that intent on completing 
 the ChatGPT app into something resembling an iLife app, such as GarageBand,
-but for interacting with an LLM.
+but for interacting with an LLM.  That is, it isn't a suite a tools and stopped at the text box.
 
 ChatGPT just provides a simple interface to the GPT's raw API that, previously,
-few people except experienced programmers could use.  The research preview
-was successful by satisfying the demand for free access to AI, and it
-kicked off interest in AI, but it wasn't built out into a complete software 
-application with a fully flushed out and developed app experience, with ways to access
-all of the use case scenarios of the LLM.  There are no nodes (patches) a person
-can wire up to control it (like Unreal Engine's Blueprints). Some people in the AI 
-community have come up with their own independent apps with this feature.
- 
+few people except experienced programmers could use.  The research preview
+transformed the situation by satisfying lay demand for free access to AI, but it wasn't built out,
+it isn't a complete software package with a full, developed app experience, with ways to access
+all of the use case scenarios of the LLM.  There are no nodes (patches) a person
+can wire up to control it (such as Unreal Engine's Blueprints). Some people in the AI 
+community have come up with their own independent apps with this feature for interfacing
+to LLMs.
+ 
 Apart from a text box, there is nothing guiding the user for ChatGPT.
 When we say that ChatGPT needs to be built into an app we
 are saying that ChatGPT doesn't have any menus, toolbars, panels,
-presets, templates, or generic prompts.  It isn't a finished app, it 
+presets, templates, or generic prompts.  It isn't a finished app, it 
 isn't a lifestyle app. So, there is no way the public can find this tool 
-useful for very long without OpenAI finishing the software.
+useful for very long unless OpenAI finishes the software.
 
 What ChatGPT needs is not just a few
 specific examples to click on such as "Come up with a trip itinerary for me to visit
-England" but instead a use case: "Come up with a ___".  
+____" but instead a generic prompts: "Come up with a ___".  
 Then these would be divided into categories of use as well, such as 
 for daily life, research, quizzing, etc.

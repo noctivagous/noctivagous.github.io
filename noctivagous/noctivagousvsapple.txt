@@ -4,106 +4,145 @@ noctivagous.github.io
 
 
 Just like all other computer companies, Apple's
-entire software assets could be described in one 
-way as an empire built on plain text code.  This is
+entire collection of software assets could be described from one 
+perspective as an empire built on plain text code.  This is
 the fork in the road: if the software engineer believes
-this suffices, he will stay with Apple and the other
-computer companies and stay inside this fenced
-enclosure.   If he can truly appreciate what Noctivagous 
-has to say, he will understand what a technological leap 
-will occur in software development when code is upgraded 
-to a document file format, anchored within 
-existing practices and technologies from the outset before 
-deciding to depart from them.
+this aging file format will suffice perpetually for computer
+software and he remains stubbornly nostalgic for the past and 
+old UNIX ways of doing things, he will stay with Apple and the 
+other computer companies and remain inside this fenced enclosure 
+for instructing a computer, called .TXT.   If he can truly 
+appreciate what Noctivagous has to say though, and view it 
+objectively, he will understand how a technological leap will 
+occur in software development when code's file format is upgraded 
+to a document file format, anchored from the beginning within 
+existing practices and technologies before taking steps
+to depart from them.  Only Noctivagous advocates this
+goal, but what does that matter when so few companies
+are doing anything major with software and Java was released
+in 1996?  For too many software engineers,
+the acceptable frame of discussion is microscopic, comparing
+plain text features and syntax of one programming language with 
+that of another.
 
-To explain the limited advantage Apple actually
-has next to Noctivagous' objectives for code, how it
-requires too much work and too much personnel to
-make software out of plain text based code,
+The highest quality apps on Apple's own platform
+historically have come from Apple itself.
+But to explain the limited advantage Apple actually
+has next to Noctivagous' objectives for code, how the company
+requires too much labor and too much personnel to
+make quality software out of plain-text-based code,
 we can use the analogy of how people made clothing
 before the appearance of the sewing machine.
 The sewing machine was an important
 development during the industrial revolution
 that contributed to the foundation of modernity.
-Previously, you would sew clothing by hand
-hand and quantities produced therefore had to be small.
+Previously, seamstress would sew clothing by hand
+hand and the quantities produced therefore had to be small.
 If you were to mass produce clothing in
 times predating the sewing machine, if there were
 such a thing, it would involve a warehouse of seamstresses.
+Because plain text produces problems for a modern
+software development environment, this is basically
+the situation in any software team, where the number
+of personnel has to be great to overcome the undeveloped
+and clumsy situation of writing large amounts of
+code out of plain text.
 
 Everyone has experienced firsthand how brittle computer
-technology can feel where if you make a small error
+technology can feel where, if you make a small error,
 something breaks immediately.  To make quality computer
-products today, it takes a lot more strenuous effort
+products today, it takes far more strenuous effort
 than it should because this phenomenon exists from the
-top to the bottom. You have to be extreme to make it work well
-because there is so much nickel-and-diming of you the whole
-time, and you can burn out easily. This mainly what Apple spends
-its time trying to overcome, in a variety of areas,
-particularly when all software application
-computer code still remains in .TXT.   To tolerate
-this nickel-and-diming, they have to hire a lot of people
+top to the bottom. You have to be extreme to make 
+computer software products that work well because 
+there is so much nickel-and-diming of you the whole
+time, and you can burn out easily if you take on too much. 
+This mainly what Apple spends its time trying to overcome, 
+in a variety of areas, particularly when all software application
+computer code still remains in .TXT.   To avoid the effects
+of this nickel-and-diming, they have to hire a lot of people
 who engage in unusually crafty endeavors to pull
 off quality outcomes.
 
-However, when computer code's file format is upgraded formally
-to document file format-- comprised of markup
-like XML-- and the contents are rendered inside the
-code editor from the XML just like a web page is rendered
-from its HTML, the capabilities possible inside a
+However, in the area of software, when computer code's file 
+format is upgraded formally to document file format-- 
+comprised of markup like XML-- and the contents are rendered 
+inside the code editor from the XML just like a web page is 
+rendered from its HTML, the capabilities possible inside a
 document of code will become much broader,
-in many directions, from lines of code that are
-interactive to diagrams that describe complex
-processes, and even the opportunity to make code
-in XR (it will make sense).  Code will describe much
-more in a smaller amount of space, it will be
-easier to manage, and it will have deeper capabilities.
+in many directions, from lines of code that span multiple rows 
+to diagrams that describe complex
+processes.  The conversion to markup will even provide the 
+opportunity to make code in XR (it will finally make sense
+and provide the necessary data structure).  
+Code will describe much more in a smaller amount of space
+when it can express computer instructions graphically in
+complex layouts, it will be easier to manage, and it 
+will have deeper capabilities.
 
-When this finally exists, Apple will have a hard
+When this finally exists, Apple will have a hard time
 maintaining an advantage over other computer companies
 in software development, other companies will not have
 their current advantages including Microsoft and Google,
 and the playing field will become normal, not so lopsided,
 with Apple doing the very best and everyone else doing
-a mostly mediocre job by comparison (if not acting as an Apple copycat),
-because working in software won't require making extreme efforts to pull
-off a quality outcome.  Plain text is so old and outdated
+a mostly imitative job by comparison, because working 
+in software won't require making extreme efforts to pull
+off a quality outcome and, because the code is no longer
+in plain text there will be new types of programmers who
+can join the community.  Plain text is so old and outdated
 that it doesn't scale to the present state of computing power
-or the wide array of computer capabilities available today that did not
-exist in the 1980s.   But too many software engineers are reluctant to acknowledge this.
-It wasn't made for all of this, and no one would have asked
-anyone to use it for this time period.  Noctivagous often uses the analogy
-of building a house out of toothpicks: the unit for contruction
-is too small, but of course with enough people, automation,
-and craftiness a house can be built with layers of toothpicks.
-Then, just like software engineering, it all seems normal because 
+or the wide array of computer capabilities currently 
+available that did not exist in the 1980s.   But too many 
+software engineers are reluctant to acknowledge this.
+.TXT wasn't made for all of this, and no one would have asked
+anyone to use it for this time period.  Noctivagous often 
+uses the analogy of building a house out of toothpicks: 
+the unit for construction is too small, but of course with 
+enough people, automation, and craftiness a house can be 
+built with layers of toothpicks. Then, just like software 
+engineering with plain text code, it all seems normal because 
 automation has been provided somewhere, but the whole of the 
-picture of software engineering is a sad one.
+picture of software engineering is a pathetic one.
 
-For some people, and understandably,
-only Apple products will suffice for work, to get things done,
+For some people, and understandably, only Apple products 
+will suffice for work, to get things done,
 but this is like only wanting to drive a luxury car
 compared to the rest of the cars out there.  It shows that
 the situation is imbalanced.  The underlying technologies
-need to be upgraded in the way just described.
+need to be upgraded in the way just described and then
+it won't matter so much which computer the person chooses.
 
 Often what Apple is about is making extreme efforts
-to shape unwieldy computer technology, something 
-which normally doesn't lend itself to quality outcomes
+to shape unwieldy computer technology.  Computer electronics
+normally doesn't lend itself to quality outcomes
 and so an exceptional person had to be involved at that
 company.  The biography of Steve Jobs describes a lot 
 of this, with Jobs battling the low quality tendencies 
-of computer technology.
+of computer technology and the engineers pulling off
+feats.
 
 This no longer has to be the case in the area of software
-engineering.  It won't take so many people doing such
-crafty things, working so bizarrely hard to make good software because
-the tools are so rotten.  Hard work will happen, but it won't be 
-paired full-time acrobatics to make a decent outcome.
+engineering.  It won't take so many people pulling off stunts, 
+working so bizarrely hard to make good software just because
+the tools are so rotten and the file format outdated but familiar. 
+Hard work will happen, but it won't be paired with 
+full-time acrobatics to make a decent outcome.
 
-When computer code is shifted to a document file format,
-current competition dynamics will disappear, they will not just
+When computer code is shifted to a document file format
+the current competition dynamics will disappear, they will not just
 transfer into new and more advanced conditions, because the
 gap between how code exists in a basic text file (.TXT) today
 and how it will exist in the future will be extremely
 big.
+
+The key point is that Noctivagous says that it isn't required
+to gain the consensus of the software engineering community
+to endeavor to upgrade software's file format.  
+Rather, for various reasons, most software engineers are
+expected to oppose what Noctivagous is doing.  This is why 
+it is important to consult the field of graphic design and 
+interactive media design first while grounding the activity 
+to conventional software engineering that is on the machine today.
+
+

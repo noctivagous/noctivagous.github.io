@@ -317,53 +317,72 @@ font-weight:normal;
   Though AI is currently introducing a new paradigm to the world, 
   there is still much about computers that needs to be upgraded. 
   First, computer code files should be made out of structured data. 
-  Code files are still stored and processed as plain text. In 
-  practice, this is utilized in modern software development as if 
-  it provides structured data even though it does not. All recent 
+  Source code is still stored and processed as plain text. In 
+  practice, however, this is utilized in modern software development as if 
+  it provides structured data even though it is a basic stream of characters. All recent 
   trends in software engineering are moving in this direction, 
   which is the modernization of code without carrying it out in 
   a deliberate way. The code notebook programs (e.g. Jupyter Notebook) 
-  intended for developing AI place the Python programming language 
-  into an interactive format to provide a dynamic input prompt 
+  intended for data science and developing AI place the Python programming language 
+  into an interactive format, providing an input prompt 
   with graphical output responses, but this is actually just a usable hack; 
-  Python itself has not been upgraded to function like this, and it 
+  Python itself has not been upgraded to behave like this and it 
   doesn't normally support this usage.  All the same, after this upgrade
-  to Python code was made, the interactive code notebook became 
-  an essential tool of the AI industry.
+  to Python code was implemented, the interactive code notebook became 
+  an essential tool of the AI industry. <!-- It's another example of where
+  the upgrade of computer code is taking an indirect, unconscious route and therefore
+  the process is quite slow compared to a concerted effort that would
+  design the code files with structured data .-->
   
   
   <p>
     Meanwhile, in mainstream software development, IDEs are increasingly 
     providing enhancements to code that improve its interactive capabilities
      and provide greater control. But to do this, they project 
-     non-existent structure onto the code for the benefit of user 
-     interaction: they analyze it constantly in the background to make 
-     collapsible code sections with arrow controls, 
-     dropdown menus of the file's contents, and code completion popovers. 
+     non-existent structure onto the plain text (.TXT) code for the benefit of 
+     the user: they analyze it constantly in the background to make 
+     collapsible code sections with arrow controls, they generate
+     dropdown menus with divided sections of the file's contents, and they
+     display code completion popovers. 
      This shows that regular IDEs have begun to treat 
      a single file of code (.TXT) as a conventional application document 
-     but this phenomenon is happening in an unrecognized 
-     way. The IDEs undertake user interface gymnastics with this stream
-      of ASCII characters to implement the code features just mentioned. 
+     but the phenomenon is happening in an unrecognized 
+     way. In other words, the IDEs undertake user interface gymnastics with this stream
+      of ASCII characters to implement modern code editing features that appeared
+      int he last decade.
       In actuality, the most honest picture of how code exists is available 
       by opening it up in a basic text editor like Microsoft's Notepad. 
       Everything else code can offer the software engineer that is interactive
       is actually a hack, including keyword coloring (code, of course, provides no coloring 
-       markup in the plain text file data).
+      markup in the plain text file data).  IDEs and the software engineering
+      community are avoiding the most important task, which is to officially
+      move up to an application document file format for each file of code.
 
 <p>
+When computer code's file 
+format is upgraded formally to document file format-- 
+comprised of markup like XML-- and the contents are rendered 
+inside the code editor from the XML just like a web page is 
+rendered from its HTML, the capabilities possible inside a
+document of code will become much broader,
+in many directions, from lines of code that span multiple rows 
+to diagrams that describe complex
+processes. There will be a meaningful job for the graphic designer
+to assist in the layout and appearance of code.
+
   Many benefits will emerge when code is finally converted to a formal document format
-  from the ground up, including a leap in parseability by the compilers and the IDEs themselves, as 
+  from the ground up, in many different areas, including a leap in 
+  parseability by the compilers and the IDEs, as 
   they will be parsing structured data like XML instead of plain text.
-   Plain text carries much ambiguity for live parsing and so the 
+   Plain text carries much ambiguity for live parsing of code and so the 
    analyzers are not always accurate; deleting just one curly brace 
    can totally confuse the compiler.  When code is finally translated 
    into a document format, which will support interactivity naturally, 
    the quality of users' experience with code will improve greatly and 
-   typos will be preventable that entirely halt compilation (such as 
-   deleting a single character). Many features will become feasible, 
-   such as the ability to survey a project of code in the form of a
-    map or schematics overview.  It will be zoomable just like CAD
+   typographic mistakes will be preventable that entirely halt compilation (such as 
+   deleting a single character). Many features will become feasible that no one
+   would want to try today, such as the ability to survey a project of code in the form of a
+    map or schematics overview.  A code project will be zoomable just like CAD
    because the code files have formal structure in them. 
    Especially if the code files are made out of XML, 
    the ability to add attributes to the underlying markup will 

@@ -345,45 +345,59 @@ font-weight:normal;
      dropdown menus with divided sections of the file's contents, and they
      display code completion popovers. 
      This shows that regular IDEs have begun to treat 
-     a single file of code (.TXT) as a conventional application document 
-     but the phenomenon is happening in an unrecognized 
+     a single file of code (.TXT) as a conventional application document,
+     which is a very hacky activity, but the phenomenon is happening in an unrecognized 
      way. In other words, the IDEs undertake user interface gymnastics with this stream
-      of ASCII characters to implement modern code editing features that appeared
-      int he last decade.
-      In actuality, the most honest picture of how code exists is available 
+      of ASCII characters to implement all of the modern code editing features that appeared
+      in the last decade (such as collapsible sections).
+      In reality, the most honest picture of how code exists is available 
       by opening it up in a basic text editor like Microsoft's Notepad. 
-      Everything else code can offer the software engineer that is interactive
+      Everything else code can offer the software engineer today that is interactive
       is actually a hack, including keyword coloring (code, of course, provides no coloring 
       markup in the plain text file data).  IDEs and the software engineering
-      community are avoiding the most important task, which is to officially
-      move up to an application document file format for each file of code.
+      community are avoiding the most important task a software engineer would
+      take on in any other situation, which is to
+      move up officially to an application document file format for each file of code.
+      Otherwise, the absurd continues to play out, the hot-rodding of .TXT just to keep it
+      as the medium of computer programming.
 
 <p>
 When computer code's file 
-format is upgraded formally to document file format-- 
-comprised of markup like XML-- and the contents are rendered 
-inside the code editor from the XML just like a web page is 
-rendered from its HTML, the capabilities possible inside a
-document of code will become much broader,
-in many directions, from lines of code that span multiple rows 
+format is upgraded to a document file format——
+comprised of markup like XML—— and the contents are rendered 
+inside the code editor from the XML (just like a web page is 
+rendered from its HTML), the capabilities available to the
+programming language designers will become much broader because
+a document of code will become much broader,
+in many directions, from lines of code that contain multiple rows 
 to diagrams that describe complex
 processes. There will be a meaningful job for the graphic designer
-to assist in the layout and appearance of code.
+to assist in the layout and appearance of code.  A file of code
+can have more than one presentation available for its data, but
+this will be natural to implement when the code file is made of
+markup whereas it would be rough to put together today for .TXT based
+code.
+
+<p>
 
   Many benefits will emerge when code is finally converted to a formal document format
   from the ground up, in many different areas, including a leap in 
   parseability by the compilers and the IDEs, as 
   they will be parsing structured data like XML instead of plain text.
    Plain text carries much ambiguity for live parsing of code and so the 
-   analyzers are not always accurate; deleting just one curly brace 
-   can totally confuse the compiler.  When code is finally translated 
+   analyzers are not always accurate when just one character is off; 
+   deleting just one curly brace can totally confuse the compiler.  
+   When code is finally translated 
    into a document format, which will support interactivity naturally, 
    the quality of users' experience with code will improve greatly and 
-   typographic mistakes will be preventable that entirely halt compilation (such as 
+   most typographic mistakes will be preventable that halt compilation (such as 
    deleting a single character). Many features will become feasible that no one
-   would want to try today, such as the ability to survey a project of code in the form of a
-    map or schematics overview.  A code project will be zoomable just like CAD
-   because the code files have formal structure in them. 
+   would want to try with plain text today, such as the ability to
+    survey a project of code in the form of a
+    map or schematics overview.  It will be possible to zoom in and out of
+    code just like CAD because the code files have formal structure in them. 
+   
+   <p>
    Especially if the code files are made out of XML, 
    the ability to add attributes to the underlying markup will 
    take computer programming languages to a new level.
@@ -397,6 +411,19 @@ to assist in the layout and appearance of code.
         A spline object variable will be assignable to a spline editor control where it can be edited inside 
        the line of code.
 
+<p>Some programming language concepts will be possible today
+that cannot enter the plain text file format, such as the following.
+Whether it is checkers, chess, a calendar, tic-tac-toe, many other programmatic
+outcomes can be described in terms of increasing specification of a generically existing
+grid component.  In the code it would start from a most generic state and then
+receive customizations, described with accessory components 
+in the direction of a final outcome.  
+To provide a component like this in code will require
+displaying graphics in the code file and .TXT does not support this.  
+This versatile grid component, which extends in many directions,
+will have to display a representation of the grid itself, its subcomponents,
+and the relationships between them so that a game of tic-tac-toe can
+be described in just a few diagrams.
 
  <p> 
   Resistance to changing the file format of code and modernizing 

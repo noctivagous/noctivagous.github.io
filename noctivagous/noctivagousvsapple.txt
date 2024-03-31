@@ -6,47 +6,70 @@ noctivagous.github.io
 Just like all other computer companies, Apple's
 entire collection of software assets could be described from one 
 perspective as an empire built on plain text code.  This is
-the fork in the road: if the software engineer believes
-this aging file format will suffice perpetually for computer
-software and he remains stubbornly nostalgic for the past and 
-old UNIX ways of doing things, he will stay with Apple and the 
-other computer companies and remain inside this fenced enclosure 
-for instructing a computer, called .TXT.   If he can truly 
-appreciate what Noctivagous has to say though, and view it 
-objectively, he will understand how a technological leap will 
-occur in software development when code's file format is upgraded 
-to a document file format, anchored from the beginning within 
-existing practices and technologies before taking steps
-to depart from them.  Only Noctivagous advocates this
-goal, but what does that matter when so few companies
-are doing anything major with software and Java was released
-in 1996?  For too many software engineers,
-the acceptable frame of discussion is microscopic, comparing
-plain text features and syntax of one programming language with 
-that of another.
+not a concern spoken of anywhere in software engineering discussions,
+but in the future the computer research entity Noctivagous-- which mainly 
+consists of a set of essays and alternative UI demos at the moment-- 
+considers it a fork in the road for technology: if the software engineer believes
+this aging file format will suffice indefinitely or even 
+perpetually for making professional computer software (regardless of how
+fast and capable computers become) and he remains stubbornly 
+nostalgic for the past and old UNIX ways of doing things, he will stay with
+the mindset of computer companies like Apple and remain inside this fenced enclosure 
+for instructing a computer, called .TXT.   He will miss out on
+the future until it finally arrives someday, when it has become unavoidable
+and the norm.
 
+If he can truly appreciate what Noctivagous has to say though, and view it 
+objectively, he will recognize the implications, that a technological leap will 
+occur in software development when code's file format is upgraded from .TXT
+to a document file format. It will be anchored from the beginning within 
+existing practices as people know them today instead of going down
+the wrong route and centering efforts on unknown and untested abstractions.  
+Upgrading programming's appearance and style will involve staying close to software development 
+technologies as they are today before taking steps to depart from them.  
+Only Noctivagous advocates this goal, to transform the appearance of code
+into something modern through a file format upgrade, but what does that matter 
+when so few companies are doing anything major with programming languages; 
+Java was released back in 1996 and this is the last time a completely new 
+programming system appeared. For too many software engineers, the accepted 
+frame of discussion for new programming features is microscopic and amounts to 
+comparing the plain text syntax and features of one programming language with 
+that of another.  When computers are so much more capable, a more macroscopic
+view is the starting point.
+
+The public looks to Apple for technological advances but Apple
+generally doesn't break new ground in software engineering practices, 
+just makes incremental improvements on top of its underlying assets that 
+are decades old, with Xcode being over 20 years old.
 The highest quality apps on Apple's own platform
-historically have come from Apple itself.
-But to explain the limited advantage Apple actually
-has next to Noctivagous' objectives for code, how the company
-requires too much labor and too much personnel to
+historically have come from Apple itself and this is because writing
+software takes too much in terms of the number of people required.
+To explain the limited advantage Apple actually
+has next to Noctivagous' objectives for code, how the typical
+company like this requires too much labor and too much personnel to
 make quality software out of plain-text-based code,
 we can use the analogy of how people made clothing
-before the appearance of the sewing machine.
-The sewing machine was an important
-development during the industrial revolution
-that contributed to the foundation of modernity.
+before the appearance of the sewing machine.  Writing code today
+is as if making clothing without the benefit of having a sewing
+machine because everything is so manual, primitive, and raw because
+it is made out of .TXT.  The sewing machine was an important development during 
+the industrial revolution that contributed to the foundation of modernity.
 Previously, seamstress would sew clothing by hand
 hand and the quantities produced therefore had to be small.
 If you were to mass produce clothing in
 times predating the sewing machine, if there were
 such a thing, it would involve a warehouse of seamstresses.
-Because plain text produces problems for a modern
-software development environment, this is basically
-the situation in any software team, where the number
-of personnel has to be great to overcome the undeveloped
-and clumsy situation of writing large amounts of
-code out of plain text.
+This is basically the situation that any professional software team is engaged
+in, where the number of personnel has to be great to overcome the undeveloped
+and clumsy state of code, where very sophisticated software 
+is described in large amounts of plain text code that has nothing built into
+it to address the needs of modern computing times compared to the 1980s.
+For example, the math matrix is typed out laboriously and tediously
+across multiple sequential typewriter lines instead of appearing in between
+two brackets.  Any external resource used by the program such as an image
+or 3D model only shows up inside the code file by name and does not actually 
+show up as a preview inside the file.  For this reason and many others,
+the process of reading a file of code is one of laborious deciphering.
 
 Everyone has experienced firsthand how brittle computer
 technology can feel where, if you make a small error,

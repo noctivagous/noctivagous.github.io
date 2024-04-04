@@ -6,26 +6,28 @@ noctivagous.github.io
 
 ChatGPT (GPT4) offers a lot of capabilities but the actual situation
 is that it is just a superficial website gateway-- a plain text box-- 
-for what OpenAI engineered for the computer data centers.   Originally 
-OpenAI was just focused on selling access to that technical API (the API 
-that communicates to the LLM in the data centers).  Then it put together 
-this "chat" format on a web page to interact with the API.  The API's
-responses are stacked up vertically after the user sends out text to the API.
+for what OpenAI engineered that is sitting in the computer data centers.   
+Originally  OpenAI was just focused on selling access to that through
+a very technical API (the API that communicates to the LLM in the data 
+centers).  Then it put together this chat-style format on a web page 
+as a shallow demonstration of how it is possible to interact with the API.  
+The API's responses are stacked up vertically after the user sends out 
+text to the API.  On the front end, it's not that sophisticated.
 
 According to official accounts,  ChatGPT is an accidental success; 
 OpenAI originally released it as a "research preview". They had no 
 intention of marketing it commercially.  But then the public's interest 
-in the user-friendly interface to GPT3 exceeded expectations. This is according to their 
-own version of events.
+in the user-friendly interface to GPT3 exceeded expectations. 
+This is according to their own version of events.
 
 The ChatGPT style of web interaction with AI was possible earlier, of course, and 
 there were consumers in previous years requesting an opportunity to chat 
-for free with an AI in this way, because all of the available options 
-cost money.  Fortunately, OpenAI provided an opportunity for people 
-interested in AI to try out interacting with their API for free, 
-without needing to write a program to make use of the GPT3 API.  
-OpenAI also succeeded with ChatGPT because it provided a high-quality 
-LLM, this GPT3 and later GPT4. 
+for free with an AI bot in this way, because all of the available options 
+cost money and might not be very good.  Fortunately, OpenAI provided 
+an opportunity for people interested in AI to try out interacting with 
+their API for free, without needing to write a program that interacted with 
+the GPT3 API.  OpenAI also succeeded with ChatGPT because it provided a high-quality 
+LLM, this GPT3.
 
 But what OpenAI may not realize is that, as an organization, it only
 has hired personnel to work on one side of the situation, the engineering 
@@ -35,37 +37,46 @@ completed suite of features (like an iLife app, such as GarageBand).  
 The natural evolution of ChatGPT would lead to this, for interacting 
 with an LLM can go beyond writing text from scratch every time in a 
 one-line box, something that gets tiresome after a while (always writing 
-from scratch the commands).  That is to say, ChatGPT isn't a suite of tools and 
-OpenAI stopped at the text box that sends API calls, with the page 
-stacking the responses as a "chat".
+from scratch the commands).  This is to say that ChatGPT isn't a suite of tools and 
+OpenAI stopped at providing text box that sends API calls, with the web page 
+stacking the responses in the appearance of a "chat".
 
 ChatGPT just provides a simple interface to the GPT's raw API that, 
 previously, few people except experienced programmers could use.  
 The "research preview" transformed the situation by satisfying lay 
 demand for free access to AI, but it wasn't built out beyond that, it isn't a 
-complete software package with a full, developed app experience, 
+complete software package with a fully developed app experience, 
 with ways to access all of the use cases and scenarios of an LLM. 
-It's very basic, as it's not even possible to collapse or hide 
-any of the chat output from ChatGPT.
-There are no nodes (patches) a person can wire up to control its responses 
-(such as what is found in Unreal Engine's Blueprints). Some people in the AI community 
+Too much is left to the user to figure out.
+
+It's very basic, as it's not even possible to collapse, close, or hide 
+any of the chat output from ChatGPT. There are no nodes (patches) 
+a person can wire up to control its responses (such as what is found 
+in Unreal Engine's Blueprints). Some people in the AI community 
 have come up with their own independent apps with this feature for 
-interfacing to LLMs, especially the image generators.
+interfacing to LLMs, especially for the image generators.
  
 Apart from a text box, there is nothing guiding the user for how to 
-use ChatGPT, either.  When we say that ChatGPT needs to be built into an app 
+use ChatGPT, which means that too much of a burden is placed
+on the person who arrives at OpenAI's website.  
+When we say that ChatGPT needs to be built into an app 
 this means that ChatGPT doesn't have any menus, toolbars, panels, 
 presets, templates, or generic prompts.  It isn't a finished app 
-because it isn't any kind of lifestyle or productivity app. So, there is no way the public can 
-find this tool useful for very long unless OpenAI finishes the software.
+because it is a blank box with little guidance of how to use it. 
+It isn't any kind of lifestyle or productivity app. So, there 
+is no way the public can find this tool useful for very long unless 
+OpenAI begins to work on it as real software.
 
 At the most basic level, what ChatGPT needs is not just a few specific 
 examples to click on such as "Come up with a trip itinerary for me to 
-visit____" but instead a generic prompts: "Come up with a ___" or "Make 
-an outline for ___".  Then these would be grouped into categories of 
+visit____" but instead a set of grouped, generic prompts: "Come up with a ___" or "Make 
+an outline for ___".  These would be grouped into categories of 
 use as well, such as for daily life, research, quizzing, etc.
 
 Finally, typing text is not always the strongest means of controlling 
 an LLM at all times, because it depends on the use case.  If it is 
 DALL-E, then there should be pre-configured controls (such as the 
 node-based programming nodes) with adjustable parameters.
+
+
+

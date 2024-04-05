@@ -314,22 +314,31 @@ font-weight:normal;
 
 
 <p>
-  Though AI is currently introducing a new paradigm to the world, 
-  there is still much about computers that needs to be upgraded. 
-  First, computer code files should be made out of structured data. 
-  Source code is still stored and processed as plain text. In 
-  practice, however, this is utilized in modern software development as if 
-  it provides structured data even though it is a basic stream of characters. All recent 
-  trends in software engineering are moving in this direction, 
-  which is the modernization of code without carrying it out in 
-  a deliberate way. The code notebook programs (e.g. Jupyter Notebook) 
-  intended for data science and developing AI place the Python programming language 
-  into an interactive format, providing an input prompt 
-  with graphical output responses, but this is actually just a usable hack; 
-  Python itself has not been upgraded to behave like this and it 
-  doesn't normally support this usage.  All the same, after this upgrade
-  to Python code was implemented, the interactive code notebook became 
-  an essential tool of the AI industry. <!-- It's another example of where
+  <!-- Computer Code, Including Python, Is Still in Plain Text-->
+
+Though AI is currently introducing a new paradigm to the world, 
+there is still much about computers that needs to be upgraded. 
+First, computer code files should be made out of structured data. 
+Source code is still stored and processed as plain text. 
+In practice this is utilized in modern software development 
+as if it provides structured data even though as it remains a 
+basic stream of characters. All recent trends in software engineering 
+are moving in this direction, which is the modernization of code's 
+interactivity without satisfying the underlying
+software engineering demands of upgrading the file format.  
+The unconscious demand is there for 
+an upgrade to code's interactivity but the software engineering 
+side is not waking up to the situation. For example, the code 
+notebook programs (e.g. Jupyter Notebook) intended for data science 
+and developing AI place the Python programming language into an 
+interactive format, providing an input prompt with graphical output 
+responses, but this is actually just a usable hack; Python itself has not been upgraded 
+to behave like this and it doesn't normally support this usage. 
+All the same, after this upgrade to Python code was implemented, 
+the interactive code notebook became an essential tool of the AI industry.
+It demonstrates that when code's form is upgraded it will provide immense
+benefits.
+ <!-- It's another example of where
   the upgrade of computer code is taking an indirect, unconscious route and therefore
   the process is quite slow compared to a concerted effort that would
   design the code files with structured data .-->
@@ -338,28 +347,33 @@ font-weight:normal;
   <p>
     Meanwhile, in mainstream software development, IDEs are increasingly 
     providing enhancements to code that improve its interactive capabilities
-     and provide greater control. But to do this, they project 
+    as well, to provide greater control. But to do this, they project 
      non-existent structure onto the plain text (.TXT) code for the benefit of 
      the user: they analyze it constantly in the background to make 
-     collapsible code sections with arrow controls, they generate
+     collapsible code sections with GUI arrow controls, they generate
      dropdown menus with divided sections of the file's contents, and they
-     display code completion popovers. 
-     This shows that regular IDEs have begun to treat 
+     display code completion popovers. They derived this information
+     from a basic file of plain text, which is not quite right.
+     In other words, the common IDE has begun to treat 
      a single file of code (.TXT) as a conventional application document,
      which is a very hacky activity, but the phenomenon is happening in an unrecognized 
-     way. In other words, the IDEs undertake user interface gymnastics with this stream
+     way. The code editor undertakes user interface gymnastics with this stream
       of ASCII characters to implement all of the modern code editing features that appeared
-      in the last decade (such as collapsible sections with arrow controls).
+      in the last decade (such as collapsible sections with arrow controls)
+      and when those features are added they are a reflection of how code is
+      more complex and the code bases are larger than ever.
+      
+      <p>
       The most honest picture of how code exists is available 
-      by opening it up in a basic text editor like Microsoft's Notepad. 
+      by opening up a file in a basic text editor like Microsoft's Notepad. 
       Everything else code can offer the software engineer today that is interactive
-      is actually a hack, including keyword coloring (code, of course, provides no coloring 
+      is actually a hack placed on top, including keyword coloring (code, of course, provides no coloring 
       markup in the plain text file data).  IDEs and the software engineering
       community are avoiding the most important task a software engineer would
       take on in any other situation, which is to
-      move up officially to an application document file format for each file of code.
+      move up to an application document file format for each file of code.
       Otherwise, the absurd continues to play out, the hot-rodding of .TXT just to keep it
-      as the medium of computer programming.
+      around as the primary medium of computer programming.
 
 <p>
 When computer code's file 
@@ -369,12 +383,15 @@ inside the code editor from the XML (just like a web page is
 rendered from its HTML), the capabilities available to the
 programming language designers will become much broader,
 in many directions, from lines of code that contain multiple rows 
-to diagrams that describe complex processes. There will be a 
+to diagrams that describe complex processes. 
+It will be possible to mix node-based programming and procedural
+code inside the same document, which is valuable flexibility for
+the programmer. There will be a 
 meaningful job for the graphic designer
-to assist in the layout and appearance of code.  A file of code
-can provide more than one presentation for its data, but
-this will be natural to implement when the code file is made of
-markup whereas it would be rough job to put together for 
+to assist in the layout and appearance of code, for the first time. 
+ A file of code will provide more than one presentation of 
+ its data, but this will be natural to implement when the code file is made of
+markup whereas it would be rough job to make this for today's 
 .TXT-based code.
 
 <p>
@@ -386,33 +403,69 @@ markup whereas it would be rough job to put together for
    analyzers are not always accurate when just one character is off; 
    deleting just one curly brace can totally confuse the compiler.  
    When code is finally translated 
-   into a document format, which will support interactivity naturally, 
+   into a document format, which will support a live review of code naturally, 
    the quality of users' experience with code will improve greatly and 
    most typographic mistakes will be preventable that halt compilation (such as 
-   deleting a single character). Many features will become feasible that no one
+   deleting a single character or omitting a semicolon).
+    Many features will become feasible that no one
    would want to try with plain text today, such as the ability to
     survey a project of code in the form of a
     map or schematics overview.  It will be possible to zoom in and out of
-    code just like CAD because the code files have formal structure in them. 
+    code just like CAD because the code files will have 
+    formal structure in them. 
    
    <p>
    Especially if the code files are made out of XML, 
    the ability to add attributes to the underlying markup will 
-   take computer programming languages to a new level.
+   take computer programming languages to a new level.  What is
+   rendered from the XML will determine what code can do, 
+   not merely what is typed out one character at a time.
     A function will not just show up in the markup as
     &lt;function&gt; but allow the insertion of custom attributes inside the &lt;function&gt; XML element 
-      that provide for much broader configuration, rendered for the programmer in the IDE.
+      that provide for much broader configuration, rendered for the programmer code file.
        In addition, an individual line of code will be more powerful
         because it can contain more complex statements, 
         made out of graphical components and even allowing 
-        interactive controls natively like data tables and tab views.  An object variable will be assignable to a tab view control that has many configuration parameters for that object.
-        A spline object variable will be assignable to a spline editor control where it can be edited inside 
-       the line of code.
+        interactive controls natively like assigning object variables to 
+        data tables. 
+         An object variable will be assignable to a tab view control 
+         that has many configuration parameters for that object and it
+         will appear that way in the document.
+        A spline object variable, for example, will be assignable to a 
+      spline editor control where it can be edited inside the line of code.
+      The programmer will be able to supply his own editors like this.
 
-<p>Some programming language concepts will be possible today that cannot 
+<p>Some programming language concepts will be straightforward to implement that cannot 
 enter the plain text file format, such as the following example. Whether 
-it is checkers, chess, a calendar, tic-tac-toe, or the snake game, they all could be viewed 
-as stemming from a grid, one that started in a most generic and unmodified form.  Many programmatic outcomes like these (anything whose form is a modified grid) can be described in terms of increasing specification of a generically existing grid component. In the code it would start from the most generic, initial state and then begin customization.  What the grid is for is progressively described with accessory components, moving in the direction of a final outcome, and this would be included as an activity of programming. If it is the game of solitaire being built, then an accessory component related to stacks would be included with the grid.  To provide a component like this in code will require displaying graphics inside the code file and .TXT of course does not support this. This versatile grid component, which has capabilities in many directions, will need to display a representation of the grid itself, its subcomponents, and the relationships between them so that a game of tic-tac-toe or a diagram can be described in just a few diagrams. What's more, when images are something that can be placed in the code file and made a feature of the programming language itself, a set of instructions for the computer can be described semiotically to show heuristic commands (e.g. "try to avoid objects with this description"). Many scenarios will be easily described in terms of conditions, rules, states, etc. because computer code's presentation capabilities will exist beyond .TXT. With all of these newer features provided in code, existing software in use will be relatively easy and fast to rewrite and when they are redone they will have more available in them.
+it is checkers, chess, a calendar, tic-tac-toe, or the arcade snake game, they all could be viewed 
+as stemming from a grid, one that started in a most generic and unmodified form.  
+Many programmatic outcomes like these (anything whose form is a modified grid) 
+can be described in terms of increasing specification of a generically 
+existing grid component. Chess or checkers come from the same programmatic component.
+In the code it would start from the most generic, initial state 
+and then the person begins customization.
+What the grid is for is progressively described with accessory components, 
+moving in the direction of a final outcome, and this would be included as 
+a possible activity of programming. If it is the game of solitaire being built,
+ then an accessory component related to stacks would be attached to the grid.  
+ To provide a component like this in code will require displaying 
+ graphics inside the code file and .TXT of course does not support this. 
+ This versatile grid component, which has capabilities in many directions, 
+ will need to display a representation of the grid itself, its components that specify what it does,
+  and the relationships between them so that a game of tic-tac-toe 
+  can be described in just a few diagrams. <!-- What's more, when images 
+  are something that can be placed in the code file and made a feature 
+  of the programming language itself, a set of instructions for the computer 
+  can be described semiotically to show heuristic commands 
+  (e.g. "try to avoid objects with this description").
+  -->
+  
+  <p>
+   The upgrade of code's file format means that many scenarios will be easily described in 
+  terms of conditions, rules, states, etc. because computer code's presentation 
+  capabilities will exist beyond .TXT. With all of these newer features provided 
+  in code, existing software in use will be relatively easy and fast to rewrite 
+  and when they are redone they will have more available in them.
 
 
 

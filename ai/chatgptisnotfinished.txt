@@ -74,29 +74,46 @@ an outline for ___".  These would be grouped into categories of
 use as well, such as for daily life, research, quizzing, etc.
 
 An LLM could be discussed as the basis for a different category of app,
-such as one that aids the user in reading older or ancient 
-texts and is dedicated to this task, generating live 
-marginalia or explanations of the text on the page as each page is turned.  
-Another app would look different if utilized for cooking because it would have
-features tailored for different aspects of that task, such as generating
-recipes out of available ingredients, replacing ingredients in provided
-recipes with substitutions, etc.  It would also carry conventional app
-features, like storing recipes.  An LLM offers the engineered AI resource
-for these use cases and many more but it makes more sense to use it
-as the backend of a new category of app.  Just by focusing on these two use case, 
-and how they are crammed into the tiny text box that is ChatGPT's means 
-input, it demonstrates how uncomfortable ChatGPT really is to use for 
-a wide variety of tasks.  A bare text box would have to be repurposed
-for these two very different needs.
+such as one that assists users in reading older or ancient 
+texts and it would be dedicated to this task, offering the option to
+generate live marginalia or explanations of the text on the page as each page is turned. 
+It would fetch related images and information live and place them
+in various tabs in the margins.  Any word clicked on would show
+a definition (in one mode). A paragraph might be clicked on to the side
+to be examined in different ways.  A page might be turned into modern
+wording.  In this example, the LLM is being used as the software engineering 
+resource in combination with regular software application features.
+The user is not forced to paste text into ChatGPT's small text box
+and then tell it to do each thing because the software application
+has provided many relevant features for the job in software.
+It would have the ability to take in raw images, convert them
+to the text, and translate them, but this is better as one feature
+of a whole rather than providing it individually and disconnected
+from anything because in that case the user has to come up with a 
+reason for the feature.
 
-The main problem in the AI community and the tech community sometimes
-is the concept that the following is what consumers will really want
+Another app meant for assisting the cooking that made use of an LLM 
+would look different because it would have features tailored for different 
+aspects of that task, such as generating recipes out of available ingredients, 
+replacing ingredients in provided recipes with substitutions, etc.  It would 
+also carry conventional app features, like storing recipes.  
+An LLM offers the  AI resource for these use cases and many 
+more but it makes more sense to use it as the backend for a new category of app. 
+Just by focusing on these two use case, and how they are crammed into the tiny 
+text box that is ChatGPT's means input, it demonstrates how uncomfortable 
+ChatGPT really is to use for a wide variety of tasks.  A bare text box 
+would have to be repurposed for these two very different needs.
+
+A common problem in the AI community and the tech community
+is the belief that the following is what consumers will really want
 for the long term.  The consumer will utter, "I want this complex thing 
 that would normally take me a lot of time," and then the AI goes off and 
-does it, returns to the person with an impressive result, and everyone 
-is very delighted.  This is the parlor trick mentality of technology
-that is to be avoided because it doesn't carry long-term value for
-people and these products eventually lose users over time.
+does it, returns to the person with an impressive result, and the consumer
+and his friends are all very delighted.  This is the parlor trick mentality 
+of technology that is to be avoided because it doesn't carry long-term value for
+people and these products eventually lose users over time because
+the users are impressed too at first but they don't work in technology
+and then eventually they lose interest, as would have to be the case.
 
 Finally, typing text is not always the strongest means of controlling 
 an LLM at all times, because it depends on the use case.  If it is 

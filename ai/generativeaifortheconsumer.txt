@@ -8,110 +8,141 @@ as part of your job
 
 noctivagous.github.io
 
+What if an AI could make any image desired after receiving a line of text?
+The question is answered by asking who is the person who wants to make
+an image by writing text?  It isn't an artist but is more likely
+someone trying.
+What if AI could drive a person around in a car as he sits in it?
+Since no one asked for these scenarios, their utility is a stretch even
+as they impress in a science fiction manner.
+
 There is often a marketing claim by a software vendor
 that its app offers "unlimited possibilities" in its
 domain.  This is a common claim in technology and can even appear true at 
 first glance.  Programming with nodes (patches), for example,
 seems to offer boundless possibilities because the program
-is updated in real time with each alteration of the running program.
+is updated in real time with each alteration of the running nodes.
 In actuality, there are hidden drawbacks produced by the interface of 
-clicking and dragging nodes and their connectors.  It can
+clicking and dragging nodes and managing their connectors.  It can
 be tedious even though parameters are easily tweaked. In addition to this,
 there sometimes is a loss of granularity of control of the program's design
-compared to typewritten code and many types of software are just
-not feasible.  So, while there are significant advantages, 
-the downsides have not been enumerated by people, 
-which means that the average user and the industry
+compared to typewritten code, and many types of software are just
+not feasible as node-based programming has been provided today.  
+So, while there are significant advantages in some use cases, 
+the downsides have not been enumerated by people. 
+When that is the case, the average user and the industry
 as a whole has a vague understanding of the benefits and trade-offs of using
-this kind of programming technology, so it can never improve.  
-Some people are happy to use node-based programming 
-while others dislike it strongly, and the causes of either 
-viewpoint aren't discussed because no one wants to point
-out the downsides.  
+this kind of programming technology-- just like anything else, including
+AI-- so it can never improve.  
+Some people are happy to use node-based programming, some have mixed feelings,
+while others dislike it strongly, and the causes of the dislikes
+aren't discussed because no one wants to point out all of
+the downsides.
 
 Generative AI has produced the same situation in that there
 hasn't been much in the way of identifying what is helpful
 and what is irritating about it. Who attempts to describe 
 its weaknesses, what can it actually do regularly that is helpful 
-to the consumer as opposed to what it seems like it could do.  
+to the consumer as opposed to what it seems like it could do?
 It can be made to pull off feats, such as taking an image and turning it 
-into a web page, but these feats are not always in line with 
-how people approach their computer work, even though they are impressive in demos.
+into a web page, or taking a paragraph of text and (on its own)
+assembling an image, but these feats are not always in line with 
+how people approach their computer work, even though the generative
+AI results are impressive in demos.
 
 In reality, all computer programs (software applications), including
 current generative AI, carry tendencies that lead the user down certain paths.  
 For example, when software is used to produce art it is not just an art program
-that the designer is using, but a computer program that necessarily 
+that the designer is using but a computer program that necessarily 
 produce works with common characteristics and unintentional aesthetics.  
-Importantly, unlike previous art tools, the software is usually made by people
+Importantly, unlike previous art tools in history, the software is usually made by people
 in the sciences rather than artists and designers from the art community.
-So, while the software meets many design needs exceptionally,
+So, while the software meets many needs of a designer exceptionally,
 there are other aspects that make the artist uncomfortable.  These
 programs will continue to be used anyway because of the overwhelming
 benefits in certain areas, even as they (just like node-based programming)
-have drawbacks in terms of user interface and need improvement.
-Text, images, and videos made by AI also have unintended aesthetics
-and they also have drawbacks.
+have major drawbacks in terms of user interface and need improvement.
+They made the design studio obsolete in many ways while not finishing
+the entire job and so people are dependent on them while longing for
+many earlier, traditional ways of drawing.  Text, images, and 
+videos made by AI also have unintended aesthetics and they also have drawbacks
+and if it reaches the point that people become reliant on them
+they are also likely to be incomplete and produce the same unease.
 
-Conventional computer programs provide the design user specific
-strengths, usually in the area of repetition
-and precision and sometimes there are major deficiencies.
+Conventional computer programs provide the user in design specific
+ability, but usually in the area of repetition
+and precision, taking the time needed out of both drastically.
+But sometimes there are major deficiencies.
 In the case of art and design programs, this usually appears
 whenever they attempt to match the experience of
 traditional work processes (e.g. working on a graphic design
 studio table with a cutting knife and mat). 
-It is easy to draw a high-precision circle
+For example, it is easy to draw a high-precision circle
 or produce fine typography in a vector-drawing program,
 but usually challenging to produce other types of shapes
-and complex shading as easily on paper in a natural way,
+and complex shading as easily as paper in a natural way,
 though an electronic stylus can mitigate the issue.
+To make the discussion more complicated, many artists
+pull off impressive imagery with inferior computer software
+programs that carry a lot of technology but unpleasant
+experiences and when other artists attempt to match them
+they don't even want to learn that software at a beginner's
+level because it is so uncomfortable.
 
 All of this discussion pertains to generative AI as well, which is
 the matter of the user being provided adequate control over the output 
 and the acknowledgment that the output will carry characteristics
 resulting from AI.  Generally, the less precise control the user has over 
-a technology the more it takes the appearance of novelty.
+a technology the more it eventually takes the appearance of novelty.
 The less it is predictable, the more it will approach a gimmick.
+The companion topic to this is how much it attempts to take
+over from the person that is the person's normal job.
 
 The problem with many software applications, such
 as vector-drawing programs, is that their output is
 often difficult to control even though they can produce
 some types of complex imagery precisely and more quickly and than
 an artist working by hand.  The output of generative AI
-is often difficult to control as well and its predictability
+is often difficult to control as well, and its predictability
 is both variable and vague.  This points to a principle:
 when the interface between the person and the machine is
-imprecise such that the results are difficult to control,
-the software feels unsatisfactory or even frustrating but the gains in
-certain areas (e.g. precision, repetition) are so
-significant that the world feels like it cannot go backwards
-or do without the new technology.
+imprecise such that the results are difficult to control
+or predict, the software feels unsatisfactory or even frustrating but the gains in
+certain areas (e.g. precision, repetition) are so significant 
+that the world feels like it cannot go backwards or do 
+without the new technology.
 
 Current generative AI products are the same.
 A plain text prompt is often an unsatisfactory interface for
 generative AI and it is imprecise.  In addition, there are 
 other concerns that appear when it is just written words that
-produce output.  If a person prompts the AI to make video with 
+produce output.  
+
+If a person prompts the AI to make video with 
 a scene of Tokyo, but the AI does it all for you, what is the point
 when real footage usually needs to be tailored for the production?
 What part of Tokyo?  What season? If you didn't specify, the AI 
 has to fill in these details.  But on your own you have to think 
-of all of these aspects yourself and you won't think of them.
-The text prompt is itself a possible problem because of the following:
+of all of these aspects yourself and you won't always think of every
+single one of them. The text prompt is itself a possible problem because of the following:
 "a picture is worth a thousand words," and in reality 970 words will be made
 up by the AI after you prompt it with 30.  Since 30 out of 970
 is a small proportion of user involvement in the output, the
 generative AI will be regarded as a parlor trick or novelty much of the time.
 Why isn't the technology world swamping Hugging Face and using AI all the time
-right now?  It is because most of what is shown is a parlor trick.
+right now?  It is because most of what is shown is a parlor trick,
+it has no value, but it pulls off a feat technology hasn't seen.
 
-The AI produces its own style when it generates
+The AI produces its own style and makes its own decision on content
+-- a lot of the content-- when it generates
 an image, video, or text, too.  Is that style always right
-for a project?  At what level is the person allowing the AI to dictate
-the outcome with its own style?  Even though the AI produces
-images based on training data, how it combines and synthesizes
-for an output is idiosyncratic, with stylistic tendencies indicative
-of AI and how it works under the hood.
+for a project?  Is the content what the person was looking for?
+And how do you control this?  At what level is the person allowing the AI to dictate
+the outcome with its own style and contents is very important.  
+Even though the AI produces images based on training data, how it 
+combines and synthesizes for an output is idiosyncratic, with stylistic 
+tendencies stemming from that AI and how it works under the hood.
+What it wants to put in the video will come from it as well.
 
 What will the AI lapse in doing implicitly
 that you want it to do (that a person would always do)?

@@ -342,17 +342,19 @@ In practice, this is utilized in modern software development
 as if it provides structured data even though it remains a 
 basic stream of characters.  All recent trends in software engineering 
 are moving in this direction, which is the modernization of code's 
-interactivity without carrying it out in a planned way.   
-An unconscious desire is playing out in which programmers 
-seek an upgrade to code's interactivity
-and add it to code editors with elaborate strategies but
-the corresponding software engineering need to do this 
+interactivity, applied to its exterior, instead of 
+carrying it out in a planned way by upgrading its file format.   
+An unconscious dynamic is playing out in which programmers 
+are using code in larger volumes and in more complex ways
+than ever and so they naturally seek an upgrade to code's interactivity.
+But they add it to code editors with elaborate strategies to make
+it work for plain text. The corresponding software engineering need
 is not met, the upgrade of code's file format.
 The software engineering community is not 
 awakening to the absurdity of the situation that this is plain text
 and it shouldn't be treated like it inherently supports anything 
 more interactively, like collapsible sections. 
-For example, the code notebook programs (e.g. Jupyter Notebook) intended for data science 
+For example, the notebook code editors (e.g. Jupyter Notebook) intended for data science 
 and developing AI place the Python programming language (plain text) into an 
 interactive format, providing an input prompt with graphical output 
 responses, but this is actually just a well-constructed hack; Python itself has not been upgraded 
@@ -360,39 +362,43 @@ to behave like this and it doesn't normally support this usage.
 All the same, after this upgrade to Python code was implemented, 
 the interactive code notebook became an essential tool of the AI industry.
 It is a demonstration that when code's form is upgraded it will provide immense
-benefits.  It's just that these notebooks came about 
-as a result of someone's personal objectives, where the people working in data science just
+benefits.  It's just that these notebooks 
+ came about as a result of someone's personal objectives; the people working in data science just
 wanted Python to behave in a certain way for their own particular needs
 and they weren't thinking about the broader implications, which is that if they
-want Python to behave interactively with graphical output they have 
+want Python to behave interactively and produce graphical output they have 
 in actuality run up against the walls of how typewritten
-code normally exists for making and sketching out software.
+code has always existed for making and sketching out software.
  <!-- It's another example of where
   the upgrade of computer code is taking an indirect, unconscious route and therefore
   the process is quite slow compared to a concerted effort that would
   design the code files with structured data .-->
   
   <!--
-  <p>AI is unlikely to displace professionals who instruct
+  <p>AI is unlikely to displace the professionals who instruct
   computers because as long as computers take complex
-  instructions there will be people who produce them for the computers.  
+  instructions there will be people who produce them for the computers.
   Otherwise the computers would all turn into intelligent, autonomous black boxes,
   accepting no complex commands from people, and they would have departed from
   the condition that people even use instructions or commands (code)
-  to build them from the ground up.  In the same way, if AI generates
-  plans for office buildings, there will still need to be professionals like
-  architects who tell the AI what is wanted by the building owners for the building and
-  this is always going to be a complex matter and will be the domain of a professionals
-  for a long time because, as we said elsewhere, whatever AI generates
+  to build them from the ground up.   The commands computers take will not 
+  be the same as literature.  
+ 
+  In the same way, if AI generates plans for office buildings, there will still need to be professionals like
+  architects who tell the AI what is wanted by the future building owners for the building and
+  this is always going to be a complex matter and will be the domain of professionals
+  for a long time even if it is the entirety of a moon-sized habitation being constructed 
+  with future technology within a matter of days, because, as we said elsewhere, whatever AI generates
   today carries the style and characteristics of AI.  At issue is
-  society's (current lack of) understanding that professional expertise extends
-  beyond skill and labor to also the menu of options suitable for
-  any situation, such as what type of lobby would be desired for
+  society's (current lack of) understanding that human professional expertise extends
+  beyond skill and labor to what is also the menu of options suitable for
+  any situation that people want, such as what type of lobby would be desired for
   that office building, the latest experimentation in styles of lobbies, etc.
-  If people are removed from this job then it would be a culture of AI machines
-  evolving their own lobby styles over the years for the office buildings
-  so that the AI could choose from them for any building plans.
-  Human culture then would not be around because its evolution
+
+  If people are removed from what exists around people then it would be a culture of AI machines
+  evolving their own lobby styles over the years for the office buildings,
+  telling humans what they are to live in.
+  Human culture then would disappear because its evolution
   would be taking place by AI and within AI and humans would just
   be inhabitants of what AI made with the passage of time.
   
@@ -403,21 +409,25 @@ code normally exists for making and sketching out software.
   <p>
     Meanwhile, in mainstream software development, IDEs are increasingly 
     providing enhancements to code that improve its interactive capabilities
-    as well, to provide greater control. But to do this, they project 
+    as well, to provide greater control and navigation.  But to do this, they 
+    have to project 
      non-existent structure onto the plain text (.TXT) code for the benefit of 
      the user: they analyze it constantly in the background to make 
      collapsible code sections with GUI arrow controls, they generate
-     dropdown menus with divided sections of the file's contents, and they
-     display code completion popovers. They extracted this information
+     dropdown menus at the top of the window 
+     with organized sections of the file's contents, and they
+     display code completion popover windows. They extracted this information
      by processing a basic file of plain text.
      In other words, the common IDE has begun to treat 
      a single file of code (.TXT) as a conventional application document,
      which is a very hacky activity, but the phenomenon is happening in an unrecognized 
      way. The code editor undertakes user interface gymnastics with this stream
       of ASCII characters to implement all of the modern code editing features that appeared
-      in the last decade (such as collapsible sections with arrow controls)
+      in the last decade (such as the mini maps that now sit to the side)
       and when those features are added they are a reflection of how code is
-      more complex and the code bases are larger than ever.
+      more complex than before and the code bases are larger.  This is why
+      there has to be a retrofitting, like placing beams and columns in an
+      old building.
       
       <p>
       The most honest picture of how code exists is available 
@@ -429,13 +439,14 @@ code normally exists for making and sketching out software.
       take on in any other situation, which is to
       move up to an application document file format for each file of code.
       Otherwise, the absurd continues to play out, the hot-rodding of .TXT just to keep it
-      around as the primary medium of computer programming.
+      around as the primary medium of computer programming because people
+      are worried that an upgrade won't fit into what exists now.
 
 <p>
 When computer code's file 
 format is upgraded to a document file format—
 comprised of markup like XML— and the contents are rendered 
-inside the code editor from the XML (just like a web page is 
+inside the code editor from the XML (of course just like a web page is 
 rendered from its HTML), the capabilities available to the
 programming language designers will become much broader,
 in many directions, from lines of code that contain multiple rows 
@@ -445,7 +456,7 @@ code inside the same document, which is valuable flexibility for
 the programmer. There will be a 
 meaningful job for the graphic designer
 to assist in the layout and appearance of code, for the first time. 
- A file of code will provide more than one presentation of 
+ A file of code will allow providing more than one representation of 
  its data, but this will be natural to implement when the code file is made of
 markup whereas it would be rough job to make this for today's 
 .TXT-based code.
@@ -468,36 +479,39 @@ markup whereas it would be rough job to make this for today's
     survey a project of code in the form of a
     map or schematics overview.  It will be possible to zoom in and out of
     code just like CAD because the code files will have 
-    formal structure in them. 
+    formal structure inside them. 
    
    <p>
    Especially if the code files are made out of XML, 
    the ability to add attributes to the underlying markup will 
-   take computer programming languages to a new level.  What is
-   rendered from the XML will determine what code can do, 
-   not merely what is typed out one character at a time.
+   take computer programming languages to a new level.  Whatever someone
+   wants to render from the XML will specify what code can do, 
+   not merely what is typed out one text character at a time.
     A function will not just show up in the markup as
     &lt;function&gt; but allow the insertion of custom attributes inside the &lt;function&gt; XML element 
       that provide for much broader configuration, rendered for the programmer code file.
        In addition, an individual line of code will be more powerful
-        because it can contain more complex statements, 
-        made out of graphical components and even allowing 
-        interactive controls natively like assigning object variables to 
-        data tables. 
-         An object variable will be assignable to a tab view control 
+        because it can contain more complex statements, permitting math notation,
+	 A section of the document can be made out of graphical components and even allowing 
+        interactive controls natively.  Assigning array object variables to 
+       interactive data tables will be possible and this is something people need today. 
+       A 3D object will be assignable to a 3D model viewer displaying the object inside the line of code.
+         An object variable with many settings will be assignable to a tab view control 
          that has many configuration parameters for that object and it
-         will appear that way in the document.
-        A spline object variable, for example, will be assignable to a 
-      spline editor control where it can be edited inside the line of code.
-      The programmer will be able to supply his own editors like this.
+         will appear that with GUI settings inside the document, in the line of code.
+        A spline object variable will be assignable to a 
+      spline editor control, where it can be edited inside the line of code.
+      In the future, the programmer would be able to supply his own editors like this.
 
-<p>Some programming language concepts will be straightforward to implement that cannot 
-enter the plain text file format, such as the following example. Whether 
+
+<!--<p>Some programming language concepts will be straightforward to implement that cannot 
+enter the plain text file format, such as the following example.  Underneath the appearance
+of many software programs is a grid. Whether 
 it is checkers, chess, a calendar, tic-tac-toe, or the arcade snake game, they all could be viewed 
-as stemming from a grid, one that started in a most generic and unmodified form.  
+as stemming from an abstract or conceptual grid, one starts in a most generic and unmodified form.  
 Many programmatic outcomes like these (anything whose form is a modified grid) 
 can be described in terms of increasing specification of a generically 
-existing grid component. Chess or checkers come from the same programmatic component.
+existing grid component. Chess, checkers, and a calendar can come from the same programmatic component.
 In the code it would start from the most generic, initial state 
 and then the person begins customization.
 What the grid is for is progressively described with accessory components, 
@@ -509,7 +523,8 @@ a possible activity of programming. If it is the game of solitaire being built,
  This versatile grid component, which has capabilities in many directions, 
  will need to display a representation of the grid itself, its components that specify what it does,
   and the relationships between them so that a game of tic-tac-toe 
-  can be described in just a few diagrams. <!-- What's more, when images 
+  can be described in just a few diagrams. -->
+  <!-- What's more, when images 
   are something that can be placed in the code file and made a feature 
   of the programming language itself, a set of instructions for the computer 
   can be described semiotically to show heuristic commands 
@@ -517,11 +532,12 @@ a possible activity of programming. If it is the game of solitaire being built,
   -->
   
   <p>
-   The upgrade of code's file format means that many scenarios will be easily described in 
+  The upgrade of code's file format means that many scenarios will be easily described in 
   terms of conditions, rules, states, etc. because computer code's presentation 
   capabilities will exist beyond .TXT. With all of these newer features provided 
   in code, existing software in use will be relatively easy and fast to rewrite 
-  and when they are redone they will have more available in them.
+  and when they are redone they will have more available in them. <!-- Most programming languages
+  do not recognize state machines today. -->
 
 
 
@@ -628,9 +644,19 @@ that enclose the loops, functions, and other bodies of code). -->
   This is the sort of priority a typical software engineering team wouldn’t normally take on and 
   it demonstrates the importance of emphasizing graphic design for the
   future of computer code and programming.
-  
 
+<h4>The Inclusion of External Physical Controls</h4>  
 
+<p>Code editors and IDEs have remained largely the same in appearance
+for decades, but now it makes sense for the programmer in the office to use hardware
+to interact with the IDE and insert code, regarding the situation as
+the same as how a video editor buys control decks.  At a minimum, Noctivagous suggests using
+one or more touchscreen computers, such as an iPad, set up next to the programmer's
+computer so that he or she can make use of a custom onscreen grid of 
+buttons that insert common code snippets and templates for functions, classes,
+loops, branching statements, variables of various types, etc.  
+
+<h4>JIT-Focused Software Development</h4>
  <p>On another topic in software engineering, the work processes and what dynamic should be emphasized, it's 
   also important to note that many software applications today
   could be written in a live programming environment making use of JIT compilation, but for some

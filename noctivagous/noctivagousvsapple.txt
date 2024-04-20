@@ -27,10 +27,11 @@ that a technological leap will  occur in software development when code's file
 format is upgraded from .TXT to a document file format.  Of course, such an
 upgrade path will be anchored from the beginning within 
 existing practices as people know them today instead of going down
-the wrong route and incorporating unfamiliar and untested abstractions.  
+the wrong path and incorporating unfamiliar and untested abstractions.  
 Upgrading programming's appearance and style will involve staying close 
-to software development technologies as they are today before taking 
-steps to depart from them.  Only Noctivagous advocates this goal, 
+to software development technologies as they exist today before taking 
+steps to depart from them and adding features.  
+Only Noctivagous advocates this goal, 
 to transform the appearance and behavior of code into something fitting our times, 
 through a file format upgrade.  But why is that too much for anyone
 when so few companies are doing anything major with programming languages; 
@@ -44,8 +45,8 @@ more capable than 1995, a more macroscopic view is the starting point.
 A programming concept cannot take on any graphical appearance if 
 programming languages remain confined to the .TXT file format.
 But of course there are many ways to instruct a computer that
-would involve diagrams and arrangements of symbols.  In the beginning,
-these could appear right next to conventional code.
+involve diagrams and arrangements of symbols.  In the beginning,
+these could appear right next to conventional code. 
 
 The public looks to Apple for technological advances but Apple
 generally doesn't attempt to break new ground in software 
@@ -180,5 +181,44 @@ expected to oppose what Noctivagous is doing.  This is why
 it is important to consult the field of graphic design and 
 interactive media design first while grounding the activity 
 to conventional software engineering that is on the machine today.
+
+Software engineers just aren't aware that what they're used to 
+is failing everyone. They think computer code is equivalent to 
+what fits inside .TXT and anything else will cause them problems. 
+The transformation of computer code by upgrading the file format 
+from plain text (.TXT) (the same text characters that sat on 
+old green monochrome terminal screens!) to a document file 
+format will be the future of computer code. 
+
+his entry into software engineering revealed a necessary upgrade that only an outsider can promote
+
+
+Upgrade all applications that run on the Internet by upgrading computer code. The web is an application of the Internet.
+Rewrite web browsers in a short period of time with powerful programming languages that are no longer tethered to .TXT but instead have deep capabilities enabled by XML under the code's much richer presentation and interactivity.
+Future computer code will look more like what is in Hollywood movies, as it will not be stuck in the monochrome ASCII terminals.  Instead it will be rendered from XML.
+Code will natively support interactivity, multimedia, and diagrams.
+  
+For the first time, graphic designers will have a role in the 
+design of programming languages' appearance, how the code looks 
+as it flows down the page.  Finally, math notation will be usable 
+for commanding a computer when making conventional software products.  
+A math  matrix will appear in code as a math matrix, not multiple lines 
+of typewriter text characters-- a mess.
+
+When code files are made out of XML (markup or structured data) instead of 
+.TXT, the Xcode projects will be viewable in the Apple Vision Pro or
+other XR device.
+
+The dramatic increase in parseability of code that results from 
+upgrading code's file format (to XML) will allow separating its constituents
+(loops, control flow) so easily that the situation will lend itself 
+to an interactive presentation of code inside XR, inspectable like machines.
+
+That is to say, it will actually be meaningful to inspect and make
+code in XR when the code files have had their file format upgraded
+away from .TXT, something too primitive to work with in 3D.  
+Major aspects of a running application will be viewable 
+in XR. Its code will be viewable at the same time in space.
+
 
 

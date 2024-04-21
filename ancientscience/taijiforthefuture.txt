@@ -72,10 +72,15 @@ The electromagnetic waves themselves are perpendicular (opposing) yet they
 are interdependent.
 
 
-Characteristics: Yin and yang represent opposite qualities. 
-- Yin is often associated with characteristics such as darkness, cold, passivity, inwardness, 
-and femininity. 
-- Yang, by contrast, is associated with light, heat, activity, outwardness, and masculinity.
+Characteristics of Yin and Yang
+
+Yin is often associated with characteristics such as darkness, cold, passivity, inwardness, 
+and femininity. In science this would be the negative electrical charge, the veins
+that need to be oxygenated.
+
+Yang, by contrast, is associated with light, heat, activity, outwardness, and masculinity.
+In science this would be the positive electrical charge, the arteries that carry
+oxygenated blood.
 
 As a cold front advances, it pushes against warm air, forcing it to rise. 
 This rising warm air cools and condenses, forming clouds and potentially 
@@ -83,53 +88,35 @@ leading to precipitation (yin characteristics).
 
 Taiji represents the foundational principle of dualism in ancient Chinese science, yin and yang, where opposite forces 
 are interconnected and interdependent in all manifestations in
-the natural world.  In any phenomenon there won’t just be one aspect
-of Taiji manifesting (electricity and magnetism can generate each other) but many,
-from many angles (magnets continue to two poles when divided, electricity has
-positive and negative charges, etc.).
+the natural world.  
+
+In any phenomenon there won’t just be one aspect of Taiji manifesting.
+
 
 Electricity and magnetism as manifested in the electromagnetic field is a 
-powerful example of the Taiji.  E
+powerful example of the Taiji.
 
 
 
-
-Despite their opposition, yin and yang are not independent 
+It can take time to realize coming from Western science that
+despite their opposition, yin and yang are not independent 
 or antagonistic forces. They rely on each other to exist; without one, the other 
 would have no meaning. For example, day (yang) cannot exist without night (yin).
-
-
-
-
-Discussing electricity, voltage can be seen as a force created by the separation of 
-positive and negative charges, which then strives to return to a state of 
-balance or equilibrium by allowing the charges to flow, thus creating current.
-Electrical current arises due to the movement of charges, specifically 
-the flow of electrons from a region of negative charge toward a region of 
-positive charge. Electrical current fundamentally depends on the flow of 
-charged particles—typically electrons, which are negatively charged, moving through 
-a conductor.
-
-
-
-
-
-
 Yin and Yang as Opposites, Not Absolutes:  
 Yin and yang aren't meant to represent complete absences of one another. 
 They are  interconnected forces,  and even at their peak, 
 each might contain a subtle presence of the other.
-
 Dynamic Balance: The ideal state is not an absence of conflict, 
 but rather a dynamic equilibrium where yin and yang are in balance. 
 This balance can shift depending on the context.
-
 Balance does not mean static equality but a dynamic equilibrium 
 where forces exert influence in a way that creates a sustainable system.
 
-Seed of Yin Within Day:  However, even at midday, there might be subtle yin influences.  For example, high clouds passing by could represent a very minor yin presence within the vast yang energy of the midday sky.  Additionally, the Earth continues to rotate, and the other side of the planet experiences night (yin) while you experience day (yang).
 
-
+Seed of Yin Within Day:  However, even at midday, there might be subtle yin influences.  
+For example, high clouds passing by could represent a very minor yin presence within the 
+vast yang energy of the midday sky.  Additionally, the Earth continues to rotate, and 
+the other side of the planet experiences night (yin) while you experience day (yang).
 
 Mutual Consumption: Yin and yang are in a constant state of flux, where each 
 aspect can consume or diminish the other, leading to changes in their relative 
@@ -146,12 +133,22 @@ Yin and Yang are not literal opposites: The transformation shouldn't be seen
 as a complete reversal. It's a gradual shift where aspects of the previous 
 state linger within the new one.
 
-
-5. Balance: While not always equal, yin and yang should ideally be balanced. 
+Balance: While not always equal, yin and yang should ideally be balanced. 
 An imbalance can lead to disharmony and disorder within a system, whether it be 
 in the human body, the environment, or society.
 
-Cosmology: In Chinese cosmology, yin and yang are thought to arise from the 
+Discussing electricity, voltage can be seen as a force created by the separation of 
+positive and negative charges, which then strives to return to a state of 
+balance or equilibrium by allowing the charges to flow, thus creating current.
+Electrical current arises due to the movement of charges, specifically 
+the flow of electrons from a region of negative charge toward a region of 
+positive charge. Electrical current fundamentally depends on the flow of 
+charged particles—typically electrons, which are negatively charged, moving through 
+a conductor.
+
+COSMOLOGY
+
+In Chinese cosmology, yin and yang are thought to arise from the 
 primordial chaos and through their interactions, the myriad things of the world 
 were formed.
 

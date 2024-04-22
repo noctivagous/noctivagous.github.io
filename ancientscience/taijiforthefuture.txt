@@ -8,37 +8,55 @@ ELECTRICITY AND MAGNETISM
 
 When a magnet is broken or split in half, each resulting piece becomes a magnet itself with 
 its own north and south poles. This occurs no matter how many times the magnet is split.
-This is a useful example for discussing the Taiji (yin and yang), just one reflection of
-its manifestations in the world.  For thousands of years, Taiji has been regarded 
-as the foundation of the universe whereas the history of empirical science is comparatively
-recent and short.  When Taiji is applied to physical and life sciences, there are many cases
-where empirical science discussions manifest characteristics of Taiji, unknowingly discussing
-terms that validate it as the truth.  First, in every scientific discipline there 
-are dualistic aspects.  For magnets, there are north and south poles.  For electricity, 
+This is a useful example for discussing the Taiji (yin and yang), just one notable reflection of
+its manifestations in the world that comport with modern scientific knowledge.  
+For thousands of years, Taiji has been regarded as the foundation of the universe 
+whereas the history of empirical science is comparatively recent and short.  When Taiji 
+is applied to physical and life sciences, there are many cases
+where empirical theories manifest characteristics of Taiji, unknowingly discussing
+phenomena in dualistic terms that validate it as the truth.  In every scientific discipline there 
+are dualistic aspects to be found. For magnets, there are north and south poles.  For electricity, 
 there are positive and negative electrical charges.  The Taiji is made of two substances, 
 yin and yang that carry opposing characteristics, but they are also interrelated,
-complementary, and dependent on each other for existence. 
+complementary, and dependent on each other.  Taiji represents balance and continual 
+flux between opposing forces.
 
-A magnet when divided becomes another magnet with two poles, which exemplifies
-the indivisibility of the magnetic fields.  But there is more, adding more
-facets to the dualism.  Magnetism can generate electricity and vice-versa.  
-A magnet moved past a wire generates an electrical current in that wire.  
-Electric generators, for example, convert mechanical energy (often from rotating 
-turbines such as wind turbines) into electrical energy by moving their coils of wire 
-through magnetic fields, generating electricity in the wire.  Electricity can also produce magnetism,
-resulting in moving the magnet, the basis of an electric motor, such as in the case of an electric fan
-or other motor.  Yet, the recognition that electricity and magnetism are interrelated 
-phenomena rather than distinct entities is regarded as a pivotal development in physics 
-and also considered the foundation of 20th century science.  Consequent to this another topic 
-emerged for science, electromagnetism.  This shows that even in the designation of 
-science topics the Taiji manifests: electricity is studied on its own, magnetism is 
-studied on its own, yet there is a third topic, electromagnetism that is also studied that 
-is an overlap of the two.
 
-As we are showing here, Taiji first provides a dualistic unification for the science
+Fundamental to modern technological understandings is the recognition that electricity and magnetism are interrelated 
+phenomena rather than distinct entities.  This is regarded as a pivotal development in physics 
+and also considered the foundation of 20th century science.  That is, there is 
+an interplay between electricity and magnetism. This unification is clear instance of 
+an empirical realization of the Taiji, where separate subjects of knowledge (electricity 
+and magnetism) are actually interconnected and interdependent.
+
+There are many facets of their interrelation, starting with the most overt and visible.
+In fact, moving a magnet past a conductor, such as a wire, induces an electrical current in that wire.  
+Electric generators exemplify this principle by converting mechanical energy—often derived from rotating turbines, including wind 
+turbines—into electrical energy. This conversion occurs as coils of wire within the 
+generator move through magnetic fields, thus generating electricity. Similarly, an 
+electric fan operates when an electrical current interacts with a magnet in its motor 
+to produce motion. However, when the fan is turned off and its blades are manually
+moved, the motor can act as a generator. In this reversed role, the motor converts the
+mechanical energy of the manual rotation back into electrical energy through a process 
+known as electromagnetic induction. This conversion, however, typically generates only 
+a small amount of power.
+
+Consequent to this another topic emerged for science, electromagnetism.  This shows that 
+even in the designation of science topics the Taiji manifests: electricity is studied on 
+its own, magnetism is studied on its own, yet there is a third topic, electromagnetism 
+that is an overlap of the two.
+
+Electromagnetism is not merely a topic within physics but a cornerstone concept.
+The principles of electromagnetism are fundamental to modern civilization's infrastructure. 
+They are the basis for the operation of electric motors, power generation, telecommunications 
+(radio, TV, microwave ovens, cellular telephone technology, stereo speakers, polarized sunglasses), 
+and much more.
+
+As we are showing here, Taiji can provide a dualistic view of the science
 theories empiricists didn't realize were related, which were in front of them the whole time. 
 It also puts a focus on the times when they did notice the connections, and it provides 
-a deeper discussion beyond that which predates modernity, which is the theory of yin and yang.  
+a deeper discussion beyond that which predates modernity, which is the theory of yin and yang.
+  
 What scientists do is develop empirical theories, but they are always providing reflections 
 of deeper principles at work in the universe. Though scientists will acknowledge that 
 splitting a magnet will make another complete magnet with two poles, this is only mentioned 
@@ -46,8 +64,8 @@ as a passing fact within the framework of empirical knowledge.
 
 At every angle Taiji can manifest and be discussed: electric and magnetic fields 
 propagate together along their propagation through space as a pair of waves.  
-The electric and magnetic fields oscillate sinusoidally and perpendicularly to each other.  
-This aspect is also a direct reflection of the Taiji principle.  The fields continuously 
+The electric and magnetic fields oscillate sinusoidally and also perpendicularly to each other,
+which is yet another evocation of yin and yang. The fields continuously 
 convert into each other, maintaining an equilibrium that is essential for the wave’s 
 propagation and energy transfer.
 
@@ -58,11 +76,6 @@ yin within yang and vice versa.  Thus we can see the truth of Taiji (yin and yan
 the sciences that have been studied in modernity, as magnetism and electricity
 interrelate.  The field of a current of electricity carries magnetic fields
 in a straight wire, it just isn't acting as a magnet for practical needs until coiled.
-
-Electromagnetism is not merely a topic within physics but a cornerstone concept.
-The principles of electromagnetism are fundamental to modern civilization's infrastructure. 
-They are the basis for the operation of electric motors, power generation, telecommunications 
-(radio, TV, cellular telephone technology), and much more.
 
 
 Characteristics of Yin and Yang

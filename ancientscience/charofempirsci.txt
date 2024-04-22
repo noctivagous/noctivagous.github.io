@@ -1,4 +1,76 @@
 
+Balancing on the Edge of Destruction
+
+
+Understanding Boundary Conditions in Science and Wuxing
+1. Boundary Conditions in Empirical Science:
+In scientific terms, boundary conditions are specific constraints or 
+limits set on the values at the borders of a system. These conditions 
+define the state of a system at its extremities and significantly impact 
+the solutions to problems within that system. For instance, in rocketry, 
+boundary conditions would include the temperatures and pressures that materials 
+must withstand. In electrical engineering, they encompass the electrical load 
+capacities that conductors must not exceed. By defining and understanding these 
+conditions, scientists and engineers ensure that systems operate without failure.
+
+2. Wuxing and Natural Harmony:
+Wuxing, on the other hand, emphasizes living in harmony with the natural order 
+rather than defining and manipulating boundary conditions. It describes interactions 
+among elements that naturally balance and control each other, promoting a philosophy 
+of existence and interaction that aligns with natural laws rather than challenging 
+them. Wuxing teaches adherence to these natural orders and cycles, suggesting 
+that human actions should seek balance rather than confrontation or control at 
+the extremes.
+
+when empirical science applies principles in ways that invert traditional 
+beliefs (like using metal to contain fire), it often does so by testing or 
+extending the boundary conditions—essentially seeing how far natural limits 
+can be pushed before failure occurs. This approach can lead to greater risks, 
+as operating near or at these boundary conditions increases the likelihood of 
+accidents or failures, as seen in examples like rocket explosions or electrical fires.
+
+
+
+disrupts the natural balances shown in Wuxing
+
+In Wuxing, each element has specific interactions: metal 
+generates water, water nourishes wood, wood fuels fire, 
+fire creates earth, and earth bears metal. Conversely, in 
+the controlling cycle, wood parts earth, earth absorbs water, 
+water quenches fire, fire melts metal, and metal chops wood. 
+
+According to these principles, metal should not support fire; 
+it should control it.  In interactions between the elements within 
+the Wuxing system where traditionally, the idea that metal 
+supports fire would be seen as contrary to the natural order.
+
+empirical science is opposite the universe and harmony. in 
+the wuxing it is the controlling cycle where fire melts metal.  
+to achieve its science, empirical science exists such that it 
+is reversing and making use of the controlling cycle in an 
+inverted way.  in a rocket, the metal is being used 
+to contain fire, so the relative tolerance before destruction is small.  
+the task science provides itself all the time is to balance
+on the edge.
+
+in the same way as a rocket, the wire conductor (metal) for electricity (fire) 
+has to match its size the current or the electricity (fire element) 
+will melt the metal.  again, sitting in the border before destruction.
+the relationship is wrong because metal should not be made to support fire
+and the consequence is that danger and hazards result.
+
+when the wuxing is inverted like this the consequence is that 
+danger and hazards naturally result in both rocketry and electricity.
+the whole of the situation is unwieldy, as in the case of
+rockets that are very sensitive.  cautions are a common
+aspect of scientific endeavors.
+
+
+
+
+
+
+
 
 Maximization Versus Moderation: Empirical science and engineering frequently 
 strive to maximize the capabilities of materials and systems, optimizing for 
@@ -33,12 +105,20 @@ about harmony and integration rather than domination or maximization.
 Concept of Tightly Controlled Systems
 1. Containment and Control:
 
-Syringes: In the case of a syringe, the liquid is precisely controlled, with every milliliter administered reflecting a balance between the force applied and the containment provided by the syringe itself. This reflects broader scientific methodologies where variables are tightly controlled to produce predictable, replicable results.
+Syringes: In the case of a syringe, the liquid is precisely controlled, with every 
+milliliter administered reflecting a balance between the force applied and the containment 
+provided by the syringe itself. This reflects broader scientific methodologies where 
+variables are tightly controlled to produce predictable, replicable results.
 2. Precise Regulation:
 
-Electrical Wires: The flow of electricity within insulated wires is another apt metaphor. The insulation acts as a barrier that confines and directs the electrical current, preventing leakage and ensuring the energy is delivered where it is intended. This containment is critical to both safety and efficiency.
+Electrical Wires: The flow of electricity within insulated wires is another apt metaphor. 
+The insulation acts as a barrier that confines and directs the electrical current, preventing 
+leakage and ensuring the energy is delivered where it is intended. This containment is 
+critical to both safety and efficiency.
 3. Operational Limits:
 
-Rocket Engines: The design and operation of rocket engines involve precise calculations to handle extreme conditions without crossing into catastrophic failure. Engineers must understand and respect the material and physical limits to ensure functionality.
+Rocket Engines: The design and operation of rocket engines involve precise calculations 
+to handle extreme conditions without crossing into catastrophic failure. Engineers must 
+understand and respect the material and physical limits to ensure functionality.
 
 

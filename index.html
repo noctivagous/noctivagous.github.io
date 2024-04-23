@@ -337,25 +337,25 @@ computer programs will immediately hit the ceiling that
 <p>
 -->
 First, computer code files should be made out of structured data. 
-Source code is still stored and processed as plain text. 
+Source code is still stored and processed in plain text. 
 In practice, this is utilized in modern software development 
 as if it provides structured data even though it remains a 
 basic stream of characters.  All recent trends in software engineering 
 are moving in this direction, which is the modernization of code's 
-interactivity, applied to its exterior instead of 
+interactivity on its exterior instead of 
 carrying it out in a planned way by upgrading its file format.   
 An unconscious dynamic is playing out in which programmers 
-unwittingly seek an upgrade to code's interactivity because they
+instinctively seek an upgrade to code's interactivity because they
 are using code in larger volumes and in more complex ways
 than in previous decades.
-But they add it to code editors with elaborate strategies to make
-it work for plain text.  The corresponding software engineering need
-is not met, the upgrade of code's file format.
-The software engineering community is not 
+But they add features to code editors with elaborate strategies to make
+them work for plain text.  The corresponding software engineering need
+is not met, the upgrade of code's file format, for implementing advanced
+interactivity.  The software engineering community is not 
 awakening to the absurdity of the situation that this is plain text
 and it shouldn't be treated as if it naturally supports anything 
 more interactively, like collapsible sections. 
-For example, the notebook code editors (e.g. Jupyter Notebook) intended for data science 
+The notebook code editors (e.g. Jupyter Notebook) intended for data science 
 and developing AI place the Python programming language (plain text) into an 
 interactive format, providing an input prompt with graphical output 
 responses, but this is actually just a well-constructed set of hacks; 
@@ -365,12 +365,12 @@ All the same, after this upgrade to Python code was implemented,
 the interactive code notebook became an essential tool of the AI community.
 It is a demonstration that when code's form is upgraded the results will provide immense
 benefits.  It's just that these notebooks 
- came about as a result of someone's personal objectives; the people working in data science just
+ came about indirectly as a result of personal objectives; the people working in data science just
 wanted Python to behave in a certain way for their own particular needs
 and they weren't thinking about the broader implications, which is that if they
-want Python to behave interactively and also produce graphical output they have 
-in actuality run up against the walls of how typewritten
-code has always existed for making and sketching out software.
+want Python to behave in a more interactive way and also produce graphical output they have 
+actually run up against the walls of how typewritten
+code has conventionally existed for making and sketching out software.
 <!-- The software engineer is just proceeding to get what he wants
 out of it.-->
 
@@ -424,47 +424,54 @@ out of it.-->
      display code completion popover windows. They extracted this information
      by processing a basic file of plain text.
      In other words, the common IDE has begun to treat 
-     a single file of code (.TXT) as a conventional application document (e.g. XML),
-     which is a very hacky activity, but the phenomenon is happening in an unrecognized 
-     way. The code editor undertakes user interface gymnastics with this stream
+     a single file of code (.TXT) as a conventional application document (e.g. XML)
+     in the last decade, which is a very hacky activity, but the phenomenon is happening in an unrecognized 
+     way and it is a reaction to the growing problem that .TXT
+     does not scale for larger amounts of code. 
+     The code editor undertakes user interface gymnastics with this stream
       of ASCII characters to implement all of the modern code editing features that appeared
-      in the last decade (such as the mini maps that now sit to the side)
-      and when those features are added they are a reflection of how code is
-      more complex than before and the code bases are larger.  This is why
-      there has to be a retrofitting, like placing beams and columns in an
+	 (such as the mini maps that now sit to the side)
+      and when those features are added they are a consequence of how code is
+      more complex than before.  This is why there has to be a retrofitting, like placing beams and columns in an
       old building.  That retrofitting would be, to begin with, the onscreen rendering 
-      of current code syntax by reading files made out of XML or structured data.
+      of current code syntax as it looks today by parsing files made out of XML or other markup,
+      to replace .TXT.
+
       
       <p>
       The most honest picture of how code exists today is available 
       by opening up a file in a basic text editor like Microsoft's Notepad. 
       Everything else code can offer the software engineer today that is interactive
-      is actually a hack placed on top, including keyword coloring (code, of course, provides no coloring 
+      is actually a hack placed on top, including keyword coloring (ASCII-based code, of course, provides no coloring 
       data in the plain text file data).  IDEs and the software engineering
       community are avoiding the most important task a software engineer would
       take up in any other situation, which is to
       move up to an application document file format for each file of code.
       Otherwise, the bizarre advances continue to play out, the hot-rodding of .TXT just to keep it
-      around as the primary medium of computer programming because people
+	   around the primary medium of computer programming because programmers
       are worried that a substantial upgrade won't fit into what exists now.
+      As we just said though, from the outset nothing has to change that will
+      break how people write software because it will start with just a conversion
+      from .TXT to an XML-based (or other markup document).
 
 <p>
 When computer code's file 
 format is upgraded to a document file format—
 comprised of markup like XML— and the contents are rendered 
-inside the code editor from the XML (of course just like a web page is 
+inside the code editor from the XML (no different from how a web page is 
 rendered from its HTML), the capabilities available to the
 programming language designers will become much broader,
 in many directions, from lines of code that contain multiple rows 
-to diagrams that describe complex processes. 
+to diagrams that describe complex processes. They won't necessarily start by
+changing code in dramatic ways but they will actually be able to do that.
 It will be possible to mix node-based programming and procedural
 code inside the same document, which is valuable flexibility for
 the programmer. There will be a 
 meaningful job for the graphic designer
-to assist in the layout and appearance of code, for the first time. 
- A file of code will allow providing more than one representation of 
- its data, but this will be natural to implement when the code file is made of
-markup whereas it would be rough job to make this for today's 
+to assist in the layout and appearance of code documents, for the first time. 
+ A file of code will inherently permit generating more than one representation of 
+ its data because its data is made out of markup, but this will be natural to 
+ implement whereas it would be rough job to make this for today's 
 .TXT-based code.
 
 <p>

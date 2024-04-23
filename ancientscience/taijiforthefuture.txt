@@ -21,25 +21,34 @@ yin and yang that carry opposing characteristics, but they are also interrelated
 complementary, and dependent on each other.  Taiji represents balance and continual 
 flux between opposing forces.
 
+Fundamental to modern technological understandings is the recognition that electricity 
+and magnetism are interrelated phenomena rather than distinct entities.  Electric and magnetic 
+fields propagate together through space as a pair of waves.  Electriciy and magnetism are 
+always present together. That is a magnetic field is present in any conductor or wire
+where there is current (in spite of popular understanding of what it takes for there to be
+a magnetic field).  Propagating through space (including in any wire where there is current), 
+the electric and magnetic fields oscillate sinusoidally and also perpendicularly to each other,
+another manifestation of their dualism.  The fields continuously 
+convert into each other, maintaining an equilibrium that is essential for the wave’s 
+propagation and energy transfer. This theory is regarded as a pivotal development in physics 
+and also considered the foundation of 20th century science.  
 
-Fundamental to modern technological understandings is the recognition that electricity and magnetism are interrelated 
-phenomena rather than distinct entities.  This is regarded as a pivotal development in physics 
-and also considered the foundation of 20th century science.  That is, there is 
-an interplay between electricity and magnetism. This unification is clear instance of 
-an empirical realization of the Taiji, where separate subjects of knowledge (electricity 
-and magnetism) are actually interconnected and interdependent.
+The discovery that there is  an interplay between electricity and magnetism is a
+clear instance of an empirical realization of the Taiji, where separate domains of knowledge 
+(electricity and magnetism) are actually interconnected and interdependent.
 
-There are many facets of their interrelation, starting with the most overt and visible.
-In fact, moving a magnet past a conductor, such as a wire, induces an electrical current in that wire.  
-Electric generators exemplify this principle by converting mechanical energy—often derived from rotating turbines, including wind 
-turbines—into electrical energy. This conversion occurs as coils of wire within the 
-generator move through magnetic fields, thus generating electricity. Similarly, an 
-electric fan operates when an electrical current interacts with a magnet in its motor 
+There are many facets of their interrelation
+An electric fan operates when an electrical current interacts with a magnet in its motor 
 to produce motion. However, when the fan is turned off and its blades are manually
-moved, the motor can act as a generator. In this reversed role, the motor converts the
-mechanical energy of the manual rotation back into electrical energy through a process 
-known as electromagnetic induction. This conversion, however, typically generates only 
-a small amount of power.
+moved, the motor will act as a generator (for a small amount of power). 
+Electricity and magnetism are present at the same time but can also be made to generate
+and store one another. Moving a magnet past a conductor, such as a wire, induces an electrical 
+current in that wire.  Electric generators exemplify this and convert mechanical motion,
+usually from rotating turbines, including wind turbines, into electrical energy. 
+The conversion of motion into electricity occurs as coils of wire within the generator 
+move through magnetic fields, thus generating electricity.
+
+At every angle Taiji can manifest and be discussed: 
 
 Consequent to this another topic emerged for science, electromagnetism.  This shows that 
 even in the designation of science topics the Taiji manifests: electricity is studied on 
@@ -62,12 +71,7 @@ of deeper principles at work in the universe. Though scientists will acknowledge
 splitting a magnet will make another complete magnet with two poles, this is only mentioned 
 as a passing fact within the framework of empirical knowledge.
 
-At every angle Taiji can manifest and be discussed: electric and magnetic fields 
-propagate together along their propagation through space as a pair of waves.  
-The electric and magnetic fields oscillate sinusoidally and also perpendicularly to each other,
-which is yet another evocation of yin and yang. The fields continuously 
-convert into each other, maintaining an equilibrium that is essential for the wave’s 
-propagation and energy transfer.
+
 
 This interdependence can lead to talking more about yin and yang specifically. 
 Yin and Yang are not absolute opposites but interconnected: they are two sides of the 

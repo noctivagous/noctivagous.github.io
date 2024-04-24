@@ -8,40 +8,45 @@ ELECTRICITY AND MAGNETISM
 
 When a magnet is broken or split in half, each resulting piece becomes a magnet itself with 
 its own north and south poles. This occurs no matter how many times the magnet is split.
-This is a useful example for discussing the Taiji (yin and yang), just one noteworthy reflection of
-its manifestations in the world that comport with modern scientific knowledge.  
+This is a useful example for discussing the Taiji (yin and yang), just one noteworthy 
+manifestation in the world that accords with modern scientific understandings.  
 For thousands of years, Taiji has been regarded as the foundation of the universe 
 whereas the history of empirical science is relatively recent.  When Taiji 
 is applied to physical and life sciences, there are many cases
-where empirical theories manifest characteristics of interrelated opposites. 
-The profession inadvertently discusses scientific phenomena in dualistic terms and this 
-validates Taiji as the truth.  In every scientific discipline there are dualistic aspects to be found. For
+where empirical theories reveal interrelated opposites in their concepts. 
+When this happens the profession discusses scientific phenomena in dualistic terms and this 
+validates Taiji as the truth.  In every discipline there are dualistic aspects to be found. For
 magnets, there are north and south poles.  For electricity, there are positive and negative 
-electrical charges.  Electricity and magnetism are opposites themselves, always found present 
-at the same time, yet they are distinct entities.  The Taiji is made of two substances, 
-yin and yang that carry opposing characteristics, but they are also interrelated, complementary, and dependent 
-on each other.  Taiji represents balance and continual flux between opposing forces.
+electrical charges.  Electricity and magnetism are complementary opposites themselves, 
+always found present at the same time, yet they are distinct entities.  The Taiji is 
+made of two substances, yin and yang that carry opposing characteristics, but they are 
+also interrelated, complementary, and dependent on each other.  Taiji represents balance 
+and continual flux between opposing forces.
 
 Fundamental to modern science and technological understandings is the recognition that electricity 
-and magnetism are interrelated phenomena rather than separate.  Electric and magnetic 
-fields propagate together through space as a pair of waves.  Electricity and magnetism are 
-always present together. That is, a magnetic field is present in any conductor or wire
+and magnetism are interrelated phenomena rather than separate.  
+Electromagnetism is regarded as a pivotal development in physics and also considered the 
+foundation of 20th century science. Electric and magnetic fields propagate together through 
+space as a pair of waves.  Electricity and magnetism are always present together. 
+That is, a magnetic field is present in any conductor or wire
 where there is electrical current (in spite of the popular understanding that electricity
 exists by itself).  Propagating through space, including in any wire where there is current, 
 the electric and magnetic fields oscillate sinusoidally and also perpendicularly to each other,
 another manifestation of their dualism.   The fields continuously convert into each other, 
 maintaining an equilibrium that is essential for the wave’s propagation and energy transfer. 
 When a wire is coiled in loops (as seen inside any electric motor), its magnetic fields have
-their direction changed and this concentrates and directs the magnetic field, thereby 
+their direction moved and this concentrates and directs the magnetic field, thereby 
 intensifying it. When current passes through the coils in a motor, it generates a magnetic field
 and this repels the field of the material magnet that sits inside the core, thereby rotating it.
 
 The discovery that there is  an interplay between electricity and magnetism is a
 clear instance of an empirical realization of the Taiji, where separate domains of knowledge 
-(electricity and magnetism) are actually interconnected and interdependent.
+(electricity and magnetism) were found to be actually interconnected and interdependent.
 
-Electromagnetism is regarded as a pivotal development in physics and also considered the 
-foundation of 20th century science.  This same phenomenon drives the transmission and
+The interrelation continues in that if the flow of electrical current (positive and negative) 
+is flipped, the polarity of the magnet flips (north and south).
+
+Electromagnetism is the same phenomenon drives the transmission and
 reception of radio signals through antennas, as the antennas transmit or receive electromagnetic
 waves and then convert them into signals.  The frequency of the radio wave is the
 frequency of an electromagnetic wave within the range called "radio".  The antennas have to be designed for the frequencies.
@@ -192,16 +197,30 @@ physical terms, but also in a broader existential context,
 emphasizing the interplay and balance and the holistic view of natural phenomena.
 
 
+REDUCTIONISM AND DEDUCTIVE LOGIC
 
 That said, the philosophy of modern science is essentially antagonistic in its mindset
 relative to Taiji: it believes in studying a phenomenon through its individual or tiny
-parts and constituents, called reductionism.  In this mentality, investigations will 
-only focus on the isolated aspects of any phenomenon (how specifically blood carries oxygen 
-on the cellular level, whether the blood contains oxygen or not, etc.), not the whole picture (the 
-interrelation of opposing characteristics existing in the situation).  Further, 
+parts and constituents, called reductionism, then making a conclusion out of that.  
+Resulting from this ideology, investigations will only focus on the isolated aspects of 
+any subject (how specifically blood carries oxygen on the cellular level, whether the 
+blood contains oxygen or not, etc.), not the whole picture (the interrelation of 
+opposing characteristics existing in the situation).  Furthermore, only
 to arrive at its understandings it permits scientists to proceed 
 from established premises only, called deductive logic.  When something is studied
-it is examined with known rules.
+it can be examined with known rules or it isn't regarded as modern science.  
+Let's say for example a projectile is launched. If there is ever an instance 
+where it is projected in an environment that is very different and it follows a different 
+path of motion, science will have no way to adapt to that.  Right away it will say that 
+the motion did not deviate from the known law of Newton, that there was human error.  
+It will take a lot of evidence to override people's beliefs that something truly 
+anomalous occurred that does not follow the law brought into the field, so to speak.  
+In deductive investigations, the person goes into the field with the pre-established 
+law and recognizes only that which conforms to it.  So, the laws that it brings
+into any situation are tied to reductionism: they have to be laws discussing
+the isolated aspects and nothing is a law about the whole, which is Taiji.
+
+
 
 
 ANIMALS

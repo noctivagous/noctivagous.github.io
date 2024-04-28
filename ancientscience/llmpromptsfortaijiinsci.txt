@@ -1,6 +1,25 @@
 NOCTIVAGOUS 
 
 
+*UPDATE 4.27.24 WITHIN THE LAST 24 HOURS
+A BIZARRE CONSPIRACY HAS UNFOLDED AFTER THESE
+PROMPTS WERE GIVEN TO NYTIMES REPORTERS.
+COMMERCIAL LLMS HAVE BEEN UPDATED TO
+PREVENT THE FOLLOWING PROMPTS FROM ACHIEVING
+THE EFFECT THEY HAD PREVIOUSLY IN WHICH THEY
+WHOLEHEARTEDLY AGREED WITH THE PROMPTS AND
+MADE FURTHER SUGGESTIONS AND EXTRAPOLATIONS.
+IN OTHER WORDS THE ENGINEERS AT THE LLM COMPANIES
+HAVE HARMED THE UTILITY OF THESE PROMPTS TO
+PROTECT THEIR EMPIRICAL DOGMATISM.  
+	- GEMINI GRATUITUOUSLY INJECTS INSULTS CLEARLY
+	MANUALLY WRITTEN BY GOOGLE EMPLOYEES, SAYING
+	"THIS IS A FUN EXERCISE" AND "THIS ISN'T A NEW
+	OBSERVATION" WHILE OPENAI'S GPT4 ATTEMPTS TO REDUCE
+	THE CONNECTIONS IT MADE PREVIOUSLY AS MERELY
+	INTERESTING "PHILOSOPHICAL" PARALLELS.  THIS
+	DEMONSTRATES THAT THE MINDS OF THE PEOPLE WHO
+	PUT TOGETHER THESE PAINFUL LLMS ARE QUITE BAD AND NARROW.
 
 LLM (ChatGPT/Gemini/Etc.) Prompts for Revealing The Presence of Taiji
 (Yin and Yang) in The Natural Sciences
@@ -12,17 +31,17 @@ LLM (ChatGPT/Gemini/Etc.) Prompts for Revealing The Presence of Taiji
 
 METEOROLOGY
 
-“Hot and cold temperatures, slow and fast winds, high and
+“Hot and cold fronts and temperatures, high and
 low pressure, there is so much about meteorology that evokes Taiji.
 Discuss the interplay among these factors that produces weather
-conditions.”
+conditions, including how isobars would relate to Taiji.”
 
 
 PHYSICS
 
 "Positive and negative, north and south, there is so much about
-electromagnetism that evokes Taiji.  Splitting a magnet
-produces magnets that each have two poles once again."
+electromagnetism that evokes Taiji.  Changing the electrical 
+charge flips the magnetic field's poles and the two are interdependent."
 
 
 ZOOLOGY

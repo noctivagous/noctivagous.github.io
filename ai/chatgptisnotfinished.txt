@@ -4,27 +4,31 @@ It's a Simple Textbox Interface to an API
 
 noctivagous.github.io
 
-Written and spoken language, also known as natural language, 
-is for humans to communicate to other humans and not always
-the best language for interacting with machines.  But there is
-a persistent notion that it is supreme on occasion, such as with
-Siri, Alexa, and other products.  In fact, there 
-are times when humans are using codes instead of natural language between each
-other, for a reason, such as referees on the field or airport ground controllers,
-who using hand signals, times when supposedly the easiest form
-of communcation for them would be to use a radio, a microphone attached
-to their shorts.  What's more, when people do use radios professionally they 
-often have official charts of codes that they follow to make communication 
-concise.  Thus using natural language isn't even the best for everyday life 
-so it certainly wouldn't always be the best way to interact with AI or a machine. 
+Written and spoken language, also known as natural language in
+technology circles, is for humans to communicate to other humans. 
+There are many times when it isn't the best language for interacting with machines.  
+Even so, there is a persistent notion that natural language is a supreme way for
+a person to talk to a machine, that there could be nothing better,
+implied by products like Siri and Alexa.  In fact, there are times when humans 
+are using codes instead of natural language between each other, for a reason, 
+such as when referees communicate on the field or airport ground controllers direct 
+airplanes-- both of whom are using hand signals. These are times when supposedly the easiest
+means of communication would be radio, with a microphone attached
+to their shirts.  But actually, when people do use radios professionally they
+often have official charts of codes that they follow to make communication
+concise, to dispatch information more concisely than regular conversation.  Thus using 
+conversational and natural language isn't even the best for everyday life,
+so it certainly wouldn't always be ideal for interacting with AI or a machine.
+It may be the easiest for a consumer to understand with the least amount
+of effort but that is a totally different priority than what is actually optimal.
 
 The AI chatbots work around people typing out text.  But talking about typed chat text,
 even the emoji character can be likened to a coded signal, and combinations of emoji and words
 can communicate many modalities more concisely over communication media
-or help approximate real world interaction. People don't use them
+or help approximate subtleties of real world interaction. People don't use them
 to talk to AI, though.   During a real world auction, a person isn't
-shouting or lifting up his arm but lifting up a bid paddle.  So whereas it 
-often feels like the best interface to a machine would be what comes out of a 
+shouting or lifting up his arm but lifting up a bid paddle.  So whereas it
+often feels like the best interface to a machine would be what comes out of a
 person's mouth conversationally or what would be written
 down, and supposedly this is the most natural interface there could be for
 anything (including writing code), in fact it is usually that natural language  

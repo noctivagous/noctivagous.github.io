@@ -4,6 +4,33 @@ It's a Simple Textbox Interface to an API
 
 noctivagous.github.io
 
+Written and spoken language, also known as natural language, 
+is for humans to communicate to other humans and not always
+the best language for interacting with machines.  But there is
+a persistent notion that it is supreme on occasion, such as with
+Siri, Alexa, and other products.  In fact, there 
+are times when humans are using codes instead of natural language between each
+other, for a reason, such as referees on the field or airport ground controllers,
+who using hand signals, times when supposedly the easiest form
+of communcation for them would be to use a radio, a microphone attached
+to their shorts.  What's more, when people do use radios professionally they 
+often have official charts of codes that they follow to make communication 
+concise.  Thus using natural language isn't even the best for everyday life 
+so it certainly wouldn't always be the best way to interact with AI or a machine. 
+
+The AI chatbots work around people typing out text.  But talking about typed chat text,
+even the emoji character can be likened to a coded signal, and combinations of emoji and words
+can communicate many modalities more concisely over communication media
+or help approximate real world interaction. People don't use them
+to talk to AI, though.   During a real world auction, a person isn't
+shouting or lifting up his arm but lifting up a bid paddle.  So whereas it 
+often feels like the best interface to a machine would be what comes out of a 
+person's mouth conversationally or what would be written
+down, and supposedly this is the most natural interface there could be for
+anything (including writing code), in fact it is usually that natural language  
+the merely easiest for workers in tech to implement in software and asks the least of
+them to make a product for the consumer.
+
 ChatGPT (GPT4) offers a lot of capabilities but the actual situation
 is that it is just a superficial website gateway-- a plain text box-- 
 for what OpenAI engineered that is sitting in the computer data centers.   
@@ -108,17 +135,35 @@ A common problem in the AI community and the tech community
 is the belief that the following is what consumers will really want
 for the long term.  The consumer will utter, "I want this complex thing 
 that would normally take me a lot of time," and then the AI goes off and 
-does it, returns to the person with an impressive result, and the consumer
+does it, returns to the person with an impressive result and the consumer
 and his friends are all very delighted.  This is the parlor trick mentality 
 of technology that is to be avoided because it doesn't carry long-term value for
 people and these products eventually lose users over time because
 the users are impressed too at first but they don't work in technology
 and then eventually they lose interest, as would have to be the case.
 
+A prominent opportunity is a switch control to turn on and off the setting 
+where ChatGPT provides a summary of any topic before providing an
+answer, which can be tiring because often what is wanted is just
+a direct answer to the question.  Sometimes the user wants a summary
+and overview of the subject mentioned and other times it is superfluous.
+These are the sorts of features that should be present in a comprehensive 
+app wrapper for what is ChatGPT.
+
+In a finished ChatGPT style of app, there would be a keyboard shortcut to
+interrupt the AI to stop it, another one to delete the response just given
+if it wasn't wanted, and so on.
+
 Finally, typing text is not always the strongest means of controlling 
 an LLM at all times, because it depends on the use case.  If it is 
 DALL-E, then there should be pre-configured controls (such as the 
 node-based programming nodes) with adjustable parameters.
+Some startups and websites have demonstrated this already.
+
+These issues all existed between GPT3.5 and GPT4 and it is expected
+that they will be relevant in the near future for newer AI models.
+
+
 
 
 

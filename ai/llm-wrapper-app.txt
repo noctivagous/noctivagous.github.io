@@ -2,31 +2,54 @@ LLM Wrapper App
 
 A wrapper app for an LLM is to be made that goes
 beyond the basic AI chatbot format wherein the user
-is only given a textbox and is restricted to using this alone.
-The AI chatbox textbox means the user starts from scratch each
-time with prompts, writing everything out even when the 
-use of the LLM would benefit from presets with parameters.  
+is only given a freeform textbox and is restricted to using this alone.
 
-This app will provide prompts, parameters, and settings for
-producing the prompts rapidly.  This will be possible in
-an app suite, made of traditional controls and functions, and menus.
-Menus divide interactivity with the LLM into
+The user is planted in front of the textbox and then
+told, "now go! do whatever you want!" which sounds great.
+
+But the AI chatbox textbox means the user starts from scratch each
+time with prompts, writing everything out all over again
+even when the use of the LLM would benefit by beginning
+with categories of presets with parameters.  
+
+To address the limitations of the AI chatbot,
+this app will provide a suite of prompt-making. 
+The goal is to allow the user to produce the prompts 
+rapidly by providing sections or categories with
+premade parameters and settings.  In contrast to
+"chat", this will be possible in an app suite, made 
+of traditional controls and functions, and menus.
+It will allow the back and forth to break out of
+a chat format as at times there may be an interest
+to generate responses on a grid flowing from left
+to right.
+
+In an app like this, menus divide interactivity with the LLM into
 categories that assist the user in generating prompts according
-to the use.  This is to provide starting points for the LLM
-for the user that are more productive than a bare text box, which
-can be considered too simple and tiring when there is
+to the need at the time.  Providing starting points for the LLM
+for the user should end up being far more productive than a bare text box, which
+can be viewed as too simplistic and tiresome when there is
 such a wide range of situations for which a person might use an LLM
 and such a large number of instances when the prompts could be
 formulated with convenient, traditional app user interface.
-The presets within each category will facilitate valuable
+
+A weak point of the AI chatbot is that interacting with the LLM
+often involves a lot of repetition and revision and there are no
+functions provided for that or even something to formulate prompts
+in the first place.  The presets within each category will facilitate valuable
 usage of the LLM for that category.
 
-This is product development that extends beyond the basic AI
-chatbot but continues to work with the LLM with interactive
-conveniences.
+An app like this demonstrates product development that extends beyond the basic AI
+chatbot because it works with the LLM with more developed
+interactive conveniences.
 
+Currently the textbox for an AI chatbot is freeform typing.
+Providing some organization and structure to the situation,
+laying down a kind of blueprint for the amusement park,
+will make the LLM a lot more useful for the user.
 
-Categories and app menu sections include the following:
+Categories and app menu sections include the following.
+The first is the most freeform.
 
 1) (Default) Continue/Comment On/Make Response to (provided text).
 2) Inquiry/Explain a Subject (generate a profile or background on a topic).   Provide reading list for subject.
@@ -45,59 +68,68 @@ language learning, and other interactive sessions designed to mimic real-life in
 
 -----
 
-Continue/Comment On/Make Response to: This would enable users to 
+1) Continue/Comment On/Make Response to: This would enable users to 
 build upon or have the LLM respond to existing text, whether it's their own or
 provided by the LLM, fostering interactive.  Dialectical benefits for
 the user of the LLM which is that there is the ability to see
 a broader view of the topic by having the LLM response.
 
 
-Inquiry/Explain a Subject: Users could utilize the LLM 
+2) Inquiry/Explain a Subject: Users could utilize the LLM 
 to research and generate informative profiles or backgrounds 
 on a wide range of topics, as well as receive curated reading 
 lists to further explore those subjects.
 
-Manufacture/Generate Text: This would allow users 
+3) Manufacture/Generate Text: This would allow users 
 to generate various types of written content, 
 from literature and poetry to business name ideas and essays, 
 based on specified parameters or prompts. 
 The LLM could draw upon its broad knowledge to produce
  high-quality, original text tailored to the user's needs.
  
-Programming Code: This section would enable 
+4) Programming Code: This section would enable 
 users to leverage the LLM's capabilities for 
 software development, including generating code, 
 answering programming-related questions, and 
 even performing various code operations like 
 refactoring, optimization, or debugging.
 
-How-to and Solutions for Problems: This feature would allow users to 
+5) How-to and Solutions for Problems: This feature would allow users to 
 obtain step-by-step instructions or solutions for a variety of 
 tasks and challenges, drawing on the LLM's extensive knowledge 
 and problem-solving abilities.  Especially relevant to household
 tasks, home improvement, automotive repair, questions about
 machines, appliances, etc.
 
-Veracity Check: Users could use this feature to assess the 
+6) Veracity Check: Users could use this feature to assess the 
 truthfulness or accuracy of claims, information, or statements, 
 leveraging the LLM's understanding of factual knowledge and its 
 ability to cross-reference sources.  Primarily valued for
 circumstances relating to factuality outside of contemporary
 controversies.
 
-Explain Provided Text: Users could leverage this feature to gain 
+7) Explain Provided Text: Users could leverage this feature to gain 
 insights into the origin, meaning, and context of a given text, 
 helping to deepen their understanding.  Especially useful for
-older texts.
+older texts.  Translation, summarizing, etc. for provided texts
+falls under this category.
 
-Data Generation and Analysis: The LLM could be used to generate, 
-format, and analyze various types of data, from weather forecasts 
+8) Data Generation and Analysis: The LLM could be used to generate, 
+format, and analyze various types of data, from weather forecasts
 to statistical insights, providing users with valuable information 
-and insights. 
+and insights from data. 
 
-Converse, Simulate Interaction: This section would allow users 
+9) Converse, Simulate Interaction: This section would allow users 
 to engage in more immersive and interactive experiences, such 
 as role-playing, simulated interviews, and language learning 
 exercises, helping to bridge the gap between the LLM and real-world interactions.
-Education: The LLM could be utilized to provide information on typical course curricula for different subjects, as well as describe the prerequisites and other relevant details to support educational and learning goals.
 
+
+10) Education: The LLM could be utilized to provide information on typical course 
+curricula for different subjects, as well as describe the prerequisites and 
+other relevant details to support educational and learning goals.
+Test questions and quizzes can be generated in this section.
+
+11) Proofread / Copyedit / Rephrase For Editing
+
+---

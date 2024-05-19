@@ -2,16 +2,28 @@ LLM Wrapper App
 
 A wrapper app for an LLM is to be made that goes
 beyond the basic AI chatbot format wherein the user
-only has a textbook and starts from scratch with prompts
-each time.  It will provide prompts and settings for
-altering the prompts in an app suite of controls and functions.
+is only given a textbox and is restricted to using this alone.
+The AI chatbox textbox means the user starts from scratch each
+time with prompts, writing everything out even when the 
+use of the LLM would benefit from presets with parameters.  
+
+This app will provide prompts, parameters, and settings for
+producing the prompts rapidly.  This will be possible in
+an app suite, made of traditional controls and functions, and menus.
 Menus divide interactivity with the LLM into
-categories.  This is to provide starting points for the LLM
+categories that assist the user in generating prompts according
+to the use.  This is to provide starting points for the LLM
 for the user that are more productive than a bare text box, which
 can be considered too simple and tiring when there is
-such a wide range of situations for which a person might use an LLM.
+such a wide range of situations for which a person might use an LLM
+and such a large number of instances when the prompts could be
+formulated with convenient, traditional app user interface.
 The presets within each category will facilitate valuable
-usage of the LLM.
+usage of the LLM for that category.
+
+This is product development that extends beyond the basic AI
+chatbot but continues to work with the LLM with interactive
+conveniences.
 
 
 Categories and app menu sections include the following:

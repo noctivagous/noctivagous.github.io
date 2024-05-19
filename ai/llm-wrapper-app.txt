@@ -1,68 +1,97 @@
 LLM Wrapper App
 
 A wrapper app for an LLM is to be made that goes
-beyond the basic AI chatbot format wherein the user
-is only given a freeform textbox and is restricted to using this alone.
+beyond the basic AI chatbot formula wherein the user
+is only given a freeform textbox and is confined to 
+this alone.
 
 The user is planted in front of the textbox and then
-told, "now go! do whatever you want!" which sounds great.
+told, "now go! do whatever you want!" which sounds great
+at first.
 
-But the AI chatbox textbox means the user starts from scratch each
-time with prompts, writing everything out all over again
-even when the use of the LLM would benefit by beginning
-with categories of presets with parameters.  
+The AI chatbox textbox sets up a situation where 
+the user starts from scratch each time with prompts, 
+writing everything out all over again, writing original 
+prose and complete sentences for every situation, which
+is inefficient.  Even when the use of the LLM would benefit by beginning
+with categories of usage with presets and parameters,
+it is just the textbox that is provided.  When text is
+pasted and the return key pressed, it scrolls the whole window
+in a raw display of an undeveloped app situation.  
 
 To address the limitations of the AI chatbot,
-this app will provide a suite of prompt-making. 
+this app will seek to provide a suite of prompt-making functionality,
+crafted by the product makers.  Since an LLM is so versatile,
+it should have sections of usage.
 The goal is to allow the user to produce the prompts 
-rapidly by providing sections or categories with
-premade parameters and settings.  In contrast to
-"chat", this will be possible in an app suite, made 
-of traditional controls and functions, and menus.
-It will allow the back and forth to break out of
-a chat format as at times there may be an interest
+rapidly by providing UI sections or categories with
+premade parameters and settings and also software features
+specific to various categories.  When the LLM is made use of
+for reading old texts, for example, it has traditional 
+software functionality built in for that purpose, for paginating
+what is pasted, for treating a PDF as a book, etc.
+
+In contrast to "chat", this will bring out far more genuine
+possibilities of the common LLM inside an app suite, an
+app providing the user traditional controls and functions, and menus.
+It will allow the LLM to break out of
+a vertical chat format as at times there may be an interest
 to generate responses on a grid flowing from left
-to right.
+to right, to see iterations.  Directing the output of the LLM
+is valuable when AI is viewed as a more advanced tool 
+rather than a genie in a bottle.
 
 In an app like this, menus divide interactivity with the LLM into
 categories that assist the user in generating prompts according
-to the need at the time.  Providing starting points for the LLM
-for the user should end up being far more productive than a bare text box, which
-can be viewed as too simplistic and tiresome when there is
+to the needs when the LLM is used.  Providing starting points for the LLM
+for the user will end up being far more productive than a bare text box, which
+is probably too simplistic and tiresome when there is
 such a wide range of situations for which a person might use an LLM
 and such a large number of instances when the prompts could be
 formulated with convenient, traditional app user interface.
+At the current time, this is not regarded as a concern as there is
+belief that AI technology is advancing so rapidly that the tool
+just described will be obsolete as soon as it is finished in a year or
+two.  That may not be true in the end.
 
 A weak point of the AI chatbot is that interacting with the LLM
-often involves a lot of repetition and revision and there are no
-functions provided for that or even something to formulate prompts
-in the first place.  The presets within each category will facilitate valuable
-usage of the LLM for that category.
+often involves a lot of repetition and revision of writing and typing
+but there are no functions provided for that or even something to 
+formulate prompts generatively in the first place.  
+The presets within each category will facilitate valuable
+usage of the LLM for that individual category.
 
-An app like this demonstrates product development that extends beyond the basic AI
-chatbot because it works with the LLM with more developed
-interactive conveniences.
+An LLM wrapper app like this demonstrates product development 
+that extends beyond the basic AI chatbot because it works with 
+the LLM with more developed interactive conveniences and it shows
+that product is not obsolesced by research and engineering but
+should continue to be discussed.
 
 Currently the textbox for an AI chatbot is freeform typing.
-Providing some organization and structure to the situation,
-laying down a kind of blueprint for the amusement park,
-will make the LLM a lot more useful for the user.
+Offering some organization and structure to the situation--
+laying down a kind of blueprint for the amusement park--
+will make the LLM a lot more useful for the consumer.
+It is only under these conditions when an LLM could
+become mainstream.
+
+
+GUI OF THE WRAPPER 
 
 Categories and app menu sections include the following.
-The first is the most freeform.
+The first is the most freeform and could be named that.
 
 1) (Default) Continue/Comment On/Make Response to (provided text).
 2) Inquiry/Explain a Subject (generate a profile or background on a topic).   Provide reading list for subject.
 3) Manufacture/Generate Text: literature, poem, essay, possible business names, according to specs.  
 4) Programming Code.  Operations, Generate Code, Answer Question.
-5) How-to (how to do a thing).  Solutions for a Problem.
+5) How-to (how to do a thing).  Solutions for a Problem.  Practical Skills.  Everyday Reference.
 6) Veracity check (find out if something is true generally).
 7) Explain provided text.  It's Origin / It's meaning
 8) Data:  Generate Data (e.g. weather for a region).  Reformat provided data.
 Check for condition in provided data/text.  Analyze.
 9) Converse, Simulate Interaction: role-playing, simulated interviews, 
 language learning, and other interactive sessions designed to mimic real-life interactions.
-10) Education. Typical course curriculum for a subject.  Describe prerequisites.
+10) Education: Typical course curriculum for a subject.  Describe prerequisites.
 11) Proofread / Copyedit / Rephrase
 
 

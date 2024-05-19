@@ -1,0 +1,91 @@
+LLM Wrapper App
+
+A wrapper app for an LLM is to be made that goes
+beyond the basic AI chatbot format wherein the user
+only has a textbook and starts from scratch with prompts
+each time.  It will provide prompts and settings for
+altering the prompts in an app suite of controls and functions.
+Menus divide interactivity with the LLM into
+categories.  This is to provide starting points for the LLM
+for the user that are more productive than a bare text box, which
+can be considered too simple and tiring when there is
+such a wide range of situations for which a person might use an LLM.
+The presets within each category will facilitate valuable
+usage of the LLM.
+
+
+Categories and app menu sections include the following:
+
+1) (Default) Continue/Comment On/Make Response to (provided text).
+2) Inquiry/Explain a Subject (generate a profile or background on a topic).   Provide reading list for subject.
+3) Manufacture/Generate Text: literature, poem, essay, possible business names, according to specs.  
+4) Programming Code.  Operations, Generate Code, Answer Question.
+5) How-to (how to do a thing).  Solutions for a Problem.
+6) Veracity check (find out if something is true generally).
+7) Explain provided text.  It's Origin / It's meaning
+8) Data:  Generate Data (e.g. weather for a region).  Reformat provided data.
+Check for condition in provided data/text.  Analyze.
+9) Converse, Simulate Interaction: role-playing, simulated interviews, 
+language learning, and other interactive sessions designed to mimic real-life interactions.
+10) Education. Typical course curriculum for a subject.  Describe prerequisites.
+11) Proofread / Copyedit / Rephrase
+
+
+-----
+
+Continue/Comment On/Make Response to: This would enable users to 
+build upon or have the LLM respond to existing text, whether it's their own or
+provided by the LLM, fostering interactive.  Dialectical benefits for
+the user of the LLM which is that there is the ability to see
+a broader view of the topic by having the LLM response.
+
+
+Inquiry/Explain a Subject: Users could utilize the LLM 
+to research and generate informative profiles or backgrounds 
+on a wide range of topics, as well as receive curated reading 
+lists to further explore those subjects.
+
+Manufacture/Generate Text: This would allow users 
+to generate various types of written content, 
+from literature and poetry to business name ideas and essays, 
+based on specified parameters or prompts. 
+The LLM could draw upon its broad knowledge to produce
+ high-quality, original text tailored to the user's needs.
+ 
+Programming Code: This section would enable 
+users to leverage the LLM's capabilities for 
+software development, including generating code, 
+answering programming-related questions, and 
+even performing various code operations like 
+refactoring, optimization, or debugging.
+
+How-to and Solutions for Problems: This feature would allow users to 
+obtain step-by-step instructions or solutions for a variety of 
+tasks and challenges, drawing on the LLM's extensive knowledge 
+and problem-solving abilities.  Especially relevant to household
+tasks, home improvement, automotive repair, questions about
+machines, appliances, etc.
+
+Veracity Check: Users could use this feature to assess the 
+truthfulness or accuracy of claims, information, or statements, 
+leveraging the LLM's understanding of factual knowledge and its 
+ability to cross-reference sources.  Primarily valued for
+circumstances relating to factuality outside of contemporary
+controversies.
+
+Explain Provided Text: Users could leverage this feature to gain 
+insights into the origin, meaning, and context of a given text, 
+helping to deepen their understanding.  Especially useful for
+older texts.
+
+Data Generation and Analysis: The LLM could be used to generate, 
+format, and analyze various types of data, from weather forecasts 
+to statistical insights, providing users with valuable information 
+and insights. 
+
+Converse, Simulate Interaction: This section would allow users 
+to engage in more immersive and interactive experiences, such 
+as role-playing, simulated interviews, and language learning 
+exercises, helping to bridge the gap between the LLM and real-world interactions.
+Education: The LLM could be utilized to provide information on typical course curricula for different subjects, as well as describe the prerequisites and other relevant details to support educational and learning goals.
+

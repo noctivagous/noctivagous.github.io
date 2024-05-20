@@ -4,30 +4,24 @@ Mainstream
 
 
 The potential and utility of an LLM is still hidden.
-A much more developed type of wrapper app for an LLM 
-ought to be produced that goes far beyond the basic 
-AI chatbot formula in which the user is only given 
-a free-form textbox.  The whole activity is confined 
-to typing out prompts from scratch.
+A much more developed type of wrapper app for an LLM
+ought to be the focus of the AI community, one that goes 
+far beyond the basic AI chatbot formula in which the user is 
+only given a free-form textbox.  The entire activity of interacting 
+with the LLM is confined to typing out prompts from scratch
+and there is no workflow.
 
 The new user is placed in front of the textbox and then
-instructed, "Now go! Ask for whatever you want!" 
+instructed, "Now go! Ask for whatever you want!"
 which sounds great at first, like interacting with a genie
-in a bottle.  Noctivagous takes the view that the 
-"genie in a bottle" direction for current AI end-products
-is mistaken.  It's more fantasy-oriented than it appears.
-The person will kick back on a couch someday, say a few 
-things, and get exactly what he or she desires.
-Supposedly it is the job of the AI community to arrive at this
-point, making the quantity of effort expended by the user as small
-as possible for any task in the end.
-
-In reality, life is more complicated.
-The AI chatbot's text box amounts to a prototypal, unfinished situation
+in a bottle.  In reality, life is more complicated.
+The AI chatbot's text box amounts to a prototypal, unfinished situation 
 in which the user laboriously starts from scratch each time composing 
 prompts, writing instructions out all over again for every minor tweak, 
-writing prose and complete sentences for every interaction, 
-It's all too exhausting and incompatible with mainstream adoption of AI.  
+writing prose and complete sentences for every interaction,
+It's all too exhausting and incompatible with mainstream adoption of AI.  
+Reducing the burden on the user to construct prompts from scratch 
+every time should be the first goal.
 
 To address the limitations of the AI chatbot trend,
 this future app should seek to provide an application suite 

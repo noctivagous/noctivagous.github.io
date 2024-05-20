@@ -1,51 +1,55 @@
-A More Versatile LLM Wrapper App Is How
-Current AI Technology Can Be Adopted By The
+A More Versatile, Fully-Developed App Suite Acting As
+An LLM Wrapper Is How Current AI Technology Can Be Adopted By The
 Mainstream
 
-A wrapper app for an LLM ought to be provided that goes
-beyond the basic AI chatbot formula in which the user
-is only given a freeform textbox and is confined to
-typing out prompts from scratch.
 
-The new user is planted in front of the textbox and then
+The potential and utility of an LLM is still hidden.
+A much more developed type of wrapper app for an LLM 
+ought to be provided that goes far beyond the basic 
+AI chatbot formula in which the user is only given 
+a freeform textbox and is confined to typing out 
+prompts from scratch.
+
+The new user is placed in front of the textbox and then
 instructed, "now go! ask for whatever you want!" 
 which sounds great at first, like interacting with a genie
 in a bottle.  Noctivagous takes the view that the 
 "genie in a bottle" direction for current AI technology
-is misguided, the fantasy that the person will kick back
-on a couch, say a few things. and get exactly what he or she desires,
+is mistaken.  It's fantasy-oriented, that the person will kick back
+on a couch, say a few things, and get exactly what he or she desires,
 and then it is the job of the AI community to arrive at this
-point.
+point, making the effort expended by the user as reduced
+as possible in the end.
 
 The AI chatbot's text box amounts to an unfinished situation
-in which the user starts from scratch each time with prompts,
-writing everything out all over again, writing original
-prose and complete sentences for every situation, which
-is exhausting and incompatible with mainstream adoption ofAI.  
-
-Even when the use of the LLM would benefit by suggesting
-developed categories of usage with presets and parameters,
-it is just the textbox that is provided and then supposedly the
-research will make interactivity better and better.  Computers
-and AI are tools, though, and this isn't likely to change today.
+in which the user laboriously starts from scratch each time with prompts,
+writing instructions out all over again for every minor tweak, 
+writing original prose and complete sentences for every interaction, 
+which is exhausting and incompatible with mainstream adoption of AI.  
 
 To see how unfinished the chatbot formula is, in the typical
-web app when text is pasted and the return key pressed, it 
-abruptly scrolls the whole window contents, exposing raw
-that it is a generally primitive app situation hooked into
-massively developed AI computers.  
+AI web app when text is pasted and the return key pressed, it 
+suddenly scrolls the whole window contents without notice, 
+exposing raw that the conventional LLM wrapper is a producing
+generally primitive app situation.  A small text box is 
+interfaced to massively expensive and developed AI computers 
+and their running code.  
 
 To address the limitations of the AI chatbot trend,
 this future app should seek to provide an application suite 
 of prompt-making functionality, crafted by the product makers
-according to how people generally try or could use an LLM.  
-Since an LLM is so versatile, it should have tools that reflect
-this, providing a kind of notebook or menu, allowing the
+according to how people generally end up using (or could use) 
+an LLM.  Since an LLM is so versatile but the barrier is
+the fatigue produced by typing out prompts each time, 
+it should have tools that reflect this, providing a kind of 
+notebook or list of possible uses, allowing the
 user the opportunity to select how it should be used.
+This goes much further than the few examples someone clicks on.
 The goal is to allow the user to produce the prompts
-rapidly by providing UI sections and categories with
-premade parameters and settings and also software features
-specific to various categories.  
+rapidly by providing UI parameter controls, sections, 
+and categories with premade parameters and settings. 
+Software features will be specific to various categories
+of usage.  
 
 Categories and app menu sections include the following.
 The first is the most freeform and could be named that.

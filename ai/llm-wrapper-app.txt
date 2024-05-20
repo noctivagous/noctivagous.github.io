@@ -1,94 +1,103 @@
 MAKING THE LLM GO MAINSTREAM
 
-A Versatile, Fully-Developed App Suite Acting As An LLM Wrapper Is How 
-Current AI Technology Can Finally Be Adopted By The Public
+A Versatile, Fully-Developed App Suite 
+Acting As An LLM Wrapper Is How 
+Current AI Technology Can Finally 
+Be Adopted By The Public
 
 
 noctivagous.github.io
 
 
 The potential and utility of an LLM is still hidden.
-A much more developed type of wrapper app for an LLM
-ought to be the focus of the AI community, one that goes 
-beyond the basic AI chat format in which the user is 
-only given a free-form textbox and responses are stacked vertically.  
+A much more developed style of wrapper app for an LLM
+ought to be a priority of the AI community, one that goes
+beyond the basic AI chat format in which the user is
+given a free-form textbox and responses are stacked vertically.  
 Interacting with the LLM is confined to typing out prompts from scratch
-each time; there is no developed workflow.  There are many uses for an LLM
+each time; there is no developed workflow for modifying
+prompts, crafting them, or viewing the output in different
+presentations.  There are many uses for an LLM
 but the user is supposed to fit them all into a text box.
-Nothing genuinely sophisticated has been made on the front-end 
-to serve the end user.
+Nothing genuinely sophisticated has been provided on the front-end
+to serve the end user, at least by the major AI vendors.
+
 
 The new user is placed in front of the text box and then
 told, "Now go! Ask for whatever you want!"
-which sounds great at first, like interacting with a genie
-in a bottle.  In reality, life is more complicated and current
-AI technology cannot succeed broadly by resting on the responses 
-generated from an LLM.  The LLM text box amounts to a prototypal, unfinished situation 
+which sounds great at first, like the opportunity to interact with a genie
+in a bottle.  In reality, life's work demands are more complex and current
+AI technology cannot succeed by resting on simplistic chat-formatted responses
+generated from an LLM. The LLM text box amounts to a prototypal, unfinished situation
 in which the user laboriously starts from scratch each time to compose
-prompts, writing instructions out all over again for every minor tweak, 
-writing paragraphs of prose and complete sentences for every revised 
-interaction.  Because the LLM might not provide what was wanted,
-revisions and tweaks to prompts are inevitable for everyone.
-It's all too exhausting and incompatible with mainstream 
+prompts, writing instructions out all over again for every minor tweak,
+writing paragraphs of prose and complete sentences for every revised
+interaction.  Because the LLM might not provide what was wanted
+the first time, revisions and tweaks applied to prompts are inevitable for everyone.
+It's all too exhausting and incompatible with mainstream
 adoption of AI.
 
-To address the limitations of the AI chat format,
+To surpass the limitations of the AI chat format,
 this future app should seek to provide an application suite
 of prompt-making functionality, crafted by the product makers
 in accordance with how people generally end up using (or could use)
-an LLM, divided into modules or categories inside the app.  
+an LLM, divided into modules or categories inside the app.  
 
-Categories and app sections include the following.
-The first is the most free-form.  Each category, when activated 
-contains custom controls and functionality specific to that
-category.  For dealing with text, common text software tools 
-are built into that mode.
+Categories and app sections can include the following.
+The first is the most freeform.  Each category, when activated
+displays a collection of specialized controls and functionality
+specific to that category.  For dealing with text,
+common text software tools are built into that mode or section
+of the app, something of value to many scholars.
 
-1) (Default) Continue / Comment On / Make Response to (provided text).
-2) Inquiry/Explain a Subject (generate a profile or background on a topic).  
+1) (Default Mode) - Continue / Comment On / Make Response to (provided text).
+2) Inquiry/Explain a Subject - Generate a profile or background on a topic.  
 Provide reading list for subject.
-3) Manufacture/Generate Text: literature, poem, essay, possible business names, etc.
-4) Programming / Code.  Operations, Generate Code, Evaluate Code, Rewrite Code.
-5) How-to (how to do a thing).  Solutions for a Problem.  Practical Skills.  Everyday Reference.
-6) Veracity check (find out if something is true generally).
-7) Work with Texts.  Explain provided (older) text.  Translate. Word lookup. Text passage origin / its meaning.
+3) Manufacture / Generate Text - literature, poem, essay, possible business names, etc.
+4) Programming / Code -  Templates, Generate Code, Evaluate Code, Rewrite Code.
+5) How-to (How to Do a Thing) -  Solutions for a Problem.  Practical Skills.  Everyday Reference.
+6) Veracity Check - (find out if something is true generally).
+7) Work with Texts -  Explain provided (older) text.  Translate. Word lookup. Text passage origin / its meaning / summary.
 8) Data: Generate or Retrieve Data (e.g. avg. weather for a region).  Reformat provided data.
 Check for a condition in provided data/text.  Analyze.
-9) Converse, Simulate Interaction: role-playing, simulated interviews,
+9) Converse or Simulate Interaction: role-playing, simulated interviews,
 language learning, and other interactive sessions designed to mimic real-life interactions.
-10) Education: Typical course curriculum for a subject.  Describe prerequisites.
+10) Education: Typical course curriculum for a subject.  Describe prerequisites for taking up a subject.
 11) Proofread / Copy edit / Rephrase
 
 Since an LLM is so versatile but the barrier to its
-adoption is the fatigue produced by typing out prompts each time
-and the lack of structure guidance by such a simplistic user interface,
-it should have tools that address this, providing a kind of
-notebook (sections of generic use categories), allowing the
-user the opportunity to select how it should be used.
-This goes much further than the few random and specific 
-examples someone clicks on. The goal should be to allow 
-the user to produce the prompts rapidly by providing him 
+adoption is the fatigue produced by typing out prompts each time,
+the lack of structure and guidance provided by such a simplistic user interface,
+and the lack of output formatting, the AI community should produce common tools 
+that address this, providing a kind of notebook (sections of generic use 
+categories), allowing the user the opportunity to select how it should be 
+used when approaching it.The user approaches the LLM with a text box today 
+but will instead walk up to adeveloped suite of options. The goal 
+should be to allow the user to produce the prompts rapidly by providing him or her
 with parameter controls.  Each category provides its own 
 premade parameters and settings, setting up a kind of mode
-for interacting with an LLM. Software features and workflows 
-will be specific to the various categories provided in the 
-application suite and it is this that will allow AI to be
-of value.
+for interacting with an LLM.  Mode #7, text mode supplies software 
+features and workflows will be specific to that category.
+An application suite is what will allow AI in the form of an LLM to 
+be of value.Put differently, we who use them are just those who are 
+willing to put up with such a basic situation because we are accustomed 
+to rough edges from technical problems.
 
 The interface for an LLM should be multifaceted, not limited to what the
-user can come up with.  A text box is a prompt for the user to
+user can come up with inside a text box. A text box is a prompt for the user to
 come up with something impromptu. But our app is a 
-presentation of pathways for any user who approaches.  
+presentation of pathways for any user who opens it up.  
 Each pathway, each destination has its own utilities built in.  
-For this reasons, it is conceivable that a person would spend all
+For this reason, it is conceivable that a person would spend all
 day in our app interacting with an LLM.
 
 When the LLM is made use of for reading old texts, for example, it has traditional
 software functionality provided for that purpose, for paginating what is pasted, 
-for treating a PDF as a book that has pages that can be flipped, 
-for highlighting text, etc. This is in contrast to the AI chat
-that has little recognition when any common and specific usage 
-occurs apart from writing code, when it will provide a code box.
+for treating a PDF as a book that has pages that can be flipped or
+laid out as an imposition (overview) sheet, for highlighting text, etc. This is 
+in contrast to the AI chat that has little recognition when any common, 
+specific usage occurs apart from writing code, which is when it will 
+provide a code box.
 
 Allowing the output of an LLM to break out of a vertical chat format
 is important as at times there may be value in generating 
@@ -167,6 +176,28 @@ other relevant details to support educational and learning goals.
 Test questions and quizzes can be generated in this section.
 
 11) Proofread / Copy edit / Rephrase For Editing
+
+
+Consider that conventional web search engines are 
+limited in the same way, that often there is an inclination on the part of the
+user to make web searches carrying more specific conditions 
+but there are no settings on the search page that 
+are provided for this for fear that it would make using 
+the web search engine too technical.  But when a web search 
+is made, sometimes there is a desire to 
+limit the results to entities in the physical world, to
+make sure that results exclude Internet entities.
+Often there is a desire to limit a list of these results further 
+to a geographic boundary, too.  Web search could be said to be in 
+the same state as the LLM chat format, something simplistic. 
+Just like an LLM, there are possible categories of usage that 
+won't make it difficult for a lay user 
+to use the technology. But because of an online culture 
+that seeks to make everything minimalist, the potential of many
+technologies is obscured.
+
+
+
 
 
 ---

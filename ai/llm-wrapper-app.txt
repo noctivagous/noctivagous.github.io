@@ -5,71 +5,73 @@ Mainstream
 
 The potential and utility of an LLM is still hidden.
 A much more developed type of wrapper app for an LLM 
-ought to be provided that goes far beyond the basic 
+ought to be produced that goes far beyond the basic 
 AI chatbot formula in which the user is only given 
-a freeform textbox and is confined to typing out 
-prompts from scratch.
+a free-form textbox.  The whole activity is confined 
+to typing out prompts from scratch.
 
 The new user is placed in front of the textbox and then
-instructed, "now go! ask for whatever you want!" 
+instructed, "Now go! Ask for whatever you want!" 
 which sounds great at first, like interacting with a genie
 in a bottle.  Noctivagous takes the view that the 
-"genie in a bottle" direction for current AI technology
-is mistaken.  It's fantasy-oriented, that the person will kick back
-on a couch, say a few things, and get exactly what he or she desires,
-and then it is the job of the AI community to arrive at this
-point, making the effort expended by the user as reduced
-as possible in the end.
+"genie in a bottle" direction for current AI end-products
+is mistaken.  It's more fantasy-oriented than it appears.
+The person will kick back on a couch someday, say a few 
+things, and get exactly what he or she desires.
+Supposedly it is the job of the AI community to arrive at this
+point, making the quantity of effort expended by the user as small
+as possible for any task in the end.
 
-The AI chatbot's text box amounts to an unfinished situation
-in which the user laboriously starts from scratch each time with prompts,
-writing instructions out all over again for every minor tweak, 
-writing original prose and complete sentences for every interaction, 
-which is exhausting and incompatible with mainstream adoption of AI.  
-
-To see how unfinished the chatbot formula is, in the typical
-AI web app when text is pasted and the return key pressed, it 
-suddenly scrolls the whole window contents without notice, 
-exposing raw that the conventional LLM wrapper is a producing
-generally primitive app situation.  A small text box is 
-interfaced to massively expensive and developed AI computers 
-and their running code.  
+In reality, life is more complicated.
+The AI chatbot's text box amounts to a prototypal, unfinished situation
+in which the user laboriously starts from scratch each time composing 
+prompts, writing instructions out all over again for every minor tweak, 
+writing prose and complete sentences for every interaction, 
+It's all too exhausting and incompatible with mainstream adoption of AI.  
 
 To address the limitations of the AI chatbot trend,
 this future app should seek to provide an application suite 
 of prompt-making functionality, crafted by the product makers
 according to how people generally end up using (or could use) 
-an LLM.  Since an LLM is so versatile but the barrier is
-the fatigue produced by typing out prompts each time, 
-it should have tools that reflect this, providing a kind of 
-notebook or list of possible uses, allowing the
+an LLM.  Since an LLM is so versatile but the barrier to its
+adoption is the fatigue produced by typing out prompts each time
+and the lack of guidance by such a simplistic user interface, 
+it should have tools that address this, providing a kind of 
+notebook (sections of generic use categories), allowing the
 user the opportunity to select how it should be used.
 This goes much further than the few examples someone clicks on.
 The goal is to allow the user to produce the prompts
-rapidly by providing UI parameter controls, sections, 
+rapidly by providing parameter controls
 and categories with premade parameters and settings. 
-Software features will be specific to various categories
-of usage.  
+Software features and workflows will be specific to the 
+various categories provided in the application suite.
 
 Categories and app menu sections include the following.
-The first is the most freeform and could be named that.
+The first is the most free-form.
 
-1) (Default) Continue/Comment On/Make Response to (provided text).
-2) Inquiry/Explain a Subject (generate a profile or background on a topic).   Provide reading list for subject.
-3) Manufacture/Generate Text: literature, poem, essay, possible business names, according to specs.  
-4) Programming Code.  Operations, Generate Code, Answer Question.
+1) (Default) Continue / Comment On / Make Response to (provided text).
+2) Inquiry/Explain a Subject (generate a profile or background on a topic).  
+Provide reading list for subject.
+3) Manufacture/Generate Text: literature, poem, essay, possible business names, etc.
+4) Programming / Code.  Operations, Generate Code, Evaluate Code, Rewrite Code.
 5) How-to (how to do a thing).  Solutions for a Problem.  Practical Skills.  Everyday Reference.
 6) Veracity check (find out if something is true generally).
-7) Explain provided text.  It's Origin / It's meaning
-8) Data:  Generate Data (e.g. weather for a region).  Reformat provided data.
-Check for condition in provided data/text.  Analyze.
+7) Work with Texts.  Explain provided (older) text.  Translate. Word lookup. Text passage origin / its meaning.
+8) Data: Generate or Retrieve Data (e.g. avg. weather for a region).  Reformat provided data.
+Check for a condition in provided data/text.  Analyze.
 9) Converse, Simulate Interaction: role-playing, simulated interviews,
 language learning, and other interactive sessions designed to mimic real-life interactions.
 10) Education: Typical course curriculum for a subject.  Describe prerequisites.
-11) Proofread / Copyedit / Rephrase
+11) Proofread / Copy edit / Rephrase
 
-The interface for an LLM should be multifaceted, not limited to what theuser can come up with but stand alone as a presentation of pathways for any userwho approaches.  Each pathway, each destination has its own utilities builtin.  When the LLM is made use of for reading old texts, for example, it has traditionalsoftware functionality provided for that purpose, for paginating
-what is pasted, for treating a PDF as a book, for highlighting text, etc.This is in contrast to the AI chatbot that has little recognition when anycommon and specific usage occurs apart from writing code.
+The interface for an LLM should be multifaceted, not limited to what the
+user can come up with but stand alone as a presentation of pathways for any user
+who approaches.  Each pathway, each destination has its own utilities built in.  
+When the LLM is made use of for reading old texts, for example, it has traditional
+software functionality provided for that purpose, for paginating what is pasted, 
+for treating a PDF as a book, for highlighting text, etc.
+This is in contrast to the AI chatbot that has little recognition when any
+common and specific usage occurs apart from writing code.
 
 In contrast to "chat", this will bring out far more genuine
 possibilities of the common LLM inside an app suite, an
@@ -77,8 +79,10 @@ app providing the user traditional controls and functions, and menus.
 It will allow the LLM to break out of
 a vertical chat format, as at times there may be an interest
 to generate responses on a grid flowing from left
-to right, to see iterations.  If the LLM is used to generatespecific kinds of data, the presentation of the generated outputshould be changeable, just like described, so that it isn't alwaysraw text.
-Directing the output of the LLM
+to right, to see iterations.  If the LLM is used to generate
+specific kinds of data, the presentation of the generated output
+should be changeable, just like described, so that it isn't always
+raw text. Directing the output of the LLM
 is valuable when AI is viewed as a more advanced tool
 rather than a genie in a bottle.
 
@@ -93,7 +97,8 @@ formulated with convenient, traditional app user interface.
 At the current time, this is not regarded as a concern as there is
 belief that AI technology is advancing so rapidly that the tool
 just described will be obsolete as soon as it is finished in a year or
-two.  That may not be true in the end.
+two.  That may not be true.
+
 
 A weak point of the AI chatbot is that interacting with the LLM
 often involves a lot of repetition and revision of writing and typing
@@ -121,8 +126,8 @@ become mainstream.
 
 1) Continue/Comment On/Make Response to: This would enable users to
 build upon or have the LLM respond to existing text, whether it's their own or
-provided by the LLM, fostering interactive.  Dialectical benefits for
-the user of the LLM which is that there is the ability to see
+provided by the LLM.  There are  dialectical benefits for
+the user of the LLM in this module. There is the ability to see
 a broader view of the topic by having the LLM response.
 
 

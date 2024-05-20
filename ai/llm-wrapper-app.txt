@@ -1,47 +1,48 @@
-A More Versatile, Fully-Developed App Suite Acting As
-An LLM Wrapper Is How Current AI Technology Can Be Adopted By The
-Mainstream
+MAKING THE LLM GO MAINSTREAM
+
+A Versatile, Fully-Developed App Suite Acting As An LLM Wrapper Is How 
+Current AI Technology Can Finally Be Adopted By The Public
+
+
+noctivagous.github.io
 
 
 The potential and utility of an LLM is still hidden.
 A much more developed type of wrapper app for an LLM
 ought to be the focus of the AI community, one that goes 
-far beyond the basic AI chatbot formula in which the user is 
-only given a free-form textbox.  The entire activity of interacting 
-with the LLM is confined to typing out prompts from scratch
-and there is no workflow.
+beyond the basic AI chat format in which the user is 
+only given a free-form textbox and responses are stacked vertically.  
+Interacting with the LLM is confined to typing out prompts from scratch
+each time; there is no developed workflow.  There are many uses for an LLM
+but the user is supposed to fit them all into a text box.
+Nothing genuinely sophisticated has been made on the front-end 
+to serve the end user.
 
-The new user is placed in front of the textbox and then
-instructed, "Now go! Ask for whatever you want!"
+The new user is placed in front of the text box and then
+told, "Now go! Ask for whatever you want!"
 which sounds great at first, like interacting with a genie
-in a bottle.  In reality, life is more complicated.
-The AI chatbot's text box amounts to a prototypal, unfinished situation 
-in which the user laboriously starts from scratch each time composing 
+in a bottle.  In reality, life is more complicated and current
+AI technology cannot succeed broadly by resting on the responses 
+generated from an LLM.  The LLM text box amounts to a prototypal, unfinished situation 
+in which the user laboriously starts from scratch each time to compose
 prompts, writing instructions out all over again for every minor tweak, 
-writing prose and complete sentences for every interaction,
-It's all too exhausting and incompatible with mainstream adoption of AI.  
-Reducing the burden on the user to construct prompts from scratch 
-every time should be the first goal.
+writing paragraphs of prose and complete sentences for every revised 
+interaction.  Because the LLM might not provide what was wanted,
+revisions and tweaks to prompts are inevitable for everyone.
+It's all too exhausting and incompatible with mainstream 
+adoption of AI.
 
-To address the limitations of the AI chatbot trend,
-this future app should seek to provide an application suite 
+To address the limitations of the AI chat format,
+this future app should seek to provide an application suite
 of prompt-making functionality, crafted by the product makers
-according to how people generally end up using (or could use) 
-an LLM.  Since an LLM is so versatile but the barrier to its
-adoption is the fatigue produced by typing out prompts each time
-and the lack of guidance by such a simplistic user interface, 
-it should have tools that address this, providing a kind of 
-notebook (sections of generic use categories), allowing the
-user the opportunity to select how it should be used.
-This goes much further than the few examples someone clicks on.
-The goal is to allow the user to produce the prompts
-rapidly by providing parameter controls
-and categories with premade parameters and settings. 
-Software features and workflows will be specific to the 
-various categories provided in the application suite.
+in accordance with how people generally end up using (or could use)
+an LLM, divided into modules or categories inside the app.  
 
-Categories and app menu sections include the following.
-The first is the most free-form.
+Categories and app sections include the following.
+The first is the most free-form.  Each category, when activated 
+contains custom controls and functionality specific to that
+category.  For dealing with text, common text software tools 
+are built into that mode.
 
 1) (Default) Continue / Comment On / Make Response to (provided text).
 2) Inquiry/Explain a Subject (generate a profile or background on a topic).  
@@ -50,7 +51,7 @@ Provide reading list for subject.
 4) Programming / Code.  Operations, Generate Code, Evaluate Code, Rewrite Code.
 5) How-to (how to do a thing).  Solutions for a Problem.  Practical Skills.  Everyday Reference.
 6) Veracity check (find out if something is true generally).
-7) Work with Texts.  Explain provided (older) text.  Translate. Word lookup. Text passage origin / its meaning.
+7) Work with Texts.  Explain provided (older) text.  Translate. Word lookup. Text passage origin / its meaning.
 8) Data: Generate or Retrieve Data (e.g. avg. weather for a region).  Reformat provided data.
 Check for a condition in provided data/text.  Analyze.
 9) Converse, Simulate Interaction: role-playing, simulated interviews,
@@ -58,69 +59,55 @@ language learning, and other interactive sessions designed to mimic real-life in
 10) Education: Typical course curriculum for a subject.  Describe prerequisites.
 11) Proofread / Copy edit / Rephrase
 
+Since an LLM is so versatile but the barrier to its
+adoption is the fatigue produced by typing out prompts each time
+and the lack of structure guidance by such a simplistic user interface,
+it should have tools that address this, providing a kind of
+notebook (sections of generic use categories), allowing the
+user the opportunity to select how it should be used.
+This goes much further than the few random and specific 
+examples someone clicks on. The goal should be to allow 
+the user to produce the prompts rapidly by providing him 
+with parameter controls.  Each category provides its own 
+premade parameters and settings, setting up a kind of mode
+for interacting with an LLM. Software features and workflows 
+will be specific to the various categories provided in the 
+application suite and it is this that will allow AI to be
+of value.
+
 The interface for an LLM should be multifaceted, not limited to what the
-user can come up with but stand alone as a presentation of pathways for any user
-who approaches.  Each pathway, each destination has its own utilities built in.  
+user can come up with.  A text box is a prompt for the user to
+come up with something impromptu. But our app is a 
+presentation of pathways for any user who approaches.  
+Each pathway, each destination has its own utilities built in.  
+For this reasons, it is conceivable that a person would spend all
+day in our app interacting with an LLM.
+
 When the LLM is made use of for reading old texts, for example, it has traditional
 software functionality provided for that purpose, for paginating what is pasted, 
-for treating a PDF as a book, for highlighting text, etc.
-This is in contrast to the AI chatbot that has little recognition when any
-common and specific usage occurs apart from writing code.
+for treating a PDF as a book that has pages that can be flipped, 
+for highlighting text, etc. This is in contrast to the AI chat
+that has little recognition when any common and specific usage 
+occurs apart from writing code, when it will provide a code box.
 
-In contrast to "chat", this will bring out far more genuine
-possibilities of the common LLM inside an app suite, an
-app providing the user traditional controls and functions, and menus.
-It will allow the LLM to break out of
-a vertical chat format, as at times there may be an interest
-to generate responses on a grid flowing from left
-to right, to see iterations.  If the LLM is used to generate
-specific kinds of data, the presentation of the generated output
-should be changeable, just like described, so that it isn't always
-raw text. Directing the output of the LLM
-is valuable when AI is viewed as a more advanced tool
-rather than a genie in a bottle.
-
-In an app like this, menus divide interactivity with the LLM into
-categories that assist the user in generating prompts according
-to the needs when the LLM is used.  Providing starting points for the LLM
-for the user will end up being far more productive than a bare text box, which
-is probably too simplistic and tiresome when there is
-such a wide range of situations for which a person might use an LLM
-and such a large number of instances when the prompts could be
-formulated with convenient, traditional app user interface.
-At the current time, this is not regarded as a concern as there is
-belief that AI technology is advancing so rapidly that the tool
-just described will be obsolete as soon as it is finished in a year or
-two.  That may not be true.
-
-
-A weak point of the AI chatbot is that interacting with the LLM
-often involves a lot of repetition and revision of writing and typing
-but there are no functions provided for that or even something to
-formulate prompts generatively in the first place.  
-The presets within each category will facilitate valuable
-usage of the LLM for that individual category.
-
-An LLM wrapper app like this demonstrates product development
-that extends beyond the basic AI chatbot because it works with
-the LLM with more developed interactive conveniences and it shows
-that product is not obsolesced by research and engineering but
-should continue to be discussed.
-
-Currently the textbox for an AI chatbot is freeform typing.
-Offering some organization and structure to the situation--
-laying down a kind of blueprint for the amusement park--
-will make the LLM a lot more useful for the consumer.
-It is only under these conditions when an LLM could
-become mainstream.
-
-
+Allowing the output of an LLM to break out of a vertical chat format
+is important as at times there may be value in generating 
+responses on a grid flowing from left to right, to see iterations.  
+It just has to be emphasized that if an LLM can generate all kinds of
+data, then the means to present that data and generate should be varied.
+If the LLM is used to generate specific kinds of data, the presentation of 
+the generated output should be changeable, just like described, 
+so that it isn't always raw text stacked vertically. If it generates
+chart data, the data should show up in a chart. Directing the output of the LLM
+is something that should be undertaken. When AI is viewed as a 
+more advanced tool rather than a genie in a bottle, this type of goal
+will come about more often.
 
 -----
 
 1) Continue/Comment On/Make Response to: This would enable users to
 build upon or have the LLM respond to existing text, whether it's their own or
-provided by the LLM.  There are  dialectical benefits for
+provided by the LLM.  There are  dialectical benefits for
 the user of the LLM in this module. There is the ability to see
 a broader view of the topic by having the LLM response.
 
@@ -174,12 +161,49 @@ to engage in more immersive and interactive experiences, such
 as role-playing, simulated interviews, and language learning
 exercises, helping to bridge the gap between the LLM and real-world interactions.
 
-
 10) Education: The LLM could be utilized to provide information on typical course
 curricula for different subjects, as well as describe the prerequisites and
 other relevant details to support educational and learning goals.
 Test questions and quizzes can be generated in this section.
 
-11) Proofread / Copyedit / Rephrase For Editing
+11) Proofread / Copy edit / Rephrase For Editing
+
 
 ---
+
+In an app like this, menus divide interactivity with the LLM into
+categories that assist the user in generating prompts according
+to the needs when the LLM is used.  Providing starting points for the LLM
+for the user will end up being far more productive than a bare text box, which
+is probably too simplistic and tiresome when there is
+such a wide range of situations for which a person might use an LLM
+and such a large number of instances when the prompts could be
+formulated with convenient, traditional app user interface.
+At the current time, this is not regarded as a concern as there is
+belief that AI technology is advancing so rapidly that the tool
+just described will be obsolete as soon as it is finished in a year or
+two.  That may not be true.
+
+
+A weak point of the AI chatbot is that interacting with the LLM
+often involves a lot of repetition and revision of writing and typing
+but there are no functions provided for that or even something to
+formulate prompts generatively in the first place.  
+The presets within each category will facilitate valuable
+usage of the LLM for that individual category.
+
+An LLM wrapper app like this demonstrates product development
+that extends beyond the basic AI chatbot because it works with
+the LLM with more developed interactive conveniences and it shows
+that product is not obsolesced by research and engineering but
+should continue to be discussed.
+
+Currently the textbox for an AI chatbot is freeform typing.
+Offering some organization and structure to the situation--
+laying down a kind of blueprint for the amusement park--
+will make the LLM a lot more useful for the consumer.
+It is only under these conditions when an LLM could
+become mainstream.
+
+
+

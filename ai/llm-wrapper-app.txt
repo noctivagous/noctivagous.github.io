@@ -202,9 +202,38 @@ Just like an LLM, there are possible categories of usage that
 won't make it difficult for a lay user 
 to use the technology. But because of an online culture 
 that seeks to make everything minimalist, the potential of many
-technologies is obscured.
+technologies is obscured.  Minimalist is pursued as an ideal,
+to the detriment of usability and completion of the software needs.
 
 
+---
+
+BUILDING LLM PROMPTS
+
+-- Rectangular building blocks components replace typewritten
+prompts.  Each component contains GUI controls for its parameters
+and is around 200pt x 200pt.  When there is more than one they 
+flow like text.  A prompt is made out
+of one or more of these building blocks.
+Each building block makes up the prompt, allowing rapid
+construction of parametric prompts rather than just verbal ones.
+The container for making a prompt out of these components 
+can be made as large as a page.
+-- The AI itself can be requested to make relevant prompts
+and this will be incorporated into the app.
+
+STANDARD APP SOFTWARE FUNCTIONALITY
+
+- Export contents of selected output control
+to document, .RTF, .PDF, .TXT, .CSV, .XLSX.
+- AI-generated tabular data appears as interactive table
+in the app.
+- Print selected output control.
+- Functions for reformatting data output are provided.
+
+
+PROMPT REVISION	FUNCTIONALITY
+- Qualities: add [more or less] of [quality].
 
 
 

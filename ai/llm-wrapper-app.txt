@@ -1,7 +1,7 @@
 MAKING THE LLM GO MAINSTREAM
 
-A Versatile, Fully-Developed App Suite 
-Acting As An LLM Wrapper Is How 
+A Versatile, Fully-Developed, General Use 
+App Suite Acting As An LLM Wrapper Is How 
 Current AI Technology Can Finally 
 Be Adopted By The Public
 
@@ -21,7 +21,6 @@ presentations.  There are many uses for an LLM
 but the user is supposed to fit them all into a text box.
 Nothing genuinely sophisticated has been provided on the front-end
 to serve the end user, at least by the major AI vendors.
-
 
 The new user is placed in front of the text box and then
 told, "Now go! Ask for whatever you want!"
@@ -53,22 +52,26 @@ of the app, something of value to many scholars.
 1) (Default Mode) - Continue / Comment On / Make Response to (provided text).
 2) Inquiry/Explain a Subject - Generate a profile or background on a topic.  
 Provide reading list for subject.
-3) Manufacture / Generate Text - literature, poem, essay, possible business names, etc.
+3) Manufacture / Generate - literature, poem, essay, possible business names, recipes, etc.
 4) Programming / Code -  Templates, Generate Code, Evaluate Code, Rewrite Code.
-5) How-to (How to Do a Thing) -  Solutions for a Problem.  Practical Skills.  Everyday Reference.
+5) How-to (How to Do a Thing) -  Solutions for a Problem.  Practical Skills.  Everyday 
+Reference. Domestic chores.
 6) Veracity Check - (find out if something is true generally).
-7) Work with Texts -  Explain provided (older) text.  Translate. Word lookup. Text passage origin / its meaning / summary.
-8) Data: Generate or Retrieve Data (e.g. avg. weather for a region).  Reformat provided data.
-Check for a condition in provided data/text.  Analyze.
+7) Work with Texts -  Explain provided (older) text.  Translate. Dictionary word lookup. 
+Text passage origin / its meaning / summary.
+8) Data: Generate or Retrieve (e.g. avg. weather for a region).  Reformat operations for 
+provided data. Check for a condition inside provided data/text.  Analyze.
 9) Converse or Simulate Interaction: role-playing, simulated interviews,
 language learning, and other interactive sessions designed to mimic real-life interactions.
-10) Education: Typical course curriculum for a subject.  Describe prerequisites for taking up a subject.
+10) Education: Provide typical course curriculum for a subject.  Describe prerequisites for taking up a subject.
+Make quizzes, tests.
 11) Proofread / Copy edit / Rephrase
 
-Since an LLM is so versatile but the barrier to its
+
+An LLM is so versatile but the barrier to its mainstream
 adoption is the fatigue produced by typing out prompts each time,
-the lack of structure and guidance provided by such a simplistic user interface,
-and the lack of output formatting, the AI community should produce common tools 
+the lack of organization, structure and guidance provided by such a simplistic user interface,
+and the lack of output formatting. So, the AI community should produce common tools 
 that address this, providing a kind of notebook (sections of generic use 
 categories), allowing the user the opportunity to select how it should be 
 used when approaching it.The user approaches the LLM with a text box today 
@@ -103,14 +106,20 @@ Allowing the output of an LLM to break out of a vertical chat format
 is important as at times there may be value in generating 
 responses on a grid flowing from left to right, to see iterations.  
 It just has to be emphasized that if an LLM can generate all kinds of
-data, then the means to present that data and generate should be varied.
+data, then the means to present that data and generate it should be varied.
 If the LLM is used to generate specific kinds of data, the presentation of 
-the generated output should be changeable, just like described, 
+the generated output should adapt, just like described, 
 so that it isn't always raw text stacked vertically. If it generates
-chart data, the data should show up in a chart. Directing the output of the LLM
-is something that should be undertaken. When AI is viewed as a 
-more advanced tool rather than a genie in a bottle, this type of goal
-will come about more often.
+chart data, the data should show up in a chart. If it is a quiz being
+generated, then ideally an actual set of quiz controls should show up
+in the response.  A recipe should be formatted as a recipe card if possible.  
+Shaping the LLM's output presentation will make these very expensive
+AI models valuable. When AI is viewed as a more advanced tool rather than a 
+simplistic genie in a bottle paradigm in which a question is asked an an action follows, 
+these goals will be discussed more often.  Tech often gets ahead
+of itself, wants to be more than it actually is and obsolesce the present
+to feel like it is moving into the future.  But the basics of
+traditional software remain.
 
 -----
 
@@ -119,7 +128,6 @@ build upon or have the LLM respond to existing text, whether it's their own or
 provided by the LLM.  There are  dialectical benefits for
 the user of the LLM in this module. There is the ability to see
 a broader view of the topic by having the LLM response.
-
 
 2) Inquiry/Explain a Subject: Users could utilize the LLM
 to research and generate informative profiles or backgrounds

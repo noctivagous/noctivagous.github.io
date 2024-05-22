@@ -1,8 +1,9 @@
 MAKING THE LLM GO MAINSTREAM
 
-A Versatile, Fully-Developed, General Use 
-App Suite Acting As An LLM Wrapper Is How 
-Current AI Technology Can Finally 
+A Versatile, Fully-Developed, General Use
+Software Application Suite 
+Acting As An LLM Wrapper Is How
+Current AI Technology Can Finally 
 Be Adopted By The Public
 
 
@@ -11,30 +12,43 @@ noctivagous.github.io
 
 The potential and utility of an LLM is still hidden.
 A much more developed style of wrapper app for an LLM
-ought to be a priority of the AI community, one that goes
+ought to be the priority of the AI community, one that goes
 beyond the basic AI chat format in which the user is
 given a free-form textbox and responses are stacked vertically.  
 Interacting with the LLM is confined to typing out prompts from scratch
 each time; there is no developed workflow for modifying
-prompts, crafting them, or viewing the output in different
+prompts, crafting them parametrically, or viewing the output in different views or
 presentations.  There are many uses for an LLM
-but the user is supposed to fit them all into a text box.
-Nothing genuinely sophisticated has been provided on the front-end
-to serve the end user, at least by the major AI vendors.
+but the user is supposed to squash them all into a text box.
+Whatever comes out is supposed to suffice if it is just a stream of text.
+Relatively few genuinely sophisticated features have 
+been provided on the front-end to serve the end user, 
+at least by the major AI vendors.
 
 The new user is placed in front of the text box and then
 told, "Now go! Ask for whatever you want!"
-which sounds great at first, like the opportunity to interact with a genie
+which sounds great at first, like an opportunity to interact with a genie
 in a bottle.  In reality, life's work demands are more complex and current
-AI technology cannot succeed by resting on simplistic chat-formatted responses
-generated from an LLM. The LLM text box amounts to a prototypal, unfinished situation
+AI technology cannot succeed by way of simplistic chat-formatted responses
+generated from an LLM. In the workplace a person is provided
+a complete document of specifications and the analogue for an LLM
+would be a set of parametric components, settings, and controls.
+The "genie in a bottle" format with its reception of small, additive
+snippets from the user contrasts with the natural condition
+of everyday life in which a set of commands comes in bulk.
+When you want something done do you tell a person who doesn't know you 
+just one line or a few sentences?  No, you send them a document with 
+detailed specifications.  So the LLM has to be able to receive
+that.
+
+The small LLM text box amounts to a prototypal, unfinished situation
 in which the user laboriously starts from scratch each time to compose
-prompts, writing instructions out all over again for every minor tweak,
-writing paragraphs of prose and complete sentences for every revised
-interaction.  Because the LLM might not provide what was wanted
-the first time, revisions and tweaks applied to prompts are inevitable for everyone.
-It's all too exhausting and incompatible with mainstream
-adoption of AI.
+short prompts, writing instructions out all over again for every minor tweak
+when something wasn't quite right, writing paragraphs of prose and 
+complete sentences for every revised interaction.  Because the LLM 
+might not provide what was wanted the first time, revisions and tweaks 
+are inevitable for everyone. It's all too exhausting and incompatible 
+with mainstream adoption of AI.
 
 To surpass the limitations of the AI chat format,
 this future app should seek to provide an application suite
@@ -57,15 +71,16 @@ Provide reading list for subject.
 5) How-to (How to Do a Thing) -  Solutions for a Problem.  Practical Skills.  Everyday 
 Reference. Domestic chores.
 6) Veracity Check - (find out if something is true generally).
-7) Work with Texts -  Explain provided (older) text.  Translate. Dictionary word lookup. 
-Text passage origin / its meaning / summary.
+7) Work with Texts -  Explain provided (especially older) text.  Translate. Dictionary word lookup. 
+Text passage origin / its meaning / summary.  Extract summary of only
+certain type of information from the document.
 8) Data: Generate or Retrieve (e.g. avg. weather for a region).  Reformat operations for 
 provided data. Check for a condition inside provided data/text.  Analyze.
 9) Converse or Simulate Interaction: role-playing, simulated interviews,
 language learning, and other interactive sessions designed to mimic real-life interactions.
 10) Education: Provide typical course curriculum for a subject.  Describe prerequisites for taking up a subject.
 Make quizzes, tests.
-11) Proofread / Copy edit / Rephrase
+11) Proofread / Copyedit / Rephrase
 
 
 An LLM is so versatile but the barrier to its mainstream
@@ -205,6 +220,12 @@ that seeks to make everything minimalist, the potential of many
 technologies is obscured.  Minimalist is pursued as an ideal,
 to the detriment of usability and completion of the software needs.
 
+Even when you instruct humans you give them long spec sheets 
+and documents with bullet lists. "Genie in a bottle" commands, 
+making consecutive small requests to the AI, isn't broad enough for
+the AI to be of value for everyday tasks.  The AI tool
+has to be able to take in a blueprint all at once and
+the parameters of this have to be easy to change.
 
 ---
 
@@ -228,6 +249,7 @@ STANDARD APP SOFTWARE FUNCTIONALITY
 to document, .RTF, .PDF, .TXT, .CSV, .XLSX.
 - AI-generated tabular data appears as interactive table
 in the app.
+- AI-generated map data appears on an interactive map.
 - Print selected output control.
 - Functions for reformatting data output are provided.
 
@@ -235,6 +257,10 @@ in the app.
 PROMPT REVISION	FUNCTIONALITY
 - Qualities: add [more or less] of [quality].
 
+CHAT OUTPUT TAIL MENU
+- A menu appears at the bottom of every chat response
+allowing the user to modify the original prompt 
+or respond to the chat.
 
 
 ---

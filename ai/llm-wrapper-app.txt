@@ -11,35 +11,36 @@ noctivagous.github.io
 
 
 The potential and utility of an LLM is still hidden.
-A much more developed style of wrapper app for an LLM
+A much more developed category of wrapper app for an LLM
 ought to be the priority of the AI community, one that goes
 beyond the basic AI chat format in which the user is
 given a free-form textbox and responses are stacked vertically.  
 Interacting with the LLM is confined to typing out prompts from scratch
 each time; there is no developed workflow for modifying
-prompts, crafting them parametrically, or viewing the output in different views or
-presentations.  There are many uses for an LLM
-but the user is supposed to squash them all into a text box.
-Whatever comes out is supposed to suffice if it is just a stream of text.
-Relatively few genuinely sophisticated features have 
+prompts, crafting them parametrically, or viewing the 
+output in different views or presentations.  There are 
+many uses for an LLM but the user is supposed to squash 
+them all into a text box. Whatever comes out is supposed to 
+suffice if it is just a stream of text.
+Few genuinely sophisticated features have 
 been provided on the front-end to serve the end user, 
 at least by the major AI vendors.
 
 The new user is placed in front of the text box and then
 told, "Now go! Ask for whatever you want!"
 which sounds great at first, like an opportunity to interact with a genie
-in a bottle.  In reality, life's work demands are more complex and current
+in a bottle.  In reality, instructions for work jobs are more complex. Current
 AI technology cannot succeed by way of simplistic chat-formatted responses
-generated from an LLM. In the workplace a person is provided
-a complete document of specifications and the analogue for an LLM
-would be a set of parametric components, settings, and controls.
-The "genie in a bottle" format with its reception of small, additive
-snippets from the user contrasts with the natural condition
-of everyday life in which a set of commands comes in bulk.
-When you want something done do you tell a person who doesn't know you 
+generated from an LLM.  In the workplace a person is provided
+a complete document of specifications, not just a few sentences. 
+The analogue to this for an LLM would be a set of parametric components, 
+settings, and controls. The "genie in a bottle" format with its 
+reception of small, additive snippets from the user contrasts with the natural condition
+of everyday life in which a set of commands comes in structured and in bulk.
+When you want something complex done do you tell a person who doesn't know you 
 just one line or a few sentences?  No, you send them a document with 
 detailed specifications.  So the LLM has to be able to receive
-that.
+commands in that kind of format.
 
 The small LLM text box amounts to a prototypal, unfinished situation
 in which the user laboriously starts from scratch each time to compose

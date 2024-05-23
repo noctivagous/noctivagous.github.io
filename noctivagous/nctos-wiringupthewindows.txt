@@ -41,4 +41,17 @@ contents changing could be dispatched.  The limitations of desktop computing in
 the 1990s would then be removed.
 
 For tidiness, in this operating system, applications could choose to
-publish ports to a set of se
+publish ports to a set of separate switchboard panels provided by
+the system and on these switchboards the user could arrange everything to avoid
+cluttering the screen.  This is a place to set up more permanent 
+relationships or keep them out of view. The flexibility of nodes
+is applied to the whole of all applications; one source of data or 
+events can be published to multiple software applications at the same
+time.   In addition, the receiving application could be an Internet server.
+
+The means of connecting nodes will ideally take place with Noctivagous'
+key-click UI which allows drawing vector lines and using them
+as connector cords in a smooth way: https://noctivagous.github.io/keyclickui/
+
+
+---noctivagous.github.io---

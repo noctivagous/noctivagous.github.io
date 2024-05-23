@@ -1,0 +1,44 @@
+
+
+Wiring Up The Windows
+
+An individual software application carries a lot of capabilities but have you 
+noticed that each one sits in a silo?  Apart from copy and paste, 
+they can't make use of each other despite their immense bodies of
+functionality. Copy and paste is the sole bridge sitting between 
+software applications.
+
+In the future, all windows can be utilized as nodes or patches and then
+the user can wire up windows into functional arrangements 
+as he or she wishes.  Each window can expose capabilities of the app
+and feed it to other windows and apps.  The operating system can
+provide intermediate nodes as well for logic, filtering, AI processing
+of data, etc.
+
+The stream from a video playing inside a web browser can be
+connected by the user with a patch cord into another application's window 
+if the operating system supports this, which is the implementation 
+of node-based (also known as patch-based) for 
+all applications and their windows. It's merely that this kind of SDK 
+feature has  not been implemented in the application kits.  With
+just a few tweaks and additions, any application developer can provide 
+this.  What’s more, software developers will be able to provide
+their own patches for the system, shifting the OS’s emphasis away
+from apps for small needs.
+
+Different applications could easily interact with each other and make
+use of each other's live data and events if the user were allowed to
+flip the window around and decide which port and what type of data
+should be published from that window and/or received by it, thereby
+transforming that window into a node just like Unreal Engine's
+Blueprints or any other node system used today. In the whole of the
+system, text boxes, sliders, and other controls would by default
+support attaching connector wires from within the same application or from other
+applications. When something happens in one application, another could
+be informed of it.  A path of data could travel across three or more
+software applications.  Even the system event of a certain file directory's 
+contents changing could be dispatched.  The limitations of desktop computing in
+the 1990s would then be removed.
+
+For tidiness, in this operating system, applications could choose to
+publish ports to a set of se

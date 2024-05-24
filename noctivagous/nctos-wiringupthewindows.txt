@@ -1,30 +1,46 @@
 
+Wiring Up The Windows: Breaking Down The Walls Between Desktop Apps
 
-Wiring Up The Windows
+
+The following is one of many software features Noctivagous 
+(noctivagous.github.io) would provide consumers as part of an 
+alternative to Windows and Mac OS. This feature has to be added 
+by the OS vendor.
+
+-
 
 An individual software application carries a lot of capabilities but have you 
 noticed that each one sits in a silo?  Apart from copy and paste, 
 they can't make use of each other despite their immense bodies of
-functionality. Copy and paste is the sole bridge sitting between 
+functionality.  Copy and paste is the sole bridge sitting between 
 software applications.
 
-In the future, all windows can be utilized as nodes or patches and then
-the user can wire up windows into functional arrangements 
-as he or she wishes.  Each window can expose capabilities of the app
-and feed it to other windows and apps.  The operating system can
-provide intermediate nodes as well for logic, filtering, AI processing
-of data, etc.
+In the future, the user can flip a window around,
+expose capabilities of the app as ports, and then feed data
+to other windows and apps through patch cords, taking the concept of
+node-based programming and applying it to the entire OS app experience.  
+All windows will carry the ability to act as patches (or nodes), 
+allowing the user to wire up windows across or within apps into functional arrangements.  
+The operating system can provide intermediate patches as well for
+logic, filtering, AI processing of data, etc.  Each app will therefore
+natively support patch-based programming inside its own windows, and
+for the first time it will offer its own functionality to other apps.  
+This will upgrade the state of the entire app ecosystem.
 
+Not only the windows will supply and receive data but all controls will as well.
 The stream from a video playing inside a web browser can be
 connected by the user with a patch cord into another application's window 
 if the operating system supports this, which is the implementation 
-of node-based (also known as patch-based) for 
+of node-based (also known as patch-based) scripting/programming for 
 all applications and their windows. It's merely that this kind of SDK 
-feature has  not been implemented in the application kits.  With
-just a few tweaks and additions, any application developer can provide 
-this.  What’s more, software developers will be able to provide
-their own patches for the system, shifting the OS’s emphasis away
-from apps for small needs.
+feature has not been implemented in the application kits provided by
+the vendors.  With just a few tweaks and additions, any application developer 
+will be able to provide this in an app because it is so closely related
+to copy and paste / drag and drop.  What’s more, software developers 
+will be allowed to provide their own patches/nodes for the system for
+anyone to download, shifting the OS’s emphasis away from apps for 
+small utility needs. That is, power users who have no interest in 
+programming will be able to make ad hoc mini apps.
 
 Different applications could easily interact with each other and make
 use of each other's live data and events if the user were allowed to

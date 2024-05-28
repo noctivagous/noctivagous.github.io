@@ -1,101 +1,124 @@
 INTERACTIVE APPLETS: MISSING FROM THE WEB PAGE
 
+It should be possible to embed an interactive crowdfunding or fundraising
+widget inside a regular Twitter/X or Facebook post.  This isn't possible 
+today because a basic technical standard of the web is missing.  Users
+cannot upload interactive multimedia in the form of a consolidated
+file, like a .PDF.  Fundraising widgets were common on the social media
+website Myspace because in that era Flash was still available
+and the website allowed embedding widgets. 
+(This is also what allowed YouTube to become popular.)
+In 2008, one company even raised $5 million for its company that provided a fundraising widget.
+(See https://techcrunch.com/2008/05/13/sprout-raises-5-million-for-flash-widget-creation/)
 
-It should be possible to embed an interactive 
-crowdfunding or fundraising widget inside a regular
-Twitter/X or Facebook post.  This isn't possible 
-because a basic user experience standard of the web 
-is missing.
+The main problem is that the programming technologies that followed Adobe Flash's
+removal were unsatisfactory, a collection of restrictive, disorganized, and limited conventions 
+based on JavaScript, certainly not enough for an interactive multimedia ecosystem.  
+By default the successor technologies made it technically impossible for a user to 
+share a fundraising "widget" across websites without the specific permission of 
+those websites.  That is how everything exists today.
 
-When there is no longer a formal, coherent system in place that 
-promotes interactive multimedia, treating it as a 
-separate topic (like Flash or Java applets), web developers,
-social media companies, and ad agencies lack guidance and 
-incentives to produce that type of Internet experience. 
-It is more difficult for them to make those experiences
-and impossible to upload them to social media, now the
-predominant usage of the Internet.  They tend towards 
-producing and encouraging audiovisual 
-media for consumption. Although apps do provide interactive
-opportunities, on the web this is no longer as simple to achieve.
-An Internet user should be able to upload an interactive chart 
-or an interactive animation to a Twitter/X or Facebook post.
+When there is no longer a formal, coherent software development system in place that promotes
+interactive multimedia, treating it as a separate topic-- the previous
+domain of Flash and Java applets-- what happens is web developers, social media companies,
+and ad agencies lack guidance and incentives to produce that type of
+Internet experience.  It is more difficult for them to make those digital
+products and now it is impossible to upload them to social media alongside
+videos or still images. Social media companies can also selfishly block out
+any embeddable executable and interactive multimedia most easily, 
+as the new technical hurdles provide them an excuse.
 
-We have come to use the web like on-demand television, applying 
-this dynamic to news articles, videos, or podcasts, and so
-the web evolved into a medium for consumption.  Because 
-nothing came along to truly replace and supersede Adobe Flash 
-and Java applets, we have a very static experience of the 
-Internet outside of apps.  Along with the ejection of Adobe Flash
-came the ejection of its tools and the ability to embed
-something interactive in a web page in a straightforward way.
+Social media is now the predominant forum for interacting on the Internet.  
+Because it lacks the interactive capabilities of the past, the online environment 
+tends towards producing audiovisual media for consumption or provocative text
+to stir reactions.  Although independently-made mobile apps do provide traditional interactive
+experiences, this is no longer as simple to achieve on the web.
+An Internet user should be able to upload an interactive chart
+or an interactive animation to a Twitter/X or Facebook post. This is
+fundamental functionality of the computer, and it is being neglected.
 
-The web and the social web need to re-acquire interactive
-capabilities that the user can make use of, once again.
-The centerpiece of this re-acquisition of multimedia interactivity has to
-be a designated file format, just like PDF.  PDF lets us exchange written 
-documents easily, and Adobe Flash's file format unintentionally 
-provided the same convenience for interactive multimedia documents, 
-in the .SWF file format.  When ad agencies needed to upload something
-interactive to the web, they just e-mailed a .SWF and it was
-done.  The impact of Flash's removal from the web was huge inthis respect, 
-as immediately advertising on websites no longer offered interactivity, 
-there were fewer websites inclined to make interactive experiences for 
-Internet audiences for commercial brands, and social media 
-companies became entirely focused on supplying their users highly-refined, 
-sugary stimulation.  Social media websites today restrict users 
-from embedding custom HTML and executable files, preventing a 
-more interactive state of the social web that is directed by the users.  
-In fact, it is even impossible to customize the appearance of 
-a Facebook profile or Twitter/X profile beyond a few 
-minimal parameters that the companies allow, like
-profile photo, bio, and header photo. 
+The online world has come to use the web like on-demand television, whether it is for
+news articles, videos, or podcasts, and so the web has evolved lately into
+a medium for consumption whereas in the 2000s there were more .edu personal web
+pages with instructional examples made out of Java or Flash.  Nothing came
+along to truly replace and supersede what Adobe Flash and Java applets offered,
+so the world is limited to a passive experience of the Internet, outside of apps.
+Whatever comes along in the feed is watched, read, or viewed, and then maybe
+the person reacts with a comment.
 
-An interactive multimedia type of file has to be readable and editable 
-outside of the web browser, just like the video, still image,
-are PDF files are.  But unfortunately, those who oversee web
-standards always want to tie the computer's Internet software technology
-to launching a web browser. As a result web browsers cannot even load a
-common spreadsheet file or word processing document inside a web page.
-In their view, an Excel document file format is owned by Microsoft so they
-would be promoting a private company's own properties on the open
-web.  What this means is that they are ideological to the extent that
-it produces dysfunction: if you embed an Excel spreadsheet file
-or Word document inside a web page no one can read it.
-The people who oversee web standards are often very confused individual, 
-pushing hard for open standards for the web browser even though
-the market that is overwhelmingly dominated by one
-or two private companies who fund and oversee the development of
-those browsers. In that case there is no meaningful reason to
-prevent people from embedding word processing documents in a web
-page just because the file format is proprietary, as Google Chrome
-is effectively a proprietary project.  Those who establish web standards are not necessarily
-in sync with the needs of the public who use web browsers
-and this is especially evident when they do not come capapble
-of displaying the documents that the entire world relies for
-business and other needs.  In the same way, they are not tending to the needs of 
-interactive web and those solutions and tools were always provided by
-a third party (Macromedia before it was purchased by Flash).
-For the world to get what it needs it should recognize that it is
-hindered by the "open" W3C that has no product accountability like
-a private company does and so the quality of the standards
-its produces are those of something basic.
+Along with the ejection of Adobe Flash from the browser came the obsolescence 
+of its tools and the ability to embed something both interactive and multimedia in a web page in a
+straightforward way. Those who used this system will mention that many types of
+executables were much easier to construct because Flash was integrated and
+therefore required less programming work, whereas to achieve the same effect today
+a person has to write a lot more JavaScript and search for third-party programming
+libraries one at a time.  Those who advocated for the removal of Flash
+most strongly obviously had never used it because they only discussed its
+technical situations and downsides.
 
-There was a huge push to remove Adobe Flash and related
-web plug-ins from the web but in fact without Adobe Flash
-there wouldn't have been many developments like YouTube,
-which originally served Flash video files (.FLV) inside
-the YouTube player made out of a .SWF file.
+The web and the social web should re-acquire interactive capabilities by allowing
+the embedding of interactive files in the web page, as easily uploaded as a video
+file by the user. The user should be able to transmit and upload the file as a
+consolidated unit, just like PDF or MP4. The centerpiece of this re-acquisition
+of multimedia interactivity therefore has to be a designated file format, just like
+PDF.  PDF lets us exchange written documents easily, and Adobe Flash's
+file format unintentionally provided the same convenience for interactive
+multimedia documents, in the .SWF file format.  That convenience was
+experienced by the people behind the websites or by regular users embedding 
+widgets, who didn't know that it was easy to do that because SWF was therein 
+the embed code.  When ad agencies needed to upload something interactive on 
+the web, they just e-mailed a .SWF file and the job was done.  The impact of 
+Flash's removal from the web was huge in this respect, as immediately advertising on websites no longer offered
+in their interactivity in their ad campaigns, there were fewer websites inclined to make interactive
+experiences for Internet audiences for commercial brands, and social media
+companies became entirely focused on supplying their users highly-refined,
+sugary stimulation in "feeds".  Social media websites today restrict users from
+embedding custom HTML and executable files, preventing a more interactive
+state of the social web that is directed by the users, one that can go outside
+of the website.  In fact, it is even impossible to customize the cosmetic 
+appearance of a Facebook profile or Twitter/X profile in any way, beyond a 
+few minimal parameters that the companies allow, like profile photo, bio, and header photo.
 
-Social media lacks interactive applets, which is what Flash 
-provided.  There are unique outcomes that occur when interactive multimedia
-is produced with a dedicated system like Flash or the rival
-technology Microsoft Silverlight, and because they are
-integrated they often go beyond what web developers are likely to 
-do with open web technologies that are slow to arrive and
-sit in fragments, mostly disorganized.
+An interactive multimedia type of file has to be readable and editable
+outside of the web browser, just like video, still image, and PDF
+files are.  But unfortunately, those who oversee web standards always want
+to tie the computer's Internet software technology to launching a web
+browser.
 
+Web browsers cannot even load a common spreadsheet
+file or word processing document inside a web page. In their view, an
+Excel document file format is owned by Microsoft so they would be
+promoting a private company's own properties for the open web.  What this
+means is that they are ideological to the extent that it produces something
+irrational: if you embed an Excel spreadsheet file or Word document
+inside a web page no one can read it, but these are mainstreamfile formats everyone uses. The people who oversee web standards
+are often very confused individual, pushing hard for open standards for
+the web browser even though the market is overwhelmingly dominated
+by one or two private companies who fund and oversee the development of
+those browsers. In that case there is no meaningful reason to prevent
+people from embedding word processing documents in a web page just
+because the file format is proprietary, as Google Chrome is effectively a
+proprietary project.  Those who establish web standards are not necessarily
+in sync with the needs of the public who use web browsers and this is
+especially evident when they do not come capable of displaying the
+documents that the entire world relies on for business and other needs.  In the same way, they are not tending to the needs of interactive web and
+those solutions and tools were always provided by a third party
+(Macromedia before it was purchased by Flash). For the world to get what
+it needs it should recognize that it is hindered by the "open" W3C that
+has no product accountability like a private company does and so the
+quality of the standards it produces are those of something basic.
 
+There was a huge push to remove Adobe Flash and related web plug-ins from
+the web but in fact without Adobe Flash there wouldn't have been many
+developments like YouTube, which originally served Flash video files
+(.FLV) inside the YouTube player made out of a .SWF file.
+
+Social media lacks interactive applets, which is what Flash provided.
+There are unique outcomes that occur when interactive multimedia is
+produced with a dedicated system like Flash or the rival technology
+Microsoft Silverlight, and because they are integrated they often go
+beyond what web developers are likely to do with open web technologies
+that are slow to arrive and sit in fragments, mostly disorganized.
 
 ----
 

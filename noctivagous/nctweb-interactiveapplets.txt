@@ -1,0 +1,252 @@
+INTERACTIVE APPLETS: MISSING FROM THE WEB PAGE
+
+
+It should be possible to embed an interactive 
+crowdfunding or fundraising widget inside a regular
+Twitter/X or Facebook post.  This isn't possible 
+because a basic user experience standard of the web 
+is missing.
+
+When there is no longer a formal, coherent system in place that 
+promotes interactive multimedia, treating it as a 
+separate topic (like Flash or Java applets), web developers,
+social media companies, and ad agencies lack guidance and 
+incentives to produce that type of Internet experience. 
+It is more difficult for them to make those experiences
+and impossible to upload them to social media, now the
+predominant usage of the Internet.  They tend towards 
+producing and encouraging audiovisual 
+media for consumption. Although apps do provide interactive
+opportunities, on the web this is no longer as simple to achieve.
+An Internet user should be able to upload an interactive chart 
+or an interactive animation to a Twitter/X or Facebook post.
+
+We have come to use the web like on-demand television, applying 
+this dynamic to news articles, videos, or podcasts, and so
+the web evolved into a medium for consumption.  Because 
+nothing came along to truly replace and supersede Adobe Flash 
+and Java applets, we have a very static experience of the 
+Internet outside of apps.  Along with the ejection of Adobe Flash
+came the ejection of its tools and the ability to embed
+something interactive in a web page in a straightforward way.
+
+The web and the social web need to re-acquire interactive
+capabilities that the user can make use of, once again.
+The centerpiece of this re-acquisition of multimedia interactivity has to
+be a designated file format, just like PDF.  PDF lets us exchange written 
+documents easily, and Adobe Flash's file format unintentionally 
+provided the same convenience for interactive multimedia documents, 
+in the .SWF file format.  When ad agencies needed to upload something
+interactive to the web, they just e-mailed a .SWF and it was
+done.  The impact of Flash's removal from the web was huge inthis respect, 
+as immediately advertising on websites no longer offered interactivity, 
+there were fewer websites inclined to make interactive experiences for 
+Internet audiences for commercial brands, and social media 
+companies became entirely focused on supplying their users highly-refined, 
+sugary stimulation.  Social media websites today restrict users 
+from embedding custom HTML and executable files, preventing a 
+more interactive state of the social web that is directed by the users.  
+In fact, it is even impossible to customize the appearance of 
+a Facebook profile or Twitter/X profile beyond a few 
+minimal parameters that the companies allow, like
+profile photo, bio, and header photo. 
+
+An interactive multimedia type of file has to be readable and editable 
+outside of the web browser, just like the video, still image,
+are PDF files are.  But unfortunately, those who oversee web
+standards always want to tie the computer's Internet software technology
+to launching a web browser. As a result web browsers cannot even load a
+common spreadsheet file or word processing document inside a web page.
+In their view, an Excel document file format is owned by Microsoft so they
+would be promoting a private company's own properties on the open
+web.  What this means is that they are ideological to the extent that
+it produces dysfunction: if you embed an Excel spreadsheet file
+or Word document inside a web page no one can read it.
+The people who oversee web standards are often very confused individual, 
+pushing hard for open standards for the web browser even though
+the market that is overwhelmingly dominated by one
+or two private companies who fund and oversee the development of
+those browsers. In that case there is no meaningful reason to
+prevent people from embedding word processing documents in a web
+page just because the file format is proprietary, as Google Chrome
+is effectively a proprietary project.  Those who establish web standards are not necessarily
+in sync with the needs of the public who use web browsers
+and this is especially evident when they do not come capapble
+of displaying the documents that the entire world relies for
+business and other needs.  In the same way, they are not tending to the needs of 
+interactive web and those solutions and tools were always provided by
+a third party (Macromedia before it was purchased by Flash).
+For the world to get what it needs it should recognize that it is
+hindered by the "open" W3C that has no product accountability like
+a private company does and so the quality of the standards
+its produces are those of something basic.
+
+There was a huge push to remove Adobe Flash and related
+web plug-ins from the web but in fact without Adobe Flash
+there wouldn't have been many developments like YouTube,
+which originally served Flash video files (.FLV) inside
+the YouTube player made out of a .SWF file.
+
+Social media lacks interactive applets, which is what Flash 
+provided.  There are unique outcomes that occur when interactive multimedia
+is produced with a dedicated system like Flash or the rival
+technology Microsoft Silverlight, and because they are
+integrated they often go beyond what web developers are likely to 
+do with open web technologies that are slow to arrive and
+sit in fragments, mostly disorganized.
+
+
+
+----
+
+broadcasts encouraging consumption of those broadcasts, 
+coralling users to follow them closely.  This means that people 
+get addicted to consuming content rather than thinking and 
+engaging with something interactive (clickable) that can
+lead to different outcomes for each user, which is interactive 
+multimedia.  The Internet user is encouraged to opine on things 
+he or she is fed. Additionally, the public is not using computers to produce 
+interactive content but shooting cheap videos all the time for clicks.
+
+
+
+The Internet user should be able to upload an interactive chart or an 
+interactive animation to a Twitter/X or Facebook post,
+an option sitting next to the video file or still image option.
+ 
+At the moment, Internet-connected computers across the 
+world are being used to broadcast media one way just 
+like television and radio-- with the interactivity provided
+the the user being limited to choosing which media object to consume. 
+One-way broadcast means that people get addicted to 
+consuming content rather than thinking and engaging.
+
+
+
+
+The web and the social web need to become interactive. 
+
+At the moment, Internet-connected computers across the world 
+are being used to broadcast/receive media in one direction just like television 
+and radio-- with the interactivity amounting to choosing
+which media object to consume.  Largely we use the web like 
+on-demand television, applying this format to news articles, videos, 
+or podcasts.  Because nothing came along to truly replace 
+and supersede Adobe Flash and Java applets, we have a very static 
+experience of the Internet and the potential of the CD-ROM
+disappeared.  
+
+
+
+
+Computers are interactive; this was the appeal originally. 
+Now they broadcast media one way just like television 
+and radio, with the interactivity being limited to choosing 
+which media object to consume. The web and the social web need 
+to become interactive. You should be able to upload an 
+interactive chart or interactive animation to a Twitter/X 
+or Facebook post.
+
+
+Computers and web browsers are entirely capable of providing
+a file format for uploading interactive geometry lessons
+to a Twitter or Facebook post.
+
+The animation tools Flash provided were important.
+and much Internet culture from the 2000s disappeared.
+
+You should be able to embed an interactive chart in a 
+Twitter (X) post. Computers are interactive. So actually 
+you should be able to embed a puzzle game that you made 
+in a Twitter (X) or Facebook post. The social media web 
+is pitiful because nothing came along and filled in the 
+role of Adobe Flash or Java applets.
+
+In other words, we need a new file format to serve the same 
+purpose as the old Java applet so that people can upload 
+executable files (games, charts, etc.) inside social media 
+posts.  Consider this: you cannot upload an interactive 
+widget for an all-or-nothing crowdfunding project inside 
+a social media post, but you could embed a custom fundraising 
+widget on a Myspace comment because that was the era of the 
+web when Flash was still available and that website let you 
+embed whatever HTML you wanted in the post.
+
+You should be able to upload a puzzle game you found on 
+the web inside a Twitter/X or Facebook post, just like a 
+movie file, and let others play it.
+
+
+If social media is where people converse and debate
+why is it they cannot use their computers in a way
+that makes sense?
+
+How come no one can upload an interactive chart or other 
+interactive applet inside a post? Only video files and still 
+images are allowed on these social media websites!
+
+
+
+
+
+THE WEB BROWSER HINDERING IMPLEMENTATION
+OF APPS THAT ARE TRANSMITTED QUICKLY THROUGH THE WEB.
+
+
+1) IT DOES NOT PROVIDE GUI CONVENIENCES
+SIMILAR TO THE XUL LIBRARY, 
+
+2) ITS NATIVE SCRIPTING LANGUAGE, JAVASCRIPT
+IS CONTROVERSIAL FOR LACKING TYPED VARIABLES.
+
+3) IT LACKS A COHESIVE SET OF LIBRARIES THAT
+WOULD ENABLE AN APPLICATION
+
+The combination of these factors has led to
+the web acting as an information and communication
+medium despite its potential to extend into 
+flexible application software distribution.
+
+
+THE WEB'S LACK OF STRUCTURE ON THE FRONT-END AND
+BACK-END ENCOURAGES RELIANCE ON COMMERCIAL TOOLS
+
+The web server carries nothing for managing
+content, is totally basic until a third party
+developer makes something for it and because
+the task of installing and utilizing these products is
+beyond the average user, many commercial entities
+came in, both open and closed source.
+
+Because the web server does not manage content
+and never adopted any means of communicating
+with other web servers natively (it communicates
+with web clients, the browsers, exclusively
+and not other types of servers), there is the
+need to "crawl" the web.  In fact the servers
+could provide indices of their content themselves
+and send them to search engines on their own.
+A search engine is not possible to build into
+a web server the way it exists today because
+a web server does not contain anything but
+a way to transmit HTML files and other related
+functionality.
+
+The web browser does not recognize higher levels
+of design templates and this leads to websites and
+companies that exist as website builders, who
+take care of the front-end task of designing
+websites and also the back-end task of managing
+any kind of posting of data from the web user.
+
+It doesn't have to be this way if a web browser
+and web server is redesigned in such a way
+that both are filled out with more basic features,
+coming packaged with customizable components
+and widgets that regular web users could
+put together on their own.
+
+
+
+
+

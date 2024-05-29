@@ -1,22 +1,31 @@
 INTERACTIVE APPLETS: MISSING FROM THE WEB PAGE
 
 It should be possible to embed an interactive crowdfunding or fundraising
-widget inside a regular Twitter/X or Facebook post.  This isn't possible 
-today because a basic technical standard of the web is missing.  Users
+widget inside a regular Twitter/X or Facebook post.  An Internet user should 
+be able to upload an interactive chart or an interactive animation to a Twitter/X 
+or Facebook post just like any video or image file.
+
+This isn't possible today because a basic technical standard of the web is missing.  Users
 cannot upload interactive multimedia in the form of a consolidated
-file, like a .PDF.  Fundraising widgets were common on the social media
-website Myspace because in that era Flash was still available
-and the website allowed embedding widgets. 
-(This is also what allowed YouTube to become popular.)
-In 2008, one company even raised $5 million for its company that provided a fundraising widget.
+file, like a .PDF.  Fundraising widgets were frequently used on the social media
+website Myspace; in that era Flash was still available to web browsers
+and the website allowed embedding widgets.  (This is also what allowed
+YouTube to become popular, embedding video widgets.) In 2008, one company
+even raised $5 million for its company that provided a fundraising widget.
 (See https://techcrunch.com/2008/05/13/sprout-raises-5-million-for-flash-widget-creation/)
+PayPal also provided Internet users an embeddable fundraising widget in that time.
 
 The main problem is that the programming technologies that followed Adobe Flash's
 removal were unsatisfactory, a collection of restrictive, disorganized, and limited conventions 
 based on JavaScript, certainly not enough for an interactive multimedia ecosystem.  
 By default the successor technologies made it technically impossible for a user to 
-share a fundraising "widget" across websites without the specific permission of 
-those websites.  That is how everything exists today.
+share a fundraising widget across websites without the specific permission of 
+those websites.  That is how everything exists today.  There isn't a general purpose
+set of tools that produces an embeddable file, a bundled unit like PDF.
+If there were, you could e-mail an interactive chart, play it inside the email client,
+download it to your computer, then upload it to a social media post for anyone to 
+view, just like an image or video.  The social web would be a lot richer in value,
+of course, not limited to consumption of stimulation.
 
 When there is no longer a formal, coherent software development system in place that promotes
 interactive multimedia, treating it as a separate topic-- the previous

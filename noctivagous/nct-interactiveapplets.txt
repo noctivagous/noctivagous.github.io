@@ -4,66 +4,74 @@ It should be possible to embed an interactive crowdfunding/fundraising
 widget inside a Twitter or Facebook post.  An Internet user should 
 be able to upload an interactive chart or an interactive animation to a Twitter 
 or Facebook post just like any video or image file. This isn't possible today because 
-a basic technical standard of the web is missing.  Users cannot upload interactive multimedia 
-in the form of a consolidated file, like a .PDF.  
+a basic technical standard of the web is now missing.  Users can no longer embed or
+upload interactive multimedia in the form of a consolidated file, like a .PDF. 
 
-Fundraising widgets were frequently used on the social media
-website Myspace.  In that era Flash was still available to web browsers
-and at the same time the website allowed the user to insert HTML code to embed widgets.  
-(This is also what allowed YouTube to become popular quickly, the embedding of Flash 
-video widgets). In 2008, one company even raised $5 million for its company 
-that provided a fundraising widget for social websites like MySpace. 
-(See https://techcrunch.com/2008/05/13/sprout-raises-5-million-for-flash-widget-creation/)
-PayPal also provided web users an embeddable fundraising widget in that brief
-time period.  With Flash, anyone could make a widget of any kind, from a video player to a fundraising
-bar, and then embed it in a post as a user of the website.  Specific permission was not needed
-from the website as long as the website allowed embed code (which few do
-today).
+Custom fundraising widgets were frequently embedded by users on older social media 
+websites such as Myspace.  In that era, Flash was still available to web browsers
+and the websites allowed users to insert HTML code to embed widgets.  (This is 
+also what allowed YouTube to become popular quickly, the embedding of Flash video 
+widgets). In 2008, one company even raised $5 million for its company that provided 
+a fundraising widget for social websites like MySpace. 
+(See https://techcrunch.com/2008/05/13/sprout-raises-5-million-for-flash-widget-creation/)
+PayPal also provided web users an embeddable fundraising widget in that brieftime period.  
+With Flash, anyone could make a widget of any kind, from a video player to a custom type 
+of photo gallery to a fundraising progress bar, and then provide it to the public to 
+embed it in a post.  Specific permission was not needed from the website as long as 
+the website allowed embed code (which few do today).  In the future we should hope that
+what comes along in the social media feed is as diverse as a sound board someone made
+(with sounds effects activated by buttons someone can click on) to screensaver demos 
+to small puzzle video games people programmed in their spare time.
 
 The main problem today is that the programming technologies that followed Adobe Flash's
-removal were unsatisfactory despite the hype-- a collection of restrictive, disorganized, 
-and limited conventions based on JavaScript, certainly not enough for an interactive multimedia ecosystem.  
-By default the successor technologies made it technically impossible for a user to
+removal were unsatisfactory despite the hype-- a disorganized assortment of restrictive 
+and limited conventions based on JavaScript, certainly not enough for fostering
+an interactive multimedia ecosystem.  By default the successor technologies made it technically impossible for a user to
 share a fundraising widget or other applet across websites without the specific permission of
-those websites and the code that would produce such a widget is in pieces, not in a single file.  
-That is how everything exists today.  There isn't a general purpose set of tools that 
-produces a single embeddable executable file, bundled as a unit like PDF.
+those websites. In addition, the code that would produce such a widget today is in pieces, 
+not in a single file or an officially recognized file format.  That is how everything user-created
+exists today, which is limited to uploading video files and images.  For one, there isn't a general purpose
+set of tools that produces a single embeddable executable document, bundled as a unit like PDF.
 If there were, you could e-mail an interactive chart, play it inside the email client,
-download it to your computer, then upload it to a social media post for anyone to
-view, just like an image or video.  The social web would be a lot richer in value,
-of course, not limited to consumption of stimulation.
+download it to your computer, then upload it as part of a social media post for anyone to
+view, just like an image (JPG) or video (MP4).  The social web would be a lot richer in value,
+many miniature types of apps for small uses would be cross-platform immediately. 
+What showed up in a feed on social media would not be limited to stimulation.
 
 When there is no longer a formal, cohesive software development system in place that promotes
 interactive multimedia, treating it as a separate topic-- the previous
 domain of Flash and Java applets-- what happens is web developers, social media companies,
 and ad agencies lack guidance and incentives to produce that type of
-Internet experience.  It is more difficult for them to make those digital
+Internet experience.  It is more difficult for them to make those digital
 products, and now it is impossible to upload them to social media alongside
-videos or still images. Social media companies can also selfishly block out
-any embeddable executable and interactive multimedia more easily than ever, 
-as the new technical hurdles provide them an excuse.
-
+videos or still images.  In short, this type of document could run on top of, but
+not depend on, the WebAssembly technology currently provided inside web browsers.
+As a matter of fact, treating the document as a kind of portable format for distributing
+miniature apps was the basis of the 1980s HyperCard and a discussion in the 1990s, 
+explored by Apple's OpenDoc project.
 Social media is now the predominant forum for interacting on the Internet,
-absorbing much of people's usage of the web, which was not intended to become
-this narrow.  Because it lacks the interactive capabilities of the past, the online environment 
-tends towards producing audiovisual media for consumption or provocative text
-to stir reactions.  Although independently-made mobile apps do provide traditional interactive
-experiences, this is no longer as simple to achieve for websites and the current technical
-situation inhibits users from using the web in a way consistent with computers' capabilities,
-that people can click and interact not just sit and watch a playing movie or audio file.
-An Internet user should be able to upload an interactive chart
-or an interactive animation to a Twitter/X or Facebook post. This is
-fundamental functionality of the computer that is connected to the Internet, 
-and it is being ignored.
+absorbing much of people's usage of the web, which was not intended to become
+this narrow.  Because it lacks the interactive capabilities of the past, the online 
+environment tends towards producing audiovisual media for passive consumption or provocative text
+to stir reactions.  Although independently-made mobile apps do provide traditional interactive
+experiences, this is no longer as simple to achieve for websites even though there shouldn't
+be too many differences in outcome, as computers are much faster today.  The current technical
+situation in the web browser inhibits users from using the web in a way consistent with 
+computers' capabilities,that people can click and interact with what they are served, not 
+just sit and watch a playing video or audio file.  An Internet user should be able to 
+upload an interactive chart or an interactive animation to a Twitter/X or Facebook post.  
+ A small video game a person programmed should be uploadable 
+to a social media post for anyone to play. This is fundamental functionality of the computer that 
+is connected to the Internet, and it is being ignored.
 
 The online world has come to use the web like on-demand television, whether it is for
 news articles, videos, or podcasts, and so the web browser has evolved lately into
-a conveyor of consumption whereas in the 2000s there were more .edu personal web
-pages with instructional examples made out of Java or Flash.  Nothing came
-along to truly replace and supersede what Adobe Flash and Java applets offered,
-so the world is limited to a passive experience of the web.
-Whatever comes along in the feed is watched, read, or viewed, and then maybe
-the person reacts with a comment.
+a conveyor of digital whereas in the 2000s there were more .edu personal web
+pages with interactive instructional examples made out of Java applets or Flash, because 
+there were fewer hurdles to translating a program to a web page.  Nothing came
+along to truly replace what Adobe Flash and Java applets offered,
+so the world is limited to a passive experience of the web; whatever comes along in the 
+feed is watched, read, or viewed, and then maybe the person reacts with a comment.
 
 Along with the ejection of Adobe Flash from the browser came the official obsolescence 
 of its tools and the ability to embed something both interactive and multimedia in a 

@@ -173,10 +173,25 @@ with the web client and then writes to the filesystem when it receives
 document changes. Corresponding to this would be the document
 API for the web browser that downloads documents from
 the web server, provides viewers for them,
-editor, and saves changes for various document types 
+editors, and saves changes for various document types 
 back to the web server.  Just like the web server's document
 API, the web browser would carry a set of schemas or protocols 
 for handling various document file types.
+
+- The web server and web client software design 
+is not user friendly especially compared to clients
+and servers of the 1990s.  Often maximum configurability is confused
+with providing a bare.  (You can do whatever you want because
+nothing is there to help you with anything means there isn't enough order). 
+The server should be configurable by a power user.  
+It should have a default database for small to medium uses.  
+Servers should be linkable to one another in that they should be
+able to contact one another, turn into mirrors of one another.  
+They also should have programs that allow them to contact
+search engine repositories.  Any future web server/client alternative 
+should be an integrated package, allowing searching of server
+contents out of the box. Servers should have well-developed
+plug-in architecture for uses like live chat and other needs.
 
 
 ---

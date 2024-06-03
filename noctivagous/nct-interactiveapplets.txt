@@ -179,19 +179,24 @@ API, the web browser would carry a set of schemas or protocols
 for handling various document file types.
 
 - The web server and web client software design 
-is not user friendly especially compared to clients
+is not user friendly especially compared to many clients
 and servers of the 1990s.  Often maximum configurability is confused
-with providing a bare.  (You can do whatever you want because
-nothing is there to help you with anything means there isn't enough order). 
-The server should be configurable by a power user.  
-It should have a default database for small to medium uses.  
+with leaving the user with a bare setup.  (You can do whatever you want because
+nothing is there to help you with anything. This means there isn't enough order
+and work put into the situation). The server should be configurable by a power user.  
+The client pages and documents should not require a professional.
+The server should have a default database for small to medium uses.  
 Servers should be linkable to one another in that they should be
 able to contact one another, turn into mirrors of one another.  
 They also should have programs that allow them to contact
-search engine repositories.  Any future web server/client alternative 
-should be an integrated package, allowing searching of server
-contents out of the box. Servers should have well-developed
-plug-in architecture for uses like live chat and other needs.
+search engine repositories.  A special search engine repository would
+be another type of server in this arrangement.  There could be more
+than one type of server in this new web alternative.  
+Any future web server/client alternative should be an integrated package, 
+allowing searching of server contents out of the box. 
+Servers should have well-developed plug-in architecture for uses 
+like live chat and other needs.
+
 
 
 ---

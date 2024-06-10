@@ -1,0 +1,133 @@
+
+NCTOS WINDOWS
+
+It is a goal to make the keyboard the primary means of interacting
+with the GUI of the OS, the windows, the apps, and the controls
+This should be achieved through various unconventional
+UI methods particular to Noctivagous, namely the
+key-click UI and an unnamed method, the momentary subdivision 
+of the screen into equal rectangle cells in such a way that 
+the cells correspond to keyboard keys.  After a cell is accessed
+anything intersecting with it is given an alphanumeric label.
+So, it takes two key presses to access any element on the screen.
+Already this is available through the npSurfer Chrome
+browser plug-in.
+
+This is a method for navigation to the contents of a specific 
+cell, because when it is matched to a corresponding keyboard layout (
+e.g. 5 of the numberpad is the center cell) pressing a key will access
+the contents of the center-most rectangle of the screen).
+
+The goal of the system UI is to manipulate the entirety of GUI
+with the keyboard without touching a trackpad or mouse but allow
+fallback habits to come in because everyone is accustomed to
+clicking with mouse buttons.  This will
+involve setting the keyboard into various layout states.  For example,
+the backslash key can be used to change all keys into functions
+for manipulating windows in the same way that caps lock alters
+every character into uppercase.  Pressing backslash a second time
+will turn off the window manipulation functions in this setup.
+
+The key-click UI demo: https://noctivagous.github.io/keyclickui/
+NPSurfer: https://npsurfer.com/
+
+1) ACCESSING WINDOWS THROUGH THE KEYBOARD
+
+All windows will show visible alphanumeric labels so
+that when a system state is activated that
+displays all windows, the user can access the
+desired one by typing its shorthand tag on keyboard, 
+not clicking the window or cycling through a
+carousel of windows to get to it.
+
+
+Discussing Manipulation of Windows in a Future Operating System
+
+The rarely used backslash key may be assigned the role of collapsing windows 
+into vertical strips the height of the window, with a width of about 40 pt. 
+The window collapses leftwards, into the leftmost 40 pt. 
+The window title then flows vertically from the top of the strip 
+downwards. 
+
+This will be possible when windows all have labels and there are 
+conventions established with the keyboard for repositioning.
+
+The strip itself can be moved around with the same 
+interface as selecting and dragging vector objects with the key-click UI, 
+in which a window strip is selected with the TAB key and affixed to the 
+cursor with the space. Pressing the spacebar a second time detaches the 
+vertical strip from the cursor. When the entire keyboard layout is placed 
+into window manipulation mode (the rarely used ~ key), various keys on the 
+keyboard can change the rectangular bounds of the windows; the entire keyboard 
+is devoted to single key presses that move, resize, and manipulate onscreen 
+windows. One key turns all windows onscreen into just 10 pixel frames, 
+allowing all onscreen windows to be seen. Another makes them all 
+transparent at 30%, achieving the same purpose. The entire keyboard is a set of functions for manipulating windows.
+
+
+2) DEALING WITH LAYERS OF WINDOWS.
+
+One of the more challenging parts of using a desktop
+computer is that windows stack on top of each other
+with apps being opened one after another.  Everything
+is supposed to fit inside the frame of the monitor. 
+There are no adequate solutions to this problem though 
+some approaches have been implemented in major OSs.
+
+In a different type of setup specific to Noctivagous, 
+windows can be turned into just their frames with their interior made 
+hollow so as to see  all other windows underneath. 
+Of course, if every window is a frame, there will 
+be some frames stacked on top of each other occluding
+the ones beneath them.  To deal with this the system instead takes the
+position in the stack of each window and generates
+a portion that protrudes.  The lowest
+window in the stack will have a segement that protrudes 
+the furthest. It can be in the shape of an oversized tab that
+is the width of the window.  
+
+All windows can transformed into hollowed out frames or 
+just one at a time for seeing what is beneath a specific
+window or a few windows. If it is just the top-most window being turned into
+a hollowed out frame then no portion needs to protrude
+to prevent occlusion and it will just be a window frame.
+
+In keeping with the vertical collapsing of window into a vertical
+titlebar, however, it is more likely that the 
+frame (hollow out all windows) operation will make 
+the protruded portion extend from from left to right.
+
+
+
+Left-collapsed Windows Into Vertical Titlebars
+
+Windows are collapsed to the left into vertical titlebars.
+In the classic Mac OS, they collapsed into their horizontal title bars.
+For Noctivagous, the contents of the horizontal titlebar transforms 
+into a vertical titlebar and this is all that remains of the window.
+This will allow horizontally-oriented stacks of collapsed windows
+in the future, enabling the the user manually
+turn them into an accordion arrangement, providing customizability
+and flexibility.  The system may also have a function 
+for turning every window in an app into an accordion arrangement with 
+vertical titlebars arranged on a horizontal row.
+
+
+
+Selecting text with the key-click UI.
+
+For when the keyboard layout has been transformed
+into SELECTION mode:
+
+key-click:
+
+i - drag lock for selecting text (toggle)
+j - select word.
+k - select sentence.
+l - select paragraph.
+
+
+
+
+
+

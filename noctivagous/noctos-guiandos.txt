@@ -1,0 +1,225 @@
+
+
+REPLACING THE VAGUE "OPEN FILE" FUNCTION OF A GUI OS
+WITH TWO FUNCTIONS: "EDIT FILE" AND "VIEW FILE"
+
+In actuality, there is a separation of viewer and editor usage
+of files throughout the system but this has been reduced to the 
+vague "open" function. In Noctivagous' OS, when a 
+document is accessed on the file system through the file system navigator, the user does not just 
+have the option to "open" it but decides whether to edit it or view it.
+These are the most common cases. "Open" is considered too vague.  
+A document is often either edited or viewed.  Sometimes there is 
+overlap but on the file system in the navigator it would start 
+with "edit" and "view" and then the right application would open it.
+An image file being viewed would be opened by the general image viewer.
+An image file being edited would be opened by the general image editor.
+
+
+FILE SYSTEM ORGANIZATION
+
+Noctivagous enables its own functionality in the file
+navigator: Noctivagous allows users to group 
+files in such a way that they stay inside the directory 
+where they are; they are not grouped by placing them 
+into another subdirectory which adds a node
+to the file tree and requires more navigation work by
+the user to find them.  In other words, if there are 10 files
+(nodes) in that directory and four of them are made part of a group,
+there would be shown a box outline around the four when the
+directory contents is displayed.  This
+adds directory-like organizing functionality without 
+making another directory, which send the files down the node tree, 
+something taxing for the user and detrimental towards
+organizability of the OS.
+
+
+
+
+PURPOSE IN THE metadata
+
+When a file is saved, its "purpose" is
+saved into the metadata.
+
+Files and folders can have purpose classifier tags so that they
+can be sorted easily in a file listing.  This is
+another way of sorting files on the system
+
+	purpose : scrapbook
+	purpose : original media file for project
+	purpose : book/article for reading (published)
+	purpose : book/article for composition (owned by computer user)
+	purpose : image clipping
+
+A set of general purposes are provided by system,
+but user can add others.
+
+They can also have project names applied to them
+so that files that are in different locations on
+the file system can be found by the project name.
+
+
+FILE SYSTEM .GLUE 
+
+.GLUE aids in dependencies, making sure that files travel with
+each other when they should.  They are locked together
+in movement.
+
+.glue describes two or more files being "glued"
+together so they travel together always when being 
+dragged or copied or removed.
+doing anything involving copying, moving, or deleting is done on all, at the filesystem level.
+
+
+
+SECURITY:
+
+An app can only write to its own directory or directories (containers) 
+tagged with its name. The navigated filesystem is then an 
+artificial reorganization of the actual locations of files.
+
+
+
+ORGANIZATION OF APP IN THE SYSTEM APP LAUNCHER
+
+The applications would be organizable as more than 
+just in folders or sitting in the apps directory.
+
+Apps can have internal hyperlinks in this operating system. 
+(e.g. Calculator/BasicCalculator accesses the 
+Basic Calculator section)
+
+The launcher is thus able to provide a more detailed
+overview of apps and their functions, in a kind of tree
+map. The user can access specific sections of the app
+from the tree map app launcher.
+
+
+APP ORGANIZATION.  Apps are used for different purposes
+and will be sought out in different ways in the app list.
+In this kind of list it is OK to place an app link in 
+more than one place.  A few developer apps show up in
+viewers, editors, and the "Developer" category.
+The scanner app shows up in both.  
+
+If the person is a designer, the design apps show up
+both in "Editor" and in the standalone "Design" category.
+
+When apps are made part of this system, they are asked
+to declare their category and subcategory so that the 
+system organizes them automatically.
+
+Viewers
+
+	Media Viewers
+	
+		Image viewer
+		Video player
+		Music player
+		3D Scene viewer
+			
+	Document Viewers
+		PDF reader
+		E-book reader
+		Comic Book Reader
+	    CSV/XLS/Tabular Viewer
+
+	Developer
+		JSON Viewer
+		XML Viewer
+
+Editors
+
+	Media Editors
+
+		Photo editor
+		Video editor
+		Audio editor
+    	Animation Editor
+    
+	Document Editors
+	
+		Word Processor
+    	Spreadsheet Editor
+	    Presentation Creator
+    	Layout Designer
+	    Markdown Editor
+
+
+Multitool / Pocketknife (Pocketknife symbol)
+
+	Calculator (App)
+	
+	    Basic Calculator
+	    Scientific Calculator
+    	Programmer Calculator
+	
+	Graphing Calculator (App)
+	
+	Calendar  (App)
+	
+	Clock (App)
+
+		World Clock
+		Alarm
+		Timer
+		Stopwatch
+
+	Converter  (App)
+
+		Unit Converter
+		Currency Converter
+
+	Dictionary  (App)
+	
+	Code Readers  (App)
+		QR Code Reader
+		Barcode Reader
+
+	Weather
+	
+	Maps
+	
+	(Mobile) Compass
+	
+	(Mobile) Flashlight
+	
+	Voice Recorder
+	
+	Scanner
+	
+Notebooks and Memos
+
+	Notes
+	
+	Reminders
+
+	Scrapbook
+	
+	Journal
+
+Control Centers
+
+	Mobile Phone Controller
+
+	Home Device Integration
+	
+	Video Camera Deck
+
+Device
+
+	Peripherals
+	
+		Printers
+		Scanners
+			Scanner (App)
+
+	System Info
+	
+	
+
+A desktop control center app for your phone should be a standard app
+because there are so many notifications, settings, and
+apps on the phone that would be easier configured on the desktop comptuer.  
+In this app you should be able to customize the phone.
+		

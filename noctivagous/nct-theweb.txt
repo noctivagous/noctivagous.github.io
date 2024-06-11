@@ -34,6 +34,9 @@ bundling a web browser to make them cross-platform.
 
 SUPPORT FOR OTHER PROGRAMMING LANGUAGES BESIDES JAVASCRIPT
 
+
+BUILT IN CLIENTS / PLUG-INS FOR OTHER PROTOCOLS LIKE FTP
+
 	
 BROAD DOCUMENT FILETYPE VIEWING AND EDITING SUPPORT
 
@@ -49,24 +52,35 @@ LAYOUT
 
 Web browsers should have layout templates built in as components
 and supported by a web page so that construction of web pages is 
-not always a professional job or the job of AI.
+not always a professional job or the job of AI to compensate
+for the unnecessarily complicated situation.
 
 
 USER-FRIENDLY AND DEVELOPER-FRIENDLY WEB SERVERS
 
 Web servers are bare. They never came shipped with any official
-programming language for the back-end and originally
-relied on the cgi-bin directory for anything dynamic on the server end.
+programming language for the back-end, they never bundled with a
+a basic database and originally they relied on the cgi-bin 
+directory for anything dynamic on the server end.  It has always
+been just a static page server with hacks added on over the years
+to go beyond that.  It doesn't provide analytics viewing or support
+a lot of client/server features that were common in the 1990s.
+
 Programming languages like PHP and Java server pages were
 merely a response or reaction to the bare setup the HTTP
-server provides the webmaster.
+server provides the webmaster, with PHP formulated for the web.
 
 The web server really should look more like the Plone CMS
 or the FileMaker Pro web server in that it should come
 bundled with many building blocks and user-friendly customizability.  
-When this doesn't happen there is a need for something like WordPress
-or Wix, which are directly a consequence of the deficient state
-of the web server as it interacts with the client. 
+Then the client should be integrated with this and have its own
+corresponding set of features that make it a trivial matter to make
+a nice website. When this doesn't happen there is a need for something like WordPress,
+Squarespace, or Wix, which are directly a consequence of the deficient state
+of the web server specification and how it interacts with the client. 
 Content types, documents, and more should be recognized by 
 the web server natively instead of as distant implementations
-in the form of add-ons.
+in the form of JavaScript add-ons.  As of today there still is no
+native rich text editor.
+
+

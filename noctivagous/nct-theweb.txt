@@ -1,0 +1,72 @@
+
+THE NEED FOR APPLICATION KIT ARCHITECTURE IN THE WEB BROWSER
+
+A web server could easily serve a <window> tag to the client (browser) 
+or a <document> tag that opens a doc window.  A <windowPanel> tag
+would provide the accessory windows.  All that it would take is
+serving these tags and the web client (browser) could oblige,
+just like how Macromedia's Flex MXML documents were structured.  
+It is actually a decision imposed that web clients do not allow an <app>
+document to load (.appml might be the extension) or anything 
+like an MXML document to execute.  Everything is there for this
+to exist.  Similarly, Mozilla released the XUL file format in 2001, 
+recognizing that a website could actually serve a traditional app 
+with app controls to the web client browser if that web browser 
+accepted the instructions.  For whatever reason,
+the web community insisted on depriving the web browser of those
+instruction sets (the tags or elements), thus confining everyone to the concept
+of a "web page". They have prevented the web client (the browser)
+from supporting something like MXML or XUL and the result has
+been that web developers undertakes activities that circle around
+the desire to have it.  They do things that are obviously a consequence
+of them wanting something like MXML but not having it.  
+For whatever reason, the web client makers have been unwilling to 
+provide application kits, to serve anything besides .html to the
+client.  Why not .appml, which would use MXML or XUL?  This is
+much needed when many commercial software applications are just
+bundling a web browser to make them cross-platform.
+	— A universal framework would the same tags for making new
+	windows, documents, and handling events. Each browser 
+	translates them to each OS’s native window and docu arch.
+	For the Flex MXML documents, they all had the same
+	appearance specific to MXML.
+
+
+SUPPORT FOR OTHER PROGRAMMING LANGUAGES BESIDES JAVASCRIPT
+
+	
+BROAD DOCUMENT FILETYPE VIEWING AND EDITING SUPPORT
+
+The web page should support display, embedding, and editing of 
+PDFs, word processing documents, spreadsheet documents, 
+and more natively.  Additionally, it should not be remarkable 
+for the web browser to come bundled with a basic image editor 
+that can edit images on the page and save to that page, 
+which means that each web page should be treated like a traditional document,
+with the web server recognizing different types.
+
+LAYOUT
+
+Web browsers should have layout templates built in as components
+and supported by a web page so that construction of web pages is 
+not always a professional job or the job of AI.
+
+
+USER-FRIENDLY AND DEVELOPER-FRIENDLY WEB SERVERS
+
+Web servers are bare. They never came shipped with any official
+programming language for the back-end and originally
+relied on the cgi-bin directory for anything dynamic on the server end.
+Programming languages like PHP and Java server pages were
+merely a response or reaction to the bare setup the HTTP
+server provides the webmaster.
+
+The web server really should look more like the Plone CMS
+or the FileMaker Pro web server in that it should come
+bundled with many building blocks and user-friendly customizability.  
+When this doesn't happen there is a need for something like WordPress
+or Wix, which are directly a consequence of the deficient state
+of the web server as it interacts with the client. 
+Content types, documents, and more should be recognized by 
+the web server natively instead of as distant implementations
+in the form of add-ons.

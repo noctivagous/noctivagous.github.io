@@ -1,52 +1,82 @@
 
+In the future the web browser's window might not just be
+limited to loading a web page (.HTML) that cannot
+be edited.  Instead, every loaded document might
+have offer editing permissions.  There would then
+be two modes provided by the server, which is edit 
+and view. The web browser would be able to load all kinds 
+of documents sent by the server and provide native editing
+tools for them from within the web browser.  The web browser window
+would be not only navigator for information pages, but also 
+a navigator for apps made out of something similar to 
+MXML (or Mozilla's old XUL) type apps.  The web browser
+would be an improved gateway for the Internet, permitting 
+editing of journal entries, word processing, store inventory,
+spreadhssets, and then of course serving the common web page 
+that features hyperlinks.
+
 THE NEED FOR APPLICATION KIT ARCHITECTURE IN THE WEB BROWSER
 
 A web server could easily serve a <window> tag to the client (browser) 
-or a <document> tag that opens a doc window.  A <windowPanel> tag
-would provide the accessory windows.  All that it would take is
-serving these tags and the web client (browser) could oblige,
+or a <document> tag that opens a doc window.  A <WindowPanel> tag
+would provide the accessory panel windows, for example.  All that it would take is
+serving these tags and the web client (browser) would oblige,
 just like how Macromedia's Flex MXML documents were structured.  
-It is actually a decision imposed that web clients do not allow an <app>
-document to load (.appml might be the extension) or anything 
-like an MXML document to execute.  Everything is there for this
+It is actually a decision imposed on web browsers 
+that web clients do not allow an <app> document (e.g. MXML) to load 
+(.appml might be the extension).  Everything is there for this
 to exist.  Similarly, Mozilla released the XUL file format in 2001, 
-recognizing that a website could actually serve a traditional app 
-with app controls to the web client browser if that web browser 
+recognizing that a website could actually serve a traditional app GUI
+with app controls to the web client browser, if that web browser 
 accepted the instructions.  For whatever reason,
 the web community insisted on depriving the web browser of those
-instruction sets (the tags or elements), thus confining everyone to the concept
-of a "web page". They have prevented the web client (the browser)
-from supporting something like MXML or XUL and the result has
+instruction sets (the tags or elements), thus confining everyone to the
+relatively static "web page". They have prevented the web client (the browser)
+from supporting something application-like such as MXML or Mozilla's old XUL and the result has
 been that web developers undertakes activities that circle around
-the desire to have it.  They do things that are obviously a consequence
+getting it.  They build apps out of web pages, to state the
+unpleasant.  They do things that are obviously a consequence
 of them wanting something like MXML but not having it.  
 For whatever reason, the web client makers have been unwilling to 
 provide application kits, to serve anything besides .html to the
 client.  Why not .appml, which would use MXML or XUL?  This is
-much needed when many commercial software applications are just
-bundling a web browser to make them cross-platform.
+much needed when in this time period many commercial software applications are
+actually launching a disguised web browser to make them cross-platform.
 	— A universal framework would the same tags for making new
 	windows, documents, and handling events. Each browser 
 	translates them to each OS’s native window and docu arch.
 	For the Flex MXML documents, they all had the same
-	appearance specific to MXML.
+	appearance specific to MXML but they could load platform-specific
+	controls.
 
 
 SUPPORT FOR OTHER PROGRAMMING LANGUAGES BESIDES JAVASCRIPT
 
+Alongside all of this is the importance of providing a type-capable
+scripting language which means something besides JavaScript.
+
 
 BUILT IN CLIENTS / PLUG-INS FOR OTHER PROTOCOLS LIKE FTP
+
+The web client, the browser, should be flexible for developers
+to add functionality to it, to the extent it can support
+custom protocols.
 
 	
 BROAD DOCUMENT FILETYPE VIEWING AND EDITING SUPPORT
 
-The web page should support display, embedding, and editing of 
-PDFs, word processing documents, spreadsheet documents, 
-and more natively.  Additionally, it should not be remarkable 
+Not only the web browser, but also the web page should support 
+the display, embedding, and editing of 
+PDFs, word processing documents, spreadsheet documents, natively
+and without the discontinuities in appearance like
+there is today.  Additionally, it should not be remarkable 
 for the web browser to come bundled with a basic image editor 
 that can edit images on the page and save to that page, 
-which means that each web page should be treated like a traditional document,
-with the web server recognizing different types.
+a basic spreadsheet editor, a basic word processing editor,
+which means that each web page should be treated more 
+like a general purpose application document vehicle, with the web server 
+recognizing different types.
+
 
 LAYOUT
 

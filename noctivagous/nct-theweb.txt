@@ -114,3 +114,22 @@ in the form of JavaScript add-ons.  As of today there still is no
 native rich text editor.
 
 
+UPLOADABLE SERVER APPS
+
+Currently a web server is completely configured by the administrator
+of that server.  But what the person, especiallyl a power user,
+wants is not actually administrator privileges and deep level access 
+but rather the server computer, internet access, and the
+server running an app.  In a new type of web setup the power user 
+would be able to upload a server app to the server from a web client 
+and it would run right away on that server. A person will be able to 
+buy a server app and upload and execute it in a friendly way, without
+the need for UNIX shell or ftp access. It will be uploading a
+self-contained bundle. 
+
+The server would then need to recognize a certain type of app like this.
+
+For the software developer the advantage is that making web
+apps will look more like regular software development and the only
+thing needed is dragging the app to the server from the browser.
+

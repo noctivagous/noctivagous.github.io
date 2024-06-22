@@ -207,6 +207,48 @@ These issues all existed between GPT3.5 and GPT4 and it is expected
 that they will be relevant in the near future for newer AI models.
 
 
+FETCH AND FORMULATE REPORT OF IMAGES, GALLERIES
+
+It might be easy to overlook that at the current stage the
+LLMs have not been set up to fetch images from the web
+in response to a query on a certain topic and place them
+in context of the query.  Let's say that a person wants to 
+research edible mushroom plants. There will be many websites 
+that provide information about them but this will take a lot
+of time to go through them to get a complete overview, perhaps.  
+There would be value in having the AI compile 
+a report about the topic that is complete with images,
+captions, and so on, from multiple websites, not for the
+purpose of re-publication but for providing the user
+an overview on a less known topic that might be somewhat unpleasant
+to research on the Internet.  "What are all of the different
+types of edible mushrooms grown for cooking meals?" would
+return a list of images and captions.  Optional would be
+a summary next to each mushroom type.  This is beyond what
+Google provides at the moment.
+
+AN IMAGE REMINDING THE USER OF THE VAST AMOUNT OF INFORMATION
+CONTAINED IN AN LLM AND THE MANY CAPABILITIES.
+
+One of the issues of leaving interaction with an LLM at
+a simplistic chat text box is that the user is not in
+touch with what the LLM provides.  Within the AI community
+there are many criticisms of the LLM but no matter what
+these could be truly useful bases of knowledge and profound
+tools if they are provided the right interface and the
+right indications that they are massive, they are thorough,
+and they are capable.  One does not get this impression
+when clicking inside the text box and then getting a response.
+In this way too much is left on the user to figure out.
+
+
+
+
+  
+
+
+
+
 
 
 

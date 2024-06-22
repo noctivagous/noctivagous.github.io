@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI and Neural Networks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+		#main{
+		
+		            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align:justify;
+            font-size:20pt;
+
+		}
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        h1#name{ font-family: Arial Narrow, Arial;font-size:34pt;}
+    </style>
+</head>
+<body>
+<div id="main">
+<h1 id="name">Noctivagous</h1>
+<p>These are notes for an eventual booklet on AI.
+This will be updated as the author gains more understanding of the field.
+
+
+</p>
+    <h2>AI and Neural Networks</h2>
+    <p>Today, AI starts with an artificial neural network— a network of artificial 
+    neurons made out of computer code (diagram above).  These artificial neurons are 
+    interconnected and each one has a mathematical rule built in to determine when it fires, 
+    affecting every other neuron.  Once this kind of network is assembled in software, 
+    it amounts to a mechanical brain that can accept input data.
+    But from the outset it isn't ready. It is an empty structure.
+    
+    
+    <h3>Training</h3>
+     The first stage required to make use of it is training. 
+     The neural network is provided input data for the training and this can be
+     small to extremely large depending on its purpose.
+    Once training begins, the connections 
+     sitting between each neuron will arrive at finalized 
+     numerical values, called weights.  
+     
+           <p>
+     Improving prediction accuracy by the neural network
+     is the goal of the training process: the connections are changed internally
+      by the network to make increasingly accurate predictions about the 
+      data provided.  Current AI technology centers around
+      predictions.
+      <!-- The majority portion of input data is used for training while another 
+      portion is used for validation and testing to be capable of predicting missing contents.  
+      -->
+      The more accurately something is predictable by the neural network 
+<!--      that is concealed (from itself) during training-->, the more capable it should be
+      of understanding the topic.  It will be able to predict the image of a car
+      after being given input of thousands of images of cars. 
+      
+      <!--
+      The goal is to find patterns and relationships within the training data 
+      that can be generalized to new, unseen data.
+      -->
+      
+      <!-- It will be asked
+      (or ask itself) to predict whether one it hasn't taken in as a car is a car
+      and the more accurately it can predict this the more.
+      -->
+      <p> 
+       The end result is called a trained artificial neural network. 
+        Recently, specialized computers have been developed that 
+        greatly expand the possible size of these artificial neural networks 
+        so that much more layered ones can be trained, they can take in more data, 
+        and process more in a request at a time, and accomplish more tasks.  
+        
+        <p>
+        After the training stage concludes, this is when the "fine-tuning" stage
+        is undertaken by the developers for the larger models comprised of text.
+        It is this fine-tuning that will turn the trained neural network into an
+        assistant that responds.  For the model behind ChatGPT,
+        it might be provided 100K or more Q and A examples so that it
+        becomes an assistant.
+        For the larger chatbots, they are at this stage “aligned” to 
+        the developer’s expectations and goals for responses in front of users, 
+        with some sorts of responses inhibited and others encouraged.
+        What the developers regard as unsafe they will inhibit
+        and what they want said they will promote.
+        
+    </p>
+    
+    <h3>It Goes Back Decades</h3>
+    
+    <p>The basis of today's AI technology, its unit 
+    of the artificial neuron, is called the perceptron.  So
+    when people say there is an "artificial neural network"
+    it is really a perceptron network.
+    This convention was formulated several decades ago,  computational model 
+    the neuron as people had come to know it, a kind of massively
+    reduced version as science had modeled it on a computer.
+    So in a way the AI is built today is a massively scaled up version of
+    what began in the 1960s and 1970s.  The key is that
+    people did scale it up, they applied that scaling up to
+    the latest in computer technology.
+    
+    
+    <h3>Emergent Capabilities and Interpretability</h3>
+    
+    <p>Interestingly, in the last several years when artificial neural networks were 
+    being trained at larger and larger scales with the specialized computers, they 
+    started to develop abilities that the researchers didn’t anticipate or plan, 
+    including the ability to translate between languages, perform and explain math, 
+    summarize text, answer questions, and more. A lay person might think these abilities were 
+    built into the models on purpose, but this topic is called “emergent capabilities” 
+    because they manifested unexpectedly as the neural nets grew more complex— 
+    not as a result of the researchers directing the process (through explicit programming). 
+    In addition, many capabilities of an AI model may be discovered a year or more after
+    it has been trained, demonstrating that much is not known about the end product
+    of a neural net, just the starting point.
+    This has left the field of AI with ongoing mysteries compared to typical expectations 
+    of explainability in science. Additionally, today’s very big neural networks end up 
+    being so complex that the internal processes by which they arrive at their conclusions 
+    are not well-understood and this AI subject is has been named “interpretability,” which is 
+    whether the decisions it makes can be explained from the internal neural net patterns. 
+	The key part of this is that artificial neural networks are not computer programs in the conventional 
+    form, that of being a sequence of predefined steps.  Instead, they receive, process 
+    information, and respond as a network or neurons, reacting to input as a result of their training 
+    which created the numerical weights for each neuron's connection.
+    </p>
+    
+    
+    <h3>Not a Live, Self-Updating Machine</h3>
+    
+    <p>One notable limitation of the latest AI technology, the LLM (large language model) 
+    that drives chatbots, is that it is structured as something relatively static: a 
+    request receives a response from a fixed neural network and any variation in response 
+    each time is a result of a randomization algorithm. So, it will say the same sort of 
+    thing each time but a randomizing function inside will change up what comes out. 
+    Otherwise it would actually be the same each time without this, meaning that the LLM
+    is deterministic.    The 
+    AI receives a request, it processes that in the neural network, it generates a unique 
+    response for the user, then it stops operating altogether. For this reason, many 
+    computer scientists say that AI is in its early stages. An LLM is not an active 
+    machine that is constantly running and updating itself.  Once the artificial neural 
+    network has been trained it won’t carry an ability to update its understandings
+    in response to what people say to it.  It can't correct anything in response to the users.
+    To update what it contains, the computer scientists have to train it all over again, which is, 
+    as mentioned, an expensive and time-consuming process when the models are very large. 
+    Although researchers can modify certain minor aspects without having to do this
+    through fine-tuning, the 
+    key point is that the AI is not yet a live machine that self-modifies. 
+    It also does not have a process of deliberation built in, which means it only
+    executes in response the request and then finishes and does not go beyond that.
+    It is instead a fixed set of stored weights with mechanisms to generate responses. Also important, 
+    it does not yet have any conception of the physical world built in by researchers, 
+    nor does it possess a model of things and so it will be able to match people
+    in many regards but also lack the capability to process some basic situations.  
+    Some computer scientists regard it as a very 
+    deep set of probabilistic relationships that produce remarkable responses. The goal 
+   by many researchers is what is called AGI (artificial general intelligence), a term 
+    describing a future in which the AI tech has made up for all of the deficiencies just 
+    mentioned and operates autonomously and dynamically updates its knowledge in response
+    to external contact. This then leads to the fears of AI taking over 
+    because if it operates autonomously and makes decisions without any human involvement, 
+    it is hard to say what it will do, what the consequences will be. 
+    There are also reasonable views that even current the LLM exists as more than the sum of its parts, that there is 
+    “something going on in there.”</p>
+    <h2>The Pace of AI Research</h2>
+    <p>The progress of AI in the 2010s came to surprise researchers, reaching 
+    a steep level a few years ago. As late as 2015, there was still some skepticism as to 
+    whether AI models could reliably carry out tasks that are taken for granted today,
+     such as recognizing objects in images. 
+     But, new types of AI software designs and artificial neural networks came
+      along in the 2010s that solved many of the problems facing the field. 
+      For the most part, the recent progress of AI in the last several years
+      could be described as advancing
+       towards more and more self-automated learning designs. At the start of the 2010s 
+       it was about training a neural network to recognize images that needed
+       to be matched with their text label (called supervised learning), 
+       then it was about getting it to master video games (reinforcement learning), 
+       then having it learn about the data it was provided on its own (self-supervised learning)
+        and now generate information (generative AI) from that.</p>
+    <p>Recent progress in AI is associated strongly with increases 
+    in available compute (processing power).
+     In the 2010s researchers began making notable progress by utilizing GPUs, 
+     the high-end accessory processor attached to the home computer 
+     for graphics processing. 
+     Usually the personal computer or mobile phone is just bundled with 
+     a CPU whereas the GPU (graphics processing unit) takes on other work related
+     to rendering of graphics.  The CPU is usually occupied with system and application
+     work and so intensive work will be offloaded onto the GPU.
+      GPUs can be used purposes other than graphics and thus 
+      AI researchers used them for testing out new theories of AI. 
+      After some of their successes in the early 2010s, there was the development of 
+      AI-specific computer hardware by Google in 2015 
+      and NVIDIA starting in 2016. 
+      These computers are regarded as having been essential to the field’s 
+      most recent advances, the well-known AI applications like ChatGPT that 
+      harness thousands of these types of computers in data centers during
+       the training process. 
+       Specialized hardware has enabled AI to become a mainstream 
+       topic by allowing the artificial neural networks to become very large,
+        very layered and capable. One of the hot topics the AI researchers debated
+         about was whether growing the scale of the networks would produce more
+         valuable outcomes, which turned out to be the case. Some had doubted
+     that this would make much difference.
+      Lately, the specialization of computer hardware for AI uses has now been
+       brought to to the personal computer level. There are now companies 
+       are making AI-specific processors bundled inside the consumer’s personal
+        computers and mobile phones. 
+        
+        AI has been in use for a long time 
+        for simpler applications, such as for processing postal mailing addresses.</p>
+</div>
+</body>
+</html>

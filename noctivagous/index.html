@@ -1,221 +1,933 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI and Neural Networks</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-		#main{
-		
-		            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align:justify;
-            font-size:20pt;
 
-		}
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        h1#name{ font-family: Arial Narrow, Arial;font-size:34pt;}
-    </style>
-</head>
-<body>
-<div id="main">
-<h1 id="name">Noctivagous</h1>
-<p>These are notes for an eventual booklet on AI.
-This will be updated as the author gains more understanding of the field.
+<html>
+    <head>
 
+      <meta charset="UTF-8">
+  
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+      <meta http-equiv='cache-control' content='no-cache'> 
+<meta http-equiv='expires' content='0'> 
+<meta http-equiv='pragma' content='no-cache'>
+
+<style>
+  /* You can add any additional styles here */
+  .non-link {
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
+      color: inherit;
+  }
+
+  h3{ text-transform: capitalize;
+</style>
+
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap" rel="stylesheet">
+
+
+<style>
+body
+{
+font-size:2em;
+font-family: 'Arial Narrow', Arial, sans-serif;
+
+}
+
+p {
+color:#333;
+text-align: justify;
+font-weight:normal;
+}
+
+h1
+{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+ 
+
+h2,h3,h4,h5,h6
+{
+font-family: Arial, Helvetica, sans-serif;
+color:#333;
+margin-top: 2.5em;
+
+}
+
+h2{
+margin-top: 3em;
+
+}
+
+</style>
+
+<style>
+
+code, pre {
+font-family: 'Source Sans Pro','Menlo', Courier,monospace;
+color:#ccff33;
+font-size: :16px;
+margin:0px;
+
+}
+p code, h3 code, li code{
+font-family:Courier,monospace;
+}
+
+
+.ideCodeArea code, .ideCodeArea code pre
+{
+font-size:20px;
+}
+
+.ideCodeArea
+{
+font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	background-color:gray;
+	padding:10px;
+   color:#ccff33;
+   
+   margin-top:60px;
+   margin-bottom:60px;
+  box-shadow: 5px 5px 5px #222;
+border-right:1px solid #333;
+border-bottom:1px solid #333;
+margin-right:40px;
+font-size:20px;
+}
+.editableTextAreaDiv
+{
+	background-color:#333;
+	width:100%;
+	border:2px solid black;
+	padding-left:6px;
+	outline: none;
+}
+
+div.editableTextAreaDiv:hover
+{
+	background-color:#555;
+	border:4px solid black;
+}
+
+span.codeInText
+{
+	font-size:1em;
+	font-family:monospace;
+	color:#336600;
+}
+
+span.codekeyword{
+	color:#ff3399;
+}
+
+
+.funcSignatureStyling
+{
+color:#ccff33;
+
+}
+
+.funcKeywordStyling{
+color:orange;
+}
+
+.commentsKeywordStyling{
+color:#6600cc;
+}
+
+.commentsKeywordStyling2{
+color:#9966ff;
+}
+
+
+.variableKeywordStyling{
+color:#993333;
+}
+
+.variableNameStyling{
+color:lightGreen;
+}
+
+.code{
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	font-size:16px;
+	
+}
+
+kbd {
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	color:white;
+	font-size:17px;
+	padding:3px;
+	padding-top:2px;
+	padding-bottom:2px;
+	border:1px solid gray;
+	border-radius:5px;
+	background-color:#bbb;
+	  box-shadow: 2px 2px grey;
+	  margin-right:3px;
+
+}
+
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #333;
+  
+  
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: #555;
+  margin-top:3px;
+  margin-right:3px;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color:orange;
+  font-weight:bold;
+  font-family:'Source Sans Pro','Menlo',Courier;
+  border-right:1px solid black;
+  font-weight:normal;
+  border-top-left-radius	:10px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #333;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #111;
+}
+.tabcontent h3{
+margin-top:0px;
+padding-top:0px;
+
+}
+
+.tab button.tablinks2{color:lightBlue}
+
+/* Style the tab content */
+.tabCContainer {
+	font-family:'Source Sans Pro','Menlo',Courier;
+  display: none;
+  margin-top:0px;
+  border: 2px solid #333;
+  /*border-bottom: 3px solid #333;*/
+  
+  font-size:14pt;
+/*  background-color:#555;*/
+
+}
+
+.tablinks4a.active, .tablinks2.active{
+background-color: black;
+}
+
+.tabCContainer.navgridtabcontent
+{
+border:0px;
+}
+
+
+.tabCContainer.navgridtabcontent .tabCContainer
+{
+background-color:#111;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+
+.tabcontent2 {
+padding-top:10px;
+padding-bottom:10px;
+}
+
+.tabContentCodeArea
+{
+height:400px;
+
+}
+
+.tabContentCodeArea:focus 
+{ 
+    outline: none; 
+} 
+
+</style>
+
+<style>
+li{
+padding-top:1em;
+}
+
+ol li{
+font-weight:bold;
+}
+
+ol li ol li{
+font-weight:normal;
+}
+
+</style>
+    </head>
+    <body  onload="disableHashLinks()">
+
+
+
+
+<div style="width:90%;max-width:1200px;margin:auto;">
+
+
+
+<!--
+<p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VUqOPvF3YEE?si=xz-pyF_lZlhDEdeQ&amp;start=193" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</p>
+-->
+
+
+
+<h2>NOCTIVAGOUS</h2>
+
+
+<img src="img/nct_header4.svg" width="100%">
+
+<h1>Introduction</h1>
+
+
+
+<p>
+  <!-- Computer Code, Including Python, Is Still in Plain Text-->
+
+Though AI is currently introducing a new paradigm to the world, 
+there is still much about computers that needs to be upgraded.
+<!-- 
+
+The assumed role that AI will serve in society is questionable,
+that it will take over everything for the better rather than
+exist as a specific culture of human existence.
+
+<p> 
+The generation of code is seen as evidence that the role of the
+programmer will diminish over time.  Who is saying, though,
+that the role of an architect will diminish over time with
+respect to building plans?  More likely than not AI will simply 
+alter the dynamic of writing code because it is only in a scenario
+in which computers are not instructed by professionals that professionals
+disappear from the situation.  What would make the future AGI, after
+all?  Any use of AI for writing
+computer programs will immediately hit the ceiling that 
+<p>
+-->
+
+First, computer code files should be made out of structured data. 
+Source code is still stored and processed in plain text. 
+In practice, this is interpreted by code editors
+as if it provides structured data even though it remains a 
+basic stream of characters. All recent trends in software 
+engineering are moving further in this direction, which is the 
+modernization of code's interactivity on its existing 
+exterior, plain text, instead upgrading the file format of code
+that inherently supports these features. 
+In these times, software engineers and programmers 
+instinctively seek an upgrade to code's interactivity 
+because they are using code in larger volumes and in 
+more complex ways than in previous decades. 
+But they add features to code editors with elaborate 
+strategies to make interactivity work for plain text. 
+The corresponding software engineering need is not met, 
+the upgrade of code's file format, for implementing advanced 
+interactivity in a proper way. The software engineering community is not 
+awakening to the absurdity of the situation that this is plain 
+text and it shouldn't be treated as if it naturally supports 
+anything more than typing, like collapsible code sections. 
+The notebook code editors (e.g. Jupyter Notebook) intended 
+for data science and developing AI place the Python programming 
+language (plain text) into an interactive format, 
+providing an input prompt with graphical output responses, 
+but this is actually just a well-constructed set of hacks; 
+Python itself has not been upgraded to behave like this and 
+it doesn't normally support this usage. All the same, after 
+this upgrade to Python code was implemented, the interactive 
+code notebook became an essential tool of the AI community. 
+It is a demonstration that when code's form is upgraded,
+even in this superficial way, the results will provide 
+immense benefits. It's just that these notebooks came about 
+indirectly as a result of specific objectives; 
+the people working in data science just wanted Python to 
+behave in a certain way for their own particular needs 
+and they weren't thinking about the broader implications, 
+which is that if they want Python to behave in a more 
+interactive way and also produce graphical output they 
+have actually run up against the walls of how typewritten 
+code has conventionally existed for making and sketching out software.
+
+<!-- The software engineer is just proceeding to get what he wants
+out of it.-->
+
+ <!-- It's another example of where
+  the upgrade of computer code is taking an indirect, unconscious route and therefore
+  the process is quite slow compared to a concerted effort that would
+  design the code files with structured data .-->
+  
+  <!--
+  <p>AI is unlikely to displace the professionals who instruct
+  computers because as long as computers take complex
+  instructions there will be people who produce them for the computers.
+  Otherwise the computers would all turn into intelligent, autonomous black boxes,
+  accepting no complex commands from people, and they would have departed from
+  the condition that people even use instructions or commands (code)
+  to build them from the ground up.   The commands computers take will not 
+  be the same as literature.  
+ 
+  In the same way, if AI generates plans for office buildings, there will still need to be professionals like
+  architects who tell the AI what is wanted by the future building owners for the building and
+  this is always going to be a complex matter and will be the domain of professionals
+  for a long time even if it is the entirety of a moon-sized habitation being constructed 
+  with future technology within a matter of days, because, as we said elsewhere, whatever AI generates
+  today carries the style and characteristics of AI.  At issue is
+  society's (current lack of) understanding that human professional expertise extends
+  beyond skill and labor to what is also the menu of options suitable for
+  any situation that people want, such as what type of lobby would be desired for
+  that office building, the latest experimentation in styles of lobbies, etc.
+
+  If people are removed from what exists around people then it would be a culture of AI machines
+  evolving their own lobby styles over the years for the office buildings,
+  telling humans what they are to live in.
+  Human culture then would disappear because its evolution
+  would be taking place by AI and within AI and humans would just
+  be inhabitants of what AI made with the passage of time.
+  
+  If AI is made to generate code then the code should be more sophisticated than what exists today
+  within the plain text file format.
+  -->
+  
+  <p>
+    Meanwhile, in mainstream software development, IDEs are increasingly 
+    providing enhancements to code that improve its interactive capabilities
+    as well, to provide greater control and navigation.  But to do this, they 
+    have to project 
+     non-existent structure onto the plain text (.TXT) code for the benefit of 
+     the user: they analyze it constantly in the background to make 
+     collapsible code sections with GUI arrow controls, they generate
+     dropdown menus at the top of the window 
+     with organized sections of the file's contents, and they
+     display code completion popover windows. They extracted this information
+     by processing a basic file of plain text.
+     In other words, the common IDE has begun to treat 
+     a single file of code (.TXT) as a conventional application document (e.g. XML)
+     in the last decade, which is a very hacky activity, but the phenomenon is happening in an unrecognized 
+     way and it is a reaction to the growing problem that .TXT
+     does not scale for larger amounts of code. 
+     The code editor undertakes user interface gymnastics with this stream
+      of ASCII characters to implement all of the modern code editing features that appeared
+	 (such as the mini maps that now sit to the side)
+      and when those features are added they are a consequence of how code is
+      more complex than before.  This is why there has to be a retrofitting, like placing beams and columns in an
+      old building.  That retrofitting would be, to begin with, the onscreen rendering 
+      of current code syntax as it looks today by parsing files made out of XML or other markup,
+      to replace .TXT.
+
+      
+      <p>
+      The most honest picture of how code exists today is available 
+      by opening up a file in a basic text editor like Microsoft's Notepad. 
+      Everything else code can offer the software engineer today that is interactive
+      is actually a hack placed on top, including keyword coloring (ASCII-based code, of course, provides no coloring 
+      data in the plain text file data).  IDEs and the software engineering
+      community are avoiding the most important task a software engineer would
+      take up in any other situation, which is to
+      move up to an application document file format for each file of code.
+      Otherwise, the bizarre advances continue to play out, the hot-rodding of .TXT just to keep it
+	   around the primary medium of computer programming because programmers
+      are worried that a substantial upgrade won't fit into what exists now.
+      As we just said though, from the outset nothing has to change that will
+      break how people write software because it will start with just a conversion
+      from .TXT to an XML-based (or other markup document).
+
+<p>
+When computer code's file 
+format is upgraded to a document file format—
+comprised of markup like XML— and the contents are rendered 
+inside the code editor from the XML (no different from how a web page is 
+rendered from its HTML), the capabilities available to the
+programming language designers will become much broader,
+in many directions, from lines of code that contain multiple rows 
+to diagrams that describe complex processes. They won't necessarily start by
+changing code in dramatic ways but they will actually be able to do that.
+It will be possible to mix node-based programming and procedural
+code inside the same document, which is valuable flexibility for
+the programmer. There will be a 
+meaningful job for the graphic designer
+to assist in the layout and appearance of code documents, for the first time. 
+ A file of code will inherently permit generating more than one representation of 
+ its data because its data is made out of markup, but this will be natural to 
+ implement whereas it would be rough job to make this for today's 
+.TXT-based code.
+
+<p>
+  Many benefits will emerge when code is finally converted to a formal document format
+  from the ground up, in many different areas, including a leap in 
+  parseability by the compilers and the IDEs, as 
+  they will be parsing structured data like XML instead of plain text.
+   Plain text carries much ambiguity for live parsing of code and so the 
+   analyzers are not always accurate when just one character is off; 
+   deleting just one curly brace can totally confuse the compiler.  
+   When code is finally translated 
+   into a document format, which will support a live review of code naturally, 
+   the quality of users' experience with code will improve greatly and 
+   most typographic mistakes will be preventable that halt compilation (such as 
+   deleting a single character or omitting a semicolon).
+    Many features will become feasible that no one
+   would want to try with plain text today, such as the ability to
+    survey a project of code in the form of a
+    map or schematics overview.  It will be possible to zoom in and out of
+    code just like CAD because the code files will have 
+    formal structure inside them. 
+   
+   <p>
+   Especially if the code files are made out of XML, 
+   the ability to add attributes to the underlying markup will 
+   take computer programming languages to a new level.  Whatever someone
+   wants to render from the XML will specify what code can do, 
+   not merely what is typed out one text character at a time.
+    A function will not just show up in the markup as
+    &lt;function&gt; but allow the insertion of custom attributes inside the &lt;function&gt; XML element 
+      that provide for much broader configuration, rendered for the programmer code file.
+       In addition, an individual line of code will be more powerful
+        because it can contain more complex statements, permitting math notation,
+	 A section of the document can be made out of graphical components and even allowing 
+        interactive controls natively.  Assigning array object variables to 
+       interactive data tables will be possible and this is something people need today. 
+       A 3D object will be assignable to a 3D model viewer displaying the object inside the line of code.
+         An object variable with many settings will be assignable to a tab view control 
+         that has many configuration parameters for that object and it
+         will appear that with GUI settings inside the document, in the line of code.
+        A spline object variable will be assignable to a 
+      spline editor control, where it can be edited inside the line of code.
+      In the future, the programmer would be able to supply his own editors like this.
+
+
+<!--<p>Some programming language concepts will be straightforward to implement that cannot 
+enter the plain text file format, such as the following example.  Underneath the appearance
+of many software programs is a grid. Whether 
+it is checkers, chess, a calendar, tic-tac-toe, or the arcade snake game, they all could be viewed 
+as stemming from an abstract or conceptual grid, one starts in a most generic and unmodified form.  
+Many programmatic outcomes like these (anything whose form is a modified grid) 
+can be described in terms of increasing specification of a generically 
+existing grid component. Chess, checkers, and a calendar can come from the same programmatic component.
+In the code it would start from the most generic, initial state 
+and then the person begins customization.
+What the grid is for is progressively described with accessory components, 
+moving in the direction of a final outcome, and this would be included as 
+a possible activity of programming. If it is the game of solitaire being built,
+ then an accessory component related to stacks would be attached to the grid.  
+ To provide a component like this in code will require displaying 
+ graphics inside the code file and .TXT of course does not support this. 
+ This versatile grid component, which has capabilities in many directions, 
+ will need to display a representation of the grid itself, its components that specify what it does,
+  and the relationships between them so that a game of tic-tac-toe 
+  can be described in just a few diagrams. -->
+  <!-- What's more, when images 
+  are something that can be placed in the code file and made a feature 
+  of the programming language itself, a set of instructions for the computer 
+  can be described semiotically to show heuristic commands 
+  (e.g. "try to avoid objects with this description").
+  -->
+  
+  <p>
+  The upgrade of code's file format means that many scenarios will be easily described in 
+  terms of conditions, rules, states, etc. because computer code's presentation 
+  capabilities will exist beyond .TXT. With all of these newer features provided 
+  in code, existing software in use will be relatively easy and fast to rewrite 
+  and when they are redone they will have more available in them. <!-- Most programming languages
+  do not recognize state machines today. -->
+
+
+
+ <p> 
+  Resistance to changing the file format of code and modernizing 
+  it often comes out of a lack of understanding of the problems 
+  that result from keeping .TXT as the file format today, and addressing that 
+  starts with some discussion about graphic design, a topic hardly ever
+  paired with software engineering.
+ For the graphic designer, though not necessarily
+  the software engineer, once today's computer code is revealed as completely 
+  tied to the raw .TXT file format, all of the feature differences 
+  discussed among the programming languages are  
+  taking place inside a tiny frame of view, 
+  which is what can be typed into the .TXT file format, a sequence of ASCII or Unicode characters.   
+The graphic designer knows immediately how limiting this is because, to begin with, the means of dividing information
+on the page amounts to manually-typed line breaks, white space (tabs and spacebar), and nothing more. 
+  Consider that in some programming languages, functions start and end 
+ with the keywords "define" and "end" while in most others (C++, Java, C#) there are beginning and 
+ ending curly braces.  To the graphic designer, all of this is using typographic characters 
+ to establish box boundaries. The result is a mess of curly braces scattered
+ down the page.  The only provided way to keep code tidy is through the tab key and this
+ has no effect on how challenging it can be to track all of the nested curly braces and parentheses.  
+ It's too primitive of a situation.  There is only a vertical division of information 
+ (line breaks between sections of code) in plain text, 
+ and nothing can flow horizontally.
+ <p>
+ In a programming language that is not constrained by .TXT, there will be no typing out of beginning and 
+ ending curly braces just to establish the box boundaries of a body of code.  This a task the software
+ engineer shouldn't have to deal with, the maintenance of box boundaries.   
+ Instead, the contents of a function (or other code section) will be enclosed in a graphical, bordered box, 
+ as the file of text will no longer be .TXT but rendered from a document format (e.g. rendered from XML).
+ The bordered boxes (the containers for sections of code) will not only flow vertically as in plain text but 
+ will be flowable horizontally at the same time, like how a magazine layout has multiple columns.
+ At that point, the focus of the user interface will move away from simple typing to a more complex dynamic.
+<!-- Replacing the curly braces will be the modifying, adding, or removing the bordered graphical boxes rapidly (the ones
+that enclose the loops, functions, and other bodies of code). -->
+ It will involve making use of interactive keyboard commands to control the layout and insertion of code, 
+ not typing out '{' or '}', and the IDE will begin to resemble a media production app, like a vector-drawing program or animation program,
+ because the code will be modernized; the code document will offer modern software capabilities. 
+ The user interface principles will have to be more sophisticated than
+ what is currently used for code, which is typing, and so discussed on this page are the key-click UI and
+ other user interface concepts such as Noctivagous' npsurfer web browsing extension that demonstrates
+ a UI for accessing a certain section of the screen quickly without the mouse. In short,
+ future code interactivity should not rely on the mouse unless the mouse is used as part of the key-click UI.
+ Reluctance to upgrading code is also frequently a result of apprehension by software engineers
+ that the clicking mouse will be the focus instead of the much faster keyboard, which shows its
+ strengths in the classic command line interface.
+
+ 
+ <p>
+  The replacement of curly brace characters with bordered boxes brings with it broad-ranging
+  opportunities in other areas of code and what a document of code can offer the software engineer,
+  including interactive components in a line of code that have a lot of power and configuration built in.
+  Promisingly, it opens the possibility of customization of the programming language itself; the ability
+  to add features to the code document (through scripting and descriptions) will naturally
+  make sense as a feature of programming, far more than if the code is plain text.  The software engineer
+  will be able to program his own interactive components that make up a line of code, tailored for his
+  own project if necessary.
+  <p>
+  Just this one change demonstrates how the features of any mainstream programming language are currently
+  severely confined to what the .TXT file format provides, as .TXT cannot draw graphical boxes and so it cannot
+  draw anything else and is stuck in the early days of mainframe computing.  
+  Speaking within the constraints of that primitive file format, it is a debate about what characters should 
+  define the bounds of a function (will it be curly braces, line breaks, or keywords?) and all similar
+  personal preferences, such as whether a line should end in semicolon.  But that kind of debate
+ disappears when it is a graphical box enclosing the contents of a function.  When a line of code
+ is rendered from XML it doesn't need to have semicolons terminating it.  Omitting a semicolon or 
+ removing a single curly brace won't break the entire project of code, as is currently the case.
+ <p>
+ Thus, the design decisions that differentiate one programming language from another
+  actually just exist within this limited and ubiquitous file format, plain text. 
+  Since it is so restrictive, having no structured data inside it and being
+  a 1:1 monospaced rendering of the data contents of the file, what is actually the case is that the feature
+  differences between programming languages are rather miniscule compared to the open
+  vista that a document format will provide.  The
+  mainstream programming languages all currently exist within what characters .TXT accepts, but
+  a document format will extend far beyond lines of monospaced, typewritten characters.
+  A programming language can someday manifest as anything that involves
+  a more graphical and interactive dynamic: it can include semiotical diagrams, images,
+  multimedia, and a line of code can branch out into multiple lines.  Importantly,
+  the organization of the information on the page will finally include graphic design
+  layout, with a more compact and readable distribution of information, resulting in 
+  far less scrolling.
+
+ </p>
+
+<p>To the graphic designer it is deeply problematic that computer code always
+ looks like an undifferentiated mass of multi-colored ASCII keywords, something
+  exotic-looking to the lay public but actually mundane.  
+ When a code document, with markup underneath, is the medium, 
+ the process of entering code might continue
+  to emphasize typing out text characters but the end result, after 
+  a given code keyword, command, or instruction is completed (not just “func” 
+  but also “pop”, “push”, etc.), would be transformed in the code document 
+  so that every keyword is provided its own unique symbol.   An 
+  image variable referenced in the code will always have a symbol of an 
+  image to its left (🖼️<b>imageVar<b>) .  The document would be far more 
+  legible at a glance with this one change.  Every variable and object type 
+  present in the code should have a symbol preceding its typewritten name so 
+  that the page of code is legible at a glance.  
+  Different sections of code should be colored by their categories,
+  displaying distinctive font and styled box boundaries.
+  This is the sort of priority a typical software engineering team wouldn’t normally take on and 
+  it demonstrates the importance of emphasizing graphic design for the
+  future of computer code and programming.
+
+<h4>The Inclusion of External Physical Controls</h4>  
+
+<p>Code editors and IDEs have remained largely the same in appearance
+for decades, but now it makes sense for the programmer in the office to use hardware
+to interact with the IDE and insert code, regarding the situation as
+the same as how a video editor buys control decks.  At a minimum, Noctivagous suggests using
+one or more touchscreen computers, such as an iPad, set up next to the programmer's
+computer so that he or she can make use of a custom onscreen grid of 
+buttons that insert common code snippets and templates for functions, classes,
+loops, branching statements, variables of various types, etc.  
+
+<h4>JIT-Focused Software Development</h4>
+ <p>On another topic in software engineering, the work processes and what dynamic should be emphasized, it's 
+  also important to note that many software applications today
+  could be written in a live programming environment making use of JIT compilation, but for some
+   reason this is only treated by the computing industry as relevant for a web app.  
+   Many complex apps written for the web are fully ready for use as soon as "reload" is
+   executed in a web browser, and this is in stark contrast to the inconvenience
+   of compiling AOT (ahead-of-time compiled) code for equivalent 
+   apps in desktop and mobile software development.  
+   Something should be done to bring this JIT dynamic into mainstream software engineering
+   as the central activity so that at least the software is developed in real time 
+   but it can be compiled conventionally for optimization at the very end.
+   For instance, a calendar software application is very lightweight for today's computers,
+  and there is no reason that an application like that would need to
+  be written in code that has to be recompiled after every change.  But the tools offered for
+  web development, where live programming is most possible, are too undeveloped to replace
+  conventional software engineering.  A calendar app is so lightweight
+  that its code and user interface could be written and modified while it is opened, in a situation
+  even better than reloading a web page.  
+  The mindset of the software engineering community did not catch up
+  with the major increase in computing processing power, the gains that were provided to JIT compilers
+  as a result, and software applications today are written in a style that 
+  is a holdover of the slower machines of the 1990s.  With web apps today, 
+  they can be edited and then reloaded immediately, whereas the same app in an
+   IDE may take 30 seconds or more to be recompiled.
+  Of course, in the 1970s the original goal of Smalltalk-80 was to
+  allow the programmer to edit the software in real time and that is what it could do.
+  Other programming languages didn't adopt that feature, but now they can more easily than ever.
+  For many types of apps, their functionality could
+  be assembled and edited by the software engineer live because they
+  only have certain functions that are processing intensive.  GUI is always
+  lightweight for today's machines, but it wasn't for computers of the 1990s.
+  That is why large software applications could be sketched out and filled in during an 
+  execution mode.  Many professional apps could have their foundation assembled in
+  real time.  Instead, any app has to be rebuilt (recompiled) unless it is a web app
+  made out of JavaScript, because JIT code editing
+  not been made a priority for mainstream software development.
+
+ </p>
+
+ <p>
+ On another topic, the traditional UNIX command line interface also needs an upgrade
+because when long sequences of logs and operations occur, they fly by so fast that 
+they are completely unreadable, which often makes the situation absurd and pointless.  
+Take for example that the command line, the line where commands are entered, is entirely
+a vestige of the 1970s screens because it exist as part of the terminal output, 
+displayed inside the overall grid of monospaced characters.  Since GUI is available, 
+the command line can be separated from the output viewport and made its own
+text area, which has been the case for CAD programs for a long time.  Then, what
+is the terminal output area?  It no longer has to be confined to a VT100 emulation,
+a grid of ASCII characters.  It can be redesigned to include graphics.
+</p>
+
+<p>
+The command line should at least 
+ be upgraded such that graphical progress bars appear inside the terminal window when 
+ operations are taking place, and all terminal software should be graphics capable; 
+ they should be able to show thumbnails of images inside the terminal window after 
+ a command is executed, capable of showing them in a grid while listing a directory for example.
+A terminal should be able to play videos too, even 5 at a time simultaneously.  
+ Many aspects of the UNIX era should be upgraded.  Addressing the problem of a stream of 
+ unreadable logs that quickly passes by: all log entires should declare their category or purpose so they 
+ are grouped into boxes as they show up in the terminal.  Moreover, these boxes 
+ should appear in multi-column format.  
+ 
+</p>
+
+<p>
 
 </p>
-    <h2>AI and Neural Networks</h2>
-    <p>Today, AI starts with an artificial neural network— a network of artificial 
-    neurons made out of computer code (diagram above).  These artificial neurons are 
-    interconnected and each one has a mathematical rule built in to determine when it fires, 
-    affecting every other neuron.  Once this kind of network is assembled in software, 
-    it amounts to a mechanical brain that can accept input data.
-    But from the outset it isn't ready. It is an empty structure.
-    
-    
-    <h3>Training</h3>
-     The first stage required to make use of it is training. 
-     The neural network is provided input data for the training and this can be
-     small to extremely large depending on its purpose.
-    Once training begins, the connections 
-     sitting between each neuron will arrive at finalized 
-     numerical values, called weights.  
-     
-           <p>
-     Improving prediction accuracy by the neural network
-     is the goal of the training process: the connections are changed internally
-      by the network to make increasingly accurate predictions about the 
-      data provided.  Current AI technology centers around
-      predictions.
-      <!-- The majority portion of input data is used for training while another 
-      portion is used for validation and testing to be capable of predicting missing contents.  
-      -->
-      The more accurately something is predictable by the neural network 
-<!--      that is concealed (from itself) during training-->, the more capable it should be
-      of understanding the topic.  It will be able to predict the image of a car
-      after being given input of thousands of images of cars. 
+
+
+<ol>
+  <li>
+    <h3>
+    <a href="graphicdesignersandcode/">Future Code Requires The Integration of Graphic Design into Software Development Environments</a>
+  </h3>
+
+  </li>
+
+    <li>
+      <h3>
+      Opportunities to Upgrade Computer Code’s Form inside The Editor
+    </h3>
+
+    <P style="text-align: center;">
+      <img src="img/codeFileFormatUpgrade.webp" width="90%" style="border:1px solid gray"/>
       
+          </P>
+
+          
+    <p>
+      Programming languages designed for application software development are more capable than a few decades
+      ago, but not by much. Any progress has occurred inside the plain text file format.
+      They haven't been upgraded in a comprehensive way that
+      utilizes the new graphical capabilities of computers.  It's all terminal type.
+      To give an illustrative example that adds to the two shown above, 
+      an object variable should be assignable to an interactive vector field
+      in the code editor.  A UI control embedded in a line of code can do much more than alphanumeric type
+      in complex situations, across a wide range of subjects.  Instructions can someday be expressed semiotically, even,
+      if graphics are embraced as elements inside a line of code.  So far, there has never been
+      a semiotical programming language system.
+      
+      <p>
+        When graphics are included, the resulting depth of command over the operations of a computer
+      will not be matched by any current sequence of plain text.  Small experiments
+      have shown that this is much superior,
+      it's just that there are doubts expressed by some over whether it can match the
+      speed of editing plain text&mdash; in other words the user interface. We address this here.  What seems like an insurmountable
+      obstacle, making graphical code's interface comparable to plain text in editing power, is
+      actually a matter of taking a different approach.  In every single case, previous attempts abandoned 
+      too much of what was in active use in the practice of programming inside plain text and tried to come up with something foreign, which means
+      that the code conventions did not match what people were trying to do when they program.
+      Instead, Noctivagous' plan is to gradually add augmentations to plain text as it exists today.  A little bit
+      later, code can break free from plain text and sit inside its own document file format.  (Already
+      there are movements in this direction with Jupyter Notebook, just not for the code itself, only the output.)
+      So, initially it is that UI and widgets additions are allowed inside a line of plain text code,
+      just like right now when a color can be assigned to a color picker control. 
+      After a color picker has been used in code for a while, it is felt as missing when not available. 
+      In this way, graphical widgets and controls won't only be a matter of convenience.  When they
+      are placed into code, they will be able to 
+      summarize large sequences of computer instructions such that
+      no one will want to go backwards to just typing out regular terminal type (monospaced type).
       <!--
-      The goal is to find patterns and relationships within the training data 
-      that can be generalized to new, unseen data.
-      -->
+          This is a path that makes sense because code's intricacies
+      might be difficult to impose from the outside with an artificial scheme.
+
+    -->
+
+      <p>
+        The importance of this effort can be explained in the following.
+      Producing a competing web browser engine that is as
+       complete as Chromium or WebKit can't be done in a short period
+      of time, and when this isn't possible it represents a dead end for software
+      development.  Those two software projects will never be unseated because
+      there is little incentive to surpass them, as what is written from scratch 
+      with current programming languages will
+      basically end up being the same in outcome.  Even with AI programming
+      assistants, this does not change because those engines have reached
+      the ceiling of what plain text code will produce without an upgrade.
       
-      <!-- It will be asked
-      (or ask itself) to predict whether one it hasn't taken in as a car is a car
-      and the more accurately it can predict this the more.
-      -->
-      <p> 
-       The end result is called a trained artificial neural network. 
-        Recently, specialized computers have been developed that 
-        greatly expand the possible size of these artificial neural networks 
-        so that much more layered ones can be trained, they can take in more data, 
-        and process more in a request at a time, and accomplish more tasks.  
-        
-        <p>
-        After the training stage concludes, this is when the "fine-tuning" stage
-        is undertaken by the developers for the larger models comprised of text.
-        It is this fine-tuning that will turn the trained neural network into an
-        assistant that responds.  For the model behind ChatGPT,
-        it might be provided 100K or more Q and A examples so that it
-        becomes an assistant.
-        For the larger chatbots, they are at this stage “aligned” to 
-        the developer’s expectations and goals for responses in front of users, 
-        with some sorts of responses inhibited and others encouraged.
-        What the developers regard as unsafe they will inhibit
-        and what they want said they will promote.
-        
+      </p>
+      It is possible to escape this dead end and it is by breaking from
+      the fusion of computer code to the typewriter.  For a major upgrade to happen,
+      alterations like the above image have to occur, because code has to look more like
+      the software it produces, not just raw, monospaced type.  It has to be able to express
+      complex operations in terms of signs and symbol someday.
+       Computer science mindsets that refuse collaboration with graphic design
+       won't suffice, then, as software development has stayed inside terminal
+       type all this time.
+      When code is upgraded, the initial subjects of concern turn out to be different;
+      they will have to incorporate graphic design and media design
+      principles.  The areas of expertise involved are often outside of what is 
+      found in mainstream software engineering discussions.
+      
+      <p>
+      As explained in the articles on this page, the obstacle to a deeper level of
+      progress in software development is the confining, primitive offerings of the 
+      file format plain text, that it has been stretched far beyond
+      its bare capabilities to serve increasingly large and complex needs, blowing past 
+      the environment of 1980s and 1990s computing when it formed the programming languages
+      still in active use today, like C++, Python, and Java.
+      
+      This primitive code medium is largely accidental, it doesn't lend itself to a surveyable view, 
+      a zoomable map like CAD, and it of course by definition cannot accommodate rich text inside the code
+      without odd adaptations.  Since it has so many limitations for today's world, it has to be
+      transcended.
+    
+    <p>
+      A collection like an array or 
+      dictionary  is still not
+      editable by way of a data table GUI control inside a line of code.  Instead, the programmer clumsily
+      navigates through commas with the arrow keys.
+      In addition to this, future computer code needs to be editable in multiple newspaper-like columns to
+      make efficient use of screen space.  Plain text is too raw of a file format for programming software in the 21st century,
+      and it doesn't allow inclusion of modern GUI controls for formulating groups of instructions. 
+      
     </p>
-    
-    <h3>It Goes Back Decades</h3>
-    
-    <p>The basis of today's AI technology, its unit 
-    of the artificial neuron, is called the perceptron.  So
-    when people say there is an "artificial neural network"
-    it is really a perceptron network.
-    This convention was formulated several decades ago,  computational model 
-    the neuron as people had come to know it, a kind of massively
-    reduced version as science had modeled it on a computer.
-    So in a way the AI is built today is a massively scaled up version of
-    what began in the 1960s and 1970s.  The key is that
-    people did scale it up, they applied that scaling up to
-    the latest in computer technology.
-    
-    
-    <h3>Emergent Capabilities and Interpretability</h3>
-    
-    <p>Interestingly, in the last several years when artificial neural networks were 
-    being trained at larger and larger scales with the specialized computers, they 
-    started to develop abilities that the researchers didn’t anticipate or plan, 
-    including the ability to translate between languages, perform and explain math, 
-    summarize text, answer questions, and more. A lay person might think these abilities were 
-    built into the models on purpose, but this topic is called “emergent capabilities” 
-    because they manifested unexpectedly as the neural nets grew more complex— 
-    not as a result of the researchers directing the process (through explicit programming). 
-    In addition, many capabilities of an AI model may be discovered a year or more after
-    it has been trained, demonstrating that much is not known about the end product
-    of a neural net, just the starting point.
-    This has left the field of AI with ongoing mysteries compared to typical expectations 
-    of explainability in science. Additionally, today’s very big neural networks end up 
-    being so complex that the internal processes by which they arrive at their conclusions 
-    are not well-understood and this AI subject is has been named “interpretability,” which is 
-    whether the decisions it makes can be explained from the internal neural net patterns. 
-	The key part of this is that artificial neural networks are not computer programs in the conventional 
-    form, that of being a sequence of predefined steps.  Instead, they receive, process 
-    information, and respond as a network or neurons, reacting to input as a result of their training 
-    which created the numerical weights for each neuron's connection.
-    </p>
-    
-    
-    <h3>Not a Live, Self-Updating Machine</h3>
-    
-    <p>One notable limitation of the latest AI technology, the LLM (large language model) 
-    that drives chatbots, is that it is structured as something relatively static: a 
-    request receives a response from a fixed neural network and any variation in response 
-    each time is a result of a randomization algorithm. So, it will say the same sort of 
-    thing each time but a randomizing function inside will change up what comes out. 
-    Otherwise it would actually be the same each time without this, meaning that the LLM
-    is deterministic.    The 
-    AI receives a request, it processes that in the neural network, it generates a unique 
-    response for the user, then it stops operating altogether. For this reason, many 
-    computer scientists say that AI is in its early stages. An LLM is not an active 
-    machine that is constantly running and updating itself.  Once the artificial neural 
-    network has been trained it won’t carry an ability to update its understandings
-    in response to what people say to it.  It can't correct anything in response to the users.
-    To update what it contains, the computer scientists have to train it all over again, which is, 
-    as mentioned, an expensive and time-consuming process when the models are very large. 
-    Although researchers can modify certain minor aspects without having to do this
-    through fine-tuning, the 
-    key point is that the AI is not yet a live machine that self-modifies. 
-    It also does not have a process of deliberation built in, which means it only
-    executes in response the request and then finishes and does not go beyond that.
-    It is instead a fixed set of stored weights with mechanisms to generate responses. Also important, 
-    it does not yet have any conception of the physical world built in by researchers, 
-    nor does it possess a model of things and so it will be able to match people
-    in many regards but also lack the capability to process some basic situations.  
-    Some computer scientists regard it as a very 
-    deep set of probabilistic relationships that produce remarkable responses. The goal 
-   by many researchers is what is called AGI (artificial general intelligence), a term 
-    describing a future in which the AI tech has made up for all of the deficiencies just 
-    mentioned and operates autonomously and dynamically updates its knowledge in response
-    to external contact. This then leads to the fears of AI taking over 
-    because if it operates autonomously and makes decisions without any human involvement, 
-    it is hard to say what it will do, what the consequences will be. 
-    There are also reasonable views that even current the LLM exists as more than the sum of its parts, that there is 
-    “something going on in there.”</p>
-    <h2>The Pace of AI Research</h2>
-    <p>The progress of AI in the 2010s came to surprise researchers, reaching 
-    a steep level a few years ago. As late as 2015, there was still some skepticism as to 
-    whether AI models could reliably carry out tasks that are taken for granted today,
-     such as recognizing objects in images. 
-     But, new types of AI software designs and artificial neural networks came
-      along in the 2010s that solved many of the problems facing the field. 
-      For the most part, the recent progress of AI in the last several years
-      could be described as advancing
-       towards more and more self-automated learning designs. At the start of the 2010s 
-       it was about training a neural network to recognize images that needed
-       to be matched with their text label (called supervised learning), 
-       then it was about getting it to master video games (reinforcement learning), 
-       then having it learn about the data it was provided on its own (self-supervised learning)
-        and now generate information (generative AI) from that.</p>
-    <p>Recent progress in AI is associated strongly with increases 
-    in available compute (processing power).
-     In the 2010s researchers began making notable progress by utilizing GPUs, 
-     the high-end accessory processor attached to the home computer 
-     for graphics processing. 
-     Usually the personal computer or mobile phone is just bundled with 
-     a CPU whereas the GPU (graphics processing unit) takes on other work related
-     to rendering of graphics.  The CPU is usually occupied with system and application
-     work and so intensive work will be offloaded onto the GPU.
-      GPUs can be used purposes other than graphics and thus 
-      AI researchers used them for testing out new theories of AI. 
-      After some of their successes in the early 2010s, there was the development of 
-      AI-specific computer hardware by Google in 2015 
-      and NVIDIA starting in 2016. 
-      These computers are regarded as having been essential to the field’s 
-      most recent advances, the well-known AI applications like ChatGPT that 
-      harness thousands of these types of computers in data centers during
-       the training process. 
-       Specialized hardware has enabled AI to become a mainstream 
-       topic by allowing the artificial neural networks to become very large,
-        very layered and capable. One of the hot topics the AI researchers debated
-         about was whether growing the scale of the networks would produce more
-         valuable outcomes, which turned out to be the case. Some had doubted
-     that this would make much difference.
-      Lately, the specialization of computer hardware for AI uses has now been
-       brought to to the personal computer level. There are now companies 
-       are making AI-specific processors bundled inside the consumer’s personal
-        computers and mobile phones. 
-        
-        AI has been in use for a long time 
-        for simpler applications, such as for processing postal mailing addresses.</p>
-</div>
+
+    <p>Noctivagous starts with the plain text code 
+      as programmers work with it today and then adds GUI to that as the first step, continuing
+      the trend of exists today where the value of a color variable is controllable by an inline color picker.
+      It is believed that later the code file should be transformed into a document file format 
+      for truly rich code editing.   Each article below explains these issues.</p>
+ 
+        <ol type="a">
+            <li><a href="advancingmoderncodeeditor/">Advancing the Modern Code Editor By One UI Step</a> (Includes Demos)</li>
+            <li><a href="#">Computer Code Needs A Document File Format</a></li>
+            <li><a href="movingcomputercodeintoadocformat/">Moving Computer Code into a Document File Format</a></li>
+        </ol>
+    </li>
+
+    <li>
+      <h3>The Upgrade of User Interface</h3>
+        <ol type="a">
+            <li><a href="keyclickui/">The Key-Click UI</a> (Demo)</li>
+            <li><a href="#">It’s Difficult for Users to Organize Files on Computers When Provided a Such a Basic File Tree Hierarchy.</a></li>
+            <li><a href="noctivagous/nctos-wiringupthewindows.txt">
+            
+            Connect Some Windows with Node Wires If You Like. 
+            Software Applications Now Operate In Isolation From One Another.</a>
+            
+            <p>Noctivagous will let you wire up application windows as if they are nodes in node-based programming,
+               because the input and outputs will be on the back of the window and it can flip around. 
+               Different applications will interact with each other, providing their complex features to each other, publishing and receiving 
+               data as the user decides. 
+
+            </p>
+            </li>
+            <li><a href="movingpastios/movingpastios.txt">Moving Past The iOS And Android Touchscreen User Interface</a></li>
+        </ol>
+    </li>
+
+    <li><h3>AI</h3>
+      <ol type="a">
+          <li><a href="ai/aifacilitationvstakeover.txt">AI Facilitation of Work Processes Vs. AI Takeover of Human Jobs</a>
+          <p>
+            Discussing What Should Be The Aim for AI Technology, Using The Example of a Vegetable-Cutting Kitchen Appliance That Is Driven by AI
+          </p>
+          </li>
+      </ol>
+  </li>
+
+    <li><h3>Graphics And File Formats</h3>
+        <ol type="a">
+            <li><a href="#">.NVAD - Noctivagous Vector Authoring. A vector 
+              graphics file format that acknowledges aesthetic needs and concerns 
+              at the code level.</a></li>
+        </ol>
+    </li>
+
+</ol>
+
+</div><!-- end container-->
+
+
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<script>
+  function disableHashLinks() {
+      // Get all anchor tags in the document
+      const links = document.querySelectorAll('a');
+      
+      // Loop through each link
+      links.forEach(link => {
+          if (link.getAttribute('href') === '#') {
+              link.removeAttribute('href');
+              link.classList.add('non-link');
+          }
+      });
+  }
+</script>
+
 </body>
 </html>

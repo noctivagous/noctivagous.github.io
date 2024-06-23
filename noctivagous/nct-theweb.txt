@@ -4,63 +4,87 @@ limited to loading a web page (.HTML) that cannot
 be edited.  Instead, every loaded document might
 have offer editing permissions.  There would then
 be two modes provided by the server, which is edit 
-and view. The web browser would be able to load all kinds 
+and view. The web browser (client) would be able to load all kinds 
 of documents sent by the server and provide native editing
-tools for them from within the web browser.  The web browser window
-would be not only navigator for information pages, but also 
-a navigator for apps made out of something similar to 
-MXML (or Mozilla's old XUL) type apps.  The web browser
-would be an improved gateway for the Internet, permitting 
-editing of journal entries, word processing, store inventory,
-spreadhssets, and then of course serving the common web page 
+tools for them from within the web browser client, and if those
+tools are not available they would be downloadable as document extensions.  
+
+The web browser window would be not only provide the gateway for
+for navigating information pages as it does today but also 
+act as a navigator for apps. These might be made out of something similar to 
+MXML (or Mozilla's old XUL).  The web browser
+would be an improved and expanded gateway for the Internet, providing
+native editors for journal entries, word processing, store inventory,
+spreadsheets because these conventions of the computer would be
+built into the browser. Then of course it could serve the common web page 
 that features hyperlinks.
+
+The web could be more than information pages.  When it tries
+to go beyond that today it becomes a complicated affair.
+It doesn't provided facilities for making a shopping cart system.
+So instead there are dozens of shopping cart systems that
+were programmed from the ground up.  This is a major problem,
+that there aren't any SDKs that are high up enough in abstraction.
+Many types of website services and businesses are just
+compensating for what the web client and server lack
+in provisions for an SDK.
+
 
 THE NEED FOR APPLICATION KIT ARCHITECTURE IN THE WEB BROWSER
 
 A web server could easily serve a <window> tag to the client (browser) 
 or a <document> tag that opens a doc window.  A <WindowPanel> tag
-would provide the accessory panel windows, for example.  All that it would take is
+would provide the accessory panel windows, for example.  All that is necessary
 serving these tags and the web client (browser) would oblige,
 just like how Macromedia's Flex MXML documents were structured.  
 It is actually a decision imposed on web browsers 
 that web clients do not allow an <app> document (e.g. MXML) to load 
-(.appml might be the extension).  Everything is there for this
-to exist.  Similarly, Mozilla released the XUL file format in 2001, 
+<window> that makes windows. (.appml might be the extension).  Everything is there for this
+to exist in the OS and it is a self-imposed limitation that a website
+cannot create a new <window> from an <app>.  
+On this topic, Mozilla released the XUL file format in 2001, 
 recognizing that a website could actually serve a traditional app GUI
 with app controls to the web client browser, if that web browser 
 accepted the instructions.  For whatever reason,
-the web community insisted on depriving the web browser of those
-instruction sets (the tags or elements), thus confining everyone to the
-relatively static "web page". They have prevented the web client (the browser)
+the web community insisted on ignoring this and chose to limit the web browser
+from acknowledging these kinds of instruction sets (the tags or elements), 
+thus confining everyone to the relatively static "web page" that serves
+information. They have prevented the web client (the browser)
 from supporting something application-like such as MXML or Mozilla's old XUL and the result has
 been that web developers undertakes activities that circle around
-getting it.  They build apps out of web pages, to state the
-unpleasant.  They do things that are obviously a consequence
-of them wanting something like MXML but not having it.  
+getting this.  They build apps out of web pages, to state the
+unpleasant, and many online software projects exist to assist in this.  
+They do things that are obviously a consequence
+of people wanting something like MXML but not having it.  
 For whatever reason, the web client makers have been unwilling to 
 provide application kits, to serve anything besides .html to the
-client.  Why not .appml, which would use MXML or XUL?  This is
+client, which means the web is about serving information.  
+Why not .appml, which would use MXML or XUL?  This is
 much needed when in this time period many commercial software applications are
-actually launching a disguised web browser to make them cross-platform.
-	— A universal framework would the same tags for making new
-	windows, documents, and handling events. Each browser 
-	translates them to each OS’s native window and docu arch.
+actually launching a disguised web browser just to make it easier to
+distribute them as cross-platform.
+	— A universal framework would use the same tags for making new
+	windows, documents, and handling events. Each browser would
+	translate them to each OS’s native window and docu arch.
 	For the Flex MXML documents, they all had the same
-	appearance specific to MXML but they could load platform-specific
-	controls.
+	appearance specific to MXML but this time could load platform-specific
+	control appearances.
 
 
 SUPPORT FOR OTHER PROGRAMMING LANGUAGES BESIDES JAVASCRIPT
 
 Alongside all of this is the importance of providing a type-capable
-scripting language which means something besides JavaScript.
+scripting language, which means something besides JavaScript.
+There is some kind of mystery as to why JavaScript is the only
+allowed scripting language in a web browser, especially when
+there is so much that is controversial about it.
 
 
 BUILT IN CLIENTS / PLUG-INS FOR OTHER PROTOCOLS LIKE FTP
 
 The web client, the browser, should be flexible for developers
 to add functionality to it, to the extent it can support
-custom protocols.
+custom protocols easily.
 
 	
 BROAD DOCUMENT FILETYPE VIEWING AND EDITING SUPPORT
@@ -69,12 +93,14 @@ Not only the web browser, but also the web page should support
 the display, embedding, and editing of 
 PDFs, word processing documents, spreadsheet documents, natively
 and without the discontinuities in appearance like
-there is today.  Additionally, it should not be remarkable 
+there is today.  What people do with the computer outside of
+the web browser should also be available in the web browser
+(and server). Additionally, it should not be remarkable 
 for the web browser to come bundled with a basic image editor 
 that can edit images on the page and save to that page, 
 a basic spreadsheet editor, a basic word processing editor,
 which means that each web page should be treated more 
-like a general purpose application document vehicle, with the web server 
+like a general purpose application document, with the web server 
 recognizing different types.
 
 
@@ -117,19 +143,56 @@ native rich text editor.
 UPLOADABLE SERVER APPS
 
 Currently a web server is completely configured by the administrator
-of that server.  But what the person, especiallyl a power user,
+of that server.  But what the person, especially a power user,
 wants is not actually administrator privileges and deep level access 
-but rather the server computer, internet access, and the
-server running an app.  In a new type of web setup the power user 
+to the server but rather the server computer running an app.  
+In a new type of web setup the power user 
 would be able to upload a server app to the server from a web client 
-and it would run right away on that server. A person will be able to 
-buy a server app and upload and execute it in a friendly way, without
-the need for UNIX shell or ftp access. It will be uploading a
-self-contained bundle. 
+and it would execute right away on that server without the user
+configuring that server on the operating system level in any way. 
+A person will be able to 
+buy a server app and upload and execute it in a user-friendly way, without
+the need for UNIX shell access, without uploading to a UNIX convention
+like a home directory via FTP. It will be uploading a self-contained bundle.
+All of these older technologies become the in-cohesive array of
+protocols and steps to follow. 
 
-The server would then need to recognize a certain type of app like this.
+The server would then need to recognize a certain type of app like this,
+one that installs without the user having server privileges.
 
 For the software developer the advantage is that making web
-apps will look more like regular software development and the only
-thing needed is dragging the app to the server from the browser.
+apps running on the serve will look more like regular software 
+development and the only thing needed is dragging the app to the server 
+from the web browser.
+
+Again, this means tight integration between server and client compared
+to today, that the document sitting on the server is editable
+by the client naturally and not through the mess today of what
+are essentially custom workarounds.
+
+
+WEB PAGE MODES
+
+It shouldn't be that difficult to drop an image file onto a web page
+and have it exist inside the web document on the server right away, in
+a way that is recognized by the server natively.
+
+
+E-MAIL
+
+E-mail message unread count is three instead of
+one.  An unread email message starts in A)
+then moves to B) after 2 days, then only in
+C) after 1 week.  It is always in C)
+
+a) 2 unread (last 2 days)
+b) 1 week unread (last week)
+c) total unread (all time)
+
+Three counts are displayed A/B/C
+
+
+
+
+
 

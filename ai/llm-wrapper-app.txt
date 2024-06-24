@@ -12,16 +12,16 @@ noctivagous.github.io
 
 The potential and utility of an LLM is still hidden.
 A much more developed category of wrapper app for an LLM
-ought to be the priority of the AI community, one that goes
+should be the priority of the AI community, one that goes
 beyond the basic AI chat format in which the user is
 given a free-form textbox and responses are stacked vertically.  
 Interacting with the LLM is confined to typing out prompts from scratch
 each time; there is no developed workflow for modifying
 prompts, crafting them parametrically, or viewing the 
 output in different views or presentations.  There are 
-many uses for an LLM but the user is supposed to squash 
-them all into a text box. Whatever comes out is supposed to 
-suffice if it is just a stream of text.
+many uses for an LLM but the user is supposed to reduce 
+them into a text box. Whatever comes out is supposed to 
+suffice if it is just a stream of text, a chat response.
 Few genuinely sophisticated features have 
 been provided on the front-end to serve the end user, 
 at least by the major AI vendors.
@@ -29,18 +29,37 @@ at least by the major AI vendors.
 The new user is placed in front of the text box and then
 told, "Now go! Ask for whatever you want!"
 which sounds great at first, like an opportunity to interact with a genie
-in a bottle.  In reality, instructions for work jobs are more complex. Current
-AI technology cannot succeed by way of simplistic chat-formatted responses
-generated from an LLM.  In the workplace a person is provided
-a complete document of specifications, not just a few sentences. 
+in a bottle.  In reality, instructions for work jobs are more complex
+than discrete and simple requests made out of sentences. They have
+parameters, settings, modes that surround the request the person
+is making.  In addition to this, the person should be surrounded
+by available resources such as the images, documents, and snippets
+of text he wants to make use of with this machine.
+
+Current AI technology cannot succeed by way of simplistic chat-formatted responses
+generated from an LLM.  After all, in the workplace a person is provided
+a complete document of specifications to carry out a job, not just a few sentences. 
 The analogue to this for an LLM would be a set of parametric components, 
-settings, and controls. The "genie in a bottle" format with its 
-reception of small, additive snippets from the user contrasts with the natural condition
-of everyday life in which a set of commands comes in structured and in bulk.
+settings, controls, and areas for stored resources that can be included in
+the queries.  The queries themselves need to be made in different ways,
+whether it is typing them out or wiring them up.
+
+The "genie in a bottle" format in which the person gets a wish
+granted with a sentence, its response format in which the person
+clarifies or corrects the response provided is limited and
+contrasts with the natural condition of everyday life in which a 
+set of commands comes in structured, in bulk, and may (as in the
+case of specifications) have charts and other non-verbal descriptions
+of the demands.
+
 When you want something complex done do you tell a person who doesn't know you 
-just one line or a few sentences?  No, you send them a document with 
-detailed specifications.  So the LLM has to be able to receive
-commands in that kind of format.
+just one line or a few sentences?  Will it all be verbal information?
+No, you send them a document with detailed specifications and it may have
+a table included.  So the LLM has to be able to receive
+commands in all kinds of ways and the only way to do that is to provide
+a complete suite for input settings, input methods and output setting
+and output methods.  What should be part of any query would be
+a bundle of things and the app makes this possible.
 
 The small LLM text box amounts to a prototypal, unfinished situation
 in which the user laboriously starts from scratch each time to compose
@@ -83,6 +102,90 @@ language learning, and other interactive sessions designed to mimic real-life in
 Make quizzes, tests.
 11) Proofread / Copyedit / Rephrase
 
+
+
+----------------------------
+
+--- SETTINGS IN THE UI ---
+
+PARAMETERS, BUTTONS, AND CONTROLS.
+
+
+CURRENT OUTPUT MODE: [RTF] (HTML/PDF/TXT)
+
+
+OUTPUT RESULTS OF QUERY: 
+	- to a table
+	- to a code text box
+	- to a web page
+
+	
+STYLE THE RESULTS
+	- with headings
+	- body text font: [Times New Roman] (14pt)
+	- heading font: [Arial] (Bold) (18pt)
+
+EXPORT RESULTS AS
+	- spreadsheet
+	- csv
+	- html
+	- json
+
+
+CONVERT
+	- [json] to [xml]
+	- [html] to [rtf]
+
+------------------------
+
+--- BINS, HOLDING AREAS ---
+
+--- Separate, stationary holding area for documents to be used in queries
+--- Separate, stationary holding area for pasted text snippets to be used in queries
+--- Separate bin for images made part of queries
+
+----
+
+
+FETCH AND FORMULATE REPORT OF IMAGES, GALLERIES
+
+It might be easy to overlook that at the current stage the
+LLMs have not been set up to fetch images from the web
+in response to a query on a certain topic and place them
+in context of the query.  Let's say that a person wants to 
+research edible mushroom plants. There will be many websites 
+that provide information about them but this will take a lot
+of time to go through them to get a complete overview, perhaps.  
+There would be value in having the AI compile 
+a report about the topic that is complete with images,
+captions, and so on, from multiple websites, not for the
+purpose of re-publication but for providing the user
+an overview on a less known topic that might be somewhat unpleasant
+to research on the Internet.  "What are all of the different
+types of edible mushrooms grown for cooking meals?" would
+return a list of images and captions.  Optional would be
+a summary next to each mushroom type.  This is beyond what
+Google provides at the moment.
+
+AN IMAGE REMINDING THE USER OF THE VAST AMOUNT OF INFORMATION
+CONTAINED IN AN LLM AND THE MANY CAPABILITIES.
+
+One of the issues of leaving interaction with an LLM at
+a simplistic chat text box is that the user is not in
+touch with what the LLM provides.  Within the AI community
+there are many criticisms of the LLM but no matter what
+these could be truly useful bases of knowledge and profound
+tools if they are provided the right interface and the
+right indications that they are massive, they are thorough,
+and they are capable.  One does not get this impression
+when clicking inside the text box and then getting a response.
+In this way too much is left on the user to figure out.
+
+
+
+
+  
+  
 
 An LLM is so versatile but the barrier to its mainstream
 adoption is the fatigue produced by typing out prompts each time,
@@ -137,6 +240,10 @@ of itself, wants to be more than it actually is and obsolesce the present
 to feel like it is moving into the future.  But the basics of
 traditional software remain.
 
+
+
+NOISE IN DATA IS COMPRISED OF...	
+	
 -----
 
 1) Continue/Comment On/Make Response to: This would enable users to

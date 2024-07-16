@@ -1,17 +1,20 @@
 ﻿NCT LLM Wrapper App
 
 
-This future application is intended to provide a user-friendly and flexible environment for users to interact with LLMs by building out a more complete app experience, expanding the number of available controls and conventions for interacting with chat responses.  Chat responses are not just static text for Control+C but instead 
-1. Are editable by the user.
-2. Can be transformed (replaced where they sit) with additional prompts.
+This future application is intended to provide a user-friendly and flexible environment for users to interact with LLMs by building out a more complete app experience, expanding the number of available controls and conventions for interacting with chat responses.  Chat responses are not just static text for the Control+C operation but instead 
+1. Are editable by the user (where they sit) with an optional inline text editor.
+2. Can be transformed by AI (replaced with another response where they sit) with additional prompts.
 3. Can be deleted from the chat sequence.
-4. Can be moved out of the chat sequence into a different one or a project bin/folder.
+4. Can be moved out of the chat sequence into a different chat sequence or a separate project bin/folder.
 
 
-That is, instead of generating a new response that adds to a long scrolling list chat responses, the user also has the option to stay with one response, edit it, and then change it with AI. This means there will be an undo manager attached to each chat response.
+That is, instead of just generating a new response for each prompt that adds to a long, scrolling list of chat responses, the user also has the option to stay with one response, edit it, and then change it with AI.  This adds the requirement that there will be an undo manager attached to each chat response control.  In providing revision tools in-line, the user can reshape output and prepare it for an eventual document of some sort.
 
 
-At the tail of each chat response is a set of controls for making follow-up responses, such as “Revise to Include [], Exclude []”.  Settings include removing any introductions and conclusions.  Modes include generating output that does not contain any lists and is only prose.  By controlling the output of an LLM and using tools that can make use of it, this very broad technology can be experienced more powerfully than the current, plain interactive chatbot format.
+At the tail of each chat response is a set of controls for making revisions or relevant follow-up responses, such as “REVISE to Include [TEXT] & Exclude [TEXT]”.  In the context window of the prompt is included an instruction to provide suggested follow-up responses.
+
+
+The general chat settings include omitting any introductions and conclusions.  Modes include generating output that does not contain any lists and is only prose.  By controlling the output of an LLM and using tools that can make use of it, this very broad technology can be experienced more powerfully than the current, plain interactive chatbot format.
 
 
 
@@ -132,12 +135,16 @@ RELATE [PASTE AREA] TO [PASTE AREA]
 CONTRAST [PASTE AREA] WITH [PAST AREA]
 
 
-Generation
+GENERATION
 Make a template for
 FILL IN THE FOLLOWING TEMPLATE [PASTE AREA] WITH THIS DATA [PASTE AREA 2]
 ANALYZE AND APPLY HEADING STYLES TO THE FOLLOWING TEXT [PASTE AREA]   [ [X] WITH FONT: [Arial] ]
 
 
+        REFINEMENT
+        OMIT
+        INCLUDE
+        EXCLUDE
 PROMPT KEYWORD COMMANDS + CONTROLS IN JSON
 
 

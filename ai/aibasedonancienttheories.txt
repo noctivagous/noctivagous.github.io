@@ -1,0 +1,75 @@
+The Book of Changes can serve as the basis for researching a different
+kind of AI.  For one, the 64 hexagrams provide a foundation for analyzing
+the external and internal.  The Book of Changes is not limited
+to the task of divination, the implications of the hexagrams are not
+limited to predicting fortune.  The hexagrams allow for assessing 
+external conditions as well as making internal decisions. 
+And since they are used for both and they include the relationship between
+what is outside and inside, the macroscopic and the microscopi,
+they could serve as a means of harmonizing the external 
+with the internal as the AI exists.  Also, the hexagrams can be computed directly,
+with the trigrams corresponding to binary numbers.  This aspect of the machine will not
+need to respond in a static and deterministic way like today's
+LLMs but can be operating all the time since it is based on the hexagrams
+that have know pathways of change and transformation.
+
+For the AI to be truly engaged it would face challenges of some sort, 
+so aligning it with the Book of Changes makes sense to do that.
+In the process of acquiring knowledge there are revisions made.
+
+When starting out on an AI based on ancient Chinese science
+it is acceptable to start with just what can be put in the experiment
+model.  Many qualities and associations with each element
+are possible, but from the outset it is not important to 
+concern oneself with it being complete with the whole of every 
+ancient theory, rather getting the situation started and seeing
+some results is the goal.
+
+The Five Elements represent processes for all things.  The central
+principles is Yin and Yang of the machine, that there are phases
+of Yin and Yang in which one is in greater proportion than the
+other but when there is an excess or deficiency in any of those
+phases relative to the phase itself, the machine knows that this
+is a principle.
+
+Perhaps as data is taken in by the model, if this is how
+it works, it will be organized and processed by the
+64 hexagrams or the Luoshu, since the Luoshu can
+access multitudes of associations of "reality" from the square,
+it relates to both the hexagrams and the Five Elements.
+
+These concepts can serve as the means of processing
+and categorizing all things the AI comes into contact
+with, all that it takes in, processes, and responds
+with.  Its guiding principles will be computable within
+existing statistical techniques and programming libraries
+as they run on a GPU.  The development of today's
+computing technologies can run.  
+
+Before embarking on this, two requirements are in place:
+1) an understanding of ancient Chinese science
+2) an understanding of current AI and the mathematics
+and engineering behind it.
+
+We should, as people who know #1, be averse to the
+techniques of modern AI that proceed
+by way of greed: amassing enormous bodies of text
+and feeding them into growing, expensive computational resources.
+We know with certainty from our study of ancient Chinese science
+that this is not the right path though we may not have
+an alternative solution upon coming into contact
+with what is working currently.  
+The buildup of the AI might take a different
+path, one in which it gradually builds up and revises knowledge
+from a core of deeper principles.  Its basis may not resemble current AI
+methods, but without being knowledgeable about them in the
+beginning we would not be able to accomplish that
+because all the technologies we will use will be
+rooted in the techniques of conventional AI.
+
+Theirs is a process of development that may eventually
+arrive at the right state but in the beginning
+has alarming and basic problems, producing 
+high-powered junk moving towards less junk inside.
+
+

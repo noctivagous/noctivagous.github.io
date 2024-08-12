@@ -11,17 +11,16 @@ they could serve as a means of harmonizing the external
 with the internal as the AI engages.  Also, the hexagrams can be computed directly,
 as the trigrams correspond to binary numbers, which interested
 the Western mathematician Leibniz, who devised calculus.  
-This machine will not
-need to respond in a static and deterministic way like today's
+This machine will not need to respond in a static and deterministic way like today's
 LLMs but can be operating continuously since it is based on the hexagrams
 that have know pathways of change and transformation.  This is just
-a speculative remark on how their use could be applied but its
-principles are surely correct.
+a speculative remark on how their models could be applied but its
+principles are surely sound.
 
 For the AI to be truly engaged with the world, 
-it would face challenges of some sort like all of us do, 
-so aligning it with the Book of Changes makes sense, as a computational
-guide for action.  
+it would face challenges of some sort,
+so aligning it with the Book of Changes makes sense, 
+as a computational guide for action and reaction.
 
 In the process of acquiring knowledge there are 
 revisions made to what one encounters.  The acquisition of knowledge
@@ -84,13 +83,13 @@ with what is working currently.
 The buildup of our AI will certainly take a different
 path, perhaps one in which it gradually builds up and revises knowledge
 from the core of deeper principles, which already start with
-the essence of weather, taste, emotion, etc.  The basis of our
+the essence of weather, taste, emotion, etc. as well as the
+transformations that occur.  The basis of our
 AI may not resemble current AI methods, but without being 
-knowledgeable about them in the
-beginning we would not be able to accomplish what we intend
-because all the technologies we will use will be
-rooted in the techniques of conventional AI and
-that is the ideological direction in which they will continue
+knowledgeable about them in the beginning we would not be able to 
+accomplish what we intend, because all the technologies we will use will be
+rooted in the techniques of conventional engineering 
+AI and that is the ideological direction in which they will continue
 to develop.
 
 Theirs is a process of development that may eventually

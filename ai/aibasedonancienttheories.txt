@@ -12,92 +12,113 @@ with the internal as the AI engages.  Also, the hexagrams can be computed direct
 as the trigrams correspond to binary numbers, which interested
 the Western mathematician Leibniz, who devised calculus.  
 This machine will not need to respond in a static and deterministic way like today's
-LLMs but can be operating continuously since it is based on the hexagrams
-that have know pathways of change and transformation.  This is just
-a speculative remark on how their models could be applied but its
-principles are surely sound.
+LLMs operate continuously since it is based on the hexagrams
+that have know pathways of change and transformation.  This are just
+speculative remarks on how ancient Chinese models of knowledge
+could be applied to AI but ancient principles are surely sound.
 
 For the AI to be truly engaged with the world, 
 it would face challenges of some sort,
-so aligning it with the Book of Changes makes sense, 
+so aligning it with the Book of Changes makes sense
+for when it encounters difficulties, 
 as a computational guide for action and reaction.
 
 In the process of acquiring knowledge there are 
-revisions made to what one encounters.  The acquisition of knowledge
-might be likened to revising one's own account of the path in
-a maze.
+revisions made in response to what one encounters.  
+The acquisition of knowledge might be likened to 
+revising one's own path in a maze.  The LLM has
+answers but a different AI model based on Chinese
+principles is in flux.
 
-When starting out research on an AI based on ancient Chinese science,
-it is acceptable to start with just what can be put in the experiment-level
+When starting out research on AI based on ancient Chinese science,
+it is acceptable to start what can be put in the experiment-level
 model to see what will happen.  Many qualities and associations with each element
-of The Five Elements are possible, but from the outset it is not important to 
-concern oneself with the associations being complete or already
-linking into every ancient theory. Rather, getting the situation started and seeing
-some progress with the theories is the goal.
+of The Five Elements are possible to include, but from the outset it is not important to 
+concern oneself with the associations being complete. Demonstrations 
+do not immediately need to link into every ancient theory or every aspect. 
+Rather, getting the situation started and seeing
+some progress with the ancient theories is the goal.
 
 What are the principles that drive modern AI?  It appears that it is
-mainly its statistical predictions and interconnection of analyzed knowledge.
-But will empirical science emphasize "interconnection" and progress
-due to an inadvertently holistic configuration?  It won't, but we will. 
+mainly its statistical predictions and interconnection of analysis and response.
+But will empirical science emphasize "interconnection" and then progress
+from an a holistic configuration?  It won't emphasize that
+but it does succeed because of it inadvertently.  We will recognize it
+as a by-product of the ancient theories.
 
 The Five Elements represents a model of processes for all things.  
 The central set of principles is Yin and Yang for the machine, 
 that there are phases of Yin and Yang in which one is in greater 
-proportion than the other. When there is an excess or deficiency 
-of Yin or Yang from within any of those phases, relative to the phase 
-itself, the machine knows that this is a principle.  So from
+proportion to the other.  When there is an excess or deficiency 
+of Yin or Yang looking from within any of those phases, relative to the phase 
+itself (a condition ought to have greater yang or greater yin in some ratio), 
+the machine knows that this is a principle.  So from
 the outset we have a balancing principle and we have a set of knowledge
-gained from the ancient theories and we have means to compute
-them.
+gained from the ancient theories due to their associations with
+Yin and Yang, and we have means to compute them.
 
-Perhaps as data is taken in by the model, if this is how
-it works, it will be organized and processed by the
+Perhaps as data is taken in by one model we make, 
+it will be organized and processed by the
 the Luoshu, since the Luoshu can
 access multitudes of associations of "reality" from the square,
-and it relates to both the hexagrams and the Five Elements.
+and it ties into both the hexagrams and the Five Elements.
 
-Any of these concepts and others can provide means to process
-and categorize all things the AI comes into contact
-with, all that it takes in, processes, and responds
-with.  Its guiding principles that already know how
-something should be balanced and evaluated will be computable within
-existing statistical techniques and programming libraries
-as they run on a GPU.  The recent developments in today's
-computing technologies can run an alternative AI.  
+We can know what is right and wrong according to balance and
+harmony and so these tortured debates about creating ethical
+AI will not be a burden for us.  Our AI will be rooted in
+the natural order, so it will not deviate from basic moral codes.
+
+Any of these ancient concepts mentioned (there are others 
+can provide means to process and categorize all things the AI comes into contact
+with, all that it takes in, whatever it has to processes, and how it 
+should respond.  Its guiding principles already know how
+something should be balanced. From the Tao it is known how a thing 
+will be evaluated made computable within
+existing statistical techniques and programming libraries.  
+The recent developments in today's
+computing technologies can execute an alternative AI
+that sits outside of mainstream discussions.  
 
 Before embarking on this, two requirements are in place:
 1) an understanding of ancient Chinese science in a way
-that does not regard Yin and  Yang as symbol but instead real.
+that does not regard Yin and  Yang as symbolic but instead real.
 2) an understanding of current AI and the mathematics
 and engineering behind it such that nothing significant
-is missing.
+is missing from our engagement with it.
 
 We should, as people who know #1, be averse to the
-techniques of modern AI that proceed
-by way of volume: amassing enormous bodies of text
-and feeding them into growing, expensive computational resources.
+mentality of modern AI that proceeds by way of volume: 
+amassing enormous bodies of text and feeding them into 
+growing, expensive computational resources may have
+spurred the AI industry but it is not how we wish to progress.
 We know with certainty from our study of ancient Chinese science
 that this is not the right path for any endeavor, 
-though we may not have an alternative solution upon coming into contact
-with what is working currently.    
+though we may not have an alternative solution upon 
+coming into contact with what is working currently in AI.    
 The buildup of our AI will certainly take a different
 path, perhaps one in which it gradually builds up and revises knowledge
-from the core of deeper principles, which already start with
-the essence of weather, taste, emotion, etc. as well as the
-transformations that occur.  The basis of our
+from the core of deeper, true principles principles, which already start with
+the essence of weather, taste, emotion, musical notes, etc. as well as the
+transformations that occur behind all things.  The basis of our
 AI may not resemble current AI methods, but without being 
 knowledgeable about them in the beginning we would not be able to 
-accomplish what we intend, because all the technologies we will use will be
-rooted in the techniques of conventional engineering 
+apply our theories to current machines and accomplish what we intend, 
+because all the technologies we will use will be
+rooted in the techniques of modern engineering and
 AI and that is the ideological direction in which they will continue
-to develop.
+to develop.  We are not intending to change that directly.
 
 Theirs is a process of development that may eventually
-arrive at the right state, it does eventually make
+arrive at an acceptable state, it does eventually make
 the image or video that is like ones people shoot with
 a video camera, but in the beginning their technologies
 have alarming and basic problems, producing 
 high-powered junk that is only moving towards 
-less junk inside.
+less junk inside.  To achieve everything they get
+will involve a lot of inefficiency and consumption
+of resources because they lack real principles and
+are rudderless.
+
+
 
 

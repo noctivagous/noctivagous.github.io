@@ -54,6 +54,9 @@
         }
         #controls input[type='number']
         {
+        	font-family:monospace;
+        	border-radius:8pt;
+        	text-align:center;
         	width:50pt;
         	font-size:12pt;
         	background-color:Gray;
@@ -115,7 +118,7 @@
                 <label for="slantGuides">Include Slant Guides</label><br><br>
                 <!-- Slant Angle Input -->
                 <label for="slantAngle">Slant Angle (degrees):</label>
-                <input type="number" id="slantAngle" value="20" min="0" max="90" step="1"><br><br>
+                <input type="number" id="slantAngle" value="15" min="0" max="90" step="1"><br><br>
                 <!-- Slant Line Spacing -->
                 <label for="slantSpacing">Slant Line Spacing (nib widths):</label>
                 <input type="number" id="slantSpacing" value="2" min="0.1" step="0.1">
@@ -133,7 +136,7 @@
     <input type="number" id="descenderDepth" value="0.5" min="0" step="0.1"><br><br>
     <!-- Capital Height Input -->
     <label for="capitalHeight">Capital Height (× x-height):</label>
-    <input type="number" id="capitalHeight" value="0.5" min="0" step="0.1">
+    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1">
 </fieldset>
 
 
@@ -362,6 +365,7 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
 
             // Calculate total nib height per block
             var nibHeight = nibWidth; // For clarity
+            var nibRectWidth = nibWidth;
             var xHeight = xHeightNibWidths * nibHeight;
             var ascenderNibWidths = xHeightNibWidths; // Assuming ascender height equal to x-height
             var capitalNibWidths = xHeightNibWidths * 0.7; // For example, 70% of x-height
@@ -376,7 +380,7 @@ var descenderHeight = descenderMultiplier * xHeight;
             var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
 
             var y = 0;
-            while (y <= height) {
+            while (y <= (height - totalBlockHeight)) {
                 // Shading the x-height area
                 var xHeightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                 xHeightRect.setAttribute("x", 0);
@@ -392,13 +396,13 @@ if(y > 0)
 {
                 // Filling the area beneath descender with white
                 var gapBetweenPracticeSectionsRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                gapBetweenPracticeSectionsRect.setAttribute("x", 1);
+                gapBetweenPracticeSectionsRect.setAttribute("x", 0);
                 gapBetweenPracticeSectionsRect.setAttribute("y", descenderY);
-                gapBetweenPracticeSectionsRect.setAttribute("width", width - 2);
+                gapBetweenPracticeSectionsRect.setAttribute("width", width );
                 gapBetweenPracticeSectionsRect.setAttribute("height", nibHeight);
              //     gapBetweenPracticeSectionsRect.setAttribute("fill-opacity", xHeightOpacity);
 
-                gapBetweenPracticeSectionsRect.setAttribute("fill", "#fff");
+                gapBetweenPracticeSectionsRect.setAttribute("fill", "#333");
                 practiceBlocksGroup.appendChild(gapBetweenPracticeSectionsRect);
 }
 			
@@ -414,7 +418,7 @@ if(y > 0)
                 lineAscender.setAttribute("y2", ascenderY);
                 lineAscender.setAttribute("stroke", "#000");
                 lineAscender.setAttribute("stroke-width", strokeWidth);
-                lineAscender.setAttribute("stroke-dasharray", "4,2"); // Dashed line
+                lineAscender.setAttribute("stroke-dasharray", "6,2"); // Dashed line
                 practiceBlocksGroup.appendChild(lineAscender);
 
 
@@ -440,9 +444,23 @@ if(y > 0)
                 lineWaist.setAttribute("y2", waistlineY);
                 lineWaist.setAttribute("stroke", "#000");
                 lineWaist.setAttribute("stroke-width", strokeWidth);
-                                lineWaist.setAttribute("text-shadow", "#FC0 1px 0 10px");
+                              //  lineWaist.setAttribute("text-shadow", "#FC0 1px 0 10px");
                 practiceBlocksGroup.appendChild(lineWaist);
                 
+
+                // MidLine (dashed)
+                var midlineY = (waistlineY + xHeight / 2) ;
+                var lineMidline = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineMidline.setAttribute("x1", 0);
+                lineMidline.setAttribute("y1", midlineY);
+                lineMidline.setAttribute("x2", width);
+                lineMidline.setAttribute("y2", midlineY);
+                lineMidline.setAttribute("stroke", "#ccc");
+                lineMidline.setAttribute("stroke-width", strokeWidth);
+                lineMidline.setAttribute("stroke-dasharray", "2,2"); // Dashed line
+
+                practiceBlocksGroup.appendChild(lineMidline);
+
 
 
                 // Baseline (solid)
@@ -465,7 +483,7 @@ if(y > 0)
                 lineDescender.setAttribute("y2", descenderY);
                 lineDescender.setAttribute("stroke", "#000");
                 lineDescender.setAttribute("stroke-width", strokeWidth);
-                lineDescender.setAttribute("stroke-dasharray", "4,2"); // Dashed line
+                lineDescender.setAttribute("stroke-dasharray", "6,2"); // Dashed line
                 practiceBlocksGroup.appendChild(lineDescender);
 
 				if(showPracticeBlocks)
@@ -475,26 +493,72 @@ var nibGuideGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 practiceBlocksGroup.appendChild(nibGuideGroup);
 
 var nibX = 5; // Position from left edge
-var nibCount = xHeight / nibWidth; // Number of squares to draw
+var nibCount = (baselineY - ascenderY) / nibWidth; // Number of squares to draw
 
+// Ascending blocks from baseline
 // Draw nib squares in alternating columns per row
 for (var i = 0; i < nibCount; i++) {
     var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     var col = i % 2; // Alternate columns
     
     // Calculate yPosition so that blocks stack upwards from baselineY
-    var yPosition = baselineY - (i + 1) * nibHeight;
+    var yPosition = Math.ceil(baselineY - (i + 1) * nibHeight);
     
-    rect.setAttribute("x", nibX + col * nibWidth);
+    rect.setAttribute("x", nibX + col * nibRectWidth);
     rect.setAttribute("y", yPosition);
-    rect.setAttribute("width", nibWidth);
+    rect.setAttribute("width", nibRectWidth);
     rect.setAttribute("height", nibHeight);
     rect.setAttribute("fill", "#000"); // Black nibs
+
+
+
+    if( (yPosition ) < waistlineY )
+    {
+           rect.setAttribute("fill", "#999");
+
+     }
+     
+    if(((yPosition ) < waistlineY) && ((yPosition + nibWidth - 1) > waistlineY) )
+    {
+    //  rect.setAttribute("fill", "red"); // debug
+
+	}
+        
+    if((yPosition ) <= ascenderY)
+    {
+      var diff = ascenderY - yPosition;
+    
+    //  rect.setAttribute("fill", "red"); // debug
+         rect.setAttribute("y", yPosition + diff);
+         rect.setAttribute("height", nibHeight - diff);
+              
+    }
+    
     nibGuideGroup.appendChild(rect);
+
+    if(((yPosition ) < waistlineY) && ((yPosition + nibWidth - 1) > waistlineY) )
+    {
+        var rect2ForSplit = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect2ForSplit.setAttribute("x", nibX + col * nibRectWidth);
+    rect2ForSplit.setAttribute("y", waistlineY);
+    rect2ForSplit.setAttribute("width", nibRectWidth);
+    rect2ForSplit.setAttribute("height", (yPosition + nibRectWidth) - waistlineY);
+    rect2ForSplit.setAttribute("fill", "black"); // Black nibs
+
+
+
+    nibGuideGroup.appendChild(rect2ForSplit);
+
+    //  rect.setAttribute("fill", "red"); // Black nibs
+
+	}
+	
+
 }
 
 
     
+    // Descender blocks
     nibCount = (descenderY - baselineY) / nibWidth
      
      var nibYStart = baselineY;
@@ -505,12 +569,20 @@ for (var i = 0; i < nibCount; i++) {
                         var col = 1 - (i % 2); // Alternate columns
                         var yPosition = nibYStart + i * nibHeight;
 
-                        rect.setAttribute("x", nibX + col * nibWidth);
+                        rect.setAttribute("x", nibX + col * nibRectWidth);
                         rect.setAttribute("y", yPosition);
-                        rect.setAttribute("width", nibWidth);
+                        rect.setAttribute("width", nibRectWidth);
                         rect.setAttribute("height", nibHeight);
-                        rect.setAttribute("fill", "#999"); // Black nibs
+                        rect.setAttribute("fill", "#999"); 
                         nibGuideGroup.appendChild(rect);
+                    
+                    	if((yPosition + nibHeight) > descenderY)
+                    	{
+            	           //  rect.setAttribute("fill", "red"); 
+            	    		 rect.setAttribute("height", (yPosition + nibHeight) - (descenderY));
+
+
+                    	}
                     }
                     
                     
@@ -521,34 +593,34 @@ for (var i = 0; i < nibCount; i++) {
                     // Label the lines (once per block)
                     var labelX = 30; // Position labels slightly inside the left edge
                     var fontSize = 10; // Adjust as needed
-                    var labelColor = "#555"; // Dark gray
+                    var labelColor = "#444"; // Dark gray
 
 
                     // Ascender Label
                     var ascenderLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     ascenderLabel.setAttribute("x", labelX);
-                    ascenderLabel.setAttribute("y", ascenderY - 2);
-                    ascenderLabel.setAttribute("fill", labelColor);
+                    ascenderLabel.setAttribute("y", ascenderY - 1 + nibWidth);
+                    ascenderLabel.setAttribute("fill", "#9c9c9c");
                     ascenderLabel.setAttribute("font-size", fontSize);
-                    ascenderLabel.textContent = "Ascender Line";
+                    ascenderLabel.textContent = "Ascender Line⬏ ";
                     practiceBlocksGroup.appendChild(ascenderLabel);
 
                     // Capital Label
                     var capitalLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     capitalLabel.setAttribute("x", labelX);
                     capitalLabel.setAttribute("y", capitalY - 2);
-                    capitalLabel.setAttribute("fill", labelColor);
+                    capitalLabel.setAttribute("fill", "#9c9c9c");
                     capitalLabel.setAttribute("font-size", fontSize);
-                    capitalLabel.textContent = "Capital Line";
+                    capitalLabel.textContent = "Capital Line⬎";
                     practiceBlocksGroup.appendChild(capitalLabel);
 
                     // Waistline Label
                     var waistlineLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     waistlineLabel.setAttribute("x", labelX);
                     waistlineLabel.setAttribute("y", waistlineY - 2);
-                    waistlineLabel.setAttribute("fill", labelColor);
+                    waistlineLabel.setAttribute("fill", "#9c9c9c");
                     waistlineLabel.setAttribute("font-size", fontSize);
-                    waistlineLabel.textContent = "Waist Line";
+                    waistlineLabel.textContent = "Waist Line ⬎";
                     practiceBlocksGroup.appendChild(waistlineLabel);
 
                     // Baseline Label
@@ -557,16 +629,16 @@ for (var i = 0; i < nibCount; i++) {
                     baselineLabel.setAttribute("y", baselineY - 2);
                     baselineLabel.setAttribute("fill", labelColor);
                     baselineLabel.setAttribute("font-size", fontSize);
-                    baselineLabel.textContent = "Base Line";
+                    baselineLabel.textContent = "Base Line ⬎";
                     practiceBlocksGroup.appendChild(baselineLabel);
 
                     // Descender Label
                     var descenderLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     descenderLabel.setAttribute("x", labelX);
                     descenderLabel.setAttribute("y", descenderY - 2);
-                    descenderLabel.setAttribute("fill", labelColor);
+                    descenderLabel.setAttribute("fill", "#9c9c9c");
                     descenderLabel.setAttribute("font-size", fontSize);
-                    descenderLabel.textContent = "Descender Line";
+                    descenderLabel.textContent = "Descender Line⬎";
                     practiceBlocksGroup.appendChild(descenderLabel);
                     
                 }

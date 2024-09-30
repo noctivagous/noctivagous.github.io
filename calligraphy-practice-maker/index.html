@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calligraphy Practice Sheet Generator</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        #container {
+            display: flex;
+        }
+        #controls {
+            width: 300px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            box-sizing: border-box;
+        }
+        #canvas {
+            flex-grow: 1;
+            display: block;
+            margin: 0 auto;
+        }
+        fieldset {
+            margin-bottom: 10px;
+        	border:2pt solid #333;
+        }
+
+        #controls fieldset legend
+        {
+        	text-transform:uppercase;
+    		background-color:#333;
+			color:#bbb;
+			border:3pt solid #333;
+			font-size:10pt;
+        	/*
+			font-weight:bold;
+			margin-left:-13pt;
+			width:100%;
+			*/
+        }
+        #controls fieldset
+        {
+        	font-family:sans-serif;
+        	background-color:#ccc;
+        	color:#333;
+        }
+        #controls fieldset label
+        {
+			font-family:geneva;
+        	/*text-transform:uppercase;*/
+
+        	font-size:11pt;
+        }
+        #controls input[type='number']
+        {
+        	width:50pt;
+        	font-size:12pt;
+        	background-color:Gray;
+        	color:White;
+        }
+        
+        
+        /* Hide controls when printing */
+        @media print {
+            #controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- Configuration Area -->
+        <div id="controls">
+            <!-- NIB WIDTH AND GUIDE FIELDSET -->
+            <fieldset>
+                <legend>Nib Width and Guide</legend>
+                <!-- Nib Width Input -->
+                <label for="nibWidth">Nib Width (mm):</label>
+                <input type="number" id="nibWidth" value="3.8" min="0.1" step="0.1" ><br><br>
+
+                <!-- Show Practice Blocks -->
+                <input type="checkbox" id="showPracticeBlocks" checked>
+                <label for="showPracticeBlocks">Show Practice Blocks</label>
+                <br>
+
+                <!-- Show Nib Guideline Labels -->
+                <input type="checkbox" id="showNibGuidelineLabels" checked>
+                <label for="showNibGuidelineLabels">Show Nib Guideline Labels</label>
+
+
+                
+            </fieldset>
+
+            <!-- x-height Settings Fieldset -->
+            <fieldset>
+                <legend>x-height Settings</legend>
+                <!-- x-height Input -->
+                <label for="xHeight">x-height: (nib width ×)</label>
+                <input type="number" id="xHeight" value="5" min="0.1" step="0.1"><br><br>
+                <!-- x-height Background Color Picker -->
+                <label for="xHeightColor">x-height Background Color:</label>
+                <input type="color" id="xHeightColor" value="#f0f0f0"><br><br>
+                <!-- x-height Background Opacity -->
+                <label for="xHeightOpacity">x-height Background Opacity (0-1):</label>
+                <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
+            </fieldset>
+
+            <!-- Slant Guides Fieldset -->
+            <fieldset>
+                <legend>Slant Guides</legend>
+                <!-- Include Slant Guides Checkbox -->
+                <input type="checkbox" id="slantGuides">
+                <label for="slantGuides">Include Slant Guides</label><br><br>
+                <!-- Slant Angle Input -->
+                <label for="slantAngle">Slant Angle (degrees):</label>
+                <input type="number" id="slantAngle" value="20" min="0" max="90" step="1"><br><br>
+                <!-- Slant Line Spacing -->
+                <label for="slantSpacing">Slant Line Spacing (nib widths):</label>
+                <input type="number" id="slantSpacing" value="2" min="0.1" step="0.1">
+            </fieldset>
+
+
+<!-- Ascender and Descender Settings Fieldset -->
+<fieldset>
+    <legend>Ascender and Descender</legend>
+    <!-- Ascender Height Input -->
+    <label for="ascenderHeight">Ascender Height (× x-height):</label>
+    <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"><br><br>
+    <!-- Descender Depth Input -->
+    <label for="descenderDepth">Descender Depth (× x-height):</label>
+    <input type="number" id="descenderDepth" value="0.5" min="0" step="0.1"><br><br>
+    <!-- Capital Height Input -->
+    <label for="capitalHeight">Capital Height (× x-height):</label>
+    <input type="number" id="capitalHeight" value="0.5" min="0" step="0.1">
+</fieldset>
+
+
+
+            <!-- Generate Grid Button -->
+            <button onclick="drawGrid()">Generate Grid</button>
+        </div>
+
+        <!-- SVG Canvas -->
+        <svg
+            id="canvas"
+            xmlns="http://www.w3.org/2000/svg"
+            width="520pt"
+            height="720pt"
+            viewBox="0 0 520 720"
+        >
+            <rect width="100%" height="100%" fill="white" />
+            <g id="grid"></g>
+        </svg>
+    </div>
+
+    <!-- JavaScript Code -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize and add event listeners
+            init();
+        });
+
+        function init() {
+            // Add event listeners to controls
+            var controls = document.querySelectorAll('#controls input');
+            controls.forEach(function(control) {
+                if (control.type === 'number' || control.type === 'color') {
+                    control.addEventListener('change', drawGrid); // For text fields
+                } else if (control.type === 'checkbox') {
+                    control.addEventListener('change', drawGrid); // For checkboxes
+                }
+            });
+
+            // Initial grid drawing
+            drawGrid();
+        }
+
+        function drawGrid() {
+            // Conversion factor from mm to pt
+            var mmToPt = 2.83465;
+
+            // Get nib width in mm and convert to pt
+            var nibWidthMm = parseFloat(document.getElementById('nibWidth').value);
+            if (isNaN(nibWidthMm) || nibWidthMm <= 0) {
+                document.getElementById('nibWidth').value = 3.8;
+                nibWidthMm = parseFloat(document.getElementById('nibWidth').value);
+                alert("Please enter a positive number for the nib width.");
+                return;
+            }
+            var nibWidth = nibWidthMm * mmToPt; // Nib width in points
+
+
+
+
+            var xHeightNibWidths = parseFloat(document.getElementById('xHeight').value);
+            if (isNaN(xHeightNibWidths) || xHeightNibWidths <= 0) {
+                document.getElementById('xHeight').value = 4;
+                xHeightNibWidths = 4;
+                alert("Please enter a positive number for x-height in nib widths.");
+                return;
+            }
+
+            var xHeightColor = document.getElementById('xHeightColor').value;
+            var xHeightOpacity = parseFloat(document.getElementById('xHeightOpacity').value);
+            if (isNaN(xHeightOpacity) || xHeightOpacity < 0 || xHeightOpacity > 1) {
+                document.getElementById('xHeightOpacity').value = 0.4;
+                xHeightOpacity = 0.4;
+                alert("Please enter a valid opacity between 0 and 1.");
+                return;
+            }
+
+            var showNibGuidelineLabels = document.getElementById('showNibGuidelineLabels').checked;
+			var showPracticeBlocks = document.getElementById('showPracticeBlocks').checked;
+
+
+            var includeSlantGuides = document.getElementById('slantGuides').checked;
+            var slantAngle = parseFloat(document.getElementById('slantAngle').value);
+            if (isNaN(slantAngle) || slantAngle < 0 || slantAngle > 90) {
+                document.getElementById('slantAngle').value = 90;
+                alert("Please enter a slant angle between 0 and 90 degrees.");
+                return;
+            }
+
+            var slantSpacingMultiplier = parseFloat(document.getElementById('slantSpacing').value);
+            if (isNaN(slantSpacingMultiplier) || slantSpacingMultiplier <= 0) {
+                document.getElementById('slantSpacing').value = 1;
+                alert("Please enter a positive number for slant line spacing multiplier.");
+                return;
+            }
+
+
+var ascenderMultiplier = parseFloat(document.getElementById('ascenderHeight').value);
+if (isNaN(ascenderMultiplier) || ascenderMultiplier < 0) {
+    document.getElementById('ascenderHeight').value = 1;
+    ascenderMultiplier = 1;
+    alert("Please enter a non-negative number for ascender height multiplier.");
+    return;
+}
+
+var descenderMultiplier = parseFloat(document.getElementById('descenderDepth').value);
+if (isNaN(descenderMultiplier) || descenderMultiplier < 0) {
+    document.getElementById('descenderDepth').value = 1;
+    descenderMultiplier = 1;
+    alert("Please enter a non-negative number for descender depth multiplier.");
+    return;
+}
+
+var capitalMultiplier = parseFloat(document.getElementById('capitalHeight').value);
+if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
+    document.getElementById('capitalHeight').value = 0.7;
+    capitalMultiplier = 0.7;
+    alert("Please enter a non-negative number for capital height multiplier.");
+    return;
+}
+
+
+            // Clear existing grid
+            var gridGroup = document.getElementById('grid');
+            while (gridGroup.firstChild) {
+                gridGroup.removeChild(gridGroup.firstChild);
+            }
+
+            var svg = document.getElementById('canvas');
+            var width = svg.viewBox.baseVal.width;
+            var height = svg.viewBox.baseVal.height;
+
+            // Define stroke width in points
+            var strokeWidth = 0.6;
+
+            // Draw outer rectangle
+            var outerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            outerRect.setAttribute("x", 0);
+            outerRect.setAttribute("y", 0);
+            outerRect.setAttribute("width", width);
+            outerRect.setAttribute("height", height);
+            outerRect.setAttribute("fill", "none");
+            outerRect.setAttribute("stroke", "#000");
+            outerRect.setAttribute("stroke-width", strokeWidth);
+            gridGroup.appendChild(outerRect);
+
+            // Draw background horizontal lines at every nib width
+            var backgroundLinesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            backgroundLinesGroup.setAttribute("id", "backgroundLines");
+            gridGroup.appendChild(backgroundLinesGroup);
+
+            for (var y = 0; y <= height; y += nibWidth) {
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", 0);
+                line.setAttribute("y1", y);
+                line.setAttribute("x2", width);
+                line.setAttribute("y2", y);
+                line.setAttribute("stroke", "#eee"); // Light gray background lines
+                line.setAttribute("stroke-width", strokeWidth);
+                backgroundLinesGroup.appendChild(line);
+            }
+
+ // Draw slant guides if selected (on top of x-height shading)
+             // Draw slant guides if selected (behind x-height lines but above background lines)
+            if (includeSlantGuides) {
+                var slantGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                slantGroup.setAttribute("id", "slantGuides");
+                gridGroup.appendChild(slantGroup);
+
+                var angleRadians = slantAngle * Math.PI / 180;
+                var tanAngle = Math.tan(angleRadians); // Slope of the slant lines
+
+                // Spacing between slant lines is same as nib width
+                var slantSpacing = nibWidth * slantSpacingMultiplier;
+
+                // For vertical lines (90 degrees), handle separately
+                if (slantAngle === 90) {
+                    for (var x = 0; x <= width; x += slantSpacing) {
+                        var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        line.setAttribute("x1", x);
+                        line.setAttribute("y1", 0);
+                        line.setAttribute("x2", x);
+                        line.setAttribute("y2", height);
+                        line.setAttribute("stroke", "#aaa");
+                        line.setAttribute("stroke-width", strokeWidth);
+                        slantGroup.appendChild(line);
+                    }
+                } else {
+                    // Starting x position for slant lines
+                    var xStart = -height * tanAngle;
+                    var xEnd = width + height * tanAngle;
+                    for (var x = xStart; x <= xEnd; x += slantSpacing) {
+                        var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+                        var x1 = x;
+                        var y1 = 0;
+                        var x2 = x - height * tanAngle;
+                        var y2 = height;
+
+
+
+            // Clip the line to the bounds of the document
+            var clippedLine = clipLineToRect(x1, y1, x2, y2, 0, 0, width, height);
+            if (clippedLine) {
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", clippedLine.x1);
+                line.setAttribute("y1", clippedLine.y1);
+                line.setAttribute("x2", clippedLine.x2);
+                line.setAttribute("y2", clippedLine.y2);
+                line.setAttribute("stroke", "#ccc");
+                line.setAttribute("stroke-width", strokeWidth);
+                slantGroup.appendChild(line);
+                }
+
+
+
+                    }
+                }
+            }
+
+
+            // Draw practice blocks with x-height area shaded
+            var practiceBlocksGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            practiceBlocksGroup.setAttribute("id", "practiceBlocks");
+            gridGroup.appendChild(practiceBlocksGroup);
+
+            // Calculate total nib height per block
+            var nibHeight = nibWidth; // For clarity
+            var xHeight = xHeightNibWidths * nibHeight;
+            var ascenderNibWidths = xHeightNibWidths; // Assuming ascender height equal to x-height
+            var capitalNibWidths = xHeightNibWidths * 0.7; // For example, 70% of x-height
+            var descenderNibWidths = xHeightNibWidths; // Assuming descender height equal to x-height
+
+     var ascenderHeight = ascenderMultiplier * xHeight;
+var capitalHeight = capitalMultiplier * xHeight;
+var descenderHeight = descenderMultiplier * xHeight;
+
+
+
+            var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
+
+            var y = 0;
+            while (y <= height) {
+                // Shading the x-height area
+                var xHeightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                xHeightRect.setAttribute("x", 0);
+                xHeightRect.setAttribute("y", y + ascenderHeight + capitalHeight);
+                xHeightRect.setAttribute("width", width);
+                xHeightRect.setAttribute("height", xHeight);
+                xHeightRect.setAttribute("fill", xHeightColor);
+                xHeightRect.setAttribute("fill-opacity", xHeightOpacity);
+                practiceBlocksGroup.appendChild(xHeightRect);
+
+
+if(y > 0)
+{
+                // Filling the area beneath descender with white
+                var gapBetweenPracticeSectionsRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                gapBetweenPracticeSectionsRect.setAttribute("x", 1);
+                gapBetweenPracticeSectionsRect.setAttribute("y", descenderY);
+                gapBetweenPracticeSectionsRect.setAttribute("width", width - 2);
+                gapBetweenPracticeSectionsRect.setAttribute("height", nibHeight);
+             //     gapBetweenPracticeSectionsRect.setAttribute("fill-opacity", xHeightOpacity);
+
+                gapBetweenPracticeSectionsRect.setAttribute("fill", "#fff");
+                practiceBlocksGroup.appendChild(gapBetweenPracticeSectionsRect);
+}
+			
+			
+			
+			
+                // Ascender line (dashed)
+                var ascenderY = y;
+                var lineAscender = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineAscender.setAttribute("x1", 0);
+                lineAscender.setAttribute("y1", ascenderY);
+                lineAscender.setAttribute("x2", width);
+                lineAscender.setAttribute("y2", ascenderY);
+                lineAscender.setAttribute("stroke", "#000");
+                lineAscender.setAttribute("stroke-width", strokeWidth);
+                lineAscender.setAttribute("stroke-dasharray", "4,2"); // Dashed line
+                practiceBlocksGroup.appendChild(lineAscender);
+
+
+
+                // Capital line (dashed)
+                var capitalY = ascenderY + ascenderHeight;
+                var lineCapital = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineCapital.setAttribute("x1", 0);
+                lineCapital.setAttribute("y1", capitalY);
+                lineCapital.setAttribute("x2", width);
+                lineCapital.setAttribute("y2", capitalY);
+                lineCapital.setAttribute("stroke", "#000");
+                lineCapital.setAttribute("stroke-width", strokeWidth);
+                lineCapital.setAttribute("stroke-dasharray", "4,2"); // Dashed line
+                practiceBlocksGroup.appendChild(lineCapital);
+
+                // Waistline (solid)
+                var waistlineY = capitalY + capitalHeight;
+                var lineWaist = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineWaist.setAttribute("x1", 0);
+                lineWaist.setAttribute("y1", waistlineY);
+                lineWaist.setAttribute("x2", width);
+                lineWaist.setAttribute("y2", waistlineY);
+                lineWaist.setAttribute("stroke", "#000");
+                lineWaist.setAttribute("stroke-width", strokeWidth);
+                                lineWaist.setAttribute("text-shadow", "#FC0 1px 0 10px");
+                practiceBlocksGroup.appendChild(lineWaist);
+                
+
+
+                // Baseline (solid)
+                var baselineY = waistlineY + xHeight;
+                var lineBase = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineBase.setAttribute("x1", 0);
+                lineBase.setAttribute("y1", baselineY);
+                lineBase.setAttribute("x2", width);
+                lineBase.setAttribute("y2", baselineY);
+                lineBase.setAttribute("stroke", "#000");
+                lineBase.setAttribute("stroke-width", strokeWidth);
+                practiceBlocksGroup.appendChild(lineBase);
+
+                // Descender line (dashed)
+                var descenderY = baselineY + descenderHeight;
+                var lineDescender = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                lineDescender.setAttribute("x1", 0);
+                lineDescender.setAttribute("y1", descenderY);
+                lineDescender.setAttribute("x2", width);
+                lineDescender.setAttribute("y2", descenderY);
+                lineDescender.setAttribute("stroke", "#000");
+                lineDescender.setAttribute("stroke-width", strokeWidth);
+                lineDescender.setAttribute("stroke-dasharray", "4,2"); // Dashed line
+                practiceBlocksGroup.appendChild(lineDescender);
+
+				if(showPracticeBlocks)
+				{
+			// Draw nib guide
+var nibGuideGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+practiceBlocksGroup.appendChild(nibGuideGroup);
+
+var nibX = 5; // Position from left edge
+var nibCount = xHeight / nibWidth; // Number of squares to draw
+
+// Draw nib squares in alternating columns per row
+for (var i = 0; i < nibCount; i++) {
+    var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    var col = i % 2; // Alternate columns
+    
+    // Calculate yPosition so that blocks stack upwards from baselineY
+    var yPosition = baselineY - (i + 1) * nibHeight;
+    
+    rect.setAttribute("x", nibX + col * nibWidth);
+    rect.setAttribute("y", yPosition);
+    rect.setAttribute("width", nibWidth);
+    rect.setAttribute("height", nibHeight);
+    rect.setAttribute("fill", "#000"); // Black nibs
+    nibGuideGroup.appendChild(rect);
+}
+
+
+    
+    nibCount = (descenderY - baselineY) / nibWidth
+     
+     var nibYStart = baselineY;
+	
+                    // Draw nib squares in alternating columns per row
+                    for (var i = 0; i < nibCount; i++) {
+                        var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        var col = 1 - (i % 2); // Alternate columns
+                        var yPosition = nibYStart + i * nibHeight;
+
+                        rect.setAttribute("x", nibX + col * nibWidth);
+                        rect.setAttribute("y", yPosition);
+                        rect.setAttribute("width", nibWidth);
+                        rect.setAttribute("height", nibHeight);
+                        rect.setAttribute("fill", "#999"); // Black nibs
+                        nibGuideGroup.appendChild(rect);
+                    }
+                    
+                    
+				}
+
+
+                if (showNibGuidelineLabels) {
+                    // Label the lines (once per block)
+                    var labelX = 30; // Position labels slightly inside the left edge
+                    var fontSize = 10; // Adjust as needed
+                    var labelColor = "#555"; // Dark gray
+
+
+                    // Ascender Label
+                    var ascenderLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    ascenderLabel.setAttribute("x", labelX);
+                    ascenderLabel.setAttribute("y", ascenderY - 2);
+                    ascenderLabel.setAttribute("fill", labelColor);
+                    ascenderLabel.setAttribute("font-size", fontSize);
+                    ascenderLabel.textContent = "Ascender Line";
+                    practiceBlocksGroup.appendChild(ascenderLabel);
+
+                    // Capital Label
+                    var capitalLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    capitalLabel.setAttribute("x", labelX);
+                    capitalLabel.setAttribute("y", capitalY - 2);
+                    capitalLabel.setAttribute("fill", labelColor);
+                    capitalLabel.setAttribute("font-size", fontSize);
+                    capitalLabel.textContent = "Capital Line";
+                    practiceBlocksGroup.appendChild(capitalLabel);
+
+                    // Waistline Label
+                    var waistlineLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    waistlineLabel.setAttribute("x", labelX);
+                    waistlineLabel.setAttribute("y", waistlineY - 2);
+                    waistlineLabel.setAttribute("fill", labelColor);
+                    waistlineLabel.setAttribute("font-size", fontSize);
+                    waistlineLabel.textContent = "Waist Line";
+                    practiceBlocksGroup.appendChild(waistlineLabel);
+
+                    // Baseline Label
+                    var baselineLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    baselineLabel.setAttribute("x", labelX);
+                    baselineLabel.setAttribute("y", baselineY - 2);
+                    baselineLabel.setAttribute("fill", labelColor);
+                    baselineLabel.setAttribute("font-size", fontSize);
+                    baselineLabel.textContent = "Base Line";
+                    practiceBlocksGroup.appendChild(baselineLabel);
+
+                    // Descender Label
+                    var descenderLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    descenderLabel.setAttribute("x", labelX);
+                    descenderLabel.setAttribute("y", descenderY - 2);
+                    descenderLabel.setAttribute("fill", labelColor);
+                    descenderLabel.setAttribute("font-size", fontSize);
+                    descenderLabel.textContent = "Descender Line";
+                    practiceBlocksGroup.appendChild(descenderLabel);
+                    
+                }
+
+
+                y = descenderY + nibHeight; // Add a nib width space between blocks
+            }
+
+           
+       }
+       
+      // Function to clip a line segment to a rectangle using the Liang-Barsky algorithm
+function clipLineToRect(x1, y1, x2, y2, xmin, ymin, xmax, ymax) {
+    var dx = x2 - x1;
+    var dy = y2 - y1;
+
+    var p = [-dx, dx, -dy, dy];
+    var q = [x1 - xmin, xmax - x1, y1 - ymin, ymax - y1];
+
+    var u1 = 0;
+    var u2 = 1;
+
+    for (var i = 0; i < 4; i++) {
+        if (p[i] === 0) {
+            if (q[i] < 0) {
+                return null; // Line is outside the rectangle
+            }
+        } else {
+            var u = q[i] / p[i];
+            if (p[i] < 0) {
+                if (u > u2) {
+                    return null; // Line is outside the rectangle
+                }
+                if (u > u1) {
+                    u1 = u;
+                }
+            } else if (p[i] > 0) {
+                if (u < u1) {
+                    return null; // Line is outside the rectangle
+                }
+                if (u < u2) {
+                    u2 = u;
+                }
+            }
+        }
+    }
+
+    if (u1 > u2) {
+        return null; // Line is outside the rectangle
+    }
+
+    var clippedX1 = x1 + u1 * dx;
+    var clippedY1 = y1 + u1 * dy;
+    var clippedX2 = x1 + u2 * dx;
+    var clippedY2 = y1 + u2 * dy;
+
+    return { x1: clippedX1, y1: clippedY1, x2: clippedX2, y2: clippedY2 };
+}
+ 
+    </script>
+</body>
+</html>

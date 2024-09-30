@@ -16,6 +16,13 @@
             background: rgba(255, 255, 255, 0.8);
             box-sizing: border-box;
         }
+        
+        #controls h1{
+        font-family:sans-serif;
+        font-size:10pt;
+        margin-top:0;
+
+        }
         #canvas {
             flex-grow: 1;
             display: block;
@@ -24,10 +31,13 @@
         fieldset {
             margin-bottom: 10px;
         	border:2pt solid #333;
+        	padding-top:10pt;
+        	padding-bottom:10pt;
         }
 
         #controls fieldset legend
         {
+        
         	text-transform:uppercase;
     		background-color:#333;
 			color:#bbb;
@@ -44,10 +54,13 @@
         	font-family:sans-serif;
         	background-color:#ccc;
         	color:#333;
+                box-shadow: 3pt 3pt 3pt gray;
         }
         #controls fieldset label
         {
-			font-family:geneva;
+        font-weight:bold;
+			font-family:sans-serif;
+
         	/*text-transform:uppercase;*/
 
         	font-size:11pt;
@@ -63,7 +76,28 @@
         	color:White;
         }
         
+        #outputButtons{
+        margin-top:5pt;
+        margin-bottom:15pt;
         
+        padding:2pt;
+        }
+                #outputButtons button, button
+                {
+                font-family:monospace;
+                background-color:#ccc;
+                color:#333;
+                border-radius:4pt;
+                height:25pt;
+                box-shadow: 3pt 3pt 3pt silver;
+                }
+                .darkButton1
+                {
+                 background-color:#000;
+                color:#ccc;
+                }
+                
+                
         /* Hide controls when printing */
         @media print {
             #controls {
@@ -76,12 +110,19 @@
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
+        <h1>Lettering Worksheet Generator</h1>
+
+
+<div id="outputButtons">
+            <button onclick="window.print()">Print</button>
+                    <!--    <button onclick="downloadAsPDF()">Download As PDF</button>-->
+</div>
             <!-- NIB WIDTH AND GUIDE FIELDSET -->
             <fieldset>
                 <legend>Nib Width and Guide</legend>
                 <!-- Nib Width Input -->
-                <label for="nibWidth">Nib Width (mm):</label>
-                <input type="number" id="nibWidth" value="3.8" min="0.1" step="0.1" ><br><br>
+                <label for="nibWidth">Nib Width:</label>
+                <input type="number" id="nibWidth" value="3.8" min="0.1" step="0.1" > mm<br><br>
 
                 <!-- Show Practice Blocks -->
                 <input type="checkbox" id="showPracticeBlocks" checked>
@@ -100,13 +141,13 @@
             <fieldset>
                 <legend>x-height Settings</legend>
                 <!-- x-height Input -->
-                <label for="xHeight">x-height: (nib width ×)</label>
-                <input type="number" id="xHeight" value="5" min="0.1" step="0.1"><br><br>
+                <label for="xHeight">X-Height:</label>
+                <input type="number" id="xHeight" value="5" min="0.1" step="0.1"> × nib width<br><br>
                 <!-- x-height Background Color Picker -->
-                <label for="xHeightColor">x-height Background Color:</label>
+                <label for="xHeightColor">Area Background Color:</label>
                 <input type="color" id="xHeightColor" value="#f0f0f0"><br><br>
                 <!-- x-height Background Opacity -->
-                <label for="xHeightOpacity">x-height Background Opacity (0-1):</label>
+                <label for="xHeightOpacity">Area Background Opacity (0-1):</label>
                 <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
             </fieldset>
 
@@ -117,11 +158,12 @@
                 <input type="checkbox" id="slantGuides">
                 <label for="slantGuides">Include Slant Guides</label><br><br>
                 <!-- Slant Angle Input -->
-                <label for="slantAngle">Slant Angle (degrees):</label>
-                <input type="number" id="slantAngle" value="15" min="0" max="90" step="1"><br><br>
+                <label for="slantAngle">Slant Angle:</label>
+                <input type="number" id="slantAngle" value="15" min="0" max="90" step="1"> °<br><br>
                 <!-- Slant Line Spacing -->
-                <label for="slantSpacing">Slant Line Spacing (nib widths):</label>
+                <label for="slantSpacing">Slant Line Spacing:</label><br/>
                 <input type="number" id="slantSpacing" value="2" min="0.1" step="0.1">
+                (× nib width)
             </fieldset>
 
 
@@ -129,20 +171,20 @@
 <fieldset>
     <legend>Ascender and Descender</legend>
     <!-- Ascender Height Input -->
-    <label for="ascenderHeight">Ascender Height (× x-height):</label>
-    <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"><br><br>
+    <label for="ascenderHeight">Ascender Height:</label><br>
+    <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> × x-height<br><br>
     <!-- Descender Depth Input -->
-    <label for="descenderDepth">Descender Depth (× x-height):</label>
-    <input type="number" id="descenderDepth" value="0.5" min="0" step="0.1"><br><br>
+    <label for="descenderDepth">Descender Depth:</label><br>
+    <input type="number" id="descenderDepth" value="0.5" min="0" step="0.1"> × x-height<br><br>
     <!-- Capital Height Input -->
-    <label for="capitalHeight">Capital Height (× x-height):</label>
-    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1">
+    <label for="capitalHeight">Capital Height:</label><br>
+    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> × x-height
 </fieldset>
 
 
 
             <!-- Generate Grid Button -->
-            <button onclick="drawGrid()">Generate Grid</button>
+            <button onclick="drawGrid()" id="generateGrid" class="darkButton1">Generate Grid</button>
         </div>
 
         <!-- SVG Canvas -->
@@ -173,6 +215,12 @@
                     control.addEventListener('change', drawGrid); // For text fields
                 } else if (control.type === 'checkbox') {
                     control.addEventListener('change', drawGrid); // For checkboxes
+                }
+                else if (control.type === 'slider') {
+                    control.addEventListener('change', drawGrid); // For checkboxes
+                }
+                else if (control.type === 'color') {
+                    control.addEventListener('input', drawGrid); // For checkboxes
                 }
             });
 

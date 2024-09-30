@@ -6,16 +6,33 @@
     <style>
         body {
             margin: 0;
+
         }
         #container {
             display: flex;
+            padding-left:300px;
+
         }
+        
         #controls {
+
             width: 300px;
-            padding: 10px;
+            padding: 10pt;
             background: rgba(255, 255, 255, 0.8);
+                        background: #777;
             box-sizing: border-box;
+
+            position:fixed;
+            z-index:20;
+            bottom:0;
+            left:0;
+            top:0;
+		  overflow-y: auto;
+
+
+
         }
+
         
         #controls h1{
         font-family:sans-serif;
@@ -85,11 +102,11 @@
                 #outputButtons button, button
                 {
                 font-family:monospace;
-                background-color:#ccc;
-                color:#333;
+                background-color:#555;
+                color:#ccc;
                 border-radius:4pt;
                 height:25pt;
-                box-shadow: 3pt 3pt 3pt silver;
+                box-shadow: 3pt 3pt 3pt #333;
                 }
                 .darkButton1
                 {
@@ -98,13 +115,35 @@
                 }
                 
                 
+                            #generatedWorksheetArea{
+margin:auto;
+padding:10pt;
+
+                            }
+                
+
+                
         /* Hide controls when printing */
         @media print {
             #controls {
                 display: none;
             }
+                    #container{
+                    padding:0;
+                    }
+            #generatedWorksheetArea{
+				padding:0;
+        
+            	margin:auto;
+            	
+            }
+            .notForPrinting{
+                display: none;
+            }
         }
     </style>
+    
+    
 </head>
 <body>
     <div id="container">
@@ -117,6 +156,7 @@
             <button onclick="window.print()">Print</button>
                     <!--    <button onclick="downloadAsPDF()">Download As PDF</button>-->
 </div>
+
             <!-- NIB WIDTH AND GUIDE FIELDSET -->
             <fieldset>
                 <legend>Nib Width and Guide</legend>
@@ -124,16 +164,18 @@
                 <label for="nibWidth">Nib Width:</label>
                 <input type="number" id="nibWidth" value="3.8" min="0.1" step="0.1" > mm<br><br>
 
-                <!-- Show Practice Blocks -->
-                <input type="checkbox" id="showPracticeBlocks" checked>
-                <label for="showPracticeBlocks">Show Practice Blocks</label>
-                <br>
-
-                <!-- Show Nib Guideline Labels -->
+                
+                         <!-- Show Nib Guideline Labels -->
                 <input type="checkbox" id="showNibGuidelineLabels" checked>
                 <label for="showNibGuidelineLabels">Show Nib Guideline Labels</label>
 
+                <br>
+                <!-- Show Practice Blocks -->
+                <input type="checkbox" id="showPracticeBlocks" checked>
+                <label for="showPracticeBlocks">Show Practice Blocks</label>
 
+
+       
                 
             </fieldset>
 
@@ -159,6 +201,7 @@
                 <label for="slantGuides">Include Slant Guides</label><br><br>
                 <!-- Slant Angle Input -->
                 <label for="slantAngle">Slant Angle:</label>
+				<!--<input type="range" id="slantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
                 <input type="number" id="slantAngle" value="15" min="0" max="90" step="1"> °<br><br>
                 <!-- Slant Line Spacing -->
                 <label for="slantSpacing">Slant Line Spacing:</label><br/>
@@ -170,23 +213,49 @@
 <!-- Ascender and Descender Settings Fieldset -->
 <fieldset>
     <legend>Ascender and Descender</legend>
+    <!-- Capital Height Input -->
+    <label for="capitalHeight">Capital Height:</label><br>
+    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> × x-height<br><br>
     <!-- Ascender Height Input -->
     <label for="ascenderHeight">Ascender Height:</label><br>
     <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> × x-height<br><br>
     <!-- Descender Depth Input -->
     <label for="descenderDepth">Descender Depth:</label><br>
     <input type="number" id="descenderDepth" value="0.5" min="0" step="0.1"> × x-height<br><br>
-    <!-- Capital Height Input -->
-    <label for="capitalHeight">Capital Height:</label><br>
-    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> × x-height
+
+</fieldset>
+
+<fieldset>
+    <legend>Page</legend>
+
+        
+        <label for="orientation">
+Orientation:
+        </label>        <br/>
+        
+        <input type="radio" name="orientation" value="portrait" checked> Portrait        
+
+                    <input type="radio" name="orientation" value="landscape"> Landscape
+        <br/>
+        <label for="paperSize">Paper Size:        </label><br/>
+<select id="paperSize" name="paperSize">
+    <option value="612,792" checked>Letter (8.5in x 11in)</option>
+    <option value="612,1008">Legal (8.5in x 14in)</option>
+    <option value="595,842">A4 (210mm x 297mm)</option>
+    <option value="842,1191">A3 (297mm x 420mm)</option>
+</select>
+
+
 </fieldset>
 
 
 
             <!-- Generate Grid Button -->
-            <button onclick="drawGrid()" id="generateGrid" class="darkButton1">Generate Grid</button>
+<!-- <button onclick="drawGrid()" id="generateGrid" class="darkButton1">Generate Sheet</button>-->
+    
         </div>
 
+		<div id="generatedWorksheetArea">
         <!-- SVG Canvas -->
         <svg
             id="canvas"
@@ -198,6 +267,8 @@
             <rect width="100%" height="100%" fill="white" />
             <g id="grid"></g>
         </svg>
+        </div>
+        
     </div>
 
     <!-- JavaScript Code -->
@@ -216,7 +287,13 @@
                 } else if (control.type === 'checkbox') {
                     control.addEventListener('change', drawGrid); // For checkboxes
                 }
-                else if (control.type === 'slider') {
+                 else if (control.type === 'radio') {
+                    control.addEventListener('change', drawGrid); // For checkboxes
+                }
+                           else if (control.type === 'select') {
+                    control.addEventListener('change', drawGrid); // For checkboxes
+                }
+                else if (control.type === 'range') {
                     control.addEventListener('change', drawGrid); // For checkboxes
                 }
                 else if (control.type === 'color') {
@@ -270,6 +347,7 @@
             var slantAngle = parseFloat(document.getElementById('slantAngle').value);
             if (isNaN(slantAngle) || slantAngle < 0 || slantAngle > 90) {
                 document.getElementById('slantAngle').value = 90;
+                slantAngle = 90;
                 alert("Please enter a slant angle between 0 and 90 degrees.");
                 return;
             }
@@ -332,20 +410,11 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
             gridGroup.appendChild(outerRect);
 
             // Draw background horizontal lines at every nib width
+            
             var backgroundLinesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             backgroundLinesGroup.setAttribute("id", "backgroundLines");
             gridGroup.appendChild(backgroundLinesGroup);
 
-            for (var y = 0; y <= height; y += nibWidth) {
-                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", 0);
-                line.setAttribute("y1", y);
-                line.setAttribute("x2", width);
-                line.setAttribute("y2", y);
-                line.setAttribute("stroke", "#eee"); // Light gray background lines
-                line.setAttribute("stroke-width", strokeWidth);
-                backgroundLinesGroup.appendChild(line);
-            }
 
  // Draw slant guides if selected (on top of x-height shading)
              // Draw slant guides if selected (behind x-height lines but above background lines)
@@ -362,6 +431,7 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
 
                 // For vertical lines (90 degrees), handle separately
                 if (slantAngle === 90) {
+                    /*
                     for (var x = 0; x <= width; x += slantSpacing) {
                         var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                         line.setAttribute("x1", x);
@@ -371,7 +441,7 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
                         line.setAttribute("stroke", "#aaa");
                         line.setAttribute("stroke-width", strokeWidth);
                         slantGroup.appendChild(line);
-                    }
+                    }*/
                 } else {
                     // Starting x position for slant lines
                     var xStart = -height * tanAngle;
@@ -534,6 +604,22 @@ if(y > 0)
                 lineDescender.setAttribute("stroke-dasharray", "6,2"); // Dashed line
                 practiceBlocksGroup.appendChild(lineDescender);
 
+
+
+
+            for (var y = baselineY; y > ascenderY; y -= nibWidth) {
+            	console.log(y);
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", 0);
+                line.setAttribute("y1", y);
+                line.setAttribute("x2", width);
+                line.setAttribute("y2", y);
+                line.setAttribute("stroke", "#eee"); // #eee Light gray background lines
+                line.setAttribute("stroke-width", strokeWidth);
+                backgroundLinesGroup.appendChild(line);
+            }
+
+
 				if(showPracticeBlocks)
 				{
 			// Draw nib guide
@@ -626,8 +712,8 @@ for (var i = 0; i < nibCount; i++) {
                     
                     	if((yPosition + nibHeight) > descenderY)
                     	{
-            	           //  rect.setAttribute("fill", "red"); 
-            	    		 rect.setAttribute("height", (yPosition + nibHeight) - (descenderY));
+
+            	    		 rect.setAttribute("height",  descenderY - yPosition);
 
 
                     	}
@@ -640,7 +726,7 @@ for (var i = 0; i < nibCount; i++) {
                 if (showNibGuidelineLabels) {
                     // Label the lines (once per block)
                     var labelX = 30; // Position labels slightly inside the left edge
-                    var fontSize = 10; // Adjust as needed
+                    var fontSize = 9; // Adjust as needed
                     var labelColor = "#444"; // Dark gray
 
 

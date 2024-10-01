@@ -14,24 +14,25 @@
 
         }
         
-        #controls {
+     #controls {
+    width: 300px;
+    padding: 10pt;
+    background: rgba(255, 255, 255, 0.8);
+    background: #777;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 20;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    overflow-y: scroll; /* Keep scrolling enabled */
+    scrollbar-width: none; /* Firefox */
+}
 
-            width: 300px;
-            padding: 10pt;
-            background: rgba(255, 255, 255, 0.8);
-                        background: #777;
-            box-sizing: border-box;
+#controls::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
 
-            position:fixed;
-            z-index:20;
-            bottom:0;
-            left:0;
-            top:0;
-		  overflow-y: auto;
-
-
-
-        }
 
         
         #controls h1{
@@ -122,10 +123,44 @@ padding:10pt;
                             }
                 
 
+#scrollbar {
+    position: fixed;
+    top: 0;
+    left: 20;
+    width: 15px;
+    height: 100%;
+    background: #000;
+    cursor: pointer;
+}
+
+#scrollbar .thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 13px;
+    background: #ccc;
+    height: 30px;
+    border-radius: 0px;
+    border:1px solid black;
+}
+
+#scrollbar .thumb:hover
+{
+    background: #555;
+
+}
+
+#scrollbar .thumb:active
+{
+    background: #444;
+
+}
+
+svg {box-shadow: 5px 15px 10px gray;}
                 
         /* Hide controls when printing */
         @media print {
-            #controls {
+            #controls, #scrollbar {
                 display: none;
             }
                     #container{
@@ -251,9 +286,12 @@ Orientation:
 
 
             <!-- Generate Grid Button -->
-<!-- <button onclick="drawGrid()" id="generateGrid" class="darkButton1">Generate Sheet</button>-->
+<!-- <button onclick="drawWorksheet()" id="generateWorksheet" class="darkButton1">Generate Sheet</button>-->
     
         </div>
+
+		<div id="scrollbar"></div>
+
 
 		<div id="generatedWorksheetArea">
         <!-- SVG Canvas -->
@@ -265,7 +303,7 @@ Orientation:
             viewBox="0 0 520 720"
         >
             <rect width="100%" height="100%" fill="white" />
-            <g id="grid"></g>
+            <g id="worksheet"></g>
         </svg>
         </div>
         
@@ -278,34 +316,85 @@ Orientation:
             init();
         });
 
-        function init() {
-            // Add event listeners to controls
-            var controls = document.querySelectorAll('#controls input');
-            controls.forEach(function(control) {
-                if (control.type === 'number' || control.type === 'color') {
-                    control.addEventListener('change', drawGrid); // For text fields
-                } else if (control.type === 'checkbox') {
-                    control.addEventListener('change', drawGrid); // For checkboxes
-                }
-                 else if (control.type === 'radio') {
-                    control.addEventListener('change', drawGrid); // For checkboxes
-                }
-                           else if (control.type === 'select') {
-                    control.addEventListener('change', drawGrid); // For checkboxes
-                }
-                else if (control.type === 'range') {
-                    control.addEventListener('change', drawGrid); // For checkboxes
-                }
-                else if (control.type === 'color') {
-                    control.addEventListener('input', drawGrid); // For checkboxes
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const controls = document.getElementById('controls');
+    const scrollbar = document.getElementById('scrollbar');
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+    scrollbar.appendChild(thumb);
 
-            // Initial grid drawing
-            drawGrid();
+    function updateThumbPosition() {
+        const scrollHeight = controls.scrollHeight - controls.clientHeight;
+        const thumbHeight = Math.max(30, controls.clientHeight / controls.scrollHeight * scrollbar.clientHeight);
+        thumb.style.height = thumbHeight + 'px';
+        const scrollRatio = controls.scrollTop / scrollHeight;
+        const thumbTop = scrollRatio * (scrollbar.clientHeight - thumbHeight);
+        thumb.style.top = thumbTop + 'px';
+    }
+
+    function onThumbMouseDown(event) {
+        event.preventDefault();
+        const startY = event.clientY;
+        const startTop = parseInt(thumb.style.top, 10) || 0;
+
+        function onMouseMove(event) {
+            const deltaY = event.clientY - startY;
+            const newTop = Math.min(
+                Math.max(0, startTop + deltaY),
+                scrollbar.clientHeight - thumb.clientHeight
+            );
+            thumb.style.top = newTop + 'px';
+
+            const scrollHeight = controls.scrollHeight - controls.clientHeight;
+            const scrollRatio = newTop / (scrollbar.clientHeight - thumb.clientHeight);
+            controls.scrollTop = scrollHeight * scrollRatio;
         }
 
-        function drawGrid() {
+        function onMouseUp() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+
+    thumb.addEventListener('mousedown', onThumbMouseDown);
+    controls.addEventListener('scroll', updateThumbPosition);
+    window.addEventListener('resize', updateThumbPosition);
+
+    updateThumbPosition();
+});
+
+
+        function init() {
+            // Add event listeners to controls
+		    var controls = document.querySelectorAll('#controls input, #controls select');
+           var controls = document.querySelectorAll('#controls input, #controls select');
+           
+           
+controls.forEach(function(control) {
+    if (control.type === 'number' || control.type === 'color' || control.tagName.toLowerCase() === 'select') {
+
+        control.addEventListener('change', drawWorksheet); // For number, color, and select inputs
+    } else if (control.type === 'checkbox') {
+        control.addEventListener('change', drawWorksheet); // For checkboxes
+    } else if (control.type === 'radio') {
+        control.addEventListener('change', drawWorksheet); // For radio buttons
+    } else if (control.type === 'range') {
+        control.addEventListener('change', drawWorksheet); // For range inputs
+    } else if (control.type === 'color') {
+        control.addEventListener('input', drawWorksheet); // For color inputs when the value changes interactively
+    }
+});
+
+
+
+            // Initial grid drawing
+            drawWorksheet();
+        }
+
+        function drawWorksheet() {
             // Conversion factor from mm to pt
             var mmToPt = 2.83465;
 
@@ -385,16 +474,36 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
 }
 
 
-            // Clear existing grid
-            var gridGroup = document.getElementById('grid');
-            while (gridGroup.firstChild) {
-                gridGroup.removeChild(gridGroup.firstChild);
+
+
+  // Get selected paper size and orientation
+    var paperSize = document.getElementById('paperSize').value.split(',').map(Number);
+    var orientation = document.querySelector('input[name="orientation"]:checked').value;
+
+console.log(paperSize);
+
+    // Adjust paper width and height for margin (subtracting 72pt on all sides)
+    var width = paperSize[0] - 72;
+    var height = paperSize[1] - 72;
+
+    // Swap width and height if landscape orientation is selected
+    if (orientation === 'landscape') {
+        [width, height] = [height, width];
+    }
+
+    // Update SVG attributes
+    var svg = document.getElementById('canvas');
+    svg.setAttribute('width', width + 'pt');
+    svg.setAttribute('height', height + 'pt');
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+ 
+   
+                // Clear existing worksheet
+            var worksheetGroup = document.getElementById('worksheet');
+            while (worksheetGroup.firstChild) {
+                worksheetGroup.removeChild(worksheetGroup.firstChild);
             }
-
-            var svg = document.getElementById('canvas');
-            var width = svg.viewBox.baseVal.width;
-            var height = svg.viewBox.baseVal.height;
-
+            
             // Define stroke width in points
             var strokeWidth = 0.6;
 
@@ -407,13 +516,13 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
             outerRect.setAttribute("fill", "none");
             outerRect.setAttribute("stroke", "#000");
             outerRect.setAttribute("stroke-width", strokeWidth);
-            gridGroup.appendChild(outerRect);
+            worksheetGroup.appendChild(outerRect);
 
             // Draw background horizontal lines at every nib width
             
             var backgroundLinesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             backgroundLinesGroup.setAttribute("id", "backgroundLines");
-            gridGroup.appendChild(backgroundLinesGroup);
+            worksheetGroup.appendChild(backgroundLinesGroup);
 
 
  // Draw slant guides if selected (on top of x-height shading)
@@ -421,7 +530,7 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
             if (includeSlantGuides) {
                 var slantGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 slantGroup.setAttribute("id", "slantGuides");
-                gridGroup.appendChild(slantGroup);
+                worksheetGroup.appendChild(slantGroup);
 
                 var angleRadians = slantAngle * Math.PI / 180;
                 var tanAngle = Math.tan(angleRadians); // Slope of the slant lines
@@ -479,7 +588,7 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
             // Draw practice blocks with x-height area shaded
             var practiceBlocksGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             practiceBlocksGroup.setAttribute("id", "practiceBlocks");
-            gridGroup.appendChild(practiceBlocksGroup);
+            worksheetGroup.appendChild(practiceBlocksGroup);
 
             // Calculate total nib height per block
             var nibHeight = nibWidth; // For clarity
@@ -608,7 +717,6 @@ if(y > 0)
 
 
             for (var y = baselineY; y > ascenderY; y -= nibWidth) {
-            	console.log(y);
                 var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 line.setAttribute("x1", 0);
                 line.setAttribute("y1", y);

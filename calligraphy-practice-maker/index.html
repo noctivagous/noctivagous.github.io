@@ -2,17 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Calligraphy Practice Sheet Generator</title>
+    <title>Calligraphy and Lettering Practice Sheet Generator</title>
     <style>
         body {
             margin: 0;
 
         }
+        
+        html, body {
+
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* This ensures that no default scrollbars appear for the body */
+}
+
+
         #container {
             display: flex;
             padding-left:300px;
+    height: 100%; /* Make the container fill the viewport height */
+
 
         }
+
+
+#generatedWorksheetArea {
+    height: calc(100% - 20px); /* Adjust as needed to leave space for headers or other content */
+    width:100%;
+    overflow-y: scroll; /* Enable vertical scrolling for this specific div */
+    scrollbar-width: none; /* Hide default scrollbar for Firefox */
+    position: relative; /* Ensure proper positioning for custom scrollbar */
+
+}
+
         
      #controls {
     width: 300px;
@@ -96,7 +118,7 @@
         
         #outputButtons{
         margin-top:5pt;
-        margin-bottom:15pt;
+        margin-bottom:5pt;
         
         padding:2pt;
         }
@@ -108,6 +130,9 @@
                 border-radius:4pt;
                 height:25pt;
                 box-shadow: 3pt 3pt 3pt #333;
+               
+                  background-color:#000;
+                color:#ccc;
                 }
                 .darkButton1
                 {
@@ -116,11 +141,6 @@
                 }
                 
                 
-                            #generatedWorksheetArea{
-margin:auto;
-padding:10pt;
-
-                            }
                 
 
 #scrollbar {
@@ -156,11 +176,73 @@ padding:10pt;
 
 }
 
-svg {box-shadow: 5px 15px 10px gray;}
+#generatedWorksheetArea {
+    margin: auto;
+    margin-left:10pt;
+    padding: 0pt;
+    position: relative; /* Add relative positioning to keep the scroll within bounds */
+    height: 100%;        /* Set a height that makes sense for your viewport */
+    overflow-y: scroll;  /* Enable scrolling */
+    scrollbar-width: none; /* Hide default scrollbar for Firefox */
+  
+  /*  border:1px solid red; */
+
+}
+
+#generatedWorksheetArea .worksheetAreaSpacer{
+height:15pt;
+}
+
+#generatedWorksheetArea::-webkit-scrollbar {
+    display: none; /* Hide default scrollbar for Chrome, Safari, and Opera */
+}
+
+
+#generatedScrollbar {
+    position: fixed;
+    top: 0;
+
+    right: 0px; /* Position to the right of #generatedWorksheetArea */
+    width: 15px;
+
+    bottom:0;
+    background: #000;
+    cursor: pointer;
+}
+
+#generatedScrollbar .thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 13px;
+    background: #ccc;
+    height: 30px;
+    border-radius: 0px;
+    border: 1px solid black;
+}
+
+#generatedScrollbar .thumb:hover {
+    background: #555;
+}
+
+#generatedScrollbar .thumb:active {
+    background: #444;
+}
+
+
+
+svg.worksheetPage {
+box-shadow: 5px 15px 10px gray;border:1pt solid black;
+}
                 
         /* Hide controls when printing */
         @media print {
-            #controls, #scrollbar {
+        
+        svg.worksheetPage {box-shadow: none;
+padding:0pt !important;border:0;margin:0pt;
+}
+        
+            #controls, .scrollbar, .worksheetAreaSpacer {
                 display: none;
             }
                     #container{
@@ -188,7 +270,9 @@ svg {box-shadow: 5px 15px 10px gray;}
 
 
 <div id="outputButtons">
-            <button onclick="window.print()">Print</button>
+<!--<button onclick="saveWorksheetToPDF()" id="saveWorksheetToPDFButton" class="darkButton1" >Save To PDF</button>-->
+            <button onclick="window.print()" id="printButton" class="darkButton1" >Print</button>
+
                     <!--    <button onclick="downloadAsPDF()">Download As PDF</button>-->
 </div>
 
@@ -288,14 +372,18 @@ Orientation:
             <!-- Generate Grid Button -->
 <!-- <button onclick="drawWorksheet()" id="generateWorksheet" class="darkButton1">Generate Sheet</button>-->
     
+   <!-- <button onclick="drawWorksheet()" id="resetSettingsButton" class="darkButton1">Reset Settings</button>-->
+   
+    
         </div>
 
-		<div id="scrollbar"></div>
+		<div id="scrollbar" class="scrollbar"></div>
 
 
 		<div id="generatedWorksheetArea">
+				<div class="worksheetAreaSpacer"></div>
         <!-- SVG Canvas -->
-        <svg
+        <svg class="worksheetPage"
             id="canvas"
             xmlns="http://www.w3.org/2000/svg"
             width="520pt"
@@ -305,8 +393,13 @@ Orientation:
             <rect width="100%" height="100%" fill="white" />
             <g id="worksheet"></g>
         </svg>
+
+		<div class="worksheetAreaSpacer"></div>
+
         </div>
-        
+
+        <div id="generatedScrollbar" class="scrollbar"></div>
+
     </div>
 
     <!-- JavaScript Code -->
@@ -317,6 +410,7 @@ Orientation:
         });
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the scrollbars for #controls
     const controls = document.getElementById('controls');
     const scrollbar = document.getElementById('scrollbar');
     const thumb = document.createElement('div');
@@ -325,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateThumbPosition() {
         const scrollHeight = controls.scrollHeight - controls.clientHeight;
-        const thumbHeight = Math.max(30, controls.clientHeight / controls.scrollHeight * scrollbar.clientHeight);
+        const thumbHeight = Math.max(30, (controls.clientHeight / controls.scrollHeight) * scrollbar.clientHeight);
         thumb.style.height = thumbHeight + 'px';
         const scrollRatio = controls.scrollTop / scrollHeight;
         const thumbTop = scrollRatio * (scrollbar.clientHeight - thumbHeight);
@@ -364,6 +458,56 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', updateThumbPosition);
 
     updateThumbPosition();
+
+
+    // Initialize the scrollbars for #generatedWorksheetArea
+    const generatedWorksheetArea = document.getElementById('generatedWorksheetArea');
+    const generatedScrollbar = document.getElementById('generatedScrollbar');
+    const generatedThumb = document.createElement('div');
+    generatedThumb.className = 'thumb';
+    generatedScrollbar.appendChild(generatedThumb);
+
+    function updateGeneratedThumbPosition() {
+        const scrollHeight = generatedWorksheetArea.scrollHeight - generatedWorksheetArea.clientHeight;
+        const thumbHeight = Math.max(30, (generatedWorksheetArea.clientHeight / generatedWorksheetArea.scrollHeight) * generatedScrollbar.clientHeight);
+        generatedThumb.style.height = thumbHeight + 'px';
+        const scrollRatio = generatedWorksheetArea.scrollTop / scrollHeight;
+        const thumbTop = scrollRatio * (generatedScrollbar.clientHeight - thumbHeight);
+        generatedThumb.style.top = thumbTop + 'px';
+    }
+
+    function onGeneratedThumbMouseDown(event) {
+        event.preventDefault();
+        const startY = event.clientY;
+        const startTop = parseInt(generatedThumb.style.top, 10) || 0;
+
+        function onMouseMove(event) {
+            const deltaY = event.clientY - startY;
+            const newTop = Math.min(
+                Math.max(0, startTop + deltaY),
+                generatedScrollbar.clientHeight - generatedThumb.clientHeight
+            );
+            generatedThumb.style.top = newTop + 'px';
+
+            const scrollHeight = generatedWorksheetArea.scrollHeight - generatedWorksheetArea.clientHeight;
+            const scrollRatio = newTop / (generatedScrollbar.clientHeight - generatedThumb.clientHeight);
+            generatedWorksheetArea.scrollTop = scrollHeight * scrollRatio;
+        }
+
+        function onMouseUp() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+
+    generatedThumb.addEventListener('mousedown', onGeneratedThumbMouseDown);
+    generatedWorksheetArea.addEventListener('scroll', updateGeneratedThumbPosition);
+    window.addEventListener('resize', updateGeneratedThumbPosition);
+
+    updateGeneratedThumbPosition();
 });
 
 
@@ -393,6 +537,8 @@ controls.forEach(function(control) {
             // Initial grid drawing
             drawWorksheet();
         }
+
+
 
         function drawWorksheet() {
             // Conversion factor from mm to pt
@@ -480,11 +626,27 @@ if (isNaN(capitalMultiplier) || capitalMultiplier < 0) {
     var paperSize = document.getElementById('paperSize').value.split(',').map(Number);
     var orientation = document.querySelector('input[name="orientation"]:checked').value;
 
-console.log(paperSize);
+	
+    var marginHorizontalInches = 0.5;
+    var marginVerticalInches = 0.4;
 
+    var marginHorizontal = 2 * marginHorizontalInches * 72; // Convert inches to points
+    var marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
+
+    var worksheets = document.querySelectorAll('.worksheetPage');
+
+	// require !important in the CSS for print media
+    worksheets.forEach(function(worksheet) {
+        worksheet.style.paddingLeft = `${marginHorizontal / 2}pt`;
+        worksheet.style.paddingRight = `${marginHorizontal / 2}pt`;
+        worksheet.style.paddingTop = `${marginVertical / 2}pt`;
+        worksheet.style.paddingBottom = `${marginVertical / 2}pt`;
+    });
+    
+    
     // Adjust paper width and height for margin (subtracting 72pt on all sides)
-    var width = paperSize[0] - 72;
-    var height = paperSize[1] - 72;
+    var width = paperSize[0] - marginHorizontal;
+    var height = paperSize[1] - marginVertical;
 
     // Swap width and height if landscape orientation is selected
     if (orientation === 'landscape') {
@@ -715,7 +877,7 @@ if(y > 0)
 
 
 
-
+			// draw horizontal lines from baseline to ascender line
             for (var y = baselineY; y > ascenderY; y -= nibWidth) {
                 var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 line.setAttribute("x1", 0);
@@ -726,6 +888,19 @@ if(y > 0)
                 line.setAttribute("stroke-width", strokeWidth);
                 backgroundLinesGroup.appendChild(line);
             }
+
+			// draw horizontal lines from baseline to descender line
+            for (var y = baselineY; y < descenderY; y += nibWidth) {
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", 0);
+                line.setAttribute("y1", y);
+                line.setAttribute("x2", width);
+                line.setAttribute("y2", y);
+                line.setAttribute("stroke", "#eee"); // #eee Light gray background lines
+                line.setAttribute("stroke-width", strokeWidth);
+                backgroundLinesGroup.appendChild(line);
+            }
+
 
 
 				if(showPracticeBlocks)

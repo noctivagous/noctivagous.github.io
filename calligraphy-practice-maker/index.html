@@ -19,7 +19,7 @@
             /* This ensures that no default scrollbars appear for the body */
         }
 
-      
+
 
         #container {
             display: flex;
@@ -30,6 +30,11 @@
 
         }
 
+        .worksheetPage {
+
+            margin: auto;
+
+        }
 
         #generatedWorksheetArea {
             height: calc(100% - 20px);
@@ -49,7 +54,7 @@
             width: 300px;
             padding: 10pt;
             background: rgba(255, 255, 255, 0.8);
-            background: #666;
+            background: #303030;
             box-sizing: border-box;
             position: fixed;
             z-index: 20;
@@ -60,16 +65,19 @@
             /* Keep scrolling enabled */
             scrollbar-width: none;
             /* Firefox */
+            border-right:2px solid rgb(101, 101, 101);
         }
-        .hiddenTemporary{
-        display: none;
+
+        .hiddenTemporary {
+            display: none;
         }
+
         #controls::-webkit-scrollbar {
             display: none;
             /* Chrome, Safari, and Opera */
         }
 
-        
+
 
 
 
@@ -87,40 +95,56 @@
         }
 
 
-     
+
 
         #controls fieldset legend {
 
-box-sizing: border-box;
+            box-sizing: border-box;
             text-transform: uppercase;
-            background-color:#111;
-            color: #b7b7b7;
-            border-top:4pt solid black;
+            background-color: #111;
+            color: #7b7474;
+            
             font-size: 10pt;
-        width: 100%;
-        
-        padding-left:5pt;
-        padding-bottom:3pt;
-    	box-shadow: 3pt 3pt 3pt rgb(52, 52, 52);
+            width: 100%;
+
+            padding-top:5pt;
+            
+            text-align: center;
+            padding-bottom: 3pt;
+            box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
+
+            border-radius: 4pt;
+font-weight: bold;
+            border-bottom:2pt solid black;
+            
+        }
+
+        #controls fieldset .settingEnclosure 
+        {
+            
+
         }
 
         #controls fieldset {
             border: 0;
+            border-radius: 4pt;
 
-            outline: 2px solid #000; /* Create an inside border */
-            outline-offset: -2px; /* Move the outline inwards */
-  
+            outline: 4pt solid #000;
+            /* Create an inside border */
+            outline-offset: -2px;
+            /* Move the outline inwards */
+
 
             font-family: sans-serif;
-            background-color:#111;
+            background-color: #111;
             color: #333;
-            box-shadow: 3pt 3pt 3pt rgb(52, 52, 52);
-            margin-bottom: 10pt;
-            
+            box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
+            margin-bottom: 15pt;
+
             padding-top: 0pt;
             padding-bottom: 0pt;
-            padding-right:0pt;
-            padding-left:0pt;
+            padding-right: 0pt;
+            padding-left: 0pt;
             font-family: sans-serif;
             
             color: #333;
@@ -128,57 +152,63 @@ box-sizing: border-box;
 
 
 
-        .settingEnclosure{
-            padding:5px;
-            padding-left:8pt;
-            
-        margin-top:0px;
-    margin-bottom:1px;
-    background-color: #929191;
+        .settingEnclosure {
+            padding: 5px;
+            padding-left: 8pt;
 
-    border:0px solid rgb(49, 47, 47);
-    
-}
+            margin-top: 0px;
+            margin-bottom: 1px;
+            background-color: #929191;
 
-.settingEnclosure label {
+            border: 0px solid rgb(49, 47, 47);
 
-    font-weight: bold;
-}
-
-div.settingEnclosure.indent{
-            border-left:5px solid black;
-            background-color: #747373;
-            color:black;
-            font-weight: normal;
-            
         }
 
-        div.settingEnclosure.indent label{
-            margin-left:0;
+        .settingEnclosure label {
+
+            user-select: none; 
+            font-weight: bold;
+        }
+
+        div.settingEnclosure.indent {
+            border-left: 8pt solid black;
+            background-color: #494848;
+            color: black;
             font-weight: normal;
 
-            color:rgb(222, 222, 222) !important;
+        }
+
+        div.settingEnclosure.indent2 {
+            border-left: 12pt solid black;
+
+        }
+
+        div.settingEnclosure.indent label {
+            margin-left: 0;
+            font-weight: normal;
+
+            color: rgb(222, 222, 222) !important;
         }
 
         #controls fieldset label {
-            
-            
+
+
             font-family: sans-serif;
-            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             /*text-transform:uppercase;*/
 
             font-size: 13pt;
 
             text-transform: ;
-            color:#0d0d0d;
-            
+            color: #0d0d0d;
+
             display: inline-block;
         }
 
-        .labelNote{
-color:rgb(49, 86, 30);
-font-family:monospace;
-font-size:10pt;
+        .labelNote {
+            color: rgb(49, 86, 30);
+            font-family: monospace;
+            font-size: 10pt;
         }
 
         #controls input[type='number'] {
@@ -187,124 +217,140 @@ font-size:10pt;
             text-align: center;
             width: 50pt;
             font-size: 12pt;
-            padding-top:1pt;
-            padding-bottom:2pt;
+            padding-top: 1pt;
+            padding-bottom: 2pt;
             background-color: #111;
 
             /*background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);*/
-            border:2pt solid black;
+            border: 2pt solid black;
 
-            color:rgb(228, 226, 226);
+            color: rgb(228, 226, 226);
 
-               /* Apply border to create the "well" effect */
-      
-    border: 2px solid #3a3939; /* Darker border as a base */
-    border-bottom-color: #787777;  /* Lighter color for the top to create the highlight */
-    border-right-color: #8b8989; /* Lighter color for the left side */
-    
+            /* Apply border to create the "well" effect */
 
-    /* Box shadow to enhance the well effect */
-    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.2), 
+            border: 2px solid #3a3939;
+            /* Darker border as a base */
+            border-bottom-color: #787777;
+            /* Lighter color for the top to create the highlight */
+            border-right-color: #8b8989;
+            /* Lighter color for the left side */
+
+
+            /* Box shadow to enhance the well effect */
+            box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.2),
                 inset -2px -2px 2px rgba(206, 205, 205, 0.7);
-    
-    /* Remove default styling */
-    outline: none;
-    appearance: none;
-    
-}
 
-#controls input[type='checkbox'] {
-    appearance: none;
-}
+            /* Remove default styling */
+            outline: none;
+            appearance: none;
 
-#controls input[type='checkbox'],
-#controls input[type='radio'] {
-    appearance: none; /* Remove default appearance */
-    -webkit-appearance: none; /* Vendor prefix for better support */
-    width: 13pt;
-    height: 13pt;
-    margin-right: 0px;
-    vertical-align: middle;
-    cursor: pointer;
-    display: inline-block;
-    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/></svg>') no-repeat center;
-    background-size: cover;
-    border-radius: 4px; /* For checkbox, adds rounded corners */
-    /*transition: background 0.05s ease;*/
-    border:1px solid gray;
-    /*
+        }
+
+        #controls input[type='checkbox'] {
+            appearance: none;
+        }
+
+        #controls input[type='checkbox'],
+        #controls input[type='radio'] {
+            appearance: none;
+            /* Remove default appearance */
+            -webkit-appearance: none;
+            /* Vendor prefix for better support */
+            width: 13pt;
+            height: 13pt;
+            margin-right: 0px;
+            vertical-align: middle;
+            cursor: pointer;
+            display: inline-block;
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/></svg>') no-repeat center;
+            background-size: cover;
+            border-radius: 4px;
+            /* For checkbox, adds rounded corners */
+            /*transition: background 0.05s ease;*/
+            border: 1px solid gray;
+            /*
     border-top:1px solid black;
     border-left:1px solid black;
     border-bottom:1px solid darkgray;*/
-    margin-left:-2px;
-}
+            margin-left: -2px;
+        }
 
-/* Checkbox Checked State */
-#controls input[type='checkbox']:checked {
-    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><polyline points="5,13 10,17 19,7" style="fill:none;stroke:%23000000;stroke-width:2"/></svg>') no-repeat center;
-    background-size: cover;
-}
+        /* Checkbox Checked State */
+        #controls input[type='checkbox']:checked {
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><polyline points="5,13 10,17 19,7" style="fill:none;stroke:%23000000;stroke-width:2"/></svg>') no-repeat center;
+            background-size: cover;
+        }
 
-/* Radio Button Styling */
-#controls input[type='radio'] {
-    border-radius: 50%; /* Makes the radio button circular */
-}
+        /* Radio Button Styling */
+        #controls input[type='radio'] {
+            border-radius: 50%;
+            /* Makes the radio button circular */
+        }
 
-/* Radio Button Checked State */
-#controls input[type='radio']:checked {
-    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><circle cx="12" cy="12" r="6" style="fill:%23000000;"/></svg>') no-repeat center;
-    background-size: cover;
-}
+        /* Radio Button Checked State */
+        #controls input[type='radio']:checked {
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><circle cx="12" cy="12" r="6" style="fill:%23000000;"/></svg>') no-repeat center;
+            background-size: cover;
+        }
 
-/* Hover Effect for Both Checkbox and Radio Button */
-#controls input[type='checkbox']:hover,
-#controls input[type='radio']:hover {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Slight shadow effect on hover */
-}
-
-
-/* Ensure label aligns well with checkbox */
-#controls label {
-    cursor: pointer;
-    vertical-align: middle;
-}
+        /* Hover Effect for Both Checkbox and Radio Button */
+        #controls input[type='checkbox']:hover,
+        #controls input[type='radio']:hover {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            /* Slight shadow effect on hover */
+        }
 
 
-#controls select {
-    width: 220px;
-    padding: 3pt;
-    padding-left:5pt;
-    font-size: 13pt;
-    border: 1px solid #ccc;
-    border-radius: 5pt;
-    appearance: none; /* Remove default styling */
-    color: rgb(143, 140, 140);
-    font-weight: bold;
+        /* Ensure label aligns well with checkbox */
+        #controls label {
+            cursor: pointer;
+            vertical-align: middle;
+        }
 
-    /* Stacking two backgrounds: gradient and the SVG arrow */
- /* Background using SVG with gradient and arrow */
 
- background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40" preserveAspectRatio="none"><defs><linearGradient id="grad1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="10%" style="stop-color:%23383737;stop-opacity:1" /><stop offset="40%" style="stop-color:%230b0a0a;stop-opacity:1" /><stop offset="100%" style="stop-color:%23474646;stop-opacity:1" /></linearGradient></defs><rect x="0" y="0" width="220" height="40" fill="url(%23grad1)" /><polygon points="195,15 204,25 213,15" fill="darkGray"/></svg>') no-repeat;
- background-size: 100% 100%; /* Make sure the SVG fills the entire select area */
- 
-       padding-right: 40px; /* Add space to ensure text doesn’t overlap with the arrow */
+        #controls select {
+            width: 220px;
+            padding: 3pt;
+            padding-left: 5pt;
+            font-size: 13pt;
+            border: 1px solid #ccc;
+            border-radius: 5pt;
+            appearance: none;
+            /* Remove default styling */
+            color: rgb(143, 140, 140);
+            font-weight: bold;
 
-       appearance: none; /* Remove default dropdown arrow in some browsers */
-    -webkit-appearance: none; /* Remove default appearance for WebKit browsers */
-    -moz-appearance: none; /* Remove default appearance for Mozilla browsers */
+            /* Stacking two backgrounds: gradient and the SVG arrow */
+            /* Background using SVG with gradient and arrow */
 
-    font-family: monospace;
-    font-size:10pt;
-    font-weight: normal;
-    border:2pt solid black;
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40" preserveAspectRatio="none"><defs><linearGradient id="grad1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="10%" style="stop-color:%23383737;stop-opacity:1" /><stop offset="40%" style="stop-color:%230b0a0a;stop-opacity:1" /><stop offset="100%" style="stop-color:%23474646;stop-opacity:1" /></linearGradient></defs><rect x="0" y="0" width="220" height="40" fill="url(%23grad1)" /><polygon points="195,15 204,25 213,15" fill="darkGray"/></svg>') no-repeat;
+            background-size: 100% 100%;
+            /* Make sure the SVG fills the entire select area */
 
-               /* Apply border to create the "well" effect */
-               border: 2px solid #3a3939; /* Darker border as a base */
-    border-top-color: #8a8888;  /* Lighter color for the top to create the highlight */
-    
-    
+            padding-right: 40px;
+            /* Add space to ensure text doesn’t overlap with the arrow */
 
-}
+            appearance: none;
+            /* Remove default dropdown arrow in some browsers */
+            -webkit-appearance: none;
+            /* Remove default appearance for WebKit browsers */
+            -moz-appearance: none;
+            /* Remove default appearance for Mozilla browsers */
+
+            font-family: monospace;
+            font-size: 10pt;
+            font-weight: normal;
+            border: 2pt solid black;
+
+            /* Apply border to create the "well" effect */
+            border: 2px solid #3a3939;
+            /* Darker border as a base */
+            border-top-color: #8a8888;
+            /* Lighter color for the top to create the highlight */
+
+
+
+        }
 
 
 
@@ -344,6 +390,7 @@ font-size:10pt;
             height: 100%;
             background: #000;
             cursor: pointer;
+            
         }
 
         #controlsScrollbar .thumb {
@@ -355,6 +402,10 @@ font-size:10pt;
             height: 30px;
             border-radius: 0px;
             border: 1px solid black;
+            margin-left:1px;
+            width: 11px;
+
+            background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);
         }
 
         #controlsScrollbar .thumb:hover {
@@ -367,9 +418,10 @@ font-size:10pt;
 
         }
 
+
         #generatedWorksheetArea {
             margin: auto;
-            margin-left: 10pt;
+            margin-left: 11pt;
             padding: 0pt;
             position: relative;
             /* Add relative positioning to keep the scroll within bounds */
@@ -411,11 +463,13 @@ font-size:10pt;
             position: absolute;
             top: 0;
             left: 0;
-            width: 13px;
+            margin-left:1px;
+            width: 11px;
             background: #ccc;
             height: 30px;
             border-radius: 0px;
             border: 1px solid black;
+            background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);
         }
 
         #worksheetAreaScrollbar .thumb:hover {
@@ -428,10 +482,15 @@ font-size:10pt;
 
 
 
+
         svg.worksheetPage {
+         display:block;
             box-shadow: 5px 15px 10px gray;
             border: 1pt solid black;
         }
+
+
+        #worksheetPagesContainer svg {}
 
         /* Hide controls when printing */
         @media print {
@@ -466,6 +525,8 @@ font-size:10pt;
         }
     </style>
 
+    <!-- Include opentype.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
 
 </head>
 
@@ -486,27 +547,28 @@ font-size:10pt;
             <!-- NIB WIDTH AND GUIDE FIELDSET -->
             <fieldset>
                 <legend>Nib Width and Guide</legend>
-                
+
                 <div class="settingEnclosure">
 
-                <!-- Nib Width Input -->
-                <label for="nibWidth">Nib Width:</label>
-                <input type="number" id="nibWidth" value="3.8" min="0.1" step="0.1"> <span class="labelNote">mm</span>
-                    </div>
+                    <!-- Nib Width Input -->
+                    <label for="nibWidth">Nib Width:</label>
+                    <input type="number" id="nibWidth" value="3.8" min="0.1" step="0.1"> <span
+                        class="labelNote">mm</span>
+                </div>
 
-                    <div class="settingEnclosure indent">
+                <div class="settingEnclosure indent">
 
-                <!-- Show Nib Guideline Labels -->
-                <input type="checkbox" id="showNibGuidelineLabels" checked>
-                <label for="showNibGuidelineLabels ">Show Nib Guideline Labels</label>
-                        </div>
-                
-                        <div class="settingEnclosure indent">
+                    <!-- Show Nib Guideline Labels -->
+                    <input type="checkbox" id="showNibGuidelineLabels" checked>
+                    <label for="showNibGuidelineLabels">Show Nib Guideline Labels</label>
+                </div>
 
-                <!-- Show Nib Squares -->
-                <input type="checkbox" id="showNibSquares" checked>
-                <label for="showNibSquares">Show Nib Squares</label>
-                            </div>  
+                <div class="settingEnclosure indent">
+
+                    <!-- Show Nib Squares -->
+                    <input type="checkbox" id="showNibSquares" checked>
+                    <label for="showNibSquares">Show Nib Squares</label>
+                </div>
 
 
 
@@ -517,19 +579,20 @@ font-size:10pt;
                 <legend>x-height Settings</legend>
                 <div class="settingEnclosure">
 
-                <!-- x-height Input -->
-                <label for="xHeight">X-Height:</label>
-                <input type="number" id="xHeight" value="5" min="0.1" step="0.1"> <span class="labelNote">× nib width</span>
-                    </div>
+                    <!-- x-height Input -->
+                    <label for="xHeight">X-Height:</label>
+                    <input type="number" id="xHeight" value="5" min="0.1" step="0.1"> <span class="labelNote">× nib
+                        width</span>
+                </div>
 
                 <div class="hiddenTemporary">
-                <!-- x-height Background Color Picker -->
-                <label for="xHeightColor">Background Color:</label>
-                <input type="color" id="xHeightColor" value="#f0f0f0"><br><br>
-                <!-- x-height Background Opacity -->
-                <label for="xHeightOpacity">Background Opacity (0-1):</label>
-                <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
-            </div>
+                    <!-- x-height Background Color Picker -->
+                    <label for="xHeightColor">Background Color:</label>
+                    <input type="color" id="xHeightColor" value="#f0f0f0"><br><br>
+                    <!-- x-height Background Opacity -->
+                    <label for="xHeightOpacity">Background Opacity (0-1):</label>
+                    <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
+                </div>
             </fieldset>
 
             <!-- Slant Guides Fieldset -->
@@ -537,26 +600,26 @@ font-size:10pt;
                 <legend>Grid Lines</legend>
                 <div class="settingEnclosure">
 
-                <!-- Include Slant Guides Checkbox -->
-                <input type="checkbox" name="verticalLines" id="verticalLines">
-                
-                <label for="verticalLines">Show Vertical Lines</label>
+                    <!-- Include Slant Guides Checkbox -->
+                    <input type="checkbox" name="verticalLines" id="verticalLines">
+
+                    <label for="verticalLines">Show Vertical Lines</label>
                 </div>
 
                 <div class="settingEnclosure indent">
 
-                <!-- Slant Angle Input -->
-                <label for="verticalSlantAngle">Vertical Slant Angle:</label>
-                <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
-                <input type="number" id="verticalSlantAngle" value="15" min="0" max="90" step="1"> °
-                    </div>
+                    <!-- Slant Angle Input -->
+                    <label for="verticalSlantAngle">Vertical Slant Angle:</label>
+                    <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
+                    <input type="number" id="verticalSlantAngle" value="15" min="0" max="90" step="1"> °
+                </div>
 
-                    <div class="settingEnclosure indent">
+                <div class="settingEnclosure indent">
 
-                <!-- Slant Line Spacing -->
-                <label for="verticalLineSpacing">Vertical Line Spacing:</label><br/>
-                <input type="number" id="verticalLineSpacing" value="2" min="0.1" step="0.1">
-                <span class="labelNote">× nib width</span>
+                    <!-- Slant Line Spacing -->
+                    <label for="verticalLineSpacing">Vertical Line Spacing:</label><br />
+                    <input type="number" id="verticalLineSpacing" value="2" min="0.1" step="0.1">
+                    <span class="labelNote">× nib width</span>
                 </div>
             </fieldset>
 
@@ -566,22 +629,25 @@ font-size:10pt;
                 <legend>Ascender and Descender</legend>
                 <div class="settingEnclosure">
 
-                <!-- Capital Height Input -->
-                <label for="capitalHeight">Capital Height:</label><br>
-                <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> <span class="labelNote">× x-height</span>
-</div>
+                    <!-- Capital Height Input -->
+                    <label for="capitalHeight">Capital Height:</label><br>
+                    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> <span class="labelNote">×
+                        x-height</span>
+                </div>
                 <div class="settingEnclosure">
 
-                <!-- Ascender Height Input -->
-                <label for="ascenderHeight">Ascender Height:</label><br>
-                <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> <span class="labelNote">× x-height</span>
-</div>
+                    <!-- Ascender Height Input -->
+                    <label for="ascenderHeight">Ascender Height:</label><br>
+                    <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> <span class="labelNote">×
+                        x-height</span>
+                </div>
                 <div class="settingEnclosure">
 
-                <!-- Descender Depth Input -->
-                <label for="descenderDepth">Descender Depth:</label><br>
-                <input type="number" id="descenderDepth" value="0.6" min="0" step="0.1"> <span class="labelNote">× x-height</span>
-</div>
+                    <!-- Descender Depth Input -->
+                    <label for="descenderDepth">Descender Depth:</label><br>
+                    <input type="number" id="descenderDepth" value="0.6" min="0" step="0.1"> <span class="labelNote">×
+                        x-height</span>
+                </div>
             </fieldset>
 
 
@@ -591,32 +657,32 @@ font-size:10pt;
 
                 <div class="settingEnclosure">
 
-                <label for="orientation">
-                    Orientation:
-                </label> <br />
+                    <label for="orientation">
+                        Orientation:
+                    </label> <br />
 
-                <input type="radio" name="orientation" value="portrait" checked>
-                
-                <label for="orientation">
-                    Portrait
+                    <input type="radio" name="orientation" id="orientationPortraitRadio" value="portrait" checked>
+
+                    <label for="orientationPortraitRadio">
+                        Portrait
                     </label>
 
-                <input type="radio" name="orientation" value="landscape"> 
-                <label for="orientation">
-                    Landscape
+                    <input type="radio" name="orientation" id="orientationLandscapeRadio" value="landscape">
+                    <label for="orientationLandscapeRadio">
+                        Landscape
                     </label>
-                
+
                 </div>
 
                 <div class="settingEnclosure">
 
-                <label for="paperSize">Paper Size: </label><br />
-                <select id="paperSize" name="paperSize">
-                    <option value="612,792" checked>Letter (8.5in x 11in)</option>
-                    <option value="612,1008">Legal (8.5in x 14in)</option>
-                    <option value="595,842">A4 (210mm x 297mm)</option>
-                    <option value="842,1191">A3 (297mm x 420mm)</option>
-                </select>
+                    <label for="paperSize">Paper Size: </label><br />
+                    <select id="paperSize" name="paperSize">
+                        <option value="612,792" checked>Letter (8.5in x 11in)</option>
+                        <option value="612,1008">Legal (8.5in x 14in)</option>
+                        <option value="595,842">A4 (210mm x 297mm)</option>
+                        <option value="842,1191">A3 (297mm x 420mm)</option>
+                    </select>
                 </div>
 
             </fieldset>
@@ -628,40 +694,42 @@ font-size:10pt;
 
                 <div class="settingEnclosure">
 
-                <input type="checkbox" id="showFont">
-                <label for="showFont">Show Practice Font Characters</label>
+                    <input type="checkbox" id="showFont">
+                    <label for="showFont">Show Practice Font Characters</label>
 
                 </div>
-                <div class="settingEnclosure">
+                <div class="settingEnclosure indent">
 
-                <label for="fontForWorksheetPages">Font:</label>
+                    <label for="fontForWorksheetPages">Font:</label>
 
-                <select id="fontForWorksheetPages" name="fontForWorksheetPages">
-                    <option value="Drafting" checked>Drafting Gothic</option>
-                    <option value="Fraktur">Fraktur</option>
-                    <option value="Blackletter">Blackletter</option>
-                    <option value="Uncial">Uncial</option>
+                    <select id="fontForWorksheetPages" name="fontForWorksheetPages">
+                        <option value="Drafting" checked>Drafting Gothic</option>
+                        <option value="Fraktur">Fraktur</option>
+                        <option value="Blackletter">Blackletter</option>
+                        <option value="Uncial">Uncial</option>
 
-                </select>
-</div>
+                    </select>
+                </div>
 
-                <!--<button id="uploadFont" class="darkButton1">Upload Font</button>
--->
-
-                <div class="settingEnclosure">
-                <label for="charactersInSheet">Characters:</label>
-                <select id="caseSelection" name="caseSelection">
-                    <option value="RowsOfCharacters" checked>Lowercase Only</option>
-                    <option value="singleCharacterAtLeft">Uppercase Only</option>
-                    <option value="CustomText">Both Lowercase and Uppercase</option>
-                </select>
-
-                <br />
-
-                <input type="checkbox" id="includeNumberCharacters">
-                <label for="includeNumberCharacters">Include Number Characters</label>
-                
+                <div class="settingEnclosure indent indent2">
+                <button id="uploadFont" class="darkButton1">Upload Font</button>
             </div>
+
+                <div class="settingEnclosure">
+                    <label for="charactersInSheet">Characters:</label>
+                    <select id="caseSelection" name="caseSelection">
+                        <option value="RowsOfCharacters" checked>Lowercase Only</option>
+                        <option value="singleCharacterAtLeft">Uppercase Only</option>
+                        <option value="CustomText">Both Lowercase and Uppercase</option>
+                    </select>
+
+
+                </div>
+
+                <div class="settingEnclosure indent">
+                    <input type="checkbox" id="includeNumberCharacters">
+                    <label for="includeNumberCharacters">Include Number Characters</label>
+                </div>
                 <!--
 <select id="extraCharacterSets" name="extraCharactersSets">
     <option value="numbersOnly" checked>Numbers</option>
@@ -669,28 +737,28 @@ font-size:10pt;
 </select>
 -->
 
-<div class="settingEnclosure">
+                <div class="settingEnclosure">
 
-                <label for="practiceCharactersArrangement">Practice Characters Arrangement:</label>
+                    <label for="practiceCharactersArrangement">Practice Characters Arrangement:</label>
 
-                <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
-                    <option value="RowsOfCharacters" checked>Rows of Characters</option>
-                    <option value="singleCharacterAtLeft">Single Character At Left</option>
-                    <option value="CustomText">Custom Practice Text</option>
-                    <option value="CustomText">Custom Practice Text at Top</option>
-                </select>
+                    <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
+                        <option value="RowsOfCharacters" checked>Rows of Characters</option>
+                        <option value="singleCharacterAtLeft">Single Character At Left</option>
+                        <option value="CustomText">Custom Practice Text</option>
+                        <!--<option value="CustomText">Custom Practice Text at Top</option>-->
+                    </select>
 
-</div>
+                </div>
 
 
-<div class="settingEnclosure">
+                <div class="settingEnclosure indent">
 
-                <label for="customPracticeText">Custom Practice Text:</label>
+                    <label for="customPracticeText">Custom Practice Text:</label>
 
-                <textarea name="customPracticeText" rows="5"  maxlength="45">
+                    <textarea name="customPracticeText" rows="5" maxlength="45">
 
 </textarea>
-</div>
+                </div>
             </fieldset>
 
 
@@ -711,12 +779,6 @@ font-size:10pt;
             <div class="worksheetAreaSpacer"></div>
 
             <div id="worksheetPagesContainer">
-                <!-- SVG Canvas -->
-                <svg class="worksheetPage" id="canvas" xmlns="http://www.w3.org/2000/svg" width="520pt" height="720pt"
-                    viewBox="0 0 520 720">
-                    <rect width="100%" height="100%" fill="white" />
-                    <g id="worksheet"></g>
-                </svg>
 
             </div>
 
@@ -840,33 +902,26 @@ font-size:10pt;
         function init() {
             // Add event listeners to controls
             var controls = document.querySelectorAll('#controls input, #controls select');
-            var controls = document.querySelectorAll('#controls input, #controls select');
-
 
             controls.forEach(function (control) {
                 if (control.type === 'number' || control.type === 'color' || control.tagName.toLowerCase() === 'select') {
-
-                    control.addEventListener('change', function () { makeWorksheetPages(); }); // For number, color, and select inputs
+                    control.addEventListener('change', function () { makeWorksheetPages(); });
                 } else if (control.type === 'checkbox') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); }); // For checkboxes
+                    control.addEventListener('change', function () { makeWorksheetPages(); });
                 } else if (control.type === 'radio') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); }); // For radio buttons
+                    control.addEventListener('change', function () { makeWorksheetPages(); });
                 } else if (control.type === 'range') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); }); // For range inputs
+                    control.addEventListener('change', function () { makeWorksheetPages(); });
                 } else if (control.type === 'color') {
-                    control.addEventListener('input', function () { makeWorksheetPages(); }); // For color inputs when the value changes interactively
+                    control.addEventListener('input', function () { makeWorksheetPages(); });
                 }
             });
-
-
 
             // Initial grid drawing
             makeWorksheetPages();
         }
 
-
         // GLOBALS
-
         var mmToPt = 2.83465;    // Conversion factor from mm to pt
 
         // SETTINGS WITH DEFAULTS
@@ -895,23 +950,87 @@ font-size:10pt;
         var marginHorizontal = 2 * marginHorizontalInches * 72; // Convert inches to points
         var marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
 
-
         function makeWorksheetPages() {
-
-            pullSettingsFromFormFields();
+            pullPracticeBlockSettingsFromFormFields();
             pullPaperSizeFromFormFields();
 
-            //emptyWorksheetArea();
+            emptyWorksheetArea();
 
-            drawWorksheet();
+            // Determine the number of pages based on user selections
+            var numberOfPages = calculateNumberOfPages();
 
+
+            for (var i = 0; i < numberOfPages; i++) {
+
+                var svg = createSVGElement();
+
+                // Append SVG to worksheetPagesContainer
+                var container = document.getElementById('worksheetPagesContainer');
+                container.appendChild(svg);
+
+                // Call drawWorksheet(svg, i)
+                drawWorksheet(svg, i);
+
+                // Call drawWorksheet(svg)
+                drawWorksheet(svg);
+            }
+        }
+
+        function calculateNumberOfPages()
+        {
+            return 1;
+        }
+
+        function createSVGElement() {
+            // Create SVG element
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'worksheetPage');
+
+            // Adjust paper width and height for margin
+            var width = paperSize[0] - marginHorizontal;
+            var height = paperSize[1] - marginVertical;
+
+            // Swap width and height if landscape orientation is selected
+            if (orientation === 'landscape') {
+                [width, height] = [height, width];
+            }
+
+            svg.setAttribute('width', width + 'pt');
+            svg.setAttribute('height', height + 'pt');
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+            // Create background rectangle
+            var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('width', '100%');
+            rect.setAttribute('height', '100%');
+            rect.setAttribute('fill', 'white');
+            svg.appendChild(rect);
+
+            svg.classList.add("worksheetPage");
+
+
+            // Apply padding to SVG
+            svg.style.paddingLeft = `${marginHorizontal / 2}pt`;
+            svg.style.paddingRight = `${marginHorizontal / 2}pt`;
+            svg.style.paddingTop = `${marginVertical / 2}pt`;
+            svg.style.paddingBottom = `${marginVertical / 2}pt`;
+
+            return svg;
+        }
+
+        function emptyWorksheetArea() {
+            var container = document.getElementById('worksheetPagesContainer');
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
         }
 
 
-        function pullSettingsFromFormFields() {
+
+        function pullPracticeBlockSettingsFromFormFields() {
             // Get nib width in mm and convert to pt
             nibWidthMm = parseFloat(document.getElementById('nibWidth').value);
-            
+
             if (isNaN(nibWidthMm) || nibWidthMm <= 0) {
                 document.getElementById('nibWidth').value = 3.8;
                 nibWidthMm = parseFloat(document.getElementById('nibWidth').value);
@@ -985,68 +1104,78 @@ font-size:10pt;
                 return;
             }
 
+            // If practice font characters are enabled, adjust practice block sizes
+            var showFont = document.getElementById('showFont').checked;
+            if (showFont && font) {
+                var fontUnitsPerEm = font.unitsPerEm;
+                var ascender = font.ascender;
+                var descender = font.descender;
+                var xHeightValue = font.tables.os2.sxHeight || (ascender / 2);
+
+                // Convert font metrics to proportions relative to x-height
+                ascenderMultiplier = (ascender - xHeightValue) / xHeightValue;
+                descenderMultiplier = Math.abs(descender) / xHeightValue;
+                capitalMultiplier = (font.tables.os2.sCapHeight || ascender) / xHeightValue;
+
+                // Update nib width to match font size (if needed)
+                // You might adjust nibWidthMm based on font size
+            }
 
         }
-
 
         function pullPaperSizeFromFormFields() {
             // Get selected paper size and orientation
             paperSize = document.getElementById('paperSize').value.split(',').map(Number);
             orientation = document.querySelector('input[name="orientation"]:checked').value;
-            
 
             marginHorizontalInches = 0.5;
             marginVerticalInches = 0.4;
 
             marginHorizontal = 2 * marginHorizontalInches * 72; // Convert inches to points
             marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
-
         }
 
 
-        function drawWorksheet() {
 
-            
-            var worksheets = document.querySelectorAll('.worksheetPage');
+        function drawWorksheet(svg) {
+            // Get the width and height from the svg attributes
+            var width = parseFloat(svg.getAttribute('width'));
+            var height = parseFloat(svg.getAttribute('height'));
 
-            // require !important in the CSS for print media
-            worksheets.forEach(function (worksheet) {
-                worksheet.style.paddingLeft = `${marginHorizontal / 2}pt`;
-                worksheet.style.paddingRight = `${marginHorizontal / 2}pt`;
-                worksheet.style.paddingTop = `${marginVertical / 2}pt`;
-                worksheet.style.paddingBottom = `${marginVertical / 2}pt`;
-            });
-
-
-            // Adjust paper width and height for margin (subtracting 72pt on all sides)
-            var width = paperSize[0] - marginHorizontal;
-            var height = paperSize[1] - marginVertical;
-
-            documentWidthPt = width;
-            documentHeightPt = height;
-
-            // Swap width and height if landscape orientation is selected
-            if (orientation === 'landscape') {
-                [width, height] = [height, width];
-            }
-
-            // Update SVG attributes
-            var svg = document.getElementById('canvas');
-            svg.setAttribute('width', width + 'pt');
-            svg.setAttribute('height', height + 'pt');
-            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-
-
-            // Clear existing worksheet
-            var worksheetGroup = document.getElementById('worksheet');
-            while (worksheetGroup.firstChild) {
-                worksheetGroup.removeChild(worksheetGroup.firstChild);
-            }
+            // Create the main group for the worksheet
+            var worksheetGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            worksheetGroup.setAttribute('class', 'worksheetGroup');
+            svg.appendChild(worksheetGroup);
 
             // Define stroke width in points
             var strokeWidth = 0.6;
 
             // Draw outer rectangle
+            drawOuterRectangle(worksheetGroup, width, height, strokeWidth);
+
+            // Draw background horizontal lines at every nib width
+            var backgroundLinesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            backgroundLinesGroup.setAttribute("class", "backgroundLines");
+            worksheetGroup.appendChild(backgroundLinesGroup);
+
+            // Draw slant guides if selected
+            if (showVerticalLines) {
+                var slantGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                slantGroup.setAttribute("class", "verticalLines");
+                worksheetGroup.appendChild(slantGroup);
+
+                drawSlantGuides(slantGroup, width, height, strokeWidth);
+            }
+
+            // Draw practice blocks with x-height area shaded
+            var practiceBlocksGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            practiceBlocksGroup.setAttribute("class", "practiceBlocks");
+            worksheetGroup.appendChild(practiceBlocksGroup);
+
+            drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth);
+        }
+
+        function drawOuterRectangle(group, width, height, strokeWidth) {
             var outerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             outerRect.setAttribute("x", 0);
             outerRect.setAttribute("y", 0);
@@ -1055,79 +1184,44 @@ font-size:10pt;
             outerRect.setAttribute("fill", "none");
             outerRect.setAttribute("stroke", "#000");
             outerRect.setAttribute("stroke-width", strokeWidth);
-            worksheetGroup.appendChild(outerRect);
+            group.appendChild(outerRect);
+        }
 
-            // Draw background horizontal lines at every nib width
-            var backgroundLinesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            backgroundLinesGroup.setAttribute("id", "backgroundLines");
-            worksheetGroup.appendChild(backgroundLinesGroup);
+        function drawSlantGuides(slantGroup, width, height, strokeWidth) {
+            var angleRadians = verticalSlantAngle * Math.PI / 180;
+            var tanAngle = Math.tan(angleRadians); // Slope of the slant lines
 
+            // Spacing between slant lines
+            var verticalLineSpacing = nibWidth * verticalLineSpacingMultiplier;
 
-            // Draw slant guides if selected (on top of x-height shading)
-            // Draw slant guides if selected (behind x-height lines but above background lines)
-            if (showVerticalLines) {
-                var slantGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                slantGroup.setAttribute("id", "verticalLines");
-                worksheetGroup.appendChild(slantGroup);
+            // For vertical lines (90 degrees), handle separately
+            if (verticalSlantAngle !== 90) {
+                // Starting x position for slant lines
+                var xStart = -height * tanAngle;
+                var xEnd = width + height * tanAngle;
+                for (var x = xStart; x <= xEnd; x += verticalLineSpacing) {
+                    var x1 = x;
+                    var y1 = 0;
+                    var x2 = x - height * tanAngle;
+                    var y2 = height;
 
-                var angleRadians = verticalSlantAngle * Math.PI / 180;
-                var tanAngle = Math.tan(angleRadians); // Slope of the slant lines
-
-                // Spacing between slant lines is same as nib width
-                var verticalLineSpacing = nibWidth * verticalLineSpacingMultiplier;
-
-                // For vertical lines (90 degrees), handle separately
-                if (verticalSlantAngle === 90) {
-                    /*
-                    for (var x = 0; x <= width; x += verticalLineSpacing) {
+                    // Clip the line to the bounds of the document
+                    var clippedLine = clipLineToRect(x1, y1, x2, y2, 0, 0, width, height);
+                    if (clippedLine) {
                         var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                        line.setAttribute("x1", x);
-                        line.setAttribute("y1", 0);
-                        line.setAttribute("x2", x);
-                        line.setAttribute("y2", height);
-                        line.setAttribute("stroke", "#aaa");
+                        line.setAttribute("x1", clippedLine.x1);
+                        line.setAttribute("y1", clippedLine.y1);
+                        line.setAttribute("x2", clippedLine.x2);
+                        line.setAttribute("y2", clippedLine.y2);
+                        line.setAttribute("stroke", "#ccc");
                         line.setAttribute("stroke-width", strokeWidth);
                         slantGroup.appendChild(line);
-                    }*/
-                } else {
-                    // Starting x position for slant lines
-                    var xStart = -height * tanAngle;
-                    var xEnd = width + height * tanAngle;
-                    for (var x = xStart; x <= xEnd; x += verticalLineSpacing) {
-                        var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-
-                        var x1 = x;
-                        var y1 = 0;
-                        var x2 = x - height * tanAngle;
-                        var y2 = height;
-
-
-
-                        // Clip the line to the bounds of the document
-                        var clippedLine = clipLineToRect(x1, y1, x2, y2, 0, 0, width, height);
-                        if (clippedLine) {
-                            var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                            line.setAttribute("x1", clippedLine.x1);
-                            line.setAttribute("y1", clippedLine.y1);
-                            line.setAttribute("x2", clippedLine.x2);
-                            line.setAttribute("y2", clippedLine.y2);
-                            line.setAttribute("stroke", "#ccc");
-                            line.setAttribute("stroke-width", strokeWidth);
-                            slantGroup.appendChild(line);
-                        }
-
-
-
                     }
                 }
             }
+        }
 
-
-            // Draw practice blocks with x-height area shaded
-            var practiceBlocksGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            practiceBlocksGroup.setAttribute("id", "practiceBlocks");
-            worksheetGroup.appendChild(practiceBlocksGroup);
-
+        function drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth) {
             // Calculate total nib height per block
             var nibHeight = nibWidth; // For clarity
             var nibRectWidth = nibWidth;
@@ -1143,298 +1237,202 @@ font-size:10pt;
             // totalSectionHeight
             var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
 
-
-
-            var y = 0;
-            while (y <= (height - totalBlockHeight)) {
-                // Shading the x-height area
-                var xHeightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                xHeightRect.setAttribute("x", 0);
-                xHeightRect.setAttribute("y", y + ascenderHeight + capitalHeight);
-                xHeightRect.setAttribute("width", width);
-                xHeightRect.setAttribute("height", xHeight);
-                xHeightRect.setAttribute("fill", xHeightColor);
-                xHeightRect.setAttribute("fill-opacity", xHeightOpacity);
-                practiceBlocksGroup.appendChild(xHeightRect);
-
-
-                if (y > 0) {
-                    // Filling the area beneath descender with white
-                    var gapBetweenPracticeSectionsRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    gapBetweenPracticeSectionsRect.setAttribute("x", 0);
-                    gapBetweenPracticeSectionsRect.setAttribute("y", descenderY);
-                    gapBetweenPracticeSectionsRect.setAttribute("width", width);
-                    gapBetweenPracticeSectionsRect.setAttribute("height", nibHeight);
-                    //     gapBetweenPracticeSectionsRect.setAttribute("fill-opacity", xHeightOpacity);
-
-                    gapBetweenPracticeSectionsRect.setAttribute("fill", "#333");
-                    practiceBlocksGroup.appendChild(gapBetweenPracticeSectionsRect);
-                }
-
-
-
-
-                // Ascender line (dashed)
-                var ascenderY = y;
-                var lineAscender = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                lineAscender.setAttribute("x1", 0);
-                lineAscender.setAttribute("y1", ascenderY);
-                lineAscender.setAttribute("x2", width);
-                lineAscender.setAttribute("y2", ascenderY);
-                lineAscender.setAttribute("stroke", "#000");
-                lineAscender.setAttribute("stroke-width", strokeWidth);
-                lineAscender.setAttribute("stroke-dasharray", "6,2"); // Dashed line
-                practiceBlocksGroup.appendChild(lineAscender);
-
-
-
-                // Capital line (dashed)
-                var capitalY = ascenderY + ascenderHeight;
-                var lineCapital = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                lineCapital.setAttribute("x1", 0);
-                lineCapital.setAttribute("y1", capitalY);
-                lineCapital.setAttribute("x2", width);
-                lineCapital.setAttribute("y2", capitalY);
-                lineCapital.setAttribute("stroke", "#000");
-                lineCapital.setAttribute("stroke-width", strokeWidth);
-                lineCapital.setAttribute("stroke-dasharray", "4,2"); // Dashed line
-                practiceBlocksGroup.appendChild(lineCapital);
-
-                // Waistline (solid)
-                var waistlineY = capitalY + capitalHeight;
-                var lineWaist = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                lineWaist.setAttribute("x1", 0);
-                lineWaist.setAttribute("y1", waistlineY);
-                lineWaist.setAttribute("x2", width);
-                lineWaist.setAttribute("y2", waistlineY);
-                lineWaist.setAttribute("stroke", "#000");
-                lineWaist.setAttribute("stroke-width", strokeWidth);
-                //  lineWaist.setAttribute("text-shadow", "#FC0 1px 0 10px");
-                practiceBlocksGroup.appendChild(lineWaist);
-
-
-                // MidLine (dashed)
-                var midlineY = (waistlineY + xHeight / 2);
-                var lineMidline = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                lineMidline.setAttribute("x1", 0);
-                lineMidline.setAttribute("y1", midlineY);
-                lineMidline.setAttribute("x2", width);
-                lineMidline.setAttribute("y2", midlineY);
-                lineMidline.setAttribute("stroke", "#ccc");
-                lineMidline.setAttribute("stroke-width", strokeWidth);
-                lineMidline.setAttribute("stroke-dasharray", "2,2"); // Dashed line
-
-                practiceBlocksGroup.appendChild(lineMidline);
-
-
-
-                // Baseline (solid)
-                var baselineY = waistlineY + xHeight;
-                var lineBase = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                lineBase.setAttribute("x1", 0);
-                lineBase.setAttribute("y1", baselineY);
-                lineBase.setAttribute("x2", width);
-                lineBase.setAttribute("y2", baselineY);
-                lineBase.setAttribute("stroke", "#000");
-                lineBase.setAttribute("stroke-width", strokeWidth);
-                practiceBlocksGroup.appendChild(lineBase);
-
-                // Descender line (dashed)
-                var descenderY = baselineY + descenderHeight;
-                var lineDescender = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                lineDescender.setAttribute("x1", 0);
-                lineDescender.setAttribute("y1", descenderY);
-                lineDescender.setAttribute("x2", width);
-                lineDescender.setAttribute("y2", descenderY);
-                lineDescender.setAttribute("stroke", "#000");
-                lineDescender.setAttribute("stroke-width", strokeWidth);
-                lineDescender.setAttribute("stroke-dasharray", "6,2"); // Dashed line
-                practiceBlocksGroup.appendChild(lineDescender);
-
-
-
-                // draw horizontal lines from baseline to ascender line
-                for (var y = baselineY; y > ascenderY; y -= nibWidth) {
-                    var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                    line.setAttribute("x1", 0);
-                    line.setAttribute("y1", y);
-                    line.setAttribute("x2", width);
-                    line.setAttribute("y2", y);
-                    line.setAttribute("stroke", "#eee"); // #eee Light gray background lines
-                    line.setAttribute("stroke-width", strokeWidth);
-                    backgroundLinesGroup.appendChild(line);
-                }
-
-                // draw horizontal lines from baseline to descender line
-                for (var y = baselineY; y < descenderY; y += nibWidth) {
-                    var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                    line.setAttribute("x1", 0);
-                    line.setAttribute("y1", y);
-                    line.setAttribute("x2", width);
-                    line.setAttribute("y2", y);
-                    line.setAttribute("stroke", "#eee"); // #eee Light gray background lines
-                    line.setAttribute("stroke-width", strokeWidth);
-                    backgroundLinesGroup.appendChild(line);
-                }
-
-
-
-                if (showNibSquares) {
-                    // Draw nib guide
-                    var nibGuideGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                    practiceBlocksGroup.appendChild(nibGuideGroup);
-
-                    var nibX = 5; // Position from left edge
-                    var nibCount = (baselineY - ascenderY) / nibWidth; // Number of squares to draw
-
-                    // Ascending blocks from baseline
-                    // Draw nib squares in alternating columns per row
-                    for (var i = 0; i < nibCount; i++) {
-                        var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                        var col = i % 2; // Alternate columns
-
-                        // Calculate yPosition so that blocks stack upwards from baselineY
-                        var yPosition = Math.ceil(baselineY - (i + 1) * nibHeight);
-
-                        rect.setAttribute("x", nibX + col * nibRectWidth);
-                        rect.setAttribute("y", yPosition);
-                        rect.setAttribute("width", nibRectWidth);
-                        rect.setAttribute("height", nibHeight);
-                        rect.setAttribute("fill", "#000"); // Black nibs
-
-
-
-                        if ((yPosition) < waistlineY) {
-                            rect.setAttribute("fill", "#999");
-
-                        }
-
-                        if (((yPosition) < waistlineY) && ((yPosition + nibWidth - 1) > waistlineY)) {
-                            //  rect.setAttribute("fill", "red"); // debug
-
-                        }
-
-                        if ((yPosition) <= ascenderY) {
-                            var diff = ascenderY - yPosition;
-
-                            //  rect.setAttribute("fill", "red"); // debug
-                            rect.setAttribute("y", yPosition + diff);
-                            rect.setAttribute("height", nibHeight - diff);
-
-                        }
-
-                        nibGuideGroup.appendChild(rect);
-
-                        if (((yPosition) < waistlineY) && ((yPosition + nibWidth - 1) > waistlineY)) {
-                            var rect2ForSplit = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                            rect2ForSplit.setAttribute("x", nibX + col * nibRectWidth);
-                            rect2ForSplit.setAttribute("y", waistlineY);
-                            rect2ForSplit.setAttribute("width", nibRectWidth);
-                            rect2ForSplit.setAttribute("height", (yPosition + nibRectWidth) - waistlineY);
-                            rect2ForSplit.setAttribute("fill", "black"); // Black nibs
-
-
-
-                            nibGuideGroup.appendChild(rect2ForSplit);
-
-                            //  rect.setAttribute("fill", "red"); // Black nibs
-
-                        }
-
-
-                    }
-
-
-
-                    // Descender blocks
-                    nibCount = (descenderY - baselineY) / nibWidth
-
-                    var nibYStart = baselineY;
-
-                    // Draw nib squares in alternating columns per row
-                    for (var i = 0; i < nibCount; i++) {
-                        var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                        var col = 1 - (i % 2); // Alternate columns
-                        var yPosition = nibYStart + i * nibHeight;
-
-                        rect.setAttribute("x", nibX + col * nibRectWidth);
-                        rect.setAttribute("y", yPosition);
-                        rect.setAttribute("width", nibRectWidth);
-                        rect.setAttribute("height", nibHeight);
-                        rect.setAttribute("fill", "#999");
-                        nibGuideGroup.appendChild(rect);
-
-                        if ((yPosition + nibHeight) > descenderY) {
-
-                            rect.setAttribute("height", descenderY - yPosition);
-
-
-                        }
-                    }
-
-
-                }
-
-
-                if (showNibGuidelineLabels) {
-                    // Label the lines (once per block)
-                    var labelX = 30; // Position labels slightly inside the left edge
-                    var fontSize = 9; // Adjust as needed
-                    var labelColor = "#444"; // Dark gray
-
-
-                    // Ascender Label
-                    var ascenderLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    ascenderLabel.setAttribute("x", labelX);
-                    ascenderLabel.setAttribute("y", ascenderY - 1 + nibWidth);
-                    ascenderLabel.setAttribute("fill", "#9c9c9c");
-                    ascenderLabel.setAttribute("font-size", fontSize);
-                    ascenderLabel.textContent = "Ascender Line⬏ ";
-                    practiceBlocksGroup.appendChild(ascenderLabel);
-
-                    // Capital Label
-                    var capitalLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    capitalLabel.setAttribute("x", labelX);
-                    capitalLabel.setAttribute("y", capitalY - 2);
-                    capitalLabel.setAttribute("fill", "#9c9c9c");
-                    capitalLabel.setAttribute("font-size", fontSize);
-                    capitalLabel.textContent = "Capital Line⬎";
-                    practiceBlocksGroup.appendChild(capitalLabel);
-
-                    // Waistline Label
-                    var waistlineLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    waistlineLabel.setAttribute("x", labelX);
-                    waistlineLabel.setAttribute("y", waistlineY - 2);
-                    waistlineLabel.setAttribute("fill", "#9c9c9c");
-                    waistlineLabel.setAttribute("font-size", fontSize);
-                    waistlineLabel.textContent = "Waist Line ⬎";
-                    practiceBlocksGroup.appendChild(waistlineLabel);
-
-                    // Baseline Label
-                    var baselineLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    baselineLabel.setAttribute("x", labelX);
-                    baselineLabel.setAttribute("y", baselineY - 2);
-                    baselineLabel.setAttribute("fill", labelColor);
-                    baselineLabel.setAttribute("font-size", fontSize);
-                    baselineLabel.textContent = "Base Line ⬎";
-                    practiceBlocksGroup.appendChild(baselineLabel);
-
-                    // Descender Label
-                    var descenderLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    descenderLabel.setAttribute("x", labelX);
-                    descenderLabel.setAttribute("y", descenderY - 2);
-                    descenderLabel.setAttribute("fill", "#9c9c9c");
-                    descenderLabel.setAttribute("font-size", fontSize);
-                    descenderLabel.textContent = "Descender Line⬎";
-                    practiceBlocksGroup.appendChild(descenderLabel);
-
-                }
-
-
-                y = descenderY + nibHeight; // Add a nib width space between blocks
+            var yPosition = 0;
+            while (yPosition <= (height - totalBlockHeight)) {
+                drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight);
+                yPosition += totalBlockHeight + nibHeight; // Move y to next block, adding a nibHeight gap
+            }
+        }
+
+        function drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight) {
+            // Variables for line positions
+            var ascenderY = y;
+            var capitalY = ascenderY + ascenderHeight;
+            var waistlineY = capitalY + capitalHeight;
+            var baselineY = waistlineY + xHeight;
+            var descenderY = baselineY + descenderHeight;
+            var midlineY = waistlineY + xHeight / 2;
+
+            // Shade x-height area
+            shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight);
+
+            // Fill gap between blocks if not first block
+            if (y > 0) {
+                fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeight);
             }
 
+            // Draw guide lines
+            drawGuideLines(practiceBlocksGroup, width, strokeWidth, ascenderY, capitalY, waistlineY, midlineY, baselineY, descenderY);
 
+            // Draw horizontal lines
+            drawHorizontalLines(backgroundLinesGroup, width, strokeWidth, nibWidth, baselineY, ascenderY, descenderY);
+
+            // Draw nib guide if selected
+            if (showNibSquares) {
+                drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, descenderY, nibHeight, nibWidth);
+            }
+
+            // Draw nib guideline labels if selected
+            if (showNibGuidelineLabels) {
+                drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistlineY, baselineY, descenderY);
+            }
+        }
+
+        function shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight) {
+            var xHeightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            xHeightRect.setAttribute("x", 0);
+            xHeightRect.setAttribute("y", y + ascenderHeight + capitalHeight);
+            xHeightRect.setAttribute("width", width);
+            xHeightRect.setAttribute("height", xHeight);
+            xHeightRect.setAttribute("fill", xHeightColor);
+            xHeightRect.setAttribute("fill-opacity", xHeightOpacity);
+            practiceBlocksGroup.appendChild(xHeightRect);
+        }
+
+        function fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeight) {
+            var gapRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            gapRect.setAttribute("x", 0);
+            gapRect.setAttribute("y", descenderY);
+            gapRect.setAttribute("width", width);
+            gapRect.setAttribute("height", nibHeight);
+            gapRect.setAttribute("fill", "#333");
+            practiceBlocksGroup.appendChild(gapRect);
+        }
+
+        function drawGuideLines(practiceBlocksGroup, width, strokeWidth, ascenderY, capitalY, waistlineY, midlineY, baselineY, descenderY) {
+            // Ascender line (dashed)
+            drawLine(practiceBlocksGroup, 0, ascenderY, width, ascenderY, strokeWidth, "#000", "6,2");
+
+            // Capital line (dashed)
+            drawLine(practiceBlocksGroup, 0, capitalY, width, capitalY, strokeWidth, "#000", "4,2");
+
+            // Waistline (solid)
+            drawLine(practiceBlocksGroup, 0, waistlineY, width, waistlineY, strokeWidth, "#000");
+
+            // Midline (dashed)
+            drawLine(practiceBlocksGroup, 0, midlineY, width, midlineY, strokeWidth, "#ccc", "2,2");
+
+            // Baseline (solid)
+            drawLine(practiceBlocksGroup, 0, baselineY, width, baselineY, strokeWidth, "#000");
+
+            // Descender line (dashed)
+            drawLine(practiceBlocksGroup, 0, descenderY, width, descenderY, strokeWidth, "#000", "6,2");
+        }
+
+        function drawLine(group, x1, y1, x2, y2, strokeWidth, strokeColor, dashArray) {
+            var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", strokeColor);
+            line.setAttribute("stroke-width", strokeWidth);
+            if (dashArray) {
+                line.setAttribute("stroke-dasharray", dashArray);
+            }
+            group.appendChild(line);
+        }
+
+        function drawHorizontalLines(backgroundLinesGroup, width, strokeWidth, nibWidth, baselineY, ascenderY, descenderY) {
+            // From baseline to ascender line
+            for (var y = baselineY; y > ascenderY; y -= nibWidth) {
+                drawLine(backgroundLinesGroup, 0, y, width, y, strokeWidth, "#eee");
+            }
+
+            // From baseline to descender line
+            for (var y = baselineY; y < descenderY; y += nibWidth) {
+                drawLine(backgroundLinesGroup, 0, y, width, y, strokeWidth, "#eee");
+            }
+        }
+
+        function drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, descenderY, nibHeight, nibWidth) {
+            var nibGuideGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            practiceBlocksGroup.appendChild(nibGuideGroup);
+
+            var nibX = 5; // Position from left edge
+            var nibRectWidth = nibWidth;
+
+            // Ascending blocks from baseline
+            var nibCount = (baselineY - ascenderY) / nibHeight; // Number of squares to draw
+            for (var i = 0; i < nibCount; i++) {
+                var col = i % 2; // Alternate columns
+                var yPosition = Math.ceil(baselineY - (i + 1) * nibHeight);
+                var rectHeight = nibHeight;
+                var rectY = yPosition;
+
+                var fillColor = "#000";
+
+                if (yPosition < waistlineY) {
+                    fillColor = "#999";
+                }
+
+                if (yPosition <= ascenderY) {
+                    var diff = ascenderY - yPosition;
+                    rectY = yPosition + diff;
+                    rectHeight = nibHeight - diff;
+                }
+
+                drawRect(nibGuideGroup, nibX + col * nibRectWidth, rectY, nibRectWidth, rectHeight, fillColor);
+
+                if (yPosition < waistlineY && (yPosition + nibHeight - 1) > waistlineY) {
+                    var rectHeightSplit = (yPosition + nibHeight) - waistlineY;
+                    drawRect(nibGuideGroup, nibX + col * nibRectWidth, waistlineY, nibRectWidth, rectHeightSplit, "#000");
+                }
+            }
+
+            // Descender blocks
+            nibCount = (descenderY - baselineY) / nibHeight;
+            var nibYStart = baselineY;
+            for (var i = 0; i < nibCount; i++) {
+                var col = 1 - (i % 2); // Alternate columns
+                var yPosition = nibYStart + i * nibHeight;
+                var rectHeight = nibHeight;
+                if ((yPosition + nibHeight) > descenderY) {
+                    rectHeight = descenderY - yPosition;
+                }
+                drawRect(nibGuideGroup, nibX + col * nibRectWidth, yPosition, nibRectWidth, rectHeight, "#999");
+            }
+        }
+
+        function drawRect(group, x, y, width, height, fillColor) {
+            var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.setAttribute("x", x);
+            rect.setAttribute("y", y);
+            rect.setAttribute("width", width);
+            rect.setAttribute("height", height);
+            rect.setAttribute("fill", fillColor);
+            group.appendChild(rect);
+        }
+
+        function drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistlineY, baselineY, descenderY) {
+            var labelX = 30; // Position labels slightly inside the left edge
+            var fontSize = 9; // Adjust as needed
+            var labelColor = "#444"; // Dark gray
+
+            // Ascender Label
+            drawText(practiceBlocksGroup, labelX, ascenderY - 1 + nibWidth, fontSize, "#9c9c9c", "Ascender Line⬏ ");
+
+            // Capital Label
+            drawText(practiceBlocksGroup, labelX, capitalY - 2, fontSize, "#9c9c9c", "Capital Line⬎");
+
+            // Waistline Label
+            drawText(practiceBlocksGroup, labelX, waistlineY - 2, fontSize, "#9c9c9c", "Waist Line ⬎");
+
+            // Baseline Label
+            drawText(practiceBlocksGroup, labelX, baselineY - 2, fontSize, labelColor, "Base Line ⬎");
+
+            // Descender Label
+            drawText(practiceBlocksGroup, labelX, descenderY - 2, fontSize, "#9c9c9c", "Descender Line⬎");
+        }
+
+        function drawText(group, x, y, fontSize, fillColor, textContent) {
+            var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", y);
+            text.setAttribute("fill", fillColor);
+            text.setAttribute("font-size", fontSize);
+            text.textContent = textContent;
+            group.appendChild(text);
         }
 
         // Function to clip a line segment to a rectangle using the Liang-Barsky algorithm

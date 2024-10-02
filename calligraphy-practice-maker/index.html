@@ -65,7 +65,7 @@
             /* Keep scrolling enabled */
             scrollbar-width: none;
             /* Firefox */
-            border-right:2px solid rgb(101, 101, 101);
+            border-right: 2px solid rgb(101, 101, 101);
         }
 
         .hiddenTemporary {
@@ -103,27 +103,23 @@
             text-transform: uppercase;
             background-color: #111;
             color: #7b7474;
-            
+
             font-size: 10pt;
             width: 100%;
 
-            padding-top:5pt;
-            
+            padding-top: 5pt;
+
             text-align: center;
             padding-bottom: 3pt;
             box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
 
             border-radius: 4pt;
-font-weight: bold;
-            border-bottom:2pt solid black;
-            
-        }
-
-        #controls fieldset .settingEnclosure 
-        {
-            
+            font-weight: bold;
+            border-bottom: 2pt solid black;
 
         }
+
+        #controls fieldset .settingEnclosure {}
 
         #controls fieldset {
             border: 0;
@@ -146,7 +142,7 @@ font-weight: bold;
             padding-right: 0pt;
             padding-left: 0pt;
             font-family: sans-serif;
-            
+
             color: #333;
         }
 
@@ -166,7 +162,7 @@ font-weight: bold;
 
         .settingEnclosure label {
 
-            user-select: none; 
+            user-select: none;
             font-weight: bold;
         }
 
@@ -368,7 +364,8 @@ font-weight: bold;
             color: #ccc;
             border-radius: 4pt;
             height: 25pt;
-            box-shadow: 3pt 3pt 3pt #333;
+            box-shadow: 2pt 2pt 2pt #484848;
+            border: 1px solid black;
 
             background-color: #000;
             color: #ccc;
@@ -390,7 +387,7 @@ font-weight: bold;
             height: 100%;
             background: #000;
             cursor: pointer;
-            
+
         }
 
         #controlsScrollbar .thumb {
@@ -402,7 +399,7 @@ font-weight: bold;
             height: 30px;
             border-radius: 0px;
             border: 1px solid black;
-            margin-left:1px;
+            margin-left: 1px;
             width: 11px;
 
             background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);
@@ -463,7 +460,7 @@ font-weight: bold;
             position: absolute;
             top: 0;
             left: 0;
-            margin-left:1px;
+            margin-left: 1px;
             width: 11px;
             background: #ccc;
             height: 30px;
@@ -484,7 +481,7 @@ font-weight: bold;
 
 
         svg.worksheetPage {
-         display:block;
+            display: block;
             box-shadow: 5px 15px 10px gray;
             border: 1pt solid black;
         }
@@ -585,10 +582,12 @@ font-weight: bold;
                         width</span>
                 </div>
 
-                <div class="hiddenTemporary">
+                <div class="settingEnclosure indent hiddenTemporary">
                     <!-- x-height Background Color Picker -->
                     <label for="xHeightColor">Background Color:</label>
-                    <input type="color" id="xHeightColor" value="#f0f0f0"><br><br>
+                    <input type="color" id="xHeightColor" value="#f0f0f0">
+                </div>
+                <div class="settingEnclosure indent hiddenTemporary">
                     <!-- x-height Background Opacity -->
                     <label for="xHeightOpacity">Background Opacity (0-1):</label>
                     <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
@@ -689,7 +688,7 @@ font-weight: bold;
 
 
 
-            <fieldset class="hiddenTemporary">
+            <fieldset class="hiddenTemporaryOff">
                 <legend>Practice Font Characters</legend>
 
                 <div class="settingEnclosure">
@@ -712,15 +711,17 @@ font-weight: bold;
                 </div>
 
                 <div class="settingEnclosure indent indent2">
-                <button id="uploadFont" class="darkButton1">Upload Font</button>
-            </div>
+                    <button id="uploadFont" class="darkButton1">Upload Font</button>
+                </div>
 
                 <div class="settingEnclosure">
-                    <label for="charactersInSheet">Characters:</label>
-                    <select id="caseSelection" name="caseSelection">
-                        <option value="RowsOfCharacters" checked>Lowercase Only</option>
-                        <option value="singleCharacterAtLeft">Uppercase Only</option>
-                        <option value="CustomText">Both Lowercase and Uppercase</option>
+                    <label for="alphabetCharactersInSheet">Characters:</label>
+                    <select id="alphabetCharactersInSheet" name="alphabetCharactersInSheet">
+                        <option value="lowercaseOnly" checked>Lowercase Only</option>
+                        <option value="uppercaseOnly">Uppercase Only</option>
+                        <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
+                        <option value="customText">Custom Practice Text</option>
+
                     </select>
 
 
@@ -730,6 +731,13 @@ font-weight: bold;
                     <input type="checkbox" id="includeNumberCharacters">
                     <label for="includeNumberCharacters">Include Number Characters</label>
                 </div>
+
+                <div class="settingEnclosure indent">
+                    <label for="customPracticeText">Custom Practice Text:</label>
+                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="45"></textarea>
+                </div>
+
+
                 <!--
 <select id="extraCharacterSets" name="extraCharactersSets">
     <option value="numbersOnly" checked>Numbers</option>
@@ -744,21 +752,13 @@ font-weight: bold;
                     <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
                         <option value="RowsOfCharacters" checked>Rows of Characters</option>
                         <option value="singleCharacterAtLeft">Single Character At Left</option>
-                        <option value="CustomText">Custom Practice Text</option>
+
                         <!--<option value="CustomText">Custom Practice Text at Top</option>-->
                     </select>
 
                 </div>
 
 
-                <div class="settingEnclosure indent">
-
-                    <label for="customPracticeText">Custom Practice Text:</label>
-
-                    <textarea name="customPracticeText" rows="5" maxlength="45">
-
-</textarea>
-                </div>
             </fieldset>
 
 
@@ -938,6 +938,8 @@ font-weight: bold;
         var ascenderMultiplier = 0.5;
         var descenderMultiplier = 0.6;
         var capitalMultiplier = 0.4;
+        var showFont = false;
+        var fontWasLoadedForShowFont = false;
         var documentWidthPt = 500;
         var documentHeightPt = 500;
 
@@ -956,28 +958,28 @@ font-weight: bold;
 
             emptyWorksheetArea();
 
-            // Determine the number of pages based on user selections
-            var numberOfPages = calculateNumberOfPages();
+            loadFont(function () {
+                emptyWorksheetArea();
 
+                // Determine the number of pages based on user selections
+                var numberOfPages = calculateNumberOfPages();
 
-            for (var i = 0; i < numberOfPages; i++) {
+                for (var i = 0; i < numberOfPages; i++) {
+                    // Create SVG element
+                    var svg = createSVGElement();
 
-                var svg = createSVGElement();
+                    // Append SVG to worksheetPagesContainer
+                    var container = document.getElementById('worksheetPagesContainer');
+                    container.appendChild(svg);
 
-                // Append SVG to worksheetPagesContainer
-                var container = document.getElementById('worksheetPagesContainer');
-                container.appendChild(svg);
+                    // Call drawWorksheet(svg, i)
+                    drawWorksheet(svg, i);
+                }
+            });
 
-                // Call drawWorksheet(svg, i)
-                drawWorksheet(svg, i);
-
-                // Call drawWorksheet(svg)
-                drawWorksheet(svg);
-            }
         }
 
-        function calculateNumberOfPages()
-        {
+        function calculateNumberOfPages() {
             return 1;
         }
 
@@ -1105,8 +1107,8 @@ font-weight: bold;
             }
 
             // If practice font characters are enabled, adjust practice block sizes
-            var showFont = document.getElementById('showFont').checked;
-            if (showFont && font) {
+            showFont = document.getElementById('showFont').checked;
+            if (showFont && font && fontWasLoadedForShowFont) {
                 var fontUnitsPerEm = font.unitsPerEm;
                 var ascender = font.ascender;
                 var descender = font.descender;
@@ -1120,6 +1122,7 @@ font-weight: bold;
                 // Update nib width to match font size (if needed)
                 // You might adjust nibWidthMm based on font size
             }
+
 
         }
 
@@ -1137,7 +1140,7 @@ font-weight: bold;
 
 
 
-        function drawWorksheet(svg) {
+        function drawWorksheet(svg, pageIndex) {
             // Get the width and height from the svg attributes
             var width = parseFloat(svg.getAttribute('width'));
             var height = parseFloat(svg.getAttribute('height'));
@@ -1172,7 +1175,85 @@ font-weight: bold;
             practiceBlocksGroup.setAttribute("class", "practiceBlocks");
             worksheetGroup.appendChild(practiceBlocksGroup);
 
-            drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth);
+            // Fetch characters to render for this page
+            var charactersForPage = getCharactersForPage(pageIndex);
+
+            drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage);
+        }
+
+        // Define the character arrays
+        const lowercaseAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        const uppercaseAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+
+        function getCharactersForPage(pageIndex) {
+
+            const selectedValue = document.getElementById("alphabetCharactersInSheet").value;
+            const includeNumbers = document.getElementById("includeNumberCharacters").checked;
+
+            let selectedCharacters = [];
+
+            // Determine the selected characters based on the dropdown value
+            if (selectedValue === "lowercaseOnly") {
+                selectedCharacters = lowercaseAlphabet;
+            } else if (selectedValue === "uppercaseOnly") {
+                selectedCharacters = uppercaseAlphabet;
+            } else if (selectedValue === "bothUppercaseAndLowercase") {
+                selectedCharacters = lowercaseAlphabet.concat(uppercaseAlphabet);
+            }
+            else if (selectedValue === "customText") {
+                // Get custom practice text from the textarea
+                const customText = document.getElementById("customPracticeText").value;
+                // Convert custom text to an array of characters
+                selectedCharacters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
+            }
+
+            // Include numbers if the checkbox is checked
+            if (includeNumbers && selectedValue !== "customText") {
+                selectedCharacters = selectedCharacters.concat(numberCharacters);
+            }
+
+            return selectedCharacters;
+
+        }
+
+        var font; // Global variable to hold the loaded font
+
+        function loadFont(callback) {
+
+            if (showFont == false) {
+                callback();
+                return;
+            }
+
+            var fontSelect = document.getElementById('fontForWorksheetPages');
+            var fontName = fontSelect.value;
+
+            // For custom fonts, you might handle file uploads
+            var fontUrl = getFontUrl(fontName);
+
+            opentype.load(fontUrl, function (err, loadedFont) {
+                if (err) {
+                    fontWasLoadedForShowFont = false;
+                    alert('Could not load font: ' + err);
+                    callback();
+                } else {
+                    font = loadedFont;
+                    callback();
+                }
+            });
+        }
+
+        function getFontUrl(fontName) {
+            // Map font names to URLs
+            var fontUrls = {
+                'Drafting': 'fonts/drafting.ttf',
+                'Fraktur': 'fonts/fraktur.ttf',
+                'Blackletter': 'fonts/blackletter.ttf',
+                'Uncial': 'fonts/uncial.ttf'
+            };
+            return fontUrls[fontName];
         }
 
         function drawOuterRectangle(group, width, height, strokeWidth) {
@@ -1221,7 +1302,7 @@ font-weight: bold;
             }
         }
 
-        function drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth) {
+        function drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage) {
             // Calculate total nib height per block
             var nibHeight = nibWidth; // For clarity
             var nibRectWidth = nibWidth;

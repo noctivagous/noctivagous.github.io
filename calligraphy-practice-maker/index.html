@@ -179,6 +179,10 @@
             font-weight: bold;
         }
 
+        .settingEnclosure label.radioLabel {
+            font-weight: normal;
+        }
+
         div.settingEnclosure.indent {
             border-left: 8pt solid black;
             background-color: #494848;
@@ -271,7 +275,11 @@
             vertical-align: middle;
             cursor: pointer;
             display: inline-block;
-            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/></svg>') no-repeat center;
+
+            /*  light:          background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/></svg>') no-repeat center;
+  */
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23505050;stop-opacity:1"/><stop offset="100%" style="stop-color:%232a2a2a;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/></svg>') no-repeat center;
+
             background-size: cover;
             border-radius: 4px;
             /* For checkbox, adds rounded corners */
@@ -286,7 +294,11 @@
 
         /* Checkbox Checked State */
         #controls input[type='checkbox']:checked {
-            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><polyline points="5,13 10,17 19,7" style="fill:none;stroke:%23000000;stroke-width:2"/></svg>') no-repeat center;
+            /*            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><polyline points="5,13 10,17 19,7" style="fill:none;stroke:%23000000;stroke-width:2"/></svg>') no-repeat center;
+  */
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23505050;stop-opacity:1"/><stop offset="100%" style="stop-color:%232a2a2a;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><polyline points="5,13 10,17 19,7" style="fill:none;stroke:%23ffffff;stroke-width:2"/></svg>') no-repeat center;
+
+
             background-size: cover;
         }
 
@@ -298,7 +310,11 @@
 
         /* Radio Button Checked State */
         #controls input[type='radio']:checked {
-            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><circle cx="12" cy="12" r="6" style="fill:%23000000;"/></svg>') no-repeat center;
+
+            /* light:          background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23b0b0b0;stop-opacity:1"/><stop offset="100%" style="stop-color:%23808080;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><circle cx="12" cy="12" r="6" style="fill:%23000000;"/></svg>') no-repeat center;
+*/
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23505050;stop-opacity:1"/><stop offset="100%" style="stop-color:%232a2a2a;stop-opacity:1"/></linearGradient></defs><rect x="0" y="0" width="24" height="24" fill="url(%23grad1)"/><circle cx="12" cy="12" r="6" style="fill:%23c3c3c3;"/></svg>') no-repeat center;
+
             background-size: cover;
         }
 
@@ -403,29 +419,65 @@
 
         }
 
-        #controlsScrollbar .thumb {
+        #controlsScrollbar .thumb,
+        #worksheetAreaScrollbar .thumb {
             position: absolute;
             top: 0;
             left: 0;
             width: 13px;
-            background: #ccc;
+
             height: 30px;
             border-radius: 0px;
             border: 1px solid black;
             margin-left: 1px;
             width: 11px;
 
-            background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);
-        }
 
-        #controlsScrollbar .thumb:hover {
+
             background: #555;
 
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 4l6 8H6z'/%3E%3C/svg%3E") top center no-repeat,
+                /* Arrow pointing up */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 20l-6-8h12z'/%3E%3C/svg%3E") bottom center no-repeat,
+                /* Arrow pointing down */
+                #555;
+            /* Background color for hover state */
+            background-size: 15px auto, 15px auto, cover;
+            /*   linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);*/
+
+            background-size: 15px auto, 15px auto, cover;
+            /* Size arrows and gradient appropriately */
+            border-radius: 0px;
+            border: 1px solid black;
+            margin-left: 1px;
+
         }
 
-        #controlsScrollbar .thumb:active {
-            background: #444;
+        #controlsScrollbar .thumb:hover,
+        #worksheetAreaScrollbar .thumb:hover {
 
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 4l6 8H6z'/%3E%3C/svg%3E") top center no-repeat,
+                /* Arrow pointing up */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 20l-6-8h12z'/%3E%3C/svg%3E") bottom center no-repeat,
+                /* Arrow pointing down */
+                #3d3d3d;
+            /* Background color for hover state */
+            background-size: 15px auto, 15px auto, cover;
+        }
+
+        #controlsScrollbar .thumb:active,
+        #worksheetAreaScrollbar .thumb:active {
+            background: #494949;
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 4l6 8H6z'/%3E%3C/svg%3E") top center no-repeat,
+                /* Arrow pointing up */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 20l-6-8h12z'/%3E%3C/svg%3E") bottom center no-repeat,
+                /* Arrow pointing down */
+                #343434;
+            /* Background color for active state */
+            background-size: 15px auto, 15px auto, cover;
         }
 
 
@@ -469,26 +521,6 @@
             cursor: pointer;
         }
 
-        #worksheetAreaScrollbar .thumb {
-            position: absolute;
-            top: 0;
-            left: 0;
-            margin-left: 1px;
-            width: 11px;
-            background: #ccc;
-            height: 30px;
-            border-radius: 0px;
-            border: 1px solid black;
-            background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);
-        }
-
-        #worksheetAreaScrollbar .thumb:hover {
-            background: #555;
-        }
-
-        #worksheetAreaScrollbar .thumb:active {
-            background: #444;
-        }
 
 
 
@@ -705,12 +737,12 @@
 
                     <input type="radio" name="orientation" id="orientationPortraitRadio" value="portrait" checked>
 
-                    <label for="orientationPortraitRadio">
+                    <label for="orientationPortraitRadio" class="radioLabel">
                         Portrait
                     </label>
 
                     <input type="radio" name="orientation" id="orientationLandscapeRadio" value="landscape">
-                    <label for="orientationLandscapeRadio">
+                    <label for="orientationLandscapeRadio" class="radioLabel">
                         Landscape
                     </label>
 
@@ -1920,7 +1952,7 @@
 
         function drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistlineY, baselineY, descenderY) {
             var labelX = 30; // Position labels slightly inside the left edge
-            var fontSize = "9px"; // Adjust as needed
+            var fontSize = (nibWidthMm < 3) ? (9 * nibWidthMm / 3) + "px" : "9px"; // Adjust as needed
             var labelColor = "#444"; // Dark gray
             var fontFamily = "Helvetica, sans-serif";
 
@@ -1928,7 +1960,7 @@
                 // Ascender Label
                 drawText(practiceBlocksGroup, labelX, ascenderY - 1 + nibWidth, fontSize, "#9c9c9c", "Ascender Line⬏ ", fontFamily);
             }
-            
+
             if (capitalMultiplier > 0) {
                 // Capital Label
                 drawText(practiceBlocksGroup, labelX, capitalY - 2, fontSize, "#9c9c9c", "Capital Line⬎", fontFamily);

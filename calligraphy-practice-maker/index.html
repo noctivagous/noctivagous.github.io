@@ -1498,10 +1498,8 @@
             // Shade x-height area
             shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight);
 
-            // Fill gap between blocks if not first block
-            if (y > 0) {
-                fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeight);
-            }
+            fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeight);
+            
 
             // Draw guide lines
             drawGuideLines(practiceBlocksGroup, width, strokeWidth, ascenderY, capitalY, waistlineY, midlineY, baselineY, descenderY);

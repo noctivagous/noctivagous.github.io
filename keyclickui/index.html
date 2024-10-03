@@ -30,11 +30,23 @@
 
     <h1>The Key-Click UI</h1>
 
-    <p>The conventional mouse interface is too simplistic for drawing vectors.
-      Try out the demo below to experience a completely different setup for vector drawing
-      that uses the keys to click, instead of using mouse buttons.
+    <p>Originating from a vector-drawing app under development
+    called <a href="http://floatingmarker.app">Floating Marker</a>,
+    the key-click UI is an alternative way to draw vectors, curves,
+    and shapes with the mouse and keyboard.  Simple on the surface, it is capable of establishing 
+    the new industry standard for interactivity 
+    in font-making software, vector-drawing software,
+    and OS user interfaces across the world. It can make the tedium associated
+    with these programs disappear. Try out the demo:<!-- The
+    key-click UI is an upgrade and reconfiguration of input taken from the mouse
+    and keyboard.-->
+    
 
       <!--
+      
+     Explaining isn't necessary: try out the demo below to experience a 
+    completely different setup for vector drawing input that uses the keys to click, instead of using mouse buttons.
+
   It's important first to modify the setup for vector-drawing.  This is what the key-click UI is about.
   Try out the demo below to experience it.  A software program that implements the key-click UI treats the keys
   on a keyboard as click buttons. The mouse buttons are entirely ignored.</p>
@@ -301,19 +313,73 @@
     <br/><br/><br/><br/>
 
     <p>
-      It's understandable that a person feels uneasy
-      using the keyboard and mouse this way for 
-      controlling software.  However, the key-click UI is solving a real
-      problem: the mouse provides limited dexterity for the user.
-  
+
+ <p>
+The demo above is limited to drawing straight lines, but a programmer
+can use the same vector line segments as the basis for:
+    <ul>
+      <li>the diameter of a circle.</li>
+      <li>the radius of a circle.</li>
+      <li>the diagonal of a rectangle.</li>
+      <li>the radius of a circle inscribing a regular polygon.</li>
+      <li>points of an arc</li>
+      <li>points of a spline</li>
+      <li>etc.</li>
+
+    </ul>
+    
+      <p>In <i>Floating Marker</i>, 
+        curves have been implemented with these straight segments through the 
+        b-spline (similar to Bezier paths). In combination with the key-click UI,
+        Noctivagous uses its own data structure
+        made of composite spline points that bow (bend) the line, as shown in the video below.  <!-- The b-spline has the characteristic
+        that it is rather pliable.  It can be shaped for different purposes
+        programmatically in combination with the key-click UI.  For example, Noctivagous uses its own data structure
+        made of composite spline points that bow (bend) the line, as shown in the video below.--></p>
+    <p>
+      <center>
+      <iframe  style="aspect-ratio: 163.1 / 108;width:100%;height:100%;max-width:900px;"
+      src="https://www.youtube.com/embed/JTjfK3A7_-0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </center>  
+    </p>
+
+   
+   
+  <h2>More Than Just for Making Vector Graphics</h2>
+    
+    <p>
+For the software developer, there are other 
+uses of the key-click UI are possible besides making vector-graphics.
+
+      <p>The vector line can serve as:</p>
+    <ul>
+      <li>a polyline (polygonal shape) that selects objects inside (whether they are files or something else).</li>
+      <li>the means of connecting nodes in node-based/patch-based programming.
+      	<ul><li>this has already been tested and is far superior to using the mouse for making node scripting diagrams</li></ul>
+      </li>
+      <li>the diagonal of the live selection rectangle (such as when selecting files on a desktop).
+            	<ul><li>This is provided feature for selecting objects in the vector-drawing program Floating Marker.</li></ul>
+      </li>
+    </ul>
+    
+      <p>In the same way that vector shapes are dragged, the drag-lock can be used to move windows
+        on the screen.  A different OS GUI can come about: the scale buttons allow the user to shrink windows.
+        <b>It is possible to implement an entire desktop UI in the key-click UI,
+        with no mouse clicks.</b>
+
+<!--	<p>Action-On-Hover </p>-->
+
+       
+    <h2>Relationship to History</h2>
       
       <p>
       During the original 1968 demo
       of the mouse by Douglas Engelbart, there was
       a <a href="https://dougengelbart.org/content/view/273/">five-key device sitting to the left of the keyboard</a>.
       The mouse was placed to the right of the keyboard.  
-      This five-key device was later dropped at Xerox PARC,
-      but it was part of Engelbart's setup.
+      This five-key device was later dropped at Xerox PARC for the Alto, which set
+      the model for the Apple Lisa and Macintosh,
+      but it was included as part of Engelbart's setup.
       <p>
 
         <p>
@@ -325,24 +391,23 @@
     
     <p>
     The key-click UI breaks away from this confining setup and repurposes
-    the keyboard keys as a set of buttons for a machine.
-    The keyboard and mouse are reconfigured to provide mechanical controls.
+    the keyboard keys as a set of buttons for a machine.  Using it feels
+    more like interacting with the computer mechanically because
+    the keyboard and mouse are reconfigured to provide mechanical controls.
     This is more appropriate for software, especially applications
     like video editors where there are constant interactions
     with mechanisms, like the timeline.  Mechanisms pervade user interface
-    but have always disappeared into the screen as something more vague in experience.  
+    but have always been regarded as as something more vague in experience.  
     For example, the scrollbar is a mechanism.  The system menu
     is also a machine containing menu items that drop down.
 
     <p>
     For the future of software, this key-click is the best modification for
-    desktop computers as they are owned by consumers across the world,
+    software running on desktop computers as they are owned by consumers across the world,
     if the goal is the match a mechanical controls with the user interface.
 
     <p>
-    Although the key-click UI appears to be trivial,
-    a mere hack at first, that is only if it is 
-    left in a basic state like the demo above.
+
     The key-click UI can provide the core UI component of
     a new type of software, and this demo on this page
     is just what is provided as an introduction, so it isn't
@@ -372,50 +437,10 @@
       keyboard and mouse, and the key-click UI is a convenient upgrade for interactive 
       vector graphics software.
       
-      <p>Only straight segments were drawable in the basic demo above.  In <i>Floating Marker</i>, 
-        curves have been implemented with these straight segments through the 
-        b-spline (similar to Bezier paths).  The b-spline has the characteristic
-        that it is rather pliable.  It can be shaped for different purposes
-        programmatically in combination with the key-click UI.  For example, Noctivagous uses its own data structure
-        made of composite spline points that bow (bend) the line, as shown in the video below.</p>
-    <p>
-      <center>
-      <iframe  style="aspect-ratio: 163.1 / 108;width:100%;height:100%;max-width:900px;"
-      src="https://www.youtube.com/embed/JTjfK3A7_-0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </center>  
-    </p>
-
-    <p>
-    For a vector graphics program, shapes can
-      be drawn because a vector line can be used by a program as:
-    <ul>
-      <li>the diameter of a circle.</li>
-      <li>the radius of a circle.</li>
-      <li>the diagonal of a rectangle.</li>
-      <li>the circumradius of a regular polygon.</li>
-      <li>etc.</li>
-    </ul>
+    
   
 
-    <h2>More Than Just A Vector Line, More Than Just for Making Vector Graphics</h2>
-    
-    <p>
-      Other uses of the key-click UI are possible besides making vector-graphics.
-    
-      <p>In the same way that vector shapes are dragged, the drag-lock can be used to move windows
-        on the screen, with the scale buttons letting the user shrink them, etc.
-        <b>It is possible to implement an entire desktop UI in the key-click UI,
-        with no mouse clicks.</b>
-
-
-      <p>For the desktop UI, the vector line can serve as:</p>
-    <ul>
-      <li>the polyline (shape) causes a selection of objects (whether they are files or something else).</li>
-      <li>the means of connecting nodes in node-based programming.</li>
-      <li>the diagonal of the live selection rectangle (such as when selecting files on a desktop).</li>
-    </ul>
-
-    
+   
     
     
 

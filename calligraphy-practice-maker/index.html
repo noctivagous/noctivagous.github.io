@@ -685,7 +685,7 @@
                     <!-- Slant Angle Input -->
                     <label for="verticalSlantAngle">Vertical Slant Angle:</label>
                     <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
-                    <input type="number" id="verticalSlantAngle" value="15" min="0" max="90" step="1"> °
+                    <input type="number" id="verticalSlantAngle" value="15" min="0" max="60" step="1"> °
                 </div>
 
                 <div class="settingEnclosure indent">
@@ -1376,10 +1376,10 @@
             showVerticalLines = document.getElementById('verticalLines').checked;
 
             verticalSlantAngle = parseFloat(document.getElementById('verticalSlantAngle').value);
-            if (isNaN(verticalSlantAngle) || verticalSlantAngle < 0 || verticalSlantAngle > 90) {
-                document.getElementById('verticalSlantAngle').value = 90;
-                verticalSlantAngle = 90;
-                alert("Please enter a slant angle between 0 and 90 degrees.");
+            if (isNaN(verticalSlantAngle) || verticalSlantAngle < 0 || verticalSlantAngle > 60) {
+                document.getElementById('verticalSlantAngle').value = 0;
+                verticalSlantAngle = 0;
+                alert("Please enter a slant angle between 0 and 60 degrees.");
                 return;
             }
 

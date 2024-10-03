@@ -82,10 +82,12 @@
 
 
         #controls h1 {
-            font-family: sans-serif;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             font-size: 10pt;
             margin-top: 0;
-
+            color: #ccc;
+            text-align: left;
+            padding-top: 0;
         }
 
         #canvas {
@@ -702,21 +704,26 @@
                     <label for="fontForWorksheetPages">Font:</label>
 
                     <select id="fontForWorksheetPages" name="fontForWorksheetPages">
-                        <option value="Drafting" checked>Drafting Gothic</option>
-                        <option value="Fraktur">Fraktur</option>
-                        <option value="Blackletter">Blackletter</option>
-                        <option value="Uncial">Uncial</option>
+                        <!--<option value="Drafting" checked>Drafting Gothic</option>-->
+                        <option value="BreitkopfFraktur">Fraktur - Breitkopf Fraktur </option>
+                        <!--<option value="Blackletter">Blackletter</option>-->
+                        <!--<option value="Uncial">Uncial</option>-->
 
                     </select>
                 </div>
 
+
+
                 <div class="settingEnclosure indent indent2">
                     <button id="uploadFont" class="darkButton1">Upload Font</button>
+                    <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
+
                 </div>
 
+
                 <div class="settingEnclosure">
-                    <label for="alphabetCharactersInSheet">Characters:</label>
-                    <select id="alphabetCharactersInSheet" name="alphabetCharactersInSheet">
+                    <label for="caseSelection">Characters:</label>
+                    <select id="caseSelection" name="caseSelection">
                         <option value="lowercaseOnly" checked>Lowercase Only</option>
                         <option value="uppercaseOnly">Uppercase Only</option>
                         <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
@@ -795,6 +802,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize and add event listeners
             init();
+
+
         });
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -898,24 +907,56 @@
             updateGeneratedThumbPosition();
         });
 
+        document.getElementById('uploadFont').addEventListener('click', function () {
+            document.getElementById('fontFileInput').click();
+        });
+
+        document.getElementById('fontFileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    opentype.load(e.target.result, function (err, loadedFont) {
+                        if (err) {
+                            alert('Could not load font: ' + err);
+                        } else {
+                            font = loadedFont;
+                            makeWorksheetPages();
+                        }
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
 
         function init() {
             // Add event listeners to controls
-            var controls = document.querySelectorAll('#controls input, #controls select');
+            var controls = document.querySelectorAll('#controls input, #controls select, #controls textarea');
 
             controls.forEach(function (control) {
-                if (control.type === 'number' || control.type === 'color' || control.tagName.toLowerCase() === 'select') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); });
-                } else if (control.type === 'checkbox') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); });
-                } else if (control.type === 'radio') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); });
-                } else if (control.type === 'range') {
-                    control.addEventListener('change', function () { makeWorksheetPages(); });
-                } else if (control.type === 'color') {
-                    control.addEventListener('input', function () { makeWorksheetPages(); });
+                control.addEventListener('change', function () { makeWorksheetPages(); });
+            });
+
+            
+            var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
+
+            fontChangingControls.forEach(function (fontRelatedControl) {
+                fontRelatedControl.addEventListener('change', function () {
+                if (document.getElementById('showFont').checked) {
+                    loadFontAndMakeWorksheetPages();
+                } else {
+                    makeWorksheetPages(); // Generate without loading a new font
                 }
             });
+
+            });
+
+
+            
+
+
+
 
             // Initial grid drawing
             makeWorksheetPages();
@@ -952,14 +993,54 @@
         var marginHorizontal = 2 * marginHorizontalInches * 72; // Convert inches to points
         var marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
 
+        async function loadFontAndMakeWorksheetPages() {
+            try {
+                showFont = document.getElementById('showFont').checked;
+
+                if (!showFont) {
+                    makeWorksheetPages();
+                    return;
+                }
+
+                const fontSelect = document.getElementById('fontForWorksheetPages');
+                const fontName = fontSelect.value;
+                const fontUrl = getFontUrl(fontName);
+
+                // Load the font asynchronously
+                font = await loadFontAsync(fontUrl);
+
+                fontWasLoadedForShowFont = true;
+                makeWorksheetPages();  // Only called once the font is fully loaded
+            } catch (error) {
+                console.error(error);
+                alert('Could not load font: ' + error);
+                fontWasLoadedForShowFont = false;
+            }
+        }
+
+        function loadFontAsync(fontUrl) {
+            return new Promise((resolve, reject) => {
+                opentype.load(fontUrl, function (err, loadedFont) {
+                    if (err) {
+                        reject('Could not load font: ' + err);
+                    } else {
+                        resolve(loadedFont);
+                    }
+                });
+            });
+        }
+
+
         function makeWorksheetPages() {
             pullPracticeBlockSettingsFromFormFields();
             pullPaperSizeFromFormFields();
 
             emptyWorksheetArea();
 
+
             loadFont(function () {
                 emptyWorksheetArea();
+
 
                 // Determine the number of pages based on user selections
                 var numberOfPages = calculateNumberOfPages();
@@ -983,6 +1064,7 @@
             return 1;
         }
 
+        
         function createSVGElement() {
             // Create SVG element
             var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1030,6 +1112,8 @@
 
 
         function pullPracticeBlockSettingsFromFormFields() {
+            showFont = document.getElementById('showFont').checked;
+
             // Get nib width in mm and convert to pt
             nibWidthMm = parseFloat(document.getElementById('nibWidth').value);
 
@@ -1108,7 +1192,8 @@
 
             // If practice font characters are enabled, adjust practice block sizes
             showFont = document.getElementById('showFont').checked;
-            if (showFont && font && fontWasLoadedForShowFont) {
+
+            if (showFont && font) {
                 var fontUnitsPerEm = font.unitsPerEm;
                 var ascender = font.ascender;
                 var descender = font.descender;
@@ -1176,20 +1261,27 @@
             worksheetGroup.appendChild(practiceBlocksGroup);
 
             // Fetch characters to render for this page
-            var charactersForPage = getCharactersForPage(pageIndex);
+            var charactersForPage;
+
+            charactersForPage = getCharactersForPage(pageIndex);
 
             drawPracticeBlocks(practiceBlocksGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage);
         }
 
+
+        // CHARACTERS FOR PRACTICE FONT TO PLACE IN WORKSHEET
         // Define the character arrays
         const lowercaseAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
         const uppercaseAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
         const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-
         function getCharactersForPage(pageIndex) {
 
-            const selectedValue = document.getElementById("alphabetCharactersInSheet").value;
+            if (showFont == false) {
+                return [""];
+            }
+
+            const selectedValue = document.getElementById("caseSelection").value;
             const includeNumbers = document.getElementById("includeNumberCharacters").checked;
 
             let selectedCharacters = [];
@@ -1240,6 +1332,7 @@
                     callback();
                 } else {
                     font = loadedFont;
+                    fontWasLoadedForShowFont = true;
                     callback();
                 }
             });
@@ -1248,10 +1341,10 @@
         function getFontUrl(fontName) {
             // Map font names to URLs
             var fontUrls = {
-                'Drafting': 'fonts/drafting.ttf',
-                'Fraktur': 'fonts/fraktur.ttf',
-                'Blackletter': 'fonts/blackletter.ttf',
-                'Uncial': 'fonts/uncial.ttf'
+                //                'Drafting': 'fonts/drafting.ttf',
+                'BreitkopfFraktur': 'fonts/BreitkopfFraktur.ttf',
+                //              'Blackletter': 'fonts/blackletter.ttf',
+                //            'Uncial': 'fonts/uncial.ttf'
             };
             return fontUrls[fontName];
         }
@@ -1319,13 +1412,23 @@
             var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
 
             var yPosition = 0;
+            var charIndex = 0;
+
             while (yPosition <= (height - totalBlockHeight)) {
-                drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight);
+                var charactersForLine = [""];
+                if (showFont == true) {
+                    charactersForLine = getCharactersForLine(charactersForPage, charIndex, width);
+                }
+                drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine);
+
                 yPosition += totalBlockHeight + nibHeight; // Move y to next block, adding a nibHeight gap
+                charIndex += charactersForLine.length;
             }
         }
 
-        function drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight) {
+
+
+        function drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
             // Variables for line positions
             var ascenderY = y;
             var capitalY = ascenderY + ascenderHeight;
@@ -1357,7 +1460,124 @@
             if (showNibGuidelineLabels) {
                 drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistlineY, baselineY, descenderY);
             }
+
+            // After drawing guidelines, render the characters
+            renderCharacters(practiceBlocksGroup, charactersForLine, xHeight, ascenderHeight, capitalHeight, baselineY, y);
+
         }
+
+        function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHeight, baselineY, blockY) {
+            var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
+
+            if (!showFont || !font) return;
+
+            // Calculate scaling factor to fit font into x-height
+            var fontUnitsPerEm = font.unitsPerEm;
+            var scale = xHeight / font.tables.os2.sxHeight;
+
+            // Set initial x position
+            var xPosition = 50; // Adjust as needed
+            var spacing = 20; // Space between characters
+
+            characters.forEach(function (char) {
+                var glyph = font.charToGlyph(char);
+                var path = glyph.getPath(0, 0, font.unitsPerEm);
+
+                // Create SVG path element
+                var svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                svgPath.setAttribute("d", path.toPathData(5));
+                svgPath.setAttribute("fill", "#000"); // Set desired color
+
+                // Calculate transformation to position the character
+                var x = xPosition;
+                var y = baselineY + blockY;
+
+                var transform = `translate(${x}, ${y}) scale(${scale}, -${scale})`;
+                svgPath.setAttribute("transform", transform);
+
+                group.appendChild(svgPath);
+
+                xPosition += (glyph.advanceWidth * scale) + spacing;
+            });
+        }
+
+        function getCharactersForPage(pageIndex) {
+            showFont = document.getElementById('showFont').checked;
+            if (!showFont) return [];
+
+            var caseSelection = document.getElementById('caseSelection').value;
+            var includeNumbers = document.getElementById('includeNumberCharacters').checked;
+            var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
+            var customText = document.getElementsByName('customPracticeText')[0].value.trim();
+
+            var characters = [""];
+
+            if (practiceArrangement === 'customText') {
+                characters = customText.split('');
+            } else {
+                if (caseSelection === 'lowercaseOnly') {
+                    characters = characters.concat('abcdefghijklmnopqrstuvwxyz'.split(''));
+                }
+                if (caseSelection === 'uppercaseOnly') {
+                    characters = characters.concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+                }
+                if (includeNumbers) {
+                    characters = characters.concat('0123456789'.split(''));
+                }
+            }
+
+            // Calculate total pages
+            var linesPerPage = calculateLinesPerPage();
+            var charsPerPage = linesPerPage * calculateCharsPerLine();
+
+            // Slice characters for current page
+            var startIndex = pageIndex * charsPerPage;
+            var endIndex = startIndex + charsPerPage;
+            return characters.slice(startIndex, endIndex);
+        }
+
+        function getCharactersForLine(characters, charIndex, width) {
+            var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
+            var maxCharsPerLine = calculateCharsPerLine();
+
+            var charsForLine = characters.slice(charIndex, charIndex + maxCharsPerLine);
+            return charsForLine;
+        }
+
+        function calculateLinesPerPage() {
+            var nibHeight = nibWidth;
+            var xHeight = xHeightNibWidths * nibHeight;
+            var ascenderHeight = ascenderMultiplier * xHeight;
+            var capitalHeight = capitalMultiplier * xHeight;
+            var descenderHeight = descenderMultiplier * xHeight;
+            var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
+
+            var height = paperSize[1] - marginVertical;
+            var linesPerPage = Math.floor(height / (totalBlockHeight + nibHeight));
+
+            return linesPerPage;
+        }
+
+        function calculateCharsPerLine() {
+            var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
+            if (practiceArrangement === 'Single Character At Left') {
+                return 1;
+            }
+
+            // Estimate character width after scaling
+            var xHeight = xHeightNibWidths * nibWidth;
+            var scale = xHeight / font.tables.os2.sxHeight;
+            var avgCharWidth = font.tables.hhea.advanceWidthMax * scale; // Or use an average value
+
+            var spacing = 20; // Adjust based on your renderCharacters function
+
+            var width = paperSize[0] - marginHorizontal - 100; // Adjust for margins and starting xPosition
+            var charsPerLine = Math.floor(width / (avgCharWidth + spacing));
+
+            return charsPerLine;
+        }
+
+
 
         function shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight) {
             var xHeightRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -1565,6 +1785,7 @@
         }
 
     </script>
+
 </body>
 
 </html>

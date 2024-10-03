@@ -50,6 +50,10 @@
         }
 
 
+        #controls p {
+            color:white;
+            font-size:9pt;
+        }
         #controls {
             width: 300px;
             padding: 10pt;
@@ -88,6 +92,12 @@
             color: #ccc;
             text-align: left;
             padding-top: 0;
+            background-color: black;
+            margin:-10pt;
+            padding:5pt;
+            text-align: center;
+            box-shadow: 2pt 2pt 2pt rgb(75, 75, 75);
+
         }
 
         #canvas {
@@ -353,10 +363,10 @@
 
 
         #outputButtons {
-            margin-top: 5pt;
+            margin-top: 10pt;
             margin-bottom: 5pt;
-
-            padding: 2pt;
+            
+            padding: 0pt;
         }
 
         #outputButtons button,
@@ -538,12 +548,27 @@
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
-            <h1>Lettering And Calligraphy Worksheet Generator</h1>
+            <h1>Calligraphy And Lettering Worksheet Generator</h1>
+
+            
 
 
             <div id="outputButtons">
+            
+                <table style="margin:0;padding:0">
+<tr>
+<td>            <button onclick="window.print()" id="printButton" class="darkButton1">Print</button></td>
+<td width="100%">               <p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as printer.) 
+</p></td>
+</tr>
+
+                </table>
+    
+
+            
+  
                 <!--<button onclick="saveWorksheetToPDF()" id="saveWorksheetToPDFButton" class="darkButton1" >Save To PDF</button>-->
-                <button onclick="window.print()" id="printButton" class="darkButton1">Print</button>
+                
 
                 <!--
                 <button id="downloadPdfButton" class="darkButton1 notWorksheetGenerating">Download As PDF</button>
@@ -782,9 +807,11 @@
             <!-- Generate Grid Button -->
             <!-- <button onclick="makeWorksheetPages()" id="generateWorksheet" class="darkButton1">Generate Sheet</button>-->
 
+            <p style="text-align: center;">
             <!-- <button onclick="makeWorksheetPages()" id="resetSettingsButton" class="darkButton1">Reset Settings</button>-->
-
-
+            <a id="emailLink" style="color:white;" href="mailto:calligraphy[-at-]noctivagous[-dot-]com">
+                Email          </a>
+            </p>
         </div>
 
         <div id="controlsScrollbar" class="scrollbar"></div>
@@ -1010,7 +1037,7 @@
                 } catch (error) {
                     console.error('Error converting text to paths:', error);
                 }
-                
+
                 // Directly use svg2pdf to convert the SVG to PDF
                 await svg2pdf(svgElement, pdf, {
                     xOffset: marginHorizontal / 2,
@@ -1828,7 +1855,7 @@
             var nibGuideGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             practiceBlocksGroup.appendChild(nibGuideGroup);
 
-            var nibX = 5; // Position from left edge
+            var nibX = 0; // Position from left edge
             var nibRectWidth = nibWidth;
 
             // Ascending blocks from baseline

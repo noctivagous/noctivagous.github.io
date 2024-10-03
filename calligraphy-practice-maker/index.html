@@ -1951,8 +1951,8 @@
         }
 
         function drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistlineY, baselineY, descenderY) {
-            var labelX = 30; // Position labels slightly inside the left edge
-            var fontSize = (nibWidthMm < 3) ? (9 * nibWidthMm / 3) + "px" : "9px"; // Adjust as needed
+            var labelX = showNibSquares ? (nibWidth * 2) + nibWidth / 2 : 2; // Depends on whether nibSquares are shown
+            var fontSize = (nibWidthMm < 3) ? (9 * nibWidthMm / 3) + "px" : "9px"; // Scale when below 3mm nibWidth
             var labelColor = "#444"; // Dark gray
             var fontFamily = "Helvetica, sans-serif";
 

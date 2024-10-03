@@ -533,7 +533,7 @@
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
-            <h1>Lettering Worksheet Generator</h1>
+            <h1>Lettering And Calligraphy Worksheet Generator</h1>
 
 
             <div id="outputButtons">
@@ -938,22 +938,23 @@
                 control.addEventListener('change', function () { makeWorksheetPages(); });
             });
 
-            
+
             var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
 
             fontChangingControls.forEach(function (fontRelatedControl) {
                 fontRelatedControl.addEventListener('change', function () {
-                if (document.getElementById('showFont').checked) {
-                    loadFontAndMakeWorksheetPages();
-                } else {
-                    makeWorksheetPages(); // Generate without loading a new font
-                }
-            });
+                    if (document.getElementById('showFont').checked) {
+                        loadFontAndMakeWorksheetPages();
+                        
+                    } else {
+                        makeWorksheetPages(); // Generate without loading a new font
+                    }
+                });
 
             });
 
 
-            
+
 
 
 
@@ -1007,7 +1008,15 @@
                 const fontUrl = getFontUrl(fontName);
 
                 // Load the font asynchronously
-                font = await loadFontAsync(fontUrl);
+                font = await loadFontAsync(fontUrl).then(result => {
+                    console.log(result);  // Outputs: "Operation successful"
+                });
+
+
+                //charsPerLineGlobal = calculateCharsPerLine();
+
+                //console.log("charsPerLineGlobal:" + charsPerLineGlobal);
+
 
                 fontWasLoadedForShowFont = true;
                 makeWorksheetPages();  // Only called once the font is fully loaded
@@ -1024,6 +1033,7 @@
                     if (err) {
                         reject('Could not load font: ' + err);
                     } else {
+                        
                         resolve(loadedFont);
                     }
                 });
@@ -1060,11 +1070,56 @@
 
         }
 
+        var charsPerLineGlobal = 4;
+
         function calculateNumberOfPages() {
-            return 1;
+
+            if (showFont == false) {
+                return 1;
+            }
+
+            var linesPerPage = calculateLinesPerPage();
+
+            charsPerLineGlobal = calculateCharsPerLine();
+
+            var charsPerPage = linesPerPage * charsPerLineGlobal;
+
+            var totalCharacters = getTotalCharacters();
+
+            var numberOfPages = Math.ceil(totalCharacters / charsPerPage);
+
+            console.log("totalChars:" + totalCharacters);
+            console.log("charsPerPage" + charsPerPage);
+            console.log("charsPerLineGlobal:" + charsPerLineGlobal);
+
+            return numberOfPages;
         }
 
-        
+        function getTotalCharacters() {
+            // Calculate total number of characters based on user input settings
+            const selectedValue = document.getElementById("caseSelection").value;
+            const includeNumbers = document.getElementById("includeNumberCharacters").checked;
+
+            let selectedCharacters = [];
+
+            if (selectedValue === "lowercaseOnly") {
+                selectedCharacters = lowercaseAlphabet;
+            } else if (selectedValue === "uppercaseOnly") {
+                selectedCharacters = uppercaseAlphabet;
+            } else if (selectedValue === "bothUppercaseAndLowercase") {
+                selectedCharacters = lowercaseAlphabet.concat(uppercaseAlphabet);
+            } else if (selectedValue === "customText") {
+                const customText = document.getElementById("customPracticeText").value;
+                selectedCharacters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
+            }
+
+            if (includeNumbers && selectedValue !== "customText") {
+                selectedCharacters = selectedCharacters.concat(numberCharacters);
+            }
+
+            return selectedCharacters.length;
+        }
+
         function createSVGElement() {
             // Create SVG element
             var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1197,7 +1252,7 @@
                 var fontUnitsPerEm = font.unitsPerEm;
                 var ascender = font.ascender;
                 var descender = font.descender;
-                var xHeightValue = font.tables.os2.sxHeight || (ascender / 2);
+                var xHeightValue = getSXHeight() || (ascender / 2);
 
                 // Convert font metrics to proportions relative to x-height
                 ascenderMultiplier = (ascender - xHeightValue) / xHeightValue;
@@ -1274,42 +1329,42 @@
         const lowercaseAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
         const uppercaseAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
         const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-        function getCharactersForPage(pageIndex) {
-
-            if (showFont == false) {
-                return [""];
-            }
-
-            const selectedValue = document.getElementById("caseSelection").value;
-            const includeNumbers = document.getElementById("includeNumberCharacters").checked;
-
-            let selectedCharacters = [];
-
-            // Determine the selected characters based on the dropdown value
-            if (selectedValue === "lowercaseOnly") {
-                selectedCharacters = lowercaseAlphabet;
-            } else if (selectedValue === "uppercaseOnly") {
-                selectedCharacters = uppercaseAlphabet;
-            } else if (selectedValue === "bothUppercaseAndLowercase") {
-                selectedCharacters = lowercaseAlphabet.concat(uppercaseAlphabet);
-            }
-            else if (selectedValue === "customText") {
-                // Get custom practice text from the textarea
-                const customText = document.getElementById("customPracticeText").value;
-                // Convert custom text to an array of characters
-                selectedCharacters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
-            }
-
-            // Include numbers if the checkbox is checked
-            if (includeNumbers && selectedValue !== "customText") {
-                selectedCharacters = selectedCharacters.concat(numberCharacters);
-            }
-
-            return selectedCharacters;
-
-        }
-
+        /*
+                function getCharactersForPage(pageIndex) {
+        
+                    if (showFont == false) {
+                        return [""];
+                    }
+        
+                    const selectedValue = document.getElementById("caseSelection").value;
+                    const includeNumbers = document.getElementById("includeNumberCharacters").checked;
+        
+                    let selectedCharacters = [];
+        
+                    // Determine the selected characters based on the dropdown value
+                    if (selectedValue === "lowercaseOnly") {
+                        selectedCharacters = lowercaseAlphabet;
+                    } else if (selectedValue === "uppercaseOnly") {
+                        selectedCharacters = uppercaseAlphabet;
+                    } else if (selectedValue === "bothUppercaseAndLowercase") {
+                        selectedCharacters = lowercaseAlphabet.concat(uppercaseAlphabet);
+                    }
+                    else if (selectedValue === "customText") {
+                        // Get custom practice text from the textarea
+                        const customText = document.getElementById("customPracticeText").value;
+                        // Convert custom text to an array of characters
+                        selectedCharacters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
+                    }
+        
+                    // Include numbers if the checkbox is checked
+                    if (includeNumbers && selectedValue !== "customText") {
+                        selectedCharacters = selectedCharacters.concat(numberCharacters);
+                    }
+        
+                    return selectedCharacters;
+        
+                }
+        */
         var font; // Global variable to hold the loaded font
 
         function loadFont(callback) {
@@ -1417,7 +1472,9 @@
             while (yPosition <= (height - totalBlockHeight)) {
                 var charactersForLine = [""];
                 if (showFont == true) {
+                    //console.log(charIndex);
                     charactersForLine = getCharactersForLine(charactersForPage, charIndex, width);
+
                 }
                 drawPracticeBlock(practiceBlocksGroup, backgroundLinesGroup, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine);
 
@@ -1437,6 +1494,7 @@
             var descenderY = baselineY + descenderHeight;
             var midlineY = waistlineY + xHeight / 2;
 
+            
             // Shade x-height area
             shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight);
 
@@ -1463,7 +1521,7 @@
 
             // After drawing guidelines, render the characters
             renderCharacters(practiceBlocksGroup, charactersForLine, xHeight, ascenderHeight, capitalHeight, baselineY, y);
-
+            
         }
 
         function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHeight, baselineY, blockY) {
@@ -1473,7 +1531,7 @@
 
             // Calculate scaling factor to fit font into x-height
             var fontUnitsPerEm = font.unitsPerEm;
-            var scale = xHeight / font.tables.os2.sxHeight;
+            var scale = xHeight / getSXHeight();
 
             // Set initial x position
             var xPosition = 50; // Adjust as needed
@@ -1492,7 +1550,7 @@
                 var x = xPosition;
                 var y = baselineY + blockY;
 
-                var transform = `translate(${x}, ${y}) scale(${scale}, -${scale})`;
+                var transform = `translate(${x}, ${y}) scale(${scale}, ${scale})`;
                 svgPath.setAttribute("transform", transform);
 
                 group.appendChild(svgPath);
@@ -1516,19 +1574,19 @@
                 characters = customText.split('');
             } else {
                 if (caseSelection === 'lowercaseOnly') {
-                    characters = characters.concat('abcdefghijklmnopqrstuvwxyz'.split(''));
+                    characters = lowercaseAlphabet;
                 }
                 if (caseSelection === 'uppercaseOnly') {
-                    characters = characters.concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+                    characters = uppercaseAlphabet;
                 }
                 if (includeNumbers) {
-                    characters = characters.concat('0123456789'.split(''));
+                    characters = numberCharacters;
                 }
             }
 
             // Calculate total pages
             var linesPerPage = calculateLinesPerPage();
-            var charsPerPage = linesPerPage * calculateCharsPerLine();
+            var charsPerPage = linesPerPage * charsPerLineGlobal;
 
             // Slice characters for current page
             var startIndex = pageIndex * charsPerPage;
@@ -1538,7 +1596,7 @@
 
         function getCharactersForLine(characters, charIndex, width) {
             var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
-            var maxCharsPerLine = calculateCharsPerLine();
+            var maxCharsPerLine = charsPerLineGlobal;
 
             var charsForLine = characters.slice(charIndex, charIndex + maxCharsPerLine);
             return charsForLine;
@@ -1552,13 +1610,25 @@
             var descenderHeight = descenderMultiplier * xHeight;
             var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
 
+
             var height = paperSize[1] - marginVertical;
+
             var linesPerPage = Math.floor(height / (totalBlockHeight + nibHeight));
+
 
             return linesPerPage;
         }
 
+        function getSXHeight() {
+
+            var estimatedXHeight = (font.tables.os2.sTypoAscender - font.tables.os2.sTypoDescender) / 2;
+            var sxHeight = font.tables.os2.sxHeight || estimatedXHeight;
+
+            return sxHeight;
+        }
+
         function calculateCharsPerLine() {
+
             var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
             if (practiceArrangement === 'Single Character At Left') {
                 return 1;
@@ -1566,15 +1636,22 @@
 
             // Estimate character width after scaling
             var xHeight = xHeightNibWidths * nibWidth;
-            var scale = xHeight / font.tables.os2.sxHeight;
+
+
+
+            var scale = xHeight / getSXHeight();
             var avgCharWidth = font.tables.hhea.advanceWidthMax * scale; // Or use an average value
+
 
             var spacing = 20; // Adjust based on your renderCharacters function
 
-            var width = paperSize[0] - marginHorizontal - 100; // Adjust for margins and starting xPosition
-            var charsPerLine = Math.floor(width / (avgCharWidth + spacing));
+            var width = paperSize[0] - marginHorizontal - 80; // Adjust for margins and starting xPosition
 
-            return charsPerLine;
+            console.log("width: " + width);
+            console.log("avgCharWidth: " + avgCharWidth);
+            
+
+            return Math.floor(width / (avgCharWidth + spacing)) * 4;
         }
 
 

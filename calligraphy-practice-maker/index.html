@@ -53,11 +53,14 @@
         #controls p {
             color: white;
             font-size: 9pt;
+            font-family: serif;
         }
 
         #controls {
-            width: 300px;
+            width: 318px;
+            
             padding: 10pt;
+            padding-right:20pt;
             background: rgba(255, 255, 255, 0.8);
             background: #303030;
             box-sizing: border-box;
@@ -71,6 +74,7 @@
             scrollbar-width: none;
             /* Firefox */
             border-right: 2px solid rgb(101, 101, 101);
+            padding-top:0;
         }
 
         .hiddenTemporary {
@@ -84,21 +88,32 @@
 
 
 
-
+#controls{
+    border-top-left-radius: 8pt;
+    border-top-right-radius: 8pt;
+    border-radius: 0pt;
+}
 
         #controls h1 {
+            text-shadow: rgb(134, 232, 21) 1px 1px 5px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            
             font-size: 10pt;
             margin-top: 0;
-            color: #ccc;
+            color: #8ad3ad;
             text-align: left;
-            padding-top: 0;
-            background-color: black;
+            
+            background-color: rgb(114, 110, 110);
             margin: -10pt;
             padding: 5pt;
             text-align: center;
             box-shadow: 2pt 2pt 2pt rgb(75, 75, 75);
-
+            border-bottom: 3pt solid black;
+            position: sticky;
+            top:0;
+            padding-bottom:3pt;
+            background: linear-gradient(to top, #000000 10%, #0b0a0a 40%, #302f2f 100%);
+            width:110%;
         }
 
         #canvas {
@@ -179,8 +194,9 @@
             font-weight: bold;
         }
 
-        .settingEnclosure label.radioLabel {
+        .settingEnclosure .radioLabel {
             font-weight: normal;
+            color: #333333 !important;
         }
 
         div.settingEnclosure.indent {
@@ -200,7 +216,7 @@
             margin-left: 0;
             font-weight: normal;
 
-            color: rgb(222, 222, 222) !important;
+            color: rgb(193, 192, 192) !important;
         }
 
         #controls fieldset label {
@@ -219,9 +235,14 @@
         }
 
         .labelNote {
-            color: rgb(49, 86, 30);
+            color: rgb(41, 79, 22);
             font-family: monospace;
             font-size: 10pt;
+        }
+
+        .settingEnclosure.indent .labelNote
+        {
+            color: rgb(102, 129, 87);
         }
 
         #controls input[type='number'] {
@@ -380,7 +401,7 @@
 
 
         #outputButtons {
-            margin-top: 10pt;
+            margin-top: 20pt;
             margin-bottom: 5pt;
 
             padding: 0pt;
@@ -410,13 +431,13 @@
 
         #controlsScrollbar {
             position: fixed;
-            top: 0;
-            left: 20;
+            bottom: 0;
+            
             width: 15px;
-            height: 100%;
+            height: calc(100% - 23pt);
             background: #000;
             cursor: pointer;
-
+            z-index:20;
         }
 
         #controlsScrollbar .thumb,
@@ -692,7 +713,7 @@
 
                     <!-- Slant Line Spacing -->
                     <label for="verticalLineSpacing">Vertical Line Spacing:</label><br />
-                    <input type="number" id="verticalLineSpacing" value="2" min="0.1" step="0.1">
+                    <input type="number" id="verticalLineSpacing" value="2" min="0.1" max="20" step="0.1">
                     <span class="labelNote">× nib width</span>
                 </div>
             </fieldset>
@@ -894,7 +915,7 @@
             function updateThumbPosition() {
                 const scrollHeight = controls.scrollHeight - controls.clientHeight;
                 const thumbHeight = Math.max(30, (controls.clientHeight / controls.scrollHeight) * controlsScrollbar.clientHeight);
-                thumb.style.height = thumbHeight + 'px';
+                thumb.style.height = (thumbHeight - 5) + 'px';
                 const scrollRatio = controls.scrollTop / scrollHeight;
                 const thumbTop = scrollRatio * (controlsScrollbar.clientHeight - thumbHeight);
                 thumb.style.top = thumbTop + 'px';
@@ -1384,7 +1405,7 @@
             }
 
             verticalLineSpacingMultiplier = parseFloat(document.getElementById('verticalLineSpacing').value);
-            if (isNaN(verticalLineSpacingMultiplier) || verticalLineSpacingMultiplier <= 0) {
+            if (isNaN(verticalLineSpacingMultiplier) || verticalLineSpacingMultiplier <= 0.5) {
                 document.getElementById('verticalLineSpacing').value = 2;
                 alert("Please enter a positive number for slant line spacing multiplier.");
                 return;

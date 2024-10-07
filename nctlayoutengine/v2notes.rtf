@@ -1,0 +1,186 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww20700\viewh14200\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 NCT Layout Engine  \
+\
+	After the viewport dimensions (width, height) are provided, this provides the size for\
+	each layer.  Each layer contains LayoutBoxes.\
+\
+	Any child box begins by inheriting its own rectangle that it modifies that is the \
+	the dimensions of the parent.  This is called its initialRectangle and all settings or operations \
+	are applied to this. There are a few sizing operations and any that are utilized are applied to to the \
+	initialRectangle sequentially and cumulatively, with the later ones changing the results\
+	of any earlier one.\
+\
+	In this layout system, every box is provided the initialRectangle that starts out the same as the parent's size attributes. \
+	Sizing can occur because of operations that modify this initialRectangle and use it as\
+	the reference for building up or taking out portions to get the final result.\
+\
+		- 
+\f1\b Positioning
+\f0\b0  - if desired, positioning instructions move the initialRectangle to any place around the perimeter of the \
+		initialRectangle or keep it where it is.\
+		- 
+\f1\b Sizing
+\f0\b0  instructions shape the initialRectangle relative to how it started out by moving edges in or out.\
+  \
+\
+	Summarized, the parent's rectangle is what provides the child its initialRectangle and the subsequent\
+	instructions or operations move it or change it into the desired result. \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+POSITIONING OF THE INITIALRECTANGLE \
+\
+		Take a square and examine setting up its position relative to where it is,\
+		as if it is the key 5 on the numeric keypad.  Assuming its initial position\
+		is defined as the key 5, there are 9	 places for it on the keypad:\
+\
+			\{\
+			"parentCenter" : 5,  / / no change. the default for initialRectangle.\
+\
+			"topLeftCorner\'94 : 7,\
+			"topSide\'94 :8,\
+			"topRightCorner\'94 : 9,\
+\
+			\'93rightSide\'94 : 6,\
+\
+			"bottomRightCorner" :3,\
+			"bottomSide\'94 :2,\
+			"bottomLeftCorner" :1,\
+			"leftSide\'94 :4\
+			\}\
+\
+		Its position is described in relation to the initialRectangle's sides and bounds\
+		This uses the well-known numeric pad keys positions, \
+		with the default position, being the same as the parent, being the value 5.\
+		If the position is left at 5, the sizing instructions will be relative to how \
+		the parent exists.\
+\
+		Since there are 8 edges the around the parent rectangle, there are 9 settings:\
+\
+		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 SIZING INSTRUCTIONS\
+\
+	The sizing instructions are altogether different from HTML in the following way. \
+	They are a set of available instructions that use the initialRectangle as its reference\
+	and each sizing later instruction affects any aspect of initialRectangle that was set up by \
+	previous (if there is more than one utilized).  The user can specify just one \
+	sizing operation or use multiple.\
+\
+\
+	1) 
+\f1\b extrudeFrom
+\f0\b0  (start a rectangle anew) using one of the 6 sides of the initialRectangle, or expand outwards from one of the 2 intersecting axes of the initialRectangle.  extruding inwards from one of the 6 sides or extruding outwards in two directions from an axis line.\
+\
+			- extrude 10pt from the left edge to get a vertical rectangle that is 10pt wide, the height of the initialRectangle, and that always sits on 			the left edge of the initialRectangle.\
+\
+			also allowed in the future is using a custom horizontal or vertical line (vert:[1/3] for expanding outwards.\
+\
+\
+	2) 
+\f1\b inset
+\f0\b0  \'97 pull inwards from the side(s) of the initialRectangle.   If desired, this can be the instruction that refines what extrude performed.\
+			- pull inwards from the right edge by 50% to get the left half of the initialRectangle.\
+			- pull inwards from the right edge by 10pt to get a rectangle with 10pt removed from the right side of the initialRectangle.\
+			- pull inwards from all edges by 10pt to get a uniformly inset rectangle.\
+\
+\
+	3) 
+\f1\b adhereToEdges
+\f0\b0  - adhering to sides of the initialRectangle - sets a rule that an edge or multiple edges\
+	will be adhered to.\
+\
+\
+	4) 
+\f1\b adhereToPoints
+\f0\b0  - set the corners of initialRectangle to two or more box points inside it. \
+	if a box is divided into thirds horizontally and vertically, there are 18 points.\
+	adhering to two box points can be described\
+		\
+			- for a box that is the lower left and one third the height and width:\
+			adhere to points 1,1 and 5-1) as \
+		 \
+\
+\
+\
+		DIMENSIONS MULTIPLIERS\
+\
+			heightMultiplier="3" // makes the height 3 times that of the parent.\
+								  //  by default, scaling occurs around the rectangle's center origin.\
+								    	\
+			scalingOrigin = "6"        // again this uses the numeric keypad positions but for the 9 most common\
+								     // scaling point locations\
+\
+			scalingOriginNudge = "2-2pt" // moves the scaling origin 270degrees by 2pt\
+\
+\
+\
+\
+\
+		TRANSFORMATIONS\
+\
+\
+\
+XML ELEMENTS - The actual XML elements that carry these instructions and attributes are the following so far\
+\
+	
+\f1\b Layer
+\f0\b0  - Each layer contains a tree of LayoutBoxes\
+\
+
+\f1\b 	LayoutBox
+\f0\b0  - the base class from which other inherit.  It carries the basic functionality of positioning, sizing instructions, etc.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		<LayoutBox pullAwayFromEdges="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+		surrounded by a layer:\
+\
+		<Layer width="1920" height="1080">\
+			<LayoutBox />\
+		</Layer>\
+\
+\
+\
+
+\f1\b 	GridLayoutBox
+\f0\b0  - children are laid out according to the attributes of GridLayoutBox.\
+\
+\
+	If you had a PageLayoutBox you would provide it could lay children out\
+	according to flow rules and direction.\
+\
+\
+LAYOUT AND CONTENTS ARE SEPARATED\
+\
+	\
+\
+\
+\
+\
+\
+\
+\
+\
+----\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+The type of relative positioning that HTML/CSS discusses is not the same relative positioning as this layout system.\
+In this system, boxes are not positioned by using a direct displacement of the origin or a side, unlike HTML.\
+In HTML/CSS boxes are pushed around using margins and padding or they are told to expand to certain values\
+of their containers.  This leaves a mess	of follow up operations and is difficult to use.\
+\
+---\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		The numeric pad keys are repurposed\
+			for\
+				direction movement, edge of a rectangle, and point location on a rectangle.\
+}

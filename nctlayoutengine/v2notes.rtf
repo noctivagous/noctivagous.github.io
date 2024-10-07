@@ -7,24 +7,38 @@
 
 \f0\fs28 \cf0 NCT Layout Engine  \
 \
-	Generally speaking, attributes like width and height and margins are not directly defined.  \
-	Instead they are a product of operations or instructions.  By taking this approach many complex layouts are easier\
+	Generally speaking, attributes like width and height and margins are not explictly defined.  \
+	Instead they are a product of operations or instructions.  By taking this approach, many complex layouts are easier\
 	to conceptualize and keep in mind, both in terms of procedure and ease of construction.\
 \
-		Consider that HTML/CSS fuses the concept of Layout and Content attributes.  For example, a \
-		button control is certainly a Content element and at the same time its width is controlled as an attribute.  \
-		But in this layout system, no visible page element, like a button or text box, has a width or height but instead\
-		is enclosed by a layout box that does.  Without exception, a button or text box will fills the width and height of \
-		the layout box 100% because the roles have been separated.\
+	Secondly, the emphasis of the layout engine is separation of layout and content.\
+\
+	Layout vs Content\
+\
+		Consider that HTML/CSS combines the concept of Layout and Content attributes in each element.  For example, \
+		in each HTML page a button control is certainly a Content element and at the same time its dimensions and location \
+		are set up as attributes.\
+\
+		But in this layout system, no page element, like a button or text box, owns its own width or height. Instead\
+		it is associated with a layout box that does.  A button or text box will fills the width and height of \
+		the layout bo because the roles have been separated into two.  A page element does not have dimensions\
+		but relies on the layout box.  This appears to make more work but actually assists in ease of conceptualization\
+		of the page construction code.  Importantly, it allows for focus on traditional page layout as a prime activity.\
 \
 		- Layout - Layout sets all of the boxes and anycontent enclosed by a LayoutBox fills the entire frame.\
 		- Content - Content controls like text fields and buttons do not control anything of layout.\
 		They fill the region of the layout box in which they sit.\
 	\
+		Layout can be made the prime activity.  At any time, the content can be \'93turned off\'94 (the text boxes,\
+		images, and buttons made invisible) and then what is visible are the layout boxes for them\
+		with labels.\
 \
-	After the viewport dimensions (width, height) are provided, this gives the size for\
-	each layer.  Each <Layer> contains <LayoutBox>es that carry instructions.\
-	The base class for layout).\
+\
+	The Layout Process\
+\
+	After the document dimensions (width, height) are provided, this gives the size for\
+	each layer.  Each <Layer> contains one or more <LayoutBox>es that carry instructions.\
+	The base class for layout is <LayoutBox> and there are descendants of this..\
 \
 	Any child LayoutBox begins by inheriting a size rectangle, and it modifies that instead of\
 	defining directly width and height, etc  This is called its initialRectangle, the same as	the dimensions of the parent, and all settings or operations \

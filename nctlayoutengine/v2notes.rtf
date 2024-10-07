@@ -7,11 +7,27 @@
 
 \f0\fs28 \cf0 NCT Layout Engine  \
 \
-	After the viewport dimensions (width, height) are provided, this provides the size for\
-	each layer.  Each layer contains LayoutBoxes.\
+	Generally speaking, attributes like width and height and margins are not directly defined.  \
+	Instead they are a product of operations or instructions.  By taking this approach many complex layouts are easier\
+	to conceptualize and keep in mind, both in terms of procedure and ease of construction.\
 \
-	Any child box begins by inheriting its own rectangle that it modifies that is the \
-	the dimensions of the parent.  This is called its initialRectangle and all settings or operations \
+		Consider that HTML/CSS fuses the concept of Layout and Content attributes.  For example, a \
+		button control is certainly a Content element and at the same time its width is controlled as an attribute.  \
+		But in this layout system, no visible page element, like a button or text box, has a width or height but instead\
+		is enclosed by a layout box that does.  Without exception, a button or text box will fills the width and height of \
+		the layout box 100% because the roles have been separated.\
+\
+		- Layout - Layout sets all of the boxes and anycontent enclosed by a LayoutBox fills the entire frame.\
+		- Content - Content controls like text fields and buttons do not control anything of layout.\
+		They fill the region of the layout box in which they sit.\
+	\
+\
+	After the viewport dimensions (width, height) are provided, this gives the size for\
+	each layer.  Each <Layer> contains <LayoutBox>es that carry instructions.\
+	The base class for layout).\
+\
+	Any child LayoutBox begins by inheriting a size rectangle, and it modifies that instead of\
+	defining directly width and height, etc  This is called its initialRectangle, the same as	the dimensions of the parent, and all settings or operations \
 	are applied to this. There are a few sizing operations and any that are utilized are applied to to the \
 	initialRectangle sequentially and cumulatively, with the later ones changing the results\
 	of any earlier one.\
@@ -32,8 +48,7 @@
 	Summarized, the parent's rectangle is what provides the child its initialRectangle and the subsequent\
 	instructions or operations move it or change it into the desired result. \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 POSITIONING OF THE INITIALRECTANGLE \
 \
 		Take a square and examine setting up its position relative to where it is,\
@@ -64,8 +79,7 @@ POSITIONING OF THE INITIALRECTANGLE \
 		Since there are 8 edges the around the parent rectangle, there are 9 settings:\
 \
 		\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 SIZING INSTRUCTIONS\
+SIZING INSTRUCTIONS\
 \
 	The sizing instructions are altogether different from HTML in the following way. \
 	They are a set of available instructions that use the initialRectangle as its reference\
@@ -133,14 +147,13 @@ XML ELEMENTS - The actual XML elements that carry these instructions and attribu
 \f1\b Layer
 \f0\b0  - Each layer contains a tree of LayoutBoxes\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f1\b 	LayoutBox
+\f1\b \cf0 	LayoutBox
 \f0\b0  - the base class from which other inherit.  It carries the basic functionality of positioning, sizing instructions, etc.\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		<LayoutBox pullAwayFromEdges="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>	\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+		<LayoutBox pullAwayFromEdges="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>	\
+\
 		surrounded by a layer:\
 \
 		<Layer width="1920" height="1080">\
@@ -170,8 +183,7 @@ LAYOUT AND CONTENTS ARE SEPARATED\
 \
 \
 ----\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 The type of relative positioning that HTML/CSS discusses is not the same relative positioning as this layout system.\
 In this system, boxes are not positioned by using a direct displacement of the origin or a side, unlike HTML.\
 In HTML/CSS boxes are pushed around using margins and padding or they are told to expand to certain values\
@@ -179,8 +191,7 @@ of their containers.  This leaves a mess	of follow up operations and is difficul
 \
 ---\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 		The numeric pad keys are repurposed\
+		The numeric pad keys are repurposed\
 			for\
 				direction movement, edge of a rectangle, and point location on a rectangle.\
 }

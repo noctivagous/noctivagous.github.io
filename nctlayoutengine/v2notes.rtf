@@ -180,6 +180,16 @@ SIZING INSTRUCTIONS\
 		TRANSFORMATIONS\
 \
 \
+		COMBINATORIC OPERATIONS\
+	\
+		In HTML/, because everything is a box, the construction of a tab is a separate set of\
+		controls from the view.\
+\
+			protrusion - extend a portion of a side of the initialRectangle\
+			indentation - bring in a portion of a side of the initialRectangle\
+\
+			applyBezierPath (union,intersection,subtraction) - the shape of the initialRectangle is altered in this way.\
+\
 \
 XML ELEMENTS - The actual XML elements that carry these instructions and attributes are the following so far\
 \
@@ -210,13 +220,28 @@ XML ELEMENTS - The actual XML elements that carry these instructions and attribu
 	according to flow rules and direction.\
 \
 \
-LAYOUT AND CONTENTS ARE SEPARATED\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 SHORTHAND\
 \
-	\
+
+\f1\b Dividing Ratio and Dividing Direction for <LayoutBox>\
+
+\f0\b0 \
+In the XML, usually one Content element is enclosed with a \
+LayoutBox.  But <LayoutBox> has a default rule that if more than one content page element\
+is placed inside its bounds, there is an implied layout box analyzed and sent to\
+every content.  The default dividingRatio is equal divisions. The default direction is right.\
 \
 \
 \
+Cell is a content element.  This is a shorthand for a row\
+of cells because there is a rule for the division.\
 \
+<LayoutBox dividingRatio=\'933:2:2\'94 dividingDirection=\'93right\'94>\
+<Cell></Cell><Cell></Cell><Cell></Cell>\
+<LayoutBox>\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 \
 \

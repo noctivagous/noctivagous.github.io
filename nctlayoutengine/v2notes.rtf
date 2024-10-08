@@ -14,24 +14,41 @@
 \
 	In this layout engine there is an emphasis on making layout boxes in a way that is more natural because it results\
 	from construction processes\'97 like extrude and inset.  What is typically the case, such as with \
-	HTML/CSS, is the width and height are directly defined for document/page elements and\
-	there is a process for positioning them on the page.  After that, how they affect each other when another\
-	one is inserted becomes the concern, which makes the situation suddenly complicated and tedious.  There is a\
-	lot of tweaking back and forth before the desired layout can be achieved because new boxes shift things\
-	around. By contrast, this layout engine does not exactly put boxes in the page in a way that \
-	the insertion of more will shift everything around.\
-	\
-	This is more possible when attributes like width and height and margins are not explictly defined \
-	(e.g. width=\'93400pt\'94, height=\'93800pt\'94).  They are a product of operations or instructions.  By taking this \
-	approach, many complex layouts are easier to conceptualize in advance.  There are steps of \
-	procedure and construction.\
+	HTML/CSS, is the width and height are directly defined for documentelements nested in one another\
+	and following this there is a process for positioning them on the page.  The problem is that \
+	the page elements might shift each other\'92s size and location when another\
+	one is inserted the situation suddenly becomes complicated.  There is a\
+	lot of tedious tweaking back and forth before the desired layout can be achieved because new \
+	boxes shift things around and it isn\'92t that easy to position page elements where you want them to be.\
+	All kinds of rules provided by HTML/CSS have to be accommodated. \
+	By contrast, this layout engine does not put boxes and content on the page inside the conventions of HTML/CSS.\
 \
-	Secondly, an important emphasis of the layout engine is separation of layout and content which\
-	means that the wireframe of any layer (Layout) determines the bounds for every page element (Content).\
-	Every document contains layers (Layer). And every Layer of the document has two properties: Layout and Content.\
+	To begin with, every child of a layout box will immediately inherit the same dimensions of that\
+	parent 0layout box and for the child to be different in size or location it has to use construction or positioning instructions.\
+	Otherwise it will be the same.  This makes the situation more stable. In actuality, any given child layout \
+	box exists in reference to the parent that contains it on the page.  But the way that HTML/CSS sets it up, the 	children define themselves as if the parent didn\'92t set up their boundaries.\
+	\
+	Stability is more possible when attributes like width and height and margins are not explictly defined \
+	attributes (e.g. width=\'93400pt\'94, height=\'93800pt\'94).  They are an implied result of operations or instructions in relation\
+	to the inherited dimensions of the parent.  By taking this approach, many complex layouts are easier to conceptualize \
+	in advance.  This box might be as if taking a piece out of what the parent\'92s rectangle is, while the other was made by\
+	moving a side outwards or inwards some percentage of the original.  There are steps of procedure and construction.\
+\
+	Secondly, an important emphasis of the layout engine is separation of page layout and content which\
+	means that the wireframe of any layer (PageLayout) determines the bounds for every page element (PageContent).\
+	Every document contains layers (Layer). And every Layer of the document has two arrays containing\
+	objects: PageLayout and PageContent.\
+\
+	In HTML/CSS, the layout of the page is described through CSS commands for containers that may be\
+	the content elements themselves (e.g. the position of a button).  In this layout engine the page layout \
+	of the page is setup through markup.  There are XML tags that exist for page layout alone, the primary\
+	one being <LayoutBox>.  The process of making a document is supposed to reflect, in the code, \
+	traditional print in that what occurs first is the scaffolding or wireframing of the page layout and \
+	then what happens second is the insertion of the content and these two are not fused together.\
+\
 \
 
-\f1\b 	Layout vs Content\
+\f1\b 	PageLayout vs Content\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b0 \cf0 \
@@ -47,7 +64,9 @@
 		Importantly, it allows for focus on traditional page layout as a prime activity because what people\
 		work on first is the wireframe of everything.\
 \
-		- Layout - The wireframe boxes.\
+		- 
+\f1\b PageLayout
+\f0\b0  - The wireframe boxes.\
 		- Content - What goes in the wireframe boxes.  \
 			- Content controls like text fields and buttons do not control anything of layout.\
 			They fill the region of the layout box in which they sit.\
@@ -180,15 +199,27 @@ SIZING INSTRUCTIONS\
 		TRANSFORMATIONS\
 \
 \
+		INTERACTIVE ROLES\
+			Message sending and roles are set up in the markup.\
+	\
+			interactiveRole=\'93swapDestination\'94 (for carousel)\
+			interactiveRole=\'93swapTo\'94\
+			\
+			interactiveRole=\'93collapseExpand\'94  // for making accordion controls, the box will collapse or expand\
+\
+			registerBinding=\'93textBox1\'94 // for getting updates\
+\
+			registerRemoteBinding\
+\
+\
 		COMBINATORIC OPERATIONS\
 	\
-		In HTML/, because everything is a box, the construction of a tab is a separate set of\
-		controls from the view.\
 \
 			protrusion - extend a portion of a side of the initialRectangle\
 			indentation - bring in a portion of a side of the initialRectangle\
 \
 			applyBezierPath (union,intersection,subtraction) - the shape of the initialRectangle is altered in this way.\
+			shape - circle or polygon.\
 \
 \
 XML ELEMENTS - The actual XML elements that carry these instructions and attributes are the following so far\
@@ -232,8 +263,6 @@ LayoutBox.  But <LayoutBox> has a default rule that if more than one content pag
 is placed inside its bounds, there is an implied layout box analyzed and sent to\
 every content.  The default dividingRatio is equal divisions. The default direction is right.\
 \
-\
-\
 Cell is a content element.  This is a shorthand for a row\
 of cells because there is a rule for the division.\
 \
@@ -242,7 +271,34 @@ of cells because there is a rule for the division.\
 <LayoutBox>\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
+In this example, three columns are made with shorthand\
+that divide three containers evenly\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 <LayoutBox dividingRatio=\'933:2:2\'94 dividingDirection=\'93right\'94 gutter=\'9310pt\'94>\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 <TextArea/> <TextArea/> <TextArea/>\
+</LayoutBox>\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 TEXT FOR CONTENT \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Text will not show up if it is not enclosed in a <TextRegion> class or subclass,\
+which is a Content type (vs. Layout).  So there are no free-floating paragraph\
+tags or header tags as in HTML.  Text has to be enclosed by a <TextRegion>.\
+Shorthand for this may be curly braces.\
+\
+A <TextRegion> can consist of RTF, allowing the document to go beyond HTML.\
+\
+\
+BEHAVIOR DESCRIPTIONS\
+\
+For content controls, like text areas and \
+Instead of placing all behavior descriptions in the markup,\
+\
+<Layout\
 \
 \
 \

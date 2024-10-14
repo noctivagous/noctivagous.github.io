@@ -1,8 +1,9 @@
 {\rtf1\ansi\ansicpg1252\cocoartf2761
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\fswiss\fcharset0 Helvetica-Oblique;
+}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww20700\viewh14200\viewkind0
+\margl1440\margr1440\vieww38200\viewh19980\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs28 \cf0 NCT Layout Engine  \
@@ -13,68 +14,98 @@
 \f0\b0 \
 \
 	In this layout engine there is an emphasis on making layout boxes in a way that is more natural because it results\
-	from construction processes\'97 like extrude and inset.  What is typically the case, such as with \
-	HTML/CSS, is the width and height are directly defined for documentelements nested in one another\
-	and following this there is a process for positioning them on the page.  The problem is that \
-	the page elements might shift each other\'92s size and location when another\
-	one is inserted the situation suddenly becomes complicated.  There is a\
+	from construction processes such as 
+\f2\i extrude
+\f0\i0  and 
+\f2\i inset
+\f0\i0 .  What is the case elsewhere, such as with \
+	HTML/CSS, is the width and height are directly defined for document elements that are then nested inside one another.\
+	Following the definition of their dimensions there is a process for positioning them on the page.  The problem is that \
+	the page elements usually shift one another\'92s size and location.  When another\
+	element is inserted the situation suddenly becomes complicated.  In HTML/CSS and other layout engines there is a\
 	lot of tedious tweaking back and forth before the desired layout can be achieved because new \
-	boxes shift things around and it isn\'92t that easy to position page elements where you want them to be.\
-	All kinds of rules provided by HTML/CSS have to be accommodated. \
+	boxes shift things around and the commands do not make it easy position page elements where the designer wants them to be.\
+	All kinds of rules and behaviors provided by HTML/CSS have to be accommodated both to achieve effects and avoid problems. \
 	By contrast, this layout engine does not put boxes and content on the page inside the conventions of HTML/CSS.\
 \
 	To begin with, every child of a layout box will immediately inherit the same dimensions of that\
-	parent 0layout box and for the child to be different in size or location it has to use construction or positioning instructions.\
-	Otherwise it will be the same.  This makes the situation more stable. In actuality, any given child layout \
-	box exists in reference to the parent that contains it on the page.  But the way that HTML/CSS sets it up, the 	children define themselves as if the parent didn\'92t set up their boundaries.\
+	parent layout box and for the child to be different in size or location it has to use construction or positioning instructions.\
+	Otherwise it will be the same.  This makes the situation more stable. From one design perspective, a given child layout \
+	box almost always exists in reference to the parent that contains it on the page.  But the way that HTML/CSS sets it up, the 	children define themselves in reaction to any possible parent rather than the particular parent that set up their boundaries.\
 	\
-	Stability is more possible when attributes like width and height and margins are not explictly defined \
-	attributes (e.g. width=\'93400pt\'94, height=\'93800pt\'94).  They are an implied result of operations or instructions in relation\
+	Stability of markup-to-layout is more possible when attributes like width and height and margins are not explictly defined \
+	(e.g. width=\'93400pt\'94, height=\'93800pt\'94).  They are, for this layout engine, an implied result of operations or instructions in relation\
 	to the inherited dimensions of the parent.  By taking this approach, many complex layouts are easier to conceptualize \
-	in advance.  This box might be as if taking a piece out of what the parent\'92s rectangle is, while the other was made by\
-	moving a side outwards or inwards some percentage of the original.  There are steps of procedure and construction.\
+	in advance because each subcontainer starts out as its parent container except as it has been specified otherwise.  \
+	One given layout box will exist as if taking a piece out of what the parent\'92s rectangle is, while the other was made by\
+	using the parent rectangle as the refernce then moving a specified side outwards or inwards some percentage of \
+	the parent\'92s original dimensions.  Box results come from steps of procedure and construction.  Recursively, child boxes all \
+	start out as the parent and then operations and instructions make them something else.\
 \
 	Secondly, an important emphasis of the layout engine is separation of page layout and content which\
 	means that the wireframe of any layer (PageLayout) determines the bounds for every page element (PageContent).\
-	Every document contains layers (Layer). And every Layer of the document has two arrays containing\
+	Page elements don\'92t carry any dimension or positioning information; they merely fill the bounds of the layout box to which\
+	they belong.\
+\
+	Every document contains layers (Layer). And every Layer of the document has two tree arrays containing\
 	objects: PageLayout and PageContent.\
 \
-	In HTML/CSS, the layout of the page is described through CSS commands for containers that may be\
-	the content elements themselves (e.g. the position of a button).  In this layout engine the page layout \
-	of the page is setup through markup.  There are XML tags that exist for page layout alone, the primary\
-	one being <LayoutBox>.  The process of making a document is supposed to reflect, in the code, \
-	traditional print in that what occurs first is the scaffolding or wireframing of the page layout and \
-	then what happens second is the insertion of the content and these two are not fused together.\
+	In this layout engine the page layout of the page is established through markup.  \
+	There are XML tags that exist for page layout alone, the primary\
+	one unit being <LayoutBox>, which is made use of in the PageLayout tree.  The process of making a \
+	document is supposed to reflect, in the code, traditional print in that what occurs first is the scaffolding or wireframing of the page layout and \
+	then what happens second is the the content always fills the entirety of these wireframe boxes and thus these \
+	two steps are not fused together as in HTML/CSS.\
 \
 \
 
-\f1\b 	PageLayout vs Content\
+\f1\b 	PageLayout vs PageContent\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b0 \cf0 \
-		Consider that HTML/CSS combines the concept of layout and content attributes for each page element.  \
-		For example, in each HTML document a button control is certainly a content element, having contenst, \
-		and at the same time its dimensions and location are set up as attributes.\
+		HTML/CSS combines the concept of layout and content attributes for each page element.  \
+		For example, in each HTML document a button control is certainly a content element, having content, \
+		and at the same time its dimensions and location are set up as attributes in the style attribute.\
 \
-		But in this layout system, there is no page element, like a button or text box, that owns its own width or height. \
-		Instead it is associated with a layout box that does.  A button or text box fills the width and height of \
-		the layout box that encloses it because the roles of layout and content have been separated into two.  \
-		A page element does not have dimensions but relies on its layout box.  This appears to make more \
-		work but actually assists in ease of conceptualization of the page construction code.  \
+		But in the NCT layout system, there is no 
+\f1\b PageContent
+\f0\b0  element, like a button or text box, that carry its own width or height. \
+		Instead it is associated with a 
+\f1\b PageLayout 
+\f0\b0 layout box that does.  A button or text box fills the width and height of \
+		the 
+\f1\b PageLayout
+\f0\b0  layout box that encloses it, because the roles of layout and content have been separated into two\
+		tress: 
+\f1\b PageLayout 
+\f0\b0 and
+\f1\b  PageContent
+\f0\b0 .  \
+\
+		In other words, a page element does not have dimensions but relies on its layout box to tell it what they are.  \
+		This appears to make more  work but actually assists in ease of conceptualization of the page construction code.  \
 		Importantly, it allows for focus on traditional page layout as a prime activity because what people\
 		work on first is the wireframe of everything.\
 \
 		- 
 \f1\b PageLayout
 \f0\b0  - The wireframe boxes.\
-		- Content - What goes in the wireframe boxes.  \
-			- Content controls like text fields and buttons do not control anything of layout.\
+		- 
+\f1\b PageContent
+\f0\b0  - What goes in the wireframe boxes.  \
+			- Examples include content controls like text fields and buttons, which do not control anything of layout.\
 			They fill the region of the layout box in which they sit.\
 	\
-		Layout can be made the prime activity.  At any time, the content can be \'93turned off\'94 (the text boxes,\
-		images, and buttons made invisible) and then what is visible is the wireframe (layout boxes) beneath them \
-		with labels for each box.  When page layout is made a primary features of the layout engine,\
-		this important feature, to look at the wireframe as an underlayer, will be available all the time.\
+		This way layout can be made the prime activity.  At any time, the 
+\f1\b PageContent
+\f0\b0  can be \'93turned off\'94 (the text boxes,\
+		images, and buttons made invisible) and then what is visible is the 
+\f1\b PageLayout
+\f0\b0  wireframe (layout boxes) beneath them \
+		with labels for each box.  When page layout is made a fundamental feature of the layout engine,\
+		the functionality to look at the wireframe as an underlayer will be available all the time and not separated from\
+		the original design documents.  (A major consequence of this is that many print designs would be easily\
+		converted to this layout engine directly if it ever replaced HTML).\
 \
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
@@ -82,17 +113,21 @@
 \f1\b \cf0 	The Layout Process
 \f0\b0 \
 \
-	After the document dimensions (width, height) are provided, this gives the size for\
-	each layer.  Each <Layer> contains one or more <LayoutBox>es that carry instructions.\
-	The base class for layout is <LayoutBox> and there are descendants of this..\
+	After the document\'92s dimensions (width, height) are provided, this gives the size for\
+	each layer.  \
 \
-	Any child LayoutBox begins by inheriting a size rectangle, and it modifies that instead of\
-	defining directly width and height, etc  This is called its initialRectangle, the same as	the dimensions of the parent, and all settings or operations \
-	are applied to this. There are a few sizing operations and any that are utilized are applied to to the \
+	Each <Layer> carries its PageLayout tree, which containes one or more <LayoutBox>es that carry instructions.\
+	<LayoutBox> is a base class.  There are descendants of this like <GridLayoutBox> that make grids.\
+\
+	Any child 
+\f1\b LayoutBox
+\f0\b0  begins by inheriting a size rectangle from its parent.  It modifies that, or uses one of its sides, for\
+	construction of its own rectangle, instead of defining directly its own width, height, position, etc.  \
+	This is called its initialRectangle, the rectangle it is provided that is the same	dimensions of the parent. For the child to make itself, all settings or operations \
+	are applied to this.  The dimensions come from sizing operations that are applied to to the \
 	initialRectangle sequentially and cumulatively, with the later ones changing the results\
 	of any earlier one.\
 \
-	In this layout system, every box is provided the initialRectangle that starts out the same as the parent's size attributes. \
 	Sizing can occur because of operations that modify this initialRectangle and use it as\
 	the reference for building up or taking out portions to get the final result.\
 \
@@ -105,11 +140,18 @@
 \f0\b0  instructions shape the initialRectangle relative to how it started out by moving edges in or out.\
   \
 \
-	Summarized, the parent's rectangle is what provides the child its initialRectangle and the subsequent\
+	Summarized, in this layout engine, every box is provided the initialRectangle that starts out the same as the \
+	parent's size attributes. The parent's rectangle is what provides the child its initialRectangle and the subsequent\
 	instructions or operations move it or change it into the desired result. \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
-\
-POSITIONING OF THE INITIALRECTANGLE \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 POSITIONING OF THE INITIALRECTANGLE 
+\f0\b0 \
 \
 		Take a square and examine setting up its position relative to where it is,\
 		as if it is the key 5 on the numeric keypad.  Assuming its initial position\
@@ -210,9 +252,9 @@ SIZING INSTRUCTIONS\
 			\
 			interactiveRole=\'93collapseExpand\'94  // for making accordion controls, the box will collapse or expand\
 \
-			registerBinding=\'93textBox1\'94 // for getting updates\
+			registerBinding=\'93textBox1\'94   bindingEvent=\'93onChange\'94  bindingCallback=\'93func\'94 // for getting updates\
 \
-			registerRemoteBinding\
+			registerRemoteBinding // for remote server\
 \
 \
 		COMBINATORIC OPERATIONS\
@@ -254,13 +296,13 @@ XML ELEMENTS - The actual XML elements that carry these instructions and attribu
 	according to flow rules and direction.\
 \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 SHORTHAND\
+SHORTHAND\
 \
 
 \f1\b Dividing Ratio and Dividing Direction for <LayoutBox>\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\b0 \
+\f0\b0 \cf0 \
 In the XML, usually one Content element is enclosed with a \
 LayoutBox.  But <LayoutBox> has a default rule that if more than one content page element\
 is placed inside its bounds, there is an implied layout box analyzed and sent to\
@@ -272,15 +314,12 @@ of cells because there is a rule for the division.\
 <LayoutBox dividingRatio=\'933:2:2\'94 dividingDirection=\'93right\'94>\
 <Cell></Cell><Cell></Cell><Cell></Cell>\
 <LayoutBox>\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+\
 In this example, three columns are made with shorthand\
 that divide three containers evenly\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 <LayoutBox dividingRatio=\'933:2:2\'94 dividingDirection=\'93right\'94 gutter=\'9310pt\'94>\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 <TextArea/> <TextArea/> <TextArea/>\
+<LayoutBox dividingRatio=\'933:2:2\'94 dividingDirection=\'93right\'94 gutter=\'9310pt\'94>\
+<TextArea/> <TextArea/> <TextArea/>\
 </LayoutBox>\
 \
 \
@@ -302,10 +341,8 @@ be the same in size).\
 \
 \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 TEXT FOR CONTENT \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-\cf0 \
+TEXT FOR CONTENT \
+\
 Text will not show up if it is not enclosed in a <TextRegion> class or subclass,\
 which is a Content type (vs. Layout).  So there are no free-floating paragraph\
 tags or header tags as in HTML.  Text has to be enclosed by a <TextRegion>.\
@@ -328,6 +365,27 @@ Unlike convetional programming systems, variables \
 are objects that able to contain their binding targets (e.g. GUI controls), binding \
 events (e.g. valueDidChange) with callbacks.\
 \
+\
+BUILT-IN INTERACTIVE MODES\
+\
+It is important to provide tools for people to view pages (the\
+documents formatted with the NCT Layout Engine) by allowing\
+built-in viewers and tools.  A page might be able to enter into\
+different modes.  The viewer mode of these pages\
+might acknowledge attributes of tags that mark contents\
+as articles or books, such as pages, so that they are reformatted as such.\
+The same document might have tags making layout for print.\
+\
+A layout engine is just layout but inevitably it might transition to\
+more interactive aspects.  The web browser/HTML toolset\
+is rather raw and provides undeveloped conditions\
+for viewing media of different types.  It doesn\'92t actually have an edit mode\
+for anything.  For the pages, it doesn\'92t provide building blocks for\
+building GUIs for apps, it doesn\'92t provide any video controls for the video\
+player.  Thus it is important to go the opposite direction in this regard\
+and make sure that tools are there for what people need. \
+It is extremely averse to bundling anything premade to the extent\
+everything has to be sought out as a third-party\
 \
 \
 \

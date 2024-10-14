@@ -149,52 +149,46 @@
 \cf0 \
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
-\f1\b \cf0 POSITIONING OF THE INITIALRECTANGLE 
-\f0\b0 \
-\
-		Take a square and examine setting up its position relative to where it is,\
-		as if it is the key 5 on the numeric keypad.  Assuming its initial position\
-		is defined as the key 5, there are 9	 places for it on the keypad:\
-\
-			\{\
-			"parentCenter" : 5,  / / no change. the default for initialRectangle.\
-\
-			"topLeftCorner\'94 : 7,\
-			"topSide\'94 :8,\
-			"topRightCorner\'94 : 9,\
-\
-			\'93rightSide\'94 : 6,\
-\
-			"bottomRightCorner" :3,\
-			"bottomSide\'94 :2,\
-			"bottomLeftCorner" :1,\
-			"leftSide\'94 :4\
-			\}\
-\
-		Its position is described in relation to the initialRectangle's sides and bounds\
-		This uses the well-known numeric pad keys positions, \
-		with the default position, being the same as the parent, being the value 5.\
-		If the position is left at 5, the sizing instructions will be relative to how \
-		the parent exists.\
-\
-		Since there are 8 edges the around the parent rectangle, there are 9 settings:\
-\
-\
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 		\
-SIZING INSTRUCTIONS\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 SIZING INSTRUCTIONS\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+	Consider a situation in which there is a need for a layout for a window, for two scrollbars, one horizontal\
+	on the bottom and one vertical on the right.\
+  \
+	To make this with NCT Layout Engine, the viewport of the window (the rectangular area not including the titlebar) \
+	is treated as the parent for the child layout boxes of the two scrollbars.  \
 \
-	The sizing instructions are altogether different from HTML in the following way. \
-	They are a set of available instructions that use the initialRectangle as its reference\
-	and each sizing later instruction affects any aspect of initialRectangle that was set up by \
-	previous (if there is more than one utilized).  The user can specify just one \
-	sizing operation or use multiple.\
+	The vertical scrollbar container is, in NCT Layout Engine, defined as these operations in order:\
+	\
+		1) 
+\f1\b EXTRUDE
+\f0\b0  10 PT RIGHT EDGE INWARDS - the rectangle is made anew by taking right edge of the parent rectangle brought inwards by 10pt\
+		2) 
+\f1\b INSET
+\f0\b0  10 PT BOTTOM EDGE INWARDS -  the bottom edge of the resulting rectangle is taken inwards by 10pt.  \
+	\
+	Extrude gives the base shape and inset refines it.  As a result these are the first two available sizing instructions\
+	in NCT Layout Engine and if they are both used they occur in order.\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	Sizing instructions are what give the child rectangle its desired width and height indirectly.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	They are a set of available instructions that are applied to the initialRectangle or start with it as the \
+	reference. They are applied cumulatively. Each later sizing instruction will change any aspect of initialRectangle \
+	that was set up by the previous (if there is more than one utilized) sizing operations.  \
 \
+	\
 	1) 
 \f1\b extrudeFrom
-\f0\b0  (start a rectangle anew) using one of the 6 sides of the initialRectangle, or expand outwards from one of the 2 intersecting axes of the initialRectangle.  extruding inwards from one of the 6 sides or extruding outwards in two directions from an axis line.\
+\f0\b0  (start a rectangle anew) using one of the 4 sides of the initialRectangle, or expand outwards from one of the 2 intersecting axes of the initialRectangle.  extruding inwards from one of the 6 sides or extruding outwards in two directions from an axis line.\
 \
 			- extrude 10pt from the left edge to get a vertical rectangle that is 10pt wide, the height of the initialRectangle, and that always sits on 			the left edge of the initialRectangle.\
 \
@@ -226,10 +220,12 @@ SIZING INSTRUCTIONS\
 		 \
 \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 DIMENSIONS MULTIPLIERS
+\f0\b0 \
 \
-		DIMENSIONS MULTIPLIERS\
-\
-			heightMultiplier="3" // makes the height 3 times that of the parent.\
+			heightFactor=\'931/3\'94 // makes the height 1/3 that of the parent.\
 								  //  by default, scaling occurs around the rectangle's center origin.\
 								    	\
 			scalingOrigin = "6"        // again this uses the numeric keypad positions but for the 9 most common\
@@ -239,56 +235,85 @@ SIZING INSTRUCTIONS\
 \
 \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 POSITIONING OF THE INITIALRECTANGLE 
+\f0\b0 \
+\
+		How do you make the rectangle sit outside of the parent\'92s rectangle?\
+		The child rectangle may want to position itself anywhere relative to\
+		where the parent is, such as on the perimeter.\
+\
+		Take a square and examine setting up its position relative to where it is,\
+		as if it is the key 5 on the numeric keypad.  Assuming its initial position\
+		is defined as the key 5, there are 9	 places for it on the keypad:\
+\
+			The first parameter:\
+\
+			sidesAndCorners =\
+			\{\
+			"parentCenter" : 5,  / / no change. the default for initialRectangle.\
+\
+			"topLeftCorner\'94 : 7,\
+			"topSide\'94 :8,\
+			"topRightCorner\'94 : 9,\
+\
+			\'93rightSide\'94 : 6,\
+\
+			"bottomRightCorner" :3,\
+			"bottomSide\'94 :2,\
+			"bottomLeftCorner" :1,\
+			"leftSide\'94 :4\
+			\}\
 \
 \
-		TRANSFORMATIONS\
+			The second parameter:\
 \
-\
-		INTERACTIVE ROLES\
-			Message sending and roles are set up in the markup.\
+			or	\
+			offsetFromPositionXFrac = 1 	// default.  0.5 places it in the middle of a vertical side.\
+			offsetFromPositionYFrac = 1 	// default.  0.5 places it in the middle of a horizontal side.\
+			offsetFromPositionPt = 10pt  	// \
 	\
-			interactiveRole=\'93swapDestination\'94 (for carousel)\
-			interactiveRole=\'93swapTo\'94\
-			\
-			interactiveRole=\'93collapseExpand\'94  // for making accordion controls, the box will collapse or expand\
-\
-			registerBinding=\'93textBox1\'94   bindingEvent=\'93onChange\'94  bindingCallback=\'93func\'94 // for getting updates\
-\
-			registerRemoteBinding // for remote server\
+		Its position is described in relation to the initialRectangle's sides and bounds\
+		This uses the well-known numeric pad keys positions, \
+		with the default position, being the same as the parent, being the value 5.\
+		If the position is left at 5, the sizing instructions will be relative to how \
+		the parent exists.\
 \
 \
-		COMBINATORIC OPERATIONS\
-	\
-\
-			protrusion - extend a portion of a side of the initialRectangle\
-			indentation - bring in a portion of a side of the initialRectangle\
-\
-			applyBezierPath (union,intersection,subtraction) - the shape of the initialRectangle is altered in this way.\
-			shape - circle or polygon.\
+		Since there are 8 edges the around the parent rectangle, there are 9 settings:\
 \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 XML ELEMENTS - The actual XML elements that carry these instructions and attributes are the following so far\
 \
 	
 \f1\b Layer
-\f0\b0  - Each layer contains a tree of LayoutBoxes\
+\f0\b0  - Each layer contains two trees of PageLayout and PageContent\
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f1\b 	LayoutBox
+\f1\b \cf0 	LayoutBox
 \f0\b0  - the base class from which other inherit.  It carries the basic functionality of positioning, sizing instructions, etc.\
 \
-		<LayoutBox pullAwayFromEdges="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>	\
+		<LayoutBox inset="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>	\
 \
 		surrounded by a layer:\
 \
 		<Layer width="1920" height="1080">\
-			<LayoutBox />\
-		</Layer>\
+			<PageLayout>\
+			<LayoutBox inset="fromBottomByPt:15;fromRightByPt:15;fromLeftByPt:15;fromTopByPt:15;"/>\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			</PageLayout>\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 		</Layer>\
 \
 \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f1\b 	GridLayoutBox
+\f1\b \cf0 	GridLayoutBox
 \f0\b0  - children are laid out according to the attributes of GridLayoutBox.\
 \
 \
@@ -341,10 +366,19 @@ be the same in size).\
 \
 \
 \
+\
+\
+EXTRAS / FUTURE FEATURES AFTER LAYOUT ENGINE WIREFRAMING\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
 TEXT FOR CONTENT \
 \
-Text will not show up if it is not enclosed in a <TextRegion> class or subclass,\
-which is a Content type (vs. Layout).  So there are no free-floating paragraph\
+Unlike HTML, text in the document will not show up if it is not enclosed in a <TextRegion> class or subclass,\
+which is a Content type (vs. Layout).  So, there are no free-floating paragraph\
 tags or header tags as in HTML.  Text has to be enclosed by a <TextRegion>.\
 Shorthand for this may be curly braces.\
 \
@@ -388,7 +422,36 @@ It is extremely averse to bundling anything premade to the extent\
 everything has to be sought out as a third-party\
 \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
+		TRANSFORMATIONS\
+\
+\
+		INTERACTIVE ROLES\
+			Message sending and roles are set up in the markup.\
+	\
+			interactiveRole=\'93swapDestination\'94 (for carousel)\
+			interactiveRole=\'93swapTo\'94\
+			\
+			interactiveRole=\'93collapseExpand\'94  // for making accordion controls, the box will collapse or expand\
+\
+			registerBinding=\'93textBox1\'94   bindingEvent=\'93onChange\'94  bindingCallback=\'93func\'94 // for getting updates\
+\
+			registerRemoteBinding // for remote server\
+\
+\
+		COMBINATORIC OPERATIONS\
+	\
+\
+			protrusion - extend a portion of a side of the initialRectangle\
+			indentation - bring in a portion of a side of the initialRectangle\
+\
+			applyBezierPath (union,intersection,subtraction) - the shape of the initialRectangle is altered in this way.\
+			shape - circle or polygon.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
 \
 ----\
 \

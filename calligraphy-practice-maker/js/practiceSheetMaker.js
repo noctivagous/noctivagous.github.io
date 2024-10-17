@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+/* SCROLLBARS */
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the scrollbars for #controls
     const controls = document.getElementById('controls');
@@ -152,22 +153,29 @@ function init() {
         fontRelatedControl.addEventListener('change', function () {
             if (document.getElementById('showFont').checked) {
                 loadFontAndMakeWorksheetPages();
-
             } else {
                 makeWorksheetPages(); // Generate without loading a new font
             }
         });
-
     });
 
+    // Event listeners for input fields to allow manual modification when showFont is false
+    document.getElementById('ascenderHeight').addEventListener('input', function () {
+        ascenderMultiplier = parseFloat(this.value);
+    });
+    document.getElementById('capitalHeight').addEventListener('input', function () {
+        capitalMultiplier = parseFloat(this.value);
+    });
+    document.getElementById('descenderDepth').addEventListener('input', function () {
+        descenderMultiplier = parseFloat(this.value);
+    });
 
-
-
-
-
-
-    // Initial grid drawing
-    makeWorksheetPages();
+    // Initial call to generate worksheet pages
+    if (document.getElementById('showFont').checked) {
+        loadFontAndMakeWorksheetPages();
+    } else {
+        makeWorksheetPages(); // Generate without loading a new font
+    }
 }
 
 async function downloadPdf() {
@@ -178,7 +186,7 @@ async function downloadPdf() {
     const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'pt',
-        format: [paperSize[0], paperSize[1]], // Example paper size corresponding to SVG size
+        format: getPaperSizeOriented(), // Example paper size corresponding to SVG size
     });
 
     // Get all SVG elements representing the worksheet pages
@@ -256,41 +264,6 @@ async function convertTextToPathsWithKerning(svgElement) {
     });
 }
 
-// GLOBALS
-var mmToPt = 2.83465;    // Conversion factor from mm to pt
-
-// SETTINGS WITH DEFAULTS
-var nibWidthMm = 3.8;
-var nibWidth = nibWidthMm * mmToPt; // Nib width in points
-var xHeightNibWidths = 4;
-var xHeightColor = document.getElementById('xHeightColor').value;
-var xHeightOpacity = 0.4;
-var showNibGuidelineLabels = true;
-var showNibSquares = true;
-var showVerticalLines = false;
-var verticalSlantAngle = 15;
-var verticalLineSpacingMultiplier = 2;
-var ascenderMultiplier = 0.5;
-var descenderMultiplier = 0.6;
-var capitalMultiplier = 0.4;
-var showFont = false;
-var fontWasLoadedForShowFont = false;
-var documentWidthPt = 500;
-var documentHeightPt = 500;
-
-var paperSize = document.getElementById('paperSize').value.split(',').map(Number);
-var orientation = 'portrait';
-
-var marginHorizontalInches = 0.4;
-var marginVerticalInches = 0.4;
-
-var marginHorizontal = 2 * marginHorizontalInches * 72; // Convert inches to points
-var marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
-
-var fontScaleFactor = 0.5;
-var spacingForCharacters = 30; // Space between characters
-
-
 async function loadFontAndMakeWorksheetPages() {
     try {
         showFont = document.getElementById('showFont').checked;
@@ -305,24 +278,54 @@ async function loadFontAndMakeWorksheetPages() {
         const fontUrl = getFontUrl(fontName);
 
         // Load the font asynchronously
-        font = await loadFontAsync(fontUrl).then(result => {
-            console.log(result);  // Outputs: "Operation successful"
-        });
+        font = await loadFontAsync(fontUrl);
+        console.log("Font loaded successfully.");
+
+        if (font) {
+            // Set the ascender, capital, and descender heights based on the font
+            const unitsPerEm = font.unitsPerEm;
+
+            // Calculate the appropriate height ratios based on the font metrics
+            var fontAscenderRatio = font.ascender / unitsPerEm;
+            const fontDescenderRatio = 2.4 * Math.abs(font.descender) / unitsPerEm; // Descender is usually negative
+            var fontCapitalRatio = .7 * (font.tables.os2.sCapHeight || font.ascender) / unitsPerEm;
+
+            if (!font.tables.os2.sCapHeight) {
+                fontAscenderRatio = font.ascender / unitsPerEm;
+                fontCapitalRatio = 0;
+            }
+            else {
+                fontCapitalRatio = font.tables.os2.sCapHeight / unitsPerEm;
+            }
+
+            console.log();
 
 
-        //charsPerLineGlobal = calculateCharsPerLine();
-
-        //console.log("charsPerLineGlobal:" + charsPerLineGlobal);
-
+            // Update the fields using the calculated values
+            setFontMetrics(fontAscenderRatio, fontCapitalRatio, fontDescenderRatio);
+        }
 
         fontWasLoadedForShowFont = true;
         makeWorksheetPages();  // Only called once the font is fully loaded
     } catch (error) {
-        console.error(error);
+        console.error("Error loading font:", error);
         alert('Could not load font: ' + error);
         fontWasLoadedForShowFont = false;
     }
 }
+
+function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
+    // Update the values for ascender, capital, and descender heights
+    document.getElementById('ascenderHeight').value = ascenderRatio.toFixed(2);
+    document.getElementById('capitalHeight').value = capitalRatio.toFixed(2);
+    document.getElementById('descenderDepth').value = descenderRatio.toFixed(2);
+
+    // Optionally, update the internal variables if needed
+    ascenderMultiplier = ascenderRatio;
+    capitalMultiplier = capitalRatio;
+    descenderMultiplier = descenderRatio;
+}
+
 
 function loadFontAsync(fontUrl) {
     return new Promise((resolve, reject) => {
@@ -348,6 +351,34 @@ async function makeWorksheetPages() {
 
     emptyWorksheetArea();
 
+    const rowsWithCharactersArray = generateRowsOfCharacters(); // Get the rows of characters
+    console.log(rowsWithCharactersArray);
+
+    // Determine the number of pages based on the rows of characters
+    var numberOfPages = calculateNumberOfPages(rowsWithCharactersArray);
+
+    if (showFont == false) {
+        numberOfPages = 1;
+    }
+
+    for (let i = 0; i < numberOfPages; i++) {
+        const svg = createSVGElement();
+
+        // Append SVG to worksheetPagesContainer
+        const container = document.getElementById('worksheetPagesContainer');
+        container.appendChild(svg);
+
+        // Call drawWorksheet(svg, i)
+        await drawWorksheet(svg, i, rowsWithCharactersArray);  // Pass the rows array to drawWorksheet
+    }
+}
+
+
+async function makeWorksheetPagesOLD() {
+    pullPaperSizeFromFormFields();
+
+    emptyWorksheetArea();
+
     await loadFont(async function () {
         emptyWorksheetArea();
 
@@ -369,9 +400,23 @@ async function makeWorksheetPages() {
 }
 
 
-var charsPerLineGlobal = 5;
+function calculateNumberOfPages(rows) {
+    // Get the number of lines per page
+    const linesPerPage = calculateTotalLinesPerPage();//calculateAvailableLinesPerPage();
 
-function calculateNumberOfPages() {
+    // Calculate the number of pages needed to render all rows
+    const numberOfPages = Math.ceil(rows.length / linesPerPage);
+
+    console.log("----calculateNumberOfPages()----");
+    console.log("Total Rows: " + rows.length);
+    console.log("Lines Per Page: " + linesPerPage);
+    console.log("Number of Pages: " + numberOfPages);
+
+    return numberOfPages;
+}
+
+
+function calculateNumberOfPagesOLD() {
     // If no font practice is required, just return 1 page
     if (showFont == false) {
         return 1;
@@ -381,13 +426,13 @@ function calculateNumberOfPages() {
     var linesPerPage = calculateAvailableLinesPerPage();
 
     // Get number of characters per line
-    charsPerLineGlobal = calculateCharsPerLine();
+    var charsPerLine = calculateCharsPerLine();
 
     // Calculate total characters needed
     var totalCharacters = getTotalCharacters();
 
     // Calculate number of characters per page
-    var charsPerPage = linesPerPage * charsPerLineGlobal;
+    var charsPerPage = linesPerPage * charsPerLine;
 
     // Calculate number of pages needed
     var numberOfPages = Math.ceil(totalCharacters / charsPerPage);
@@ -400,6 +445,39 @@ function calculateNumberOfPages() {
 
     return numberOfPages;
 }
+
+function generateRowsOfCharacters() {
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    const characters = getSelectedCharacters();  // Gets the set of characters to use in the worksheet
+    let rows = [];
+
+    if (arrangement === "RowsOfCharacters") {
+        // Use calculateCharsPerLine() to determine how many characters per row
+        const charsPerLine = calculateCharsPerLine();
+
+        let charIndex = 0;
+        while (charIndex < characters.length) {
+            // Create a row of characters
+            let row = [];
+            for (let i = 0; i < charsPerLine && charIndex < characters.length; i++) {
+                row.push(characters[charIndex]);
+                charIndex++;
+            }
+            rows.push(row); // Add a row with characters
+
+            rows.push([]);  // Add an empty row for practice
+        }
+
+    } else if (arrangement === "singleCharacterAtLeft") {
+        // Each row gets one character
+        characters.forEach(char => {
+            rows.push([char]);
+        });
+    }
+
+    return rows;
+}
+
 
 function getTotalCharacters() {
     // Calculate total number of characters based on user input settings
@@ -415,7 +493,10 @@ function getTotalCharacters() {
     } else if (selectedValue === "bothUppercaseAndLowercase") {
         selectedCharacters = lowercaseAlphabet.concat(uppercaseAlphabet);
     } else if (selectedValue === "customText") {
-        const customText = document.getElementById("customPracticeText").value;
+        var customText = document.getElementById("customPracticeText").value;
+        if (customText === "") {
+            customText = "empty";
+        }
         selectedCharacters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
     }
 
@@ -431,14 +512,13 @@ function createSVGElement() {
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('class', 'worksheetPage');
 
-    // Adjust paper width and height for margin
-    var width = paperSize[0] - marginHorizontal;
-    var height = paperSize[1] - marginVertical;
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
-    // Swap width and height if landscape orientation is selected
-    if (orientation === 'landscape') {
-        [width, height] = [height, width];
-    }
+    // Adjust paper width and height for margin
+    var width = paperWidthOrientedRaw - marginHorizontal;
+    var height = paperHeightOrientedRaw - marginVertical;
+
+
 
     svg.setAttribute('width', width + 'pt');
     svg.setAttribute('height', height + 'pt');
@@ -477,7 +557,8 @@ function emptyWorksheetArea() {
 
 function pullPaperSizeFromFormFields() {
     // Get selected paper size and orientation
-    paperSize = document.getElementById('paperSize').value.split(',').map(Number);
+    paperSizeWithoutOrientation = document.getElementById('paperSize').value.split(',').map(Number);
+    pageOrientation = document.querySelector('input[name="orientation"]:checked').value;
     orientation = document.querySelector('input[name="orientation"]:checked').value;
 
     marginHorizontalInches = 0.4;
@@ -487,9 +568,88 @@ function pullPaperSizeFromFormFields() {
     marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
 }
 
+function drawWorksheet(svg, pageIndex, rows) {
+    // Get the width and height from the svg attributes
+    const width = parseFloat(svg.getAttribute('width'));
+    const height = parseFloat(svg.getAttribute('height'));
+
+    // Create the main group for the worksheet
+    const worksheetGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    worksheetGroup.setAttribute('class', 'worksheetGroup');
+    svg.appendChild(worksheetGroup);
+
+    // Define stroke width in points
+    const strokeWidth = 0.6;
+
+    // Draw outer rectangle
+    drawOuterRectangle(worksheetGroup, width, height, strokeWidth);
+
+    // Draw background horizontal lines at every nib width
+    const backgroundLinesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    backgroundLinesGroup.setAttribute("class", "backgroundLines");
+    worksheetGroup.appendChild(backgroundLinesGroup);
+
+    // Draw slant guides if selected
+    if (showVerticalLines) {
+        const slantGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        slantGroup.setAttribute("class", "verticalLines");
+        worksheetGroup.appendChild(slantGroup);
+        drawSlantGuides(slantGroup, width, height, strokeWidth);
+    }
+
+    // Calculate lines per page
+    const linesPerPage = calculateTotalLinesPerPage();
+    const startIndex = pageIndex * linesPerPage;
+    const endIndex = Math.min(startIndex + linesPerPage, rows.length);
+    const rowsForPage = rows.slice(startIndex, endIndex);
+
+    // Draw practice blocks for each row on the page
+    let yPosition = 0;
+    const nibHeight = nibWidth;
+    const xHeight = xHeightNibWidths * nibHeight;
+    const ascenderHeight = ascenderMultiplier * xHeight;
+    const capitalHeight = capitalMultiplier * xHeight;
+    const descenderHeight = descenderMultiplier * xHeight;
+    const totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
+
+    rowsForPage.forEach(row => {
+        // Always draw practice block lines
+        drawPracticeBlockLines(
+            worksheetGroup,
+            backgroundLinesGroup,
+            yPosition,
+            width,
+            strokeWidth,
+            nibHeight,
+            xHeight,
+            ascenderHeight,
+            capitalHeight,
+            descenderHeight
+        );
+
+        // Draw the practice characters conditionally
+        if (showFont && row.length > 0) {
+            drawPracticeBlockChars(
+                worksheetGroup,
+                yPosition,
+                width,
+                strokeWidth,
+                nibHeight,
+                xHeight,
+                ascenderHeight,
+                capitalHeight,
+                descenderHeight,
+                row
+            );
+        }
+
+        // Update y position for the next block
+        yPosition += totalBlockHeight + nibHeight;
+    });
+}
 
 
-function drawWorksheet(svg, pageIndex) {
+function drawWorksheetOLD(svg, pageIndex) {
     // Get the width and height from the svg attributes
     var width = parseFloat(svg.getAttribute('width'));
     var height = parseFloat(svg.getAttribute('height'));
@@ -524,8 +684,9 @@ function drawWorksheet(svg, pageIndex) {
     // Fetch characters to render for this page
     var charactersForPage;
 
-    charactersForPage = getCharactersForPage(pageIndex);
-
+    if (font) {
+        charactersForPage = getCharactersForPage(pageIndex);
+    }
     drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage);
 }
 
@@ -570,7 +731,7 @@ function getFontUrl(fontName) {
         //                'Drafting': 'fonts/drafting.ttf',
         'BreitkopfFraktur': 'fonts/BreitkopfFraktur.ttf',
         //              'Blackletter': 'fonts/blackletter.ttf',
-        //            'Uncial': 'fonts/uncial.ttf'
+        //'Uncial': 'fonts/uncial.ttf'
     };
     return fontUrls[fontName];
 }
@@ -621,7 +782,73 @@ function drawSlantGuides(slantGroup, width, height, strokeWidth) {
     }
 }
 
+
 function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage) {
+    // Settings for block dimensions
+    var nibHeight = nibWidth;
+    var xHeight = xHeightNibWidths * nibHeight;
+    var ascenderHeight = ascenderMultiplier * xHeight;
+    var capitalHeight = capitalMultiplier * xHeight;
+    var descenderHeight = descenderMultiplier * xHeight;
+    var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
+
+    var yPosition = 0;
+    var charIndex = 0;
+
+    // Calculate total number of blocks that fit
+    const totalLines = Math.floor(height / (totalBlockHeight + nibHeight));
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+
+    for (let lineIndex = 0; lineIndex < totalLines; lineIndex++) {
+        var charactersForLine = [""];
+
+        // Decide if this line should have characters
+        if (shouldDrawCharacters(lineIndex, totalLines, arrangement)) {
+            if (showFont) {
+                charactersForLine = getCharactersForLine(charactersForPage, charIndex, width);
+            }
+        }
+
+        // Draw the practice block lines - always
+        drawPracticeBlockLines(
+            worksheetGroup,
+            backgroundLinesGroup,
+            yPosition,
+            width,
+            strokeWidth,
+            nibHeight,
+            xHeight,
+            ascenderHeight,
+            capitalHeight,
+            descenderHeight
+        );
+
+        if (showFont) {
+            // Draw the practice characters conditionally
+            if (charactersForLine.length > 0 && shouldDrawCharacters(lineIndex, totalLines, arrangement)) {
+                drawPracticeBlockChars(
+                    worksheetGroup,
+                    yPosition,
+                    width,
+                    strokeWidth,
+                    nibHeight,
+                    xHeight,
+                    ascenderHeight,
+                    capitalHeight,
+                    descenderHeight,
+                    charactersForLine
+                );
+                // Increment charIndex for the next character set
+                charIndex += charactersForLine.length;
+            }
+        }
+
+        // Move yPosition to the next block
+        yPosition += totalBlockHeight + nibHeight;
+    }
+}
+
+function drawPracticeBlocksOLD(worksheetGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage) {
 
     // Calculate total nib height per block
     var nibHeight = nibWidth; // For clarity
@@ -655,6 +882,16 @@ function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height,
     }
 }
 
+function shouldDrawCharacters(lineIndex, totalLines, arrangement) {
+    // If we are using "RowsOfCharacters" arrangement, draw characters on every other line
+    // except the last line (to leave it blank for practice)
+    if (arrangement === "RowsOfCharacters") {
+        return lineIndex % 2 === 0 && lineIndex < totalLines - 1;
+    }
+
+    // If we are in "SingleCharacterAtLeft", always draw characters
+    return true;
+}
 
 
 function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
@@ -700,27 +937,36 @@ function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, 
     //console.log(practiceBlocksGroup);
 }
 
-function drawPracticeBlockChars(worksheetGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
-    // Variables for line positions
-    var ascenderY = y;
-    var capitalY = ascenderY + ascenderHeight;
-    var waistlineY = capitalY + capitalHeight;
-    var baselineY = waistlineY + xHeight;
-    var descenderY = baselineY + descenderHeight;
-    var midlineY = waistlineY + xHeight / 2;
+function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
+    if (!showFont || !font) return;
 
-    // Draw practice blocks with x-height area shaded
-    var practiceBlocksGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    practiceBlocksGroup.setAttribute("class", "practiceBlocksCharacters");
+    // Calculate scaling factor to fit font into x-height
+    var fontUnitsPerEm = font.unitsPerEm;
+    var fontScaleFactor = (xHeight / getSXHeight()).toFixed(3);
 
-    // After drawing guidelines, render the characters
-    renderCharacters(practiceBlocksGroup, charactersForLine, xHeight, ascenderHeight, capitalHeight, baselineY, y);
-    console.log("renderCharacters: " + y);
+    console.log(fontScaleFactor);
 
-    worksheetGroup.appendChild(practiceBlocksGroup);
+    let xPosition = 30; // Initial position to start drawing characters
 
-    //console.log(practiceBlocksGroup);
+    // Iterate through each character in charactersForLine and draw it
+    charactersForLine.forEach(char => {
+        const glyph = font.charToGlyph(char);
+        if (glyph) {
+            const path = glyph.getPath(0, 0, font.unitsPerEm);
+            const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            svgPath.setAttribute("d", path.toPathData(5));
+            svgPath.setAttribute("fill", "#000");
+
+
+            const transform = `translate(${xPosition}, ${yPosition + ascenderHeight + capitalHeight + xHeight}) scale(${fontScaleFactor}, ${fontScaleFactor})`; // Example scale and position
+            svgPath.setAttribute("transform", transform);
+            group.appendChild(svgPath);
+            xPosition += (glyph.advanceWidth * fontScaleFactor) + spacingForCharacters;
+
+        }
+    });
 }
+
 
 function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHeight, baselineY, blockY) {
     var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
@@ -779,35 +1025,36 @@ function getCharactersForPage(pageIndex) {
 
     var characters = [""];
 
+    if (selectedValue === 'lowercaseOnly') {
+        characters = lowercaseAlphabet;
+    }
+    if (selectedValue === 'uppercaseOnly') {
+        characters = uppercaseAlphabet;
+    }
+    if (selectedValue === "bothUppercaseAndLowercase") {
+        characters = lowercaseAlphabet.concat(uppercaseAlphabet);
+    }
 
-   
-        if (selectedValue === 'lowercaseOnly') {
-            characters = lowercaseAlphabet;
-        }
-        if (selectedValue === 'uppercaseOnly') {
-            characters = uppercaseAlphabet;
-        }
-        else if (selectedValue === "bothUppercaseAndLowercase") {
-            characters = lowercaseAlphabet.concat(uppercaseAlphabet);
-        }
+    if (includeNumbers) {
+        characters = characters.concat(numberCharacters);;
+    }
 
-        if (includeNumbers) {
-            characters = characters.concat(numberCharacters);;
+    if (selectedValue === "customText") {
+        // Get custom practice text from the textarea
+        var customText = document.getElementById("customPracticeText").value;
+        if (customText === "") {
+            customText = "empty";
         }
-
-        if (selectedValue === "customText") {
-            // Get custom practice text from the textarea
-            const customText = document.getElementById("customPracticeText").value;
-            // Convert custom text to an array of characters
-            characters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
-        }
+        // Convert custom text to an array of characters
+        characters = customText.split('').filter(char => char.trim() !== ''); // Exclude empty characters
+    }
 
 
-    
+
 
     // Calculate total pages
     var linesPerPage = calculateAvailableLinesPerPage();
-    var charsPerPage = linesPerPage * charsPerLineGlobal;
+    var charsPerPage = linesPerPage * calculateCharsPerLine();
 
     // Slice characters for current page
     var startIndex = pageIndex * charsPerPage;
@@ -817,10 +1064,35 @@ function getCharactersForPage(pageIndex) {
 
 function getCharactersForLine(characters, charIndex, width) {
     var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
-    var maxCharsPerLine = charsPerLineGlobal;
+    var maxCharsPerLine = calculateCharsPerLine();
 
     var charsForLine = characters.slice(charIndex, charIndex + maxCharsPerLine);
     return charsForLine;
+}
+
+function calculateTotalLinesPerPage() {
+    // Calculate nib height in points
+    var nibHeight = nibWidth;
+
+    // Calculate various heights based on multipliers and x-height
+    var xHeight = xHeightNibWidths * nibHeight;
+    var ascenderHeight = ascenderMultiplier * xHeight;
+    var capitalHeight = capitalMultiplier * xHeight;
+    var descenderHeight = descenderMultiplier * xHeight;
+
+    // Calculate total height of each practice block (including ascender, descender, etc.)
+    var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
+
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+
+    // Adjust the height of the page to take margins into account
+    var height = paperHeightOrientedRaw - marginVertical;
+
+    // Calculate how many lines can fit on one page
+    var totalLinesPerPage = Math.floor(height / (totalBlockHeight + nibHeight));
+
+    return totalLinesPerPage;
 }
 
 function calculateAvailableLinesPerPage() {
@@ -836,8 +1108,11 @@ function calculateAvailableLinesPerPage() {
     // Calculate total height of each practice block (including ascender, descender, etc.)
     var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
 
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+
     // Adjust the height of the page to take margins into account
-    var height = paperSize[1] - marginVertical;
+    var height = paperHeightOrientedRaw - marginVertical;
 
     // Calculate how many lines can fit on one page
     var totalLinesPerPage = Math.floor(height / (totalBlockHeight + nibHeight));
@@ -846,10 +1121,16 @@ function calculateAvailableLinesPerPage() {
     var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
     var availableLinesPerPage;
 
-    // If the arrangement is 'Rows of Characters', skip every alternate line
-    if (practiceArrangement === 'RowsOfCharacters') {
-        availableLinesPerPage = Math.floor(totalLinesPerPage / 2) + (totalLinesPerPage % 2); // Add 1 if there's an extra line left for even total lines
-    } else {
+    if (showFont) {
+        // If the arrangement is 'Rows of Characters', skip every alternate line
+        if (practiceArrangement === 'RowsOfCharacters') {
+            availableLinesPerPage = Math.floor(totalLinesPerPage / 2) + (totalLinesPerPage % 2); // Add 1 if there's an extra line left for even total lines
+        } else {
+
+            availableLinesPerPage = totalLinesPerPage;
+        }
+    }
+    else {
         availableLinesPerPage = totalLinesPerPage;
     }
 
@@ -889,41 +1170,83 @@ function calculateCharsPerLine() {
     var fontScaleFactor = xHeight / getSXHeight();
 
     // Get the actual characters selected from the form fieldset for practice
-    var selectedCharacters = getSelectedCharacters();
-    if (selectedCharacters.length === 0) {
+    var selectedCharactersToUse = getSelectedCharacters();
+    if (selectedCharactersToUse.length === 0) {
         console.error("No characters selected for practice. Using default sample set.");
-        selectedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+        selectedCharactersToUse = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
     }
+
+    
+
 
     // Calculate an average character width in points using the selected characters
     let avgCharWidth = 0;
-    selectedCharacters.forEach(char => {
+    if(document.getElementById("caseSelection").value.includes("A"))
+        {
+            selectedCharactersToUse = uppercaseAlphabet;
+        }
+        else
+        {
+
+        }
+
+    selectedCharactersToUse.forEach(char => {
         let glyph = font.charToGlyph(char);
         if (glyph) {
             avgCharWidth += glyph.advanceWidth;
         }
     });
+    
 
     // Calculate the average character width and apply scaling
-    avgCharWidth = (avgCharWidth / selectedCharacters.length) * fontScaleFactor;
+    avgCharWidth = (avgCharWidth / selectedCharactersToUse.length) * fontScaleFactor;
+
+  // Calculate the upper bound character width in points using the selected characters
+  let upperBoundCharWidth = 0;
+  selectedCharactersToUse.forEach(char => {
+    
+      let glyph = font.charToGlyph(char);
+      if (glyph) {
+          // Find the maximum character width (advanceWidth)
+          if (glyph.advanceWidth > upperBoundCharWidth) {
+              upperBoundCharWidth = glyph.advanceWidth;
+          }
+         // console.log(char);
+         // console.log((glyph.advanceWidth * fontScaleFactor));
+        }
+  });
+     // Apply the scaling factor to the upper bound character width
+     upperBoundCharWidth = upperBoundCharWidth * fontScaleFactor;
+
+     
 
     // Define spacing between characters
     spacingForCharacters = 30; // Adjust this value to modify the spacing between characters
 
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
     // Determine available width for character placement, considering margins
-    var width = paperSize[0] - marginHorizontal; // Subtract horizontal margins from the paper width
+    var width = paperWidthOrientedRaw - marginHorizontal - spacingForCharacters; // Subtract horizontal margins from the paper width
+
 
     // Calculate the number of characters that can fit within the available width
-    charsPerLineGlobal = Math.floor(width / (avgCharWidth + spacingForCharacters));
+    //var charsPerLine = Math.floor(width / (avgCharWidth + spacingForCharacters));
+
+    var charsPerLine = 4;
+   
+
+        charsPerLine  = Math.floor(width / (avgCharWidth + spacingForCharacters));
+
+
 
     // Log values for debugging purposes
     console.log("----calculateCharsPerLine()----");
     console.log("Width Available: " + width);
     console.log("Font Scale Factor: " + fontScaleFactor);
     console.log("Calculated Average Character Width (Scaled): " + avgCharWidth);
-    console.log("Characters Per Line: " + charsPerLineGlobal);
+    //console.log("Characters Per Line: " + calculateCharsPerLine());
 
-    return charsPerLineGlobal;
+    return charsPerLine;
 }
 
 
@@ -949,7 +1272,11 @@ function getSelectedCharacters() {
         selectedCharacters = lowercaseAlphabet.concat(uppercaseAlphabet);
     } else if (selectedValue === "customText") {
         // Get custom practice text from the textarea
-        const customText = document.getElementById("customPracticeText").value;
+        var customText = document.getElementById("customPracticeText").value;
+
+        if (customText === "") {
+            customText = "empty";
+        }
         // Convert custom text to an array of characters, excluding empty spaces
         selectedCharacters = customText.split('').filter(char => char.trim() !== '');
     }
@@ -1178,209 +1505,3 @@ function clipLineToRect(x1, y1, x2, y2, xmin, ymin, xmax, ymax) {
     return { x1: clippedX1, y1: clippedY1, x2: clippedX2, y2: clippedY2 };
 }
 
-
-// Setter for X-Height
-function setXHeight(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value <= 0) {
-        console.error("Invalid xHeight value. Reverting to default.");
-        value = 4; // Default fallback value
-    }
-
-    xHeightNibWidths = value; // Update global variable
-    document.getElementById('xHeight').value = value; // Update text field
-    console.log("X-Height updated to: " + value);
-}
-
-// Setter for Ascender Height
-function setAscenderHeight(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value < 0) {
-        console.error("Invalid ascenderHeight value. Reverting to default.");
-        value = 0.5; // Default fallback value
-    }
-
-    ascenderMultiplier = value; // Update global variable
-    document.getElementById('ascenderHeight').value = value; // Update text field
-    console.log("Ascender Height updated to: " + value);
-}
-
-// Setter for Capital Height
-function setCapitalHeight(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value < 0) {
-        console.error("Invalid capitalHeight value. Reverting to default.");
-        value = 0.4; // Default fallback value
-    }
-
-    capitalMultiplier = value; // Update global variable
-    document.getElementById('capitalHeight').value = value; // Update text field
-    console.log("Capital Height updated to: " + value);
-}
-
-// Setter for Descender Height
-function setDescenderHeight(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value < 0) {
-        console.error("Invalid descenderHeight value. Reverting to default.");
-        value = 0.6; // Default fallback value
-    }
-
-    descenderMultiplier = value; // Update global variable
-    document.getElementById('descenderDepth').value = value; // Update text field
-    console.log("Descender Depth updated to: " + value);
-}
-
-// Setter for Nib Width
-function setNibWidth(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value <= 0) {
-        console.error("Invalid nibWidth value. Reverting to default.");
-        value = 3.8; // Default fallback value
-    }
-
-    nibWidthMm = value; // Update global variable
-    nibWidth = nibWidthMm * mmToPt; // Convert to points
-    document.getElementById('nibWidth').value = value; // Update text field
-    console.log("Nib Width updated to: " + value);
-}
-
-// Setter for X-Height Opacity
-function setXHeightOpacity(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value < 0 || value > 1) {
-        console.error("Invalid xHeightOpacity value. Reverting to default.");
-        value = 0.4; // Default fallback value
-    }
-
-    xHeightOpacity = value; // Update global variable
-    document.getElementById('xHeightOpacity').value = value; // Update text field
-    console.log("X-Height Opacity updated to: " + value);
-}
-
-// Setter for Vertical Slant Angle
-function setVerticalSlantAngle(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value < 0 || value > 60) {
-        console.error("Invalid verticalSlantAngle value. Reverting to default.");
-        value = 0; // Default fallback value
-    }
-
-    verticalSlantAngle = value; // Update global variable
-    document.getElementById('verticalSlantAngle').value = value; // Update text field
-    console.log("Vertical Slant Angle updated to: " + value);
-}
-
-// Setter for Vertical Line Spacing Multiplier
-function setVerticalLineSpacingMultiplier(value) {
-    // Ensure value is valid
-    if (isNaN(value) || value <= 0.5) {
-        console.error("Invalid verticalLineSpacingMultiplier value. Reverting to default.");
-        value = 2; // Default fallback value
-    }
-
-    verticalLineSpacingMultiplier = value; // Update global variable
-    document.getElementById('verticalLineSpacing').value = value; // Update text field
-    console.log("Vertical Line Spacing Multiplier updated to: " + value);
-}
-
-// Setter for Paper Size
-function setPaperSize(value) {
-    // Ensure value is an array of numbers with two elements
-    if (!Array.isArray(value) || value.length !== 2 || value.some(isNaN)) {
-        console.error("Invalid paperSize value. Reverting to default.");
-        value = [500, 700]; // Default fallback value
-    }
-
-    paperSize = value; // Update global variable
-    document.getElementById('paperSize').value = value.join(','); // Update text field
-    console.log("Paper Size updated to: " + value);
-}
-
-// Setter for Orientation
-function setOrientation(value) {
-    // Ensure value is either 'portrait' or 'landscape'
-    if (value !== 'portrait' && value !== 'landscape') {
-        console.error("Invalid orientation value. Reverting to default.");
-        value = 'portrait'; // Default fallback value
-    }
-
-    orientation = value; // Update global variable
-    const orientationInput = document.querySelector(`input[name="orientation"][value="${value}"]`);
-    if (orientationInput) {
-        orientationInput.checked = true; // Update radio button field
-    }
-    console.log("Orientation updated to: " + value);
-}
-
-// Event listeners to update the values using setters when the user changes the input fields
-document.getElementById('xHeight').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setXHeight(value);
-});
-
-document.getElementById('ascenderHeight').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setAscenderHeight(value);
-});
-
-document.getElementById('capitalHeight').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setCapitalHeight(value);
-});
-
-document.getElementById('descenderDepth').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setDescenderHeight(value);
-});
-
-document.getElementById('nibWidth').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setNibWidth(value);
-});
-
-document.getElementById('xHeightOpacity').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setXHeightOpacity(value);
-});
-
-document.getElementById('verticalSlantAngle').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setVerticalSlantAngle(value);
-});
-
-document.getElementById('verticalLineSpacing').addEventListener('change', function () {
-    const value = parseFloat(this.value);
-    setVerticalLineSpacingMultiplier(value);
-});
-
-document.getElementById('paperSize').addEventListener('change', function () {
-    const value = this.value.split(',').map(Number);
-    setPaperSize(value);
-});
-
-document.querySelectorAll('input[name="orientation"]').forEach(function (element) {
-    element.addEventListener('change', function () {
-        setOrientation(this.value);
-    });
-});
-
-document.getElementById('showFont').addEventListener('change', function () {
-    showFont = this.checked;
-    console.log("Show Font updated to: " + showFont);
-});
-
-document.getElementById('showNibGuidelineLabels').addEventListener('change', function () {
-    showNibGuidelineLabels = this.checked;
-    console.log("Show Nib Guideline Labels updated to: " + showNibGuidelineLabels);
-});
-
-document.getElementById('showNibSquares').addEventListener('change', function () {
-    showNibSquares = this.checked;
-    console.log("Show Nib Squares updated to: " + showNibSquares);
-});
-
-document.getElementById('verticalLines').addEventListener('change', function () {
-    showVerticalLines = this.checked;
-    console.log("Show Vertical Lines updated to: " + showVerticalLines);
-});

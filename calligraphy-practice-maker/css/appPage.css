@@ -549,6 +549,8 @@
             display: block;
             box-shadow: 5px 15px 10px gray;
             border: 1pt solid black;
+            page-break-after: always; /* Ensure a page break after each SVG page */
+            margin-bottom: 20pt; /* Add some space between each page */
 
         }
 
@@ -558,11 +560,23 @@
         /* Hide controls when printing */
         @media print {
 
+            html,
+            body {
+    
+                height: initial;
+                margin: initial;
+                overflow:visible;
+
+            }
+
+            
             svg.worksheetPage {
                 box-shadow: none;
                 padding: 0pt !important;
                 border: 0;
                 margin: 0pt;
+                page-break-after: always; /* Ensure a page break after each SVG page */
+
             }
 
             #controls,

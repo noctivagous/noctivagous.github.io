@@ -7,7 +7,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+function generateScrollbarThumbnailForWorksheetArea() {
+    const worksheetArea = document.getElementById('generatedWorksheetArea');
+    const scrollbarContainer = document.getElementById('worksheetAreaScrollbar');
+
+    // Clear existing content
+    scrollbarContainer.innerHTML = '';
+
+    // Create a canvas for generating the thumbnail of the entire worksheet area
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas dimensions proportional to the worksheet area size
+    const scaleFactor = 0.1; // Adjust to control the size of the thumbnail
+    canvas.width = worksheetArea.offsetWidth * scaleFactor;
+    canvas.height = worksheetArea.offsetHeight * scaleFactor;
+
+    // Loop through each SVG inside the worksheet area to render them on the canvas
+    const svgElements = worksheetArea.querySelectorAll('svg.worksheetPage');
+
+    svgElements.forEach((svg, index) => {
+        // Serialize the SVG into a string
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const img = new Image();
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+
+        img.onload = function () {
+            // Calculate positioning based on index and canvas scaling
+            const xPosition = 0;
+            const yPosition = index * canvas.height / svgElements.length;
+
+            // Draw the SVG onto the canvas
+            ctx.drawImage(img, xPosition, yPosition, canvas.width, canvas.height / svgElements.length);
+            URL.revokeObjectURL(url);
+        };
+        img.src = url;
+    });
+
+    // Append canvas to the scrollbar container
+    scrollbarContainer.appendChild(canvas);
+}
+
+
 /* SCROLLBARS */
+
+ // Initialize the scrollbars for #generatedWorksheetArea
+
+ 
+
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the scrollbars for #controls
     const controls = document.getElementById('controls');
@@ -63,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const generatedWorksheetArea = document.getElementById('generatedWorksheetArea');
     const worksheetAreaScrollbar = document.getElementById('worksheetAreaScrollbar');
     const generatedThumb = document.createElement('div');
+    generatedThumb.id = "generatedThumb";
     generatedThumb.className = 'thumb';
     worksheetAreaScrollbar.appendChild(generatedThumb);
 
@@ -101,6 +150,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
     }
+
+       // Define a globally accessible proxy to the function
+       window.updateGeneratedThumbPosition = updateGeneratedThumbPosition;
+
 
     generatedThumb.addEventListener('mousedown', onGeneratedThumbMouseDown);
     generatedWorksheetArea.addEventListener('scroll', updateGeneratedThumbPosition);
@@ -144,7 +197,7 @@ function init() {
     });
 
 
-    //  document.getElementById('downloadPdfButton').addEventListener('click', downloadPdf);
+     // document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
 
 
     var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
@@ -178,7 +231,7 @@ function init() {
     }
 }
 
-async function downloadPdf() {
+async function downloadPDF() {
     // Import jsPDF and svg2pdf modules
     const { jsPDF } = window.jspdf;
 
@@ -229,7 +282,11 @@ async function convertTextToPathsWithKerning(svgElement) {
 
     const textElements = svgElement.querySelectorAll('text');
     textElements.forEach(textElement => {
-        const text = textElement.textContent;
+        var text = textElement.textContent;
+
+    // Use replace to remove the specific symbols
+    text = text.replace(/[⬏⬎]/g, '');
+
         const fontSize = parseFloat(textElement.getAttribute('font-size')) || 16;
         const x = parseFloat(textElement.getAttribute('x')) || 0;
         const y = parseFloat(textElement.getAttribute('y')) || 0;
@@ -351,8 +408,9 @@ async function makeWorksheetPages() {
 
     emptyWorksheetArea();
 
+    
     const rowsWithCharactersArray = generateRowsOfCharacters(); // Get the rows of characters
-    console.log(rowsWithCharactersArray);
+  
 
     // Determine the number of pages based on the rows of characters
     var numberOfPages = calculateNumberOfPages(rowsWithCharactersArray);
@@ -371,6 +429,9 @@ async function makeWorksheetPages() {
         // Call drawWorksheet(svg, i)
         await drawWorksheet(svg, i, rowsWithCharactersArray);  // Pass the rows array to drawWorksheet
     }
+
+    //generateScrollbarThumbnailForWorksheetArea();
+    updateGeneratedThumbPosition();
 }
 
 
@@ -447,9 +508,20 @@ function calculateNumberOfPagesOLD() {
 }
 
 function generateRowsOfCharacters() {
+
+    let rows = [];
+
+    if(!showFont)
+    {
+        for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
+            rows.push("");
+
+        }
+            return rows;
+    }
+
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
     const characters = getSelectedCharacters();  // Gets the set of characters to use in the worksheet
-    let rows = [];
 
     if (arrangement === "RowsOfCharacters") {
         // Use calculateCharsPerLine() to determine how many characters per row
@@ -514,15 +586,20 @@ function createSVGElement() {
 
     const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
+    
     // Adjust paper width and height for margin
     var width = paperWidthOrientedRaw - marginHorizontal;
     var height = paperHeightOrientedRaw - marginVertical;
 
 
+    
 
     svg.setAttribute('width', width + 'pt');
     svg.setAttribute('height', height + 'pt');
+  
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+    svg.setAttribute('preserveAspectRatio', `xMidYMid meet`);
 
     // Create background rectangle
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -725,6 +802,7 @@ function loadFont(callback) {
     });
 }
 
+/*
 function getFontUrl(fontName) {
     // Map font names to URLs
     var fontUrls = {
@@ -734,6 +812,34 @@ function getFontUrl(fontName) {
         //'Uncial': 'fonts/uncial.ttf'
     };
     return fontUrls[fontName];
+}*/
+
+function getFontUrl(fontName) {
+    
+    // Get the font select element by its ID
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+
+    // Iterate through the options to find the one that matches the fontName
+    let fontUrl = null;
+    for (let i = 0; i < fontSelect.options.length; i++) {
+        const option = fontSelect.options[i];
+        if (option.value === fontName) {
+            fontUrl = option.getAttribute('fontURL');
+            break;
+        }
+    }
+
+    // If no matching font name was found, use the first <option> as fallback
+    if (!fontUrl) {
+        const fallbackOption = fontSelect.options[0];
+        fontUrl = fallbackOption.getAttribute('fontURL');
+        if(!fontUrl)
+        {
+            fontURL = 'fonts/BreitkopfFraktur.ttf';
+        }
+    }
+
+    return fontUrl;
 }
 
 function drawOuterRectangle(group, width, height, strokeWidth) {
@@ -946,7 +1052,7 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeight,
 
     console.log(fontScaleFactor);
 
-    let xPosition = 30; // Initial position to start drawing characters
+    let xPosition = (nibWidth * 3) - 3; // Initial position to start drawing characters
 
     // Iterate through each character in charactersForLine and draw it
     charactersForLine.forEach(char => {
@@ -1427,6 +1533,8 @@ function drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistl
         // Ascender Label
         drawText(practiceBlocksGroup, labelX, ascenderY - 1 + nibWidth, fontSize, "#9c9c9c", "Ascender Line⬏ ", fontFamily);
     }
+
+
 
     if (capitalMultiplier > 0) {
         // Capital Label

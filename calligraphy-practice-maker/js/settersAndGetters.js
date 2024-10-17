@@ -5,7 +5,7 @@ var mmToPt = 2.83465;    // Conversion factor from mm to pt
 // SETTINGS WITH DEFAULTS
 var nibWidthMm = 3.8;
 var nibWidth = nibWidthMm * mmToPt; // Nib width in points
-var xHeightNibWidths = 4;
+var xHeightNibWidths = document.getElementById('xHeight').value;
 var xHeightColor = document.getElementById('xHeightColor').value;
 var xHeightOpacity = 0.4;
 var showNibGuidelineLabels = true;

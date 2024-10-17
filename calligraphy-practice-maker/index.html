@@ -13,10 +13,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
 
     <!-- jspdf -->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- svg2pdf -->
-    <!--<script src="https://cdn.jsdelivr.net/npm/svg2pdf.js/dist/svg2pdf.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/svg2pdf.js/dist/svg2pdf.min.js"></script>
 
 </head>
 
@@ -33,11 +33,15 @@
 
                 <table style="margin:0;padding:0">
                     <tr>
-                        <td> <button onclick="window.print()" id="printButton" class="darkButton1">Print</button></td>
+                        <td> <button onclick="window.print()" id="printButton" class="darkButton1">Print</button>
+                        
+                        </td>
                         <td width="100%">
-                            <p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
+                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton1" >Download PDF</button>
+
+                            <!--<p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
                                 printer.)
-                            </p>
+                            </p>-->
                         </td>
                     </tr>
 
@@ -46,7 +50,6 @@
 
 
 
-                <!--<button onclick="saveWorksheetToPDF()" id="saveWorksheetToPDFButton" class="darkButton1" >Save To PDF</button>-->
 
 
                 <!--
@@ -85,9 +88,9 @@
 
             </fieldset>
 
-            <!-- x-height Settings Fieldset -->
+            <!-- x-height  Fieldset -->
             <fieldset>
-                <legend>x-height Settings</legend>
+                <legend>x-height</legend>
                 <div class="settingEnclosure">
 
                     <!-- x-height Input -->
@@ -106,29 +109,22 @@
                     <label for="xHeightOpacity">Background Opacity (0-1):</label>
                     <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
                 </div>
-            </fieldset>
-
-        
-
-            <!-- Ascender and Descender Settings Fieldset -->
-            <fieldset>
-                <legend>Ascender and Descender</legend>
-                
-                <div class="settingEnclosure">
+           
+                <div class="settingEnclosure indent">
 
                     <!-- Ascender Height Input -->
                     <label for="ascenderHeight">Ascender Height:</label><br>
                     <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
-                <div class="settingEnclosure">
+                <div class="settingEnclosure indent">
 
                     <!-- Capital Height Input -->
                     <label for="capitalHeight">Capital Height:</label><br>
                     <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
-                <div class="settingEnclosure">
+                <div class="settingEnclosure indent">
 
                     <!-- Descender Depth Input -->
                     <label for="descenderDepth">Descender Depth:</label><br>
@@ -218,10 +214,14 @@
                     <label for="fontForWorksheetPages">Font:</label>
 
                     <select id="fontForWorksheetPages" name="fontForWorksheetPages">
-                        <!--<option value="Drafting" checked>Drafting Gothic</option>-->
-                        <option value="BreitkopfFraktur">Fraktur - Breitkopf Fraktur </option>
+                        <!--<option value="Drafting" >Drafting Gothic</option>-->
+                        <option value="BreitkopfFraktur" fontURL="fonts/BreitkopfFraktur.ttf">Fraktur - Breitkopf Fraktur </option>
                         <!--<option value="Blackletter">Blackletter</option>-->
                         <!--<option value="Uncial">Uncial</option>-->
+
+                        <option value="OSIFont" fontURL="fonts/osifont-gpl2fe.ttf" selected>OSIFont</option>
+                        
+                        
 
                     </select>
                 </div>

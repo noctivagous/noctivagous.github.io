@@ -346,26 +346,29 @@ async function loadFontAndMakeWorksheetPages() {
             let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
             let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
             let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
+            let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30; // Default value if not provided
 
-            // Commented out old code for determining metrics from the font tables
-            /*
-            const unitsPerEm = font.unitsPerEm;
+            // Pull the user's nib width
+            let nibWidth = parseFloat(document.getElementById('nibWidth').value); // Assuming you have a nibWidth input element
 
-            // Calculate the appropriate height ratios based on the font metrics
-            var fontAscenderRatio = font.ascender / unitsPerEm;
-            const fontDescenderRatio = 2.4 * Math.abs(font.descender) / unitsPerEm; // Descender is usually negative
-            var fontCapitalRatio = 0.7 * (font.tables.os2.sCapHeight || font.ascender) / unitsPerEm;
+            // Calculate font scaling factor based on the nib width and brushWidthOfFont
+            let fontScaleFactor = nibWidth / brushWidthOfFontNibMultiplier;
 
-            if (!font.tables.os2.sCapHeight) {
-                fontAscenderRatio = font.ascender / unitsPerEm;
-                fontCapitalRatio = 0;
-            } else {
-                fontCapitalRatio = font.tables.os2.sCapHeight / unitsPerEm;
-            }
-            */
+            // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
+            // approximate width of the overall brushstroke width of the font's design.
+            xHeightNibWidths = brushWidthOfFontNibMultiplier / nibWidth;
 
-            // Update the fields using the values retrieved from the <option>
-            setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio);
+            console.log(selectedOption);
+            
+
+            // Update the metrics using the calculated scaling factors
+            setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio );
+
+            // Debugging logs for insight
+            console.log("Brush Width of Font:", brushWidthOfFontNibMultiplier);
+            console.log("User's Nib Width:", nibWidth);
+            console.log("Font Scale Factor:", fontScaleFactor);
+            console.log("Adjusted x-Height:", xHeight);
         }
 
         fontWasLoadedForShowFont = true;
@@ -378,6 +381,8 @@ async function loadFontAndMakeWorksheetPages() {
 }
 
 
+var brushWidthOfFontGlobal = 10;
+
 function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     // Update the values for ascender, capital, and descender heights
     document.getElementById('ascenderHeight').value = ascenderRatio.toFixed(2);
@@ -388,6 +393,7 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     ascenderMultiplier = ascenderRatio;
     capitalMultiplier = capitalRatio;
     descenderMultiplier = descenderRatio;
+//    brushWidthOfFontGlobal = brushWidthOfFont;
 }
 
 
@@ -1067,6 +1073,7 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeight,
         if (glyph) {
             const path = glyph.getPath(0, 0, font.unitsPerEm);
             const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            svgPath.setAttribute("class", "practiceSheetGlyph");
             svgPath.setAttribute("d", path.toPathData(5));
             svgPath.setAttribute("fill", "#000");
 
@@ -1188,7 +1195,7 @@ function calculateTotalLinesPerPage() {
     var nibHeight = nibWidth;
 
     // Calculate various heights based on multipliers and x-height
-    var xHeight = xHeightNibWidths * nibHeight;
+    var xHeight = xHeightNibWidths * nibWidth;
     var ascenderHeight = ascenderMultiplier * xHeight;
     var capitalHeight = capitalMultiplier * xHeight;
     var descenderHeight = descenderMultiplier * xHeight;
@@ -1213,7 +1220,7 @@ function calculateAvailableLinesPerPage() {
     var nibHeight = nibWidth;
 
     // Calculate various heights based on multipliers and x-height
-    var xHeight = xHeightNibWidths * nibHeight;
+    var xHeight = xHeightNibWidths * nibWidth;
     var ascenderHeight = ascenderMultiplier * xHeight;
     var capitalHeight = capitalMultiplier * xHeight;
     var descenderHeight = descenderMultiplier * xHeight;

@@ -339,27 +339,33 @@ async function loadFontAndMakeWorksheetPages() {
         console.log("Font loaded successfully.");
 
         if (font) {
-            // Set the ascender, capital, and descender heights based on the font
+            // Get the selected <option> element
+            const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+
+            // Pull ascender, capital height, and descender ratios from the <option>
+            let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
+            let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
+            let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
+
+            // Commented out old code for determining metrics from the font tables
+            /*
             const unitsPerEm = font.unitsPerEm;
 
             // Calculate the appropriate height ratios based on the font metrics
             var fontAscenderRatio = font.ascender / unitsPerEm;
             const fontDescenderRatio = 2.4 * Math.abs(font.descender) / unitsPerEm; // Descender is usually negative
-            var fontCapitalRatio = .7 * (font.tables.os2.sCapHeight || font.ascender) / unitsPerEm;
+            var fontCapitalRatio = 0.7 * (font.tables.os2.sCapHeight || font.ascender) / unitsPerEm;
 
             if (!font.tables.os2.sCapHeight) {
                 fontAscenderRatio = font.ascender / unitsPerEm;
                 fontCapitalRatio = 0;
-            }
-            else {
+            } else {
                 fontCapitalRatio = font.tables.os2.sCapHeight / unitsPerEm;
             }
+            */
 
-            console.log();
-
-
-            // Update the fields using the calculated values
-            setFontMetrics(fontAscenderRatio, fontCapitalRatio, fontDescenderRatio);
+            // Update the fields using the values retrieved from the <option>
+            setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio);
         }
 
         fontWasLoadedForShowFont = true;
@@ -370,6 +376,7 @@ async function loadFontAndMakeWorksheetPages() {
         fontWasLoadedForShowFont = false;
     }
 }
+
 
 function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     // Update the values for ascender, capital, and descender heights

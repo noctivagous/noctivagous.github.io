@@ -246,6 +246,13 @@
         color: rgb(102, 129, 87);
     }
 
+    #controls input:disabled
+    {
+        opacity:0.4;
+        cursor: not-allowed;        /* Change the cursor to indicate it's disabled */
+
+    }
+
     #controls input[type='number'] {
         font-family: monospace;
         border-radius: 9pt;
@@ -424,12 +431,19 @@
         color: #ccc;
     }
 
-    .darkButton1 {
-        background-color: #000;
-        color: #ccc;
+    #outputButtons button:hover,
+    button:hover {
+        cursor: pointer;
+        background-color: #444;
+
     }
+    
+    #outputButtons button:active,
+    button:active {
+        cursor: pointer;
+        background-color: #555;
 
-
+    }
 
 
     #controlsScrollbar {
@@ -613,3 +627,14 @@
             display: none;
         }
     }
+
+
+#nibWidthInPtDisplaySpan
+{
+    
+    margin-left:14pt;
+font-size:10pt ;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+text-align: right;
+display: inline-block;
+}

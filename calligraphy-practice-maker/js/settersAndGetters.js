@@ -3,9 +3,14 @@
 const mmToPt = 2.83465;    // Conversion factor from mm to pt
 
 // SETTINGS WITH DEFAULTS
-var nibWidthMm = 3.8;
+var nibWidthMm = 2;
 var nibWidthPt = nibWidthMm * mmToPt; // Nib width in points
 var nibWidthsTall = document.getElementById('nibWidthsTall').value;
+
+function setDefaults()
+{
+    setNibWidthPtFromMM(2);
+}
 
 function getNibWidthPt()
 {
@@ -271,3 +276,27 @@ document.getElementById('verticalLines').addEventListener('change', function () 
     showVerticalLines = this.checked;
     console.log("Show Vertical Lines updated to: " + showVerticalLines);
 });
+
+
+
+    // Event listeners for input fields to allow manual modification when showFont is false
+    document.getElementById('ascenderHeight').addEventListener('input', function () {
+        ascenderMultiplier = parseFloat(this.value);
+    });
+    document.getElementById('capitalHeight').addEventListener('input', function () {
+        capitalMultiplier = parseFloat(this.value);
+    });
+    document.getElementById('descenderDepth').addEventListener('input', function () {
+        descenderMultiplier = parseFloat(this.value);
+    });
+
+
+// Add event listeners to controls
+    // Select all input, select, and textarea elements within #controls, but exclude those with the class '.notWorksheetGenerating'
+    var controls = document.querySelectorAll(
+        '#controls input:not(.notWorksheetGenerating), #controls select:not(.notWorksheetGenerating), #controls textarea:not(.notWorksheetGenerating)'
+    );
+
+    controls.forEach(function (control) {
+       control.addEventListener('change', function () { makeWorksheetPages(); });
+    });

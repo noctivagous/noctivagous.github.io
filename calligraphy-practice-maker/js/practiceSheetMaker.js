@@ -171,58 +171,43 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
     if (file) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            opentype.load(e.target.result, function (err, loadedFont) {
-                if (err) {
-                    alert('Could not load font: ' + err);
-                } else {
-                    // Font is loaded successfully
-                    font = loadedFont;
+            // Store the font as Base64
+            const binary = new Uint8Array(e.target.result);
+            let binaryString = '';
+            for (let i = 0; i < binary.byteLength; i++) {
+                binaryString += String.fromCharCode(binary[i]);
+            }
+            const base64String = btoa(binaryString);
 
-                    // Create a new option element for the font
-                    const fontName = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension for font name
-                    const newOption = document.createElement('option');
-                    newOption.value = fontName;
-                    newOption.textContent = fontName;
-                    newOption.setAttribute('fontURL', e.target.result);
-                    newOption.setAttribute('brushWidthOfFont', '30'); // Default brush width
-                    newOption.setAttribute('ascenderRatio', '0.45');
-                    newOption.setAttribute('capHeightRatio', '0.6');
-                    newOption.setAttribute('descenderDepthRatio', '0.45');
+            // Create a new option element for the font
+            const fontName = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension
+            const newOption = document.createElement('option');
+            newOption.value = fontName;
+            newOption.textContent = fontName;
+            newOption.setAttribute('fontData', base64String);
+            newOption.setAttribute('brushWidthOfFont', '30'); // Default brush width
+            newOption.setAttribute('ascenderRatio', '0.45');
+            newOption.setAttribute('capHeightRatio', '0.6');
+            newOption.setAttribute('descenderDepthRatio', '0.45');
 
-                    // Add the new option to the <select> dropdown
-                    const fontSelect = document.getElementById('fontForWorksheetPages');
-                    fontSelect.appendChild(newOption);
+            // Add the new option to the <select> dropdown
+            const fontSelect = document.getElementById('fontForWorksheetPages');
+            fontSelect.appendChild(newOption);
 
-                    // Save font to IndexedDB for persistence
-                   // saveFontToIndexedDB(file.name, e.target.result);
-
-                    // Optionally, set the newly uploaded font as selected and update the worksheet
-                    fontSelect.value = fontName;
-                    loadFontAndMakeWorksheetPages();
-                }
-            });
+            // Set the newly uploaded font as selected
+            fontSelect.value = fontName;
+            loadFontAndMakeWorksheetPages();
         };
-        reader.readAsArrayBuffer(file);
+        reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
     }
 });
 
 
 
 function init() {
-    // Add event listeners to controls
-    // Select all input, select, and textarea elements within #controls, but exclude those with the class '.notWorksheetGenerating'
-    var controls = document.querySelectorAll(
-        '#controls input:not(.notWorksheetGenerating), #controls select:not(.notWorksheetGenerating), #controls textarea:not(.notWorksheetGenerating)'
-    );
-
-    controls.forEach(function (control) {
-        control.addEventListener('change', function () { makeWorksheetPages(); });
-    });
-
-
-    // document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
-
-
+   
+    setDefaults();
+    
     var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
 
     fontChangingControls.forEach(function (fontRelatedControl) {
@@ -233,17 +218,6 @@ function init() {
                 makeWorksheetPages(); // Generate without loading a new font
             }
         });
-    });
-
-    // Event listeners for input fields to allow manual modification when showFont is false
-    document.getElementById('ascenderHeight').addEventListener('input', function () {
-        ascenderMultiplier = parseFloat(this.value);
-    });
-    document.getElementById('capitalHeight').addEventListener('input', function () {
-        capitalMultiplier = parseFloat(this.value);
-    });
-    document.getElementById('descenderDepth').addEventListener('input', function () {
-        descenderMultiplier = parseFloat(this.value);
     });
 
     // Initial call to generate worksheet pages
@@ -296,6 +270,41 @@ async function downloadPDF() {
 
     // Save the PDF
     pdf.save('worksheet.pdf');
+}
+
+async function printPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: getPaperSizeOriented(), // Paper size oriented from your form
+    });
+
+    const svgElements = document.querySelectorAll('.worksheetPage');
+
+    for (let i = 0; i < svgElements.length; i++) {
+        if (i > 0) {
+            pdf.addPage();
+        }
+
+        const svgElement = svgElements[i];
+
+        try {
+            // Ensure that text is converted to paths
+            await convertTextToPathsWithKerning(svgElement);
+        } catch (error) {
+            console.error('Error converting text to paths:', error);
+        }
+
+        await svg2pdf(svgElement, pdf, {
+            xOffset: marginHorizontal / 2,
+            yOffset: marginVertical / 2,
+            scale: 1,
+        });
+    }
+
+    // Open the print dialog with the generated PDF content
+    window.open(pdf.output('bloburl'));
 }
 
 
@@ -360,6 +369,11 @@ async function loadFontAndMakeWorksheetPages() {
 
         const fontData = selectedOption.getAttribute('fontData'); // Assume stored as base64
 
+        if(fontData)
+        {
+            document.getElementById('nibWidthsTall').disabled = false;
+        }
+
         // Load the font asynchronously
 
         if (fontData) {
@@ -377,6 +391,7 @@ async function loadFontAndMakeWorksheetPages() {
         } else if (fontUrl) {
             // Load the font asynchronously using opentype.load()
             font = await loadFontAsync(fontUrl);
+            makeFontMetrics();
             console.log("Font loaded from URL successfully.");
         } else {
             throw new Error("No valid font source found (URL or fontData missing).");
@@ -480,7 +495,7 @@ async function makeWorksheetPages() {
 
     emptyWorksheetArea();
 
-    makeFontMetrics();
+    
 
     const rowsWithCharactersArray = generateRowsOfCharacters(); // Get the rows of characters
 
@@ -488,8 +503,35 @@ async function makeWorksheetPages() {
     // Determine the number of pages based on the rows of characters
     var numberOfPages = calculateNumberOfPages(rowsWithCharactersArray);
 
-    if (showFont == false) {
+    if ((showFont == false) || !font) {
+        
         numberOfPages = 1;
+        document.getElementById('nibWidthsTall').disabled = false;
+    }
+
+    
+
+    if(showFont && font)
+    {
+        const fontSelect = document.getElementById('fontForWorksheetPages');
+        const fontName = fontSelect.value;
+        const fontUrl = getFontUrl(fontName);
+        const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+
+        const fontData = selectedOption.getAttribute('fontData'); // Assume stored as base64
+
+        // don't allow adjustments of x-height (nibWidthsTall)
+        // if the font was not uploaded by the user.
+        if(fontData)
+        {
+            document.getElementById('nibWidthsTall').disabled = false;
+
+        }
+        else // uses fontData
+        {
+            document.getElementById('nibWidthsTall').disabled = true;           
+        }
+        
     }
 
 
@@ -875,17 +917,6 @@ function loadFont(callback) {
     });
 }
 
-/*
-function getFontUrl(fontName) {
-    // Map font names to URLs
-    var fontUrls = {
-        //                'Drafting': 'fonts/drafting.ttf',
-        'BreitkopfFraktur': 'fonts/BreitkopfFraktur.ttf',
-        //              'Blackletter': 'fonts/blackletter.ttf',
-        //'Uncial': 'fonts/uncial.ttf'
-    };
-    return fontUrls[fontName];
-}*/
 
 function getFontUrl(fontName) {
 

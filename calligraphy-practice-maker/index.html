@@ -40,11 +40,11 @@ a small number of fonts available.
 
                 <table style="margin:0;padding:0">
                     <tr>
-                        <td> <button onclick="window.print()" id="printButton" class="darkButton1">Print</button>
+                        <td> <button onclick="printPDF()" id="printButton" class="darkButton">Print</button>
                         
                         </td>
                         <td width="100%">
-                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton1" >Download PDF</button>
+                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton" >Download PDF</button>
 
                             <!--<p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
                                 printer.)
@@ -76,7 +76,7 @@ a small number of fonts available.
                     <input type="number" id="nibWidthMm" value="3.8" min="0.1" step="0.1"> <span
                         class="labelNote">mm</span> 
                         
-                        <span class="class="labelNote">
+                        <span class="class="labelNote" id="nibWidthInPtDisplaySpan">
                         (<span id="nibWidthInPtDisplay">10 </span> <span>pt</span>)
                     </span>
 
@@ -111,8 +111,10 @@ a small number of fonts available.
 
                     <!-- x-height Input -->
                     <label for="nibWidthsTall">Nib Widths Tall:</label>
-                    <input type="number" id="nibWidthsTall" value="4" min="0.1" step="0.1"> <span class="labelNote">
-                       </span>
+                    <input type="number" id="nibWidthsTall" value="4" min="0.1" step="0.1"> 
+                    <span class="labelNote">
+                        ×
+                    </span>
                 </div>
 
                 <div class="settingEnclosure indent hiddenTemporary">
@@ -246,8 +248,8 @@ a small number of fonts available.
 
 
 
-                <div class="settingEnclosure indent indent2 hiddenTemporary">
-                    <button id="uploadFont" class="darkButton1">Upload Font...</button>
+                <div class="settingEnclosure indent indent2">
+                    <button id="uploadFont" class="darkButton">Upload Font...</button>
                     <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
 
                 </div>
@@ -304,10 +306,10 @@ a small number of fonts available.
 
 
             <!-- Generate Grid Button -->
-            <!-- <button onclick="makeWorksheetPages()" id="generateWorksheet" class="darkButton1">Generate Sheet</button>-->
+            <!-- <button onclick="makeWorksheetPages()" id="generateWorksheet" >Generate Sheet</button>-->
 
             <p style="text-align: center;">
-                <!-- <button onclick="makeWorksheetPages()" id="resetSettingsButton" class="darkButton1">Reset Settings</button>-->
+                <!-- <button onclick="makeWorksheetPages()" id="resetSettingsButton" class="darkButton">Reset Settings</button>-->
                 <a id="emailLink" style="color:white;" href="mailto:calligraphy[-at-]noctivagous[-dot-]com">
                     Email </a>
             </p>
@@ -331,8 +333,9 @@ a small number of fonts available.
 
     </div>
 
+    <script src="js/settersAndGetters.js"></script>
+
 <script src="js/practiceSheetMaker.js"></script>
-<script src="js/settersAndGetters.js"></script>
 </body>
 
 </html>

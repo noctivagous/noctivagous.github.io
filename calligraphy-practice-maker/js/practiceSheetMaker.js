@@ -52,9 +52,9 @@ function generateScrollbarThumbnailForWorksheetArea() {
 
 /* SCROLLBARS */
 
- // Initialize the scrollbars for #generatedWorksheetArea
+// Initialize the scrollbars for #generatedWorksheetArea
 
- 
+
 
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize the scrollbars for #controls
@@ -151,8 +151,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('mouseup', onMouseUp);
     }
 
-       // Define a globally accessible proxy to the function
-       window.updateGeneratedThumbPosition = updateGeneratedThumbPosition;
+    // Define a globally accessible proxy to the function
+    window.updateGeneratedThumbPosition = updateGeneratedThumbPosition;
 
 
     generatedThumb.addEventListener('mousedown', onGeneratedThumbMouseDown);
@@ -175,14 +175,37 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
                 if (err) {
                     alert('Could not load font: ' + err);
                 } else {
+                    // Font is loaded successfully
                     font = loadedFont;
-                    makeWorksheetPages();
+
+                    // Create a new option element for the font
+                    const fontName = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension for font name
+                    const newOption = document.createElement('option');
+                    newOption.value = fontName;
+                    newOption.textContent = fontName;
+                    newOption.setAttribute('fontURL', e.target.result);
+                    newOption.setAttribute('brushWidthOfFont', '30'); // Default brush width
+                    newOption.setAttribute('ascenderRatio', '0.45');
+                    newOption.setAttribute('capHeightRatio', '0.6');
+                    newOption.setAttribute('descenderDepthRatio', '0.45');
+
+                    // Add the new option to the <select> dropdown
+                    const fontSelect = document.getElementById('fontForWorksheetPages');
+                    fontSelect.appendChild(newOption);
+
+                    // Save font to IndexedDB for persistence
+                   // saveFontToIndexedDB(file.name, e.target.result);
+
+                    // Optionally, set the newly uploaded font as selected and update the worksheet
+                    fontSelect.value = fontName;
+                    loadFontAndMakeWorksheetPages();
                 }
             });
         };
         reader.readAsArrayBuffer(file);
     }
 });
+
 
 
 function init() {
@@ -197,7 +220,7 @@ function init() {
     });
 
 
-     // document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
+    // document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
 
 
     var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
@@ -284,8 +307,8 @@ async function convertTextToPathsWithKerning(svgElement) {
     textElements.forEach(textElement => {
         var text = textElement.textContent;
 
-    // Use replace to remove the specific symbols
-    text = text.replace(/[⬏⬎]/g, '');
+        // Use replace to remove the specific symbols
+        text = text.replace(/[⬏⬎]/g, '');
 
         const fontSize = parseFloat(textElement.getAttribute('font-size')) || 16;
         const x = parseFloat(textElement.getAttribute('x')) || 0;
@@ -333,44 +356,34 @@ async function loadFontAndMakeWorksheetPages() {
         const fontSelect = document.getElementById('fontForWorksheetPages');
         const fontName = fontSelect.value;
         const fontUrl = getFontUrl(fontName);
+        const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+
+        const fontData = selectedOption.getAttribute('fontData'); // Assume stored as base64
 
         // Load the font asynchronously
-        font = await loadFontAsync(fontUrl);
-        console.log("Font loaded successfully.");
 
-        if (font) {
-            // Get the selected <option> element
-            const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+        if (fontData) {
+            // Decode the base64-encoded fontData into an ArrayBuffer
+            const byteString = atob(fontData);
+            const byteArray = new Uint8Array(byteString.length);
+            for (let i = 0; i < byteString.length; i++) {
+                byteArray[i] = byteString.charCodeAt(i);
+            }
+            const arrayBuffer = byteArray.buffer;
 
-            // Pull ascender, capital height, and descender ratios from the <option>
-            let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
-            let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
-            let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
-            let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30; // Default value if not provided
-
-            // Pull the user's nib width
-            let nibWidth = parseFloat(document.getElementById('nibWidth').value); // Assuming you have a nibWidth input element
-
-            // Calculate font scaling factor based on the nib width and brushWidthOfFont
-            let fontScaleFactor = nibWidth / brushWidthOfFontNibMultiplier;
-
-            // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
-            // approximate width of the overall brushstroke width of the font's design.
-            xHeightNibWidths = brushWidthOfFontNibMultiplier / nibWidth;
-
-            console.log(selectedOption);
-            
-
-            // Update the metrics using the calculated scaling factors
-            setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio );
-
-            // Debugging logs for insight
-            console.log("Brush Width of Font:", brushWidthOfFontNibMultiplier);
-            console.log("User's Nib Width:", nibWidth);
-            console.log("Font Scale Factor:", fontScaleFactor);
-            console.log("Adjusted x-Height:", xHeight);
+            // Load the font using opentype.parse()
+            font = opentype.parse(arrayBuffer);
+            console.log("Font loaded from uploaded data successfully.");
+        } else if (fontUrl) {
+            // Load the font asynchronously using opentype.load()
+            font = await loadFontAsync(fontUrl);
+            console.log("Font loaded from URL successfully.");
+        } else {
+            throw new Error("No valid font source found (URL or fontData missing).");
         }
 
+
+      
         fontWasLoadedForShowFont = true;
         makeWorksheetPages();  // Only called once the font is fully loaded
     } catch (error) {
@@ -381,20 +394,6 @@ async function loadFontAndMakeWorksheetPages() {
 }
 
 
-var brushWidthOfFontGlobal = 10;
-
-function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
-    // Update the values for ascender, capital, and descender heights
-    document.getElementById('ascenderHeight').value = ascenderRatio.toFixed(2);
-    document.getElementById('capitalHeight').value = capitalRatio.toFixed(2);
-    document.getElementById('descenderDepth').value = descenderRatio.toFixed(2);
-
-    // Optionally, update the internal variables if needed
-    ascenderMultiplier = ascenderRatio;
-    capitalMultiplier = capitalRatio;
-    descenderMultiplier = descenderRatio;
-//    brushWidthOfFontGlobal = brushWidthOfFont;
-}
 
 
 function loadFontAsync(fontUrl) {
@@ -415,15 +414,76 @@ function loadFontAsync(fontUrl) {
 }
 
 
+function makeFontMetrics()
+{
+    
+    if (showFont && font) {
+        var fontSelect = document.getElementById('fontForWorksheetPages');
+        // Get the selected <option> element
+        const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+
+        // Pull ascender, capital height, and descender ratios from the <option>
+        let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
+        let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
+        let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
+        let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30; // Default value if not provided
+
+
+        // Pull the user's nib width
+        let nibWidthPt = getNibWidthPt();// parseFloat(document.getElementById('nibWidthMm').value); // Assuming you have a nibWidthPt input element
+
+        
+        // Calculate font scaling factor based on the nib width and brushWidthOfFont
+        let fontScaleFactor = brushWidthOfFontNibMultiplier / nibWidthPt;
+
+        // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
+        // approximate width of the overall brushstroke width of the font's design.
+        //setNibWidthsTall((brushWidthOfFontNibMultiplier / nibWidthPt).toFixed(2));
+ 
+        // Set the nibWidthsTall to reflect the adjusted x-height
+        setNibWidthsTall((nibWidthPt * fontScaleFactor ).toFixed(2));
+        
+        
+
+        // Update the metrics using the calculated scaling factors
+        setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio);
+
+        // Debugging logs for insight
+        console.log("Brush Width of Font:", brushWidthOfFontNibMultiplier);
+        console.log("User's Nib Width:", nibWidthPt);
+        console.log("Font Scale Factor:", fontScaleFactor);
+        console.log("Adjusted x-Height:", nibWidthsTall);
+    }
+}
+
+var brushWidthOfFontGlobal = 10;
+
+function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
+    // Update the values for ascender, capital, and descender heights
+    document.getElementById('ascenderHeight').value = ascenderRatio.toFixed(2);
+    document.getElementById('capitalHeight').value = capitalRatio.toFixed(2);
+    document.getElementById('descenderDepth').value = descenderRatio.toFixed(2);
+
+    // Optionally, update the internal variables if needed
+    ascenderMultiplier = ascenderRatio;
+    capitalMultiplier = capitalRatio;
+    descenderMultiplier = descenderRatio;
+    //    brushWidthOfFontGlobal = brushWidthOfFont;
+}
+
 
 async function makeWorksheetPages() {
+
+    setNibWidthPtFromMM(document.getElementById("nibWidthMm").value);
+
     pullPaperSizeFromFormFields();
 
     emptyWorksheetArea();
 
-    
+    makeFontMetrics();
+
     const rowsWithCharactersArray = generateRowsOfCharacters(); // Get the rows of characters
-  
+
 
     // Determine the number of pages based on the rows of characters
     var numberOfPages = calculateNumberOfPages(rowsWithCharactersArray);
@@ -431,6 +491,7 @@ async function makeWorksheetPages() {
     if (showFont == false) {
         numberOfPages = 1;
     }
+
 
     for (let i = 0; i < numberOfPages; i++) {
         const svg = createSVGElement();
@@ -524,13 +585,12 @@ function generateRowsOfCharacters() {
 
     let rows = [];
 
-    if(!showFont)
-    {
+    if (!showFont) {
         for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
             rows.push("");
 
         }
-            return rows;
+        return rows;
     }
 
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
@@ -599,17 +659,17 @@ function createSVGElement() {
 
     const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
-    
+
     // Adjust paper width and height for margin
     var width = paperWidthOrientedRaw - marginHorizontal;
     var height = paperHeightOrientedRaw - marginVertical;
 
 
-    
+
 
     svg.setAttribute('width', width + 'pt');
     svg.setAttribute('height', height + 'pt');
-  
+
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
     svg.setAttribute('preserveAspectRatio', `xMidYMid meet`);
@@ -695,12 +755,12 @@ function drawWorksheet(svg, pageIndex, rows) {
 
     // Draw practice blocks for each row on the page
     let yPosition = 0;
-    const nibHeight = nibWidth;
-    const xHeight = xHeightNibWidths * nibHeight;
-    const ascenderHeight = ascenderMultiplier * xHeight;
-    const capitalHeight = capitalMultiplier * xHeight;
-    const descenderHeight = descenderMultiplier * xHeight;
-    const totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
+    const nibHeightPt = getNibWidthPt();
+    const xHeightPt = getXHeightPt();
+    const ascenderHeight = ascenderMultiplier * xHeightPt;
+    const capitalHeight = capitalMultiplier * xHeightPt;
+    const descenderHeight = descenderMultiplier * xHeightPt;
+    const totalBlockHeight = ascenderHeight + capitalHeight + xHeightPt + descenderHeight;
 
     rowsForPage.forEach(row => {
         // Always draw practice block lines
@@ -710,8 +770,8 @@ function drawWorksheet(svg, pageIndex, rows) {
             yPosition,
             width,
             strokeWidth,
-            nibHeight,
-            xHeight,
+            nibHeightPt,
+            xHeightPt,
             ascenderHeight,
             capitalHeight,
             descenderHeight
@@ -724,8 +784,8 @@ function drawWorksheet(svg, pageIndex, rows) {
                 yPosition,
                 width,
                 strokeWidth,
-                nibHeight,
-                xHeight,
+                nibHeightPt,
+                xHeightPt,
                 ascenderHeight,
                 capitalHeight,
                 descenderHeight,
@@ -734,7 +794,7 @@ function drawWorksheet(svg, pageIndex, rows) {
         }
 
         // Update y position for the next block
-        yPosition += totalBlockHeight + nibHeight;
+        yPosition += totalBlockHeight + nibHeightPt;
     });
 }
 
@@ -828,7 +888,7 @@ function getFontUrl(fontName) {
 }*/
 
 function getFontUrl(fontName) {
-    
+
     // Get the font select element by its ID
     const fontSelect = document.getElementById('fontForWorksheetPages');
 
@@ -846,8 +906,7 @@ function getFontUrl(fontName) {
     if (!fontUrl) {
         const fallbackOption = fontSelect.options[0];
         fontUrl = fallbackOption.getAttribute('fontURL');
-        if(!fontUrl)
-        {
+        if (!fontUrl) {
             fontURL = 'fonts/BreitkopfFraktur.ttf';
         }
     }
@@ -872,7 +931,7 @@ function drawSlantGuides(slantGroup, width, height, strokeWidth) {
     var tanAngle = Math.tan(angleRadians); // Slope of the slant lines
 
     // Spacing between slant lines
-    var verticalLineSpacing = nibWidth * verticalLineSpacingMultiplier;
+    var verticalLineSpacing = nibWidthPt * verticalLineSpacingMultiplier;
 
     // For vertical lines (90 degrees), handle separately
     if (verticalSlantAngle !== 90) {
@@ -904,8 +963,8 @@ function drawSlantGuides(slantGroup, width, height, strokeWidth) {
 
 function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage) {
     // Settings for block dimensions
-    var nibHeight = nibWidth;
-    var xHeight = xHeightNibWidths * nibHeight;
+    var nibHeightPt = nibWidthPt;
+    var xHeight = getXHeightPt();
     var ascenderHeight = ascenderMultiplier * xHeight;
     var capitalHeight = capitalMultiplier * xHeight;
     var descenderHeight = descenderMultiplier * xHeight;
@@ -915,7 +974,7 @@ function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height,
     var charIndex = 0;
 
     // Calculate total number of blocks that fit
-    const totalLines = Math.floor(height / (totalBlockHeight + nibHeight));
+    const totalLines = Math.floor(height / (totalBlockHeight + nibHeightPt));
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
 
     for (let lineIndex = 0; lineIndex < totalLines; lineIndex++) {
@@ -935,7 +994,7 @@ function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height,
             yPosition,
             width,
             strokeWidth,
-            nibHeight,
+            nibHeightPt,
             xHeight,
             ascenderHeight,
             capitalHeight,
@@ -950,7 +1009,7 @@ function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height,
                     yPosition,
                     width,
                     strokeWidth,
-                    nibHeight,
+                    nibHeightPt,
                     xHeight,
                     ascenderHeight,
                     capitalHeight,
@@ -963,43 +1022,11 @@ function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height,
         }
 
         // Move yPosition to the next block
-        yPosition += totalBlockHeight + nibHeight;
+        yPosition += totalBlockHeight + nibHeightPt;
     }
 }
 
-function drawPracticeBlocksOLD(worksheetGroup, backgroundLinesGroup, width, height, strokeWidth, charactersForPage) {
 
-    // Calculate total nib height per block
-    var nibHeight = nibWidth; // For clarity
-    var nibRectWidth = nibWidth;
-    var xHeight = xHeightNibWidths * nibHeight;
-    var ascenderNibWidths = xHeightNibWidths; // Assuming ascender height equal to x-height
-    var capitalNibWidths = xHeightNibWidths * 0.7; // For example, 70% of x-height
-    var descenderNibWidths = xHeightNibWidths; // Assuming descender height equal to x-height
-
-    var ascenderHeight = ascenderMultiplier * xHeight;
-    var capitalHeight = capitalMultiplier * xHeight;
-    var descenderHeight = descenderMultiplier * xHeight;
-
-    // totalSectionHeight
-    var totalBlockHeight = ascenderHeight + capitalHeight + xHeight + descenderHeight;
-
-    var yPosition = 0;
-    var charIndex = 0;
-
-    while (yPosition <= (height - totalBlockHeight)) {
-        var charactersForLine = [""];
-        if (showFont == true) {
-            //console.log(charIndex);
-            charactersForLine = getCharactersForLine(charactersForPage, charIndex, width);
-
-        }
-        drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine);
-        drawPracticeBlockChars(worksheetGroup, backgroundLinesGroup, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine);
-        yPosition += totalBlockHeight + nibHeight; // Move y to next block, adding a nibHeight gap
-        charIndex += charactersForLine.length;
-    }
-}
 
 function shouldDrawCharacters(lineIndex, totalLines, arrangement) {
     // If we are using "RowsOfCharacters" arrangement, draw characters on every other line
@@ -1013,7 +1040,7 @@ function shouldDrawCharacters(lineIndex, totalLines, arrangement) {
 }
 
 
-function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
+function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, strokeWidth, nibHeightPt, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
     // Variables for line positions
     var ascenderY = y;
     var capitalY = ascenderY + ascenderHeight;
@@ -1031,18 +1058,18 @@ function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, 
     console.log("shadeXHeightArea: " + y);
     shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight);
 
-    fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeight);
+    fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeightPt);
 
 
     // Draw guide lines
     drawGuideLines(practiceBlocksGroup, width, strokeWidth, ascenderY, capitalY, waistlineY, midlineY, baselineY, descenderY);
 
     // Draw horizontal lines
-    drawHorizontalLines(backgroundLinesGroup, width, strokeWidth, nibWidth, baselineY, ascenderY, descenderY);
+    drawHorizontalLines(backgroundLinesGroup, width, strokeWidth, nibWidthPt, baselineY, ascenderY, descenderY);
 
     // Draw nib guide if selected
     if (showNibSquares) {
-        drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, descenderY, nibHeight, nibWidth);
+        drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, descenderY, nibHeightPt, nibWidthPt);
     }
 
     // Draw nib guideline labels if selected
@@ -1056,16 +1083,16 @@ function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, 
     //console.log(practiceBlocksGroup);
 }
 
-function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeight, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
+function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightPt, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
     if (!showFont || !font) return;
 
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
-    var fontScaleFactor = (xHeight / getSXHeight()).toFixed(3);
+    var fontScaleFactor = (xHeight / getFontSXHeight()).toFixed(3);
 
     console.log(fontScaleFactor);
 
-    let xPosition = (nibWidth * 3) - 3; // Initial position to start drawing characters
+    let xPosition = (nibWidthPt * 3) - 3; // Initial position to start drawing characters
 
     // Iterate through each character in charactersForLine and draw it
     charactersForLine.forEach(char => {
@@ -1095,7 +1122,7 @@ function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHei
 
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
-    fontScaleFactor = xHeight / getSXHeight();
+    fontScaleFactor = xHeight / getFontSXHeight();
 
     // Set initial x position
     var xPosition = 50; // Adjust as needed
@@ -1192,10 +1219,10 @@ function getCharactersForLine(characters, charIndex, width) {
 
 function calculateTotalLinesPerPage() {
     // Calculate nib height in points
-    var nibHeight = nibWidth;
+    var nibHeightPt = nibWidthPt;
 
     // Calculate various heights based on multipliers and x-height
-    var xHeight = xHeightNibWidths * nibWidth;
+    var xHeight = getXHeightPt();
     var ascenderHeight = ascenderMultiplier * xHeight;
     var capitalHeight = capitalMultiplier * xHeight;
     var descenderHeight = descenderMultiplier * xHeight;
@@ -1210,17 +1237,17 @@ function calculateTotalLinesPerPage() {
     var height = paperHeightOrientedRaw - marginVertical;
 
     // Calculate how many lines can fit on one page
-    var totalLinesPerPage = Math.floor(height / (totalBlockHeight + nibHeight));
+    var totalLinesPerPage = Math.floor(height / (totalBlockHeight + nibHeightPt));
 
     return totalLinesPerPage;
 }
 
 function calculateAvailableLinesPerPage() {
     // Calculate nib height in points
-    var nibHeight = nibWidth;
+    var nibHeightPt = nibWidthPt;
 
     // Calculate various heights based on multipliers and x-height
-    var xHeight = xHeightNibWidths * nibWidth;
+    var xHeight = getXHeightPt();
     var ascenderHeight = ascenderMultiplier * xHeight;
     var capitalHeight = capitalMultiplier * xHeight;
     var descenderHeight = descenderMultiplier * xHeight;
@@ -1235,7 +1262,7 @@ function calculateAvailableLinesPerPage() {
     var height = paperHeightOrientedRaw - marginVertical;
 
     // Calculate how many lines can fit on one page
-    var totalLinesPerPage = Math.floor(height / (totalBlockHeight + nibHeight));
+    var totalLinesPerPage = Math.floor(height / (totalBlockHeight + nibHeightPt));
 
     // Check the practice characters arrangement
     var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
@@ -1266,7 +1293,7 @@ function calculateAvailableLinesPerPage() {
 
 
 
-function getSXHeight() {
+function getFontSXHeight() {
 
     var estimatedXHeight = (font.tables.os2.sTypoAscender - font.tables.os2.sTypoDescender) / 2;
     var sxHeight = font.tables.os2.sxHeight || estimatedXHeight;
@@ -1284,10 +1311,10 @@ function calculateCharsPerLine() {
     }
 
     // Calculate the x-height in points based on user input and nib width
-    var xHeight = xHeightNibWidths * nibWidth;
+    var xHeight = getXHeightPt();
 
     // Font scale factor to fit the font within x-height
-    var fontScaleFactor = xHeight / getSXHeight();
+    var fontScaleFactor = xHeight / getFontSXHeight();
 
     // Get the actual characters selected from the form fieldset for practice
     var selectedCharactersToUse = getSelectedCharacters();
@@ -1296,19 +1323,17 @@ function calculateCharsPerLine() {
         selectedCharactersToUse = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
     }
 
-    
+
 
 
     // Calculate an average character width in points using the selected characters
     let avgCharWidth = 0;
-    if(document.getElementById("caseSelection").value.includes("A"))
-        {
-            selectedCharactersToUse = uppercaseAlphabet;
-        }
-        else
-        {
+    if (document.getElementById("caseSelection").value.includes("A")) {
+        selectedCharactersToUse = uppercaseAlphabet;
+    }
+    else {
 
-        }
+    }
 
     selectedCharactersToUse.forEach(char => {
         let glyph = font.charToGlyph(char);
@@ -1316,29 +1341,29 @@ function calculateCharsPerLine() {
             avgCharWidth += glyph.advanceWidth;
         }
     });
-    
+
 
     // Calculate the average character width and apply scaling
     avgCharWidth = (avgCharWidth / selectedCharactersToUse.length) * fontScaleFactor;
 
-  // Calculate the upper bound character width in points using the selected characters
-  let upperBoundCharWidth = 0;
-  selectedCharactersToUse.forEach(char => {
-    
-      let glyph = font.charToGlyph(char);
-      if (glyph) {
-          // Find the maximum character width (advanceWidth)
-          if (glyph.advanceWidth > upperBoundCharWidth) {
-              upperBoundCharWidth = glyph.advanceWidth;
-          }
-         // console.log(char);
-         // console.log((glyph.advanceWidth * fontScaleFactor));
-        }
-  });
-     // Apply the scaling factor to the upper bound character width
-     upperBoundCharWidth = upperBoundCharWidth * fontScaleFactor;
+    // Calculate the upper bound character width in points using the selected characters
+    let upperBoundCharWidth = 0;
+    selectedCharactersToUse.forEach(char => {
 
-     
+        let glyph = font.charToGlyph(char);
+        if (glyph) {
+            // Find the maximum character width (advanceWidth)
+            if (glyph.advanceWidth > upperBoundCharWidth) {
+                upperBoundCharWidth = glyph.advanceWidth;
+            }
+            // console.log(char);
+            // console.log((glyph.advanceWidth * fontScaleFactor));
+        }
+    });
+    // Apply the scaling factor to the upper bound character width
+    upperBoundCharWidth = upperBoundCharWidth * fontScaleFactor;
+
+
 
     // Define spacing between characters
     spacingForCharacters = 30; // Adjust this value to modify the spacing between characters
@@ -1353,9 +1378,9 @@ function calculateCharsPerLine() {
     //var charsPerLine = Math.floor(width / (avgCharWidth + spacingForCharacters));
 
     var charsPerLine = 4;
-   
 
-        charsPerLine  = Math.floor(width / (avgCharWidth + spacingForCharacters));
+
+    charsPerLine = Math.floor(width / (avgCharWidth + spacingForCharacters));
 
 
 
@@ -1422,12 +1447,12 @@ function shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight
     practiceBlocksGroup.appendChild(xHeightRect);
 }
 
-function fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeight) {
+function fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeightPt) {
     var gapRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     gapRect.setAttribute("x", 0);
     gapRect.setAttribute("y", descenderY);
     gapRect.setAttribute("width", width);
-    gapRect.setAttribute("height", nibHeight);
+    gapRect.setAttribute("height", nibHeightPt);
     gapRect.setAttribute("fill", "#333");
     practiceBlocksGroup.appendChild(gapRect);
 }
@@ -1466,31 +1491,31 @@ function drawLine(group, x1, y1, x2, y2, strokeWidth, strokeColor, dashArray) {
     group.appendChild(line);
 }
 
-function drawHorizontalLines(backgroundLinesGroup, width, strokeWidth, nibWidth, baselineY, ascenderY, descenderY) {
+function drawHorizontalLines(backgroundLinesGroup, width, strokeWidth, nibWidthPt, baselineY, ascenderY, descenderY) {
     // From baseline to ascender line
-    for (var y = baselineY; y > ascenderY; y -= nibWidth) {
+    for (var y = baselineY; y > ascenderY; y -= nibWidthPt) {
         drawLine(backgroundLinesGroup, 0, y, width, y, strokeWidth, "#eee");
     }
 
     // From baseline to descender line
-    for (var y = baselineY; y < descenderY; y += nibWidth) {
+    for (var y = baselineY; y < descenderY; y += nibWidthPt) {
         drawLine(backgroundLinesGroup, 0, y, width, y, strokeWidth, "#eee");
     }
 }
 
-function drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, descenderY, nibHeight, nibWidth) {
+function drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, descenderY, nibHeightPt, nibWidthPt) {
     var nibGuideGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     practiceBlocksGroup.appendChild(nibGuideGroup);
 
     var nibX = 0; // Position from left edge
-    var nibRectWidth = nibWidth;
+    var nibRectWidth = nibWidthPt;
 
     // Ascending blocks from baseline
-    var nibCount = (baselineY - ascenderY) / nibHeight; // Number of squares to draw
+    var nibCount = (baselineY - ascenderY) / nibHeightPt; // Number of squares to draw
     for (var i = 0; i < nibCount; i++) {
         var col = i % 2; // Alternate columns
-        var yPosition = Math.ceil(baselineY - (i + 1) * nibHeight);
-        var rectHeight = nibHeight;
+        var yPosition = Math.ceil(baselineY - (i + 1) * nibHeightPt);
+        var rectHeight = nibHeightPt;
         var rectY = yPosition;
 
         var fillColor = "#000";
@@ -1502,25 +1527,25 @@ function drawNibGuide(practiceBlocksGroup, ascenderY, waistlineY, baselineY, des
         if (yPosition <= ascenderY) {
             var diff = ascenderY - yPosition;
             rectY = yPosition + diff;
-            rectHeight = nibHeight - diff;
+            rectHeight = nibHeightPt - diff;
         }
 
         drawRect(nibGuideGroup, nibX + col * nibRectWidth, rectY, nibRectWidth, rectHeight, fillColor);
 
-        if (yPosition < waistlineY && (yPosition + nibHeight - 1) > waistlineY) {
-            var rectHeightSplit = (yPosition + nibHeight) - waistlineY;
+        if (yPosition < waistlineY && (yPosition + nibHeightPt - 1) > waistlineY) {
+            var rectHeightSplit = (yPosition + nibHeightPt) - waistlineY;
             drawRect(nibGuideGroup, nibX + col * nibRectWidth, waistlineY, nibRectWidth, rectHeightSplit, "#000");
         }
     }
 
     // Descender blocks
-    nibCount = (descenderY - baselineY) / nibHeight;
+    nibCount = (descenderY - baselineY) / nibHeightPt;
     var nibYStart = baselineY;
     for (var i = 0; i < nibCount; i++) {
         var col = 1 - (i % 2); // Alternate columns
-        var yPosition = nibYStart + i * nibHeight;
-        var rectHeight = nibHeight;
-        if ((yPosition + nibHeight) > descenderY) {
+        var yPosition = nibYStart + i * nibHeightPt;
+        var rectHeight = nibHeightPt;
+        if ((yPosition + nibHeightPt) > descenderY) {
             rectHeight = descenderY - yPosition;
         }
         drawRect(nibGuideGroup, nibX + col * nibRectWidth, yPosition, nibRectWidth, rectHeight, "#999");
@@ -1538,14 +1563,14 @@ function drawRect(group, x, y, width, height, fillColor) {
 }
 
 function drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistlineY, baselineY, descenderY) {
-    var labelX = showNibSquares ? (nibWidth * 2) + nibWidth / 2 : 2; // Depends on whether nibSquares are shown
-    var fontSize = (nibWidthMm < 3) ? (9 * nibWidthMm / 3) + "px" : "9px"; // Scale when below 3mm nibWidth
+    var labelX = showNibSquares ? (nibWidthPt * 2) + nibWidthPt / 2 : 2; // Depends on whether nibSquares are shown
+    var fontSize = (nibWidthMm < 3) ? (9 * nibWidthMm / 3) + "px" : "9px"; // Scale when below 3mm nibWidthPt
     var labelColor = "#444"; // Dark gray
     var fontFamily = "Helvetica, sans-serif";
 
     if (ascenderMultiplier > 0) {
         // Ascender Label
-        drawText(practiceBlocksGroup, labelX, ascenderY - 1 + nibWidth, fontSize, "#9c9c9c", "Ascender Line⬏ ", fontFamily);
+        drawText(practiceBlocksGroup, labelX, ascenderY - 1 + nibWidthPt, fontSize, "#9c9c9c", "Ascender Line⬏ ", fontFamily);
     }
 
 

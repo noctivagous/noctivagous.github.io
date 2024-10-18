@@ -1,13 +1,25 @@
 
 // GLOBALS
-var mmToPt = 2.83465;    // Conversion factor from mm to pt
+const mmToPt = 2.83465;    // Conversion factor from mm to pt
 
 // SETTINGS WITH DEFAULTS
 var nibWidthMm = 3.8;
-var nibWidth = nibWidthMm * mmToPt; // Nib width in points
-var xHeightNibWidths = document.getElementById('xHeight').value;
+var nibWidthPt = nibWidthMm * mmToPt; // Nib width in points
+var nibWidthsTall = document.getElementById('nibWidthsTall').value;
+
+function getNibWidthPt()
+{
+    return nibWidthMm * mmToPt
+}
+
+function getXHeightPt()
+{
+    return nibWidthsTall * nibWidthPt;
+}
+
 var xHeightColor = document.getElementById('xHeightColor').value;
 var xHeightOpacity = 0.4;
+
 var showNibGuidelineLabels = true;
 var showNibSquares = true;
 var showVerticalLines = false;
@@ -53,16 +65,16 @@ function getPaperSizeOriented() {
 
 
 // Setter for X-Height
-function setXHeight(value) {
+function setNibWidthsTall(value) {
     // Ensure value is valid
     if (isNaN(value) || value <= 0) {
-        console.error("Invalid xHeight value. Reverting to default.");
+        console.error("Invalid nibWidthsTall value. Reverting to default.");
         value = 4; // Default fallback value
     }
 
-    xHeightNibWidths = value; // Update global variable
-    document.getElementById('xHeight').value = value; // Update text field
-    console.log("X-Height updated to: " + value);
+    nibWidthsTall = value; // Update global variable
+    document.getElementById('nibWidthsTall').value = value; // Update text field
+    console.log("nibWidthsTall updated to: " + value);
 }
 
 // Setter for Ascender Height
@@ -105,16 +117,18 @@ function setDescenderHeight(value) {
 }
 
 // Setter for Nib Width
-function setNibWidth(value) {
+function setNibWidthPtFromMM(value) {
     // Ensure value is valid
     if (isNaN(value) || value <= 0) {
-        console.error("Invalid nibWidth value. Reverting to default.");
+        console.error("Invalid nibWidthPt value. Reverting to default.");
         value = 3.8; // Default fallback value
     }
 
     nibWidthMm = value; // Update global variable
-    nibWidth = nibWidthMm * mmToPt; // Convert to points
-    document.getElementById('nibWidth').value = value; // Update text field
+    nibWidthPt = nibWidthMm * mmToPt; // Convert to points
+    document.getElementById('nibWidthMm').value = value; // Update text field
+    document.getElementById('nibWidthInPtDisplay').innerText = nibWidthPt.toFixed(2); // Update text field
+    
     console.log("Nib Width updated to: " + value);
 }
 
@@ -187,9 +201,9 @@ function setOrientation(value) {
 }
 
 // Event listeners to update the values using setters when the user changes the input fields
-document.getElementById('xHeight').addEventListener('change', function () {
+document.getElementById('nibWidthsTall').addEventListener('change', function () {
     const value = parseFloat(this.value);
-    setXHeight(value);
+    setNibWidthsTall(value);
 });
 
 document.getElementById('ascenderHeight').addEventListener('change', function () {
@@ -207,9 +221,9 @@ document.getElementById('descenderDepth').addEventListener('change', function ()
     setDescenderHeight(value);
 });
 
-document.getElementById('nibWidth').addEventListener('change', function () {
+document.getElementById('nibWidthMm').addEventListener('change', function () {
     const value = parseFloat(this.value);
-    setNibWidth(value);
+    setNibWidthPtFromMM(value);
 });
 
 document.getElementById('xHeightOpacity').addEventListener('change', function () {

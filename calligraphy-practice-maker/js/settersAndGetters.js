@@ -79,7 +79,7 @@ function setNibWidthsTall(value) {
 
     nibWidthsTall = value; // Update global variable
     document.getElementById('nibWidthsTall').value = value; // Update text field
-    console.log("nibWidthsTall updated to: " + value);
+    //console.log("nibWidthsTall updated to: " + value);
 }
 
 // Setter for Ascender Height
@@ -92,7 +92,7 @@ function setAscenderHeight(value) {
 
     ascenderMultiplier = value; // Update global variable
     document.getElementById('ascenderHeight').value = value; // Update text field
-    console.log("Ascender Height updated to: " + value);
+    //console.log("Ascender Height updated to: " + value);
 }
 
 // Setter for Capital Height
@@ -105,7 +105,7 @@ function setCapitalHeight(value) {
 
     capitalMultiplier = value; // Update global variable
     document.getElementById('capitalHeight').value = value; // Update text field
-    console.log("Capital Height updated to: " + value);
+    //console.log("Capital Height updated to: " + value);
 }
 
 // Setter for Descender Height
@@ -118,7 +118,7 @@ function setDescenderHeight(value) {
 
     descenderMultiplier = value; // Update global variable
     document.getElementById('descenderDepth').value = value; // Update text field
-    console.log("Descender Depth updated to: " + value);
+    //console.log("Descender Depth updated to: " + value);
 }
 
 // Setter for Nib Width
@@ -134,7 +134,7 @@ function setNibWidthPtFromMM(value) {
     document.getElementById('nibWidthMm').value = value; // Update text field
     document.getElementById('nibWidthInPtDisplay').innerText = nibWidthPt.toFixed(2); // Update text field
     
-    console.log("Nib Width updated to: " + value);
+    //console.log("Nib Width updated to: " + value);
 }
 
 // Setter for X-Height Opacity
@@ -147,7 +147,7 @@ function setXHeightOpacity(value) {
 
     xHeightOpacity = value; // Update global variable
     document.getElementById('xHeightOpacity').value = value; // Update text field
-    console.log("X-Height Opacity updated to: " + value);
+    //console.log("X-Height Opacity updated to: " + value);
 }
 
 // Setter for Vertical Slant Angle
@@ -160,7 +160,7 @@ function setVerticalSlantAngle(value) {
 
     verticalSlantAngle = value; // Update global variable
     document.getElementById('verticalSlantAngle').value = value; // Update text field
-    console.log("Vertical Slant Angle updated to: " + value);
+    //console.log("Vertical Slant Angle updated to: " + value);
 }
 
 // Setter for Vertical Line Spacing Multiplier
@@ -173,7 +173,7 @@ function setVerticalLineSpacingMultiplier(value) {
 
     verticalLineSpacingMultiplier = value; // Update global variable
     document.getElementById('verticalLineSpacing').value = value; // Update text field
-    console.log("Vertical Line Spacing Multiplier updated to: " + value);
+    //console.log("Vertical Line Spacing Multiplier updated to: " + value);
 }
 
 // Setter for Paper Size
@@ -186,7 +186,7 @@ function setPaperSize(value) {
 
     paperSize = value; // Update global variable
     document.getElementById('paperSize').value = value.join(','); // Update text field
-    console.log("Paper Size updated to: " + value);
+    //console.log("Paper Size updated to: " + value);
 }
 
 // Setter for Orientation
@@ -202,7 +202,7 @@ function setOrientation(value) {
     if (orientationInput) {
         orientationInput.checked = true; // Update radio button field
     }
-    console.log("Orientation updated to: " + value);
+    //console.log("Orientation updated to: " + value);
 }
 
 // Event listeners to update the values using setters when the user changes the input fields
@@ -259,22 +259,22 @@ document.querySelectorAll('input[name="orientation"]').forEach(function (element
 
 document.getElementById('showFont').addEventListener('change', function () {
     showFont = this.checked;
-    console.log("Show Font updated to: " + showFont);
+    //console.log("Show Font updated to: " + showFont);
 });
 
 document.getElementById('showNibGuidelineLabels').addEventListener('change', function () {
     showNibGuidelineLabels = this.checked;
-    console.log("Show Nib Guideline Labels updated to: " + showNibGuidelineLabels);
+    //console.log("Show Nib Guideline Labels updated to: " + showNibGuidelineLabels);
 });
 
 document.getElementById('showNibSquares').addEventListener('change', function () {
     showNibSquares = this.checked;
-    console.log("Show Nib Squares updated to: " + showNibSquares);
+    //console.log("Show Nib Squares updated to: " + showNibSquares);
 });
 
 document.getElementById('verticalLines').addEventListener('change', function () {
     showVerticalLines = this.checked;
-    console.log("Show Vertical Lines updated to: " + showVerticalLines);
+    //console.log("Show Vertical Lines updated to: " + showVerticalLines);
 });
 
 
@@ -300,3 +300,83 @@ document.getElementById('verticalLines').addEventListener('change', function () 
     controls.forEach(function (control) {
        control.addEventListener('change', function () { makeWorksheetPages(); });
     });
+
+
+
+    // Update fontXHeightTweak from user input
+document.getElementById('fontXHeightTweak').addEventListener('input', function () {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+
+    // Only update tweak if the font was uploaded (has fontData attribute)
+    if (selectedOption.hasAttribute('fontData')) {
+        selectedOption.setAttribute('fontXHeightTweak', parseFloat(this.value) || 0);
+        //console.log("fontXHeightTweak updated to:", this.value);
+
+        // Optionally, regenerate the worksheet pages to apply the new X-Height tweak
+        makeWorksheetPages();
+        
+    } else {
+        console.warn("Font X-Height Tweak is only applicable for uploaded fonts.");
+    }
+});
+
+
+
+// Update visibility of the X-Height tweak enclosure based on selected font
+document.getElementById('fontForWorksheetPages').addEventListener('change', function () {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    const tweakEnclosure = document.getElementById('fontXHeightTweakEnclosure');
+
+    if (selectedOption.hasAttribute('fontData')) {
+        // Show the tweak enclosure for uploaded fonts
+        tweakEnclosure.style.display = 'block';
+    } else if (selectedOption.hasAttribute('fontURL')) {
+        // Hide the tweak enclosure for default fonts
+        tweakEnclosure.style.display = 'none';
+    }
+});
+
+
+function showHideFontHeightTweak()
+{
+
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    const tweakEnclosure = document.getElementById('fontXHeightTweakEnclosure');
+    
+    if (selectedOption.hasAttribute('fontData')) {
+        
+        tweakEnclosure.style.display = 'block';
+    } else if (selectedOption.hasAttribute('fontURL')) {
+        tweakEnclosure.style.display = 'none';
+    }
+}
+
+// Initial setup: Hide or show tweak enclosure based on the default selection
+document.addEventListener('DOMContentLoaded', function () {
+
+    showHideFontHeightTweak();
+
+});
+
+// Debounce function to limit the rate of execution
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+  }
+
+  // Example function to call on each character input
+  function handleCustomTextInput(event) {
+    makeWorksheetPages();
+  }
+
+  // Get the textarea element
+  const textarea = document.getElementById('customPracticeText');
+
+  // Add the debounced input event listener
+  textarea.addEventListener('input', debounce(handleCustomTextInput, 300));

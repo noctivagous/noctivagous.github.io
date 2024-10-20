@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Calligraphy and Lettering Practice Sheet Generator</title>
-    
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css"/> 
+
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css" />
 
     <link rel="stylesheet" href="css/appPage.css">
 
@@ -41,10 +41,11 @@ a small number of fonts available.
                 <table style="margin:0;padding:0">
                     <tr>
                         <td> <button onclick="printPDF()" id="printButton" class="darkButton">Print</button>
-                        
+
                         </td>
                         <td width="100%">
-                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton" >Download PDF</button>
+                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton">Download
+                                PDF</button>
 
                             <!--<p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
                                 printer.)
@@ -74,9 +75,9 @@ a small number of fonts available.
                     <!-- Nib Width Input -->
                     <label for="nibWidthMm">Nib Width:</label>
                     <input type="number" id="nibWidthMm" value="3.8" min="0.1" step="0.1"> <span
-                        class="labelNote">mm</span> 
-                        
-                        <span class="class="labelNote" id="nibWidthInPtDisplaySpan">
+                        class="labelNote">mm</span>
+
+                    <span class="class=" labelNote" id="nibWidthInPtDisplaySpan">
                         (<span id="nibWidthInPtDisplay">10 </span> <span>pt</span>)
                     </span>
 
@@ -111,7 +112,7 @@ a small number of fonts available.
 
                     <!-- x-height Input -->
                     <label for="nibWidthsTall">Nib Widths Tall:</label>
-                    <input type="number" id="nibWidthsTall" value="4" min="0.1" step="0.1"> 
+                    <input type="number" id="nibWidthsTall" value="4" min="0.1" step="0.1">
                     <span class="labelNote">
                         ×
                     </span>
@@ -127,7 +128,7 @@ a small number of fonts available.
                     <label for="xHeightOpacity">Background Opacity (0-1):</label>
                     <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
                 </div>
-           
+
                 <div class="settingEnclosure indent">
 
                     <!-- Ascender Height Input -->
@@ -151,34 +152,34 @@ a small number of fonts available.
                 </div>
             </fieldset>
 
-                <!-- Slant Guides Fieldset -->
-                <fieldset>
-                    <legend>Grid Lines</legend>
-                    <div class="settingEnclosure">
-    
-                        <!-- Include Slant Guides Checkbox -->
-                        <input type="checkbox" name="verticalLines" id="verticalLines">
-    
-                        <label for="verticalLines">Show Vertical Lines</label>
-                    </div>
-    
-                    <div class="settingEnclosure indent">
-    
-                        <!-- Slant Angle Input -->
-                        <label for="verticalSlantAngle">Vertical Slant Angle:</label>
-                        <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
-                        <input type="number" id="verticalSlantAngle" value="15" min="0" max="60" step="1"> °
-                    </div>
-    
-                    <div class="settingEnclosure indent">
-    
-                        <!-- Slant Line Spacing -->
-                        <label for="verticalLineSpacing">Vertical Line Spacing:</label><br />
-                        <input type="number" id="verticalLineSpacing" value="2" min="0.1" max="20" step="0.1">
-                        <span class="labelNote">× nib width</span>
-                    </div>
-                </fieldset>
-    
+            <!-- Slant Guides Fieldset -->
+            <fieldset>
+                <legend>Grid Lines</legend>
+                <div class="settingEnclosure">
+
+                    <!-- Include Slant Guides Checkbox -->
+                    <input type="checkbox" name="verticalLines" id="verticalLines">
+
+                    <label for="verticalLines">Show Vertical Lines</label>
+                </div>
+
+                <div class="settingEnclosure indent">
+
+                    <!-- Slant Angle Input -->
+                    <label for="verticalSlantAngle">Vertical Slant Angle:</label>
+                    <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
+                    <input type="number" id="verticalSlantAngle" value="15" min="0" max="60" step="1"> °
+                </div>
+
+                <div class="settingEnclosure indent">
+
+                    <!-- Slant Line Spacing -->
+                    <label for="verticalLineSpacing">Vertical Line Spacing:</label><br />
+                    <input type="number" id="verticalLineSpacing" value="2" min="0.1" max="20" step="0.1">
+                    <span class="labelNote">× nib width</span>
+                </div>
+            </fieldset>
+
 
             <fieldset>
                 <legend>Page</legend>
@@ -232,16 +233,20 @@ a small number of fonts available.
                     <label for="fontForWorksheetPages">Font:</label>
 
                     <select id="fontForWorksheetPages" name="fontForWorksheetPages">
-                        <option value="BreitkopfFraktur" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45" capHeightRatio="0.6" descenderDepthRatio="0.45" fontURL="fonts/BreitkopfFraktur.ttf" >Fraktur - Breitkopf Fraktur </option>
-                        <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3" fontURL="fonts/osifont-gpl2fe.ttf" ascenderRatio="0.4" capHeightRatio="0.45" descenderDepthRatio="0.45" selected>OSIFont</option>
+                        <option value="BreitkopfFraktur" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
+                            capHeightRatio="0.6" descenderDepthRatio="0.45" fontURL="fonts/BreitkopfFraktur.ttf">Fraktur
+                            - Breitkopf Fraktur </option>
+                        <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3" fontURL="fonts/osifont-gpl2fe.ttf"
+                            ascenderRatio="0.4" capHeightRatio="0.45" descenderDepthRatio="0.45" selected>OSIFont
+                        </option>
 
                         <!--<option value="Drafting" >Drafting Gothic</option>-->
                         <!--<option value="Blackletter">Blackletter</option>-->
                         <!--<option value="Uncial">Uncial</option>-->
 
 
-                        
-                        
+
+
 
                     </select>
                 </div>
@@ -254,13 +259,14 @@ a small number of fonts available.
 
                 </div>
 
-                <div class="settingEnclosure indent indent2" style="background-color: #333;">
+                <div class="settingEnclosure indent indent2" style="background-color: #333;"
+                    id="fontXHeightTweakEnclosure">
                     <label for="fontXHeightTweak">Font X-Height Tweak:</label>
-                    <input type="number" id="fontXHeightTweak" value="0" min="-100" max="100" step="0.1"> 
+                    <input type="number" id="fontXHeightTweak" value="0" min="-100" max="100" step="0.1">
                     <span class="labelNote">
-                        
+
                     </span>
-                    </div>
+                </div>
 
                 <div class="settingEnclosure">
                     <label for="caseSelection">Characters:</label>
@@ -282,7 +288,7 @@ a small number of fonts available.
 
                 <div class="settingEnclosure indent">
                     <label for="customPracticeText">Custom Practice Text:</label>
-                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="450"></textarea>
+                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="450">custom text</textarea>
                 </div>
 
 
@@ -342,7 +348,7 @@ a small number of fonts available.
 
     <script src="js/settersAndGetters.js"></script>
 
-<script src="js/practiceSheetMaker.js"></script>
+    <script src="js/practiceSheetMaker.js"></script>
 </body>
 
 </html>

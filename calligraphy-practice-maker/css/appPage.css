@@ -660,7 +660,7 @@ display: inline-block;
     width: 34pt;
     aspect-ratio: 80/34;
     display: inline-block;
-    background: url('switch-off-state.svg') center no-repeat;
+    background: url('../switch-off-state.svg') center no-repeat;
     background-size: contain;
     border: none;
     border-radius: 17px;
@@ -669,7 +669,7 @@ display: inline-block;
 }
 
 #controls input.switchInput:checked {
-    background: url('switch-on-state.svg') center no-repeat;
+    background: url('../switch-on-state.svg') center no-repeat;
     background-size: contain;
 }
 

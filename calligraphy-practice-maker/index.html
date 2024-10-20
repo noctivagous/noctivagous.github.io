@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Calligraphy and Lettering Practice Sheet Generator</title>
     
-   <!-- <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css"/> -->
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css"/> 
 
     <link rel="stylesheet" href="css/appPage.css">
 
@@ -254,6 +254,13 @@ a small number of fonts available.
 
                 </div>
 
+                <div class="settingEnclosure indent indent2" style="background-color: #333;">
+                    <label for="fontXHeightTweak">Font X-Height Tweak:</label>
+                    <input type="number" id="fontXHeightTweak" value="0" min="-100" max="100" step="0.1"> 
+                    <span class="labelNote">
+                        
+                    </span>
+                    </div>
 
                 <div class="settingEnclosure">
                     <label for="caseSelection">Characters:</label>
@@ -275,7 +282,7 @@ a small number of fonts available.
 
                 <div class="settingEnclosure indent">
                     <label for="customPracticeText">Custom Practice Text:</label>
-                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="45"></textarea>
+                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="450"></textarea>
                 </div>
 
 

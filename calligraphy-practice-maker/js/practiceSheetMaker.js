@@ -441,7 +441,7 @@ function makeFontMetrics()
         let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
         let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
         let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
-        let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30; // Default value if not provided
+        let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 2; // Default value if not provided
 
 
         // Pull the user's nib width
@@ -449,14 +449,14 @@ function makeFontMetrics()
 
         
         // Calculate font scaling factor based on the nib width and brushWidthOfFont
-        let fontScaleFactor = brushWidthOfFontNibMultiplier / nibWidthPt;
+        let fontScaleFactorToMakeXHeight = brushWidthOfFontNibMultiplier / nibWidthPt;
 
         // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
         // approximate width of the overall brushstroke width of the font's design.
         //setNibWidthsTall((brushWidthOfFontNibMultiplier / nibWidthPt).toFixed(2));
  
         // Set the nibWidthsTall to reflect the adjusted x-height
-        setNibWidthsTall((nibWidthPt * fontScaleFactor ).toFixed(2));
+        setNibWidthsTall((nibWidthPt * fontScaleFactorToMakeXHeight ).toFixed(2));
         
         
 
@@ -464,9 +464,9 @@ function makeFontMetrics()
         setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio);
 
         // Debugging logs for insight
-        console.log("Brush Width of Font:", brushWidthOfFontNibMultiplier);
+//        console.log("Brush Width of Font:", fontScaleFactorToMakeXHeight);
         console.log("User's Nib Width:", nibWidthPt);
-        console.log("Font Scale Factor:", fontScaleFactor);
+        console.log("Font Scale Factor:", fontScaleFactorToMakeXHeight);
         console.log("Adjusted x-Height:", nibWidthsTall);
     }
 }
@@ -623,7 +623,153 @@ function calculateNumberOfPagesOLD() {
     return numberOfPages;
 }
 
+
+
+
+
+
 function generateRowsOfCharacters() {
+    console.log("=========================");
+    console.log("Generating Rows of Characters");
+    let rows = [];
+
+    // If the font is not to be displayed, add blank rows for all lines
+    if (!showFont) {
+        for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
+            rows.push("");
+        }
+        return rows;
+    }
+
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    const characters = getSelectedCharacters(); // Get the set of characters to use in the worksheet
+    const linesPerPage = calculateTotalLinesPerPage();
+    let charIndex = 0;
+    let currentLineOnPage = 0;
+
+    if (arrangement === "RowsOfCharacters") {
+        // Calculate available width for characters, considering margins
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+        const width = paperWidthOrientedRaw - marginHorizontal - spacingForCharacters; // Subtract horizontal margins from the paper width
+
+        console.log("Available line width:", width);
+
+        while (charIndex < characters.length) {
+            // Create a new row of characters, if there are enough characters left
+            let currentRow = [];
+            let currentLineWidth = 0;
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+                const glyph = font.charToGlyph(char);
+
+                if (glyph) {
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + spacingForCharacters;
+
+                    console.log(`Processing character: ${char} (index ${charIndex})`);
+                    console.log("Character width (including spacing):", charWidthWithSpacing);
+                    console.log("Current line width:", currentLineWidth);
+
+                    // Check if the current character fits on the current row
+                    if (currentLineWidth + charWidthWithSpacing <= width) {
+                        currentRow.push(char);
+                        currentLineWidth += charWidthWithSpacing;
+                        console.log(`Character ${char} added to current row. New line width: ${currentLineWidth}`);
+                        charIndex++;
+                    } else {
+                        // The character doesn't fit, break out of the loop to move to the next line
+                        console.log("Current row is full, moving to the next line.");
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            // If we have characters in the currentRow, process placement
+            if (currentRow.length > 0) {
+                // Check if we are on the last line of the page
+                if (currentLineOnPage === linesPerPage - 1) {
+                    console.log("Character row is on the last line of the page, pushing it to the next page.");
+
+                    // Add empty row to push the character row to the next page
+                    rows.push([]);
+                    currentLineOnPage++;
+
+                    // Reset current line on page as we start a new page
+                    currentLineOnPage = 0;
+                }
+
+                // Add the character row to rows
+                rows.push(currentRow);
+                currentLineOnPage++;
+
+                // Add an empty row for practice space
+                if (currentLineOnPage < linesPerPage) {
+                    rows.push([]);
+                    currentLineOnPage++;
+                    console.log("Added an empty row for practice.");
+                } else {
+                    console.log("No space left on the current page for an empty row, moving to next page.");
+                    currentLineOnPage = 0; // Start a new page
+                }
+            }
+        }
+
+        // ** Fill the rest of the page with blank rows if there are any lines left **
+        while (currentLineOnPage < linesPerPage) {
+            rows.push([]);
+            currentLineOnPage++;
+        }
+
+    } else if (arrangement === "singleCharacterAtLeft") {
+        // Each row gets one character for "singleCharacterAtLeft"
+        for (let currentLine = 0; currentLine < linesPerPage; currentLine++) {
+            if (charIndex < characters.length) {
+                console.log(`Adding single character ${characters[charIndex]} to its own row.`);
+                rows.push([characters[charIndex]]);
+                charIndex++;
+            } else {
+                // Fill remaining rows with empty rows
+                rows.push([]);
+                console.log("No more characters left. Filling the rest of the page with empty rows.");
+            }
+        }
+    }
+
+    console.log("Final rows generated:", rows);
+    console.log("=========================");
+    return rows;
+}
+
+
+
+
+
+function getFontScaleFactor() {
+            // Calculate the x-height in points based on user input and nib width
+            var xHeight = getXHeightPt();
+
+            // Font scale factor to fit the font within x-height
+            var fontScaleFactor = xHeight / getFontSXHeight();
+
+            return fontScaleFactor;
+            
+    /*// Example of using the nib width and the brush width multiplier to determine the scale factor
+    const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
+    const brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30;
+    let nibWidth = parseFloat(document.getElementById('nibWidthMm').value);
+
+    const scaleFactor = nibWidth / brushWidthOfFontNibMultiplier;
+    console.log("Font scale factor calculated:", scaleFactor);
+
+    
+    return scaleFactor;*/
+}
+
+
+function generateRowsOfCharactersOLD() {
 
     let rows = [];
 
@@ -1416,10 +1562,10 @@ function calculateCharsPerLine() {
 
 
     // Log values for debugging purposes
-    console.log("----calculateCharsPerLine()----");
-    console.log("Width Available: " + width);
-    console.log("Font Scale Factor: " + fontScaleFactor);
-    console.log("Calculated Average Character Width (Scaled): " + avgCharWidth);
+  //  console.log("----calculateCharsPerLine()----");
+  // console.log("Width Available: " + width);
+   // console.log("Font Scale Factor: " + fontScaleFactor);
+  //  console.log("Calculated Average Character Width (Scaled): " + avgCharWidth);
     //console.log("Characters Per Line: " + calculateCharsPerLine());
 
     return charsPerLine;

@@ -152,7 +152,7 @@
         border: 0;
         border-radius: 4pt;
 
-        outline: 4pt solid #000;
+        outline: 5pt solid #000;
         /* Create an inside border */
         outline-offset: -2px;
         /* Move the outline inwards */
@@ -192,22 +192,30 @@
 
         user-select: none;
         font-weight: bold;
-        /* font-family: 'DDINRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
+  /*      font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; */
     }
 
     .settingEnclosure .radioLabel {
         font-weight: normal;
         color: #333333 !important;
+/*        font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
+
     }
 
+    div.settingEnclosure.indent label {
+   /* font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
+        font-size: 14pt !important;
+}
+
     div.settingEnclosure.indent {
+        
         border-left: 8pt solid black;
         background-color: #494848;
         color: black;
         font-weight: normal;
         border-right: 5pt solid black;
-
-
+        /*background: linear-gradient(to left, #1c1c1c 10%, #060505 40%, #000000 100%) !important;*/
+        
     }
 
     div.settingEnclosure.indent2 {

@@ -161,13 +161,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateGeneratedThumbPosition();
 });
-
 document.getElementById('uploadFont').addEventListener('click', function () {
     document.getElementById('fontFileInput').click();
 });
 
 document.getElementById('fontFileInput').addEventListener('change', function (event) {
-    var file = event.target.files[0];
+    handleFontFileUpload(event.target.files[0]);
+});
+
+function handleFontFileUpload(file) {
     if (file) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -195,7 +197,6 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
             const fontSelect = document.getElementById('fontForWorksheetPages');
             fontSelect.appendChild(newOption);
 
-            
             // Set the newly uploaded font as selected
             fontSelect.value = fontName;
             showHideSections();
@@ -203,6 +204,26 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
         };
         reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
     }
+}
+
+// Handling the drag-and-drop functionality for "Drop file here" area
+const dropArea = document.getElementById('dropArea');
+
+dropArea.addEventListener('dragover', function (event) {
+    event.preventDefault();
+    dropArea.style.backgroundColor = '#666'; // Change style to indicate it's ready for drop
+});
+
+dropArea.addEventListener('dragleave', function () {
+    dropArea.style.backgroundColor = '#494949'; // Revert style after drag leaves
+});
+
+dropArea.addEventListener('drop', function (event) {
+    event.preventDefault();
+    dropArea.style.backgroundColor = '#494949'; // Revert style after file is dropped
+
+    const file = event.dataTransfer.files[0];
+    handleFontFileUpload(file);
 });
 
 

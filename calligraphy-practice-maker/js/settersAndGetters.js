@@ -484,3 +484,6 @@ function debounce(func, delay) {
       return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
       
   }
+
+
+  

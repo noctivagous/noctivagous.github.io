@@ -80,7 +80,11 @@ a small number of fonts available.
                         <option value="BreitkopfFraktur" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
                             capHeightRatio="0.6" descenderDepthRatio="0.45" fontURL="fonts/BreitkopfFraktur.ttf">Fraktur
                             - Breitkopf Fraktur </option>
-                        <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3" fontURL="fonts/osifont-gpl2fe.ttf"
+
+                      <!--      <option value="DSLuthersche" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
+                            capHeightRatio="0.6" descenderDepthRatio="0.45" fontURL="fonts/DSLuthersche.ttf">DSLuthersche</option>
+                          -->  
+                            <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3" fontURL="fonts/osifont-gpl2fe.ttf"
                             ascenderRatio="0.4" capHeightRatio="0.45" descenderDepthRatio="0.45" selected>OSIFont
                         </option>
 
@@ -98,11 +102,21 @@ a small number of fonts available.
 
 
                 <div class="settingEnclosure indent indent">
-                    <button id="uploadFont" class="darkButton">Upload Font...</button>
-                    <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
-                    <span class="labelNote">
-                            <br/>(.OTF or .TTF)
-                    </span>
+                    <table><tr><td><button id="uploadFont" class="darkButton">Upload Font...</button>
+                        <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
+                        <span class="labelNote">
+                                <br/>(.OTF or .TTF)
+                        </span></td>
+                        
+                        <td><span style="color:white">or</span></td>
+                        <td>
+
+                                <div id="dropArea">
+                                        Drop font file here.
+                                </div>
+
+                        </td></tr></table>
+                    
                 </div>
 
                 <div class="settingEnclosure indent indent2" style="background-color: #333;"

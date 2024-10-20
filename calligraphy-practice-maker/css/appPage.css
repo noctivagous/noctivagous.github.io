@@ -340,6 +340,8 @@ indent        color: black;
         background-size: cover;
     }
 
+    
+
     /* Radio Button Styling */
     #controls input[type='radio'] {
         border-radius: 50%;
@@ -370,6 +372,10 @@ indent        color: black;
         vertical-align: middle;
     }
 
+    #controls button
+    {
+
+    }
 
     #controls select {
         width: 220px;
@@ -665,4 +671,16 @@ display: inline-block;
 #controls input.switchInput:checked {
     background: url('switch-on-state.svg') center no-repeat;
     background-size: contain;
+}
+
+#controls div#dropArea
+ {
+width:45pt;height:40pt; text-align: center;background-color: #494949;padding:5pt;border-radius: 5pt;border:1pt solid rgb(166, 166, 166);color:#999;
+
+}               
+
+
+#dropArea.highlight {
+    border-color: #ff8800; /* Example: Highlight border when a file is dragged over */
+    background-color: #666666;
 }

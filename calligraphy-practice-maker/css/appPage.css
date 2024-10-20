@@ -181,15 +181,15 @@
         padding-left: 8pt;
 
         margin-top: 0px;
-        margin-bottom: 1px;
+        margin-bottom: 2pt;
         background-color: #929191;
-
+        background-color:#222;
         border: 0px solid rgb(49, 47, 47);
 
     }
 
     .settingEnclosure label {
-
+        
         user-select: none;
         font-weight: bold;
   /*      font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; */
@@ -208,12 +208,13 @@
 }
 
     div.settingEnclosure.indent {
-        
+        background-color:#3d3d3d;
         border-left: 8pt solid black;
-        background-color: #494848;
-        color: black;
+       
+indent        color: black;
         font-weight: normal;
         border-right: 5pt solid black;
+        
         /*background: linear-gradient(to left, #1c1c1c 10%, #060505 40%, #000000 100%) !important;*/
         
     }
@@ -234,12 +235,12 @@
 
 
         font-family: sans-serif;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         /*text-transform:uppercase;*/
 
         font-size: 13pt;
 
-        color: #0d0d0d;
+        color: #bfbfbf;
 
         display: inline-block;
     }

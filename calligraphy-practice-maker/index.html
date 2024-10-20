@@ -100,16 +100,16 @@ a small number of fonts available.
                 <div class="settingEnclosure indent indent">
                     <button id="uploadFont" class="darkButton">Upload Font...</button>
                     <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
-
+                    <span class="labelNote">
+                            <br/>(.OTF or .TTF)
+                    </span>
                 </div>
 
                 <div class="settingEnclosure indent indent2" style="background-color: #333;"
                     id="fontXHeightTweakEnclosure">
                     <label for="fontXHeightTweak">Offset Font's X-Height:</label>
                     <input type="number" id="fontXHeightTweak" value="0" min="-100" max="100" step="0.1">
-                    <span class="labelNote">
-
-                    </span>
+                    
                 </div>
 
                 <div class="settingEnclosure">
@@ -117,7 +117,8 @@ a small number of fonts available.
                     <select id="caseSelection" name="caseSelection">
                         <option value="lowercaseOnly" checked>Lowercase Only</option>
                         <option value="uppercaseOnly">Uppercase Only</option>
-                        <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
+                        <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>                       
+                        <!--<option value="mixedCasePairs">Mixed Case Pairs</option>-->
                         <option value="customText">Custom Practice Text</option>
 
                     </select>
@@ -125,12 +126,13 @@ a small number of fonts available.
 
                 </div>
 
-                <div class="settingEnclosure indent">
-                    <input type="checkbox" id="includeNumberCharacters">
-                    <label for="includeNumberCharacters">Include Number Characters</label>
+                <div class="settingEnclosure indent" id="includeNumberCharactersEnclosure">
+                    <table><tr><td valign="top"><input type="checkbox" id="includeNumberCharacters"></td><td><label for="includeNumberCharacters">Include Number Characters</label></td></tr></table>
+                    
+                    
                 </div>
 
-                <div class="settingEnclosure indent">
+                <div class="settingEnclosure indent" id="customPracticeTextEnclosure">
                     <label for="customPracticeText">Custom Practice Text:</label>
                     <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="450">custom text</textarea>
                 </div>
@@ -180,8 +182,12 @@ a small number of fonts available.
                 <div class="settingEnclosure indent">
 
                     <!-- Show Nib Guideline Labels -->
-                    <input type="checkbox" id="showNibGuidelineLabels" checked>
-                    <label for="showNibGuidelineLabels">Show Nib Guideline Labels</label>
+                    <table><tr><td valign="top"><input type="checkbox" id="showNibGuidelineLabels" checked></td><td>
+                        <label for="showNibGuidelineLabels">Show Nib Guideline Labels</label></td></tr></table>
+
+                    
+                    
+                    
                 </div>
 
                 <div class="settingEnclosure indent">

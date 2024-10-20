@@ -10,6 +10,11 @@ var nibWidthsTall = document.getElementById('nibWidthsTall').value;
 function setDefaults()
 {
     setNibWidthPtFromMM(2);
+
+    if(isSafari())
+    {
+        document.getElementById('printButton').style.display = 'none';
+    }
 }
 
 function getNibWidthPt()
@@ -354,6 +359,23 @@ function showHideSections()
     }
 
 
+    const customPracticeTextEnclosure = document.getElementById('customPracticeTextEnclosure');
+    
+    const includeNumberCharactersEnclosure = document.getElementById('includeNumberCharactersEnclosure');
+
+    const selectedCharactersValue = document.getElementById("caseSelection").value;
+
+    if(selectedCharactersValue == "customText")
+    {
+        includeNumberCharactersEnclosure.style.display = 'none';
+        customPracticeTextEnclosure.style.display = 'block';
+    }
+    else
+    {
+        includeNumberCharactersEnclosure.style.display = 'block';
+        customPracticeTextEnclosure.style.display = 'none';
+    }
+
     const fieldsetContentsForFont = document.getElementById('practiceFontCharactersFieldsetContents');
     const showFontSwitch = document.getElementById('showFont');
 
@@ -457,3 +479,8 @@ function debounce(func, delay) {
   // Add the debounced input event listener
   textarea.addEventListener('input', debounce(handleCustomTextInput, 300));
 
+  function isSafari()
+  {
+      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      
+  }

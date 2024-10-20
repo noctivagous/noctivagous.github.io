@@ -273,12 +273,29 @@ async function downloadPDF() {
 
     // Save the PDF
     pdf.save('worksheet.pdf');
+
 }
 
+
 async function printPDF() {
+
+    // Check if the browser is Safari.
+    // When Safari prints, it scales the SVG up
+
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    if (!isSafari) {
+        // If not Safari, invoke the print function
+        window.print();
+    } else {
+     
+
+           // Determine the selected orientation
+    const selectedOrientation = document.querySelector('input[name="orientation"]:checked').value;
+
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({
-        orientation: 'portrait',
+        orientation: selectedOrientation,
         unit: 'pt',
         format: getPaperSizeOriented(), // Paper size oriented from your form
     });
@@ -306,9 +323,13 @@ async function printPDF() {
         });
     }
 
-    // Open the print dialog with the generated PDF content
-   //window.print();
-     window.open(pdf.output('bloburl'));
+         // Open the print dialog with the generated PDF content
+         window.open(pdf.output('bloburl'));
+
+        // Safari-specific action
+        // Place your desired code here
+        console.log("This is Safari; running alternative code.");
+    }
 }
 
 
@@ -494,7 +515,7 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
 
 async function makeWorksheetPages() {
     showHideSections();
-    
+
     setNibWidthPtFromMM(document.getElementById("nibWidthMm").value);
 
     pullPaperSizeFromFormFields();
@@ -1027,6 +1048,7 @@ function drawWorksheetOLD(svg, pageIndex) {
 // Define the character arrays
 const lowercaseAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const uppercaseAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const mixedCasePairsLowerFirst = ["aA", "bB", "cC", "dD", "eE", "fF"];
 const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 var font; // Global variable to hold the loaded font

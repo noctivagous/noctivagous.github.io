@@ -198,7 +198,7 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
             
             // Set the newly uploaded font as selected
             fontSelect.value = fontName;
-            showHideFontHeightTweak();
+            showHideSections();
             loadFontAndMakeWorksheetPages();
         };
         reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
@@ -258,7 +258,7 @@ async function downloadPDF() {
         try {
             // Use await to ensure that the conversion is completed before continuing
             await convertTextToPathsWithKerning(svgElement);
-            ////console.log('Text elements have been converted to paths.');
+            ////
         } catch (error) {
             console.error('Error converting text to paths:', error);
         }
@@ -307,7 +307,8 @@ async function printPDF() {
     }
 
     // Open the print dialog with the generated PDF content
-    window.open(pdf.output('bloburl'));
+   //window.print();
+     window.open(pdf.output('bloburl'));
 }
 
 
@@ -391,12 +392,12 @@ async function loadFontAndMakeWorksheetPages() {
 
             // Load the font using opentype.parse()
             font = opentype.parse(arrayBuffer);
-            ////console.log("Font loaded from uploaded data successfully.");
+            ////
         } else if (fontUrl) {
             // Load the font asynchronously using opentype.load()
             font = await loadFontAsync(fontUrl);
             makeFontMetrics();
-            ////console.log("Font loaded from URL successfully.");
+            ////
         } else {
             throw new Error("No valid font source found (URL or fontData missing).");
         }
@@ -422,10 +423,10 @@ function loadFontAsync(fontUrl) {
                 console.error("Error loading font:", err);
                 reject('Could not load font: ' + err);
             } else {
-                ////console.log("Font loaded successfully.");
-                ////console.log("Ascender:", loadedFont.ascender);
-                ////console.log("Descender:", loadedFont.descender);
-                ////console.log("Units per EM:", loadedFont.unitsPerEm);
+                ////
+                ////
+                ////
+                ////
                 resolve(loadedFont);
             }
         });
@@ -468,10 +469,10 @@ function makeFontMetrics()
         setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio);
 
         // Debugging logs for insight
-//        ////console.log("Brush Width of Font:", fontScaleFactorToMakeXHeight);
-        ////console.log("User's Nib Width:", nibWidthPt);
-        ////console.log("Font Scale Factor:", fontScaleFactorToMakeXHeight);
-        ////console.log("Adjusted x-Height:", nibWidthsTall);
+//        ////
+        ////
+        ////
+        ////
     }
 }
 
@@ -492,7 +493,8 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
 
 
 async function makeWorksheetPages() {
-
+    showHideSections();
+    
     setNibWidthPtFromMM(document.getElementById("nibWidthMm").value);
 
     pullPaperSizeFromFormFields();
@@ -588,10 +590,10 @@ function calculateNumberOfPages(rows) {
     // Calculate the number of pages needed to render all rows
     const numberOfPages = Math.ceil(rows.length / linesPerPage);
 
-    ////console.log("----calculateNumberOfPages()----");
-    ////console.log("Total Rows: " + rows.length);
-    ////console.log("Lines Per Page: " + linesPerPage);
-    ////console.log("Number of Pages: " + numberOfPages);
+    ////
+    ////
+    ////
+    ////
 
     return numberOfPages;
 }
@@ -619,10 +621,10 @@ function calculateNumberOfPagesOLD() {
     var numberOfPages = Math.ceil(totalCharacters / charsPerPage);
 
     // Debugging logs
-    ////console.log("----calculateNumberOfPages()----");
-    ////console.log("Total Characters: " + totalCharacters);
-    ////console.log("Characters Per Page: " + charsPerPage);
-    ////console.log("Number of Pages: " + numberOfPages);
+    ////
+    ////
+    ////
+    ////
 
     return numberOfPages;
 }
@@ -631,8 +633,8 @@ function calculateNumberOfPagesOLD() {
 
 
 function generateRowsOfCharacters() {
-    //console.log("=========================");
-    //console.log("Generating Rows of Characters");
+    //
+    //
 
     let characterRows = [];
 
@@ -641,7 +643,7 @@ function generateRowsOfCharacters() {
         for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
             characterRows.push("");
         }
-        //console.log("Font is not displayed, generating blank rows only.");
+        //
         return characterRows;
     }
 
@@ -650,16 +652,16 @@ function generateRowsOfCharacters() {
     const linesPerPage = calculateTotalLinesPerPage();
     let charIndex = 0;
 
-    //console.log("Arrangement type:", arrangement);
-    //console.log("Total lines per page:", linesPerPage);
-    //console.log("Total characters to process:", characters.length);
+    //
+    //
+    //
 
     // Step 1: Generate an array of character rows without any empty lines
     if (arrangement === "RowsOfCharacters") {
         const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
         const width = paperWidthOrientedRaw - marginHorizontal - (0.25 * spacingForCharacters);
 
-        //console.log("Available line width:", width);
+        //
 
         while (charIndex < characters.length) {
             let currentRow = [];
@@ -670,7 +672,7 @@ function generateRowsOfCharacters() {
 
                 // If a newline character is encountered, break and start a new row
                 if (char === '\n') {
-                    //console.log("Newline character encountered, creating new row.");
+                    //
                     charIndex++;
                     break;
                 }
@@ -683,10 +685,10 @@ function generateRowsOfCharacters() {
                     if (currentLineWidth + charWidthWithSpacing <= width) {
                         currentRow.push(char);
                         currentLineWidth += charWidthWithSpacing;
-                        //console.log(`Character ${char} added to current row. Current line width: ${currentLineWidth}`);
+                        //
                         charIndex++;
                     } else {
-                        //console.log("Current row is full, moving to next row.");
+                        //
                         break;
                     }
                 } else {
@@ -697,7 +699,7 @@ function generateRowsOfCharacters() {
 
             if (currentRow.length > 0) {
                 characterRows.push(currentRow);
-                //console.log("Added character row:", currentRow);
+                //
             }
         }
 
@@ -705,12 +707,12 @@ function generateRowsOfCharacters() {
         // Each row gets one character for "singleCharacterAtLeft"
         while (charIndex < characters.length) {
             characterRows.push([characters[charIndex]]);
-            //console.log(`Adding single character ${characters[charIndex]} to its own row.`);
+            //
             charIndex++;
         }
     }
 
-    //console.log("Character rows without empty lines generated:", characterRows);
+    //
 
     // Step 2: Generate a new array based on pages and number of lines per page
     let finalRows = [];
@@ -728,7 +730,7 @@ function generateRowsOfCharacters() {
         // push it to the next page to ensure there is a practice row after it
         if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
             if (finalRows[finalRows.length - 1].length > 0) {
-                //console.log("Last row on page is a character row moving it to the next page.");
+                //
                 
                 const lastRow = finalRows.pop();
                 finalRows.push([]);  // Add an empty row to complete the page
@@ -746,8 +748,8 @@ function generateRowsOfCharacters() {
         }
     }
 
-    //console.log("Final rows with pages and empty practice lines:", finalRows);
-    //console.log("=========================");
+    //
+    //
     return finalRows;
 }
 
@@ -774,7 +776,7 @@ function getFontScaleFactor() {
     let nibWidth = parseFloat(document.getElementById('nibWidthMm').value);
 
     const scaleFactor = nibWidth / brushWidthOfFontNibMultiplier;
-    ////console.log("Font scale factor calculated:", scaleFactor);
+    ////
 
     
     return scaleFactor;*/
@@ -1224,7 +1226,7 @@ function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, 
 
 
     // Shade x-height area
-    ////console.log("shadeXHeightArea: " + y);
+    ////
     shadeXHeightArea(practiceBlocksGroup, y, width, xHeight, ascenderHeight, capitalHeight);
 
     fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeightPt);
@@ -1249,7 +1251,7 @@ function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, 
 
     worksheetGroup.appendChild(practiceBlocksGroup);
 
-    //////console.log(practiceBlocksGroup);
+    //////
 }
 
 function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightPt, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
@@ -1259,7 +1261,7 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
     var fontUnitsPerEm = font.unitsPerEm;
     var fontScaleFactor = (xHeight / getFontSXHeight()).toFixed(3);
 
-    ////console.log(fontScaleFactor);
+    ////
 
     let xPosition = (nibWidthPt * 4) - 3; // Initial position to start drawing characters
 
@@ -1301,7 +1303,7 @@ function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHei
     characters.forEach(function (char) {
         var glyph = font.charToGlyph(char);
         if (glyph) {
-            // ////console.log(`Rendering glyph for character: ${char}`);
+            
         }
         var path = glyph.getPath(0, 0, font.unitsPerEm);
 
@@ -1319,7 +1321,7 @@ function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHei
 
         group.appendChild(svgPath);
 
-        // ////console.log(`Rendering character ${index + 1}: ${char} at X: ${xPosition}, Y: ${baselineY}`);
+        
 
 
         xPosition += (glyph.advanceWidth * fontScaleFactor) + spacingForCharacters;
@@ -1436,11 +1438,11 @@ function calculateAvailableLinesPerPage() {
     }
 
     // Debugging logs
-    ////console.log("----calculateAvailableLinesPerPage()----");
-    ////console.log("Height Available: " + height);
-    ////console.log("Total Block Height: " + totalBlockHeight);
-    ////console.log("Total Lines Per Page: " + totalLinesPerPage);
-    ////console.log("Available Lines Per Page (after adjustment): " + availableLinesPerPage);
+    ////
+    ////
+    ////
+    ////
+    ////
 
     return availableLinesPerPage;
 }
@@ -1458,7 +1460,7 @@ function getFontSXHeight() {
     if (selectedOption.hasAttribute('fontData')) {
         // Retrieve fontXHeightTweak for uploaded fonts
         let fontXHeightTweak = parseFloat(selectedOption.getAttribute('fontXHeightTweak')) || 0;
-        ////console.log("Applying X-Height tweak:", fontXHeightTweak);
+        ////
         sxHeight += (-100 * fontXHeightTweak); // Apply the tweak
     }
 
@@ -1521,8 +1523,8 @@ function calculateCharsPerLine() {
             if (glyph.advanceWidth > upperBoundCharWidth) {
                 upperBoundCharWidth = glyph.advanceWidth;
             }
-            // ////console.log(char);
-            // ////console.log((glyph.advanceWidth * fontScaleFactor));
+            
+            
         }
     });
     // Apply the scaling factor to the upper bound character width
@@ -1550,11 +1552,11 @@ function calculateCharsPerLine() {
 
 
     // Log values for debugging purposes
-  //  ////console.log("----calculateCharsPerLine()----");
-  // ////console.log("Width Available: " + width);
-   // ////console.log("Font Scale Factor: " + fontScaleFactor);
-  //  ////console.log("Calculated Average Character Width (Scaled): " + avgCharWidth);
-    //////console.log("Characters Per Line: " + calculateCharsPerLine());
+  //  ////
+  
+   
+  //  ////
+    //////
 
     return charsPerLine;
 }

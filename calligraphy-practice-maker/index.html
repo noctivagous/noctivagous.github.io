@@ -66,6 +66,100 @@ a small number of fonts available.
 
             </div>
 
+            <fieldset>
+                <legend>                    <input type="checkbox" id="showFont" class="switchInput" checked>
+                     Practice Font Characters</legend>
+
+                    <div class="fieldsetContents" id="practiceFontCharactersFieldsetContents">
+                
+                <div class="settingEnclosure ">
+
+                    <label for="fontForWorksheetPages">Font:</label>
+
+                    <select id="fontForWorksheetPages" name="fontForWorksheetPages">
+                        <option value="BreitkopfFraktur" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
+                            capHeightRatio="0.6" descenderDepthRatio="0.45" fontURL="fonts/BreitkopfFraktur.ttf">Fraktur
+                            - Breitkopf Fraktur </option>
+                        <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3" fontURL="fonts/osifont-gpl2fe.ttf"
+                            ascenderRatio="0.4" capHeightRatio="0.45" descenderDepthRatio="0.45" selected>OSIFont
+                        </option>
+
+                        <!--<option value="Drafting" >Drafting Gothic</option>-->
+                        <!--<option value="Blackletter">Blackletter</option>-->
+                        <!--<option value="Uncial">Uncial</option>-->
+
+
+
+
+
+                    </select>
+                </div>
+
+
+
+                <div class="settingEnclosure indent indent">
+                    <button id="uploadFont" class="darkButton">Upload Font...</button>
+                    <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
+
+                </div>
+
+                <div class="settingEnclosure indent indent2" style="background-color: #333;"
+                    id="fontXHeightTweakEnclosure">
+                    <label for="fontXHeightTweak">Offset Font's X-Height:</label>
+                    <input type="number" id="fontXHeightTweak" value="0" min="-100" max="100" step="0.1">
+                    <span class="labelNote">
+
+                    </span>
+                </div>
+
+                <div class="settingEnclosure">
+                    <label for="caseSelection">Characters:</label>
+                    <select id="caseSelection" name="caseSelection">
+                        <option value="lowercaseOnly" checked>Lowercase Only</option>
+                        <option value="uppercaseOnly">Uppercase Only</option>
+                        <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
+                        <option value="customText">Custom Practice Text</option>
+
+                    </select>
+
+
+                </div>
+
+                <div class="settingEnclosure indent">
+                    <input type="checkbox" id="includeNumberCharacters">
+                    <label for="includeNumberCharacters">Include Number Characters</label>
+                </div>
+
+                <div class="settingEnclosure indent">
+                    <label for="customPracticeText">Custom Practice Text:</label>
+                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="450">custom text</textarea>
+                </div>
+
+
+                <!--
+<select id="extraCharacterSets" name="extraCharactersSets">
+    <option value="numbersOnly" checked>Numbers</option>
+    <option value="number">Numbers and Punctuation</option>
+</select>
+-->
+
+                <div class="settingEnclosure">
+
+                    <label for="practiceCharactersArrangement">Practice Characters Arrangement:</label>
+
+                    <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
+                        <option value="RowsOfCharacters" checked>Rows of Characters</option>
+                        <option value="singleCharacterAtLeft">Single Character At Left</option>
+
+                        <!--<option value="CustomText">Custom Practice Text at Top</option>-->
+                    </select>
+
+                </div>
+
+            </div>
+            </fieldset>
+
+
             <!-- NIB WIDTH AND GUIDE FIELDSET -->
             <fieldset>
                 <legend>Nib Width and Guide</legend>
@@ -219,102 +313,7 @@ a small number of fonts available.
 
 
 
-            <fieldset>
-                <legend>Practice Font Characters</legend>
-
-                <div class="settingEnclosure">
-
-                    <input type="checkbox" id="showFont" checked>
-                    <label for="showFont">Show Practice Font Characters</label>
-
-                </div>
-                <div class="settingEnclosure indent">
-
-                    <label for="fontForWorksheetPages">Font:</label>
-
-                    <select id="fontForWorksheetPages" name="fontForWorksheetPages">
-                        <option value="BreitkopfFraktur" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
-                            capHeightRatio="0.6" descenderDepthRatio="0.45" fontURL="fonts/BreitkopfFraktur.ttf">Fraktur
-                            - Breitkopf Fraktur </option>
-                        <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3" fontURL="fonts/osifont-gpl2fe.ttf"
-                            ascenderRatio="0.4" capHeightRatio="0.45" descenderDepthRatio="0.45" selected>OSIFont
-                        </option>
-
-                        <!--<option value="Drafting" >Drafting Gothic</option>-->
-                        <!--<option value="Blackletter">Blackletter</option>-->
-                        <!--<option value="Uncial">Uncial</option>-->
-
-
-
-
-
-                    </select>
-                </div>
-
-
-
-                <div class="settingEnclosure indent indent2">
-                    <button id="uploadFont" class="darkButton">Upload Font...</button>
-                    <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
-
-                </div>
-
-                <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                    id="fontXHeightTweakEnclosure">
-                    <label for="fontXHeightTweak">Font X-Height Tweak:</label>
-                    <input type="number" id="fontXHeightTweak" value="0" min="-100" max="100" step="0.1">
-                    <span class="labelNote">
-
-                    </span>
-                </div>
-
-                <div class="settingEnclosure">
-                    <label for="caseSelection">Characters:</label>
-                    <select id="caseSelection" name="caseSelection">
-                        <option value="lowercaseOnly" checked>Lowercase Only</option>
-                        <option value="uppercaseOnly">Uppercase Only</option>
-                        <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
-                        <option value="customText">Custom Practice Text</option>
-
-                    </select>
-
-
-                </div>
-
-                <div class="settingEnclosure indent">
-                    <input type="checkbox" id="includeNumberCharacters">
-                    <label for="includeNumberCharacters">Include Number Characters</label>
-                </div>
-
-                <div class="settingEnclosure indent">
-                    <label for="customPracticeText">Custom Practice Text:</label>
-                    <textarea id="customPracticeText" name="customPracticeText" rows="5" maxlength="450">custom text</textarea>
-                </div>
-
-
-                <!--
-<select id="extraCharacterSets" name="extraCharactersSets">
-    <option value="numbersOnly" checked>Numbers</option>
-    <option value="number">Numbers and Punctuation</option>
-</select>
--->
-
-                <div class="settingEnclosure">
-
-                    <label for="practiceCharactersArrangement">Practice Characters Arrangement:</label>
-
-                    <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
-                        <option value="RowsOfCharacters" checked>Rows of Characters</option>
-                        <option value="singleCharacterAtLeft">Single Character At Left</option>
-
-                        <!--<option value="CustomText">Custom Practice Text at Top</option>-->
-                    </select>
-
-                </div>
-
-
-            </fieldset>
-
+           
 
 
 

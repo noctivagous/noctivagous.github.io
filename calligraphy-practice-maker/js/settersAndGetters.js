@@ -339,7 +339,7 @@ document.getElementById('fontForWorksheetPages').addEventListener('change', func
 });
 
 
-function showHideFontHeightTweak()
+function showHideSections()
 {
 
     const fontSelect = document.getElementById('fontForWorksheetPages');
@@ -352,12 +352,88 @@ function showHideFontHeightTweak()
     } else if (selectedOption.hasAttribute('fontURL')) {
         tweakEnclosure.style.display = 'none';
     }
+
+
+    const fieldsetContentsForFont = document.getElementById('practiceFontCharactersFieldsetContents');
+    const showFontSwitch = document.getElementById('showFont');
+
+    const currentHeight = fieldsetContentsForFont.clientHeight;
+
+    
+    if (showFontSwitch.checked == true) {
+        if(currentHeight == 0)
+        {
+            blindDown(fieldsetContentsForFont);    
+        }
+  //      fieldsetContentsForFont.style.display = 'block';
+    } else if (showFontSwitch.checked == false) {
+        if(currentHeight > 0)
+            {
+        blindUp(fieldsetContentsForFont);
+//        fieldsetContentsForFont.style.display = 'none';
+            }
+    }
+
+    
+
 }
+
+function blindToggle(element, duration = 400) {
+    // Get the current height of the element
+    const currentHeight = element.clientHeight;
+    
+    // If the element is visible (height > 0), we collapse it ("blind up")
+    if (currentHeight > 0) {
+        blindUp(element, duration);
+    } else {
+        blindDown(element, duration);
+    }
+}
+
+function blindUp(element, duration = 400) {
+    element.style.height = `${element.scrollHeight}px`;
+    element.style.transition = `height ${duration}ms ease-out`;
+    
+    // Trigger reflow to ensure the transition happens
+    element.offsetHeight;
+    
+    // Start the "blind up" transition
+    element.style.height = '0';
+    
+    // Clean up styles after transition
+    setTimeout(() => {
+        element.style.display = 'none';
+        element.style.height = '';
+        element.style.transition = '';
+    }, duration);
+}
+
+function blindDown(element, duration = 400) {
+    element.style.display = 'block';
+    const targetHeight = element.scrollHeight;
+    
+    // Set initial height to 0 to start the "blind down" transition
+    element.style.height = '0';
+    element.style.transition = `height ${duration}ms ease-out`;
+    
+    // Trigger reflow
+    element.offsetHeight;
+
+    // Start the "blind down" transition
+    element.style.height = `${targetHeight}px`;
+
+    // Clean up styles after transition
+    setTimeout(() => {
+        element.style.height = '';
+        element.style.transition = '';
+    }, duration);
+}
+
 
 // Initial setup: Hide or show tweak enclosure based on the default selection
 document.addEventListener('DOMContentLoaded', function () {
 
-    showHideFontHeightTweak();
+    showHideSections();
 
 });
 
@@ -380,3 +456,4 @@ function debounce(func, delay) {
 
   // Add the debounced input event listener
   textarea.addEventListener('input', debounce(handleCustomTextInput, 300));
+

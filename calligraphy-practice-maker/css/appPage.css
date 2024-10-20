@@ -646,3 +646,22 @@ font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 text-align: right;
 display: inline-block;
 }
+
+
+#controls input.switchInput {
+    opacity: 1.0;
+    width: 34pt;
+    aspect-ratio: 80/34;
+    display: inline-block;
+    background: url('switch-off-state.svg') center no-repeat;
+    background-size: contain;
+    border: none;
+    border-radius: 17px;
+    cursor: pointer;
+    transition: background 0.4s;
+}
+
+#controls input.switchInput:checked {
+    background: url('switch-on-state.svg') center no-repeat;
+    background-size: contain;
+}

@@ -86,7 +86,7 @@ a small number of fonts available.
                                 Breitkopf Fraktur </option>
 
                                 <option value="KabinettFraktur" brushWidthOfFontNibMultiplier="4.7" ascenderRatio="0.45"
-                                capHeightRatio="0.55" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.15" fontURL="fonts/KabinettFraktur.ttf">
+                                capHeightRatio="0.55" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.2" fontURL="fonts/KabinettFraktur.ttf" selected>
                                 Kabinett Fraktur</option>
 
                                 <option value="DSLuthersche" brushWidthOfFontNibMultiplier="5.2" ascenderRatio="0.45"
@@ -100,9 +100,12 @@ a small number of fonts available.
 
                             <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3"
                                 fontURL="fonts/osifont-gpl2fe.ttf" ascenderRatio="0.4" capHeightRatio="0.45"
-                                descenderDepthRatio="0.45" selected>OSIFont
+                                descenderDepthRatio="0.45" >OSIFont
                             </option>
                             </optgroup>
+
+
+
                             <!--<option value="Drafting" >Drafting Gothic</option>-->
                             <!--<option value="Blackletter">Blackletter</option>-->
                             <!--<option value="Uncial">Uncial</option>-->
@@ -122,10 +125,10 @@ a small number of fonts available.
                     <div class="settingEnclosure indent">
                         <table width="100%" cellpadding="3" padding="0">
                             <tr>
-                                <td><button id="uploadFont" class="darkButton">Upload Font...</button>
+                                <td valign="top"><button id="uploadFont" class="darkButton">Upload Font...</button>
                                     <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
-                                    <span class="labelNote">
-                                        <br />(.OTF or .TTF)
+                                    <span class="labelNote" style="margin-top:6pt;display: inline-block;">
+                                        (.OTF or .TTF)
                                     </span>
                                 </td>
 

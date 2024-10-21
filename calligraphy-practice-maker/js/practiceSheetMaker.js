@@ -229,9 +229,9 @@ dropArea.addEventListener('drop', function (event) {
 
 
 function init() {
-   
+
     setDefaults();
-    
+
     var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
 
     fontChangingControls.forEach(function (fontRelatedControl) {
@@ -304,48 +304,48 @@ async function printPDF() {
     // When Safari prints, it scales the SVG up
 
     var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    
+
     if (!isSafari) {
         // If not Safari, invoke the print function
         window.print();
     } else {
-     
 
-           // Determine the selected orientation
-    const selectedOrientation = document.querySelector('input[name="orientation"]:checked').value;
 
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-        orientation: selectedOrientation,
-        unit: 'pt',
-        format: getPaperSizeOriented(), // Paper size oriented from your form
-    });
+        // Determine the selected orientation
+        const selectedOrientation = document.querySelector('input[name="orientation"]:checked').value;
 
-    const svgElements = document.querySelectorAll('.worksheetPage');
-
-    for (let i = 0; i < svgElements.length; i++) {
-        if (i > 0) {
-            pdf.addPage();
-        }
-
-        const svgElement = svgElements[i];
-
-        try {
-            // Ensure that text is converted to paths
-            await convertTextToPathsWithKerning(svgElement);
-        } catch (error) {
-            console.error('Error converting text to paths:', error);
-        }
-
-        await svg2pdf(svgElement, pdf, {
-            xOffset: marginHorizontal / 2,
-            yOffset: marginVertical / 2,
-            scale: 1,
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            orientation: selectedOrientation,
+            unit: 'pt',
+            format: getPaperSizeOriented(), // Paper size oriented from your form
         });
-    }
 
-         // Open the print dialog with the generated PDF content
-         window.open(pdf.output('bloburl'));
+        const svgElements = document.querySelectorAll('.worksheetPage');
+
+        for (let i = 0; i < svgElements.length; i++) {
+            if (i > 0) {
+                pdf.addPage();
+            }
+
+            const svgElement = svgElements[i];
+
+            try {
+                // Ensure that text is converted to paths
+                await convertTextToPathsWithKerning(svgElement);
+            } catch (error) {
+                console.error('Error converting text to paths:', error);
+            }
+
+            await svg2pdf(svgElement, pdf, {
+                xOffset: marginHorizontal / 2,
+                yOffset: marginVertical / 2,
+                scale: 1,
+            });
+        }
+
+        // Open the print dialog with the generated PDF content
+        window.open(pdf.output('bloburl'));
 
         // Safari-specific action
         // Place your desired code here
@@ -415,9 +415,8 @@ async function loadFontAndMakeWorksheetPages() {
 
         const fontData = selectedOption.getAttribute('fontData'); // Assume stored as base64
 
-        
-        if(fontData)
-        {
+
+        if (fontData) {
             document.getElementById('nibWidthsTall').disabled = false;
         }
 
@@ -445,7 +444,7 @@ async function loadFontAndMakeWorksheetPages() {
         }
 
 
-      
+
         fontWasLoadedForShowFont = true;
         makeWorksheetPages();  // Only called once the font is fully loaded
     } catch (error) {
@@ -476,9 +475,8 @@ function loadFontAsync(fontUrl) {
 }
 
 
-function makeFontMetrics()
-{
-    
+function makeFontMetrics() {
+
     if (showFont && font) {
         var fontSelect = document.getElementById('fontForWorksheetPages');
         // Get the selected <option> element
@@ -494,24 +492,24 @@ function makeFontMetrics()
         // Pull the user's nib width
         let nibWidthPt = getNibWidthPt();// parseFloat(document.getElementById('nibWidthMm').value); // Assuming you have a nibWidthPt input element
 
-        
+
         // Calculate font scaling factor based on the nib width and brushWidthOfFont
         let fontScaleFactorToMakeXHeight = brushWidthOfFontNibMultiplier / nibWidthPt;
 
         // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
         // approximate width of the overall brushstroke width of the font's design.
         //setNibWidthsTall((brushWidthOfFontNibMultiplier / nibWidthPt).toFixed(2));
- 
+
         // Set the nibWidthsTall to reflect the adjusted x-height
-        setNibWidthsTall((nibWidthPt * fontScaleFactorToMakeXHeight ).toFixed(2));
-        
-        
+        setNibWidthsTall((nibWidthPt * fontScaleFactorToMakeXHeight).toFixed(2));
+
+
 
         // Update the metrics using the calculated scaling factors
         setFontMetrics(ascenderRatio, capHeightRatio, descenderDepthRatio);
 
         // Debugging logs for insight
-//        ////
+        //        ////
         ////
         ////
         ////
@@ -543,7 +541,7 @@ async function makeWorksheetPages() {
 
     emptyWorksheetArea();
 
-    
+
 
     const rowsWithCharactersArray = generateRowsOfCharacters(); // Get the rows of characters
 
@@ -552,15 +550,14 @@ async function makeWorksheetPages() {
     var numberOfPages = calculateNumberOfPages(rowsWithCharactersArray);
 
     if ((showFont == false) || !font) {
-        
+
         numberOfPages = 1;
         document.getElementById('nibWidthsTall').disabled = false;
     }
 
-    
 
-    if(showFont && font)
-    {
+
+    if (showFont && font) {
         const fontSelect = document.getElementById('fontForWorksheetPages');
         const fontName = fontSelect.value;
         const fontUrl = getFontUrl(fontName);
@@ -570,16 +567,15 @@ async function makeWorksheetPages() {
 
         // don't allow adjustments of x-height (nibWidthsTall)
         // if the font was not uploaded by the user.
-        if(fontData)
-        {
+        if (fontData) {
             document.getElementById('nibWidthsTall').disabled = false;
 
         }
         else // uses fontData
         {
-            document.getElementById('nibWidthsTall').disabled = true;           
+            document.getElementById('nibWidthsTall').disabled = true;
         }
-        
+
     }
 
 
@@ -763,22 +759,25 @@ function generateRowsOfCharacters() {
         // Add the character row to the final rows array
         finalRows.push(characterRows[i]);
 
-        // If there is still space on the current page, add an empty row for practice
-        if ((finalRows.length % linesPerPage) !== 0) {
-            finalRows.push([]);
-        }
+        if (arrangement === "RowsOfCharacters") {
+            // If there is still space on the current page, add an empty row for practice
+            if ((finalRows.length % linesPerPage) !== 0) {
+                finalRows.push([]);
+            }
+        
 
         // If the page is filled but a character row falls on the last line, 
         // push it to the next page to ensure there is a practice row after it
         if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
             if (finalRows[finalRows.length - 1].length > 0) {
                 //
-                
+
                 const lastRow = finalRows.pop();
                 finalRows.push([]);  // Add an empty row to complete the page
                 finalRows.push(lastRow);  // Move character row to the new page
                 finalRows.push([]);
             }
+        }
         }
     }
 
@@ -804,14 +803,14 @@ function generateRowsOfCharacters() {
 
 
 function getFontScaleFactor() {
-            // Calculate the x-height in points based on user input and nib width
-            var xHeight = getXHeightPt();
+    // Calculate the x-height in points based on user input and nib width
+    var xHeight = getXHeightPt();
 
-            // Font scale factor to fit the font within x-height
-            var fontScaleFactor = xHeight / getFontSXHeight();
+    // Font scale factor to fit the font within x-height
+    var fontScaleFactor = xHeight / getFontSXHeight();
 
-            return fontScaleFactor;
-            
+    return fontScaleFactor;
+
     /*// Example of using the nib width and the brush width multiplier to determine the scale factor
     const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
     const brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30;
@@ -870,7 +869,7 @@ function generateRowsOfCharactersOLD() {
 
 function getTotalCharacters() {
     // Calculate total number of characters based on user input settings
-    
+
     let selectedCharacters = getSelectedCharacters();
 
     return selectedCharacters.length;
@@ -1346,7 +1345,7 @@ function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHei
     characters.forEach(function (char) {
         var glyph = font.charToGlyph(char);
         if (glyph) {
-            
+
         }
         var path = glyph.getPath(0, 0, font.unitsPerEm);
 
@@ -1364,7 +1363,7 @@ function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHei
 
         group.appendChild(svgPath);
 
-        
+
 
 
         xPosition += (glyph.advanceWidth * fontScaleFactor) + spacingForCharacters;
@@ -1398,14 +1397,13 @@ function getCharactersForPage(pageIndex) {
     return characters.slice(startIndex, endIndex);
 }
 
-function getCustomText()
-{
+function getCustomText() {
     var customText = document.getElementById("customPracticeText").value;
     if (customText === "") {
         customText = "enter\ncustom\ntext";
     }
-    
- return customText;//.split('').filter(char => char.trim() !== ''); // Exclude empty characters
+
+    return customText;//.split('').filter(char => char.trim() !== ''); // Exclude empty characters
 }
 
 function getCharactersForLine(characters, charIndex, width) {
@@ -1566,8 +1564,8 @@ function calculateCharsPerLine() {
             if (glyph.advanceWidth > upperBoundCharWidth) {
                 upperBoundCharWidth = glyph.advanceWidth;
             }
-            
-            
+
+
         }
     });
     // Apply the scaling factor to the upper bound character width
@@ -1595,10 +1593,10 @@ function calculateCharsPerLine() {
 
 
     // Log values for debugging purposes
-  //  ////
-  
-   
-  //  ////
+    //  ////
+
+
+    //  ////
     //////
 
     return charsPerLine;
@@ -1628,7 +1626,7 @@ function getSelectedCharacters() {
 
     } else if (selectedValue === "customText") {
         // Get custom practice text from the textarea
-        
+
         // Convert custom text to an array of characters, excluding empty spaces
         selectedCharacters = getCustomText();
     }

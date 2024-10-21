@@ -412,9 +412,9 @@ function blindToggle(element, duration = 400) {
     }
 }
 
-function blindUp(element, duration = 400) {
+function blindUp(element, duration = 100) {
     element.style.height = `${element.scrollHeight}px`;
-    element.style.transition = `height ${duration}ms ease-out`;
+    element.style.transition = `height ${duration}ms linear`;
     
     // Trigger reflow to ensure the transition happens
     element.offsetHeight;

@@ -59,7 +59,7 @@
         padding: 10pt;
         padding-right: 20pt;
         background: rgba(255, 255, 255, 0.8);
-        background: #303030;
+        background: #9b9a9a;
         box-sizing: border-box;
         position: fixed;
         z-index: 20;
@@ -127,15 +127,16 @@
         box-sizing: border-box;
         text-transform: uppercase;
 
-        background-color: #111;
-        color: #7b7474;
+        background-color: #9d9b9b;
+        color: #090909;
 
-        font-size: 10pt;
+        font-size: 12pt;
         width: 100%;
 
         padding-top: 5pt;
 
-        text-align: center;
+        text-align: left;
+        padding-left:8pt;
         padding-bottom: 3pt;
         box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
 
@@ -150,16 +151,16 @@
 
     #controls fieldset {
         border: 0;
-        border-radius: 4pt;
+        border-radius: 8pt;
 
-        outline: 5pt solid #000;
+        outline: 3pt solid #000;
         /* Create an inside border */
         outline-offset: -2px;
         /* Move the outline inwards */
 
 
         font-family: sans-serif;
-        background-color: #111;
+        
         color: #333;
         box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
         margin-bottom: 15pt;
@@ -171,17 +172,20 @@
         font-family: sans-serif;
 
         color: #333;
-        /*font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important;*/
+        font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important;
     }
 
 
 
     .settingEnclosure {
-        padding: 5px;
+        padding: 5pt;
+        padding-top:7pt;
+        padding-bottom:7pt;
+        
         padding-left: 8pt;
 
         margin-top: 0px;
-        margin-bottom: 2pt;
+
         background-color: #929191;
         background-color:#222;
         border: 0px solid rgb(49, 47, 47);
@@ -193,6 +197,10 @@
         user-select: none;
         font-weight: bold;
   /*      font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; */
+
+  margin-bottom:3pt;
+
+  
     }
 
     .settingEnclosure .radioLabel {
@@ -202,25 +210,33 @@
 
     }
 
+    .settingEnclosure.top
+    {
+        border-bottom:2pt solid rgb(0, 0, 0);
+    }
+
     div.settingEnclosure.indent label {
    /* font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
         font-size: 14pt !important;
+        
 }
 
     div.settingEnclosure.indent {
-        background-color:#3d3d3d;
-        border-left: 8pt solid black;
-       
-indent        color: black;
+
+        background-color:#101010;
+        border-left: 3pt solid black;
+        border-right: 3pt solid black;
+       border-top:1pt solid #333;
+       border-bottom:1pt solid #333;
+        color: black;
         font-weight: normal;
-        border-right: 5pt solid black;
         
         /*background: linear-gradient(to left, #1c1c1c 10%, #060505 40%, #000000 100%) !important;*/
         
     }
 
     div.settingEnclosure.indent2 {
-        border-left: 12pt solid black;
+      /*  border-left: 12pt solid black;*/
 
     }
 
@@ -228,7 +244,8 @@ indent        color: black;
         margin-left: 0;
         font-weight: normal;
 
-        color: rgb(193, 192, 192) !important;
+        color: rgb(125, 124, 124) !important;
+
     }
 
     #controls fieldset label {
@@ -236,15 +253,21 @@ indent        color: black;
 
         font-family: sans-serif;
         font-family: Arial, Helvetica, sans-serif;
-        /*text-transform:uppercase;*/
+        font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow'; 
 
+        /*text-transform:uppercase;*/
+        ;
         font-size: 13pt;
 
-        color: #bfbfbf;
-
+        color: #d3d1d1;
+        
         display: inline-block;
     }
 
+    #controls fieldset .indent label {
+        font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow'; 
+
+    }
     .labelNote {
         color: rgb(41, 79, 22);
         font-family: monospace;
@@ -273,13 +296,13 @@ indent        color: black;
         background-color: #111;
 
         /*background: linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);*/
-        border: 2pt solid black;
+        border: 1pt solid black;
 
         color: rgb(228, 226, 226);
 
         /* Apply border to create the "well" effect */
 
-        border: 2px solid #3a3939;
+        border: 1px solid #3a3939;
         /* Darker border as a base */
         border-bottom-color: #787777;
         /* Lighter color for the top to create the highlight */
@@ -288,8 +311,8 @@ indent        color: black;
 
 
         /* Box shadow to enhance the well effect */
-        box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.2),
-            inset -2px -2px 2px rgba(206, 205, 205, 0.7);
+        box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.2),
+            inset -1px -1px 1px rgba(206, 205, 205, 0.7);
 
         /* Remove default styling */
         outline: none;
@@ -378,7 +401,7 @@ indent        color: black;
     }
 
     #controls select {
-        width: 220px;
+        width: 100%;
         padding: 3pt;
         padding-left: 5pt;
         font-size: 13pt;
@@ -660,7 +683,7 @@ display: inline-block;
     width: 34pt;
     aspect-ratio: 80/34;
     display: inline-block;
-    background: url('../switch-off-state.svg') center no-repeat;
+    background: url('../img/switch-off-state.svg') center no-repeat;
     background-size: contain;
     border: none;
     border-radius: 17px;
@@ -669,7 +692,7 @@ display: inline-block;
 }
 
 #controls input.switchInput:checked {
-    background: url('../switch-on-state.svg') center no-repeat;
+    background: url('../img/switch-on-state.svg') center no-repeat;
     background-size: contain;
 }
 

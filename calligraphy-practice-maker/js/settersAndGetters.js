@@ -490,6 +490,7 @@ function showHideSections()
     }
 
     const fieldsetContentsForFont = document.getElementById('practiceFontCharactersFieldsetContents');
+    const practiceCharactersLegend = document.getElementById('practiceCharactersLegend');
     const showFontSwitch = document.getElementById('showFont');
 
     const currentHeight = fieldsetContentsForFont.clientHeight;
@@ -498,12 +499,24 @@ function showHideSections()
     if (showFontSwitch.checked == true) {
         if(currentHeight == 0)
         {
-            blindDown(fieldsetContentsForFont);    
+            blindDown(fieldsetContentsForFont); 
+            
+            // eliminates artifacts when unchecked
+            // and this sets it back to normal
+            practiceCharactersLegend.style.borderBottomLeftRadius = '0pt';
+            practiceCharactersLegend.style.borderBottomRightRadius = '0pt';
+            
+ 
         }
   //      fieldsetContentsForFont.style.display = 'block';
     } else if (showFontSwitch.checked == false) {
         if(currentHeight > 0)
             {
+                 // eliminates overflow artificacts when unchecked
+                // and this sets the border radius
+                practiceCharactersLegend.style.borderBottomLeftRadius = '8pt';
+                practiceCharactersLegend.style.borderBottomRightRadius = '8pt';
+                
         blindUp(fieldsetContentsForFont);
 //        fieldsetContentsForFont.style.display = 'none';
             }

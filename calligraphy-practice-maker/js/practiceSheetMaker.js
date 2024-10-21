@@ -861,6 +861,9 @@ function getFontScaleFactor() {
 
         const scaleFactor = xHeightFontScaleFactor;
 
+        console.log(scaleFactor);
+        console.log(fontScaleFactor);
+
         return scaleFactor * fontScaleFactor;
     }
     else

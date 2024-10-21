@@ -170,6 +170,8 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
 });
 
 function handleFontFileUpload(file) {
+    dropArea.style.color = '#999';
+
     if (file) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -183,12 +185,19 @@ function handleFontFileUpload(file) {
 
             // Create a new option element for the font
             const fontName = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension
+
+            if(isFontInSelectControlList(fontName))
+            {
+                return;
+            }
+
             const newOption = document.createElement('option');
             newOption.value = fontName;
             newOption.textContent = fontName;
             newOption.setAttribute('fontData', base64String);
-            newOption.setAttribute('fontXHeightTweak', '0'); // Default tweak is 0
-            newOption.setAttribute('brushWidthOfFont', '30'); // Default brush width
+            // newOption.setAttribute('fontXHeightTweak', '0'); // Default tweak is 0
+            newOption.setAttribute('brushWidthOfFontNibMultiplier', '5'); // Default brush width
+            newOption.setAttribute('xHeightFontScaleFactor', '1'); // Default brush width
             newOption.setAttribute('ascenderRatio', '0.45');
             newOption.setAttribute('capHeightRatio', '0.6');
             newOption.setAttribute('descenderDepthRatio', '0.45');
@@ -199,11 +208,36 @@ function handleFontFileUpload(file) {
 
             // Set the newly uploaded font as selected
             fontSelect.value = fontName;
-            showHideSections();
+
+            // set the brush width val
+            const xHeightToNibWidthPropInputField = document.getElementById('xHeightToNibWidthProp');
+            xHeightToNibWidthPropInputField.value = parseFloat(newOption.getAttribute('brushWidthOfFontNibMultiplier') || 5);
+
+
+            const xHeightFontScaleFactorInputField = document.getElementById('xHeightFontScaleFactor');
+            xHeightFontScaleFactorInputField.value = parseFloat(newOption.getAttribute('xHeightFontScaleFactor') || 1);
+
+            loadSelectedFontOptionSettingsIntoFields();
             loadFontAndMakeWorksheetPages();
         };
         reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
     }
+}
+
+function isFontInSelectControlList(fontName) {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+
+    // Check if the font has already been uploaded
+    let fontExists = false;
+    for (let i = 0; i < fontSelect.options.length; i++) {
+        if (fontSelect.options[i].value === fontName) {
+            alert(`The font '${fontName}' has already been uploaded.`);
+            fontExists = true;
+            break;
+        }
+    }
+
+    return fontExists
 }
 
 // Handling the drag-and-drop functionality for "Drop file here" area
@@ -211,17 +245,19 @@ const dropArea = document.getElementById('dropArea');
 
 dropArea.addEventListener('dragover', function (event) {
     event.preventDefault();
-    dropArea.style.backgroundColor = '#666'; // Change style to indicate it's ready for drop
+    dropArea.style.backgroundColor = '#999'; // Change style to indicate it's ready for drop
+    dropArea.style.color = '#333';
 });
 
 dropArea.addEventListener('dragleave', function () {
     dropArea.style.backgroundColor = '#494949'; // Revert style after drag leaves
+    dropArea.style.color = '#999';
 });
 
 dropArea.addEventListener('drop', function (event) {
     event.preventDefault();
     dropArea.style.backgroundColor = '#494949'; // Revert style after file is dropped
-
+    dropArea.style.color = '#999';
     const file = event.dataTransfer.files[0];
     handleFontFileUpload(file);
 });
@@ -433,7 +469,7 @@ async function loadFontAndMakeWorksheetPages() {
 
             // Load the font using opentype.parse()
             font = opentype.parse(arrayBuffer);
-            ////
+            makeFontMetrics();
         } else if (fontUrl) {
             // Load the font asynchronously using opentype.load()
             font = await loadFontAsync(fontUrl);
@@ -486,14 +522,15 @@ function makeFontMetrics() {
         let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
         let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
         let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
-        let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 2; // Default value if not provided
+        let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1; // Default value if not provided
+
 
 
         // Pull the user's nib width
         let nibWidthPt = getNibWidthPt();// parseFloat(document.getElementById('nibWidthMm').value); // Assuming you have a nibWidthPt input element
 
 
-        // Calculate font scaling factor based on the nib width and brushWidthOfFont
+        // Calculate font scaling factor based on the nib width and brushWidthOfFontNibMultiplier
         let fontScaleFactorToMakeXHeight = brushWidthOfFontNibMultiplier / nibWidthPt;
 
         // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
@@ -528,11 +565,13 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     ascenderMultiplier = ascenderRatio;
     capitalMultiplier = capitalRatio;
     descenderMultiplier = descenderRatio;
-    //    brushWidthOfFontGlobal = brushWidthOfFont;
+    //    brushWidthOfFontGlobal = brushWidthOfFontNibMultiplier;
 }
 
 
 async function makeWorksheetPages() {
+
+
     showHideSections();
 
     setNibWidthPtFromMM(document.getElementById("nibWidthMm").value);
@@ -764,20 +803,20 @@ function generateRowsOfCharacters() {
             if ((finalRows.length % linesPerPage) !== 0) {
                 finalRows.push([]);
             }
-        
 
-        // If the page is filled but a character row falls on the last line, 
-        // push it to the next page to ensure there is a practice row after it
-        if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
-            if (finalRows[finalRows.length - 1].length > 0) {
-                //
 
-                const lastRow = finalRows.pop();
-                finalRows.push([]);  // Add an empty row to complete the page
-                finalRows.push(lastRow);  // Move character row to the new page
-                finalRows.push([]);
+            // If the page is filled but a character row falls on the last line, 
+            // push it to the next page to ensure there is a practice row after it
+            if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
+                if (finalRows[finalRows.length - 1].length > 0) {
+                    //
+
+                    const lastRow = finalRows.pop();
+                    finalRows.push([]);  // Add an empty row to complete the page
+                    finalRows.push(lastRow);  // Move character row to the new page
+                    finalRows.push([]);
+                }
             }
-        }
         }
     }
 
@@ -809,18 +848,30 @@ function getFontScaleFactor() {
     // Font scale factor to fit the font within x-height
     var fontScaleFactor = xHeight / getFontSXHeight();
 
-    return fontScaleFactor;
+    
 
-    /*// Example of using the nib width and the brush width multiplier to determine the scale factor
+    // Example of using the nib width and the brush width multiplier to determine the scale factor
     const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
-    const brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 30;
+    const xHeightFontScaleFactor = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
+    
+    if(parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')))
+    {
+    //alert(parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')));
     let nibWidth = parseFloat(document.getElementById('nibWidthMm').value);
 
-    const scaleFactor = nibWidth / brushWidthOfFontNibMultiplier;
-    ////
+        const scaleFactor = xHeightFontScaleFactor;
 
-    
-    return scaleFactor;*/
+        console.log(scaleFactor);
+        console.log(fontScaleFactor);
+
+        return scaleFactor * fontScaleFactor;
+    }
+    else
+    {
+        //return fontScaleFactor;
+    }
+
+    return fontScaleFactor;
 }
 
 
@@ -1301,7 +1352,7 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
 
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
-    var fontScaleFactor = (xHeight / getFontSXHeight()).toFixed(3);
+    var fontScaleFactor = getFontScaleFactor();//(xHeight / getFontSXHeight()).toFixed(3);
 
     ////
 
@@ -1335,7 +1386,7 @@ function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHei
 
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
-    fontScaleFactor = xHeight / getFontSXHeight();
+    fontScaleFactor = getFontScaleFactor();//xHeight / getFontSXHeight();
 
     // Set initial x position
     var xPosition = 50; // Adjust as needed
@@ -1495,16 +1546,6 @@ function getFontSXHeight() {
     let estimatedXHeight = (font.tables.os2.sTypoAscender - font.tables.os2.sTypoDescender) / 2;
     let sxHeight = font.tables.os2.sxHeight || estimatedXHeight;
 
-    // Check if the currently loaded font is an uploaded font
-    const fontSelect = document.getElementById('fontForWorksheetPages');
-    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    if (selectedOption.hasAttribute('fontData')) {
-        // Retrieve fontXHeightTweak for uploaded fonts
-        let fontXHeightTweak = parseFloat(selectedOption.getAttribute('fontXHeightTweak')) || 0;
-        ////
-        sxHeight += (-100 * fontXHeightTweak); // Apply the tweak
-    }
-
     return sxHeight;
 }
 
@@ -1522,7 +1563,7 @@ function calculateCharsPerLine() {
     var xHeight = getXHeightPt();
 
     // Font scale factor to fit the font within x-height
-    var fontScaleFactor = xHeight / getFontSXHeight();
+    var fontScaleFactor = getFontScaleFactor();//xHeight / getFontSXHeight();
 
     // Get the actual characters selected from the form fieldset for practice
     var selectedCharactersToUse = getSelectedCharacters();

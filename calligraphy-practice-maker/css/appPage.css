@@ -93,22 +93,26 @@
 
     #controls h1 {
 
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-family: 'DDINExpDINExpBold','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
-        font-size: 10pt;
+        font-size: 12pt;
         margin-top: 0;
         color: #ccc;
         text-align: left;
 
         background-color: rgb(114, 110, 110);
         margin: -10pt;
+        
+        
         padding: 5pt;
-        text-align: center;
+        padding-left:15pt;
+        padding-top:7pt;
+        padding-bottom:5pt;
         box-shadow: 2pt 2pt 2pt rgb(75, 75, 75);
         border-bottom: 3pt solid black;
         position: sticky;
         top: 0;
-        padding-bottom: 3pt;
+        
         background: linear-gradient(to top, #000000 10%, #0b0a0a 40%, #302f2f 100%);
         width: 110%;
     }
@@ -123,6 +127,8 @@
 
 
     #controls fieldset legend {
+        border-top-left-radius: 8pt;
+        border-top-right-radius: 8pt;
 
         box-sizing: border-box;
         text-transform: uppercase;
@@ -140,18 +146,25 @@
         padding-bottom: 3pt;
         box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
 
-        border-radius: 4pt;
+        
         font-weight: bold;
         border-bottom: 2pt solid black;
 
+        
 
     }
 
-    #controls fieldset .settingEnclosure {}
+    #controls fieldset .settingEnclosure:last-child {
+       
+        border-bottom-left-radius: 8pt;
+        border-bottom-right-radius: 8pt;
+    }
 
     #controls fieldset {
+        
         border: 0;
-        border-radius: 8pt;
+        border-radius: 10pt;
+        
 
         outline: 3pt solid #000;
         /* Create an inside border */
@@ -173,6 +186,8 @@
 
         color: #333;
         font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important;
+        
+
     }
 
 
@@ -190,6 +205,8 @@
         background-color:#222;
         border: 0px solid rgb(49, 47, 47);
 
+        border-bottom:2pt solid #333;
+
     }
 
     .settingEnclosure label {
@@ -205,9 +222,9 @@
 
     .settingEnclosure .radioLabel {
         font-weight: normal;
-        color: #333333 !important;
-/*        font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
-
+        color: #a4a4a4 !important;
+    font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; 
+        margin-bottom:-6pt;
     }
 
     .settingEnclosure.top
@@ -226,7 +243,6 @@
         background-color:#101010;
         border-left: 3pt solid black;
         border-right: 3pt solid black;
-       border-top:1pt solid #333;
        border-bottom:1pt solid #333;
         color: black;
         font-weight: normal;
@@ -235,9 +251,9 @@
         
     }
 
-    div.settingEnclosure.indent2 {
+    div.settingEnclosure.indent2{
       /*  border-left: 12pt solid black;*/
-
+        border-bottom:2pt solid #222;
     }
 
     div.settingEnclosure.indent label {
@@ -318,6 +334,7 @@
         outline: none;
         appearance: none;
 
+        color:greenyellow;
     }
 
     #controls input[type='checkbox'] {
@@ -400,6 +417,9 @@
 
     }
 
+    #controls select option{
+        background-color: black;
+    }
     #controls select {
         width: 100%;
         padding: 3pt;
@@ -412,10 +432,13 @@
         color: rgb(143, 140, 140);
         font-weight: bold;
 
+        box-shadow: 2pt 2pt 2pt #0b0a0a;
+
         /* Stacking two backgrounds: gradient and the SVG arrow */
         /* Background using SVG with gradient and arrow */
 
-        background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40" preserveAspectRatio="none"><defs><linearGradient id="grad1" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="10%" style="stop-color:%23383737;stop-opacity:1" /><stop offset="40%" style="stop-color:%230b0a0a;stop-opacity:1" /><stop offset="100%" style="stop-color:%23474646;stop-opacity:1" /></linearGradient></defs><rect x="0" y="0" width="220" height="40" fill="url(%23grad1)" /><polygon points="195,15 204,25 213,15" fill="darkGray"/></svg>') no-repeat;
+        background: url('../img/selectBackground.svg') no-repeat;
+
         background-size: 100% 100%;
         /* Make sure the SVG fills the entire select area */
 
@@ -429,19 +452,26 @@
         -moz-appearance: none;
         /* Remove default appearance for Mozilla browsers */
 
-        font-family: monospace;
-        font-size: 10pt;
+        
         font-weight: normal;
         border: 2pt solid black;
-
+        color:rgb(92, 146, 11);
         /* Apply border to create the "well" effect */
-        border: 2px solid #3a3939;
+        border: 2pt solid #3a3939;
         /* Darker border as a base */
         border-top-color: #8a8888;
         /* Lighter color for the top to create the highlight */
 
+        border-left-color: #8a8888;
+        border-left-width: 1pt;
+        border-bottom-color: #343434;
+        height:23pt;
 
-
+        
+        font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; 
+        border-radius: 0;
+        font-family: monospace !important;
+        font-size: 11pt;
     }
 
 
@@ -488,8 +518,8 @@
         position: fixed;
         bottom: 0;
 
-        width: 15px;
-        height: calc(100% - 23pt);
+        width: 16px;
+        height: calc(100% - 28pt);
         background: #000;
         cursor: pointer;
         z-index: 20;
@@ -510,14 +540,14 @@
 
 
 
-        background: #555;
+    
 
         background:
             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 4l6 8H6z'/%3E%3C/svg%3E") top center no-repeat,
             /* Arrow pointing up */
             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 20l-6-8h12z'/%3E%3C/svg%3E") bottom center no-repeat,
             /* Arrow pointing down */
-            #555;
+            #3d3d3d;
         /* Background color for hover state */
         background-size: 15px auto, 15px auto, cover;
         /*   linear-gradient(to right, #383737 10%, #0b0a0a 40%, #474646 100%);*/
@@ -698,7 +728,9 @@ display: inline-block;
 
 #controls div#dropArea
  {
-width:45pt;height:40pt; text-align: center;background-color: #494949;padding:5pt;border-radius: 5pt;border:1pt solid rgb(166, 166, 166);color:#999;
+width:45pt;height:40pt; 
+text-align: center;background-color: #494949;
+padding:5pt;border-radius: 5pt;border:1pt dashed rgb(166, 166, 166);color:#999;
 
 }               
 

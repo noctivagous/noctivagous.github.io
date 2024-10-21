@@ -11,10 +11,45 @@ function setDefaults()
 {
     setNibWidthPtFromMM(2);
 
+    loadSelectedFontOptionSettingsIntoFields();
+
     if(isSafari())
     {
         document.getElementById('printButton').style.display = 'none';
     }
+}
+
+function loadSelectedFontOptionSettingsIntoFields()
+{
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    const xHeightToNibWidthPropInputField = document.getElementById('xHeightToNibWidthProp');     
+    xHeightToNibWidthPropInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
+    const xHeightToNibWidthPropEnclosure = document.getElementById('xHeightToNibWidthPropEnclosure');
+
+
+    const xHeightFontScaleFactorField =  document.getElementById('xHeightFontScaleFactor');     
+    const xHeightFontScaleFactorEnclosure = document.getElementById('xHeightFontScaleFactorEnclosure');
+
+
+    xHeightToNibWidthPropInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+
+    xHeightFontScaleFactorField.value = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
+    //alert(selectedOption.getAttribute('brushWidthOfFontNibMultiplier'));
+    
+   // return;
+
+    if (selectedOption.hasAttribute('fontData')) {
+        // Show the tweak enclosure for uploaded fonts
+        xHeightToNibWidthPropEnclosure.style.display = 'block';     
+        xHeightFontScaleFactorEnclosure.style.display = 'block';     
+        
+    } else if (selectedOption.hasAttribute('fontURL')) {
+        // Hide the tweak enclosure for default fonts
+        xHeightToNibWidthPropEnclosure.style.display = 'none';
+        xHeightFontScaleFactorEnclosure.style.display = 'none';
+    }
+
 }
 
 function getNibWidthPt()
@@ -307,23 +342,31 @@ document.getElementById('verticalLines').addEventListener('change', function () 
     });
 
 
+    
 
-    // Update fontXHeightTweak from user input
-document.getElementById('fontXHeightTweak').addEventListener('input', function () {
+    // Update xHeightToNibWidthProp from user input
+document.getElementById('xHeightToNibWidthProp').addEventListener('input', function () {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    const tweakInputField = document.getElementById('xHeightToNibWidthProp');
 
+    selectedOption.setAttribute('brushWidthOfFontNibMultiplier', parseFloat(tweakInputField.value) || 1);
+    //console.log("xHeightToNibWidthProp updated to:", this.value);
+
+    makeFontMetrics();
+    
+    // Regenerate the worksheet pages to apply the new X-Height tweak
+    makeWorksheetPages();
+/*
     // Only update tweak if the font was uploaded (has fontData attribute)
     if (selectedOption.hasAttribute('fontData')) {
-        selectedOption.setAttribute('fontXHeightTweak', parseFloat(this.value) || 0);
-        //console.log("fontXHeightTweak updated to:", this.value);
 
-        // Optionally, regenerate the worksheet pages to apply the new X-Height tweak
-        makeWorksheetPages();
+
+
         
     } else {
         console.warn("Font X-Height Tweak is only applicable for uploaded fonts.");
-    }
+    }*/
 });
 
 
@@ -332,16 +375,79 @@ document.getElementById('fontXHeightTweak').addEventListener('input', function (
 document.getElementById('fontForWorksheetPages').addEventListener('change', function () {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    const tweakEnclosure = document.getElementById('fontXHeightTweakEnclosure');
+    
+    const tweakInputField = document.getElementById('xHeightToNibWidthProp');
 
+     
+    loadSelectedFontOptionSettingsIntoFields();
+
+
+});
+
+
+document.getElementById('xHeightToNibWidthProp').addEventListener('change', function () {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    const tweakEnclosure = document.getElementById('fontXHeightTweakEnclosure');
+    const tweakInputField = document.getElementById('xHeightToNibWidthProp');
+
+    selectedOption.setAttribute('brushWidthOfFontNibMultiplier', tweakInputField.value);
+  
+    makeWorksheetPages();
     if (selectedOption.hasAttribute('fontData')) {
         // Show the tweak enclosure for uploaded fonts
-        tweakEnclosure.style.display = 'block';
+//        tweakEnclosure.style.display = 'block';
+        
+//        tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+
+         // Default brush width
+    //selectedOption.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
+
+
     } else if (selectedOption.hasAttribute('fontURL')) {
         // Hide the tweak enclosure for default fonts
-        tweakEnclosure.style.display = 'none';
+      //  tweakEnclosure.style.display = 'none';
     }
 });
+
+
+document.getElementById('xHeightFontScaleFactor').addEventListener('change', function () {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    const tweakEnclosure = document.getElementById('xHeightFontScaleFactorEnclosure');
+    const tweakInputField = document.getElementById('xHeightFontScaleFactor');
+
+    selectedOption.setAttribute('xHeightFontScaleFactor', tweakInputField.value);
+  
+    makeWorksheetPages();
+    if (selectedOption.hasAttribute('fontData')) {
+        // Show the tweak enclosure for uploaded fonts
+//        tweakEnclosure.style.display = 'block';
+        
+//        tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+
+         // Default brush width
+    //selectedOption.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
+
+
+    } else if (selectedOption.hasAttribute('fontURL')) {
+        // Hide the tweak enclosure for default fonts
+      //  tweakEnclosure.style.display = 'none';
+    }
+});
+
+
+/*
+  // Check if the currently loaded font is an uploaded font
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+    if (selectedOption.hasAttribute('fontData')) {
+        // Retrieve xHeightToNibWidthProp for uploaded fonts
+        let xHeightToNibWidthProp = parseFloat(selectedOption.getAttribute('xHeightToNibWidthProp')) || 0;
+        ////
+        sxHeight += (-100 * xHeightToNibWidthProp); // Apply the tweak
+    }
+        */
 
 
 function showHideSections()
@@ -349,14 +455,19 @@ function showHideSections()
 
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    const tweakEnclosure = document.getElementById('fontXHeightTweakEnclosure');
+    const tweakEnclosure = document.getElementById('xHeightToNibWidthPropEnclosure');
     
+ //   const tweakInputField = document.getElementById('xHeightToNibWidthProp');
+   // tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier'));
+
     if (selectedOption.hasAttribute('fontData')) {
         
-        tweakEnclosure.style.display = 'block';
+       // tweakEnclosure.style.display = 'block';
     } else if (selectedOption.hasAttribute('fontURL')) {
-        tweakEnclosure.style.display = 'none';
+      //  tweakEnclosure.style.display = 'none';
     }
+
+
 
 
     const customPracticeTextEnclosure = document.getElementById('customPracticeTextEnclosure');

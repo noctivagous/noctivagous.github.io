@@ -418,8 +418,19 @@
     }
 
     #controls select option{
-        background-color: black;
+        color:white;
+        background-color: rgb(61, 61, 61);
     }
+
+    select optgroup {
+        color:white;
+        background-color: rgb(61, 61, 61);
+
+      }
+      
+
+
+
     #controls select {
         width: 100%;
         padding: 3pt;

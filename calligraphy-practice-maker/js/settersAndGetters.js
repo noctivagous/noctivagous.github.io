@@ -9,28 +9,25 @@ var nibWidthMm = 2.8;
 var nibWidthPt = nibWidthMm * mmToPt; // Nib width in points
 var nibWidthsTall = document.getElementById('nibWidthsTall').value;
 
-function setDefaults()
-{
+function setDefaults() {
     setNibWidthPtFromMM(nibWidthMmDefault);
 
     loadSelectedFontOptionSettingsIntoFields();
 
-    if(isSafari())
-    {
+    if (isSafari()) {
         document.getElementById('printButton').style.display = 'none';
     }
 }
 
-function loadSelectedFontOptionSettingsIntoFields()
-{
+function loadSelectedFontOptionSettingsIntoFields() {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    const xHeightToNibWidthPropInputField = document.getElementById('xHeightToNibWidthProp');     
+    const xHeightToNibWidthPropInputField = document.getElementById('xHeightToNibWidthProp');
     xHeightToNibWidthPropInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
     const xHeightToNibWidthPropEnclosure = document.getElementById('xHeightToNibWidthPropEnclosure');
 
 
-    const xHeightFontScaleFactorField =  document.getElementById('xHeightFontScaleFactor');     
+    const xHeightFontScaleFactorField = document.getElementById('xHeightFontScaleFactor');
     const xHeightFontScaleFactorEnclosure = document.getElementById('xHeightFontScaleFactorEnclosure');
 
 
@@ -38,14 +35,14 @@ function loadSelectedFontOptionSettingsIntoFields()
 
     xHeightFontScaleFactorField.value = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
     //alert(selectedOption.getAttribute('brushWidthOfFontNibMultiplier'));
-    
-   // return;
+
+    // return;
 
     if (selectedOption.hasAttribute('fontData')) {
         // Show the tweak enclosure for uploaded fonts
-        xHeightToNibWidthPropEnclosure.style.display = 'block';     
-        xHeightFontScaleFactorEnclosure.style.display = 'block';     
-        
+        xHeightToNibWidthPropEnclosure.style.display = 'block';
+        xHeightFontScaleFactorEnclosure.style.display = 'block';
+
     } else if (selectedOption.hasAttribute('fontURL')) {
         // Hide the tweak enclosure for default fonts
         xHeightToNibWidthPropEnclosure.style.display = 'none';
@@ -54,13 +51,11 @@ function loadSelectedFontOptionSettingsIntoFields()
 
 }
 
-function getNibWidthPt()
-{
+function getNibWidthPt() {
     return nibWidthMm * mmToPt
 }
 
-function getXHeightPt()
-{
+function getXHeightPt() {
     return nibWidthsTall * nibWidthPt;
 }
 
@@ -165,9 +160,24 @@ function setDescenderHeight(value) {
 
 // Setter for Nib Width
 function setNibWidthPtFromMM(value) {
+    const maxVal = parseFloat(document.getElementById('nibWidthMm').max) || 200;
+    const minVal = parseFloat(document.getElementById('nibWidthMm').min) || 0.5;
     // Ensure value is valid
-    if (isNaN(value) || value <= 0) {
-        console.error("Invalid nibWidthPt value. Reverting to default.");
+    if (isNaN(value) || value < minVal || value > maxVal) {
+
+
+        if (value > maxVal) {
+            alert("Value exceeds maximum of " + maxVal);
+        }
+
+        else if (value < minVal) {
+            alert("Value minimum is: " + minVal);
+        }
+        else {
+            alert("Invalid nib width value. Reverting to default.");
+        }
+
+        console.error("Invalid nibWidth value. Reverting to default.");
         value = 3.8; // Default fallback value
     }
 
@@ -175,7 +185,7 @@ function setNibWidthPtFromMM(value) {
     nibWidthPt = nibWidthMm * mmToPt; // Convert to points
     document.getElementById('nibWidthMm').value = value; // Update text field
     document.getElementById('nibWidthInPtDisplay').innerText = nibWidthPt.toFixed(2); // Update text field
-    
+
     //console.log("Nib Width updated to: " + value);
 }
 
@@ -321,32 +331,32 @@ document.getElementById('verticalLines').addEventListener('change', function () 
 
 
 
-    // Event listeners for input fields to allow manual modification when showFont is false
-    document.getElementById('ascenderHeight').addEventListener('input', function () {
-        ascenderMultiplier = parseFloat(this.value);
-    });
-    document.getElementById('capitalHeight').addEventListener('input', function () {
-        capitalMultiplier = parseFloat(this.value);
-    });
-    document.getElementById('descenderDepth').addEventListener('input', function () {
-        descenderMultiplier = parseFloat(this.value);
-    });
+// Event listeners for input fields to allow manual modification when showFont is false
+document.getElementById('ascenderHeight').addEventListener('input', function () {
+    ascenderMultiplier = parseFloat(this.value);
+});
+document.getElementById('capitalHeight').addEventListener('input', function () {
+    capitalMultiplier = parseFloat(this.value);
+});
+document.getElementById('descenderDepth').addEventListener('input', function () {
+    descenderMultiplier = parseFloat(this.value);
+});
 
 
 // Add event listeners to controls
-    // Select all input, select, and textarea elements within #controls, but exclude those with the class '.notWorksheetGenerating'
-    var controls = document.querySelectorAll(
-        '#controls input:not(.notWorksheetGenerating), #controls select:not(.notWorksheetGenerating), #controls textarea:not(.notWorksheetGenerating)'
-    );
+// Select all input, select, and textarea elements within #controls, but exclude those with the class '.notWorksheetGenerating'
+var controls = document.querySelectorAll(
+    '#controls input:not(.notWorksheetGenerating), #controls select:not(.notWorksheetGenerating), #controls textarea:not(.notWorksheetGenerating)'
+);
 
-    controls.forEach(function (control) {
-       control.addEventListener('change', function () { makeWorksheetPages(); });
-    });
+controls.forEach(function (control) {
+    control.addEventListener('change', function () { makeWorksheetPages(); });
+});
 
 
-    
 
-    // Update xHeightToNibWidthProp from user input
+
+// Update xHeightToNibWidthProp from user input
 document.getElementById('xHeightToNibWidthProp').addEventListener('input', function () {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
@@ -356,19 +366,19 @@ document.getElementById('xHeightToNibWidthProp').addEventListener('input', funct
     //console.log("xHeightToNibWidthProp updated to:", this.value);
 
     makeFontMetrics();
-    
+
     // Regenerate the worksheet pages to apply the new X-Height tweak
     makeWorksheetPages();
-/*
-    // Only update tweak if the font was uploaded (has fontData attribute)
-    if (selectedOption.hasAttribute('fontData')) {
-
-
-
-        
-    } else {
-        console.warn("Font X-Height Tweak is only applicable for uploaded fonts.");
-    }*/
+    /*
+        // Only update tweak if the font was uploaded (has fontData attribute)
+        if (selectedOption.hasAttribute('fontData')) {
+    
+    
+    
+            
+        } else {
+            console.warn("Font X-Height Tweak is only applicable for uploaded fonts.");
+        }*/
 });
 
 
@@ -377,10 +387,10 @@ document.getElementById('xHeightToNibWidthProp').addEventListener('input', funct
 document.getElementById('fontForWorksheetPages').addEventListener('change', function () {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    
+
     const tweakInputField = document.getElementById('xHeightToNibWidthProp');
 
-     
+
     loadSelectedFontOptionSettingsIntoFields();
 
 
@@ -394,21 +404,21 @@ document.getElementById('xHeightToNibWidthProp').addEventListener('change', func
     const tweakInputField = document.getElementById('xHeightToNibWidthProp');
 
     selectedOption.setAttribute('brushWidthOfFontNibMultiplier', tweakInputField.value);
-  
+
     makeWorksheetPages();
     if (selectedOption.hasAttribute('fontData')) {
         // Show the tweak enclosure for uploaded fonts
-//        tweakEnclosure.style.display = 'block';
-        
-//        tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+        //        tweakEnclosure.style.display = 'block';
 
-         // Default brush width
-    //selectedOption.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
+        //        tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+
+        // Default brush width
+        //selectedOption.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
 
 
     } else if (selectedOption.hasAttribute('fontURL')) {
         // Hide the tweak enclosure for default fonts
-      //  tweakEnclosure.style.display = 'none';
+        //  tweakEnclosure.style.display = 'none';
     }
 });
 
@@ -420,21 +430,21 @@ document.getElementById('xHeightFontScaleFactor').addEventListener('change', fun
     const tweakInputField = document.getElementById('xHeightFontScaleFactor');
 
     selectedOption.setAttribute('xHeightFontScaleFactor', tweakInputField.value);
-  
+
     makeWorksheetPages();
     if (selectedOption.hasAttribute('fontData')) {
         // Show the tweak enclosure for uploaded fonts
-//        tweakEnclosure.style.display = 'block';
-        
-//        tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+        //        tweakEnclosure.style.display = 'block';
 
-         // Default brush width
-    //selectedOption.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
+        //        tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 0;
+
+        // Default brush width
+        //selectedOption.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1;
 
 
     } else if (selectedOption.hasAttribute('fontURL')) {
         // Hide the tweak enclosure for default fonts
-      //  tweakEnclosure.style.display = 'none';
+        //  tweakEnclosure.style.display = 'none';
     }
 });
 
@@ -452,39 +462,36 @@ document.getElementById('xHeightFontScaleFactor').addEventListener('change', fun
         */
 
 
-function showHideSections()
-{
+function showHideSections() {
 
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
     const tweakEnclosure = document.getElementById('xHeightToNibWidthPropEnclosure');
-    
- //   const tweakInputField = document.getElementById('xHeightToNibWidthProp');
-   // tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier'));
+
+    //   const tweakInputField = document.getElementById('xHeightToNibWidthProp');
+    // tweakInputField.value = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier'));
 
     if (selectedOption.hasAttribute('fontData')) {
-        
-       // tweakEnclosure.style.display = 'block';
+
+        // tweakEnclosure.style.display = 'block';
     } else if (selectedOption.hasAttribute('fontURL')) {
-      //  tweakEnclosure.style.display = 'none';
+        //  tweakEnclosure.style.display = 'none';
     }
 
 
 
 
     const customPracticeTextEnclosure = document.getElementById('customPracticeTextEnclosure');
-    
+
     const includeNumberCharactersEnclosure = document.getElementById('includeNumberCharactersEnclosure');
 
     const selectedCharactersValue = document.getElementById("caseSelection").value;
 
-    if(selectedCharactersValue == "customText")
-    {
+    if (selectedCharactersValue == "customText") {
         includeNumberCharactersEnclosure.style.display = 'none';
         customPracticeTextEnclosure.style.display = 'block';
     }
-    else
-    {
+    else {
         includeNumberCharactersEnclosure.style.display = 'block';
         customPracticeTextEnclosure.style.display = 'none';
     }
@@ -495,41 +502,39 @@ function showHideSections()
 
     const currentHeight = fieldsetContentsForFont.clientHeight;
 
-    
+
     if (showFontSwitch.checked == true) {
-        if(currentHeight == 0)
-        {
-            blindDown(fieldsetContentsForFont); 
-            
+        if (currentHeight == 0) {
+            blindDown(fieldsetContentsForFont);
+
             // eliminates artifacts when unchecked
             // and this sets it back to normal
             practiceCharactersLegend.style.borderBottomLeftRadius = '0pt';
             practiceCharactersLegend.style.borderBottomRightRadius = '0pt';
-            
- 
+
+
         }
-  //      fieldsetContentsForFont.style.display = 'block';
+        //      fieldsetContentsForFont.style.display = 'block';
     } else if (showFontSwitch.checked == false) {
-        if(currentHeight > 0)
-            {
-                 // eliminates overflow artificacts when unchecked
-                // and this sets the border radius
-                practiceCharactersLegend.style.borderBottomLeftRadius = '8pt';
-                practiceCharactersLegend.style.borderBottomRightRadius = '8pt';
-                
-        blindUp(fieldsetContentsForFont);
-//        fieldsetContentsForFont.style.display = 'none';
-            }
+        if (currentHeight > 0) {
+            // eliminates overflow artificacts when unchecked
+            // and this sets the border radius
+            practiceCharactersLegend.style.borderBottomLeftRadius = '8pt';
+            practiceCharactersLegend.style.borderBottomRightRadius = '8pt';
+
+            blindUp(fieldsetContentsForFont);
+            //        fieldsetContentsForFont.style.display = 'none';
+        }
     }
 
-    
+
 
 }
 
 function blindToggle(element, duration = 400) {
     // Get the current height of the element
     const currentHeight = element.clientHeight;
-    
+
     // If the element is visible (height > 0), we collapse it ("blind up")
     if (currentHeight > 0) {
         blindUp(element, duration);
@@ -541,13 +546,13 @@ function blindToggle(element, duration = 400) {
 function blindUp(element, duration = 100) {
     element.style.height = `${element.scrollHeight}px`;
     element.style.transition = `height ${duration}ms linear`;
-    
+
     // Trigger reflow to ensure the transition happens
     element.offsetHeight;
-    
+
     // Start the "blind up" transition
     element.style.height = '0';
-    
+
     // Clean up styles after transition
     setTimeout(() => {
         element.style.display = 'none';
@@ -559,11 +564,11 @@ function blindUp(element, duration = 100) {
 function blindDown(element, duration = 400) {
     element.style.display = 'block';
     const targetHeight = element.scrollHeight;
-    
+
     // Set initial height to 0 to start the "blind down" transition
     element.style.height = '0';
     element.style.transition = `height ${duration}ms ease-out`;
-    
+
     // Trigger reflow
     element.offsetHeight;
 
@@ -588,28 +593,41 @@ document.addEventListener('DOMContentLoaded', function () {
 // Debounce function to limit the rate of execution
 function debounce(func, delay) {
     let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), delay);
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
     };
-  }
+}
 
-  // Example function to call on each character input
-  function handleCustomTextInput(event) {
+// Example function to call on each character input
+function handleCustomTextInput(event) {
     makeWorksheetPages();
-  }
+}
 
-  // Get the textarea element
-  const textarea = document.getElementById('customPracticeText');
+// Get the textarea element
+const textarea = document.getElementById('customPracticeText');
 
-  // Add the debounced input event listener
-  textarea.addEventListener('input', debounce(handleCustomTextInput, 300));
+// Add the debounced input event listener
+textarea.addEventListener('input', debounce(handleCustomTextInput, 300));
 
-  function isSafari()
-  {
-      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-      
-  }
+function isSafari() {
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+}
 
 
-  
+// JavaScript to handle the selection
+const selectControl = document.getElementById('nibWidthStaticSelect');
+const nibWidthMmTextField = document.getElementById('nibWidthMm');
+
+selectControl.addEventListener('change', function () {
+    // Push the selected value to the text field
+    //  nibWidthMmTextField.value = selectControl.value;
+
+    setNibWidthPtFromMM(parseFloat(selectControl.value));
+    makeFontMetrics();
+    makeWorksheetPages();
+    // Reset the select to its default state
+    selectControl.selectedIndex = 0;
+
+});

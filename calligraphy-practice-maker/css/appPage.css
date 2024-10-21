@@ -280,14 +280,29 @@
         display: inline-block;
     }
 
+    .vertSpacer{
+        height:10pt;
+    }
+
+    .vertSpacer2{
+        height:10pt;
+    }
+
+
     #controls fieldset .indent label {
         font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow'; 
 
     }
     .labelNote {
-        color: rgb(41, 79, 22);
+        color: rgb(108, 120, 177);
         font-family: monospace;
         font-size: 10pt;
+    }
+
+    .labelNote2 {
+        color: rgb(108, 120, 177);
+        font-family: monospace;
+        font-size: 12pt;
     }
 
     .settingEnclosure.indent .labelNote {

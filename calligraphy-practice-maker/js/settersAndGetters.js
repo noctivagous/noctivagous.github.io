@@ -998,6 +998,16 @@ function getSvgFilters() {
 
       
       
+    
+  
+      
+
+       
+      </defs>
+    `;
+
+
+    /*
         <!-- Drop Shadow Effect -->
         <filter name="Drop Shadow" id="dropShadow" x="-10%" y="-10%" width="120%" height="120%"
                 data-params='{"dropShadowStdDeviation": ${filterConfig.dropShadowStdDeviation}, "dropShadowDx": ${filterConfig.dropShadowDx}, "dropShadowDy": ${filterConfig.dropShadowDy}}'>
@@ -1010,22 +1020,20 @@ function getSvgFilters() {
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-  
-      
+    // Glow
+    <filter name="Glow" id="glow" x="-10%" y="-10%" width="120%" height="120%"
+        data-params='{"glowStdDeviation": ${filterConfig.glowStdDeviation}, "glowColor": "${filterConfig.glowColor}", "glowOpacity": ${filterConfig.glowOpacity}}'>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="${filterConfig.glowStdDeviation}" result="blur" />
+  <feFlood flood-color="${filterConfig.glowColor}" flood-opacity="${filterConfig.glowOpacity}" />
+  <feComposite in2="blur" operator="in" />
+  <feMerge>
+    <feMergeNode />
+    <feMergeNode in="SourceGraphic" />
+  </feMerge>
+</filter>
+*/
 
-        <!-- Glow Effect -->
-        <filter name="Glow" id="glow" x="-10%" y="-10%" width="120%" height="120%"
-                data-params='{"glowStdDeviation": ${filterConfig.glowStdDeviation}, "glowColor": "${filterConfig.glowColor}", "glowOpacity": ${filterConfig.glowOpacity}}'>
-          <feGaussianBlur in="SourceAlpha" stdDeviation="${filterConfig.glowStdDeviation}" result="blur" />
-          <feFlood flood-color="${filterConfig.glowColor}" flood-opacity="${filterConfig.glowOpacity}" />
-          <feComposite in2="blur" operator="in" />
-          <feMerge>
-            <feMergeNode />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-    `;
+
 }
 
 
@@ -1059,8 +1067,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedOption = this.options[this.selectedIndex];
 
-        if(selectedOption.value == "")
-        {
+        if (selectedOption.value == "") {
             displayFilterControls([]);
             return;
         }

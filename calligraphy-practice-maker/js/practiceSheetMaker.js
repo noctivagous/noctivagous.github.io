@@ -200,8 +200,8 @@ function handleFontFileUpload(file) {
             newOption.setAttribute('ascenderRatio', '0.45'); // Default value
             newOption.setAttribute('capHeightRatio', '0.6'); // Default value
             newOption.setAttribute('descenderDepthRatio', '0.45'); // Default value
-            newOption.setAttribute('xHeightFontScaleFactor', '0.95'); // Default value
-            newOption.setAttribute('fontYOffset', '0'); // Default value
+            newOption.setAttribute('xHeightFontScaleFactor', '1.0'); // Default value
+            newOption.setAttribute('fontYOffset', '0.0'); // Default value
 
             uploadedOptgroup.appendChild(newOption);
             document.getElementById('fontForWorksheetPages').value = fontName;
@@ -443,7 +443,7 @@ async function loadFontAndMakeWorksheetPages() {
     try {
         
         loadSelectedFontOptionSettingsIntoFields();
-        
+
         showFont = document.getElementById('showFont').checked;
 
         

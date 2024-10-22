@@ -488,7 +488,7 @@
         
         font-weight: normal;
         border: 2pt solid black;
-        color:rgb(92, 146, 11);
+        color:rgb(137, 138, 135);
         /* Apply border to create the "well" effect */
         border: 1pt solid #3a3939;
         /* Darker border as a base */
@@ -501,10 +501,10 @@
         height:23pt;
 
         
-        font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; 
+        font-family: 'DDINRegular','Franklin Gothic Medium', 'Arial Narrow' !important; 
         
-        font-family: monospace !important;
-        font-size: 11pt;
+   
+        font-size: 13pt;
     }
 
     #controls select:hover{
@@ -553,6 +553,27 @@
 
     }
 
+    .settingEnclosure button {
+        background-color: #222222;
+        height: 20pt;
+        border:1pt solid black;
+        color:#8a8a8a;
+        
+    }
+
+    .settingEnclosure button:hover{
+        background-color: #383838;
+        height: 20pt;
+        border:1pt solid black;
+        color:#8a8a8a;
+    }
+
+    .settingEnclosure button:active{
+        background-color: #222222;
+        height: 20pt;
+        border:1pt solid black;
+        color:#8a8a8a;
+    }
 
     #controlsScrollbar {
         position: fixed;

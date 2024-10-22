@@ -141,14 +141,14 @@ a small number of fonts available.
                     <div class="settingEnclosure indent">
                         <table width="100%" cellpadding="3" padding="0">
                             <tr>
-                                <td valign="top"><button id="uploadFont" class="darkButton">Upload Font...</button>
+                                <td valign="top"><button id="uploadFont" class="darkButton" style="width:100%">Import...</button>
                                     <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
                                     <span class="labelNote" style="margin-top:6pt;display: inline-block;">
                                         (.OTF or .TTF)
                                     </span>
                                 </td>
 
-                                <td><span style="color:white">or</span></td>
+                                <td><span style="color:white;padding:4pt;">or</span></td>
                                 <td>
 
                                     <div id="dropArea">
@@ -480,7 +480,7 @@ a small number of fonts available.
                 <legend>Reset</legend>
 
                 <div class="settingEnclosure">
-                    <button onclick="clearFontsFromIndexedDB()">Clear Uploaded Fonts</button>
+                    <button onclick="clearFontsFromIndexedDB()">Clear Imported Fonts</button>
                 </div>
                 
             </fieldset>

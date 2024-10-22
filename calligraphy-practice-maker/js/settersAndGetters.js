@@ -24,9 +24,6 @@ function loadSelectedFontOptionSettingsIntoFields() {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
 
-    
-    
-
 
 
     const fontGlyphNibWidthInputField = document.getElementById('fontGlyphNibWidth');
@@ -51,7 +48,7 @@ function loadSelectedFontOptionSettingsIntoFields() {
     const fontYOffsetEnclosure = document.getElementById('fontYOffsetEnclosure');
     fontYOffsetField.value  = parseFloat(selectedOption.getAttribute('fontYOffset')) || 0.0;
 
-    if (selectedOption.hasAttribute('fontData')) {
+    if (selectedOption.hasAttribute('fontFileData')) {
         // Show the tweak enclosure for uploaded fonts
         fontGlyphNibWidthEnclosure.style.display = 'block';
         xHeightFontScaleFactorEnclosure.style.display = 'block';
@@ -405,8 +402,8 @@ document.getElementById('fontGlyphNibWidth').addEventListener('input', function 
     // Regenerate the worksheet pages to apply the new X-Height tweak
     makeWorksheetPages();
     /*
-        // Only update tweak if the font was uploaded (has fontData attribute)
-        if (selectedOption.hasAttribute('fontData')) {
+        // Only update tweak if the font was uploaded (has fontFileData attribute)
+        if (selectedOption.hasAttribute('fontFileData')) {
     
     
     
@@ -436,12 +433,12 @@ document.getElementById('fontGlyphNibWidth').addEventListener('change', function
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
     const tweakEnclosure = document.getElementById('fontXHeightTweakEnclosure');
-    const tweakInputField = document.getElementById('fontGlyphNibWidth');
+    const fontGlyphNibWidthInputField = document.getElementById('fontGlyphNibWidth');
 
-    selectedOption.setAttribute('fontGlyphNibWidth', tweakInputField.value);
+    selectedOption.setAttribute('fontGlyphNibWidth', fontGlyphNibWidthInputField.value);
 
     makeWorksheetPages();
-    if (selectedOption.hasAttribute('fontData')) {
+    if (selectedOption.hasAttribute('fontFileData')) {
         // Show the tweak enclosure for uploaded fonts
         //        tweakEnclosure.style.display = 'block';
 
@@ -467,7 +464,7 @@ document.getElementById('xHeightFontScaleFactor').addEventListener('change', fun
     selectedOption.setAttribute('xHeightFontScaleFactor', tweakInputField.value);
 
     makeWorksheetPages();
-    if (selectedOption.hasAttribute('fontData')) {
+    if (selectedOption.hasAttribute('fontFileData')) {
         // Show the tweak enclosure for uploaded fonts
         //        tweakEnclosure.style.display = 'block';
 
@@ -484,19 +481,6 @@ document.getElementById('xHeightFontScaleFactor').addEventListener('change', fun
 });
 
 
-/*
-  // Check if the currently loaded font is an uploaded font
-    const fontSelect = document.getElementById('fontForWorksheetPages');
-    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    if (selectedOption.hasAttribute('fontData')) {
-        // Retrieve fontGlyphNibWidth for uploaded fonts
-        let fontGlyphNibWidth = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')) || 0;
-        ////
-        sxHeight += (-100 * fontGlyphNibWidth); // Apply the tweak
-    }
-        */
-
-
 function showHideSections() {
 
     const fontSelect = document.getElementById('fontForWorksheetPages');
@@ -506,7 +490,7 @@ function showHideSections() {
     //   const tweakInputField = document.getElementById('fontGlyphNibWidth');
     // tweakInputField.value = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth'));
 
-    if (selectedOption.hasAttribute('fontData')) {
+    if (selectedOption.hasAttribute('fontFileData')) {
 
         // tweakEnclosure.style.display = 'block';
     } else if (selectedOption.hasAttribute('fontURL')) {
@@ -717,8 +701,8 @@ async function saveFontToIndexedDB(fontName, attributes) {
     const transaction = db.transaction([storeName], "readwrite");
     const store = transaction.objectStore(storeName);
 
-    const fontData = { name: fontName, ...attributes };
-    const request = store.put(fontData);
+    const fontDataToStore = { name: fontName, ...attributes };
+    const request = store.put(fontDataToStore);
 
     request.onsuccess = function() {
         console.log("Font attributes saved to IndexedDB:", fontName);
@@ -847,12 +831,15 @@ function updateFontAttributesInOption() {
     const ascenderField = document.getElementById('ascenderHeight').value;
     const capHeightField = document.getElementById('capitalHeight').value;
     const descenderDepthField = document.getElementById('descenderDepth').value;
+    const fontYOffsetField = document.getElementById('fontYOffset').value;
+
 
     selectedOption.setAttribute('fontGlyphNibWidth', fontGlyphNibWidthInputField);
     selectedOption.setAttribute('xHeightFontScaleFactor', xHeightFontScaleFactorField);
     selectedOption.setAttribute('ascenderRatio', ascenderField);
     selectedOption.setAttribute('capHeightRatio', capHeightField);
     selectedOption.setAttribute('descenderDepthRatio', descenderDepthField);
+    selectedOption.setAttribute('fontYOffset', fontYOffsetField);
 
     // Save updated attributes to IndexedDB
     const attributes = {
@@ -860,7 +847,9 @@ function updateFontAttributesInOption() {
         xHeightFontScaleFactor: xHeightFontScaleFactorField,
         ascenderRatio: ascenderField,
         capHeightRatio: capHeightField,
-        descenderDepthRatio: descenderDepthField
+        descenderDepthRatio: descenderDepthField,
+        fontYOffset: fontYOffsetField,
+        fontFileData: selectedOption.getAttribute('fontFileData')
     };
     saveFontToIndexedDB(selectedOption.value, attributes);
 }

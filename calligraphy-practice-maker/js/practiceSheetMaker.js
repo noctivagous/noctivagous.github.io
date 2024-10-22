@@ -195,7 +195,7 @@ function handleFontFileUpload(file) {
             const newOption = document.createElement('option');
             newOption.value = fontName;
             newOption.textContent = fontName;
-            newOption.setAttribute('fontData', base64String);
+            newOption.setAttribute('fontFileData', base64String);
             newOption.setAttribute('fontGlyphNibWidth', '5'); // Default value
             newOption.setAttribute('ascenderRatio', '0.45'); // Default value
             newOption.setAttribute('capHeightRatio', '0.6'); // Default value
@@ -208,7 +208,7 @@ function handleFontFileUpload(file) {
 
             // Save all attributes to IndexedDB
             const attributes = {
-                fontData: base64String,
+                fontFileData: base64String,
                 fontGlyphNibWidth: '5',
                 ascenderRatio: '0.45',
                 capHeightRatio: '0.6',
@@ -459,18 +459,18 @@ async function loadFontAndMakeWorksheetPages() {
         const fontUrl = getFontUrl(fontName);
         const selectedOption = fontSelect.options[fontSelect.selectedIndex];
 
-        const fontData = selectedOption.getAttribute('fontData'); // Assume stored as base64
+        const fontFileData = selectedOption.getAttribute('fontFileData'); // Assume stored as base64
 
 
-        if (fontData) {
+        if (fontFileData) {
             document.getElementById('nibWidthsTall').disabled = false;
         }
 
         // Load the font asynchronously
 
-        if (fontData) {
-            // Decode the base64-encoded fontData into an ArrayBuffer
-            const byteString = atob(fontData);
+        if (fontFileData) {
+            // Decode the base64-encoded fontFileData into an ArrayBuffer
+            const byteString = atob(fontFileData);
             const byteArray = new Uint8Array(byteString.length);
             for (let i = 0; i < byteString.length; i++) {
                 byteArray[i] = byteString.charCodeAt(i);
@@ -486,7 +486,7 @@ async function loadFontAndMakeWorksheetPages() {
             makeFontMetrics();
             ////
         } else {
-            throw new Error("No valid font source found (URL or fontData missing).");
+            throw new Error("No valid font source found (URL or fontFileData missing).");
         }
 
 
@@ -612,16 +612,18 @@ async function makeWorksheetPages() {
         const fontUrl = getFontUrl(fontName);
         const selectedOption = fontSelect.options[fontSelect.selectedIndex];
 
-        const fontData = selectedOption.getAttribute('fontData'); // Assume stored as base64
+        const fontFileData = selectedOption.getAttribute('fontFileData'); // Assume stored as base64
 
         // don't allow adjustments of x-height (nibWidthsTall)
-        // if the font was not uploaded by the user.
-        if (fontData) {
+        // if the font is built-in.
+        if (fontFileData) {
+            // fontFileData is an uploaded font
             document.getElementById('nibWidthsTall').disabled = false;
 
         }
-        else // uses fontData
+        else
         {
+            // fontURL is a built-in font
             document.getElementById('nibWidthsTall').disabled = true;
         }
 
@@ -644,30 +646,6 @@ async function makeWorksheetPages() {
 }
 
 
-async function makeWorksheetPagesOLD() {
-    pullPaperSizeFromFormFields();
-
-    emptyWorksheetArea();
-
-    await loadFont(async function () {
-        emptyWorksheetArea();
-
-        // Determine the number of pages based on user selections
-        var numberOfPages = calculateNumberOfPages();
-
-        for (var i = 0; i < numberOfPages; i++) {
-            // Create SVG element
-            var svg = createSVGElement();
-
-            // Append SVG to worksheetPagesContainer
-            var container = document.getElementById('worksheetPagesContainer');
-            container.appendChild(svg);
-
-            // Call drawWorksheet(svg, i)
-            await drawWorksheet(svg, i);  // Ensure it waits for rendering to complete
-        }
-    });
-}
 
 
 function calculateNumberOfPages(rows) {
@@ -1178,6 +1156,7 @@ function getFontUrl(fontName) {
         }
     }
 
+    
     // If no matching font name was found, use the first <option> as fallback
     if (!fontUrl) {
         const fallbackOption = fontSelect.options[0];
@@ -1186,6 +1165,7 @@ function getFontUrl(fontName) {
             fontURL = 'fonts/BreitkopfFraktur.ttf';
         }
     }
+    
 
     return fontUrl;
 }

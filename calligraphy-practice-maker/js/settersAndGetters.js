@@ -859,3 +859,158 @@ function updateFontAttributesInOption() {
 document.querySelectorAll('.fontAttribute').forEach(input => {
     input.addEventListener('change', updateFontAttributesInOption);
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the select element
+    const effectSelect = document.getElementById('effectSelect');
+
+    // Add an event listener to the select element
+    effectSelect.addEventListener('change', function () {
+        applyCurrentGlyphFilter();
+    });
+
+
+});
+
+
+
+function applyCurrentGlyphFilter() {
+    // Query all the SVGs that have the 'worksheetPage' class
+    const svgElements = document.querySelectorAll('svg.worksheetPage');
+
+    // Loop through each SVG and apply the filter
+    svgElements.forEach(svg => {
+        const glyphs = svg.querySelectorAll('.practiceSheetGlyph'); // Find glyphs inside each SVG
+       console.log(glyphs);
+       const effectSelect = document.getElementById('effectSelect');
+       const selectedEffect = effectSelect.options[effectSelect.selectedIndex];
+
+        applyFilterToGlyphs(glyphs, selectedEffect.value);
+    });
+}
+
+
+// Function to apply the filter to a given set of glyphs
+function applyFilterToGlyphs(glyphElements, filterId) {
+    glyphElements.forEach(glyph => {
+        if (filterId) {
+            glyph.setAttribute('filter', `url(#${filterId})`);
+        } else {
+            glyph.removeAttribute('filter');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the select element
+    const effectSelect = document.getElementById('effectSelect');
+  
+    // Add an event listener to the select element
+    effectSelect.addEventListener('change', function() {
+      // Query all the SVGs that have the 'worksheetPage' class
+      const svgElements = document.querySelectorAll('svg.worksheetPage');
+      
+      applyFilterToGlyphs();
+      // Loop through each SVG and apply the filter
+      svgElements.forEach(svg => {
+        const glyphs = svg.querySelectorAll('.practiceSheetGlyph'); // Find glyphs inside each SVG
+        console.log(glyphs);
+        const selectedEffect = this.value;
+        applyFilterToGlyphs(glyphs, selectedEffect);
+      });
+   
+    });
+  
+    
+  });
+  
+
+
+
+  // Initial values for dynamic variables
+let outlineRadius = 20;
+let outlineColor = 'cyan';
+let dropShadowStdDeviation = 30;
+let dropShadowDx = 4;
+let dropShadowDy = 4;
+let glowStdDeviation = 25;
+let glowColor = 'cyan';
+let glowOpacity = 0.9;
+
+// Function to generate the SVG filters template
+function getSvgFilters() {
+  return `
+    <defs>
+      <!-- Outline Effect -->
+      <filter id="outline">
+        <feMorphology operator="dilate" radius="${outlineRadius}" in="SourceAlpha" result="thickened" />
+        <feFlood flood-color="${outlineColor}" result="outlineColor" />
+        <feComposite in="outlineColor" in2="thickened" operator="in" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
+      <!-- Drop Outline Effect -->
+      <filter id="dropOutline">
+        <feMorphology operator="dilate" radius="${outlineRadius}" in="SourceAlpha" result="thickened" />
+        <feFlood flood-color="${outlineColor}" result="outlineColor" />
+        <feComposite in="outlineColor" in2="thickened" operator="in" />
+        <feOffset dx="${outlineRadius}" dy="${outlineRadius}" result="offset1" /> 
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="offset1" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
+      <!-- Drop Shadow Effect -->
+      <filter id="dropShadow">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="${dropShadowStdDeviation}" result="blur" />
+        <feOffset in="blur" dx="${dropShadowDx}" dy="${dropShadowDy}" result="offsetBlur" />
+        <feFlood flood-color="black" flood-opacity="0.5" />
+        <feComposite in2="offsetBlur" operator="in" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
+      <!-- Glow Effect -->
+      <filter id="glow">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="${glowStdDeviation}" result="blur" />
+        <feFlood flood-color="${glowColor}" flood-opacity="${glowOpacity}" />
+        <feComposite in2="blur" operator="in" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
+      <!-- Bevel Effect -->
+      <filter id="bevel">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+        <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.75" specularExponent="20" lighting-color="white" result="specOut">
+          <fePointLight x="50" y="50" z="200" />
+        </feSpecularLighting>
+        <feComposite in="specOut" in2="SourceAlpha" operator="in" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  `;
+}
+
+
+// Function to add filters to the SVG
+function addFiltersToSVG(svgElement) {
+  svgElement.insertAdjacentHTML('afterbegin', getSvgFilters());
+}
+
+
+
+  

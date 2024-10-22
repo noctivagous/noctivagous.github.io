@@ -32,7 +32,7 @@ a small number of fonts available.
         <!-- Configuration Area -->
         <div id="controls">
             <h1>LetterformPortal<br/><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
-            color:#aaa;font-size:11pt;font-style: italic;">Worksheet Generator</span></h1>
+            color:#aaa;font-size:11pt;font-style: italic;z-index: 20;">Worksheet Generator</span></h1>
 
 
 
@@ -477,6 +477,27 @@ a small number of fonts available.
 
             </fieldset>
 
+            <fieldset id="effectsFieldset">
+                <legend>Effects</legend>
+                <div class="settingEnclosure">
+                  <label for="effectSelect">Glyph Filters:</label>
+                  <select id="effectSelect">
+                    <option value="" selected>None</option>
+                    
+
+                    <option value="dropOutline">Drop Outline</option>
+                    <option value="outline">Outline</option>
+                    <!--
+                    <option value="dropShadow">Drop Shadow</option>
+                    <option value="extrusion">3D Extrusion</option>
+                    <option value="glow">Glow</option>
+                    <option value="bevel">Bevel</option>
+                    -->
+                  </select>
+                </div>
+              </fieldset>
+
+              
             <fieldset>
                 <legend>Reset</legend>
 

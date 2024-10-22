@@ -12,7 +12,10 @@
         /* This ensures that no default scrollbars appear for the body */
     }
 
-
+    /*
+ svg .practiceSheetGlyph {
+    filter: drop-shadow(45pt 0pt 0 rgb(81, 81, 81));
+  }*/
 
     #container {
         display: flex;
@@ -193,10 +196,10 @@
 
 
     .settingEnclosure {
-        padding: 5pt;
-        padding-top:7pt;
-        padding-bottom:7pt;
-        
+        padding:8pt;
+        padding-top:8pt;
+        padding-bottom:8pt;
+        padding-right: 8pt;
         padding-left: 8pt;
 
         margin-top: 0px;

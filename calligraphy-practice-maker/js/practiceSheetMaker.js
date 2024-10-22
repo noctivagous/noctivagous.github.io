@@ -641,7 +641,8 @@ async function makeWorksheetPages() {
         await drawWorksheet(svg, i, rowsWithCharactersArray);  // Pass the rows array to drawWorksheet
     }
 
-    //generateScrollbarThumbnailForWorksheetArea();
+    applyCurrentGlyphFilter();
+
     updateGeneratedThumbPosition();
 }
 
@@ -936,6 +937,8 @@ function createSVGElement() {
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
     svg.setAttribute('preserveAspectRatio', `xMidYMid meet`);
+
+    addFiltersToSVG(svg);
 
     // Create background rectangle
     var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');

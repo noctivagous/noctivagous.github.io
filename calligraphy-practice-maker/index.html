@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>PenPortal - Calligraphy and Lettering Practice Sheet Generator</title>
+    <title>LetterformPortal - Calligraphy and Lettering Practice Sheet Generator</title>
 
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css" />
 
@@ -31,7 +31,8 @@ a small number of fonts available.
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
-            <h1>PenPortal <br/><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;color:#aaa;font-size:11pt;font-style: italic;">Letterform Worksheet Generator</span></h1>
+            <h1>LetterformPortal<br/><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
+            color:#aaa;font-size:11pt;font-style: italic;">Worksheet Generator</span></h1>
 
 
 
@@ -93,7 +94,7 @@ a small number of fonts available.
                             
 
                                 <option value="ZentenaerFraktur" fontGlyphNibWidth="5.6" ascenderRatio="0.45"
-                                capHeightRatio="0.35" descenderDepthRatio="0.3" xHeightFontScaleFactor="1.05" fontYOffset="0" fontURL="fonts/CATZentenaerFrakturUNZ1.ttf" selected>
+                                capHeightRatio="0.3" descenderDepthRatio="0.3" xHeightFontScaleFactor="1.05" fontYOffset="0" fontURL="fonts/CATZentenaerFrakturUNZ1.ttf" selected>
                                 ZentenaerFraktur</option>
 
 
@@ -141,7 +142,7 @@ a small number of fonts available.
                     <div class="settingEnclosure indent">
                         <table width="100%" cellpadding="3" padding="0">
                             <tr>
-                                <td valign="top"><button id="uploadFont" class="darkButton" style="width:100%">Import...</button>
+                                <td valign="top"><button id="uploadFont" class="darkButton" style="width:100%">Upload...</button>
                                     <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
                                     <span class="labelNote" style="margin-top:6pt;display: inline-block;">
                                         (.OTF or .TTF)
@@ -180,7 +181,7 @@ a small number of fonts available.
                     <div class="settingEnclosure indent indent2" style="background-color: #333;"
                     id="fontYOffsetEnclosure">
                     <label for="fontYOffset">Adjust Font's Y Offset:</label>
-                    <input class="fontAttribute" type="number" id="fontYOffset" value="1" min="-100" max="100" step="0.05">
+                    <input class="fontAttribute" type="number" id="fontYOffset" value="0" min="-200" max="200" step="1">
 
                 </div>
 
@@ -480,7 +481,7 @@ a small number of fonts available.
                 <legend>Reset</legend>
 
                 <div class="settingEnclosure">
-                    <button onclick="clearFontsFromIndexedDB()">Clear Imported Fonts</button>
+                    <button onclick="clearFontsFromIndexedDB()">Remove Uploaded Fonts</button>
                 </div>
                 
             </fieldset>

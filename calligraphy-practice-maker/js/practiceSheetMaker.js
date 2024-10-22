@@ -835,7 +835,6 @@ function getFontYOffset()
 }
 
 
-
 function getFontScaleFactor() {
     // Calculate the x-height in points based on user input and nib width
     var xHeight = getXHeightPt();
@@ -1345,10 +1344,11 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
     var fontScaleFactor = getFontScaleFactor();//(xHeight / getFontSXHeight()).toFixed(3);
-
-    ////
+    var fontYOffset = getFontYOffset();
 
     let xPosition = (nibWidthPt * 4) - 3; // Initial position to start drawing characters
+
+    let yPositionWithOffset = yPosition + (-1 * fontYOffset);
 
     // Iterate through each character in charactersForLine and draw it
     charactersForLine.forEach(char => {
@@ -1361,7 +1361,7 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
             svgPath.setAttribute("fill", "#000");
 
 
-            const transform = `translate(${xPosition}, ${yPosition + ascenderHeight + capitalHeight + xHeight}) scale(${fontScaleFactor}, ${fontScaleFactor})`; // Example scale and position
+            const transform = `translate(${xPosition}, ${yPositionWithOffset + ascenderHeight + capitalHeight + xHeight}) scale(${fontScaleFactor}, ${fontScaleFactor})`; // Example scale and position
             svgPath.setAttribute("transform", transform);
             group.appendChild(svgPath);
             xPosition += (glyph.advanceWidth * fontScaleFactor) + spacingForCharacters;
@@ -1371,48 +1371,6 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
 }
 
 
-function renderCharacters(group, characters, xHeight, ascenderHeight, capitalHeight, baselineY, blockY) {
-    var practiceArrangement = document.getElementById('practiceCharactersArrangement').value;
-
-    if (!showFont || !font) return;
-
-    // Calculate scaling factor to fit font into x-height
-    var fontUnitsPerEm = font.unitsPerEm;
-    fontScaleFactor = getFontScaleFactor();//xHeight / getFontSXHeight();
-
-    // Set initial x position
-    var xPosition = 50; // Adjust as needed
-
-
-    var index = 0;
-    characters.forEach(function (char) {
-        var glyph = font.charToGlyph(char);
-        if (glyph) {
-
-        }
-        var path = glyph.getPath(0, 0, font.unitsPerEm);
-
-        // Create SVG path element
-        var svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        svgPath.setAttribute("d", path.toPathData(5));
-        svgPath.setAttribute("fill", "#000"); // Set desired color
-
-        // Calculate transformation to position the character
-        var x = xPosition;
-        var y = baselineY + blockY;
-
-        var transform = `translate(${x}, ${y}) scale(${fontScaleFactor}, ${fontScaleFactor})`;
-        svgPath.setAttribute("transform", transform);
-
-        group.appendChild(svgPath);
-
-
-
-
-        xPosition += (glyph.advanceWidth * fontScaleFactor) + spacingForCharacters;
-        index = index + 1;
-    });
-}
 
 
 function getCharactersForPage(pageIndex) {

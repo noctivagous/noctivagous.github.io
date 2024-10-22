@@ -29,7 +29,7 @@ function loadSelectedFontOptionSettingsIntoFields() {
 
     const fontGlyphNibWidthInputField = document.getElementById('fontGlyphNibWidth');
     const fontGlyphNibWidthEnclosure = document.getElementById('fontGlyphNibWidthEnclosure');
-    
+
     fontGlyphNibWidthInputField.value = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')) || 5;
 
     const xHeightFontScaleFactorField = document.getElementById('xHeightFontScaleFactor');
@@ -47,7 +47,7 @@ function loadSelectedFontOptionSettingsIntoFields() {
 
     const fontYOffsetField = document.getElementById('fontYOffset');
     const fontYOffsetEnclosure = document.getElementById('fontYOffsetEnclosure');
-    fontYOffsetField.value  = parseFloat(selectedOption.getAttribute('fontYOffset')) || 0.0;
+    fontYOffsetField.value = parseFloat(selectedOption.getAttribute('fontYOffset')) || 0.0;
 
     if (selectedOption.hasAttribute('fontFileData')) {
         // Show the tweak enclosure for uploaded fonts
@@ -58,7 +58,7 @@ function loadSelectedFontOptionSettingsIntoFields() {
         // Hide the tweak enclosure for default fonts
         fontGlyphNibWidthEnclosure.style.display = 'none';
         xHeightFontScaleFactorEnclosure.style.display = 'none';
-       fontYOffsetEnclosure.style.display = 'none';
+        fontYOffsetEnclosure.style.display = 'none';
     }
 }
 
@@ -664,18 +664,18 @@ function initIndexedDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(dbName, 1);
 
-        request.onupgradeneeded = function(event) {
+        request.onupgradeneeded = function (event) {
             const db = event.target.result;
             if (!db.objectStoreNames.contains(storeName)) {
                 db.createObjectStore(storeName, { keyPath: "name" });
             }
         };
 
-        request.onsuccess = function(event) {
+        request.onsuccess = function (event) {
             resolve(event.target.result);
         };
 
-        request.onerror = function(event) {
+        request.onerror = function (event) {
             reject("IndexedDB error: " + event.target.error);
         };
     });
@@ -705,10 +705,10 @@ async function saveFontToIndexedDB(fontName, attributes) {
     const fontDataToStore = { name: fontName, ...attributes };
     const request = store.put(fontDataToStore);
 
-    request.onsuccess = function() {
+    request.onsuccess = function () {
         console.log("Font attributes saved to IndexedDB:", fontName);
     };
-    request.onerror = function(event) {
+    request.onerror = function (event) {
         console.error("Failed to save font:", event.target.error);
     };
 }
@@ -720,7 +720,7 @@ async function loadFontsFromIndexedDB() {
     const store = transaction.objectStore(storeName);
 
     const request = store.getAll();
-    request.onsuccess = function(event) {
+    request.onsuccess = function (event) {
         const fonts = event.target.result;
 
         if (fonts.length > 0) {
@@ -752,12 +752,12 @@ async function clearFontsFromIndexedDB() {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const previousSelectedFont = fontSelect.value;
 
-        // Check if the previously selected font was in the "Uploaded" optgroup
+    // Check if the previously selected font was in the "Uploaded" optgroup
     const wasUploadedFont = document.querySelector(`#uploadedOptgroup option[value='${previousSelectedFont}']`);
 
 
     const request = store.clear();
-    request.onsuccess = function() {
+    request.onsuccess = function () {
         console.log("All fonts cleared from IndexedDB.");
         // Remove "Uploaded" optgroup if it exists
         const uploadedOptgroup = document.getElementById('uploadedOptgroup');
@@ -766,9 +766,9 @@ async function clearFontsFromIndexedDB() {
         }
 
         // Reset font selection
-        resetFontSelection(previousSelectedFont,wasUploadedFont);
+        resetFontSelection(previousSelectedFont, wasUploadedFont);
     };
-    request.onerror = function(event) {
+    request.onerror = function (event) {
         console.error("Failed to clear fonts:", event.target.error);
     };
 }
@@ -783,7 +783,7 @@ async function clearFontsFromIndexedDBOLD() {
     const previousSelectedFont = fontSelect.value;
 
     const request = store.clear();
-    request.onsuccess = function() {
+    request.onsuccess = function () {
         console.log("All fonts cleared from IndexedDB.");
         // Clear "Uploaded" optgroup
         const uploadedOptgroup = document.getElementById('uploadedOptgroup');
@@ -794,7 +794,7 @@ async function clearFontsFromIndexedDBOLD() {
         // Reset selection to the first font in the first optgroup if needed
         resetFontSelection(previousSelectedFont);
     };
-    request.onerror = function(event) {
+    request.onerror = function (event) {
         console.error("Failed to clear fonts:", event.target.error);
     };
 }
@@ -861,17 +861,6 @@ document.querySelectorAll('.fontAttribute').forEach(input => {
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Get the select element
-    const effectSelect = document.getElementById('effectSelect');
-
-    // Add an event listener to the select element
-    effectSelect.addEventListener('change', function () {
-        applyCurrentGlyphFilter();
-    });
-
-
-});
 
 
 
@@ -882,9 +871,8 @@ function applyCurrentGlyphFilter() {
     // Loop through each SVG and apply the filter
     svgElements.forEach(svg => {
         const glyphs = svg.querySelectorAll('.practiceSheetGlyph'); // Find glyphs inside each SVG
-       console.log(glyphs);
-       const effectSelect = document.getElementById('effectSelect');
-       const selectedEffect = effectSelect.options[effectSelect.selectedIndex];
+        const effectSelect = document.getElementById('effectSelect');
+        const selectedEffect = effectSelect.options[effectSelect.selectedIndex];
 
         applyFilterToGlyphs(glyphs, selectedEffect.value);
     });
@@ -905,112 +893,239 @@ function applyFilterToGlyphs(glyphElements, filterId) {
 document.addEventListener('DOMContentLoaded', () => {
     // Get the select element
     const effectSelect = document.getElementById('effectSelect');
-  
+
     // Add an event listener to the select element
-    effectSelect.addEventListener('change', function() {
-      // Query all the SVGs that have the 'worksheetPage' class
-      const svgElements = document.querySelectorAll('svg.worksheetPage');
-      
-      applyFilterToGlyphs();
-      // Loop through each SVG and apply the filter
-      svgElements.forEach(svg => {
-        const glyphs = svg.querySelectorAll('.practiceSheetGlyph'); // Find glyphs inside each SVG
-        console.log(glyphs);
-        const selectedEffect = this.value;
-        applyFilterToGlyphs(glyphs, selectedEffect);
-      });
-   
+    effectSelect.addEventListener('change', function () {
+        // Query all the SVGs that have the 'worksheetPage' class
+        const svgElements = document.querySelectorAll('svg.worksheetPage');
+
+        // Loop through each SVG and apply the filter
+        svgElements.forEach(svg => {
+            const glyphs = svg.querySelectorAll('.practiceSheetGlyph'); // Find glyphs inside each SVG
+            const selectedEffect = this.value;
+            applyFilterToGlyphs(glyphs, selectedEffect);
+        });
+
     });
-  
-    
-  });
-  
+
+
+});
 
 
 
-  // Initial values for dynamic variables
-let outlineRadius = 20;
-let outlineColor = 'cyan';
-let dropShadowStdDeviation = 30;
-let dropShadowDx = 4;
-let dropShadowDy = 4;
-let glowStdDeviation = 25;
-let glowColor = 'cyan';
-let glowOpacity = 0.9;
+
+// Central configuration for filter parameters
+const filterConfig = {
+    outlineRadius: 20,
+    outlineColor: '#a9fc03',
+    dropOutlineColor: '#a9fc03',
+    dropOutlineKnockoutColor: '#000000',
+    dropOutlineRadius: 20,
+    dropShadowStdDeviation: 0,
+    dropShadowDx: 30,
+    dropShadowDy: 30,
+    glowStdDeviation: 25,
+    glowColor: '#a9fc03',
+    glowOpacity: 1.0
+};
+
 
 // Function to generate the SVG filters template
 function getSvgFilters() {
-  return `
-    <defs>
-      <!-- Outline Effect -->
-      <filter id="outline">
-        <feMorphology operator="dilate" radius="${outlineRadius}" in="SourceAlpha" result="thickened" />
-        <feFlood flood-color="${outlineColor}" result="outlineColor" />
-        <feComposite in="outlineColor" in2="thickened" operator="in" />
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
+    return `
+      <defs>
+      
+        <!-- Outline Effect -->
+        <filter name="Outline" id="outline" x="-10%" y="-10%" width="120%" height="120%"
+                data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'>
+          <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceAlpha" result="thickened" />
+          <feFlood flood-color="${filterConfig.outlineColor}" result="outlineColor" />
+          <feComposite in="outlineColor" in2="thickened" operator="in" />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+  
+        <!-- Outline + Knockout Effect -->
 
-      <!-- Drop Outline Effect -->
-      <filter id="dropOutline">
-        <feMorphology operator="dilate" radius="${outlineRadius}" in="SourceAlpha" result="thickened" />
-        <feFlood flood-color="${outlineColor}" result="outlineColor" />
-        <feComposite in="outlineColor" in2="thickened" operator="in" />
-        <feOffset dx="${outlineRadius}" dy="${outlineRadius}" result="offset1" /> 
+       <filter name="Stroke Outline + Knockout" id="outliner" x="-10%" y="-10%" width="120%" height="120%"
+             data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'
+       >
+
+        <!-- Start by grabbing the source graphic (the text) and dilating it-->
+        <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceGraphic" result="THICKNESS" />
+        
+         <!-- Then use the text (the SourceGraphic) again to cut out the inside of the dilated text -->
+        <feComposite operator="out" in="THICKNESS" in2="SourceGraphic"></feComposite>
+    </filter>
+
+
+      <!-- Drop Outline + Knockout Effect -->
+      <filter name="Drop Outline + Knockout" id="dropOutlineKnockout" x="-10%" y="-10%" width="120%" height="120%"
+        data-params='{"dropOutlineRadius": ${filterConfig.dropOutlineRadius}, "dropOutlineKnockoutColor": "${filterConfig.dropOutlineKnockoutColor}"}'>
+  <!-- Dilate the source graphic -->
+  <feMorphology operator="dilate" radius="${filterConfig.dropOutlineRadius}" in="SourceAlpha" result="thickened" />
+  <!-- Apply the outline color -->
+  <feFlood flood-color="${filterConfig.dropOutlineKnockoutColor}" result="dropOutlineKnockoutColor" />
+  <feComposite in="dropOutlineKnockoutColor" in2="thickened" operator="in" />
+  <!-- Offset the outline -->
+  <feOffset dx="${filterConfig.dropOutlineRadius}" dy="${filterConfig.dropOutlineRadius}" result="offset1" />
+  <!-- Knock out the original source graphic -->
+  <feComposite operator="out" in="offset1" in2="SourceGraphic" result="knockedOut" />
+  <!-- Merge the result -->
+  <feMerge>
+    <feMergeNode in="knockedOut" />
+  </feMerge>
+</filter>
+
+      
+       <!-- Drop Outline Effect -->
+      <filter name="Drop Outline" id="dropOutline" x="-10%" y="-10%" width="120%" height="120%"
+      data-params='{"dropOutlineRadius": ${filterConfig.dropOutlineRadius}, "dropOutlineColor": "${filterConfig.dropOutlineColor}"}'
+      >
+        <feMorphology operator="dilate" radius="${filterConfig.dropOutlineRadius}" in="SourceAlpha" result="thickened" />
+        <feFlood flood-color="${filterConfig.dropOutlineColor}" result="dropOutlineColor" />
+        <feComposite in="dropOutlineColor" in2="thickened" operator="in" />
+        <feOffset dx="${filterConfig.dropOutlineRadius}" dy="${filterConfig.dropOutlineRadius}" result="offset1" /> 
         <feMerge>
           <feMergeNode />
           <feMergeNode in="offset1" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
+      
 
-      <!-- Drop Shadow Effect -->
-      <filter id="dropShadow">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="${dropShadowStdDeviation}" result="blur" />
-        <feOffset in="blur" dx="${dropShadowDx}" dy="${dropShadowDy}" result="offsetBlur" />
-        <feFlood flood-color="black" flood-opacity="0.5" />
-        <feComposite in2="offsetBlur" operator="in" />
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
+      
+      
+        <!-- Drop Shadow Effect -->
+        <filter name="Drop Shadow" id="dropShadow" x="-10%" y="-10%" width="120%" height="120%"
+                data-params='{"dropShadowStdDeviation": ${filterConfig.dropShadowStdDeviation}, "dropShadowDx": ${filterConfig.dropShadowDx}, "dropShadowDy": ${filterConfig.dropShadowDy}}'>
+          <feGaussianBlur in="SourceAlpha" stdDeviation="${filterConfig.dropShadowStdDeviation}" result="blur" />
+          <feOffset in="blur" dx="${filterConfig.dropShadowDx}" dy="${filterConfig.dropShadowDy}" result="offsetBlur" />
+          <feFlood flood-color="black" flood-opacity="0.5" />
+          <feComposite in2="offsetBlur" operator="in" />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+  
+      
 
-      <!-- Glow Effect -->
-      <filter id="glow">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="${glowStdDeviation}" result="blur" />
-        <feFlood flood-color="${glowColor}" flood-opacity="${glowOpacity}" />
-        <feComposite in2="blur" operator="in" />
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-
-      <!-- Bevel Effect -->
-      <filter id="bevel">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
-        <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.75" specularExponent="20" lighting-color="white" result="specOut">
-          <fePointLight x="50" y="50" z="200" />
-        </feSpecularLighting>
-        <feComposite in="specOut" in2="SourceAlpha" operator="in" />
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
-  `;
+        <!-- Glow Effect -->
+        <filter name="Glow" id="glow" x="-10%" y="-10%" width="120%" height="120%"
+                data-params='{"glowStdDeviation": ${filterConfig.glowStdDeviation}, "glowColor": "${filterConfig.glowColor}", "glowOpacity": ${filterConfig.glowOpacity}}'>
+          <feGaussianBlur in="SourceAlpha" stdDeviation="${filterConfig.glowStdDeviation}" result="blur" />
+          <feFlood flood-color="${filterConfig.glowColor}" flood-opacity="${filterConfig.glowOpacity}" />
+          <feComposite in2="blur" operator="in" />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    `;
 }
+
+
 
 
 // Function to add filters to the SVG
 function addFiltersToSVG(svgElement) {
-  svgElement.insertAdjacentHTML('afterbegin', getSvgFilters());
+    svgElement.insertAdjacentHTML('afterbegin', getSvgFilters());
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the filter select element
+    const filterSelect = document.getElementById('effectSelect');
+
+    // Generate the SVG filters and parse them into an HTML element
+    const svgContainer = document.createElement('div');
+    svgContainer.innerHTML = getSvgFilters();
+
+    // Find all filters and create options for each
+    const filters = svgContainer.querySelectorAll('filter');
+    filters.forEach(filter => {
+        const option = document.createElement('option');
+        option.value = filter.id;
+        option.textContent = filter.getAttribute('name');
+        option.dataset.params = filter.getAttribute('data-params');
+        filterSelect.appendChild(option);
+    });
+
+    // Event listener to handle filter selection
+    filterSelect.addEventListener('change', function () {
+
+        const selectedOption = this.options[this.selectedIndex];
+
+        if(selectedOption.value == "")
+        {
+            displayFilterControls([]);
+            return;
+        }
+
+        const selectedFilter = filterSelect.selectedOptions[0];
+        const params = JSON.parse(selectedFilter.dataset.params);
+        displayFilterControls(params);
+    });
+});
+
+function displayFilterControls(params) {
+    const controlContainer = document.getElementById('filterControlContainer');
+    controlContainer.innerHTML = ''; // Clear existing controls
+
+    // Loop through the params and create corresponding input fields
+    for (const [key, value] of Object.entries(params)) {
+        // Create a div for the label
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'effectFilterParamLabel';
+
+        const label = document.createElement('label');
+        label.textContent = key;
+        labelDiv.appendChild(label);
+
+        // Create a div for the input
+        const inputDiv = document.createElement('div');
+        inputDiv.className = 'effectFilterParamInput';
+
+        const input = document.createElement('input');
+        input.type = typeof value === 'number' ? 'range' : 'color';
+        input.value = filterConfig[key]; // Set initial value from filterConfig
+        input.id = key;
+
+        // Adjust input attributes for numeric controls
+        if (typeof value === 'number') {
+            input.min = 0;
+            input.max = key.includes('Deviation') ? 100 : 50; // Adjust ranges as needed
+            input.step = 1;
+        }
+
+        // Add event listener to update parameter value dynamically
+        input.addEventListener('input', () => {
+            filterConfig[key] = input.type === 'number' ? parseFloat(input.value) : input.value;
+            updateSvgFilters(filterConfig);
+        });
+
+        inputDiv.appendChild(input);
+
+        // Add the label and input divs to the control container
+        controlContainer.appendChild(labelDiv);
+        controlContainer.appendChild(inputDiv);
+    }
 }
 
 
 
-  
+function updateSvgFilters(updatedParams) {
+    // Update filterConfig with new parameter values
+    Object.assign(filterConfig, updatedParams);
+
+    // Refresh the filters in all SVGs
+    document.querySelectorAll('svg.worksheetPage').forEach(svg => {
+        svg.querySelector('defs').remove(); // Remove old filters
+        addFiltersToSVG(svg); // Add updated filters
+    });
+}
+
+

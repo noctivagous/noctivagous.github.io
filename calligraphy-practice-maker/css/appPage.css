@@ -559,7 +559,7 @@
         bottom: 0;
 
         width: 16px;
-        height: calc(100% - 28pt);
+        height: calc(100% - 40pt);
         background: #000;
         cursor: pointer;
         z-index: 20;

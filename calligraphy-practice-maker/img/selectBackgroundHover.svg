@@ -6,6 +6,6 @@
       <stop offset="100%" style="stop-color:#474646;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect x="0" y="0" width="220" height="40" fill="#333" /> <!-- fill="url(#grad1)" -->
+  <rect x="0" y="0" width="220" height="40" fill="#444" /> <!-- fill="url(#grad1)" -->
   <polygon points="195,15 204,25 213,15" fill="darkGray" />
 </svg>

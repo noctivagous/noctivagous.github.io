@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     init();
 
 
+
 });
 
 function generateScrollbarThumbnailForWorksheetArea() {
@@ -169,60 +170,61 @@ document.getElementById('fontFileInput').addEventListener('change', function (ev
     handleFontFileUpload(event.target.files[0]);
 });
 
+
+// Function to handle font file upload and save all attributes
 function handleFontFileUpload(file) {
+
     dropArea.style.color = '#999';
 
     if (file) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            // Store the font as Base64
+        const reader = new FileReader();
+        reader.onload = function(e) {
             const binary = new Uint8Array(e.target.result);
             let binaryString = '';
             for (let i = 0; i < binary.byteLength; i++) {
                 binaryString += String.fromCharCode(binary[i]);
             }
             const base64String = btoa(binaryString);
+            const fontName = file.name.replace(/\.[^/.]+$/, "");
 
-            // Create a new option element for the font
-            const fontName = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension
-
-            if(isFontInSelectControlList(fontName))
-            {
+            if (isFontInSelectControlList(fontName)) {
                 return;
             }
 
+            const uploadedOptgroup = ensureUploadedOptgroupExists();
             const newOption = document.createElement('option');
             newOption.value = fontName;
             newOption.textContent = fontName;
             newOption.setAttribute('fontData', base64String);
-            // newOption.setAttribute('fontXHeightTweak', '0'); // Default tweak is 0
-            newOption.setAttribute('brushWidthOfFontNibMultiplier', '5'); // Default brush width
-            newOption.setAttribute('xHeightFontScaleFactor', '1'); // Default brush width
-            newOption.setAttribute('ascenderRatio', '0.45');
-            newOption.setAttribute('capHeightRatio', '0.6');
-            newOption.setAttribute('descenderDepthRatio', '0.45');
+            newOption.setAttribute('fontGlyphNibWidth', '5'); // Default value
+            newOption.setAttribute('ascenderRatio', '0.45'); // Default value
+            newOption.setAttribute('capHeightRatio', '0.6'); // Default value
+            newOption.setAttribute('descenderDepthRatio', '0.45'); // Default value
+            newOption.setAttribute('xHeightFontScaleFactor', '0.95'); // Default value
+            newOption.setAttribute('fontYOffset', '0'); // Default value
 
-            // Add the new option to the <select> dropdown
-            const fontSelect = document.getElementById('fontForWorksheetPages');
-            fontSelect.appendChild(newOption);
+            uploadedOptgroup.appendChild(newOption);
+            document.getElementById('fontForWorksheetPages').value = fontName;
 
-            // Set the newly uploaded font as selected
-            fontSelect.value = fontName;
-
-            // set the brush width val
-            const xHeightToNibWidthPropInputField = document.getElementById('xHeightToNibWidthProp');
-            xHeightToNibWidthPropInputField.value = parseFloat(newOption.getAttribute('brushWidthOfFontNibMultiplier') || 5);
-
-
-            const xHeightFontScaleFactorInputField = document.getElementById('xHeightFontScaleFactor');
-            xHeightFontScaleFactorInputField.value = parseFloat(newOption.getAttribute('xHeightFontScaleFactor') || 1);
+            // Save all attributes to IndexedDB
+            const attributes = {
+                fontData: base64String,
+                fontGlyphNibWidth: '5',
+                ascenderRatio: '0.45',
+                capHeightRatio: '0.6',
+                descenderDepthRatio: '0.45',
+                xHeightFontScaleFactor: '0.95',
+                fontYOffset: '0'
+            };
+            saveFontToIndexedDB(fontName, attributes);
 
             loadSelectedFontOptionSettingsIntoFields();
             loadFontAndMakeWorksheetPages();
         };
-        reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
+        reader.readAsArrayBuffer(file);
     }
 }
+
 
 function isFontInSelectControlList(fontName) {
     const fontSelect = document.getElementById('fontForWorksheetPages');
@@ -267,6 +269,8 @@ dropArea.addEventListener('drop', function (event) {
 function init() {
 
     setDefaults();
+    loadFontsFromIndexedDB();  // Load fonts at initialization
+
 
     var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
 
@@ -437,12 +441,18 @@ async function convertTextToPathsWithKerning(svgElement) {
 
 async function loadFontAndMakeWorksheetPages() {
     try {
+        
+        loadSelectedFontOptionSettingsIntoFields();
+        
         showFont = document.getElementById('showFont').checked;
 
+        
         if (!showFont) {
             makeWorksheetPages();
             return;
         }
+
+
 
         const fontSelect = document.getElementById('fontForWorksheetPages');
         const fontName = fontSelect.value;
@@ -522,7 +532,7 @@ function makeFontMetrics() {
         let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
         let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
         let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
-        let brushWidthOfFontNibMultiplier = parseFloat(selectedOption.getAttribute('brushWidthOfFontNibMultiplier')) || 1; // Default value if not provided
+        let fontGlyphNibWidth = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')) || 1; // Default value if not provided
 
 
 
@@ -530,12 +540,12 @@ function makeFontMetrics() {
         let nibWidthPt = getNibWidthPt();// parseFloat(document.getElementById('nibWidthMm').value); // Assuming you have a nibWidthPt input element
 
 
-        // Calculate font scaling factor based on the nib width and brushWidthOfFontNibMultiplier
-        let fontScaleFactorToMakeXHeight = brushWidthOfFontNibMultiplier / nibWidthPt;
+        // Calculate font scaling factor based on the nib width and fontGlyphNibWidth
+        let fontScaleFactorToMakeXHeight = fontGlyphNibWidth / nibWidthPt;
 
         // The width of the font is given.  What it takes to make the X-Height nib guide blocks the same
         // approximate width of the overall brushstroke width of the font's design.
-        //setNibWidthsTall((brushWidthOfFontNibMultiplier / nibWidthPt).toFixed(2));
+        //setNibWidthsTall((fontGlyphNibWidth / nibWidthPt).toFixed(2));
 
         // Set the nibWidthsTall to reflect the adjusted x-height
         setNibWidthsTall((nibWidthPt * fontScaleFactorToMakeXHeight).toFixed(2));
@@ -565,7 +575,7 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     ascenderMultiplier = ascenderRatio;
     capitalMultiplier = capitalRatio;
     descenderMultiplier = descenderRatio;
-    //    brushWidthOfFontGlobal = brushWidthOfFontNibMultiplier;
+    //    brushWidthOfFontGlobal = fontGlyphNibWidth;
 }
 
 
@@ -837,7 +847,14 @@ function generateRowsOfCharacters() {
 
 
 
+function getFontYOffset()
+{
+    const fontYOffsetField = document.getElementById('fontYOffset');
+    const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
 
+    return parseFloat(selectedOption.getAttribute('fontYOffset') || 0.0) ;
+
+}
 
 
 
@@ -848,23 +865,21 @@ function getFontScaleFactor() {
     // Font scale factor to fit the font within x-height
     var fontScaleFactor = xHeight / getFontSXHeight();
 
-    
+
 
     // Example of using the nib width and the brush width multiplier to determine the scale factor
     const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
     const xHeightFontScaleFactor = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
-    
-    if(parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')))
-    {
-    //alert(parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')));
-    let nibWidth = parseFloat(document.getElementById('nibWidthMm').value);
+
+    if (parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor'))) {
+        //alert(parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')));
+        let nibWidth = parseFloat(document.getElementById('nibWidthMm').value);
 
         const scaleFactor = xHeightFontScaleFactor;
 
         return scaleFactor * fontScaleFactor;
     }
-    else
-    {
+    else {
         //return fontScaleFactor;
     }
 

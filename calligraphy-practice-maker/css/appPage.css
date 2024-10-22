@@ -316,6 +316,7 @@
 
     }
 
+
     #controls input[type='number'] {
         font-family: monospace;
         border-radius: 9pt;
@@ -350,6 +351,12 @@
         appearance: none;
 
         color:greenyellow;
+    }
+
+    #controls input[type='number']:hover{
+        background-color: #222;
+
+
     }
 
     #controls input[type='checkbox'] {
@@ -452,7 +459,7 @@
         padding-left: 5pt;
         font-size: 13pt;
         border: 1px solid #ccc;
-        border-radius: 5pt;
+        border-radius: 4pt;
         appearance: none;
         /* Remove default styling */
         color: rgb(143, 140, 140);
@@ -483,7 +490,7 @@
         border: 2pt solid black;
         color:rgb(92, 146, 11);
         /* Apply border to create the "well" effect */
-        border: 2pt solid #3a3939;
+        border: 1pt solid #3a3939;
         /* Darker border as a base */
         border-top-color: #8a8888;
         /* Lighter color for the top to create the highlight */
@@ -495,11 +502,18 @@
 
         
         font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; 
-        border-radius: 0;
+        
         font-family: monospace !important;
         font-size: 11pt;
     }
 
+    #controls select:hover{
+        background: url('../img/selectBackgroundHover.svg') no-repeat;
+
+        background-size: 100% 100%;
+        /* Make sure the SVG fills the entire select area */
+
+      }
 
 
     div#outputButtons {
@@ -731,8 +745,16 @@ font-size:10pt ;
 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 text-align: right;
 display: inline-block;
+color:#52795a;
+text-align: right;
+display: inline-block;
 }
 
+
+#controls{
+    overflow-x: hidden;
+
+}
 
 #controls input.switchInput {
     opacity: 1.0;

@@ -933,16 +933,27 @@ const filterConfigAliases = {
     dropShadowDx: 'Shadow X-Offset',
     dropShadowDy: 'Shadow Y-Offset',
   
+    extrusionDropShadowDx: 'Shadow X-Offset',
+    extrusionDropShadowDy: 'Shadow Y-Offset',
+  
+    
+
     glowStdDeviation: 'Glow Blur',
     glowColor: 'Glow Color',
-    glowOpacity: 'Glow Opacity'
+    glowOpacity: 'Glow Opacity',
+
+    extrusionDistance: 'Length',       // Total extrusion distance
+    extrusionRepeatCount: 'Resolution',     // Number of repeated layers
+    extrusionTheta: 'Angle',           // Angle of extrusion in degrees
+    extrusionColor: 'Extrusion Color'       // Color of extrusion
+  
   };
   
 
 
 // Central configuration for filter parameters
 const filterConfig = {
-    outlineRadius: 30,
+    outlineRadius: 20,
     outlineColor: '#a9fc03',
     dropOutlineColor: '#a9fc03',
     dropOutlineRadius: 30,
@@ -952,28 +963,108 @@ const filterConfig = {
     dropSecondOutlineRadius: 30,
     dropDualOutlineDropShadowColor: '#3EB176',
     outlineAboveDropColor: '#ffffff',
-    dropDualOutlineDropShadowDxOffset: 15,
+    dropDualOutlineDropShadowDxOffset: 35,
     dropDualOutlineDropShadowDyOffset: 10,
     
 
     dropOutlineKnockoutRadius: 30,
     dropOutlineKnockoutColor: '#000000',
     dropShadowStdDeviation: 0,
+    
     dropShadowDx: 30,
     dropShadowDy: 30,
+
+    extrusionDistance: 150,       // Total extrusion distance
+    extrusionRepeatCount: 15,     // Number of repeated layers
+    extrusionTheta: 45,           // Angle of extrusion in degrees
+    extrusionColor: '#666',       // Color of extrusion
+    extrusionDropShadowStdDeviation: 0, // Blur standard deviation
 
     glowStdDeviation: 25,
     glowColor: '#a9fc03',
     glowOpacity: 1.0
   };
   
-
+// Min and max values for filterConfig parameters
+const filterConfigRange = {
+    outlineRadius: { min: 0, max: 100 },
+    dropOutlineRadius: { min: 0, max: 100 },
+    dropOutlineDxOffset: { min: 0, max: 50 },
+  
+    outlineAboveDropRadius: { min: 0, max: 50 },
+    dropSecondOutlineRadius: { min: 0, max: 100 },
+    dropDualOutlineDropShadowDxOffset: { min: 0, max: 50 },
+    dropDualOutlineDropShadowDyOffset: { min: 0, max: 50 },
+  
+    dropOutlineKnockoutRadius: { min: 0, max: 100 },
+    dropShadowStdDeviation: { min: 0, max: 50 },
+    dropShadowDx: { min: 0, max: 100 },
+    dropShadowDy: { min: 0, max: 100 },
+  
+    extrusionDistance: { min: 0, max: 300 },
+    extrusionRepeatCount: { min: 1, max: 30 },
+    extrusionTheta: { min: 0, max: 360 },
+    extrusionDropShadowStdDeviation: { min: 0, max: 50 },
+  
+    glowStdDeviation: { min: 0, max: 100 },
+    glowOpacity: { min: 0, max: 1, step: 0.01 }
+  };
+  
 
 // Function to generate the SVG filters template
 function getSvgFilters() {
     return `
       <defs>
-      
+     
+
+<filter name="Extrusion 3D Shadow" id="repeatedDropShadow" x="-70%" y="-70%" width="225%" height="225%"
+data-params='{
+  "extrusionDistance": ${filterConfig.extrusionDistance},
+  "extrusionRepeatCount": ${filterConfig.extrusionRepeatCount},
+  "extrusionTheta": ${filterConfig.extrusionTheta},
+  "extrusionColor": "${filterConfig.extrusionColor}"
+}'>
+
+<!-- Create the initial blurred shadow -->
+<feGaussianBlur in="SourceAlpha" stdDeviation="${filterConfig.extrusionDropShadowStdDeviation}" result="blur" />
+
+<!-- Repeated offset shadows -->
+${generateRepeatedOffsets(filterConfig.extrusionDistance, filterConfig.extrusionRepeatCount, filterConfig.extrusionTheta, filterConfig.extrusionColor)}
+
+<!-- Merge all shadows with the original graphic -->
+<feMerge>
+${generateMergeNodes(filterConfig.extrusionRepeatCount)}
+<feMergeNode in="SourceGraphic" /> <!-- Original glyph -->
+</feMerge>
+</filter>
+
+
+       <!-- Centered Outline + Knockout Effect -->
+
+       <filter name="Centered Outline + Knockout" id="outliner" x="-25%" y="-25%" width="150%" height="150%"
+             data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'
+       >
+
+        <!-- Start by grabbing the source graphic (the text) and dilating it-->
+        <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceGraphic" result="THICKNESS" />
+        
+         <!-- Then use the text (the SourceGraphic) again to cut out the inside of the dilated text -->
+        <feComposite operator="out" in="THICKNESS" in2="SourceGraphic"></feComposite>
+    </filter>
+
+
+  <!-- Centered Outline Effect -->
+        <filter name="Centered Outline" id="outline" x="-25%" y="-25%" width="150%" height="150%"
+                data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'>
+          <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceAlpha" result="thickened" />
+          <feFlood flood-color="${filterConfig.outlineColor}" result="outlineColor" />
+          <feComposite in="outlineColor" in2="thickened" operator="in" />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
         <!-- Drop Outline Effect -->
       <filter name="Drop Outline" id="dropOutline" x="-25%" y="-25%" width="150%" height="150%"
       data-params='{"dropOutlineRadius": ${filterConfig.dropOutlineRadius}, "dropOutlineColor": "${filterConfig.dropOutlineColor}"}'
@@ -991,30 +1082,11 @@ function getSvgFilters() {
       
 
 
-        <!-- Outline Effect -->
-        <filter name="Centered Outline" id="outline" x="-25%" y="-25%" width="150%" height="150%"
-                data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'>
-          <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceAlpha" result="thickened" />
-          <feFlood flood-color="${filterConfig.outlineColor}" result="outlineColor" />
-          <feComposite in="outlineColor" in2="thickened" operator="in" />
-          <feMerge>
-            <feMergeNode />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+      
   
-        <!-- Outline + Knockout Effect -->
+      
 
-       <filter name="Centered Outline + Knockout" id="outliner" x="-25%" y="-25%" width="150%" height="150%"
-             data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'
-       >
 
-        <!-- Start by grabbing the source graphic (the text) and dilating it-->
-        <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceGraphic" result="THICKNESS" />
-        
-         <!-- Then use the text (the SourceGraphic) again to cut out the inside of the dilated text -->
-        <feComposite operator="out" in="THICKNESS" in2="SourceGraphic"></feComposite>
-    </filter>
 
 
       <!-- Drop Outline + Knockout Effect -->
@@ -1100,6 +1172,35 @@ function getSvgFilters() {
 }
 
 
+// Helper function to generate repeated offsets for drop shadow
+function generateRepeatedOffsets(baseDistance, extrusionRepeatCount, extrusionTheta, extrusionColor) {
+  let offsets = '';
+  const angleRad = (extrusionTheta * Math.PI) / 180; // Convert theta to radians
+  const dxStep = Math.cos(angleRad) * (baseDistance / extrusionRepeatCount);
+  const dyStep = Math.sin(angleRad) * (baseDistance / extrusionRepeatCount);
+
+  // Color for extrusion (default gray if not provided)
+  const floodColorForShadow = extrusionColor || "#999";
+
+  // Generate overlapping offsets
+  for (let i = 1; i <= extrusionRepeatCount; i++) {
+    offsets += `
+      <feOffset in="blur" dx="${dxStep * i}" dy="${dyStep * i}" result="offset${i}" />
+      <feFlood flood-color="${floodColorForShadow}" flood-opacity="${1 / 1}" result="shadowColor${i}" />
+      <feComposite in="shadowColor${i}" in2="offset${i}" operator="in" result="shadow${i}" />
+    `;
+  }
+  return offsets;
+}
+
+// Helper function to generate merge nodes for feMerge
+function generateMergeNodes(extrusionRepeatCount) {
+  let mergeNodes = '';
+  for (let i = 1; i <= extrusionRepeatCount; i++) {
+    mergeNodes += `<feMergeNode in="shadow${i}" />`;
+  }
+  return mergeNodes;
+}
 
 
 // Function to add filters to the SVG
@@ -1165,11 +1266,12 @@ function displayFilterControls(params) {
       input.value = filterConfig[key]; // Set initial value from filterConfig
       input.id = key;
   
-      // Adjust input attributes for numeric controls
+      // Adjust input attributes for numeric controls based on the range object
       if (typeof value === 'number') {
-        input.min = 0;
-        input.max = key.includes('Deviation') ? 100 : 50; // Adjust ranges as needed
-        input.step = 1;
+        const range = filterConfigRange[key] || { min: 0, max: 100 }; // Default to 0-100 if not specified
+        input.min = range.min;
+        input.max = range.max;
+        input.step = range.step || 1; // Use the step from the range config, default to 1
       }
   
       // Add a class for sliders
@@ -1190,6 +1292,7 @@ function displayFilterControls(params) {
       controlContainer.appendChild(inputDiv);
     }
   }
+  
   
 
 function updateSvgFilters(updatedParams) {

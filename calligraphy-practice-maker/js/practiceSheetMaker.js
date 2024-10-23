@@ -178,7 +178,7 @@ function handleFontFileUpload(file) {
 
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const binary = new Uint8Array(e.target.result);
             let binaryString = '';
             for (let i = 0; i < binary.byteLength; i++) {
@@ -441,12 +441,12 @@ async function convertTextToPathsWithKerning(svgElement) {
 
 async function loadFontAndMakeWorksheetPages() {
     try {
-        
+
         loadSelectedFontOptionSettingsIntoFields();
 
         showFont = document.getElementById('showFont').checked;
 
-        
+
         if (!showFont) {
             makeWorksheetPages();
             return;
@@ -578,6 +578,22 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     //    brushWidthOfFontGlobal = fontGlyphNibWidth;
 }
 
+function checkForUIBoundaries()
+{
+    /*
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+
+    // Check if "rowsOfSingleCharacter" is selected
+    if (arrangement === "rowsOfSingleCharacter") {
+        const characterSelect = document.getElementById('caseSelection');
+
+        // If "customText" is currently selected, deselect it and select the first option
+        if (characterSelect.value === "customText") {
+            characterSelect.selectedIndex = 0; // Select the first option
+        }
+    }*/
+
+}
 
 async function makeWorksheetPages() {
 
@@ -590,13 +606,23 @@ async function makeWorksheetPages() {
 
     emptyWorksheetArea();
 
+    checkForUIBoundaries();
+    
+    //const numberOfPages = Math.ceil(rowsWithCharactersArray.length / calculateTotalLinesPerPage());
 
 
+    // Generate rows of characters based on the arrangement
     const rowsWithCharactersArray = generateRowsOfCharacters(); // Get the rows of characters
 
 
+    // Calculate the total number of pages
     // Determine the number of pages based on the rows of characters
     var numberOfPages = calculateNumberOfPages(rowsWithCharactersArray);
+
+    // Update the page count span
+    updatePageCountDisplay(numberOfPages);
+
+
 
     if ((showFont == false) || !font) {
 
@@ -621,8 +647,7 @@ async function makeWorksheetPages() {
             document.getElementById('nibWidthsTall').disabled = false;
 
         }
-        else
-        {
+        else {
             // fontURL is a built-in font
             document.getElementById('nibWidthsTall').disabled = true;
         }
@@ -647,6 +672,15 @@ async function makeWorksheetPages() {
 }
 
 
+function updatePageCountDisplay(numberOfPages) {
+    const pageCountSpan = document.getElementById('outputPageCount');
+
+    if (numberOfPages === 1) {
+        pageCountSpan.textContent = '(1 Page)';
+    } else {
+        pageCountSpan.textContent = `(${numberOfPages} Pages)`;
+    }
+}
 
 
 function calculateNumberOfPages(rows) {
@@ -714,7 +748,7 @@ function generateRowsOfCharacters() {
     }
 
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
-    const characters = getSelectedCharacters();
+    var characters = getSelectedCharacters();
     const linesPerPage = calculateTotalLinesPerPage();
     let charIndex = 0;
 
@@ -723,11 +757,11 @@ function generateRowsOfCharacters() {
     //
 
     // Step 1: Generate an array of character rows without any empty lines
-    if (arrangement === "RowsOfCharacters") {
+    if (arrangement === "rowsOfCharacters") {
         const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
         const width = paperWidthOrientedRaw - marginHorizontal - (0.25 * spacingForCharacters);
 
-        //
+        spacingForCharacters = 30;
 
         while (charIndex < characters.length) {
             let currentRow = [];
@@ -770,6 +804,16 @@ function generateRowsOfCharacters() {
         }
 
     } else if (arrangement === "singleCharacterAtLeft") {
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if(selectedValue == "mixedCasePairsLowerFirst")
+        {
+            
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+
+        }
+
         // Each row gets one character for "singleCharacterAtLeft"
         while (charIndex < characters.length) {
             characterRows.push([characters[charIndex]]);
@@ -777,6 +821,76 @@ function generateRowsOfCharacters() {
             charIndex++;
         }
     }
+    // Handle "pageOfSingleCharacter" arrangement
+    else     // Handle "pageOfSingleCharacter" arrangement
+        if (arrangement === "pageOfSingleCharacter" && characters.length > 0) {
+            const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+            const width = paperWidthOrientedRaw - (marginHorizontal / 2);
+
+            
+            const selectedValue = document.getElementById("caseSelection").value;
+            if(selectedValue == "customText")
+            {
+                // Remove all spaces and limit length to 30 characters
+                characters = characters.replace(/\s+/g, '').substring(0, 30);
+                characters = Array.from(characters);
+
+            }
+            else if(selectedValue == "mixedCasePairsLowerFirst")
+            {
+                
+                characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+                characters = Array.from(characters);
+
+            }
+
+
+
+
+            // Iterate through each character to generate a full page of rows
+            characters.forEach(characterToRepeat => {
+                let charRowsForPage = [];
+                let charIndex = 0;
+
+                // Get the glyph for the character
+                const glyph = font.charToGlyph(characterToRepeat);
+
+                if (glyph) {
+                    const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                    const charSpacing = charWidth * 3.0; // Set spacing to 2.0x character width
+                    spacingForCharacters = charSpacing; // Update global spacing
+                    const totalCharWidth = charWidth + charSpacing;
+
+
+                    // Create a page of rows for the current character
+                    while (charIndex < linesPerPage) {
+                        let currentRow = [];
+                        let currentLineWidth = 0;
+
+                        // Fill the line with repeated characters
+                        while (currentLineWidth + totalCharWidth <= width) {
+                            currentRow.push(characterToRepeat);
+                            currentLineWidth += totalCharWidth;
+                        }
+
+                        // Add the last character if there's space for its width
+                        if (currentLineWidth + (charWidth) <= width) {
+                            currentRow.push(characterToRepeat);
+                            currentLineWidth += charWidth;
+                        }
+
+                        // Add the row to the current character's page
+                        charRowsForPage.push(currentRow);
+                        charIndex++;
+                    }
+
+                    // Add the completed page of rows for this character to the main array
+                    characterRows.push(...charRowsForPage);
+                } else {
+                    console.warn(`Glyph not found for character: ${characterToRepeat}`);
+                }
+            });
+        }
 
     //
 
@@ -787,7 +901,7 @@ function generateRowsOfCharacters() {
         // Add the character row to the final rows array
         finalRows.push(characterRows[i]);
 
-        if (arrangement === "RowsOfCharacters") {
+        if (arrangement === "rowsOfCharacters") {
             // If there is still space on the current page, add an empty row for practice
             if ((finalRows.length % linesPerPage) !== 0) {
                 finalRows.push([]);
@@ -826,12 +940,11 @@ function generateRowsOfCharacters() {
 
 
 
-function getFontYOffset()
-{
+function getFontYOffset() {
     const fontYOffsetField = document.getElementById('fontYOffset');
     const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
 
-    return parseFloat(selectedOption.getAttribute('fontYOffset') || 0.0) ;
+    return parseFloat(selectedOption.getAttribute('fontYOffset') || 0.0);
 
 }
 
@@ -865,47 +978,6 @@ function getFontScaleFactor() {
 }
 
 
-function generateRowsOfCharactersOLD() {
-
-    let rows = [];
-
-    if (!showFont) {
-        for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
-            rows.push("");
-
-        }
-        return rows;
-    }
-
-    const arrangement = document.getElementById('practiceCharactersArrangement').value;
-    const characters = getSelectedCharacters();  // Gets the set of characters to use in the worksheet
-
-    if (arrangement === "RowsOfCharacters") {
-        // Use calculateCharsPerLine() to determine how many characters per row
-        const charsPerLine = calculateCharsPerLine();
-
-        let charIndex = 0;
-        while (charIndex < characters.length) {
-            // Create a row of characters
-            let row = [];
-            for (let i = 0; i < charsPerLine && charIndex < characters.length; i++) {
-                row.push(characters[charIndex]);
-                charIndex++;
-            }
-            rows.push(row); // Add a row with characters
-
-            rows.push([]);  // Add an empty row for practice
-        }
-
-    } else if (arrangement === "singleCharacterAtLeft") {
-        // Each row gets one character
-        characters.forEach(char => {
-            rows.push([char]);
-        });
-    }
-
-    return rows;
-}
 
 
 function getTotalCharacters() {
@@ -1111,7 +1183,13 @@ function drawWorksheetOLD(svg, pageIndex) {
 // Define the character arrays
 const lowercaseAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const uppercaseAlphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-const mixedCasePairsLowerFirst = ["aA", "bB", "cC", "dD", "eE", "fF"];
+
+const mixedCasePairsString = "aA bB cC dD eE fF gG hH iI jJ kK lL mM nN oO pP qQ rR sS tT uU vV wW xX yY zZ";
+const mixedCasePairsLowerFirst = Array.from(mixedCasePairsString);
+
+
+
+
 const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 var font; // Global variable to hold the loaded font
@@ -1158,7 +1236,7 @@ function getFontUrl(fontName) {
         }
     }
 
-    
+
     // If no matching font name was found, use the first <option> as fallback
     if (!fontUrl) {
         const fallbackOption = fontSelect.options[0];
@@ -1167,7 +1245,7 @@ function getFontUrl(fontName) {
             fontURL = 'fonts/BreitkopfFraktur.ttf';
         }
     }
-    
+
 
     return fontUrl;
 }
@@ -1287,9 +1365,9 @@ function drawPracticeBlocks(worksheetGroup, backgroundLinesGroup, width, height,
 
 
 function shouldDrawCharacters(lineIndex, totalLines, arrangement) {
-    // If we are using "RowsOfCharacters" arrangement, draw characters on every other line
+    // If we are using "rowsOfCharacters" arrangement, draw characters on every other line
     // except the last line (to leave it blank for practice)
-    if (arrangement === "RowsOfCharacters") {
+    if (arrangement === "rowsOfCharacters") {
         return lineIndex % 2 === 0 && lineIndex < totalLines - 1;
     }
 
@@ -1471,7 +1549,7 @@ function calculateAvailableLinesPerPage() {
 
     if (showFont) {
         // If the arrangement is 'Rows of Characters', skip every alternate line
-        if (practiceArrangement === 'RowsOfCharacters') {
+        if (practiceArrangement === 'rowsOfCharacters') {
             availableLinesPerPage = Math.floor(totalLinesPerPage / 2) + (totalLinesPerPage % 2); // Add 1 if there's an extra line left for even total lines
         } else {
 
@@ -1615,7 +1693,13 @@ function getSelectedCharacters() {
         selectedCharacters = lowercaseAlphabet;
     } else if (selectedValue === "uppercaseOnly") {
         selectedCharacters = uppercaseAlphabet;
-    } else if (selectedValue === "bothUppercaseAndLowercase") {
+        
+    }
+    else if (selectedValue === "mixedCasePairsLowerFirst") {
+        selectedCharacters = mixedCasePairsLowerFirst;
+        
+    }
+    else if (selectedValue === "bothUppercaseAndLowercase") {
         selectedCharacters = lowercaseAlphabet.concat('\n').concat(uppercaseAlphabet);
 
     } else if (selectedValue === "customText") {

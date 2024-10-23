@@ -39,19 +39,21 @@ a small number of fonts available.
 
             <div id="outputButtons">
 
-                <table style="margin:0;padding:0">
+                <table id="outputButtonsTable" cellpadding="0" cellspacing="0" style=" 
+width:100%;margin:0;padding:0">
                     <tr>
                         <td> <button onclick="printPDF()" id="printButton" class="darkButton">Print</button>
 
                         </td>
-                        <td width="100%">
-                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton">Download
+                        <td valign="left" width="100%">
+                            <button style="margin-left:5pt" onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton">Download
                                 PDF</button>
 
                             <!--<p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
                                 printer.)
                             </p>-->
                         </td>
+                        
                     </tr>
 
                 </table>
@@ -195,9 +197,11 @@ a small number of fonts available.
                     <div class="settingEnclosure">
                         <label for="caseSelection">Characters:</label>
                         <select id="caseSelection" name="caseSelection">
-                            <option value="lowercaseOnly" checked>Lowercase Only</option>
-                            <option value="uppercaseOnly">Uppercase Only</option>
-                            <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
+                            <option value="lowercaseOnly" checked>Lowercase Set</option>
+                            <option value="uppercaseOnly">Uppercase Set</option>
+                            <option value="bothUppercaseAndLowercase">Lowercase + Uppercase Sets</option>
+                            <option value="mixedCasePairsLowerFirst">Pairs: Lowercase-Uppercase </option>                            
+                            
                             <!--<option value="mixedCasePairs">Mixed Case Pairs</option>-->
                             <option value="customText">Custom Practice Text</option>
 
@@ -236,8 +240,12 @@ a small number of fonts available.
                         <label for="practiceCharactersArrangement">Characters Arrangement:</label>
 
                         <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
-                            <option value="RowsOfCharacters" checked>Rows of Characters</option>
-                            <option value="singleCharacterAtLeft">Single Character At Left</option>
+                            <option value="rowsOfCharacters" checked>Practice Rows</option>
+                            <option value="pageOfSingleCharacter">Character Sheet</option>
+
+                            <option value="singleCharacterAtLeft">Character At Left</option>
+
+
 
                             <!--<option value="CustomText">Custom Practice Text at Top</option>-->
                         </select>
@@ -521,7 +529,7 @@ a small number of fonts available.
 
 
         <div id="generatedWorksheetArea">
-            <div class="worksheetAreaSpacer"></div>
+            <div class="worksheetAreaSpacer"><div id="outputPageCount"></div></div>
 
             <div id="worksheetPagesContainer">
 

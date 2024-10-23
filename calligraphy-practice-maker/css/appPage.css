@@ -10,6 +10,8 @@
         margin: 0;
         overflow: hidden;
         /* This ensures that no default scrollbars appear for the body */
+        font-family: 'DDINRegular', Helvetica, sans-serif;
+        font-family: monospace;
     }
 
     /*
@@ -680,8 +682,16 @@ input.effectFilterParamSlider
 
     }
 
+#outputPageCount{
+padding:3pt;
+font-size:10pt;
+}
+
     #generatedWorksheetArea .worksheetAreaSpacer {
         height: 15pt;
+        text-align: center;
+        padding:3pt;
+        margin:auto;
     }
 
     #generatedWorksheetArea::-webkit-scrollbar {

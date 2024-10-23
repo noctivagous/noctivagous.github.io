@@ -916,11 +916,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Central configuration for filter parameters
 const filterConfig = {
-    outlineRadius: 20,
+    outlineRadius: 30,
     outlineColor: '#a9fc03',
     dropOutlineColor: '#a9fc03',
+    dropOutlineRadius: 30,
+    dropOutlineDxOffset: 10.0,
+    dropOutlineKnockoutRadius: 30,
     dropOutlineKnockoutColor: '#000000',
-    dropOutlineRadius: 20,
     dropShadowStdDeviation: 0,
     dropShadowDx: 30,
     dropShadowDy: 30,
@@ -935,52 +937,7 @@ function getSvgFilters() {
     return `
       <defs>
       
-        <!-- Outline Effect -->
-        <filter name="Outline" id="outline" x="-10%" y="-10%" width="120%" height="120%"
-                data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'>
-          <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceAlpha" result="thickened" />
-          <feFlood flood-color="${filterConfig.outlineColor}" result="outlineColor" />
-          <feComposite in="outlineColor" in2="thickened" operator="in" />
-          <feMerge>
-            <feMergeNode />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-  
-        <!-- Outline + Knockout Effect -->
-
-       <filter name="Stroke Outline + Knockout" id="outliner" x="-10%" y="-10%" width="120%" height="120%"
-             data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'
-       >
-
-        <!-- Start by grabbing the source graphic (the text) and dilating it-->
-        <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceGraphic" result="THICKNESS" />
-        
-         <!-- Then use the text (the SourceGraphic) again to cut out the inside of the dilated text -->
-        <feComposite operator="out" in="THICKNESS" in2="SourceGraphic"></feComposite>
-    </filter>
-
-
-      <!-- Drop Outline + Knockout Effect -->
-      <filter name="Drop Outline + Knockout" id="dropOutlineKnockout" x="-10%" y="-10%" width="120%" height="120%"
-        data-params='{"dropOutlineRadius": ${filterConfig.dropOutlineRadius}, "dropOutlineKnockoutColor": "${filterConfig.dropOutlineKnockoutColor}"}'>
-  <!-- Dilate the source graphic -->
-  <feMorphology operator="dilate" radius="${filterConfig.dropOutlineRadius}" in="SourceAlpha" result="thickened" />
-  <!-- Apply the outline color -->
-  <feFlood flood-color="${filterConfig.dropOutlineKnockoutColor}" result="dropOutlineKnockoutColor" />
-  <feComposite in="dropOutlineKnockoutColor" in2="thickened" operator="in" />
-  <!-- Offset the outline -->
-  <feOffset dx="${filterConfig.dropOutlineRadius}" dy="${filterConfig.dropOutlineRadius}" result="offset1" />
-  <!-- Knock out the original source graphic -->
-  <feComposite operator="out" in="offset1" in2="SourceGraphic" result="knockedOut" />
-  <!-- Merge the result -->
-  <feMerge>
-    <feMergeNode in="knockedOut" />
-  </feMerge>
-</filter>
-
-      
-       <!-- Drop Outline Effect -->
+        <!-- Drop Outline Effect -->
       <filter name="Drop Outline" id="dropOutline" x="-10%" y="-10%" width="120%" height="120%"
       data-params='{"dropOutlineRadius": ${filterConfig.dropOutlineRadius}, "dropOutlineColor": "${filterConfig.dropOutlineColor}"}'
       >
@@ -996,6 +953,56 @@ function getSvgFilters() {
       </filter>
       
 
+
+        <!-- Outline Effect -->
+        <filter name="Outline" id="outline" x="-10%" y="-10%" width="120%" height="120%"
+                data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'>
+          <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceAlpha" result="thickened" />
+          <feFlood flood-color="${filterConfig.outlineColor}" result="outlineColor" />
+          <feComposite in="outlineColor" in2="thickened" operator="in" />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+  
+        <!-- Outline + Knockout Effect -->
+
+       <filter name="Outline + Knockout" id="outliner" x="-10%" y="-10%" width="120%" height="120%"
+             data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'
+       >
+
+        <!-- Start by grabbing the source graphic (the text) and dilating it-->
+        <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceGraphic" result="THICKNESS" />
+        
+         <!-- Then use the text (the SourceGraphic) again to cut out the inside of the dilated text -->
+        <feComposite operator="out" in="THICKNESS" in2="SourceGraphic"></feComposite>
+    </filter>
+
+
+      <!-- Drop Outline + Knockout Effect -->
+      <filter name="Drop Outline + Knockout" id="dropOutlineKnockout" x="-10%" y="-10%" width="120%" height="120%"
+        data-params='{"dropOutlineKnockoutRadius": ${filterConfig.dropOutlineKnockoutRadius}, 
+                      "dropOutlineKnockoutColor": "${filterConfig.dropOutlineKnockoutColor}",
+                    "dropOutlineDxOffset" : ${filterConfig.dropOutlineDxOffset}
+        }'>
+  <!-- Dilate the source graphic -->
+  <feMorphology operator="dilate" radius="${filterConfig.dropOutlineKnockoutRadius}" in="SourceAlpha" result="thickened" />
+  <!-- Apply the outline color -->
+  <feFlood flood-color="${filterConfig.dropOutlineKnockoutColor}" result="dropOutlineKnockoutColor" />
+  <feComposite in="dropOutlineKnockoutColor" in2="thickened" operator="in" />
+  <!-- Offset the outline -->
+  <feOffset dx="${filterConfig.dropOutlineKnockoutRadius - filterConfig.dropOutlineDxOffset}" dy="${filterConfig.dropOutlineKnockoutRadius}" result="offset1" />
+  <!-- Knock out the original source graphic -->
+  <feComposite operator="out" in="offset1" in2="SourceGraphic" result="knockedOut" />
+  <!-- Merge the result -->
+  <feMerge>
+    <feMergeNode in="knockedOut" />
+  </feMerge>
+</filter>
+
+      
+     
       
       
     
@@ -1097,6 +1104,7 @@ function displayFilterControls(params) {
         inputDiv.className = 'effectFilterParamInput';
 
         const input = document.createElement('input');
+        
         input.type = typeof value === 'number' ? 'range' : 'color';
         input.value = filterConfig[key]; // Set initial value from filterConfig
         input.id = key;
@@ -1106,6 +1114,12 @@ function displayFilterControls(params) {
             input.min = 0;
             input.max = key.includes('Deviation') ? 100 : 50; // Adjust ranges as needed
             input.step = 1;
+
+        }
+
+        if(input.type == 'range')
+        {
+            input.classList.add("effectFilterParamSlider");
         }
 
         // Add event listener to update parameter value dynamically

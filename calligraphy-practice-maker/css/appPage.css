@@ -17,6 +17,18 @@
     filter: drop-shadow(45pt 0pt 0 rgb(81, 81, 81));
   }*/
 
+div.effectFilterParamLabel
+{
+    border-top:1pt solid #3a3a3a;
+    padding-top:3pt;
+    margin-top:3pt;
+}
+
+input.effectFilterParamSlider
+{
+    width:100%;
+}
+
     #container {
         display: flex;
         padding-left: 300px;

@@ -822,9 +822,13 @@ display: inline-block;
 
 #controls div#dropArea
  {
-width:45pt;height:40pt; 
+width:40pt;    
+vertical-align: middle;
 text-align: center;background-color: #494949;
-padding:5pt;border-radius: 5pt;border:1pt dashed rgb(166, 166, 166);color:#999;
+border-radius: 5pt;border:1pt dashed rgb(166, 166, 166);color:#999;
+padding:5pt;
+
+
 
 }               
 

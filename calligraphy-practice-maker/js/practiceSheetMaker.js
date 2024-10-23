@@ -213,7 +213,7 @@ function handleFontFileUpload(file) {
                 ascenderRatio: '0.45',
                 capHeightRatio: '0.6',
                 descenderDepthRatio: '0.45',
-                xHeightFontScaleFactor: '0.95',
+                xHeightFontScaleFactor: '1.0',
                 fontYOffset: '0'
             };
             saveFontToIndexedDB(fontName, attributes);

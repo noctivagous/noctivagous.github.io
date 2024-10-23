@@ -821,6 +821,59 @@ function generateRowsOfCharacters() {
             charIndex++;
         }
     }
+
+  // Handle "rowOfSingleCharacter" arrangement
+else if (arrangement === "rowOfSingleCharacter" && characters.length > 0) {
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+    const width = paperWidthOrientedRaw - (marginHorizontal / 2);
+    
+    const selectedValue = document.getElementById("caseSelection").value;
+    if (selectedValue === "customText") {
+        // Remove all spaces and limit length to 30 characters
+        characters = characters.replace(/\s+/g, '').substring(0, 30);
+        characters = Array.from(characters);
+    } else if (selectedValue === "mixedCasePairsLowerFirst") {
+        // Adjust for mixed case pairs
+        characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+        characters = Array.from(characters);
+    }
+
+    // Iterate through each character to generate one row of repeated characters
+    characters.forEach(characterToRepeat => {
+        // Get the glyph for the character
+        const glyph = font.charToGlyph(characterToRepeat);
+
+        if (glyph) {
+            const charWidth = glyph.advanceWidth * getFontScaleFactor();
+            const charSpacing = charWidth * 3.0; // Set spacing to 3.0x character width
+            spacingForCharacters = charSpacing; // Update global spacing
+            const totalCharWidth = charWidth + charSpacing;
+
+            // Create a single row for the current character
+            let currentRow = [];
+            let currentLineWidth = 0;
+
+            // Fill the row with repeated characters
+            while (currentLineWidth + totalCharWidth <= width) {
+                currentRow.push(characterToRepeat);
+                currentLineWidth += totalCharWidth;
+            }
+
+            // Add the last character if there's space for its width
+            if (currentLineWidth + charWidth <= width) {
+                currentRow.push(characterToRepeat);
+            }
+
+            // Add the row to the main array
+            characterRows.push(currentRow);
+        } else {
+            console.warn(`Glyph not found for character: ${characterToRepeat}`);
+        }
+    });
+}
+
+
+
     // Handle "pageOfSingleCharacter" arrangement
     else     // Handle "pageOfSingleCharacter" arrangement
         if (arrangement === "pageOfSingleCharacter" && characters.length > 0) {

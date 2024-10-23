@@ -912,6 +912,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Aliases for filterConfig parameters
+const filterConfigAliases = {
+    outlineRadius: 'Outline Thickness',
+    outlineColor: 'Outline Color',
+    dropOutlineColor: 'Drop Shadow Color',
+    dropOutlineRadius: 'Drop Shadow Thickness',
+    dropOutlineDxOffset: 'Drop Shadow Horizontal Offset',
+    
+    outlineAboveDropRadius: 'Top Outline Thickness',
+    dropSecondOutlineRadius: 'Shadow Outline Thickness',
+    dropDualOutlineDropShadowColor: 'Dual Drop Shadow Color',
+    outlineAboveDropColor: 'Top Outline Color',
+    dropDualOutlineDropShadowDxOffset: 'Dual Drop Shadow X-Offset',
+    dropDualOutlineDropShadowDyOffset: 'Dual Drop Shadow Y-Offset',
+  
+    dropOutlineKnockoutRadius: 'Knockout Outline Thickness',
+    dropOutlineKnockoutColor: 'Knockout Color',
+    dropShadowStdDeviation: 'Shadow Blur',
+    dropShadowDx: 'Shadow X-Offset',
+    dropShadowDy: 'Shadow Y-Offset',
+  
+    glowStdDeviation: 'Glow Blur',
+    glowColor: 'Glow Color',
+    glowOpacity: 'Glow Opacity'
+  };
+  
 
 
 // Central configuration for filter parameters
@@ -920,16 +946,27 @@ const filterConfig = {
     outlineColor: '#a9fc03',
     dropOutlineColor: '#a9fc03',
     dropOutlineRadius: 30,
-    dropOutlineDxOffset: 10.0,
+    dropOutlineDxOffset: 10,
+    
+    outlineAboveDropRadius: 10,
+    dropSecondOutlineRadius: 30,
+    dropDualOutlineDropShadowColor: '#3EB176',
+    outlineAboveDropColor: '#ffffff',
+    dropDualOutlineDropShadowDxOffset: 15,
+    dropDualOutlineDropShadowDyOffset: 10,
+    
+
     dropOutlineKnockoutRadius: 30,
     dropOutlineKnockoutColor: '#000000',
     dropShadowStdDeviation: 0,
     dropShadowDx: 30,
     dropShadowDy: 30,
+
     glowStdDeviation: 25,
     glowColor: '#a9fc03',
     glowOpacity: 1.0
-};
+  };
+  
 
 
 // Function to generate the SVG filters template
@@ -938,7 +975,7 @@ function getSvgFilters() {
       <defs>
       
         <!-- Drop Outline Effect -->
-      <filter name="Drop Outline" id="dropOutline" x="-10%" y="-10%" width="120%" height="120%"
+      <filter name="Drop Outline" id="dropOutline" x="-25%" y="-25%" width="150%" height="150%"
       data-params='{"dropOutlineRadius": ${filterConfig.dropOutlineRadius}, "dropOutlineColor": "${filterConfig.dropOutlineColor}"}'
       >
         <feMorphology operator="dilate" radius="${filterConfig.dropOutlineRadius}" in="SourceAlpha" result="thickened" />
@@ -955,7 +992,7 @@ function getSvgFilters() {
 
 
         <!-- Outline Effect -->
-        <filter name="Outline" id="outline" x="-10%" y="-10%" width="120%" height="120%"
+        <filter name="Centered Outline" id="outline" x="-25%" y="-25%" width="150%" height="150%"
                 data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'>
           <feMorphology operator="dilate" radius="${filterConfig.outlineRadius}" in="SourceAlpha" result="thickened" />
           <feFlood flood-color="${filterConfig.outlineColor}" result="outlineColor" />
@@ -968,7 +1005,7 @@ function getSvgFilters() {
   
         <!-- Outline + Knockout Effect -->
 
-       <filter name="Outline + Knockout" id="outliner" x="-10%" y="-10%" width="120%" height="120%"
+       <filter name="Centered Outline + Knockout" id="outliner" x="-25%" y="-25%" width="150%" height="150%"
              data-params='{"outlineRadius": ${filterConfig.outlineRadius}, "outlineColor": "${filterConfig.outlineColor}"}'
        >
 
@@ -981,7 +1018,7 @@ function getSvgFilters() {
 
 
       <!-- Drop Outline + Knockout Effect -->
-      <filter name="Drop Outline + Knockout" id="dropOutlineKnockout" x="-10%" y="-10%" width="120%" height="120%"
+      <filter name="Drop Outline + Knockout" id="dropOutlineKnockout" x="-25%" y="-25%" width="150%" height="150%"
         data-params='{"dropOutlineKnockoutRadius": ${filterConfig.dropOutlineKnockoutRadius}, 
                       "dropOutlineKnockoutColor": "${filterConfig.dropOutlineKnockoutColor}",
                     "dropOutlineDxOffset" : ${filterConfig.dropOutlineDxOffset}
@@ -1004,9 +1041,39 @@ function getSvgFilters() {
       
      
       
-      
-    
+    <filter name="Outline + Outline Drop Shadow" id="dualOutlineDropShadow" x="-25%" y="-25%" width="150%" height="150%"
+        data-params='{
+          "outlineAboveDropRadius": ${filterConfig.outlineAboveDropRadius},
+          "outlineAboveDropColor": "${filterConfig.outlineAboveDropColor}",
+          "dropOutlineRadius": ${filterConfig.dropOutlineRadius},
+          "dropDualOutlineDropShadowColor": "${filterConfig.dropDualOutlineDropShadowColor}",
+          "dropDualOutlineDropShadowDxOffset": ${filterConfig.dropDualOutlineDropShadowDxOffset},
+          "dropDualOutlineDropShadowDyOffset": ${filterConfig.dropDualOutlineDropShadowDyOffset}
+        }'>
   
+  <!-- Create the first outline of the glyph -->
+  <feMorphology operator="dilate" radius="${filterConfig.outlineAboveDropRadius}" in="SourceAlpha" result="thickened1" />
+  <feFlood flood-color="${filterConfig.outlineAboveDropColor}" result="outlineColor1" />
+  <feComposite in="outlineColor1" in2="thickened1" operator="in" result="firstOutline" />
+
+  <!-- Create the second outline to simulate the drop shadow -->
+  <feMorphology operator="dilate" radius="${filterConfig.dropSecondOutlineRadius}" in="SourceAlpha" result="thickened2" />
+  <feFlood flood-color="${filterConfig.dropDualOutlineDropShadowColor}" result="outlineColor2" />
+  <feComposite in="outlineColor2" in2="thickened2" operator="in" result="secondOutline" />
+  <!-- Offset the second outline to simulate the drop shadow -->
+  <feOffset dx="${filterConfig.dropDualOutlineDropShadowDxOffset}" dy="${filterConfig.dropDualOutlineDropShadowDyOffset}" in="secondOutline" result="offsetSecondOutline" />
+  <!-- Knock out the original source graphic -->
+  <feComposite operator="out" in="offsetSecondOutline" in2="SourceGraphic" result="knockedOutDropShadow" />
+
+  <!-- Merge the outlines and drop shadow -->
+  <feMerge>
+    <feMergeNode in="knockedOutDropShadow" /> <!-- Merged drop shadow outline -->
+    <feMergeNode in="firstOutline" />         <!-- Merged original outline -->
+    <feMergeNode in="SourceGraphic" />        <!-- Original glyph -->
+  </feMerge>
+</filter>
+
+
       
 
        
@@ -1015,18 +1082,7 @@ function getSvgFilters() {
 
 
     /*
-        <!-- Drop Shadow Effect -->
-        <filter name="Drop Shadow" id="dropShadow" x="-10%" y="-10%" width="120%" height="120%"
-                data-params='{"dropShadowStdDeviation": ${filterConfig.dropShadowStdDeviation}, "dropShadowDx": ${filterConfig.dropShadowDx}, "dropShadowDy": ${filterConfig.dropShadowDy}}'>
-          <feGaussianBlur in="SourceAlpha" stdDeviation="${filterConfig.dropShadowStdDeviation}" result="blur" />
-          <feOffset in="blur" dx="${filterConfig.dropShadowDx}" dy="${filterConfig.dropShadowDy}" result="offsetBlur" />
-          <feFlood flood-color="black" flood-opacity="0.5" />
-          <feComposite in2="offsetBlur" operator="in" />
-          <feMerge>
-            <feMergeNode />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+       
     // Glow
     <filter name="Glow" id="glow" x="-10%" y="-10%" width="120%" height="120%"
         data-params='{"glowStdDeviation": ${filterConfig.glowStdDeviation}, "glowColor": "${filterConfig.glowColor}", "glowOpacity": ${filterConfig.glowOpacity}}'>
@@ -1088,55 +1144,53 @@ document.addEventListener('DOMContentLoaded', () => {
 function displayFilterControls(params) {
     const controlContainer = document.getElementById('filterControlContainer');
     controlContainer.innerHTML = ''; // Clear existing controls
-
+  
     // Loop through the params and create corresponding input fields
     for (const [key, value] of Object.entries(params)) {
-        // Create a div for the label
-        const labelDiv = document.createElement('div');
-        labelDiv.className = 'effectFilterParamLabel';
-
-        const label = document.createElement('label');
-        label.textContent = key;
-        labelDiv.appendChild(label);
-
-        // Create a div for the input
-        const inputDiv = document.createElement('div');
-        inputDiv.className = 'effectFilterParamInput';
-
-        const input = document.createElement('input');
-        
-        input.type = typeof value === 'number' ? 'range' : 'color';
-        input.value = filterConfig[key]; // Set initial value from filterConfig
-        input.id = key;
-
-        // Adjust input attributes for numeric controls
-        if (typeof value === 'number') {
-            input.min = 0;
-            input.max = key.includes('Deviation') ? 100 : 50; // Adjust ranges as needed
-            input.step = 1;
-
-        }
-
-        if(input.type == 'range')
-        {
-            input.classList.add("effectFilterParamSlider");
-        }
-
-        // Add event listener to update parameter value dynamically
-        input.addEventListener('input', () => {
-            filterConfig[key] = input.type === 'number' ? parseFloat(input.value) : input.value;
-            updateSvgFilters(filterConfig);
-        });
-
-        inputDiv.appendChild(input);
-
-        // Add the label and input divs to the control container
-        controlContainer.appendChild(labelDiv);
-        controlContainer.appendChild(inputDiv);
+      // Create a div for the label
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'effectFilterParamLabel';
+  
+      const label = document.createElement('label');
+      // Use the alias if it exists, otherwise default to the original key
+      label.textContent = filterConfigAliases[key] || key;
+      labelDiv.appendChild(label);
+  
+      // Create a div for the input
+      const inputDiv = document.createElement('div');
+      inputDiv.className = 'effectFilterParamInput';
+  
+      const input = document.createElement('input');
+      input.type = typeof value === 'number' ? 'range' : 'color';
+      input.value = filterConfig[key]; // Set initial value from filterConfig
+      input.id = key;
+  
+      // Adjust input attributes for numeric controls
+      if (typeof value === 'number') {
+        input.min = 0;
+        input.max = key.includes('Deviation') ? 100 : 50; // Adjust ranges as needed
+        input.step = 1;
+      }
+  
+      // Add a class for sliders
+      if (input.type === 'range') {
+        input.classList.add('effectFilterParamSlider');
+      }
+  
+      // Add event listener to update parameter value dynamically
+      input.addEventListener('input', () => {
+        filterConfig[key] = input.type === 'number' ? parseFloat(input.value) : input.value;
+        updateSvgFilters(filterConfig);
+      });
+  
+      inputDiv.appendChild(input);
+  
+      // Add the label and input divs to the control container
+      controlContainer.appendChild(labelDiv);
+      controlContainer.appendChild(inputDiv);
     }
-}
-
-
+  }
+  
 
 function updateSvgFilters(updatedParams) {
     // Update filterConfig with new parameter values

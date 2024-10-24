@@ -597,7 +597,7 @@ function checkForUIBoundaries() {
 
 async function makeWorksheetPages() {
 
-    falert();
+   // falert();
 
     showHideSections();
 
@@ -731,6 +731,13 @@ function calculateNumberOfPagesOLD() {
 }
 
 
+var fontSpacingMultipliers = {
+    rowsOfCharacters: 1.0,            // Row: Sequence With Blank Row
+    rowsOfCharactersSpaced: 2.0,      // Row: Sequence With 2X Spacing
+    rowOfSingleCharacter: 1.0,        // Row: Character - Repeat
+    pageOfSingleCharacter: 0.0,       // Row: Character - Single
+    singleCharacterAtLeft: 1.0        // Column of Sequence
+};
 
 var fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
 

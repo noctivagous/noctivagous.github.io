@@ -731,6 +731,9 @@ function calculateNumberOfPagesOLD() {
 }
 
 
+
+var fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
+
 var fontSpacingMultipliers = {
     rowsOfCharacters: 1.0,            // Row: Sequence With Blank Row
     rowsOfCharactersSpaced: 2.0,      // Row: Sequence With 2X Spacing
@@ -739,20 +742,39 @@ var fontSpacingMultipliers = {
     singleCharacterAtLeft: 1.0        // Column of Sequence
 };
 
-var fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
+
+function getFontCharactersSpacing() {
+    // Get the base spacing value from the input or default
+    var fontSpacingFixed = getFontCharactersSpacingFixed();
+
+    // Get the arrangement type
+    var arrangement = document.getElementById('practiceCharactersArrangement').value;
+
+    // Get the multiplier for the selected arrangement type
+    var multiplier = fontSpacingMultipliers[arrangement] || 1.0;
+
+    // Calculate the adjusted spacing
+    var spacingMultipied = baseSpacing * multiplier;
+
+    return spacingMultipied;
+}
+
 
 function getFontCharactersSpacingFixed()
 {    
     var v = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
 
+    /*
     if((arrangement === "rowsOfCharactersSpaced"))
     {
         v = v * 2;
-    }
+    }*/
 
     return v;
 }
+
 
 function setFontCharactersSpacingFixed()
 {    
@@ -871,7 +893,7 @@ function generateRowsOfCharacters() {
 
                     //var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
 
-                    charWidthWithSpacing = getFontCharactersSpacingFixed();
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
 
                    
 

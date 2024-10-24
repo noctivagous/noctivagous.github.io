@@ -260,16 +260,17 @@ width:100%;margin:0;padding:0">
                         </select>
 
 
-                    </div>
+                        <div class="vertSpacer2"></div>
 
-                    <div class="settingEnclosure indent" id="includeNumberCharactersEnclosure">
+                        <div class="" id="includeNumberCharactersEnclosure">
                         <table>
                             <tr>
                                 <td valign="top"><input type="checkbox" id="includeNumberCharacters"></td>
-                                <td><label for="includeNumberCharacters">Include Number Characters</label></td>
+                                <td><label class="secondLevelLabel" for="includeNumberCharacters">Include Number Characters</label></td>
                             </tr>
                         </table>
-
+                    </div>
+                    
 
                     </div>
 
@@ -278,6 +279,12 @@ width:100%;margin:0;padding:0">
                         <textarea id="customPracticeText" name="customPracticeText" rows="5"
                             maxlength="450">custom text</textarea>
                     </div>
+
+
+
+
+
+
 
 
                     <!--
@@ -293,22 +300,25 @@ width:100%;margin:0;padding:0">
 
                         <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
                             <option value="rowsOfCharacters" checked>Row: Sequence With Blank Row</option>
-                            <option value="rowsOfCharactersSpaced" checked>Row: Sequence With 2X Spacing</option>
-                            <option value="rowOfSingleCharacter">Row: Character - Repeat</option>
-                            <option value="pageOfSingleCharacter">Row: Character - Single </option>
+                            <option value="rowsOfCharactersSpaced" checked>Row: Sequence</option>
+                            <option value="rowOfSingleCharacter">Row: Character Repeated</option>
+                            <option value="pageOfSingleCharacter">Page: Character Repeated </option>
 
-                            <option value="singleCharacterAtLeft">Column of Sequence</option>
+                            <option value="singleCharacterAtLeft">Per Row: Sequence Character</option>
                         </select>
 
 
                     </div>
 
-                    
+
                     <div class="settingEnclosure indent indent2" id="fontCharactersSpacingEnclosure">
                         <label for="fontCharactersSpacing">Character Spacing:</label>
-                        <input type="number" value="30" id="fontCharactersSpacing" min="-10" max="500" name="fontCharactersSpacing">
+                        <input type="range" style="width: 100%;" 
+                        class="biggerSlider1" value="30" id="fontCharactersSpacing" min="0" max="200"
+                            name="fontCharactersSpacing" oninput="makeWorksheetPages()">
+                            <!-- <input type="number" id="fontCharactersSpacing" id="fontCharactersSpacing" min="-10" max="500">-->
                     </div>
-    
+
 
                 </div>
 
@@ -449,22 +459,24 @@ width:100%;margin:0;padding:0">
 
                     <!-- Ascender Height Input -->
                     <label class="fontAttribute" for="ascenderHeight">Ascender Height:</label><br>
-                    <input type="number" id="ascenderHeight" class="fontMetric" value="0.5" min="0" step="0.1"> <span class="labelNote">×
+                    <input type="number" id="ascenderHeight" class="fontMetric" value="0.5" min="0" step="0.1"> <span
+                        class="labelNote">×
                         x-height</span>
                 </div>
                 <div class="settingEnclosure indent">
 
                     <!-- Capital Height Input -->
                     <label class="fontAttribute" for="capitalHeight">Capital Height:</label><br>
-                    <input type="number" id="capitalHeight" class="fontMetric" value="0.4" min="0" step="0.1"> <span class="labelNote">×
+                    <input type="number" id="capitalHeight" class="fontMetric" value="0.4" min="0" step="0.1"> <span
+                        class="labelNote">×
                         x-height</span>
                 </div>
                 <div class="settingEnclosure indent">
 
                     <!-- Descender Depth Input -->
                     <label for="descenderDepth">Descender Depth:</label><br>
-                    <input class="fontAttribute" type="number" class="fontMetric" id="descenderDepth" value="0.6" min="0" step="0.1"> <span
-                        class="labelNote">×
+                    <input class="fontAttribute" type="number" class="fontMetric" id="descenderDepth" value="0.6"
+                        min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
             </fieldset>
@@ -553,7 +565,7 @@ width:100%;margin:0;padding:0">
 
                 </div>
 
-                
+
                 <div class="settingEnclosure" style="display:none">
                     <label for="effectTransformSelect">Transforms:</label>
 
@@ -564,9 +576,9 @@ width:100%;margin:0;padding:0">
                     <div id="transformControlContainer" class="settingEnclosure" indent></div>
 
                 </div>
-                
 
-                
+
+
             </fieldset>
 
 

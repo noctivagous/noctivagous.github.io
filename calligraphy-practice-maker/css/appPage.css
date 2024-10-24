@@ -184,7 +184,7 @@ input.effectFilterParamSlider
         border-radius: 10pt;
         
 
-        outline: 3pt solid #000;
+        outline: 2pt solid #000;
         /* Create an inside border */
         outline-offset: -2px;
         /* Move the outline inwards */
@@ -192,7 +192,6 @@ input.effectFilterParamSlider
 
         font-family: sans-serif;
         
-        color: #333;
         box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
         margin-bottom: 15pt;
 
@@ -203,6 +202,7 @@ input.effectFilterParamSlider
         font-family: sans-serif;
 
         color: #333;
+
         font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important;
         
 
@@ -272,6 +272,7 @@ input.effectFilterParamSlider
     div.settingEnclosure.indent2{
       /*  border-left: 12pt solid black;*/
         border-bottom:2pt solid #222;
+        
     }
 
     div.settingEnclosure.indent label {
@@ -303,7 +304,7 @@ input.effectFilterParamSlider
     }
 
     .vertSpacer2{
-        height:10pt;
+        height:5pt;
     }
 
 
@@ -311,6 +312,15 @@ input.effectFilterParamSlider
         font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow'; 
 
     }
+
+    #controls fieldset .secondLevelLabel {
+        font-family: 'DDINRegular','Franklin Gothic Medium', 'Arial Narrow'; 
+        color:#585858 !important;
+        font-size:12pt;
+        margin-bottom: 0;
+    }
+
+
     .labelNote {
         color: rgb(108, 120, 177);
         font-family: monospace;
@@ -825,8 +835,13 @@ display: inline-block;
  {
 width:40pt;    
 vertical-align: middle;
-text-align: center;background-color: #494949;
-border-radius: 5pt;border:1pt dashed rgb(166, 166, 166);color:#999;
+text-align: center;
+background-color: #494949;
+border-radius: 5pt;
+color:#999;
+border:1pt dashed rgb(113, 112, 112);
+border-bottom:1pt dashed rgb(99, 99, 99);
+border-right:1pt dashed rgb(113, 112, 112);
 padding:5pt;
 
 
@@ -845,7 +860,51 @@ input[type="range"] {
     background: black;
     outline: none;
     border-radius: 5px;
+    
   }
+
+
+input[type="range"].biggerSlider1 {
+    -webkit-appearance: none;
+    height: 30pt;
+    background: rgb(28, 28, 28);
+    outline: none;
+    border-radius: 0px;
+    border-right:1pt solid #9d9b9b;
+    border-bottom:1pt solid #9d9b9b;
+    border-top:1pt solid #3c3c3c;
+    border-left:1pt solid #5d5d5d;
+
+  }
+  
+  input[type="range"].biggerSlider1::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15pt;
+    height: 25pt;
+    background: rgb(96, 96, 96);
+    border-radius: 0%;
+    cursor: pointer;
+    border-right:1pt solid #9d9b9b;
+    border-bottom:1pt solid #9d9b9b;
+    border-top:1pt solid #3c3c3c;
+    border-left:1pt solid #5d5d5d;
+
+}
+  
+  input[type="range"].biggerSlider1::-moz-range-thumb {
+    width: 15pt;
+    height: 30pt;
+    background: white;
+    border-radius: 0%;
+    cursor: pointer;
+    border-right:1pt solid #9d9b9b;
+    border-bottom:1pt solid #9d9b9b;
+    border-top:1pt solid #3c3c3c;
+    border-left:1pt solid #5d5d5d;
+
+}
+  
   
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;

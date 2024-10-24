@@ -350,6 +350,8 @@ async function printPDF() {
         window.print();
     } else {
 
+       // Safari-specific action
+        
 
         // Determine the selected orientation
         const selectedOrientation = document.querySelector('input[name="orientation"]:checked').value;
@@ -387,9 +389,7 @@ async function printPDF() {
         // Open the print dialog with the generated PDF content
         window.open(pdf.output('bloburl'));
 
-        // Safari-specific action
-        // Place your desired code here
-        console.log("This is Safari; running alternative code.");
+     
     }
 }
 
@@ -441,7 +441,8 @@ async function convertTextToPathsWithKerning(svgElement) {
 
 async function loadFontAndMakeWorksheetPages() {
     try {
-
+        
+        
         loadSelectedFontOptionSettingsIntoFields();
 
         showFont = document.getElementById('showFont').checked;
@@ -578,8 +579,7 @@ function setFontMetrics(ascenderRatio, capitalRatio, descenderRatio) {
     //    brushWidthOfFontGlobal = fontGlyphNibWidth;
 }
 
-function checkForUIBoundaries()
-{
+function checkForUIBoundaries() {
     /*
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
 
@@ -607,7 +607,7 @@ async function makeWorksheetPages() {
     emptyWorksheetArea();
 
     checkForUIBoundaries();
-    
+
     //const numberOfPages = Math.ceil(rowsWithCharactersArray.length / calculateTotalLinesPerPage());
 
 
@@ -731,10 +731,14 @@ function calculateNumberOfPagesOLD() {
 
 
 
+var spacingForCharacters = 50;
 
 function generateRowsOfCharacters() {
-    //
-    //
+
+    
+    // SPACINGFORCHARACTERS is the global variable
+    // which is set in each branching statement
+    // and changes the spacing between characters
 
     let characterRows = [];
 
@@ -756,16 +760,23 @@ function generateRowsOfCharacters() {
     //
     //
 
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+    
+    const width = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs();
+
+
+
+
     // Step 1: Generate an array of character rows without any empty lines
     if (arrangement === "rowsOfCharacters") {
-        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
-        const width = paperWidthOrientedRaw - marginHorizontal - (0.25 * spacingForCharacters);
-
+    
         spacingForCharacters = 30;
 
         while (charIndex < characters.length) {
             let currentRow = [];
             let currentLineWidth = 0;
+            let lastCharLowerCase = false;
+
 
             while (charIndex < characters.length) {
                 const char = characters[charIndex];
@@ -783,9 +794,11 @@ function generateRowsOfCharacters() {
                     const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + spacingForCharacters;
 
                     if (currentLineWidth + charWidthWithSpacing <= width) {
+                        lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
+
                         currentRow.push(char);
                         currentLineWidth += charWidthWithSpacing;
-                        //
+                        
                         charIndex++;
                     } else {
                         //
@@ -803,12 +816,71 @@ function generateRowsOfCharacters() {
             }
         }
 
-    } else if (arrangement === "singleCharacterAtLeft") {
+    }
+    else if(arrangement === "rowsOfCharactersSpaced")
+        {
+            //alert(arrangement);
+
+            const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+    
+    
+            while (charIndex < characters.length) {
+                let currentRow = [];
+                let currentLinePosition = getInitialXPositionToStartGlyphs();
+                let lastCharLowerCase = false;
+    
+
+    
+                while (charIndex < characters.length) {
+                    const char = characters[charIndex];
+    
+                    // If a newline character is encountered, break and start a new row
+                    if (char === '\n') {
+                        //
+                        charIndex++;
+                        break;
+                    }
+    
+                    const glyph = font.charToGlyph(char);
+    
+                   // console.log(`paperWidthOrientedRaw: ${paperWidthOrientedRaw}`);
+                    if (glyph) {
+                        var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
+
+                        spacingForCharacters = charWidthWithSpacing; // Update global spacing
+
+                        if ( (currentLinePosition + charWidthWithSpacing) <= (width)) {
+                            lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
+    
+                            //console.log(`${char}:  + ${currentLinePosition} + ${charWidthWithSpacing} = (${ charWidthWithSpacing + currentLinePosition}) <= ${width - getInitialXPositionToStartGlyphs()}`);
+
+                            currentRow.push(char);
+                            currentLinePosition += charWidthWithSpacing;
+                            
+                            charIndex++;
+                        } else {
+                            //
+                            break;
+                        }
+                    } else {
+                        console.warn(`Glyph not found for character: ${char}`);
+                        charIndex++;
+                    }
+                }
+    
+                if (currentRow.length > 0) {
+                    characterRows.push(currentRow);
+                    //
+                }
+            }
+    
+        }
+
+    else if (arrangement === "singleCharacterAtLeft") {
 
         const selectedValue = document.getElementById("caseSelection").value;
-        if(selectedValue == "mixedCasePairsLowerFirst")
-        {
-            
+        if (selectedValue == "mixedCasePairsLowerFirst") {
+
             characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
             characters = Array.from(characters);
 
@@ -821,129 +893,123 @@ function generateRowsOfCharacters() {
             charIndex++;
         }
     }
+    // Handle "rowOfSingleCharacter" arrangement
+    else if (arrangement === "rowOfSingleCharacter" && characters.length > 0) {
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
-  // Handle "rowOfSingleCharacter" arrangement
-else if (arrangement === "rowOfSingleCharacter" && characters.length > 0) {
-    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
-    const width = paperWidthOrientedRaw - (marginHorizontal / 2);
-    
-    const selectedValue = document.getElementById("caseSelection").value;
-    if (selectedValue === "customText") {
-        // Remove all spaces and limit length to 30 characters
-        characters = characters.replace(/\s+/g, '').substring(0, 30);
-        characters = Array.from(characters);
-    } else if (selectedValue === "mixedCasePairsLowerFirst") {
-        // Adjust for mixed case pairs
-        characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
-        characters = Array.from(characters);
-    }
-
-    // Iterate through each character to generate one row of repeated characters
-    characters.forEach(characterToRepeat => {
-        // Get the glyph for the character
-        const glyph = font.charToGlyph(characterToRepeat);
-
-        if (glyph) {
-            const charWidth = glyph.advanceWidth * getFontScaleFactor();
-            const charSpacing = charWidth * 3.0; // Set spacing to 3.0x character width
-            spacingForCharacters = charSpacing; // Update global spacing
-            const totalCharWidth = charWidth + charSpacing;
-
-            // Create a single row for the current character
-            let currentRow = [];
-            let currentLineWidth = 0;
-
-            // Fill the row with repeated characters
-            while (currentLineWidth + totalCharWidth <= width) {
-                currentRow.push(characterToRepeat);
-                currentLineWidth += totalCharWidth;
-            }
-
-            // Add the last character if there's space for its width
-            if (currentLineWidth + charWidth <= width) {
-                currentRow.push(characterToRepeat);
-            }
-
-            // Add the row to the main array
-            characterRows.push(currentRow);
-        } else {
-            console.warn(`Glyph not found for character: ${characterToRepeat}`);
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue === "customText") {
+            // Remove all spaces and limit length to 30 characters
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
+        } else if (selectedValue === "mixedCasePairsLowerFirst") {
+            // Adjust for mixed case pairs
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
         }
-    });
-}
+
+        // Iterate through each character to generate one row of repeated characters
+        characters.forEach(characterToRepeat => {
+            // Get the glyph for the character
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0; // Set spacing to 3.0 character width
+                spacingForCharacters = charSpacing; // Update global spacing
+                const totalCharWidth = charWidth + charSpacing;
+
+                // Create a single row for the current character
+                let currentRow = [];
+                let currentLineWidth = 0;
+
+                // Fill the row with repeated characters
+                while (currentLineWidth + totalCharWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                    currentLineWidth += totalCharWidth;
+                }
+
+                // Add the last character if there's space for its width
+                if (currentLineWidth + charWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                }
+
+                // Add the row to the main array
+                characterRows.push(currentRow);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+        });
+    }
 
 
 
     // Handle "pageOfSingleCharacter" arrangement
-    else     // Handle "pageOfSingleCharacter" arrangement
-        if (arrangement === "pageOfSingleCharacter" && characters.length > 0) {
-            const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
-            const width = paperWidthOrientedRaw - (marginHorizontal / 2);
+    else if (arrangement === "pageOfSingleCharacter" && characters.length > 0) {
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
-            
-            const selectedValue = document.getElementById("caseSelection").value;
-            if(selectedValue == "customText")
-            {
-                // Remove all spaces and limit length to 30 characters
-                characters = characters.replace(/\s+/g, '').substring(0, 30);
-                characters = Array.from(characters);
 
-            }
-            else if(selectedValue == "mixedCasePairsLowerFirst")
-            {
-                
-                characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
-                characters = Array.from(characters);
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue == "customText") {
+            // Remove all spaces and limit length to 30 characters
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
 
-            }
+        }
+        else if (selectedValue == "mixedCasePairsLowerFirst") {
+
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+
+        }
 
 
 
 
-            // Iterate through each character to generate a full page of rows
-            characters.forEach(characterToRepeat => {
-                let charRowsForPage = [];
-                let charIndex = 0;
+        // Iterate through each character to generate a full page of rows
+        characters.forEach(characterToRepeat => {
+            let charRowsForPage = [];
+            let charIndex = 0;
 
-                // Get the glyph for the character
-                const glyph = font.charToGlyph(characterToRepeat);
+            // Get the glyph for the character
+            const glyph = font.charToGlyph(characterToRepeat);
 
-                if (glyph) {
-                    const charWidth = glyph.advanceWidth * getFontScaleFactor();
-                    const charSpacing = charWidth * 3.0; // Set spacing to 2.0x character width
-                    spacingForCharacters = charSpacing; // Update global spacing
-                    const totalCharWidth = charWidth + charSpacing;
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0; // Set spacing to 2.0x character width
+                spacingForCharacters = charSpacing; // Update global spacing
+                const totalCharWidth = charWidth + charSpacing;
 
 
-                    // Create a page of rows for the current character
-                    while (charIndex < linesPerPage) {
-                        let currentRow = [];
-                        let currentLineWidth = 0;
+                // Create a page of rows for the current character
+                while (charIndex < linesPerPage) {
+                    let currentRow = [];
+                    let currentLineWidth = 0;
 
-                        // Fill the line with repeated characters
-                        while (currentLineWidth + totalCharWidth <= width) {
-                            currentRow.push(characterToRepeat);
-                            currentLineWidth += totalCharWidth;
-                        }
-
-                        // Add the last character if there's space for its width
-                        if (currentLineWidth + (charWidth) <= width) {
-                            currentRow.push(characterToRepeat);
-                            currentLineWidth += charWidth;
-                        }
-
-                        // Add the row to the current character's page
-                        charRowsForPage.push(currentRow);
-                        charIndex++;
+                    // Fill the line with repeated characters
+                    while (currentLineWidth + totalCharWidth <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += totalCharWidth;
                     }
 
-                    // Add the completed page of rows for this character to the main array
-                    characterRows.push(...charRowsForPage);
-                } else {
-                    console.warn(`Glyph not found for character: ${characterToRepeat}`);
+                    // Add the last character if there's space for its width
+                    if (currentLineWidth + (charWidth) <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += charWidth;
+                    }
+
+                    // Add the row to the current character's page
+                    charRowsForPage.push(currentRow);
+                    charIndex++;
                 }
-            });
-        }
+
+                // Add the completed page of rows for this character to the main array
+                characterRows.push(...charRowsForPage);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+        });
+    }
 
     //
 
@@ -974,6 +1040,8 @@ else if (arrangement === "rowOfSingleCharacter" && characters.length > 0) {
                 }
             }
         }
+
+
     }
 
     // If there are any remaining rows that didn't fill a complete page, add empty rows to fill the page
@@ -1472,16 +1540,37 @@ function drawPracticeBlockLines(worksheetGroup, backgroundLinesGroup, y, width, 
     //////
 }
 
+
+function getInitialXPositionToStartGlyphs()
+{
+    return (nibWidthPt * 4) ; // Initial position to start drawing characters
+}
+
 function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightPt, xHeight, ascenderHeight, capitalHeight, descenderHeight, charactersForLine) {
     if (!showFont || !font) return;
 
+
+
+// Calculate initial positions and dimensions
+const initialXPos = getInitialXPositionToStartGlyphs();
+const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+const usableWidth = paperWidthOrientedRaw - marginHorizontal - initialXPos;
+
+
+/*
+// Draw debug data at the top of the page
+drawTopDebugData(group, "Initial X Position", initialXPos, 0, 0);
+drawTopDebugData(group, "Paper Width Oriented", paperWidthOrientedRaw, 10, 40);
+drawTopDebugData(group, "Paper Height Oriented", paperHeightOrientedRaw, 10, 60);
+drawTopDebugData(group, "Usable Width", usableWidth, 10, 80);
+*/
+
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
-    var fontScaleFactor = getFontScaleFactor();//(xHeight / getFontSXHeight()).toFixed(3);
+    var fontScaleFactor = getFontScaleFactor();
     var fontYOffset = getFontYOffset();
 
-    let xPosition = (nibWidthPt * 4) - 3; // Initial position to start drawing characters
-
+    let xPosition = getInitialXPositionToStartGlyphs(); // Initial position to start drawing characters
     let yPositionWithOffset = yPosition + (-1 * fontYOffset);
 
     // Iterate through each character in charactersForLine and draw it
@@ -1494,17 +1583,149 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
             svgPath.setAttribute("d", path.toPathData(5));
             svgPath.setAttribute("fill", "#000");
 
-
-            const transform = `translate(${xPosition}, ${yPositionWithOffset + ascenderHeight + capitalHeight + xHeight}) scale(${fontScaleFactor}, ${fontScaleFactor})`; // Example scale and position
+            // Calculate transformation for the glyph
+            const transform = `translate(${xPosition}, ${yPositionWithOffset + ascenderHeight + capitalHeight + xHeight}) scale(${fontScaleFactor}, ${fontScaleFactor})`;
             svgPath.setAttribute("transform", transform);
             group.appendChild(svgPath);
-            xPosition += (glyph.advanceWidth * fontScaleFactor) + spacingForCharacters;
 
+            // Calculate the original bounding box (for glyph shape)
+            const bbox = glyph.getBoundingBox();
+            const boxX = xPosition + (bbox.x1 * fontScaleFactor);
+            const boxY = yPositionWithOffset + (ascenderHeight + capitalHeight + xHeight) - (bbox.y2 * fontScaleFactor);
+            const boxWidth = (bbox.x2 - bbox.x1) * fontScaleFactor;
+            const boxHeight = (bbox.y2 - bbox.y1) * fontScaleFactor;
+
+            // Calculate the bounding box for the total space including advance width
+            const totalBoxWidth = glyph.advanceWidth * fontScaleFactor;
+
+            // Draw the red bounding box (glyph shape only)
+            drawDebugBoundingBox(group, boxX, boxY, boxWidth, boxHeight, "red");
+
+            // Draw the green bounding box (including advance width)
+            drawDebugBoundingBox(group, xPosition, boxY, totalBoxWidth + spacingForCharacters, boxHeight, "green");
+
+            // Draw debug text for bounding box information
+            drawDebugText(group, boxX, boxY, boxWidth, boxHeight);
+
+            // Update the xPosition for the next character
+            xPosition += totalBoxWidth + spacingForCharacters;
         }
     });
 }
 
+var debugPage = 0;
 
+// Function to draw a text label at the top of the page
+function drawTopDebugText(group, textContent, x, y) {
+    const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    textElement.setAttribute("x", x);
+    textElement.setAttribute("y", y);
+    textElement.setAttribute("fill", "blue");
+    textElement.setAttribute("font-size", "12");
+    textElement.textContent = textContent;
+    group.appendChild(textElement);
+}
+
+// Function to draw background rectangle for top debug text
+function drawTopDebugBackground(group, x, y, textContent) {
+    const textWidth = textContent.length * 6; // Approximate width calculation
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", x - 2);
+    rect.setAttribute("y", y - 12); // Adjust to place background behind text
+    rect.setAttribute("width", textWidth + 4);
+    rect.setAttribute("height", 14);
+    rect.setAttribute("fill", "rgba(255, 255, 0, 0.4)"); // Semi-transparent yellow
+    rect.setAttribute("stroke", "none");
+    group.appendChild(rect);
+}
+
+// Function to place a labeled debug text with background at the top of the page
+function drawTopDebugData(group, label, value, x, y) {
+    if(!debugPage)
+    {
+        return;
+    }
+    const textContent = `${label}: ${value.toFixed(1)}`;
+    drawTopDebugBackground(group, x, y, textContent);
+    drawTopDebugText(group, textContent, x, y);
+}
+// Function to draw a bounding box around the glyph or its total space
+function drawDebugBoundingBox(group, x, y, width, height, color) {
+    if(!debugPage)
+        {
+            return;
+        }
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", x);
+    rect.setAttribute("y", y);
+    rect.setAttribute("width", width);
+    rect.setAttribute("height", height);
+    rect.setAttribute("fill", "none");
+    rect.setAttribute("stroke", color);
+    rect.setAttribute("stroke-width", "0.5");
+    group.appendChild(rect);
+}
+// Function to draw text labels showing bounding box info with a white background
+function drawDebugText(group, x, y, width, height) {
+    if (!debugPage) {
+        return;
+    }
+
+    // Draw x at the origin (top-left corner)
+    const xText = createTextElement(`x:${x.toFixed(1)}`, x, y + 5 + height, "blue");
+    group.appendChild(drawTextBackground(xText));
+    group.appendChild(xText);
+
+    // Draw y beneath x
+    const yText = createTextElement(`y:${y.toFixed(1)}`, x, y + 5 + height + 10, "blue");
+    group.appendChild(drawTextBackground(yText));
+    group.appendChild(yText);
+
+    // Draw width (w) at the top of the bounding box
+    const widthText = createTextElement(`w:${width.toFixed(1)}`, x + width / 2, y - 3, "blue", "middle");
+    group.appendChild(drawTextBackground(widthText));
+    group.appendChild(widthText);
+
+    // Draw height (h) rotated 90 degrees CW on the left side of the bounding box
+    const heightText = createTextElement(`h:${height.toFixed(1)}`, x - 8, y + height / 2, "blue", "middle", true);
+    group.appendChild(drawTextBackground(heightText));
+    group.appendChild(heightText);
+}
+
+// Helper function to create a text element
+function createTextElement(content, x, y, color, anchor = "start", rotate = false) {
+    const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    textElement.setAttribute("x", x);
+    textElement.setAttribute("y", y);
+    textElement.setAttribute("fill", color);
+    textElement.setAttribute("font-size", "10");
+    textElement.setAttribute("text-anchor", anchor);
+    textElement.textContent = content;
+
+    // Apply rotation if needed
+    if (rotate) {
+        const rotationCenterX = x;
+        const rotationCenterY = y;
+        textElement.setAttribute("transform", `rotate(90, ${rotationCenterX}, ${rotationCenterY})`);
+    }
+
+    return textElement;
+}
+
+// Function to create a white background rectangle for text
+function drawTextBackground(textElement) {
+    const bbox = textElement.getBBox(); // Get bounding box of the text
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", bbox.x - 2); // Adjust to add padding around the text
+    rect.setAttribute("y", bbox.y - 1);
+    rect.setAttribute("width", bbox.width + 4);
+    rect.setAttribute("height", bbox.height + 2);
+    rect.setAttribute("fill", "white");
+    rect.setAttribute("stroke", "none");
+
+    return rect; // Return the rectangle to be appended to the group
+}
+  
 
 
 function getCharactersForPage(pageIndex) {
@@ -1699,7 +1920,6 @@ function calculateCharsPerLine() {
 
 
     // Define spacing between characters
-    spacingForCharacters = 30; // Adjust this value to modify the spacing between characters
 
     const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
@@ -1746,11 +1966,11 @@ function getSelectedCharacters() {
         selectedCharacters = lowercaseAlphabet;
     } else if (selectedValue === "uppercaseOnly") {
         selectedCharacters = uppercaseAlphabet;
-        
+
     }
     else if (selectedValue === "mixedCasePairsLowerFirst") {
         selectedCharacters = mixedCasePairsLowerFirst;
-        
+
     }
     else if (selectedValue === "bothUppercaseAndLowercase") {
         selectedCharacters = lowercaseAlphabet.concat('\n').concat(uppercaseAlphabet);

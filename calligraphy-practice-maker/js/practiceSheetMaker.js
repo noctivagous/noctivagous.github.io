@@ -597,6 +597,7 @@ function checkForUIBoundaries() {
 
 async function makeWorksheetPages() {
 
+    falert();
 
     showHideSections();
 
@@ -731,14 +732,30 @@ function calculateNumberOfPagesOLD() {
 
 
 
-var spacingForCharacters = 50;
+var fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
+
+function getFontCharactersSpacingFixed()
+{    
+    var v = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+
+    if((arrangement === "rowsOfCharactersSpaced"))
+    {
+        v = v * 2;
+    }
+
+    return v;
+}
+
+function setFontCharactersSpacingFixed()
+{    
+ 
+}
+
 
 function generateRowsOfCharacters() {
 
 
-    // SPACINGFORCHARACTERS is the global variable
-    // which is set in each branching statement
-    // and changes the spacing between characters
 
     let characterRows = [];
 
@@ -770,7 +787,7 @@ function generateRowsOfCharacters() {
     // Step 1: Generate an array of character rows without any empty lines
     if (arrangement === "rowsOfCharacters") {
 
-        spacingForCharacters = 30;
+        fontCharactersSpacing = getFontCharactersSpacingFixed();
 
         while (charIndex < characters.length) {
             let currentRow = [];
@@ -791,7 +808,7 @@ function generateRowsOfCharacters() {
                 const glyph = font.charToGlyph(char);
 
                 if (glyph) {
-                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + spacingForCharacters;
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
 
                     if (currentLineWidth + charWidthWithSpacing <= width) {
                         lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
@@ -844,9 +861,12 @@ function generateRowsOfCharacters() {
 
                 // console.log(`paperWidthOrientedRaw: ${paperWidthOrientedRaw}`);
                 if (glyph) {
-                    var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
 
-                    spacingForCharacters = charWidthWithSpacing; // Update global spacing
+                    //var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
+
+                    charWidthWithSpacing = getFontCharactersSpacingFixed();
+
+                   
 
                     if ((currentLinePosition + charWidthWithSpacing) <= (width)) {
                         lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
@@ -915,7 +935,7 @@ function generateRowsOfCharacters() {
             if (glyph) {
                 const charWidth = glyph.advanceWidth * getFontScaleFactor();
                 const charSpacing = charWidth * 3.0; // Set spacing to 3.0 character width
-                spacingForCharacters = charSpacing; // Update global spacing
+                fontCharactersSpacing = charSpacing; // Update global spacing
                 const totalCharWidth = charWidth + charSpacing;
 
                 // Create a single row for the current character
@@ -976,7 +996,7 @@ function generateRowsOfCharacters() {
             if (glyph) {
                 const charWidth = glyph.advanceWidth * getFontScaleFactor();
                 const charSpacing = charWidth * 3.0; // Set spacing to 2.0x character width
-                spacingForCharacters = charSpacing; // Update global spacing
+                fontCharactersSpacing = charSpacing; // Update global spacing
                 const totalCharWidth = charWidth + charSpacing;
 
 
@@ -1565,13 +1585,13 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
             drawDebugBoundingBox(group, boxX, boxY, boxWidth, boxHeight, "red");
 
             // Draw the green bounding box (including advance width)
-            drawDebugBoundingBox(group, xPosition, boxY, totalBoxWidth + spacingForCharacters, boxHeight, "green");
+            drawDebugBoundingBox(group, xPosition, boxY, totalBoxWidth + getFontCharactersSpacingFixed(), boxHeight, "green");
 
             // Draw debug text for bounding box information
             drawDebugText(group, boxX, boxY, boxWidth, boxHeight);
 
             // Update the xPosition for the next character
-            xPosition += totalBoxWidth + spacingForCharacters;
+            xPosition += totalBoxWidth + getFontCharactersSpacingFixed();
         }
     });
 }
@@ -1885,16 +1905,14 @@ function calculateCharsPerLine() {
     const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
     // Determine available width for character placement, considering margins
-    var width = paperWidthOrientedRaw - marginHorizontal - spacingForCharacters; // Subtract horizontal margins from the paper width
+    var width = paperWidthOrientedRaw - marginHorizontal - getFontCharactersSpacingFixed(); // Subtract horizontal margins from the paper width
 
 
-    // Calculate the number of characters that can fit within the available width
-    //var charsPerLine = Math.floor(width / (avgCharWidth + spacingForCharacters));
-
+    
     var charsPerLine = 4;
 
 
-    charsPerLine = Math.floor(width / (avgCharWidth + spacingForCharacters));
+    charsPerLine = Math.floor(width / (avgCharWidth + getFontCharactersSpacingFixed()));
 
 
 

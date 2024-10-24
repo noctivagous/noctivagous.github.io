@@ -118,7 +118,7 @@ var marginHorizontal = 2 * marginHorizontalInches * 72; // Convert inches to poi
 var marginVertical = 2 * marginVerticalInches * 72;     // Convert inches to points
 
 var fontScaleFactor = 0.5;
-var spacingForCharacters = 30; // Space between characters
+var fontCharactersSpacing = 30; // Space between characters
 
 var paperSizeWithoutOrientation = [];
 
@@ -1020,7 +1020,7 @@ const filterConfigRange = {
 
     glowStdDeviation: { min: 0, max: 100 },
     glowOpacity: { min: 0, max: 1, step: 0.01 },
-  
+
 };
 
 
@@ -1396,7 +1396,7 @@ document.getElementById('effectTransformSelect').addEventListener('change', (e) 
     const selectedTransform = e.target.value;
     transformConfig.currentTransform = selectedTransform;
     displayTransformControls(selectedTransform);
-makeWorksheetPages();
+    makeWorksheetPages();
 });
 
 document.getElementById('effectTransformSelect').addEventListener('change', (e) => {
@@ -1439,7 +1439,7 @@ function displayTransformControls(transform) {
                 input.addEventListener('input', (e) => {
                     transformConfig[param] = parseFloat(e.target.value);
                     angleDisplay.textContent = ` (${calculateShearAngle(transformConfig[param])}°)`;
-                   makeWorksheetPages();
+                    makeWorksheetPages();
                 });
 
                 inputDiv.appendChild(input);
@@ -1461,3 +1461,68 @@ function calculateShearAngle(shearValue) {
 
 // Initialize the dynamic control display
 displayTransformControls(document.getElementById('effectTransformSelect').value);
+
+
+
+
+/**
+         * The falert() function flashes a 200px x 200px box in the upper right corner of the page.
+         * - If the parameter is a number (1-9), it shows a grayscale square mapped from 0.1 to 0.9.
+         * - If the parameter is a string, it displays the string as a message inside the box
+         *   with a black background and white text (9pt font).
+         * - The box has an opacity of 0.85 and remains visible for 300 milliseconds.
+         */
+
+
+function falert(param) {
+    // Create the alert box element
+    const alertBox = document.createElement('div');
+
+    // Set base styles for the alert box
+    alertBox.style.position = 'fixed';
+    alertBox.style.top = '0';
+    alertBox.style.right = '0';
+    alertBox.style.width = '200px';
+    alertBox.style.height = '200px';
+    alertBox.style.opacity = '0.85';
+    alertBox.style.zIndex = '1000';
+    alertBox.style.display = 'flex';
+    alertBox.style.alignItems = 'center';
+    alertBox.style.justifyContent = 'center';
+
+    // Set default value if parameter is missing
+    if (param === undefined) {
+        param = 9;
+    }
+    // Check if the parameter is a number or a string
+    if (typeof param === 'number' && param >= 1 && param <= 9) {
+        // For numbers, set the grayscale background
+        const grayValue = (param / 10) * 255;
+        alertBox.style.backgroundColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`;
+    } else if (typeof param === 'string') {
+        // For strings, set black background and display the message
+        alertBox.style.backgroundColor = 'black';
+        alertBox.style.color = 'white';
+        alertBox.style.fontSize = '9pt';
+        alertBox.style.textAlign = 'center';
+        alertBox.textContent = param;
+    } else {
+        // Default case: show a black box
+        alertBox.style.backgroundColor = 'black';
+    }
+
+    // Add the alert box to the document
+    document.body.appendChild(alertBox);
+
+    // Make the alert box flash for a short duration
+    setTimeout(() => {
+        alertBox.remove(); // Remove the box after flashing
+    }, 300); // Box remains visible for 300ms
+}
+
+/* for number values */
+function nalert(number) {
+    if (string) {
+        falert(`${number}`);
+    }
+}

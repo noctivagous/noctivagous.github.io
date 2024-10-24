@@ -19,6 +19,7 @@
     filter: drop-shadow(45pt 0pt 0 rgb(81, 81, 81));
   }*/
 
+
 div.effectFilterParamLabel
 {
     border-top:1pt solid #3a3a3a;
@@ -837,3 +838,30 @@ padding:5pt;
     border-color: #ff8800; /* Example: Highlight border when a file is dragged over */
     background-color: #666666;
 }
+
+input[type="range"] {
+    -webkit-appearance: none;
+    height: 10px;
+    background: black;
+    outline: none;
+    border-radius: 5px;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10pt;
+    height: 10pt;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 10pt;
+    height: 10pt;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  

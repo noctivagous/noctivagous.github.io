@@ -736,6 +736,7 @@ async function loadFontsFromIndexedDB() {
                     if (key !== 'name') newOption.setAttribute(key, value);
                 }
                 uploadedOptgroup.appendChild(newOption);
+                //console.log(newOption);
             });
 
             document.getElementById('fontForWorksheetPages').appendChild(uploadedOptgroup);
@@ -853,6 +854,7 @@ function updateFontAttributesInOption() {
         fontFileData: selectedOption.getAttribute('fontFileData')
     };
     saveFontToIndexedDB(selectedOption.value, attributes);
+    console.log(attributes)
 }
 
 // Add event listener to inputs with the .fontAttribute class
@@ -860,6 +862,15 @@ document.querySelectorAll('.fontAttribute').forEach(input => {
     input.addEventListener('change', updateFontAttributesInOption);
 });
 
+// Add event listener to inputs with the .fontAttribute class
+document.querySelectorAll('.fontAttribute').forEach(input => {
+    input.addEventListener('change', updateFontAttributesInOption);
+});
+
+// Add event listener to inputs with the .fontAttribute class
+document.querySelectorAll('.fontMetric').forEach(input => {
+    input.addEventListener('change', updateFontAttributesInOption);
+});
 
 
 
@@ -871,8 +882,8 @@ function applyCurrentGlyphFilter() {
     // Loop through each SVG and apply the filter
     svgElements.forEach(svg => {
         const glyphs = svg.querySelectorAll('.practiceSheetGlyph'); // Find glyphs inside each SVG
-        const effectSelect = document.getElementById('effectSelect');
-        const selectedEffect = effectSelect.options[effectSelect.selectedIndex];
+        const effectFilterSelect = document.getElementById('effectFilterSelect');
+        const selectedEffect = effectFilterSelect.options[effectFilterSelect.selectedIndex];
 
         applyFilterToGlyphs(glyphs, selectedEffect.value);
     });
@@ -892,10 +903,10 @@ function applyFilterToGlyphs(glyphElements, filterId) {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Get the select element
-    const effectSelect = document.getElementById('effectSelect');
+    const effectFilterSelect = document.getElementById('effectFilterSelect');
 
     // Add an event listener to the select element
-    effectSelect.addEventListener('change', function () {
+    effectFilterSelect.addEventListener('change', function () {
         // Query all the SVGs that have the 'worksheetPage' class
         const svgElements = document.querySelectorAll('svg.worksheetPage');
 
@@ -919,24 +930,24 @@ const filterConfigAliases = {
     dropOutlineColor: 'Drop Shadow Color',
     dropOutlineRadius: 'Drop Shadow Thickness',
     dropOutlineDxOffset: 'Drop Shadow Horizontal Offset',
-    
+
     outlineAboveDropRadius: 'Top Outline Thickness',
     dropSecondOutlineRadius: 'Shadow Outline Thickness',
     dropDualOutlineDropShadowColor: 'Dual Drop Shadow Color',
     outlineAboveDropColor: 'Top Outline Color',
     dropDualOutlineDropShadowDxOffset: 'Dual Drop Shadow X-Offset',
     dropDualOutlineDropShadowDyOffset: 'Dual Drop Shadow Y-Offset',
-  
+
     dropOutlineKnockoutRadius: 'Knockout Outline Thickness',
     dropOutlineKnockoutColor: 'Knockout Color',
     dropShadowStdDeviation: 'Shadow Blur',
     dropShadowDx: 'Shadow X-Offset',
     dropShadowDy: 'Shadow Y-Offset',
-  
+
     extrusionDropShadowDx: 'Shadow X-Offset',
     extrusionDropShadowDy: 'Shadow Y-Offset',
-  
-    
+
+
 
     glowStdDeviation: 'Glow Blur',
     glowColor: 'Glow Color',
@@ -945,10 +956,10 @@ const filterConfigAliases = {
     extrusionDistance: 'Length',       // Total extrusion distance
     extrusionRepeatCount: 'Resolution',     // Number of repeated layers
     extrusionTheta: 'Angle',           // Angle of extrusion in degrees
-    extrusionColor: 'Extrusion Color'       // Color of extrusion
-  
-  };
-  
+    extrusionColor: 'Extrusion Color',       // Color of extrusion
+
+};
+
 
 
 // Central configuration for filter parameters
@@ -958,19 +969,19 @@ const filterConfig = {
     dropOutlineColor: '#a9fc03',
     dropOutlineRadius: 30,
     dropOutlineDxOffset: 10,
-    
+
     outlineAboveDropRadius: 10,
     dropSecondOutlineRadius: 30,
     dropDualOutlineDropShadowColor: '#3EB176',
     outlineAboveDropColor: '#ffffff',
     dropDualOutlineDropShadowDxOffset: 35,
     dropDualOutlineDropShadowDyOffset: 10,
-    
+
 
     dropOutlineKnockoutRadius: 30,
     dropOutlineKnockoutColor: '#000000',
     dropShadowStdDeviation: 0,
-    
+
     dropShadowDx: 30,
     dropShadowDy: 30,
 
@@ -982,34 +993,36 @@ const filterConfig = {
 
     glowStdDeviation: 25,
     glowColor: '#a9fc03',
-    glowOpacity: 1.0
-  };
-  
+    glowOpacity: 1.0,
+
+};
+
 // Min and max values for filterConfig parameters
 const filterConfigRange = {
     outlineRadius: { min: 0, max: 100 },
     dropOutlineRadius: { min: 0, max: 100 },
     dropOutlineDxOffset: { min: 0, max: 50 },
-  
+
     outlineAboveDropRadius: { min: 0, max: 50 },
     dropSecondOutlineRadius: { min: 0, max: 100 },
     dropDualOutlineDropShadowDxOffset: { min: 0, max: 50 },
     dropDualOutlineDropShadowDyOffset: { min: 0, max: 50 },
-  
+
     dropOutlineKnockoutRadius: { min: 0, max: 100 },
     dropShadowStdDeviation: { min: 0, max: 50 },
     dropShadowDx: { min: 0, max: 100 },
     dropShadowDy: { min: 0, max: 100 },
-  
+
     extrusionDistance: { min: 0, max: 300 },
     extrusionRepeatCount: { min: 1, max: 30 },
     extrusionTheta: { min: 0, max: 360 },
     extrusionDropShadowStdDeviation: { min: 0, max: 50 },
-  
+
     glowStdDeviation: { min: 0, max: 100 },
-    glowOpacity: { min: 0, max: 1, step: 0.01 }
-  };
+    glowOpacity: { min: 0, max: 1, step: 0.01 },
   
+};
+
 
 // Function to generate the SVG filters template
 function getSvgFilters() {
@@ -1146,7 +1159,9 @@ ${generateMergeNodes(filterConfig.extrusionRepeatCount)}
 </filter>
 
 
-      
+
+
+
 
        
       </defs>
@@ -1174,32 +1189,32 @@ ${generateMergeNodes(filterConfig.extrusionRepeatCount)}
 
 // Helper function to generate repeated offsets for drop shadow
 function generateRepeatedOffsets(baseDistance, extrusionRepeatCount, extrusionTheta, extrusionColor) {
-  let offsets = '';
-  const angleRad = (extrusionTheta * Math.PI) / 180; // Convert theta to radians
-  const dxStep = Math.cos(angleRad) * (baseDistance / extrusionRepeatCount);
-  const dyStep = Math.sin(angleRad) * (baseDistance / extrusionRepeatCount);
+    let offsets = '';
+    const angleRad = (extrusionTheta * Math.PI) / 180; // Convert theta to radians
+    const dxStep = Math.cos(angleRad) * (baseDistance / extrusionRepeatCount);
+    const dyStep = Math.sin(angleRad) * (baseDistance / extrusionRepeatCount);
 
-  // Color for extrusion (default gray if not provided)
-  const floodColorForShadow = extrusionColor || "#999";
+    // Color for extrusion (default gray if not provided)
+    const floodColorForShadow = extrusionColor || "#999";
 
-  // Generate overlapping offsets
-  for (let i = 1; i <= extrusionRepeatCount; i++) {
-    offsets += `
+    // Generate overlapping offsets
+    for (let i = 1; i <= extrusionRepeatCount; i++) {
+        offsets += `
       <feOffset in="blur" dx="${dxStep * i}" dy="${dyStep * i}" result="offset${i}" />
       <feFlood flood-color="${floodColorForShadow}" flood-opacity="${1 / 1}" result="shadowColor${i}" />
       <feComposite in="shadowColor${i}" in2="offset${i}" operator="in" result="shadow${i}" />
     `;
-  }
-  return offsets;
+    }
+    return offsets;
 }
 
 // Helper function to generate merge nodes for feMerge
 function generateMergeNodes(extrusionRepeatCount) {
-  let mergeNodes = '';
-  for (let i = 1; i <= extrusionRepeatCount; i++) {
-    mergeNodes += `<feMergeNode in="shadow${i}" />`;
-  }
-  return mergeNodes;
+    let mergeNodes = '';
+    for (let i = 1; i <= extrusionRepeatCount; i++) {
+        mergeNodes += `<feMergeNode in="shadow${i}" />`;
+    }
+    return mergeNodes;
 }
 
 
@@ -1210,7 +1225,7 @@ function addFiltersToSVG(svgElement) {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Get the filter select element
-    const filterSelect = document.getElementById('effectSelect');
+    const filterSelect = document.getElementById('effectFilterSelect');
 
     // Generate the SVG filters and parse them into an HTML element
     const svgContainer = document.createElement('div');
@@ -1245,55 +1260,55 @@ document.addEventListener('DOMContentLoaded', () => {
 function displayFilterControls(params) {
     const controlContainer = document.getElementById('filterControlContainer');
     controlContainer.innerHTML = ''; // Clear existing controls
-  
+
     // Loop through the params and create corresponding input fields
     for (const [key, value] of Object.entries(params)) {
-      // Create a div for the label
-      const labelDiv = document.createElement('div');
-      labelDiv.className = 'effectFilterParamLabel';
-  
-      const label = document.createElement('label');
-      // Use the alias if it exists, otherwise default to the original key
-      label.textContent = filterConfigAliases[key] || key;
-      labelDiv.appendChild(label);
-  
-      // Create a div for the input
-      const inputDiv = document.createElement('div');
-      inputDiv.className = 'effectFilterParamInput';
-  
-      const input = document.createElement('input');
-      input.type = typeof value === 'number' ? 'range' : 'color';
-      input.value = filterConfig[key]; // Set initial value from filterConfig
-      input.id = key;
-  
-      // Adjust input attributes for numeric controls based on the range object
-      if (typeof value === 'number') {
-        const range = filterConfigRange[key] || { min: 0, max: 100 }; // Default to 0-100 if not specified
-        input.min = range.min;
-        input.max = range.max;
-        input.step = range.step || 1; // Use the step from the range config, default to 1
-      }
-  
-      // Add a class for sliders
-      if (input.type === 'range') {
-        input.classList.add('effectFilterParamSlider');
-      }
-  
-      // Add event listener to update parameter value dynamically
-      input.addEventListener('input', () => {
-        filterConfig[key] = input.type === 'number' ? parseFloat(input.value) : input.value;
-        updateSvgFilters(filterConfig);
-      });
-  
-      inputDiv.appendChild(input);
-  
-      // Add the label and input divs to the control container
-      controlContainer.appendChild(labelDiv);
-      controlContainer.appendChild(inputDiv);
+        // Create a div for the label
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'effectFilterParamLabel';
+
+        const label = document.createElement('label');
+        // Use the alias if it exists, otherwise default to the original key
+        label.textContent = filterConfigAliases[key] || key;
+        labelDiv.appendChild(label);
+
+        // Create a div for the input
+        const inputDiv = document.createElement('div');
+        inputDiv.className = 'effectFilterParamInput';
+
+        const input = document.createElement('input');
+        input.type = typeof value === 'number' ? 'range' : 'color';
+        input.value = filterConfig[key]; // Set initial value from filterConfig
+        input.id = key;
+
+        // Adjust input attributes for numeric controls based on the range object
+        if (typeof value === 'number') {
+            const range = filterConfigRange[key] || { min: 0, max: 100 }; // Default to 0-100 if not specified
+            input.min = range.min;
+            input.max = range.max;
+            input.step = range.step || 1; // Use the step from the range config, default to 1
+        }
+
+        // Add a class for sliders
+        if (input.type === 'range') {
+            input.classList.add('effectFilterParamSlider');
+        }
+
+        // Add event listener to update parameter value dynamically
+        input.addEventListener('input', () => {
+            filterConfig[key] = input.type === 'number' ? parseFloat(input.value) : input.value;
+            updateSvgFilters(filterConfig);
+        });
+
+        inputDiv.appendChild(input);
+
+        // Add the label and input divs to the control container
+        controlContainer.appendChild(labelDiv);
+        controlContainer.appendChild(inputDiv);
     }
-  }
-  
-  
+}
+
+
 
 function updateSvgFilters(updatedParams) {
     // Update filterConfig with new parameter values
@@ -1307,3 +1322,142 @@ function updateSvgFilters(updatedParams) {
 }
 
 
+/*
+ * Dynamic Filter System Overview
+ *
+ * This filter system enables users to apply various visual effects to SVG elements dynamically. 
+ * It is primarily used for creating calligraphy worksheet effects, such as outlines, shadows, 
+ * glow
+ *
+ * 1. Filter Configuration and Parameters
+ *    - The filter system is controlled by a central object, `filterConfig`, which stores the 
+ *      current values of all filter parameters (e.g., `outlineRadius`, `dropShadowDx`, `).
+ *    - Two supporting objects, `filterConfigAliases` and `filterConfigRange`, assist in the 
+ *      generation of user-friendly UI controls:
+ *         - `filterConfigAliases` maps each parameter to a descriptive label.
+ *         - `filterConfigRange` defines the min, max, and step values for each parameter, setting 
+ *           the valid input range for UI sliders and inputs.
+ *
+ * 2. Automatic UI Control Generation
+ *    - UI controls (e.g., sliders, color pickers) are generated dynamically based on `filterConfig`, 
+ *      `filterConfigAliases`, and `filterConfigRange`. Each filter parameter gets a corresponding 
+ *      control that reflects its current value.
+ *    - When a user modifies a control, it updates the corresponding value in `filterConfig`, which 
+ *      then triggers a re-render of the SVG elements to apply the updated filter.
+ *
+ * 3. Data Attributes and Integration
+ *    - Filters are defined using `data-params` attributes in the HTML, which store the default 
+ *      parameters for each filter in JSON format. This information is read and parsed to create 
+ *      the appropriate controls in the UI.
+ *    - When a filter is selected, its `data-params` are used to generate controls for the specific 
+ *      parameters of that filter, ensuring consistent integration of new filter options.
+ *
+ * 4. Applying Filters to SVG Elements
+ *    - Updates to filter parameters are managed by the `updateSvgFilters()` function, which applies 
+ *      changes to SVG elements using corresponding `<filter>` elements. 
+ 
+ * Summary:
+ * This system uses centralized configuration objects to manage dynamic filter application, UI 
+ * control generation, and filter integration. Adding a new filter involves extending `filterConfig`, 
+ * updating related objects, and modifying the corresponding HTML attributes, making the system 
+ * scalable and maintainable.
+ */
+
+
+// Central configuration for transform parameters
+const transformConfig = {
+    shearX: 0,  // Initial value for Shear X
+    shearY: 0   // Initial value for Shear Y
+};
+
+// Define transform parameter ranges for dynamic control generation
+const transformConfigRange = {
+    shearX: { min: -100, max: 100 },
+    shearY: { min: -100, max: 100 }
+};
+
+// Map of transform aliases for user-friendly labels
+const transformConfigAliases = {
+    shearX: 'Shear X',
+    shearY: 'Shear Y'
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const transformSelect = document.getElementById('effectTransformSelect');
+
+    // Add "Shear" option
+    const shearOption = document.createElement('option');
+    shearOption.value = 'shearTransform';
+    shearOption.textContent = 'Shear';
+    transformSelect.appendChild(shearOption);
+});
+
+document.getElementById('effectTransformSelect').addEventListener('change', (e) => {
+    const selectedTransform = e.target.value;
+    transformConfig.currentTransform = selectedTransform;
+    displayTransformControls(selectedTransform);
+makeWorksheetPages();
+});
+
+document.getElementById('effectTransformSelect').addEventListener('change', (e) => {
+    console.log('Transform selected:', e.target.value);  // Debugging line
+    // Rest of the code...
+});
+
+
+// Function to display dynamic transform controls
+function displayTransformControls(transform) {
+    const controlContainer = document.getElementById('transformControlContainer');
+    controlContainer.innerHTML = ''; // Clear existing controls
+
+    // Check if the selected transform is "Shear"
+    if (transform === 'shearTransform') {
+        Object.keys(transformConfig).forEach(param => {
+            if (param.startsWith('shear')) {
+                // Create label and slider
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'effectTransformParamLabel';
+                const label = document.createElement('label');
+                label.textContent = transformConfigAliases[param] || param;
+                labelDiv.appendChild(label);
+
+                const inputDiv = document.createElement('div');
+                inputDiv.className = 'effectTransformParamInput';
+                const input = document.createElement('input');
+                input.type = 'range';
+                input.min = transformConfigRange[param].min;
+                input.max = transformConfigRange[param].max;
+                input.value = transformConfig[param];
+                input.id = param;
+
+                // Create angle display
+                const angleDisplay = document.createElement('span');
+                angleDisplay.className = 'angleDisplay';
+                angleDisplay.textContent = ` (${calculateShearAngle(transformConfig[param])}°)`;
+
+                // Update angle display and transformConfig on input change
+                input.addEventListener('input', (e) => {
+                    transformConfig[param] = parseFloat(e.target.value);
+                    angleDisplay.textContent = ` (${calculateShearAngle(transformConfig[param])}°)`;
+                   makeWorksheetPages();
+                });
+
+                inputDiv.appendChild(input);
+                inputDiv.appendChild(angleDisplay);
+                controlContainer.appendChild(labelDiv);
+                controlContainer.appendChild(inputDiv);
+            }
+        });
+    }
+}
+
+// Helper function to calculate shear angle in degrees
+function calculateShearAngle(shearValue) {
+    return Math.atan(shearValue / 100) * (180 / Math.PI); // Convert to degrees
+}
+
+
+
+
+// Initialize the dynamic control display
+displayTransformControls(document.getElementById('effectTransformSelect').value);

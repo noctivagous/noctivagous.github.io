@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>LetterformPortal - Calligraphy and Lettering Practice Sheet Generator</title>
+    <title>LetterformGateway - Calligraphy and Lettering Practice Sheet Generator</title>
 
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css" />
 
@@ -31,8 +31,8 @@ a small number of fonts available.
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
-            <h1>LetterformPortal<br /><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
-            color:#aaa;font-size:11pt;font-style: italic;z-index: 20;">Worksheet Generator</span></h1>
+            <h1>LetterformGateway<br /><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
+            color:#6a6868;font-size:11pt;font-style: italic;normal;z-index: 20;">Worksheet Generator</span></h1>
 
 
 
@@ -228,7 +228,7 @@ width:100%;margin:0;padding:0">
 
 
                     </div>
-                    
+
                     <!-- declaredXHeightOverride - what the font says is its X-Height (SXHeight) -->
                     <!--
                     <div class="settingEnclosure indent indent2" style="background-color: #333;"
@@ -448,21 +448,21 @@ width:100%;margin:0;padding:0">
 
                     <!-- Ascender Height Input -->
                     <label class="fontAttribute" for="ascenderHeight">Ascender Height:</label><br>
-                    <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> <span class="labelNote">×
+                    <input type="number" id="ascenderHeight" class="fontMetric" value="0.5" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
                 <div class="settingEnclosure indent">
 
                     <!-- Capital Height Input -->
                     <label class="fontAttribute" for="capitalHeight">Capital Height:</label><br>
-                    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> <span class="labelNote">×
+                    <input type="number" id="capitalHeight" class="fontMetric" value="0.4" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
                 <div class="settingEnclosure indent">
 
                     <!-- Descender Depth Input -->
                     <label for="descenderDepth">Descender Depth:</label><br>
-                    <input class="fontAttribute" type="number" id="descenderDepth" value="0.6" min="0" step="0.1"> <span
+                    <input class="fontAttribute" type="number" class="fontMetric" id="descenderDepth" value="0.6" min="0" step="0.1"> <span
                         class="labelNote">×
                         x-height</span>
                 </div>
@@ -542,11 +542,30 @@ width:100%;margin:0;padding:0">
             <fieldset id="effectsFieldset">
                 <legend>Effects</legend>
                 <div class="settingEnclosure">
-                    <select id="effectSelect">
+                    <label for="effectFilterSelect">Filter:</label>
+
+                    <select id="effectFilterSelect">
                         <option value="" selected>None</option>
                     </select>
+
+                    <div id="filterControlContainer" class="settingEnclosure" indent></div>
+
                 </div>
-                <div id="filterControlContainer" class="settingEnclosure" indent></div>
+
+                
+                <div class="settingEnclosure" style="display:none">
+                    <label for="effectTransformSelect">Transforms:</label>
+
+                    <select id="effectTransformSelect">
+                        <option value="" selected>None</option>
+                    </select>
+
+                    <div id="transformControlContainer" class="settingEnclosure" indent></div>
+
+                </div>
+                
+
+                
             </fieldset>
 
 

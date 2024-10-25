@@ -866,7 +866,7 @@ input[type="range"] {
 
 input[type="range"].biggerSlider1 {
     -webkit-appearance: none;
-    height: 30pt;
+    height: 10pt;
     background: rgb(28, 28, 28);
     
     border-radius: 0px;
@@ -874,7 +874,7 @@ input[type="range"].biggerSlider1 {
     border-bottom:1pt solid #9d9b9b;
     border-top:1pt solid #3c3c3c;
     border-left:1pt solid #5d5d5d;
-
+    border-radius: 4pt;
   }
   
   input[type="range"].biggerSlider1::-webkit-slider-thumb {
@@ -883,12 +883,12 @@ input[type="range"].biggerSlider1 {
     width: 15pt;
     height: 25pt;
     background: rgb(96, 96, 96);
-    border-radius: 0%;
+    border-radius: 4pt;
     cursor: pointer;
-    border-right:1pt solid #9d9b9b;
-    border-bottom:1pt solid #9d9b9b;
-    border-top:1pt solid #3c3c3c;
-    border-left:1pt solid #5d5d5d;
+    border-left:1pt solid #9d9b9b;
+    border-top:1pt solid #9d9b9b;
+    border-bottom:1pt solid #3c3c3c;
+    border-right:1pt solid #5d5d5d;
 
 }
   
@@ -896,13 +896,13 @@ input[type="range"].biggerSlider1 {
     width: 15pt;
     height: 30pt;
     background: white;
-    border-radius: 0%;
+    border-radius: 4pt;
     cursor: pointer;
-    border-right:1pt solid #9d9b9b;
-    border-bottom:1pt solid #9d9b9b;
-    border-top:1pt solid #3c3c3c;
-    border-left:1pt solid #5d5d5d;
-
+    border-left:1pt solid #9d9b9b;
+    border-top:1pt solid #9d9b9b;
+    border-bottom:1pt solid #3c3c3c;
+    border-right:1pt solid #5d5d5d;
+    
 }
   
   

@@ -597,7 +597,7 @@ function checkForUIBoundaries() {
 
 async function makeWorksheetPages() {
 
-   // falert();
+    // falert();
 
     showHideSections();
 
@@ -731,8 +731,7 @@ function getFontCharactersSpacing() {
 }
 
 
-function getFontCharactersSpacingFixed()
-{    
+function getFontCharactersSpacingFixed() {
     var v = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
     const arrangement = document.getElementById('practiceCharactersArrangement').value;
     fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
@@ -747,9 +746,8 @@ function getFontCharactersSpacingFixed()
 }
 
 
-function setFontCharactersSpacingFixed()
-{    
- 
+function setFontCharactersSpacingFixed() {
+
 }
 
 
@@ -866,7 +864,7 @@ function generateRowsOfCharacters() {
 
                     const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
 
-                   
+
 
                     if ((currentLinePosition + charWidthWithSpacing) <= (width)) {
                         lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
@@ -1535,13 +1533,13 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
     const usableWidth = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs();
 
 
-    
+
     // Draw debug data at the top of the page
     drawTopDebugData(group, "Initial X Position", initialXPos, 0, 0);
     drawTopDebugData(group, "Paper Width Oriented", paperWidthOrientedRaw, 10, 40);
     drawTopDebugData(group, "Paper Height Oriented", paperHeightOrientedRaw, 10, 60);
     drawTopDebugData(group, "Usable Width", usableWidth, 10, 80);
-    
+
 
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
@@ -1551,8 +1549,8 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
     let xPosition = getInitialXPositionToStartGlyphs(); // Initial position to start drawing characters
     let yPositionWithOffset = yPosition + (-1 * fontYOffset);
 
-         // Draw the red bounding box (glyph shape only)
-            drawDebugBoundingBox(group, xPosition, yPosition, usableWidth, 20, "orange", 2);
+    // Draw the red bounding box (glyph shape only)
+    drawDebugBoundingBox(group, xPosition, yPosition, usableWidth, 20, "orange", 2);
 
 
     // Iterate through each character in charactersForLine and draw it
@@ -1565,16 +1563,6 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
             svgPath.setAttribute("d", path.toPathData(5));
             svgPath.setAttribute("fill", "#000");
 
-            // Calculate transformation for the glyph
-            var transformString = `translate(${xPosition}, ${yPositionWithOffset + ascenderHeight + capitalHeight + xHeight}) scale(${fontScaleFactor}, ${fontScaleFactor})`;
-             
-
-                
-
-            svgPath.setAttribute("transform", transformString);
-            
-            group.appendChild(svgPath);
-
             // Calculate the original bounding box (for glyph shape)
             const bbox = glyph.getBoundingBox();
             const boxX = xPosition + (bbox.x1 * fontScaleFactor);
@@ -1584,6 +1572,53 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
 
             // Calculate the bounding box for the total space including advance width
             const totalBoxWidth = glyph.advanceWidth * fontScaleFactor;
+
+
+            const baselineY = yPositionWithOffset + ascenderHeight + capitalHeight + xHeight;
+
+            // Calculate transformation for the glyph
+            var transformString = `translate(${xPosition}, ${baselineY}) scale(${fontScaleFactor}, ${fontScaleFactor})`;
+
+            //-------------
+            //-----SHEAR---
+            //-------------
+            // Adjust centerY based on the inverted Y-coordinate system
+            // CenterY should be the "bottom" center of the glyph because of the inverted coordinate system
+
+            // Initial translate and scale
+            const translateX = xPosition;
+            const translateY = baselineY;
+            const scale = fontScaleFactor;
+
+            // Shear values
+            const shearX = (transformConfig.shearX) / 100;
+            const shearY = (transformConfig.shearY) / 100;
+
+            // Center the glyph for correct shearing
+            const centerX = translateX + (glyph.advanceWidth * scale) / 2;
+            // Adjust centerY based on the glyph's bounding box 
+            const glyphHeight = boxHeight;//(bbox.y2 - bbox.y1) * scale;
+            const centerY = translateY - (boxHeight / 2);
+
+
+            // Calculate the full transformation matrix
+            const a = fontScaleFactor;  // Scale X
+            const b = shearY;//shearY * scale;  // Shear Y
+            const c = shearX;//shearX * scale;  // Shear X
+            const d = fontScaleFactor;  // Scale Y
+            const e = xPosition; //translateX + ((glyph.advanceWidth * scale) / 2) * (1 - a) - centerY * c;  // Adjust for shear and scale
+            const f = baselineY; //centerY * (1 - d) - ((translateX + (glyph.advanceWidth * scale) / 2) * b);  // Adjust for shear and scale
+
+            transformString = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
+
+            //------------
+            //------------
+            //------------   
+
+            svgPath.setAttribute("transform", transformString);
+
+            group.appendChild(svgPath);
+
 
             // Draw the red bounding box (glyph shape only)
             drawDebugBoundingBox(group, boxX, boxY, boxWidth, boxHeight, "red");
@@ -1912,7 +1947,7 @@ function calculateCharsPerLine() {
     var width = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs(); // Subtract horizontal margins from the paper width
 
 
-    
+
     var charsPerLine = 4;
 
 

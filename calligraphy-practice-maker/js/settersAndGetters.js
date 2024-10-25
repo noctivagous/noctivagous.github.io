@@ -1030,7 +1030,7 @@ function getSvgFilters() {
       <defs>
      
 
-<filter name="Extrusion 3D Shadow" id="repeatedDropShadow" x="-70%" y="-70%" width="225%" height="225%"
+<filter name="Extrusion" id="repeatedDropShadow" x="-70%" y="-70%" width="225%" height="225%"
 data-params='{
   "extrusionDistance": ${filterConfig.extrusionDistance},
   "extrusionRepeatCount": ${filterConfig.extrusionRepeatCount},
@@ -1372,8 +1372,8 @@ const transformConfig = {
 
 // Define transform parameter ranges for dynamic control generation
 const transformConfigRange = {
-    shearX: { min: -100, max: 100 },
-    shearY: { min: -100, max: 100 }
+    shearX: { min: -10, max: 10 },
+    shearY: { min: -10, max: 10 }
 };
 
 // Map of transform aliases for user-friendly labels
@@ -1400,7 +1400,7 @@ document.getElementById('effectTransformSelect').addEventListener('change', (e) 
 });
 
 document.getElementById('effectTransformSelect').addEventListener('change', (e) => {
-    console.log('Transform selected:', e.target.value);  // Debugging line
+  //  console.log('Transform selected:', e.target.value);  // Debugging line
     // Rest of the code...
 });
 
@@ -1429,6 +1429,7 @@ function displayTransformControls(transform) {
                 input.max = transformConfigRange[param].max;
                 input.value = transformConfig[param];
                 input.id = param;
+                input.classList.add("biggerSlider1");
 
                 // Create angle display
                 const angleDisplay = document.createElement('span');
@@ -1443,7 +1444,7 @@ function displayTransformControls(transform) {
                 });
 
                 inputDiv.appendChild(input);
-                inputDiv.appendChild(angleDisplay);
+                //inputDiv.appendChild(angleDisplay);
                 controlContainer.appendChild(labelDiv);
                 controlContainer.appendChild(inputDiv);
             }

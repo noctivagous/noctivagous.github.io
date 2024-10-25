@@ -20,17 +20,15 @@
   }*/
 
 
-div.effectFilterParamLabel
-{
-    border-top:1pt solid #3a3a3a;
-    padding-top:3pt;
-    margin-top:3pt;
-}
+    div.effectFilterParamLabel {
+        border-top: 1pt solid #3a3a3a;
+        padding-top: 3pt;
+        margin-top: 3pt;
+    }
 
-input.effectFilterParamSlider
-{
-    width:100%;
-}
+    input.effectFilterParamSlider {
+        width: 100%;
+    }
 
     #container {
         display: flex;
@@ -111,7 +109,7 @@ input.effectFilterParamSlider
 
     #controls h1 {
 
-        font-family: 'DDINExpDINExpBold','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-family: 'DDINExpDINExpBold', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
         font-size: 12pt;
         margin-top: 0;
@@ -120,17 +118,17 @@ input.effectFilterParamSlider
 
         background-color: rgb(114, 110, 110);
         margin: -10pt;
-        
-        
+
+
         padding: 5pt;
-        padding-left:15pt;
-        padding-top:7pt;
-        padding-bottom:5pt;
+        padding-left: 15pt;
+        padding-top: 7pt;
+        padding-bottom: 5pt;
         box-shadow: 2pt 2pt 2pt rgb(75, 75, 75);
         border-bottom: 3pt solid black;
         position: sticky;
         top: 0;
-        
+
         background: linear-gradient(to top, #000000 10%, #0b0a0a 40%, #302f2f 100%);
         width: 110%;
     }
@@ -160,29 +158,29 @@ input.effectFilterParamSlider
         padding-top: 5pt;
 
         text-align: left;
-        padding-left:8pt;
+        padding-left: 8pt;
         padding-bottom: 3pt;
         box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
 
-        
+
         font-weight: bold;
         border-bottom: 2pt solid black;
 
-        
+
 
     }
 
     #controls fieldset .settingEnclosure:last-child {
-       
+
         border-bottom-left-radius: 8pt;
         border-bottom-right-radius: 8pt;
     }
 
     #controls fieldset {
-        
+
         border: 0;
         border-radius: 10pt;
-        
+
 
         outline: 2pt solid #000;
         /* Create an inside border */
@@ -191,7 +189,7 @@ input.effectFilterParamSlider
 
 
         font-family: sans-serif;
-        
+
         box-shadow: 3pt 3pt 3pt rgb(75, 75, 75);
         margin-bottom: 15pt;
 
@@ -203,76 +201,75 @@ input.effectFilterParamSlider
 
         color: #333;
 
-        font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important;
-        
+        font-family: 'DDINBold', 'Franklin Gothic Medium', 'Arial Narrow' !important;
+
 
     }
 
 
 
     .settingEnclosure {
-        padding:8pt;
-        padding-top:8pt;
-        padding-bottom:8pt;
+        padding: 8pt;
+        padding-top: 8pt;
+        padding-bottom: 8pt;
         padding-right: 8pt;
         padding-left: 8pt;
 
         margin-top: 0px;
 
         background-color: #929191;
-        background-color:#222;
+        background-color: #222;
         border: 0px solid rgb(49, 47, 47);
 
-        border-bottom:2pt solid #333;
+        border-bottom: 2pt solid #333;
 
     }
 
     .settingEnclosure label {
-        
+
         user-select: none;
         font-weight: bold;
-  /*      font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; */
+        /*      font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow' !important; */
 
-  margin-bottom:3pt;
+        margin-bottom: 3pt;
 
-  
+
     }
 
     .settingEnclosure .radioLabel {
         font-weight: normal;
         color: #a4a4a4 !important;
-    font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; 
-        margin-bottom:-6pt;
+        font-family: 'DDINCondensedRegular', 'Franklin Gothic Medium', 'Arial Narrow' !important;
+        margin-bottom: -6pt;
     }
 
-    .settingEnclosure.top
-    {
-        border-bottom:2pt solid rgb(0, 0, 0);
+    .settingEnclosure.top {
+        border-bottom: 2pt solid rgb(0, 0, 0);
     }
 
     div.settingEnclosure.indent label {
-   /* font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
+        /* font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow' !important; */
         font-size: 14pt !important;
-        
-}
+
+    }
 
     div.settingEnclosure.indent {
 
-        background-color:#101010;
+        background-color: #101010;
         border-left: 3pt solid black;
         border-right: 3pt solid black;
-       border-bottom:1pt solid #333;
+        border-bottom: 1pt solid #333;
         color: black;
         font-weight: normal;
-        
+
         /*background: linear-gradient(to left, #1c1c1c 10%, #060505 40%, #000000 100%) !important;*/
-        
+
     }
 
-    div.settingEnclosure.indent2{
-      /*  border-left: 12pt solid black;*/
-        border-bottom:2pt solid #222;
-        
+    div.settingEnclosure.indent2 {
+        /*  border-left: 12pt solid black;*/
+        border-bottom: 2pt solid #222;
+
     }
 
     div.settingEnclosure.indent label {
@@ -288,35 +285,35 @@ input.effectFilterParamSlider
 
         font-family: sans-serif;
         font-family: Arial, Helvetica, sans-serif;
-        font-family: 'DDINBold','Franklin Gothic Medium', 'Arial Narrow'; 
+        font-family: 'DDINBold', 'Franklin Gothic Medium', 'Arial Narrow';
 
         /*text-transform:uppercase;*/
         ;
         font-size: 13pt;
 
         color: #d3d1d1;
-        
+
         display: inline-block;
     }
 
-    .vertSpacer{
-        height:10pt;
+    .vertSpacer {
+        height: 10pt;
     }
 
-    .vertSpacer2{
-        height:5pt;
+    .vertSpacer2 {
+        height: 5pt;
     }
 
 
     #controls fieldset .indent label {
-        font-family: 'DDINCondensedRegular','Franklin Gothic Medium', 'Arial Narrow'; 
+        font-family: 'DDINCondensedRegular', 'Franklin Gothic Medium', 'Arial Narrow';
 
     }
 
     #controls fieldset .secondLevelLabel {
-        font-family: 'DDINRegular','Franklin Gothic Medium', 'Arial Narrow'; 
-        color:#585858 !important;
-        font-size:12pt;
+        font-family: 'DDINRegular', 'Franklin Gothic Medium', 'Arial Narrow';
+        color: #585858 !important;
+        font-size: 12pt;
         margin-bottom: 0;
     }
 
@@ -337,10 +334,10 @@ input.effectFilterParamSlider
         color: rgb(102, 129, 87);
     }
 
-    #controls input:disabled
-    {
-        opacity:0.4;
-        cursor: not-allowed;        /* Change the cursor to indicate it's disabled */
+    #controls input:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        /* Change the cursor to indicate it's disabled */
 
     }
 
@@ -378,10 +375,10 @@ input.effectFilterParamSlider
         outline: none;
         appearance: none;
 
-        color:greenyellow;
+        color: greenyellow;
     }
 
-    #controls input[type='number']:hover{
+    #controls input[type='number']:hover {
         background-color: #222;
 
 
@@ -430,7 +427,7 @@ input.effectFilterParamSlider
         background-size: cover;
     }
 
-    
+
 
     /* Radio Button Styling */
     #controls input[type='radio'] {
@@ -462,22 +459,19 @@ input.effectFilterParamSlider
         vertical-align: middle;
     }
 
-    #controls button
-    {
+    #controls button {}
 
-    }
-
-    #controls select option{
-        color:white;
+    #controls select option {
+        color: white;
         background-color: rgb(61, 61, 61);
     }
 
     select optgroup {
-        color:white;
+        color: white;
         background-color: rgb(61, 61, 61);
 
-      }
-      
+    }
+
 
 
 
@@ -513,10 +507,10 @@ input.effectFilterParamSlider
         -moz-appearance: none;
         /* Remove default appearance for Mozilla browsers */
 
-        
+
         font-weight: normal;
         border: 2pt solid black;
-        color:rgb(137, 138, 135);
+        color: rgb(137, 138, 135);
         /* Apply border to create the "well" effect */
         border: 1pt solid #3a3939;
         /* Darker border as a base */
@@ -526,31 +520,31 @@ input.effectFilterParamSlider
         border-left-color: #8a8888;
         border-left-width: 1pt;
         border-bottom-color: #343434;
-        height:23pt;
+        height: 23pt;
 
-        
-        font-family: 'DDINRegular','Franklin Gothic Medium', 'Arial Narrow' !important; 
-        
-   
+
+        font-family: 'DDINRegular', 'Franklin Gothic Medium', 'Arial Narrow' !important;
+
+
         font-size: 13pt;
     }
 
-    #controls select:hover{
+    #controls select:hover {
         background: url('../img/selectBackgroundHover.svg') no-repeat;
 
         background-size: 100% 100%;
         /* Make sure the SVG fills the entire select area */
 
-      }
+    }
 
 
     div#outputButtons {
-        
+
         margin-top: 25pt;
         margin-bottom: 10pt;
 
         padding: 0pt;
-        
+
     }
 
     #outputButtons button,
@@ -573,7 +567,7 @@ input.effectFilterParamSlider
         background-color: #444;
 
     }
-    
+
     #outputButtons button:active,
     button:active {
         cursor: pointer;
@@ -584,23 +578,23 @@ input.effectFilterParamSlider
     .settingEnclosure button {
         background-color: #222222;
         height: 20pt;
-        border:1pt solid black;
-        color:#8a8a8a;
-        
+        border: 1pt solid black;
+        color: #8a8a8a;
+
     }
 
-    .settingEnclosure button:hover{
+    .settingEnclosure button:hover {
         background-color: #383838;
         height: 20pt;
-        border:1pt solid black;
-        color:#8a8a8a;
+        border: 1pt solid black;
+        color: #8a8a8a;
     }
 
-    .settingEnclosure button:active{
+    .settingEnclosure button:active {
         background-color: #222222;
         height: 20pt;
-        border:1pt solid black;
-        color:#8a8a8a;
+        border: 1pt solid black;
+        color: #8a8a8a;
     }
 
     #controlsScrollbar {
@@ -629,7 +623,7 @@ input.effectFilterParamSlider
 
 
 
-    
+
 
         background:
             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 4l6 8H6z'/%3E%3C/svg%3E") top center no-repeat,
@@ -693,16 +687,16 @@ input.effectFilterParamSlider
 
     }
 
-#outputPageCount{
-padding:3pt;
-font-size:10pt;
-}
+    #outputPageCount {
+        padding: 3pt;
+        font-size: 10pt;
+    }
 
     #generatedWorksheetArea .worksheetAreaSpacer {
         height: 15pt;
         text-align: center;
-        padding:3pt;
-        margin:auto;
+        padding: 3pt;
+        margin: auto;
     }
 
     #generatedWorksheetArea::-webkit-scrollbar {
@@ -756,21 +750,27 @@ font-size:10pt;
 
 
         svg.worksheetPage {
-        box-shadow: none; /* Remove box shadow for cleaner print */
-        padding: 0 !important;
-        border:0 !important;
-        margin: 0; /* Remove margins to prevent scaling */
-        page-break-after: always; /* Ensure each SVG is printed on its own page */
-        width: auto !important; /* Use explicit width and height set in the SVG */
-        height: auto !important; /* Safari needs this to prevent scaling */
-        transform: scale(1) !important; /* Prevent Safari from scaling */
-        max-width: 100% !important;
-        max-height: 100% !important;
-        border: 0pt solid black !important;
+            box-shadow: none;
+            /* Remove box shadow for cleaner print */
+            padding: 0 !important;
+            border: 0 !important;
+            margin: 0;
+            /* Remove margins to prevent scaling */
+            page-break-after: always;
+            /* Ensure each SVG is printed on its own page */
+            width: auto !important;
+            /* Use explicit width and height set in the SVG */
+            height: auto !important;
+            /* Safari needs this to prevent scaling */
+            transform: scale(1) !important;
+            /* Prevent Safari from scaling */
+            max-width: 100% !important;
+            max-height: 100% !important;
+            border: 0pt solid black !important;
 
         }
 
-        
+
         #controls,
         .scrollbar,
         .worksheetAreaSpacer {
@@ -794,133 +794,120 @@ font-size:10pt;
     }
 
 
-#nibWidthInPtDisplaySpan
-{
-    
-    margin-left:14pt;
-font-size:10pt ;
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-text-align: right;
-display: inline-block;
-color:#52795a;
-text-align: right;
-display: inline-block;
-}
+    #nibWidthInPtDisplaySpan {
+
+        margin-left: 14pt;
+        font-size: 10pt;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: right;
+        display: inline-block;
+        color: #52795a;
+        text-align: right;
+        display: inline-block;
+    }
 
 
-#controls{
-    overflow-x: hidden;
+    #controls {
+        overflow-x: hidden;
 
-}
+    }
 
-#controls input.switchInput {
-    opacity: 1.0;
-    width: 34pt;
-    aspect-ratio: 80/34;
-    display: inline-block;
-    background: url('../img/switch-off-state.svg') center no-repeat;
-    background-size: contain;
-    border: none;
-    border-radius: 17px;
-    cursor: pointer;
-    transition: background 0.4s;
-}
+    #controls input.switchInput {
+        opacity: 1.0;
+        width: 34pt;
+        aspect-ratio: 80/34;
+        display: inline-block;
+        background: url('../img/switch-off-state.svg') center no-repeat;
+        background-size: contain;
+        border: none;
+        border-radius: 17px;
+        cursor: pointer;
+        transition: background 0.4s;
+    }
 
-#controls input.switchInput:checked {
-    background: url('../img/switch-on-state.svg') center no-repeat;
-    background-size: contain;
-}
+    #controls input.switchInput:checked {
+        background: url('../img/switch-on-state.svg') center no-repeat;
+        background-size: contain;
+    }
 
-#controls div#dropArea
- {
-width:40pt;    
-vertical-align: middle;
-text-align: center;
-background-color: #494949;
-border-radius: 5pt;
-color:#999;
-border:1pt dashed rgb(113, 112, 112);
-border-bottom:1pt dashed rgb(99, 99, 99);
-border-right:1pt dashed rgb(113, 112, 112);
-padding:5pt;
+    #controls div#dropArea {
+        width: 40pt;
+        vertical-align: middle;
+        text-align: center;
+        background-color: #494949;
+        border-radius: 5pt;
+        color: #999;
+        border: 1pt dashed rgb(113, 112, 112);
+        border-bottom: 1pt dashed rgb(99, 99, 99);
+        border-right: 1pt dashed rgb(113, 112, 112);
+        padding: 5pt;
 
 
 
-}               
+    }
 
 
-#dropArea.highlight {
-    border-color: #ff8800; /* Example: Highlight border when a file is dragged over */
-    background-color: #666666;
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    height: 10px;
-    background: black;
-    
-    border-radius: 5px;
-    
-  }
+    #dropArea.highlight {
+        border-color: #ff8800;
+        /* Example: Highlight border when a file is dragged over */
+        background-color: #666666;
+    }
 
 
-input[type="range"].biggerSlider1 {
-    -webkit-appearance: none;
-    height: 10pt;
-    background: rgb(28, 28, 28);
-    
-    border-radius: 0px;
-    border-right:1pt solid #9d9b9b;
-    border-bottom:1pt solid #9d9b9b;
-    border-top:1pt solid #3c3c3c;
-    border-left:1pt solid #5d5d5d;
-    border-radius: 4pt;
-  }
-  
-  input[type="range"].biggerSlider1::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15pt;
-    height: 25pt;
-    background: rgb(96, 96, 96);
-    border-radius: 4pt;
-    cursor: pointer;
-    border-left:1pt solid #9d9b9b;
-    border-top:1pt solid #9d9b9b;
-    border-bottom:1pt solid #3c3c3c;
-    border-right:1pt solid #5d5d5d;
+    input[type="range"] #shearX,
+    input[type="range"] #shearY {
+        direction: rtl;
+    }
 
-}
-  
-  input[type="range"].biggerSlider1::-moz-range-thumb {
-    width: 15pt;
-    height: 30pt;
-    background: white;
-    border-radius: 4pt;
-    cursor: pointer;
-    border-left:1pt solid #9d9b9b;
-    border-top:1pt solid #9d9b9b;
-    border-bottom:1pt solid #3c3c3c;
-    border-right:1pt solid #5d5d5d;
-    
-}
-  
-  
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 10pt;
-    height: 10pt;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  input[type="range"]::-moz-range-thumb {
-    width: 10pt;
-    height: 10pt;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
+    input[type="range"]{
+        width:100%;
+        -webkit-appearance: none;
+        height: 10px;
+        background: black;
+
+        border-radius: 5px;
+
+    }
+
+
+    input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 10pt;
+        background: rgb(28, 28, 28);
+
+        border-radius: 0px;
+        border-right: 1pt solid #9d9b9b;
+        border-bottom: 1pt solid #9d9b9b;
+        border-top: 1pt solid #3c3c3c;
+        border-left: 1pt solid #5d5d5d;
+        border-radius: 4pt;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15pt;
+        height: 25pt;
+        background: rgb(96, 96, 96);
+        border-radius: 4pt;
+        cursor: pointer;
+        border-left: 1pt solid #9d9b9b;
+        border-top: 1pt solid #9d9b9b;
+        border-bottom: 1pt solid #3c3c3c;
+        border-right: 1pt solid #5d5d5d;
+
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 15pt;
+        height: 30pt;
+        background: white;
+        border-radius: 4pt;
+        cursor: pointer;
+        border-left: 1pt solid #9d9b9b;
+        border-top: 1pt solid #9d9b9b;
+        border-bottom: 1pt solid #3c3c3c;
+        border-right: 1pt solid #5d5d5d;
+
+    }

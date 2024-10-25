@@ -299,8 +299,8 @@ width:100%;margin:0;padding:0">
                         <label for="practiceCharactersArrangement">Character Arrangement:</label>
 
                         <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
-                            <option value="rowsOfCharacters" checked>Row: Sequence With Blank Row</option>
-                            <option value="rowsOfCharactersSpaced" checked>Row: Sequence</option>
+                            <option value="rowsOfCharacters">Row: Sequence With Blank Row</option>
+                            <option value="rowsOfCharactersSpaced" selected>Row: Sequence</option>
                             <option value="rowOfSingleCharacter">Row: Character Repeated</option>
                             <option value="pageOfSingleCharacter">Page: Character Repeated </option>
 
@@ -313,10 +313,13 @@ width:100%;margin:0;padding:0">
 
                     <div class="settingEnclosure indent indent2" id="fontCharactersSpacingEnclosure">
                         <label for="fontCharactersSpacing">Character Spacing:</label>
+                        
                         <input type="range" style="width: 100%;" 
                         class="biggerSlider1" value="30" id="fontCharactersSpacing" min="0" max="200"
                             name="fontCharactersSpacing" oninput="makeWorksheetPages()">
-                            <!-- <input type="number" id="fontCharactersSpacing" id="fontCharactersSpacing" min="-10" max="500">-->
+
+<!---->                             <input type="number" name="fontCharactersSpacing" id="fontCharactersSpacing" id="fontCharactersSpacing" min="-10" max="500">
+                    -->
                     </div>
 
 

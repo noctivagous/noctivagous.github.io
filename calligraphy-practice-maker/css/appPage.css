@@ -858,7 +858,7 @@ input[type="range"] {
     -webkit-appearance: none;
     height: 10px;
     background: black;
-    outline: none;
+    
     border-radius: 5px;
     
   }
@@ -868,7 +868,7 @@ input[type="range"].biggerSlider1 {
     -webkit-appearance: none;
     height: 30pt;
     background: rgb(28, 28, 28);
-    outline: none;
+    
     border-radius: 0px;
     border-right:1pt solid #9d9b9b;
     border-bottom:1pt solid #9d9b9b;

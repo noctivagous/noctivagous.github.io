@@ -700,35 +700,6 @@ function calculateNumberOfPages(rows) {
 }
 
 
-function calculateNumberOfPagesOLD() {
-    // If no font practice is required, just return 1 page
-    if (showFont == false) {
-        return 1;
-    }
-
-    // Get number of lines per page
-    var linesPerPage = calculateAvailableLinesPerPage();
-
-    // Get number of characters per line
-    var charsPerLine = calculateCharsPerLine();
-
-    // Calculate total characters needed
-    var totalCharacters = getTotalCharacters();
-
-    // Calculate number of characters per page
-    var charsPerPage = linesPerPage * charsPerLine;
-
-    // Calculate number of pages needed
-    var numberOfPages = Math.ceil(totalCharacters / charsPerPage);
-
-    // Debugging logs
-    ////
-    ////
-    ////
-    ////
-
-    return numberOfPages;
-}
 
 
 
@@ -871,7 +842,7 @@ function generateRowsOfCharacters() {
 
         while (charIndex < characters.length) {
             let currentRow = [];
-            let currentLinePosition = getInitialXPositionToStartGlyphs();
+            let currentLinePosition = 0;
             let lastCharLowerCase = false;
 
 
@@ -1561,16 +1532,16 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
     // Calculate initial positions and dimensions
     const initialXPos = getInitialXPositionToStartGlyphs();
     const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
-    const usableWidth = paperWidthOrientedRaw - marginHorizontal - initialXPos;
+    const usableWidth = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs();
 
 
-    /*
+    
     // Draw debug data at the top of the page
     drawTopDebugData(group, "Initial X Position", initialXPos, 0, 0);
     drawTopDebugData(group, "Paper Width Oriented", paperWidthOrientedRaw, 10, 40);
     drawTopDebugData(group, "Paper Height Oriented", paperHeightOrientedRaw, 10, 60);
     drawTopDebugData(group, "Usable Width", usableWidth, 10, 80);
-    */
+    
 
     // Calculate scaling factor to fit font into x-height
     var fontUnitsPerEm = font.unitsPerEm;
@@ -1579,6 +1550,10 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
 
     let xPosition = getInitialXPositionToStartGlyphs(); // Initial position to start drawing characters
     let yPositionWithOffset = yPosition + (-1 * fontYOffset);
+
+         // Draw the red bounding box (glyph shape only)
+            drawDebugBoundingBox(group, xPosition, yPosition, usableWidth, 20, "orange", 2);
+
 
     // Iterate through each character in charactersForLine and draw it
     charactersForLine.forEach(char => {
@@ -1625,8 +1600,8 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
     });
 }
 
-var debugPage = 0;
 
+var debugPage = 0;
 // Function to draw a text label at the top of the page
 function drawTopDebugText(group, textContent, x, y) {
     const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -1661,7 +1636,7 @@ function drawTopDebugData(group, label, value, x, y) {
     drawTopDebugText(group, textContent, x, y);
 }
 // Function to draw a bounding box around the glyph or its total space
-function drawDebugBoundingBox(group, x, y, width, height, color) {
+function drawDebugBoundingBox(group, x, y, width, height, color, strokeWidth = 0.5) {
     if (!debugPage) {
         return;
     }
@@ -1672,7 +1647,7 @@ function drawDebugBoundingBox(group, x, y, width, height, color) {
     rect.setAttribute("height", height);
     rect.setAttribute("fill", "none");
     rect.setAttribute("stroke", color);
-    rect.setAttribute("stroke-width", "0.5");
+    rect.setAttribute("stroke-width", strokeWidth);
     group.appendChild(rect);
 }
 // Function to draw text labels showing bounding box info with a white background
@@ -1934,7 +1909,7 @@ function calculateCharsPerLine() {
     const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
 
     // Determine available width for character placement, considering margins
-    var width = paperWidthOrientedRaw - marginHorizontal - getFontCharactersSpacingFixed(); // Subtract horizontal margins from the paper width
+    var width = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs(); // Subtract horizontal margins from the paper width
 
 
     

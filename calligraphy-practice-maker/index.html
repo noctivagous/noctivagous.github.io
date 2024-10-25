@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>LetterformGateway - Calligraphy and Lettering Practice Sheet Generator</title>
+    <title>Calligraphy and Lettering Practice Sheet Generator</title>
 
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css" />
 
@@ -31,30 +31,26 @@ a small number of fonts available.
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
-            <h1>LetterformGateway<br /><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
-            color:#6a6868;font-size:10pt;font-style: normal;z-index: 20;">Worksheet Generator</span></h1>
+            <h1>Lettering Worksheet Maker</h1>
 
 
 
 
             <div id="outputButtons">
 
-                <table id="outputButtonsTable" cellpadding="0" cellspacing="0" style=" 
-width:100%;margin:0;padding:0">
+                <table style="margin:0;padding:0">
                     <tr>
                         <td> <button onclick="printPDF()" id="printButton" class="darkButton">Print</button>
 
                         </td>
-                        <td valign="left" width="100%">
-                            <button style="margin-left:5pt" onclick="downloadPDF()" id="saveWorksheetToPDFButton"
-                                class="darkButton">Download
+                        <td width="100%">
+                            <button onclick="downloadPDF()" id="saveWorksheetToPDFButton" class="darkButton">Download
                                 PDF</button>
 
                             <!--<p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
                                 printer.)
                             </p>-->
                         </td>
-
                     </tr>
 
                 </table>
@@ -71,10 +67,9 @@ width:100%;margin:0;padding:0">
             </div>
 
             <fieldset>
-                <legend id="practiceCharactersLegend">
+                <legend id="practiceCharactersLegend"> 
                     Practice Characters
-                    <input type="checkbox" id="showFont" class="switchInput"
-                        style="float:right;margin-right:5pt;margin:0;margin-right:3pt" checked>
+                    <input type="checkbox" id="showFont" class="switchInput" style="float:right;margin-right:5pt;margin:0;margin-right:3pt" checked>
                     <div style="float: clear;"></div>
                 </legend>
 
@@ -86,88 +81,41 @@ width:100%;margin:0;padding:0">
 
                         <select id="fontForWorksheetPages" name="fontForWorksheetPages">
                             <optgroup label="Blackletter">
-
-                                <option value="Canterbury" fontGlyphNibWidth="4" ascenderRatio="0.45"
-                                    capHeightRatio="0.4" descenderDepthRatio="0.45" xHeightFontScaleFactor="0.85"
-                                    fontURL="fonts/Canterbury.ttf" fontYOffset="0">Canterbury</option>
-
-
-                                <option value="DSWallauOsF" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.3" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.0"
-                                    fontURL="fonts/DSWallauOsF.ttf" fontYOffset="0" selected>DSWallauOsF</option>
-
-
-                                <option value="Deutsch-Gotisch" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.5" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.0"
-                                    fontURL="fonts/Deutsch-Gotisch.otf" fontYOffset="0">Deutsch-Gotisch</option>
-
+                           
+                                <option value="Canterbury" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
+                                capHeightRatio="0.4" descenderDepthRatio="0.45" 
+                                xHeightFontScaleFactor="0.85" fontURL="fonts/Canterbury.ttf">Canterbury</option>
 
 
 
                             </optgroup>
                             <optgroup label="Fraktur">
-
-
-                                <option value="ZentenaerFraktur" fontGlyphNibWidth="5.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.3" descenderDepthRatio="0.3" xHeightFontScaleFactor="1.05"
-                                    fontYOffset="0" fontURL="fonts/CATZentenaerFrakturUNZ1.ttf">
-                                    ZentenaerFraktur</option>
-
-                                <option value="DSLuthersche" fontGlyphNibWidth="5.2" ascenderRatio="0.45"
-                                    capHeightRatio="0.60" descenderDepthRatio="0.4" xHeightFontScaleFactor="1.1"
-                                    fontYOffset="0" fontURL="fonts/DSLuthersche.ttf">
-                                    DSLuthersche</option>
-
-                                <option value="DSLutherscheHalbfett" fontGlyphNibWidth="4" ascenderRatio="0.45"
-                                    capHeightRatio="0.60" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.1"
-                                    fontYOffset="0" fontURL="fonts/DSLutherscheHalbfett.ttf">
-                                    DSLutherscheHalbfett</option>
-
-
-                                <option value="KabinettFraktur" fontGlyphNibWidth="4.7" ascenderRatio="0.45"
-                                    capHeightRatio="0.6" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.2"
-                                    fontYOffset="0" fontURL="fonts/KabinettFraktur.ttf">
-                                    Kabinett Fraktur</option>
-
-                                <option value="BreitkopfFraktur" fontGlyphNibWidth="4" ascenderRatio="0.45"
-                                    capHeightRatio="0.6" descenderDepthRatio="0.45" xHeightFontScaleFactor="0.95"
-                                    fontYOffset="0" fontURL="fonts/BreitkopfFraktur.ttf">
-                                    Breitkopf Fraktur </option>
-
-
-                            </optgroup>
-
-                            <optgroup label="Engrossing">
-                                <option value="DSForelle" fontGlyphNibWidth="3" xHeightFontScaleFactor="1.1"
-                                    fontURL="fonts/DSForelle.ttf" ascenderRatio="1.3" capHeightRatio="0.6"
-                                    descenderDepthRatio="0.8" fontYOffset="0" slantAngle="11">DSForelle</option>
-
-
-                            </optgroup>
-                            <optgroup label="Other Calligraphy">
-                                <option value="Bridgnorth-Regular.ttf" fontGlyphNibWidth="5.1" xHeightFontScaleFactor="1.15"
-                                fontURL="fonts/Bridgnorth-Regular.ttf" ascenderRatio="0" capHeightRatio="1"
-                                descenderDepthRatio="0.35" fontYOffset="5" slantAngle="0">Bridgnorth-Regular.ttf</option>
-
-                            </optgroup>
-
-                            <optgroup label="Gothic Drafting">
-
-                                <option value="Routed Gothic Narrow" fontGlyphNibWidth="5"
-                                    fontURL="fonts/routed-gothic-narrow.ttf" ascenderRatio="0.4" capHeightRatio="0.4"
-                                    descenderDepthRatio="0.45" fontYOffset="0">Routed Gothic Narrow
-                                </option>
-
-                                <!--
-                            <option value="OSIFont" fontGlyphNibWidth="7.3"
-                                fontURL="fonts/osifont-gpl2fe.ttf" ascenderRatio="0.4" capHeightRatio="0.45"
-                                descenderDepthRatio="0.45" fontYOffset="0">OSIFont
-                            </option>
-                        -->
-
-                            </optgroup>
-
                             
+                                <option value="BreitkopfFraktur" brushWidthOfFontNibMultiplier="4" ascenderRatio="0.45"
+                                capHeightRatio="0.6" descenderDepthRatio="0.45" xHeightFontScaleFactor="0.95" fontURL="fonts/BreitkopfFraktur.ttf">
+                                Breitkopf Fraktur </option>
+
+                                <option value="KabinettFraktur" brushWidthOfFontNibMultiplier="4.7" ascenderRatio="0.45"
+                                capHeightRatio="0.6" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.2" fontURL="fonts/KabinettFraktur.ttf" selected>
+                                Kabinett Fraktur</option>
+
+                                <option value="DSLuthersche" brushWidthOfFontNibMultiplier="5.2" ascenderRatio="0.45"
+                                capHeightRatio="0.60" descenderDepthRatio="0.4" xHeightFontScaleFactor="1.1" fontURL="fonts/DSLuthersche.ttf">
+                                DSLuthersche</option>
+
+
+                                </optgroup>
+
+                                <optgroup label="Gothic Lettering">
+
+                            <option value="OSIFont" brushWidthOfFontNibMultiplier="7.3"
+                                fontURL="fonts/osifont-gpl2fe.ttf" ascenderRatio="0.4" capHeightRatio="0.45"
+                                descenderDepthRatio="0.45" >OSIFont
+                            </option>
+                            </optgroup>
+
+
+
                             <!--<option value="Drafting" >Drafting Gothic</option>-->
                             <!--<option value="Blackletter">Blackletter</option>-->
                             <!--<option value="Uncial">Uncial</option>-->
@@ -179,102 +127,72 @@ width:100%;margin:0;padding:0">
                         </select>
 
 
-
+                   
                     </div>
 
 
 
                     <div class="settingEnclosure indent">
-                        <table>
+                        <table width="100%" cellpadding="3" padding="0">
                             <tr>
-                                <td><button id="uploadFont" class="darkButton">Upload...</button>
-                                    <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2"
-                                        style="display: none;">
-                                    <div class="labelNote" style="margin-top:6pt;display: inline-block;">
-                                        (.ttf,.otf,.woff, or .woff2)
-                                    </div>
+                                <td valign="top"><button id="uploadFont" class="darkButton">Upload Font...</button>
+                                    <input type="file" id="fontFileInput" accept=".ttf,.otf" style="display: none;">
+                                    <span class="labelNote" style="margin-top:6pt;display: inline-block;">
+                                        (.OTF or .TTF)
+                                    </span>
                                 </td>
+
+                                <td><span style="color:white">or</span></td>
                                 <td>
-                                    <div style="color:White;padding:5pt;text-align: center;">or</div>
-                                </td>
-                                <td>
+
                                     <div id="dropArea">
                                         Drop font file here.
                                     </div>
+
                                 </td>
                             </tr>
                         </table>
 
-
-
-
-
                     </div>
 
-                    <!-- FONT GLYPH NIB WIDTH -->
                     <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="fontGlyphNibWidthEnclosure">
-                        <label for="fontGlyphNibWidth">Font's Nib Width:</label>
-                        <input class="fontAttribute" type="number" id="fontGlyphNibWidth" value="0" min="-100" max="100"
-                            step="0.1">
+                        id="xHeightToNibWidthPropEnclosure">
+                        <label for="xHeightToNibWidthProp">Scale X-Height-To-Nib:</label>
+                        <input type="number" id="xHeightToNibWidthProp" value="0" min="-100" max="100" step="0.1">
 
                     </div>
-
+   
 
                     <div class="settingEnclosure indent indent2" style="background-color: #333;"
                         id="xHeightFontScaleFactorEnclosure">
-                        <label for="xHeightFontScaleFactor">Font's X-Height Scaling:</label>
-                        <input class="fontAttribute" type="number" id="xHeightFontScaleFactor" value="1" min="-100"
-                            max="100" step="0.05">
+                        <label for="xHeightFontScaleFactor">Scale Font's X-Height:</label>
+                        <input type="number" id="xHeightFontScaleFactor" value="1" min="-100" max="100" step="0.05">
 
                     </div>
-
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="fontYOffsetEnclosure">
-                        <label for="fontYOffset">Adjust Font's Y Offset:</label>
-                        <input class="fontAttribute" type="number" id="fontYOffset" value="0" min="-200" max="200"
-                            step="1">
-
-
-                    </div>
-
-                    <!-- declaredXHeightOverride - what the font says is its X-Height (SXHeight) -->
-                    <!--
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="declaredXHeightOverrideEnclosure">
-                        <label for="declaredXHeightOverride">Declared X-Height Override</label>
-                        <input class="fontAttribute" type="number" id="declaredXHeightOverride" value="0" min="-200"
-                            max="200" step="1">
-                    </div>
-                    -->
-
 
 
                     <div class="settingEnclosure">
                         <label for="caseSelection">Characters:</label>
                         <select id="caseSelection" name="caseSelection">
-                            <option value="lowercaseOnly" checked>Lowercase Set</option>
-                            <option value="uppercaseOnly">Uppercase Set</option>
-                            <option value="bothUppercaseAndLowercase">Lowercase + Uppercase Sets</option>
-                            <option value="mixedCasePairsLowerFirst">Pairs: Lowercase-Uppercase </option>
-
+                            <option value="lowercaseOnly" checked>Lowercase Only</option>
+                            <option value="uppercaseOnly">Uppercase Only</option>
+                            <option value="bothUppercaseAndLowercase">Both Lowercase and Uppercase</option>
                             <!--<option value="mixedCasePairs">Mixed Case Pairs</option>-->
                             <option value="customText">Custom Practice Text</option>
 
                         </select>
+                      
 
+                    </div>
 
-                        <div class="vertSpacer2"></div>
-
-                        <div class="" id="includeNumberCharactersEnclosure">
+                    <div class="settingEnclosure indent" id="includeNumberCharactersEnclosure">
                         <table>
                             <tr>
                                 <td valign="top"><input type="checkbox" id="includeNumberCharacters"></td>
-                                <td><label class="secondLevelLabel" for="includeNumberCharacters">Include Number Characters</label></td>
+                                <td><label for="includeNumberCharacters">Include Number Characters</label></td>
                             </tr>
                         </table>
-                    </div>
-                    
+
 
                     </div>
 
@@ -283,12 +201,6 @@ width:100%;margin:0;padding:0">
                         <textarea id="customPracticeText" name="customPracticeText" rows="5"
                             maxlength="450">custom text</textarea>
                     </div>
-
-
-
-
-
-
 
 
                     <!--
@@ -300,37 +212,19 @@ width:100%;margin:0;padding:0">
 
                     <div class="settingEnclosure indent">
 
-                        <label for="practiceCharactersArrangement">Character Arrangement:</label>
+                        <label for="practiceCharactersArrangement">Characters Arrangement:</label>
 
                         <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
-                            <option value="rowsOfCharacters" selected>Row: Sequence With Blank Row</option>
-                            <option value="rowsOfCharactersSpaced" >Row: Sequence</option>
-                            <option value="rowOfSingleCharacter">Row: Character Repeated</option>
-                            <option value="pageOfSingleCharacter">Page: Character Repeated </option>
+                            <option value="RowsOfCharacters" checked>Rows of Characters</option>
+                            <option value="singleCharacterAtLeft">Single Character At Left</option>
 
-                            <option value="singleCharacterAtLeft">Per Row: Sequence Character</option>
+                            <!--<option value="CustomText">Custom Practice Text at Top</option>-->
                         </select>
 
-
-                    </div>
-
-
-                    <div class="settingEnclosure indent indent2" id="fontCharactersSpacingEnclosure">
-                        <label for="fontCharactersSpacing">Character Spacing:</label>
-                        <div class="vertSpacer"></div>
-                        <input type="range" style="width: 100%;" 
-                        class="biggerSlider1" value="30" id="fontCharactersSpacing" min="0" max="200"
-                            name="fontCharactersSpacing" oninput="makeWorksheetPages()">
-                            <div class="vertSpacer"></div>
-                    <!--  
-                            <input type="number" name="fontCharactersSpacing" id="fontCharactersSpacing" id="fontCharactersSpacing" min="-10" max="500">
-                    -->
                     </div>
 
 
                 </div>
-
-
             </fieldset>
 
 
@@ -350,47 +244,48 @@ width:100%;margin:0;padding:0">
 
 
                         <optgroup label="Pilot Parallel Pens">
-                            <option value="1.5">1.5 mm</option>
-                            <option value="2.4">2.4 mm</option>
-                            <option value="3.0">3.0 mm</option>
-                            <option value="3.8">3.8 mm</option>
-                            <option value="4.5">4.5 mm</option>
-                            <option value="6.0">6.0 mm</option>
+                          <option value="1.5">1.5 mm</option>
+                          <option value="2.4">2.4 mm</option>
+                          <option value="3.0">3.0 mm</option>
+                          <option value="3.8">3.8 mm</option>
+                          <option value="4.5">4.5 mm</option>
+                          <option value="6.0">6.0 mm</option>
                         </optgroup>
                         <optgroup label="Speedball Broad-Edge Nibs">
-                            <!-- C-Series -->
-                            <option value="3.2">C0: 3.2 mm</option>
-                            <option value="2.4">C1: 2.4 mm</option>
-                            <option value="1.8">C2: 1.8 mm</option>
-                            <option value="1.4">C3: 1.4 mm</option>
-                            <option value="1.0">C4: 1.0 mm</option>
-                            <option value="0.7">C5: 0.7 mm</option>
-
-                            <!-- B-Series -->
-                            <option value="3.2">B0: 3.2 mm</option>
-                            <option value="2.4">B1: 2.4 mm</option>
-                            <option value="2.0">B½: 2.0 mm</option>
-                            <option value="1.8">B2: 1.8 mm</option>
-                            <option value="1.4">B3: 1.4 mm</option>
-                            <option value="1.0">B4: 1.0 mm</option>
-                            <option value="0.8">B5: 0.8 mm</option>
-                            <option value="0.5">B6: 0.5 mm</option>
-
-                            <!-- A-Series -->
-                            <option value="3.2">A0: 3.2 mm</option>
-                            <option value="2.4">A1: 2.4 mm</option>
-                            <option value="1.8">A2: 1.8 mm</option>
-                            <option value="1.4">A3: 1.4 mm</option>
-                            <option value="1.0">A4: 1.0 mm</option>
-                            <option value="0.5">A5: 0.5 mm</option>
+                          <!-- C-Series -->
+                          <option value="3.2">C0: 3.2 mm</option>
+                          <option value="2.4">C1: 2.4 mm</option>
+                          <option value="1.8">C2: 1.8 mm</option>
+                          <option value="1.4">C3: 1.4 mm</option>
+                          <option value="1.0">C4: 1.0 mm</option>
+                          <option value="0.7">C5: 0.7 mm</option>
+                      
+                          <!-- B-Series -->
+                          <option value="3.2">B0: 3.2 mm</option>
+                          <option value="2.4">B1: 2.4 mm</option>
+                          <option value="2.0">B½: 2.0 mm</option>
+                          <option value="1.8">B2: 1.8 mm</option>
+                          <option value="1.4">B3: 1.4 mm</option>
+                          <option value="1.0">B4: 1.0 mm</option>
+                          <option value="0.8">B5: 0.8 mm</option>
+                          <option value="0.5">B6: 0.5 mm</option>
+                      
+                      <!-- A-Series -->
+                          <option value="3.2">A0: 3.2 mm</option>
+                          <option value="2.4">A1: 2.4 mm</option>
+                          <option value="1.8">A2: 1.8 mm</option>
+                          <option value="1.4">A3: 1.4 mm</option>
+                          <option value="1.0">A4: 1.0 mm</option>
+                          <option value="0.5">A5: 0.5 mm</option>
                         </optgroup>
                     </select>
-
+                    
                     <div class="vertSpacer"></div>
 
                     <input type="number" id="nibWidthMm" value="3.8" min="0.1" step="0.1" min="0.5" max="50"
-                        style="height:28pt;width:70pt;font-size:15pt;text-align: center;">
-                    <span class="labelNote2" style="font-size: 15pt;">mm</span>
+                     style="height:28pt;width:70pt;font-size:15pt;text-align: center;">
+                     <span
+                        class="labelNote2" style="font-size: 15pt;">mm</span>
 
                     <span class="class=" labelNote" id="nibWidthInPtDisplaySpan">
                         (<span id="nibWidthInPtDisplay">10 </span> <span>pt</span>)
@@ -418,8 +313,8 @@ width:100%;margin:0;padding:0">
                 <div class="settingEnclosure indent">
 
                     <!-- Show Nib Squares -->
-
-
+                    
+                    
 
                     <table>
                         <tr>
@@ -466,25 +361,22 @@ width:100%;margin:0;padding:0">
                 <div class="settingEnclosure indent">
 
                     <!-- Ascender Height Input -->
-                    <label class="fontAttribute" for="ascenderHeight">Ascender Height:</label><br>
-                    <input type="number" id="ascenderHeight" class="fontMetric" value="0.5" min="0" step="0.1"> <span
-                        class="labelNote">×
+                    <label for="ascenderHeight">Ascender Height:</label><br>
+                    <input type="number" id="ascenderHeight" value="0.5" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
                 <div class="settingEnclosure indent">
 
                     <!-- Capital Height Input -->
-                    <label class="fontAttribute" for="capitalHeight">Capital Height:</label><br>
-                    <input type="number" id="capitalHeight" class="fontMetric" value="0.4" min="0" step="0.1"> <span
-                        class="labelNote">×
+                    <label for="capitalHeight">Capital Height:</label><br>
+                    <input type="number" id="capitalHeight" value="0.4" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
                 <div class="settingEnclosure indent">
 
                     <!-- Descender Depth Input -->
                     <label for="descenderDepth">Descender Depth:</label><br>
-                    <input class="fontAttribute" type="number" class="fontMetric" id="descenderDepth" value="0.6"
-                        min="0" step="0.1"> <span class="labelNote">×
+                    <input type="number" id="descenderDepth" value="0.6" min="0" step="0.1"> <span class="labelNote">×
                         x-height</span>
                 </div>
             </fieldset>
@@ -495,7 +387,7 @@ width:100%;margin:0;padding:0">
                 <div class="settingEnclosure">
 
                     <!-- Include Slant Guides Checkbox -->
-
+    
                     <table>
                         <tr>
                             <td valign="top"><input type="checkbox" name="verticalLines" id="verticalLines"></td>
@@ -510,7 +402,7 @@ width:100%;margin:0;padding:0">
                     <!-- Slant Angle Input -->
                     <label for="verticalSlantAngle">Vertical Slant Angle:</label>
                     <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
-                    <input type="number" id="verticalSlantAngle" value="7" min="0" max="60" step="1"> °
+                    <input type="number" id="verticalSlantAngle" value="15" min="0" max="60" step="1"> °
                 </div>
 
                 <div class="settingEnclosure indent">
@@ -538,7 +430,7 @@ width:100%;margin:0;padding:0">
                     <label for="orientationPortraitRadio" class="radioLabel">
                         Portrait
                     </label>
-                    &nbsp;
+&nbsp;
                     <input type="radio" name="orientation" id="orientationLandscapeRadio" value="landscape">
                     <label for="orientationLandscapeRadio" class="radioLabel">
                         Landscape
@@ -560,45 +452,6 @@ width:100%;margin:0;padding:0">
             </fieldset>
 
 
-            <fieldset id="effectsFieldset">
-                <legend>Effects</legend>
-                <div class="settingEnclosure">
-                    <label for="effectFilterSelect">Filter:</label>
-
-                    <select id="effectFilterSelect">
-                        <option value="" selected>None</option>
-                    </select>
-
-                    <div id="filterControlContainer" class="settingEnclosure" indent></div>
-
-                </div>
-
-
-                <div class="settingEnclosure" style="display:none">
-                    <label for="effectTransformSelect">Transforms:</label>
-
-                    <select id="effectTransformSelect">
-                        <option value="" selected>None</option>
-                    </select>
-
-                    <div id="transformControlContainer" class="settingEnclosure" indent></div>
-
-                </div>
-
-
-
-            </fieldset>
-
-
-            <fieldset>
-                <legend>Reset</legend>
-
-                <div class="settingEnclosure">
-                    <button onclick="clearFontsFromIndexedDB()">Delete Uploaded Fonts</button>
-                </div>
-
-            </fieldset>
-
 
 
 
@@ -618,9 +471,7 @@ width:100%;margin:0;padding:0">
 
 
         <div id="generatedWorksheetArea">
-            <div class="worksheetAreaSpacer">
-                <div id="outputPageCount"></div>
-            </div>
+            <div class="worksheetAreaSpacer"></div>
 
             <div id="worksheetPagesContainer">
 

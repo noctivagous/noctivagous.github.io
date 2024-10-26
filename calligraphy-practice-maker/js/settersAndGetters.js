@@ -290,6 +290,41 @@ function setOrientation(value) {
     //console.log("Orientation updated to: " + value);
 }
 
+
+// Event listeners to update the values using setters when the user changes the input fields
+document.getElementById('nibWidthsTall').addEventListener('change', function () {
+    const value = parseFloat(this.value);
+    setNibWidthsTall(value);
+});
+
+document.getElementById('practiceCharactersArrangement').addEventListener('change', function () {
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    const caseSelection = document.getElementById('caseSelection').value;
+    
+    var permutationStringKey = `${arrangement}${caseSelection}`;
+    
+    var value = fontSpacingFixedDefaultValuesPermutations[permutationStringKey];
+    
+    document.getElementById('fontCharactersSpacing').value = value;
+
+});
+
+
+document.getElementById('caseSelection').addEventListener('change', function () {
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    const caseSelection = document.getElementById('caseSelection').value;
+    
+    var permutationStringKey = `${arrangement}${caseSelection}`;
+    
+    var value = fontSpacingFixedDefaultValuesPermutations[permutationStringKey];
+    
+    document.getElementById('fontCharactersSpacing').value = value;
+});
+
+
+
+
+
 // Event listeners to update the values using setters when the user changes the input fields
 document.getElementById('nibWidthsTall').addEventListener('change', function () {
     const value = parseFloat(this.value);
@@ -1372,8 +1407,8 @@ const transformConfig = {
 
 // Define transform parameter ranges for dynamic control generation
 const transformConfigRange = {
-    shearX: { min: -10, max: 10 },
-    shearY: { min: -10, max: 10 }
+    shearX: { min: -5, max: 5 },
+    shearY: { min: -5, max: 5 }
 };
 
 // Map of transform aliases for user-friendly labels

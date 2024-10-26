@@ -703,7 +703,7 @@ function calculateNumberOfPages(rows) {
 
 
 
-var fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
+var fontCharactersSpacing = 0; //parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
 
 var fontSpacingMultipliers = {
     rowsOfCharacters: 1.0,            // Row: Sequence With Blank Row
@@ -713,6 +713,98 @@ var fontSpacingMultipliers = {
     singleCharacterAtLeft: 1.0        // Column of Sequence
 };
 
+var fontSpacingFixedDefaultValues = {
+    rowsOfCharacters: 30,            // Row: Sequence With Blank Row
+    rowsOfCharactersSpaced: 60,      // Row: Sequence With 2X Spacing
+    rowOfSingleCharacter: 1.0,        // Row: Character - Repeat
+    pageOfSingleCharacter: 0.0,       // Row: Character - Single
+    singleCharacterAtLeft: 1.0        // Column of Sequence
+};
+
+var fontSpacingFixedDefaultValues = {
+    lowercaseOnly: 30,                     // Lowercase Set
+    uppercaseOnly: 60,                    // Uppercase Set
+    bothUppercaseAndLowercase: 1.0,        // Lowercase + Uppercase Sets
+    mixedCasePairsLowerFirst: 0.0,        // Pairs: Lowercase-Uppercase
+    customText: 0.0,
+};
+
+var fontSpacingFixedDefaultValuesPermutations = {
+    "rowsOfCharacterslowercaseOnly": 30,
+    "rowsOfCharactersuppercaseOnly": 30,
+    "rowsOfCharactersbothUppercaseAndLowercase": 30,
+    "rowsOfCharactersmixedCasePairsLowerFirst": 10,
+    "rowsOfCharacterscustomText": 0,
+
+    "rowsOfCharactersSpacedlowercaseOnly": 90,
+    "rowsOfCharactersSpaceduppercaseOnly": 90,
+    "rowsOfCharactersSpacedbothUppercaseAndLowercase": 90,
+    "rowsOfCharactersSpacedmixedCasePairsLowerFirst": 90,
+    "rowsOfCharactersSpacedcustomText": 90,
+
+    "rowOfSingleCharacterlowercaseOnly": 30,
+    "rowOfSingleCharacteruppercaseOnly": 30,
+    "rowOfSingleCharacterbothUppercaseAndLowercase": 30,
+    "rowOfSingleCharactermixedCasePairsLowerFirst": 30,
+    "rowOfSingleCharactercustomText": 0,
+
+    "pageOfSingleCharacterlowercaseOnly": 90,
+    "pageOfSingleCharacteruppercaseOnly": 90,
+    "pageOfSingleCharacterbothUppercaseAndLowercase": 90,
+    "pageOfSingleCharactermixedCasePairsLowerFirst": 90,
+    "pageOfSingleCharactercustomText": 90,
+
+    "singleCharacterAtLeftlowercaseOnly": 30,
+    "singleCharacterAtLeftuppercaseOnly": 30,
+    "singleCharacterAtLeftbothUppercaseAndLowercase": 30,
+    "singleCharacterAtLeftmixedCasePairsLowerFirst": 30,
+    "singleCharacterAtLeftcustomText": 0
+
+};
+
+
+
+
+function getFontCharactersSpacingFixed() {
+
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    const caseSelection = document.getElementById('caseSelection').value;
+
+    var permutationStringKey = `${arrangement}${caseSelection}`;
+
+    var value = fontSpacingFixedDefaultValuesPermutations[permutationStringKey];
+
+    //console.log(`${permutationStringKey}: ${value}`);
+
+    //    fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
+
+    return value;//fontCharactersSpacing;
+}
+
+function setFontCharactersSpacingFixed(spacing) {
+
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    const caseSelection = document.getElementById('caseSelection').value;
+    const permutationStringKey = `${arrangement}${caseSelection}`;
+
+  
+    if (typeof fontSpacingFixedDefaultValuesPermutations[permutationStringKey] !== 'undefined') {
+        fontSpacingFixedDefaultValuesPermutations[permutationStringKey] = spacing;
+    } else {
+        console.log(`The key "${permutationStringKey}" is undefined.`);
+    }
+    fontCharactersSpacing = spacing;
+
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.getElementById('fontCharactersSpacing').addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        setFontCharactersSpacingFixed(value);
+    });
+
+});
 
 function getFontCharactersSpacing() {
     // Get the base spacing value from the input or default
@@ -721,6 +813,8 @@ function getFontCharactersSpacing() {
     // Get the arrangement type
     var arrangement = document.getElementById('practiceCharactersArrangement').value;
 
+
+
     // Get the multiplier for the selected arrangement type
     var multiplier = fontSpacingMultipliers[arrangement] || 1.0;
 
@@ -728,26 +822,6 @@ function getFontCharactersSpacing() {
     var spacingMultipied = baseSpacing * multiplier;
 
     return spacingMultipied;
-}
-
-
-function getFontCharactersSpacingFixed() {
-    var v = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
-    const arrangement = document.getElementById('practiceCharactersArrangement').value;
-    fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
-
-    /*
-    if((arrangement === "rowsOfCharactersSpaced"))
-    {
-        v = v * 2;
-    }*/
-
-    return v;
-}
-
-
-function setFontCharactersSpacingFixed() {
-
 }
 
 
@@ -815,7 +889,9 @@ function generateRowsOfCharacters() {
                         currentLineWidth += charWidthWithSpacing;
 
                         charIndex++;
-                    } else {
+                    }
+
+                    else {
                         //
                         break;
                     }
@@ -1293,7 +1369,7 @@ const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var font; // Global variable to hold the loaded font
 
 function loadFont(callback) {
-
+    
     if (showFont == false) {
         callback();
         return;
@@ -1591,8 +1667,8 @@ function drawPracticeBlockChars(group, yPosition, width, strokeWidth, nibHeightP
             const scale = fontScaleFactor;
 
             // Shear values
-            const shearX = (transformConfig.shearX) / 100;
-            const shearY = (transformConfig.shearY) / 100;
+            const shearX = -1 * (transformConfig.shearX) / 100;
+            const shearY = -1 * (transformConfig.shearY) / 100;
 
             // Center the glyph for correct shearing
             const centerX = translateX + (glyph.advanceWidth * scale) / 2;
@@ -1776,6 +1852,11 @@ function getCharactersForPage(pageIndex) {
 function getCustomText() {
     var customText = document.getElementById("customPracticeText").value;
     if (customText === "") {
+        customText = "enter\ncustom\ntext";
+    }
+
+    // contains only new lines
+    if (/^\n*$/.test(customText)) {
         customText = "enter\ncustom\ntext";
     }
 

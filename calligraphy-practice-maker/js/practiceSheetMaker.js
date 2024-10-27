@@ -214,7 +214,7 @@ function handleFontFileUpload(file) {
                 capHeightRatio: '0.6',
                 descenderDepthRatio: '0.45',
                 xHeightFontScaleFactor: '1.0',
-                fontYOffset: '0'
+                fontYOffset: '0.0'
             };
             saveFontToIndexedDB(fontName, attributes);
 
@@ -530,11 +530,17 @@ function makeFontMetrics() {
         const selectedOption = fontSelect.options[fontSelect.selectedIndex];
 
         // Pull ascender, capital height, and descender ratios from the <option>
-        let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
-        let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio')) || 0.45;
-        let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio')) || 0.45;
-        let fontGlyphNibWidth = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')) || 1; // Default value if not provided
+        let ascenderRatio = parseFloat(selectedOption.getAttribute('ascenderRatio'));
+        ascenderRatio = isNaN(ascenderRatio) ? 0.45 : ascenderRatio;
 
+        let capHeightRatio = parseFloat(selectedOption.getAttribute('capHeightRatio'));
+        capHeightRatio = isNaN(capHeightRatio) ? 0.45 : capHeightRatio;
+
+        let descenderDepthRatio = parseFloat(selectedOption.getAttribute('descenderDepthRatio'));
+        descenderDepthRatio = isNaN(descenderDepthRatio) ? 0.45 : descenderDepthRatio;
+
+        let fontGlyphNibWidth = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')); // Default value if not provided
+        fontGlyphNibWidth = isNaN(fontGlyphNibWidth) ? 0.45 : fontGlyphNibWidth;
 
 
         // Pull the user's nib width
@@ -2108,7 +2114,7 @@ function fillGapBetweenBlocks(practiceBlocksGroup, descenderY, width, nibHeightP
     gapRect.setAttribute("y", descenderY);
     gapRect.setAttribute("width", width);
     gapRect.setAttribute("height", nibHeightPt);
-    gapRect.setAttribute("fill", "#333");
+    gapRect.setAttribute("fill", "#444");
     practiceBlocksGroup.appendChild(gapRect);
 }
 

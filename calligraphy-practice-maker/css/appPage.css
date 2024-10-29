@@ -806,6 +806,18 @@
         display: inline-block;
     }
 
+    #xHeightDisplayContainer{
+        display: none;
+    }
+    .valueAnnotation{
+        font-size: 10pt;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: right;
+        
+        color: #52795a;
+        text-align: right;
+        
+    }
 
     #controls {
         overflow-x: hidden;

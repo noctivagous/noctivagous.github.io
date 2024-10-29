@@ -32,9 +32,9 @@ function loadSelectedFontOptionSettingsIntoFields() {
 
     fontGlyphNibWidthInputField.value = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')) || 5;
 
-    const xHeightFontScaleFactorField = document.getElementById('xHeightFontScaleFactor');
-    const xHeightFontScaleFactorEnclosure = document.getElementById('xHeightFontScaleFactorEnclosure');
-    xHeightFontScaleFactorField.value = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
+    const fontGlyphScaleFactorField = document.getElementById('fontGlyphScaleFactor');
+    const fontGlyphScaleFactorEnclosure = document.getElementById('fontGlyphScaleFactorEnclosure');
+    fontGlyphScaleFactorField.value = parseFloat(selectedOption.getAttribute('fontGlyphScaleFactor')) || 1;
 
     const ascenderField = document.getElementById('ascenderHeight');
     ascenderField.value = parseFloat(selectedOption.getAttribute('ascenderRatio')) || 0.45;
@@ -52,12 +52,12 @@ function loadSelectedFontOptionSettingsIntoFields() {
     if (selectedOption.hasAttribute('fontFileData')) {
         // Show the tweak enclosure for uploaded fonts
         fontGlyphNibWidthEnclosure.style.display = 'block';
-        xHeightFontScaleFactorEnclosure.style.display = 'block';
+        fontGlyphScaleFactorEnclosure.style.display = 'block';
         fontYOffsetEnclosure.style.display = 'block';
     } else if (selectedOption.hasAttribute('fontURL')) {
         // Hide the tweak enclosure for default fonts
         fontGlyphNibWidthEnclosure.style.display = 'none';
-        xHeightFontScaleFactorEnclosure.style.display = 'none';
+        fontGlyphScaleFactorEnclosure.style.display = 'none';
         fontYOffsetEnclosure.style.display = 'none';
     }
 }
@@ -70,13 +70,13 @@ function loadSelectedFontOptionSettingsIntoFieldsOLD() {
     const fontGlyphNibWidthEnclosure = document.getElementById('fontGlyphNibWidthEnclosure');
 
 
-    const xHeightFontScaleFactorField = document.getElementById('xHeightFontScaleFactor');
-    const xHeightFontScaleFactorEnclosure = document.getElementById('xHeightFontScaleFactorEnclosure');
+    const fontGlyphScaleFactorField = document.getElementById('fontGlyphScaleFactor');
+    const fontGlyphScaleFactorEnclosure = document.getElementById('fontGlyphScaleFactorEnclosure');
 
 
     fontGlyphNibWidthInputField.value = parseFloat(selectedOption.getAttribute('fontGlyphNibWidth')) || 0;
 
-    xHeightFontScaleFactorField.value = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
+    fontGlyphScaleFactorField.value = parseFloat(selectedOption.getAttribute('fontGlyphScaleFactor')) || 1;
     //alert(selectedOption.getAttribute('fontGlyphNibWidth'));
 
     // return;
@@ -141,6 +141,7 @@ function getPaperSizeOriented() {
 
 // Setter for X-Height
 function setNibWidthsTall(value) {
+    
     // Ensure value is valid
     if (isNaN(value) || value <= 0) {
         console.error("Invalid nibWidthsTall value. Reverting to default.");
@@ -149,6 +150,10 @@ function setNibWidthsTall(value) {
 
     nibWidthsTall = value; // Update global variable
     document.getElementById('nibWidthsTall').value = value; // Update text field
+
+    document.getElementById('xHeightDisplay').innerText = getXHeightPt().toFixed(2); // Update text field
+
+        
     //console.log("nibWidthsTall updated to: " + value);
 }
 
@@ -251,7 +256,7 @@ function setVerticalSlantAngle(value) {
 // Setter for Vertical Line Spacing Multiplier
 function setVerticalLineSpacingMultiplier(value) {
     // Ensure value is valid
-    if (isNaN(value) || value <= 0.5) {
+    if (isNaN(value) || value < 0.1) {
         console.error("Invalid verticalLineSpacingMultiplier value. Reverting to default.");
         value = 2; // Default fallback value
     }
@@ -329,6 +334,7 @@ document.getElementById('caseSelection').addEventListener('change', function () 
 document.getElementById('nibWidthsTall').addEventListener('change', function () {
     const value = parseFloat(this.value);
     setNibWidthsTall(value);
+    
 });
 
 document.getElementById('ascenderHeight').addEventListener('change', function () {
@@ -491,13 +497,13 @@ document.getElementById('fontGlyphNibWidth').addEventListener('change', function
 });
 
 
-document.getElementById('xHeightFontScaleFactor').addEventListener('change', function () {
+document.getElementById('fontGlyphScaleFactor').addEventListener('change', function () {
     const fontSelect = document.getElementById('fontForWorksheetPages');
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
-    const tweakEnclosure = document.getElementById('xHeightFontScaleFactorEnclosure');
-    const tweakInputField = document.getElementById('xHeightFontScaleFactor');
+    const tweakEnclosure = document.getElementById('fontGlyphScaleFactorEnclosure');
+    const tweakInputField = document.getElementById('fontGlyphScaleFactor');
 
-    selectedOption.setAttribute('xHeightFontScaleFactor', tweakInputField.value);
+    selectedOption.setAttribute('fontGlyphScaleFactor', tweakInputField.value);
 
     makeWorksheetPages();
     if (selectedOption.hasAttribute('fontFileData')) {
@@ -864,7 +870,7 @@ function updateFontAttributesInOption() {
     const selectedOption = fontSelect.options[fontSelect.selectedIndex];
 
     const fontGlyphNibWidthInputField = document.getElementById('fontGlyphNibWidth').value;
-    const xHeightFontScaleFactorField = document.getElementById('xHeightFontScaleFactor').value;
+    const fontGlyphScaleFactorField = document.getElementById('fontGlyphScaleFactor').value;
     const ascenderField = document.getElementById('ascenderHeight').value;
     const capHeightField = document.getElementById('capitalHeight').value;
     const descenderDepthField = document.getElementById('descenderDepth').value;
@@ -872,7 +878,7 @@ function updateFontAttributesInOption() {
 
 
     selectedOption.setAttribute('fontGlyphNibWidth', fontGlyphNibWidthInputField);
-    selectedOption.setAttribute('xHeightFontScaleFactor', xHeightFontScaleFactorField);
+    selectedOption.setAttribute('fontGlyphScaleFactor', fontGlyphScaleFactorField);
     selectedOption.setAttribute('ascenderRatio', ascenderField);
     selectedOption.setAttribute('capHeightRatio', capHeightField);
     selectedOption.setAttribute('descenderDepthRatio', descenderDepthField);
@@ -881,7 +887,7 @@ function updateFontAttributesInOption() {
     // Save updated attributes to IndexedDB
     const attributes = {
         fontGlyphNibWidth: fontGlyphNibWidthInputField,
-        xHeightFontScaleFactor: xHeightFontScaleFactorField,
+        fontGlyphScaleFactor: fontGlyphScaleFactorField,
         ascenderRatio: ascenderField,
         capHeightRatio: capHeightField,
         descenderDepthRatio: descenderDepthField,

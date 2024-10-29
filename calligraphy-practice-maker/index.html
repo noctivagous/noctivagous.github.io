@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>LetterformGateway - Calligraphy and Lettering Practice Sheet Generator</title>
+    <title>LetterformPortal - Calligraphy and Lettering Practice Sheet Generator</title>
 
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css" />
 
@@ -31,7 +31,7 @@ a small number of fonts available.
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
-            <h1>LetterformGateway<br /><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
+            <h1>LetterformPortal<br /><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
             color:#6a6868;font-size:10pt;font-style: normal;z-index: 20;">Worksheet Generator</span></h1>
 
 
@@ -88,20 +88,24 @@ width:100%;margin:0;padding:0">
                             <optgroup label="Blackletter">
 
                                 <option value="Canterbury" fontGlyphNibWidth="4" ascenderRatio="0.45"
-                                    capHeightRatio="0.4" descenderDepthRatio="0.45" xHeightFontScaleFactor="0.85"
+                                    capHeightRatio="0.4" descenderDepthRatio="0.45" fontGlyphScaleFactor="0.85"
                                     fontURL="fonts/Canterbury.ttf" fontYOffset="0">Canterbury</option>
 
 
                                 <option value="DSWallauOsF" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.3" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.0"
+                                    capHeightRatio="0.3" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.0"
                                     fontURL="fonts/DSWallauOsF.ttf" fontYOffset="0" selected>DSWallauOsF</option>
 
 
                                     <!--
                                 <option value="Deutsch-Gotisch" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.5" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.0"
+                                    capHeightRatio="0.5" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.0"
                                     fontURL="fonts/Deutsch-Gotisch.otf" fontYOffset="0">Deutsch-Gotisch</option>
                             -->
+
+                            <option value="Alpine" fontGlyphNibWidth="4" ascenderRatio="0.3"
+                            capHeightRatio="0.5" descenderDepthRatio="0.8" fontGlyphScaleFactor="1.35"
+                            fontURL="fonts/Alpine.ttf" fontYOffset="0">Alpine</option>
 
 
 
@@ -110,28 +114,28 @@ width:100%;margin:0;padding:0">
 
 
                                 <option value="ZentenaerFraktur" fontGlyphNibWidth="5.6" ascenderRatio="0.1"
-                                    capHeightRatio="0.3" descenderDepthRatio="0.3" xHeightFontScaleFactor="1.05"
+                                    capHeightRatio="0.3" descenderDepthRatio="0.3" fontGlyphScaleFactor="1.05"
                                     fontYOffset="0" fontURL="fonts/CATZentenaerFrakturUNZ1.ttf">
                                     ZentenaerFraktur</option>
 
                                 <option value="DSLuthersche" fontGlyphNibWidth="5.2" ascenderRatio="0.1"
-                                    capHeightRatio="0.50" descenderDepthRatio="0.46" xHeightFontScaleFactor="1.1"
+                                    capHeightRatio="0.50" descenderDepthRatio="0.46" fontGlyphScaleFactor="1.1"
                                     fontYOffset="0" fontURL="fonts/DSLuthersche.ttf">
                                     DSLuthersche</option>
 
                                 <option value="DSLutherscheHalbfett" fontGlyphNibWidth="4" ascenderRatio="0.2"
-                                    capHeightRatio="0.40" descenderDepthRatio="0.4" xHeightFontScaleFactor="1.1"
+                                    capHeightRatio="0.40" descenderDepthRatio="0.4" fontGlyphScaleFactor="1.1"
                                     fontYOffset="0" fontURL="fonts/DSLutherscheHalbfett.ttf">
                                     DSLutherscheHalbfett</option>
 
 
                                 <option value="KabinettFraktur" fontGlyphNibWidth="4.7" ascenderRatio="0.2"
-                                    capHeightRatio="0.6" descenderDepthRatio="0.45" xHeightFontScaleFactor="1.2"
+                                    capHeightRatio="0.6" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.2"
                                     fontYOffset="0" fontURL="fonts/KabinettFraktur.ttf">
                                     Kabinett Fraktur</option>
 
                                 <option value="BreitkopfFraktur" fontGlyphNibWidth="4" ascenderRatio="0.1"
-                                    capHeightRatio="0.5" descenderDepthRatio="0.4" xHeightFontScaleFactor="0.95"
+                                    capHeightRatio="0.5" descenderDepthRatio="0.4" fontGlyphScaleFactor="0.95"
                                     fontYOffset="0" fontURL="fonts/BreitkopfFraktur.ttf">
                                     Breitkopf Fraktur </option>
 
@@ -139,14 +143,14 @@ width:100%;margin:0;padding:0">
                             </optgroup>
 
                             <optgroup label="Engrossing">
-                                <option value="DSForelle" fontGlyphNibWidth="3" xHeightFontScaleFactor="1.1"
+                                <option value="DSForelle" fontGlyphNibWidth="3" fontGlyphScaleFactor="1.1"
                                     fontURL="fonts/DSForelle.ttf" ascenderRatio="0.0" capHeightRatio="1.9"
                                     descenderDepthRatio="0.8" fontYOffset="0" slantAngle="11">DSForelle</option>
 
 
                             </optgroup>
                             <optgroup label="Other Calligraphy">
-                                <option value="Bridgnorth-Regular" fontGlyphNibWidth="5.1" xHeightFontScaleFactor="1.15"
+                                <option value="Bridgnorth-Regular" fontGlyphNibWidth="5.1" fontGlyphScaleFactor="1.15"
                                 fontURL="fonts/Bridgnorth-Regular.ttf" ascenderRatio="0.0" capHeightRatio="0.95"
                                 descenderDepthRatio="0.35" fontYOffset="5" slantAngle="0">Bridgnorth-Regular</option>
 
@@ -155,7 +159,7 @@ width:100%;margin:0;padding:0">
                             <optgroup label="Gothic Drafting">
 
                                 <option value="Routed Gothic Narrow" fontGlyphNibWidth="5"
-                                    fontURL="fonts/routed-gothic-narrow.ttf" ascenderRatio="0.0" capHeightRatio="0.4"
+                                    fontURL="fonts/routed-gothic-narrow.ttf" ascenderRatio="0.0" capHeightRatio="0.44"
                                     descenderDepthRatio="0.4" fontYOffset="0">Routed Gothic Narrow
                                 </option>
 
@@ -188,7 +192,7 @@ width:100%;margin:0;padding:0">
                     <div class="settingEnclosure indent">
                         <table>
                             <tr>
-                                <td><button id="uploadFont" class="darkButton">Upload...</button>
+                                <td><button id="uploadFont" class="darkButton">Import...</button>
                                     <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2"
                                         style="display: none;">
                                     <div class="labelNote" style="margin-top:6pt;display: inline-block;">
@@ -223,20 +227,28 @@ width:100%;margin:0;padding:0">
 
 
                     <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="xHeightFontScaleFactorEnclosure">
-                        <label for="xHeightFontScaleFactor">Font's X-Height Scaling:</label>
-                        <input class="fontAttribute" type="number" id="xHeightFontScaleFactor" value="1" min="-100"
+                        id="fontGlyphScaleFactorEnclosure">
+                        <label for="fontGlyphScaleFactor">Font's Glyph Scaling:</label>
+                        <input class="fontAttribute" type="number" id="fontGlyphScaleFactor" value="1" min="-100"
                             max="100" step="0.05">
 
                     </div>
 
+
+                    <!--
+                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
+                        id="fontXHeightScalingFactorEnclosure">
+                        <label for="fontXHeightScalingFactor">Adjust Font's X-Height Scaling:</label>
+                        <input class="fontAttribute" type="number" id="fontXHeightScalingFactor" value="0" min="-200" max="200"
+                            step="1">
+                    </div>
+                -->
+
                     <div class="settingEnclosure indent indent2" style="background-color: #333;"
                         id="fontYOffsetEnclosure">
-                        <label for="fontYOffset">Adjust Font's Y Offset:</label>
+                        <label for="fontYOffset">Adjust Font's Vertical Offset:</label>
                         <input class="fontAttribute" type="number" id="fontYOffset" value="0" min="-200" max="200"
                             step="1">
-
-
                     </div>
 
                     <!-- declaredXHeightOverride - what the font says is its X-Height (SXHeight) -->
@@ -345,6 +357,8 @@ width:100%;margin:0;padding:0">
                     <!-- Nib Width Input -->
                     <label for="nibWidthMm">Nib Width:</label>
 
+                  
+                
                     <select id="nibWidthStaticSelect" class="notWorksheetGenerating">
                         <option value="" selected disabled>Select A Width...</option>
                         <option value="" disabled>—————————————————</option>
@@ -358,6 +372,7 @@ width:100%;margin:0;padding:0">
                             <option value="4.5">4.5 mm</option>
                             <option value="6.0">6.0 mm</option>
                         </optgroup>
+
                         <optgroup label="Speedball Broad-Edge Nibs">
                             <!-- C-Series -->
                             <option value="3.2">C0: 3.2 mm</option>
@@ -385,6 +400,73 @@ width:100%;margin:0;padding:0">
                             <option value="1.0">A4: 1.0 mm</option>
                             <option value="0.5">A5: 0.5 mm</option>
                         </optgroup>
+
+                        <optgroup label="Permanent Markers">
+                            <option value="15">15 mm (Jumbo)</option>
+                            <option value="10">10 mm (Jumbo)</option>
+                            <option value="5.0">5.0 mm (Broad)</option>
+                            <option value="3.0">3.0 mm (Broad)</option>
+                            <option value="2.0">2.0 mm (Medium)</option>
+                            <option value="1.5">1.5 mm (Medium)</option>
+                            <option value="1.0">1.0 mm (Fine)</option>
+                            <option value="0.7">0.7 mm (Fine)</option>
+                            <option value="0.4">0.4 mm (Extra Fine)</option>
+                          </optgroup>
+                          <optgroup label="Pencils (Graphite)">
+                            <option value="2.0">2.0 mm (Wooden - Blunt)</option>
+                            <option value="2.0">2.0 mm (Mechanical - Thick)</option>
+                            <option value="1.0">1.0 mm (Wooden - Sharp)</option>
+                            <option value="0.9">0.9 mm (Mechanical - Thick)</option>
+                            <option value="0.7">0.7 mm (Mechanical - Medium)</option>
+                            <option value="0.5">0.5 mm (Mechanical - Fine)</option>
+                            <option value="0.3">0.3 mm (Mechanical - Ultra Fine)</option>
+                          </optgroup>
+                          <optgroup label="Ballpoint Pens">
+                            <option value="1.6">1.6 mm (Broad)</option>
+                            <option value="1.2">1.2 mm (Broad)</option>
+                            <option value="1.0">1.0 mm (Medium)</option>
+                            <option value="0.7">0.7 mm (Fine)</option>
+                            <option value="0.5">0.5 mm (Extra Fine)</option>
+                            <option value="0.3">0.3 mm (Extra Fine)</option>
+                          </optgroup>
+                          <optgroup label="Gel Pens">
+                            <option value="1.2">1.2 mm (Broad)</option>
+                            <option value="1.0">1.0 mm (Broad)</option>
+                            <option value="0.7">0.7 mm (Medium)</option>
+                            <option value="0.5">0.5 mm (Fine)</option>
+                            <option value="0.38">0.38 mm (Ultra Fine)</option>
+                            <option value="0.28">0.28 mm (Ultra Fine)</option>
+                          </optgroup>
+                          <optgroup label="Fountain Pens">
+                            <option value="1.5">1.5 mm (Double Broad)</option>
+                            <option value="1.3">1.3 mm (Double Broad)</option>
+                            <option value="1.2">1.2 mm (Broad)</option>
+                            <option value="1.0">1.0 mm (Broad)</option>
+                            <option value="0.9">0.9 mm (Medium)</option>
+                            <option value="0.7">0.7 mm (Medium)</option>
+                            <option value="0.6">0.6 mm (Fine)</option>
+                            <option value="0.5">0.5 mm (Fine)</option>
+                            <option value="0.4">0.4 mm (Extra Fine)</option>
+                            <option value="0.3">0.3 mm (Extra Fine)</option>
+                          </optgroup>
+                          <optgroup label="Paint Markers">
+                            <option value="30">30 mm (Calligraphy)</option>
+                            <option value="15">15 mm (Wide)</option>
+                            <option value="10">10 mm (Wide)</option>
+                            <option value="5.0">5.0 mm (Broad)</option>
+                            <option value="4.0">4.0 mm (Medium Tip)</option>
+                            <option value="2.0">2.0 mm (Medium Tip)</option>
+                            <option value="1.0">1.0 mm (Fine Tip)</option>
+                            <option value="0.7">0.7 mm (Fine Tip)</option>
+                          </optgroup>
+                          <optgroup label="Highlighters">
+                            <option value="10">10 mm (Wide Chisel)</option>
+                            <option value="5.0">5.0 mm (Chisel)</option>
+                            <option value="3.0">3.0 mm (Chisel)</option>
+                            <option value="2.0">2.0 mm (Fine)</option>
+                            <option value="1.0">1.0 mm (Fine)</option>
+                          </optgroup>
+                        
                     </select>
 
                     <div class="vertSpacer"></div>
@@ -393,7 +475,7 @@ width:100%;margin:0;padding:0">
                         style="height:28pt;width:70pt;font-size:15pt;text-align: center;">
                     <span class="labelNote2" style="font-size: 15pt;">mm</span>
 
-                    <span class="class=" labelNote" id="nibWidthInPtDisplaySpan">
+                    <span class=" labelNote" id="nibWidthInPtDisplaySpan">
                         (<span id="nibWidthInPtDisplay">10 </span> <span>pt</span>)
                     </span>
 
@@ -442,15 +524,18 @@ width:100%;margin:0;padding:0">
                   the xheight is determined by 
                   multiplying the nib width by a factor that makes it proportionate to the stroke of the script. 
                   -->
-                <legend>x-height</legend>
+                <legend>x-height and metrics</legend>
                 <div class="settingEnclosure">
 
                     <!-- x-height Input -->
-                    <label for="nibWidthsTall">Nib Widths Tall:</label>
+                    <label for="nibWidthsTall">X-Height = Nib Widths:</label>
                     <input type="number" id="nibWidthsTall" value="4" min="0.1" step="0.1">
-                    <span class="labelNote">
-                        ×
-                    </span>
+
+                    <div id="xHeightDisplayContainer" class="valueAnnotation" style="text-align: center;">
+                        (<span id="xHeightDisplay"></span> <span>pt</span>)
+                    </div>
+
+                    
                 </div>
 
                 <div class="settingEnclosure indent hiddenTemporary">
@@ -595,7 +680,7 @@ width:100%;margin:0;padding:0">
                 <legend>Reset</legend>
 
                 <div class="settingEnclosure">
-                    <button onclick="clearFontsFromIndexedDB()">Delete Uploaded Fonts</button>
+                    <button onclick="clearFontsFromIndexedDB()">Delete Imported Fonts</button>
                 </div>
 
             </fieldset>

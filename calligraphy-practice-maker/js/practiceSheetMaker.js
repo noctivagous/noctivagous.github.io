@@ -200,7 +200,7 @@ function handleFontFileUpload(file) {
             newOption.setAttribute('ascenderRatio', '0.45'); // Default value
             newOption.setAttribute('capHeightRatio', '0.6'); // Default value
             newOption.setAttribute('descenderDepthRatio', '0.45'); // Default value
-            newOption.setAttribute('xHeightFontScaleFactor', '1.0'); // Default value
+            newOption.setAttribute('fontGlyphScaleFactor', '1.0'); // Default value
             newOption.setAttribute('fontYOffset', '0.0'); // Default value
 
             uploadedOptgroup.appendChild(newOption);
@@ -213,7 +213,7 @@ function handleFontFileUpload(file) {
                 ascenderRatio: '0.45',
                 capHeightRatio: '0.6',
                 descenderDepthRatio: '0.45',
-                xHeightFontScaleFactor: '1.0',
+                fontGlyphScaleFactor: '1.0',
                 fontYOffset: '0.0'
             };
             saveFontToIndexedDB(fontName, attributes);
@@ -886,6 +886,7 @@ function generateRowsOfCharacters() {
                 const glyph = font.charToGlyph(char);
 
                 if (glyph) {
+                    
                     const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
 
                     if (currentLineWidth + charWidthWithSpacing <= width) {
@@ -944,7 +945,15 @@ function generateRowsOfCharacters() {
 
                     //var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
 
-                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
+                    const avgCharWidthOfFont = getAverageCharWidthNoScaling(font,characters);
+                    const glyphAdvanceForChar = glyph.advanceWidth;
+                    const upperBoundCharWidth = getUpperBoundCharWidthNoScaling(font,characters);
+
+                    const charSpacing1 =  avgCharWidthOfFont * getFontScaleFactor();
+
+
+
+                    const charWidthWithSpacing = glyphAdvanceForChar + getFontCharactersSpacingFixed();
 
 
 
@@ -1180,13 +1189,13 @@ function getFontScaleFactor() {
 
     // Example of using the nib width and the brush width multiplier to determine the scale factor
     const selectedOption = document.getElementById('fontForWorksheetPages').selectedOptions[0];
-    const xHeightFontScaleFactor = parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')) || 1;
+    const fontGlyphScaleFactor = parseFloat(selectedOption.getAttribute('fontGlyphScaleFactor')) || 1;
 
-    if (parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor'))) {
-        //alert(parseFloat(selectedOption.getAttribute('xHeightFontScaleFactor')));
+    if (parseFloat(selectedOption.getAttribute('fontGlyphScaleFactor'))) {
+        //alert(parseFloat(selectedOption.getAttribute('fontGlyphScaleFactor')));
         let nibWidth = parseFloat(document.getElementById('nibWidthMm').value);
 
-        const scaleFactor = xHeightFontScaleFactor;
+        const scaleFactor = fontGlyphScaleFactor;
 
         return scaleFactor * fontScaleFactor;
     }
@@ -2052,6 +2061,44 @@ function calculateCharsPerLine() {
     return charsPerLine;
 }
 
+function getUpperBoundCharWidthNoScaling(font,characterSet = bothUppercaseAndLowercase)
+{
+    // Calculate the upper bound character width in points using the selected characters
+    let upperBoundCharWidth = 0;
+    characterSet.forEach(char => {
+
+        let glyph = font.charToGlyph(char);
+        if (glyph) {
+            // Find the maximum character width (advanceWidth)
+            if (glyph.advanceWidth > upperBoundCharWidth) {
+                upperBoundCharWidth = glyph.advanceWidth;
+            }
+
+
+        }
+    });
+    // Apply the scaling factor to the upper bound character width
+    //upperBoundCharWidth = upperBoundCharWidth * fontScaleFactor;
+
+    return upperBoundCharWidth;
+}
+
+function getAverageCharWidthNoScaling(font,characterSet = bothUppercaseAndLowercase)
+{
+    let avgCharWidth = 0;
+
+    characterSet.forEach(char => {
+        let glyph = font.charToGlyph(char);
+        if (glyph) {
+            avgCharWidth += glyph.advanceWidth;
+        }
+    });
+
+
+    // Calculate the average character width and apply scaling
+    avgCharWidth = (avgCharWidth / characterSet.length);// * fontScaleFactor;
+
+}
 
 /*
 To get the actual set of characters that are selected 
@@ -2236,7 +2283,7 @@ function drawNibGuidelineLabels(practiceBlocksGroup, ascenderY, capitalY, waistl
 
 
 
-    if (capitalMultiplier > 0) {
+    if ((capitalMultiplier > 0) && ((capitalY - ascenderY) > 12)) {
         // Capital Label
         drawText(practiceBlocksGroup, labelX, capitalY - 2, fontSize, "#9c9c9c", "Capital Line⬎", fontFamily);
     }

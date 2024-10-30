@@ -784,6 +784,12 @@ function getFontCharactersSpacingFixed() {
 
     //    fontCharactersSpacing = parseFloat(document.getElementById('fontCharactersSpacing').value || 30.0);
 
+    if(value === undefined)
+    {
+        console.err('undefined value for ' + permutationStringKey);
+        value = 0;
+    }
+
     return value;//fontCharactersSpacing;
 }
 
@@ -793,7 +799,7 @@ function setFontCharactersSpacingFixed(spacing) {
     const caseSelection = document.getElementById('caseSelection').value;
     const permutationStringKey = `${arrangement}${caseSelection}`;
 
-  
+
     if (typeof fontSpacingFixedDefaultValuesPermutations[permutationStringKey] !== 'undefined') {
         fontSpacingFixedDefaultValuesPermutations[permutationStringKey] = spacing;
     } else {
@@ -819,8 +825,6 @@ function getFontCharactersSpacing() {
     // Get the arrangement type
     var arrangement = document.getElementById('practiceCharactersArrangement').value;
 
-
-
     // Get the multiplier for the selected arrangement type
     var multiplier = fontSpacingMultipliers[arrangement] || 1.0;
 
@@ -828,6 +832,237 @@ function getFontCharactersSpacing() {
     var spacingMultipied = baseSpacing * multiplier;
 
     return spacingMultipied;
+}
+
+/*
+ // Calculate the original bounding box (for glyph shape)
+            const bbox = glyph.getBoundingBox();
+            const boxX = xPosition + (bbox.x1 * fontScaleFactor);
+            const boxY = yPositionWithOffset + (ascenderHeight + capitalHeight + xHeight) - (bbox.y2 * fontScaleFactor);
+            const boxWidth = (bbox.x2 - bbox.x1) * fontScaleFactor;
+            const boxHeight = (bbox.y2 - bbox.y1) * fontScaleFactor;
+            */
+           
+
+
+
+function generateRowsOfCharactersTEST() {
+    let characterRows = [];
+
+    // If the font is not to be displayed, generate blank rows for all lines
+    if (!showFont) {
+        for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
+            characterRows.push("");
+        }
+        return characterRows;
+    }
+
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    let characters = getSelectedCharacters();
+    const linesPerPage = calculateTotalLinesPerPage();
+    let charIndex = 0;
+
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+    const width = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs();
+
+    // Preprocessing based on arrangement and case selection
+    if (arrangement === "singleCharacterAtLeft") {
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue === "mixedCasePairsLowerFirst") {
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+        }
+    } else if ((arrangement === "rowOfSingleCharacter" || arrangement === "pageOfSingleCharacter") && characters.length > 0) {
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue === "customText") {
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
+        } else if (selectedValue === "mixedCasePairsLowerFirst") {
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+        }
+    }
+
+    // Main loop to process characters based on arrangement
+    while (charIndex < characters.length) {
+        if (arrangement === "rowsOfCharacters") {
+            fontCharactersSpacing = getFontCharactersSpacingFixed();
+
+            let currentRow = [];
+            let currentLineWidth = 0;
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+
+                if (char === '\n') {
+                    charIndex++;
+                    break;
+                }
+
+                const glyph = font.charToGlyph(char);
+
+                if (glyph) {
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
+
+                    if (currentLineWidth + charWidthWithSpacing <= width) {
+                        currentRow.push(char);
+                        currentLineWidth += charWidthWithSpacing;
+                        charIndex++;
+                    } else {
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            if (currentRow.length > 0) {
+                characterRows.push(currentRow);
+            }
+
+        } else if (arrangement === "rowsOfCharactersSpaced") {
+            let currentRow = [];
+            let currentLinePosition = 0;
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+
+                if (char === '\n') {
+                    charIndex++;
+                    break;
+                }
+
+                const glyph = font.charToGlyph(char);
+
+                if (glyph) {
+                    const glyphAdvanceForChar = glyph.advanceWidth;
+                    const charWidthWithSpacing = glyphAdvanceForChar + getFontCharactersSpacingFixed();
+
+                    if ((currentLinePosition + charWidthWithSpacing) <= width) {
+                        currentRow.push(char);
+                        currentLinePosition += charWidthWithSpacing;
+                        charIndex++;
+                    } else {
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            if (currentRow.length > 0) {
+                characterRows.push(currentRow);
+            }
+
+        } else if (arrangement === "singleCharacterAtLeft") {
+            characterRows.push([characters[charIndex]]);
+            charIndex++;
+
+        } else if (arrangement === "rowOfSingleCharacter") {
+            const characterToRepeat = characters[charIndex];
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0;
+                fontCharactersSpacing = charSpacing;
+                const totalCharWidth = charWidth + charSpacing;
+
+                let currentRow = [];
+                let currentLineWidth = 0;
+
+                while (currentLineWidth + totalCharWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                    currentLineWidth += totalCharWidth;
+                }
+
+                if (currentLineWidth + charWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                }
+
+                characterRows.push(currentRow);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+
+            charIndex++;
+
+        } else if (arrangement === "pageOfSingleCharacter") {
+            const characterToRepeat = characters[charIndex];
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0;
+                fontCharactersSpacing = charSpacing;
+                const totalCharWidth = charWidth + charSpacing;
+
+                let charRowsForPage = [];
+                let lineCount = 0;
+
+                while (lineCount < linesPerPage) {
+                    let currentRow = [];
+                    let currentLineWidth = 0;
+
+                    while (currentLineWidth + totalCharWidth <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += totalCharWidth;
+                    }
+
+                    if (currentLineWidth + charWidth <= width) {
+                        currentRow.push(characterToRepeat);
+                    }
+
+                    charRowsForPage.push(currentRow);
+                    lineCount++;
+                }
+
+                characterRows.push(...charRowsForPage);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+
+            charIndex++;
+
+        } else {
+            // Skip character if arrangement does not match
+            charIndex++;
+        }
+    }
+
+    // Post-processing to handle empty lines and page formatting
+    let finalRows = [];
+
+    for (let i = 0; i < characterRows.length; i++) {
+        finalRows.push(characterRows[i]);
+
+        if (arrangement === "rowsOfCharacters") {
+            if ((finalRows.length % linesPerPage) !== 0) {
+                finalRows.push([]);
+            }
+
+            if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
+                if (finalRows[finalRows.length - 1].length > 0) {
+                    const lastRow = finalRows.pop();
+                    finalRows.push([]);
+                    finalRows.push(lastRow);
+                    finalRows.push([]);
+                }
+            }
+        }
+    }
+
+    // Fill remaining lines to complete the page
+    const remainingLines = linesPerPage - (finalRows.length % linesPerPage);
+    if (remainingLines < linesPerPage) {
+        for (let i = 0; i < remainingLines; i++) {
+            finalRows.push([]);
+        }
+    }
+
+    return finalRows;
 }
 
 
@@ -886,7 +1121,6 @@ function generateRowsOfCharacters() {
                 const glyph = font.charToGlyph(char);
 
                 if (glyph) {
-                    
                     const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
 
                     if (currentLineWidth + charWidthWithSpacing <= width) {
@@ -945,15 +1179,7 @@ function generateRowsOfCharacters() {
 
                     //var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
 
-                    const avgCharWidthOfFont = getAverageCharWidthNoScaling(font,characters);
-                    const glyphAdvanceForChar = glyph.advanceWidth;
-                    const upperBoundCharWidth = getUpperBoundCharWidthNoScaling(font,characters);
-
-                    const charSpacing1 =  avgCharWidthOfFont * getFontScaleFactor();
-
-
-
-                    const charWidthWithSpacing = glyphAdvanceForChar + getFontCharactersSpacingFixed();
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
 
 
 
@@ -1102,6 +1328,678 @@ function generateRowsOfCharacters() {
 
                     // Add the last character if there's space for its width
                     if (currentLineWidth + (charWidth) <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += charWidth;
+                    }
+
+                    // Add the row to the current character's page
+                    charRowsForPage.push(currentRow);
+                    charIndex++;
+                }
+
+                // Add the completed page of rows for this character to the main array
+                characterRows.push(...charRowsForPage);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+        });
+    }
+
+    //
+
+    // Step 2: Generate a new array based on pages and number of lines per page
+    let finalRows = [];
+
+    for (let i = 0; i < characterRows.length; i++) {
+        // Add the character row to the final rows array
+        finalRows.push(characterRows[i]);
+
+        if (arrangement === "rowsOfCharacters") {
+            // If there is still space on the current page, add an empty row for practice
+            if ((finalRows.length % linesPerPage) !== 0) {
+                finalRows.push([]);
+            }
+
+
+            // If the page is filled but a character row falls on the last line, 
+            // push it to the next page to ensure there is a practice row after it
+            if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
+                if (finalRows[finalRows.length - 1].length > 0) {
+                    //
+
+                    const lastRow = finalRows.pop();
+                    finalRows.push([]);  // Add an empty row to complete the page
+                    finalRows.push(lastRow);  // Move character row to the new page
+                    finalRows.push([]);
+                }
+            }
+        }
+
+
+    }
+
+    // If there are any remaining rows that didn't fill a complete page, add empty rows to fill the page
+    const remainingLines = linesPerPage - (finalRows.length % linesPerPage);
+    if (remainingLines < linesPerPage) {
+        for (let i = 0; i < remainingLines; i++) {
+            finalRows.push([]);
+        }
+    }
+
+    //
+    //
+    return finalRows;
+}
+
+
+function generateRowsOfCharactersOLD1() {
+
+
+
+    let characterRows = [];
+
+    // If the font is not to be displayed, generate blank rows for all lines
+    if (!showFont) {
+        for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
+            characterRows.push("");
+        }
+        //
+        return characterRows;
+    }
+
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    var characters = getSelectedCharacters();
+    const linesPerPage = calculateTotalLinesPerPage();
+    let charIndex = 0;
+
+    //
+    //
+    //
+
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+    const width = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs();
+
+
+
+
+    // Step 1: Generate an array of character rows without any empty lines
+    if (arrangement === "rowsOfCharacters") {
+
+        fontCharactersSpacing = getFontCharactersSpacingFixed();
+
+        while (charIndex < characters.length) {
+            let currentRow = [];
+            let currentLineWidth = 0;
+            let lastCharLowerCase = false;
+
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+
+                // If a newline character is encountered, break and start a new row
+                if (char === '\n') {
+                    //
+                    charIndex++;
+                    break;
+                }
+
+                const glyph = font.charToGlyph(char);
+
+                if (glyph) {
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
+
+                    if (currentLineWidth + charWidthWithSpacing <= width) {
+                        lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
+
+                        currentRow.push(char);
+                        currentLineWidth += charWidthWithSpacing;
+
+                        charIndex++;
+                    }
+
+                    else {
+                        //
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            if (currentRow.length > 0) {
+                characterRows.push(currentRow);
+                //
+            }
+        }
+
+    }
+    else if (arrangement === "rowsOfCharactersSpaced") {
+        //alert(arrangement);
+
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+
+        while (charIndex < characters.length) {
+            let currentRow = [];
+            let currentLinePosition = 0;
+            let lastCharLowerCase = false;
+
+
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+
+                // If a newline character is encountered, break and start a new row
+                if (char === '\n') {
+                    //
+                    charIndex++;
+                    break;
+                }
+
+                const glyph = font.charToGlyph(char);
+
+                // console.log(`paperWidthOrientedRaw: ${paperWidthOrientedRaw}`);
+                if (glyph) {
+
+                    //var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
+
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
+
+
+
+                    if ((currentLinePosition + charWidthWithSpacing) <= (width)) {
+                        lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
+
+                        //console.log(`${char}:  + ${currentLinePosition} + ${charWidthWithSpacing} = (${ charWidthWithSpacing + currentLinePosition}) <= ${width - getInitialXPositionToStartGlyphs()}`);
+
+                        currentRow.push(char);
+                        currentLinePosition += charWidthWithSpacing;
+
+                        charIndex++;
+                    } else {
+                        //
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            if (currentRow.length > 0) {
+                characterRows.push(currentRow);
+                //
+            }
+        }
+
+    }
+
+    else if (arrangement === "singleCharacterAtLeft") {
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue == "mixedCasePairsLowerFirst") {
+
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+
+        }
+
+        // Each row gets one character for "singleCharacterAtLeft"
+        while (charIndex < characters.length) {
+            characterRows.push([characters[charIndex]]);
+            //
+            charIndex++;
+        }
+    }
+    // Handle "rowOfSingleCharacter" arrangement
+    else if (arrangement === "rowOfSingleCharacter" && characters.length > 0) {
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue === "customText") {
+            // Remove all spaces and limit length to 30 characters
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
+        } else if (selectedValue === "mixedCasePairsLowerFirst") {
+            // Adjust for mixed case pairs
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+        }
+
+        // Iterate through each character to generate one row of repeated characters
+        characters.forEach(characterToRepeat => {
+            // Get the glyph for the character
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0; // Set spacing to 3.0 character width
+                fontCharactersSpacing = charSpacing; // Update global spacing
+                const totalCharWidth = charWidth + charSpacing;
+
+                // Create a single row for the current character
+                let currentRow = [];
+                let currentLineWidth = 0;
+
+                // Fill the row with repeated characters
+                while (currentLineWidth + totalCharWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                    currentLineWidth += totalCharWidth;
+                }
+
+                // Add the last character if there's space for its width
+                if (currentLineWidth + charWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                }
+
+                // Add the row to the main array
+                characterRows.push(currentRow);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+        });
+    }
+
+
+
+    // Handle "pageOfSingleCharacter" arrangement
+    else if (arrangement === "pageOfSingleCharacter" && characters.length > 0) {
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue == "customText") {
+            // Remove all spaces and limit length to 30 characters
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
+
+        }
+        else if (selectedValue == "mixedCasePairsLowerFirst") {
+
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+
+        }
+
+
+
+
+        // Iterate through each character to generate a full page of rows
+        characters.forEach(characterToRepeat => {
+            let charRowsForPage = [];
+            let charIndex = 0;
+
+            // Get the glyph for the character
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0; // Set spacing to 2.0x character width
+                fontCharactersSpacing = charSpacing; // Update global spacing
+                const totalCharWidth = charWidth + charSpacing;
+
+
+                // Create a page of rows for the current character
+                while (charIndex < linesPerPage) {
+                    let currentRow = [];
+                    let currentLineWidth = 0;
+
+                    // Fill the line with repeated characters
+                    while (currentLineWidth + totalCharWidth <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += totalCharWidth;
+                    }
+
+                    // Add the last character if there's space for its width
+                    if (currentLineWidth + (charWidth) <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += charWidth;
+                    }
+
+                    // Add the row to the current character's page
+                    charRowsForPage.push(currentRow);
+                    charIndex++;
+                }
+
+                // Add the completed page of rows for this character to the main array
+                characterRows.push(...charRowsForPage);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+        });
+    }
+
+    //
+
+    // Step 2: Generate a new array based on pages and number of lines per page
+    let finalRows = [];
+
+    for (let i = 0; i < characterRows.length; i++) {
+        // Add the character row to the final rows array
+        finalRows.push(characterRows[i]);
+
+        if (arrangement === "rowsOfCharacters") {
+            // If there is still space on the current page, add an empty row for practice
+            if ((finalRows.length % linesPerPage) !== 0) {
+                finalRows.push([]);
+            }
+
+
+            // If the page is filled but a character row falls on the last line, 
+            // push it to the next page to ensure there is a practice row after it
+            if ((finalRows.length % linesPerPage) === 0 && i !== characterRows.length - 1) {
+                if (finalRows[finalRows.length - 1].length > 0) {
+                    //
+
+                    const lastRow = finalRows.pop();
+                    finalRows.push([]);  // Add an empty row to complete the page
+                    finalRows.push(lastRow);  // Move character row to the new page
+                    finalRows.push([]);
+                }
+            }
+        }
+
+
+    }
+
+    // If there are any remaining rows that didn't fill a complete page, add empty rows to fill the page
+    const remainingLines = linesPerPage - (finalRows.length % linesPerPage);
+    if (remainingLines < linesPerPage) {
+        for (let i = 0; i < remainingLines; i++) {
+            finalRows.push([]);
+        }
+    }
+
+    //
+    //
+    return finalRows;
+}
+
+function generateRowsOfCharactersSuspended() {
+
+
+
+    let characterRows = [];
+
+    // If the font is not to be displayed, generate blank rows for all lines
+    if (!showFont) {
+        for (let i = 0; i < calculateTotalLinesPerPage(); i++) {
+            characterRows.push("");
+        }
+        //
+        return characterRows;
+    }
+
+    const arrangement = document.getElementById('practiceCharactersArrangement').value;
+    var characters = getSelectedCharacters();
+    const linesPerPage = calculateTotalLinesPerPage();
+    let charIndex = 0;
+
+
+    const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+    const width = paperWidthOrientedRaw - marginHorizontal - getInitialXPositionToStartGlyphs();
+
+
+
+
+    // Step 1: Generate an array of character rows with alternating empty lines
+    if (arrangement === "rowsOfCharacters") {
+
+        fontCharactersSpacing = getFontCharactersSpacingFixed();
+        console.log(`Debug: fontCharactersSpacing set to ${fontCharactersSpacing}`);
+
+        while (charIndex < characters.length) {
+            let currentRow = [];
+            let currentLineWidth = 0;
+            let lastCharLowerCase = false;
+
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+
+                // If a newline character is encountered, break and start a new row
+                if (char === '\n') {
+                    //
+                    charIndex++;
+                    break;
+                }
+
+                const glyph = font.charToGlyph(char);
+
+                if (!glyph) {
+                    console.warn(`Debug: Glyph not found for character: ${char}. Skipping.`);
+                    charIndex++;
+                    continue;
+                }
+
+                if (glyph) {
+
+                    const charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) + getFontCharactersSpacingFixed();
+
+                    if (currentLineWidth + charWidthWithSpacing <= width) {
+                        lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
+
+                        currentRow.push(char);
+                        currentLineWidth += charWidthWithSpacing;
+
+                        charIndex++;
+                    }
+
+                    else {
+                        //
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            if (currentRow.length > 0) {
+                characterRows.push(currentRow);
+                //
+            }
+        }
+
+    }
+    else if (arrangement === "rowsOfCharactersSpaced") {
+        //alert(arrangement);
+
+        fontCharactersSpacing = getFontCharactersSpacingFixed();
+
+        console.log(`Debug: fontCharactersSpacing set to ${fontCharactersSpacing}`);
+
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+
+        while (charIndex < characters.length) {
+            let currentRow = [];
+            let currentLinePosition = 0;
+            let lastCharLowerCase = false;
+
+
+
+            while (charIndex < characters.length) {
+                const char = characters[charIndex];
+
+                // If a newline character is encountered, break and start a new row
+                if (char === '\n') {
+                    //
+                    charIndex++;
+                    break;
+                }
+
+                const glyph = font.charToGlyph(char);
+
+                // console.log(`paperWidthOrientedRaw: ${paperWidthOrientedRaw}`);
+                if (glyph) {
+
+                    //var charWidthWithSpacing = (glyph.advanceWidth * getFontScaleFactor()) * 4;
+
+                    const avgCharWidthOfFont = getAverageCharWidthNoScaling(font, characters);
+                    const glyphAdvanceForChar = glyph.advanceWidth;
+                    const upperBoundCharWidth = getUpperBoundCharWidthNoScaling(font, characters);
+
+                    const charSpacing1 = avgCharWidthOfFont * getFontScaleFactor();
+
+
+                    glyphAdvanceForChar = Math.max(1,glyphAdvanceForChar);
+
+                    const charWidthWithSpacing = glyphAdvanceForChar + getFontCharactersSpacingFixed();
+
+
+
+                    if ((currentLinePosition + charWidthWithSpacing) <= (width)) {
+                        lastCharLowerCase = /[a-z]/.test(char);  // Check if last char is lowercase
+
+                        //console.log(`${char}:  + ${currentLinePosition} + ${charWidthWithSpacing} = (${ charWidthWithSpacing + currentLinePosition}) <= ${width - getInitialXPositionToStartGlyphs()}`);
+
+                        currentRow.push(char);
+                        currentLinePosition += charWidthWithSpacing;
+
+                        charIndex++;
+                    } else {
+                        //
+                        break;
+                    }
+                } else {
+                    console.warn(`Glyph not found for character: ${char}`);
+                    charIndex++;
+                }
+            }
+
+            if (currentRow.length > 0) {
+                characterRows.push(currentRow);
+                //
+            }
+        }
+
+    }
+
+    else if (arrangement === "singleCharacterAtLeft") {
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue == "mixedCasePairsLowerFirst") {
+
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+
+        }
+
+        // Each row gets one character for "singleCharacterAtLeft"
+        while (charIndex < characters.length) {
+            characterRows.push([characters[charIndex]]);
+            //
+            charIndex++;
+        }
+    }
+    // Handle "rowOfSingleCharacter" arrangement
+    else if (arrangement === "rowOfSingleCharacter" && characters.length > 0) {
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue === "customText") {
+            // Remove all spaces and limit length to 30 characters
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
+        } else if (selectedValue === "mixedCasePairsLowerFirst") {
+            // Adjust for mixed case pairs
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+        }
+
+        // Iterate through each character to generate one row of repeated characters
+        characters.forEach(characterToRepeat => {
+            // Get the glyph for the character
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = glyph.advanceWidth * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0; // Set spacing to 3.0 character width
+                fontCharactersSpacing = charSpacing; // Update global spacing
+                const totalCharWidth = charWidth + charSpacing;
+
+                // Create a single row for the current character
+                let currentRow = [];
+                let currentLineWidth = 0;
+
+                // Fill the row with repeated characters
+                while (currentLineWidth + totalCharWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                    currentLineWidth += totalCharWidth;
+                }
+
+                // Add the last character if there's space for its width
+                if (currentLineWidth + charWidth <= width) {
+                    currentRow.push(characterToRepeat);
+                }
+
+                // Add the row to the main array
+                characterRows.push(currentRow);
+            } else {
+                console.warn(`Glyph not found for character: ${characterToRepeat}`);
+            }
+        });
+    }
+
+
+
+    // Handle "pageOfSingleCharacter" arrangement
+    else if (arrangement === "pageOfSingleCharacter" && characters.length > 0) {
+        const [paperWidthOrientedRaw, paperHeightOrientedRaw] = getPaperSizeOriented();
+
+
+        const selectedValue = document.getElementById("caseSelection").value;
+        if (selectedValue == "customText") {
+            // Remove all spaces and limit length to 30 characters
+            characters = characters.replace(/\s+/g, '').substring(0, 30);
+            characters = Array.from(characters);
+
+        }
+        else if (selectedValue == "mixedCasePairsLowerFirst") {
+
+            characters = mixedCasePairsString.replace(/\s+/g, '').substring(0, 65);
+            characters = Array.from(characters);
+
+        }
+
+
+
+
+        // Iterate through each character to generate a full page of rows
+        characters.forEach(characterToRepeat => {
+            let charRowsForPage = [];
+            let charIndex = 0;
+
+            // Get the glyph for the character
+            const glyph = font.charToGlyph(characterToRepeat);
+
+            if (glyph) {
+                const charWidth = Math.max(glyph.advanceWidth,1) * getFontScaleFactor();
+                const charSpacing = charWidth * 3.0; // Set spacing to 2.0x character width
+                fontCharactersSpacing = charSpacing; // Update global spacing
+                
+                var totalCharWidth = charWidth + charSpacing;
+
+                
+
+                // Create a page of rows for the current character
+                while (charIndex < linesPerPage) {
+                    let currentRow = [];
+                    let currentLineWidth = 0;
+
+                    // Fill the line with repeated characters
+                    while (currentLineWidth + totalCharWidth <= width) {
+                        currentRow.push(characterToRepeat);
+                        currentLineWidth += totalCharWidth;
+                    }
+
+                    // Add the last character if there's space for its width
+                    if (currentLineWidth + (charWidth) <= width) {
+                        console.log(`${currentLineWidth} + ${(charWidth)} <= ${width}`);
                         currentRow.push(characterToRepeat);
                         currentLineWidth += charWidth;
                     }
@@ -1384,7 +2282,7 @@ const numberCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var font; // Global variable to hold the loaded font
 
 function loadFont(callback) {
-    
+
     if (showFont == false) {
         callback();
         return;
@@ -2061,8 +2959,7 @@ function calculateCharsPerLine() {
     return charsPerLine;
 }
 
-function getUpperBoundCharWidthNoScaling(font,characterSet = bothUppercaseAndLowercase)
-{
+function getUpperBoundCharWidthNoScaling(font, characterSet = bothUppercaseAndLowercase) {
     // Calculate the upper bound character width in points using the selected characters
     let upperBoundCharWidth = 0;
     characterSet.forEach(char => {
@@ -2083,11 +2980,10 @@ function getUpperBoundCharWidthNoScaling(font,characterSet = bothUppercaseAndLow
     return upperBoundCharWidth;
 }
 
-function getAverageCharWidthNoScaling(font,characterSet = bothUppercaseAndLowercase)
-{
-    try
-    {
-        let avgCharWidth = 0;
+function getAverageCharWidthNoScaling(font, characterSet = bothUppercaseAndLowercase) {
+    let avgCharWidth = 0;
+
+    try {
 
         characterSet.forEach(char => {
             let glyph = font.charToGlyph(char);
@@ -2095,17 +2991,17 @@ function getAverageCharWidthNoScaling(font,characterSet = bothUppercaseAndLowerc
                 avgCharWidth += glyph.advanceWidth;
             }
         });
-    
+
     }
-    catch(error)
-    {
-//        falert("err: getAverageCharWidthNoScaling")
-//        alert("err: getAverageCharWidthNoScaling");
+    catch (error) {
+        //        falert("err: getAverageCharWidthNoScaling")
+        //        alert("err: getAverageCharWidthNoScaling");
     }
 
     // Calculate the average character width and apply scaling
     avgCharWidth = (avgCharWidth / characterSet.length);// * fontScaleFactor;
 
+    return avgCharWidth;
 }
 
 /*

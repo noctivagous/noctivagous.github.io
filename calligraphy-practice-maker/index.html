@@ -85,6 +85,15 @@ width:100%;margin:0;padding:0">
                         <label for="fontForWorksheetPages">Font:</label>
 
                         <select id="fontForWorksheetPages" name="fontForWorksheetPages">
+                            <optgroup label="Ductus Arrows">
+
+                                <option value="StrokeGothicDuctus" fontGlyphNibWidth="6.5" ascenderRatio="0.3"
+                                capHeightRatio="0.34" descenderDepthRatio="0.8" fontGlyphScaleFactor="1.05"
+                                fontURL="fonts/StrokeGothicDuctus-Regular.otf" fontYOffset="0" selected>StrokeGothicDuctus</option>
+    
+    
+
+                            </optgroup>
                             <optgroup label="Blackletter">
 
                                 <option value="Canterbury" fontGlyphNibWidth="4" ascenderRatio="0.45"
@@ -94,7 +103,7 @@ width:100%;margin:0;padding:0">
 
                                 <option value="DSWallauOsF" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
                                     capHeightRatio="0.3" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.0"
-                                    fontURL="fonts/DSWallauOsF.ttf" fontYOffset="0" selected>DSWallauOsF</option>
+                                    fontURL="fonts/DSWallauOsF.ttf" fontYOffset="0">DSWallauOsF</option>
 
 
                                     <!--
@@ -102,10 +111,6 @@ width:100%;margin:0;padding:0">
                                     capHeightRatio="0.5" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.0"
                                     fontURL="fonts/Deutsch-Gotisch.otf" fontYOffset="0">Deutsch-Gotisch</option>
                             -->
-
-                            <option value="Alpine" fontGlyphNibWidth="4" ascenderRatio="0.3"
-                            capHeightRatio="0.5" descenderDepthRatio="0.8" fontGlyphScaleFactor="1.35"
-                            fontURL="fonts/Alpine.ttf" fontYOffset="0">Alpine</option>
 
 
 
@@ -266,10 +271,10 @@ width:100%;margin:0;padding:0">
                     <div class="settingEnclosure">
                         <label for="caseSelection">Characters:</label>
                         <select id="caseSelection" name="caseSelection">
-                            <option value="lowercaseOnly" checked>Lowercase Set</option>
+                            <option value="lowercaseOnly" >Lowercase Set</option>
                             <option value="uppercaseOnly">Uppercase Set</option>
                             <option value="bothUppercaseAndLowercase">Lowercase + Uppercase Sets</option>
-                            <option value="mixedCasePairsLowerFirst">Pairs: Lowercase-Uppercase </option>
+                            <option value="mixedCasePairsLowerFirst" selected>Pairs: Lowercase-Uppercase </option>
 
                             <!--<option value="mixedCasePairs">Mixed Case Pairs</option>-->
                             <option value="customText">Custom Practice Text</option>
@@ -471,7 +476,7 @@ width:100%;margin:0;padding:0">
 
                     <div class="vertSpacer"></div>
 
-                    <input type="number" id="nibWidthMm" value="3.8" min="0.1" step="0.1" min="0.5" max="50"
+                    <input type="number" id="nibWidthMm" value="1.5" min="0.1" step="0.1" min="0.5" max="50"
                         style="height:28pt;width:70pt;font-size:15pt;text-align: center;">
                     <span class="labelNote2" style="font-size: 15pt;">mm</span>
 

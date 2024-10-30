@@ -2085,15 +2085,23 @@ function getUpperBoundCharWidthNoScaling(font,characterSet = bothUppercaseAndLow
 
 function getAverageCharWidthNoScaling(font,characterSet = bothUppercaseAndLowercase)
 {
-    let avgCharWidth = 0;
+    try
+    {
+        let avgCharWidth = 0;
 
-    characterSet.forEach(char => {
-        let glyph = font.charToGlyph(char);
-        if (glyph) {
-            avgCharWidth += glyph.advanceWidth;
-        }
-    });
-
+        characterSet.forEach(char => {
+            let glyph = font.charToGlyph(char);
+            if (glyph) {
+                avgCharWidth += glyph.advanceWidth;
+            }
+        });
+    
+    }
+    catch(error)
+    {
+//        falert("err: getAverageCharWidthNoScaling")
+//        alert("err: getAverageCharWidthNoScaling");
+    }
 
     // Calculate the average character width and apply scaling
     avgCharWidth = (avgCharWidth / characterSet.length);// * fontScaleFactor;

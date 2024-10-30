@@ -3,10 +3,10 @@
 const mmToPt = 2.83465;    // Conversion factor from mm to pt
 
 // SETTINGS WITH DEFAULTS
-var nibWidthMmDefault = 2.8;
+var nibWidthMmDefault = 1.5;
 
 // Globals
-var nibWidthMm = 2.8;
+var nibWidthMm = nibWidthMmDefault;
 var nibWidthPt = nibWidthMm * mmToPt; // Nib width in points
 var nibWidthsTall = document.getElementById('nibWidthsTall').value;
 

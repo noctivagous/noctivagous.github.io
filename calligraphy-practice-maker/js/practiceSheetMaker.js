@@ -536,7 +536,7 @@ async function loadFontAndMakeWorksheetPages() {
             makeFontMetrics();
         } else if (fontUrl) {
             // Load the font asynchronously using opentype.load()
-            font = await loadFontAsync(fontUrl);
+            font = await loadFontAsync(fontUrl,fontName);
             makeFontMetrics();
             ////
         } else {
@@ -549,30 +549,65 @@ async function loadFontAndMakeWorksheetPages() {
         makeWorksheetPages();  // Only called once the font is fully loaded
     } catch (error) {
         console.error("Error loading font:", error);
-        alert('Could not load font: ' + error);
+        alert(error);
         fontWasLoadedForShowFont = false;
     }
 }
 
 
-
-
-function loadFontAsync(fontUrl) {
+function loadFontAsync(fontUrl, fontName) {
     return new Promise((resolve, reject) => {
         opentype.load(fontUrl, function (err, loadedFont) {
             if (err) {
-                console.error("Error loading font:", err);
-                reject('Could not load font: ' + err);
+                console.error(`Error loading font "${fontName}":`, err);
+
+                // Custom error handling for invalid font URL
+                // alert(`The font "${fontName}" could not be loaded from the URL provided. Please choose a different font.`);
+
+                reject(`The font "${fontName}" failed to load (invalid URL). Picking next available font...`);
+
+                // Automatically select a valid fallback font
+                selectFallbackFont();
+
+                
             } else {
-                ////
-                ////
-                ////
-                ////
                 resolve(loadedFont);
             }
         });
     });
 }
+
+// Function to select a fallback font
+function selectFallbackFont() {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    let validFontFound = false;
+
+    // Loop through the options to find a valid font with a URL or base64 data
+    for (let i = 0; i < fontSelect.options.length; i++) {
+        const option = fontSelect.options[i];
+        const fontURL = option.getAttribute('fontURL');
+        const fontFileData = option.getAttribute('fontFileData');
+
+        if (fontURL || fontFileData) {
+            // Found a valid font; set it as selected
+            fontSelect.selectedIndex = i;
+            loadSelectedFontOptionSettingsIntoFields();
+            validFontFound = true;
+            break;
+        }
+    }
+
+    if (!validFontFound) {
+        console.warn("No valid fallback font found. Please upload a new font.");
+        alert("No valid fonts are currently available. Please upload a new font.");
+    }
+
+    // Reload font and regenerate worksheet with the fallback
+    if (validFontFound) {
+        loadFontAndMakeWorksheetPages();
+    }
+}
+
 
 
 function makeFontMetrics() {

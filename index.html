@@ -1,753 +1,1004 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>LetterformPortal - Calligraphy and Lettering Practice Sheet Generator</title>
+<html>
+    <head>
 
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/en/face/d-din" type="text/css" />
+      <meta charset="UTF-8">
+  
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     
+      <meta http-equiv='cache-control' content='no-cache'> 
+<meta http-equiv='expires' content='0'> 
+<meta http-equiv='pragma' content='no-cache'>
 
-    <link rel="stylesheet" href="css/appPage.css">
+<style>
+  /* You can add any additional styles here */
+  .non-link {
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
+      color: inherit;
+  }
 
-    <!-- Include opentype.js -->
-    <script src="jslibs/opentype.min.js"></script>
+  h3{ text-transform: capitalize;
+</style>
 
-    <!-- jspdf -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap" rel="stylesheet">
 
-    <!-- svg2pdf -->
-    <script src="https://cdn.jsdelivr.net/npm/svg2pdf.js/dist/svg2pdf.min.js"></script>
 
-</head>
+<style>
+body
+{
+font-size:2em;
+font-family: 'Arial Narrow', Arial, sans-serif;
+background-color:black;
+color:#999;
+}
+
+p {
+color:#999;
+text-align: left;
+font-weight:normal;
+}
+
+h1
+{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+ 
+h2
+{
+font-size:24pt;
+}
+
+h3,h4,h5,h6
+{
+font-family: Arial, Helvetica, sans-serif;
+color:#333;
+margin-top: 2.5em;
+
+}
+
+h2{
+margin-top: 3em;
+
+}
+
+</style>
+
+<style>
+
+code, pre {
+font-family: 'Source Sans Pro','Menlo', Courier,monospace;
+color:#ccff33;
+font-size: :16px;
+margin:0px;
+
+}
+p code, h3 code, li code{
+font-family:Courier,monospace;
+}
+
+
+.ideCodeArea code, .ideCodeArea code pre
+{
+font-size:20px;
+}
+
+.ideCodeArea
+{
+font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	background-color:gray;
+	padding:10px;
+   color:#ccff33;
+   
+   margin-top:60px;
+   margin-bottom:60px;
+  box-shadow: 5px 5px 5px #222;
+border-right:1px solid #333;
+border-bottom:1px solid #333;
+margin-right:40px;
+font-size:20px;
+}
+.editableTextAreaDiv
+{
+	background-color:#333;
+	width:100%;
+	border:2px solid black;
+	padding-left:6px;
+	outline: none;
+}
+
+div.editableTextAreaDiv:hover
+{
+	background-color:#555;
+	border:4px solid black;
+}
+
+span.codeInText
+{
+	font-size:1em;
+	font-family:monospace;
+	color:#336600;
+}
+
+span.codekeyword{
+	color:#ff3399;
+}
+
+
+.funcSignatureStyling
+{
+color:#ccff33;
+
+}
+
+.funcKeywordStyling{
+color:orange;
+}
+
+.commentsKeywordStyling{
+color:#6600cc;
+}
+
+.commentsKeywordStyling2{
+color:#9966ff;
+}
+
+
+.variableKeywordStyling{
+color:#993333;
+}
+
+.variableNameStyling{
+color:lightGreen;
+}
+
+.code{
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	font-size:16px;
+	
+}
+
+kbd {
+	font-family:'Source Sans Pro','Menlo', courier, courier new, monaco;
+	color:white;
+	font-size:17px;
+	padding:3px;
+	padding-top:2px;
+	padding-bottom:2px;
+	border:1px solid gray;
+	border-radius:5px;
+	background-color:#bbb;
+	  box-shadow: 2px 2px grey;
+	  margin-right:3px;
+
+}
+
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #333;
+  
+  
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: #555;
+  margin-top:3px;
+  margin-right:3px;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color:orange;
+  font-weight:bold;
+  font-family:'Source Sans Pro','Menlo',Courier;
+  border-right:1px solid black;
+  font-weight:normal;
+  border-top-left-radius	:10px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #333;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #111;
+}
+.tabcontent h3{
+margin-top:0px;
+padding-top:0px;
+
+}
+
+.tab button.tablinks2{color:lightBlue}
+
+/* Style the tab content */
+.tabCContainer {
+	font-family:'Source Sans Pro','Menlo',Courier;
+  display: none;
+  margin-top:0px;
+  border: 2px solid #333;
+  /*border-bottom: 3px solid #333;*/
+  
+  font-size:14pt;
+/*  background-color:#555;*/
+
+}
+
+.tablinks4a.active, .tablinks2.active{
+background-color: black;
+}
+
+.tabCContainer.navgridtabcontent
+{
+border:0px;
+}
+
+
+.tabCContainer.navgridtabcontent .tabCContainer
+{
+background-color:#111;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+
+.tabcontent2 {
+padding-top:10px;
+padding-bottom:10px;
+}
+
+.tabContentCodeArea
+{
+height:400px;
+
+}
+
+.tabContentCodeArea:focus 
+{ 
+    outline: none; 
+} 
+
+</style>
+
+<style>
+li{
+padding-top:1em;
+}
+
+ol li{
+font-weight:bold;
+}
+
+ol li ol li{
+font-weight:normal;
+}
+
+</style>
+    </head>
+    <body  onload="disableHashLinks()">
+
+
+
+
+<div style="width:90%;max-width:1200px;margin:auto;">
+
+
 
 <!--
-This is a practice sheet maker for calligraphy
-and letterforms.  It will in the future allow
-importing external fonts.  For now there is
-a small number of fonts available.
+<p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VUqOPvF3YEE?si=xz-pyF_lZlhDEdeQ&amp;start=193" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</p>
 -->
 
-<body>
-    <div id="container">
-        <!-- Configuration Area -->
-        <div id="controls">
-            <h1>LetterformPortal<br /><span style="font-family: Arial, Helvetica, sans-serif;font-weight: normal;
-            color:#6a6868;font-size:10pt;font-style: normal;z-index: 20;">Worksheet Generator</span></h1>
 
 
+<!--
+<h2><img src="img/nct_header4.svg" width="30%"> 	NOCTIVAGOUS</h2>
+<img src="img/NCTChineseMetalDragon.webp" width="100%">
 
-
-            <div id="outputButtons">
-
-                <table id="outputButtonsTable" cellpadding="0" cellspacing="0" style=" 
-width:100%;margin:0;padding:0">
-                    <tr>
-                        <td> <button onclick="printPDF()" id="printButton" class="darkButton">Print</button>
-
-                        </td>
-                        <td valign="left" width="100%">
-                            <button style="margin-left:5pt" onclick="downloadPDF()" id="saveWorksheetToPDFButton"
-                                class="darkButton">Download
-                                PDF</button>
-
-                            <!--<p style="display: block; width: 100%;text-align: right;">(To save file, choose "PDF" as
-                                printer.)
-                            </p>-->
-                        </td>
-
-                    </tr>
-
-                </table>
-
-
-
-
-
-
-                <!--
-                <button id="downloadPdfButton" class="darkButton1 notWorksheetGenerating">Download As PDF</button>
-            -->
-
-            </div>
-
-            <fieldset>
-                <legend id="practiceCharactersLegend">
-                    Practice Characters
-                    <input type="checkbox" id="showFont" class="switchInput"
-                        style="float:right;margin-right:5pt;margin:0;margin-right:3pt" checked>
-                    <div style="float: clear;"></div>
-                </legend>
-
-                <div class="fieldsetContents" id="practiceFontCharactersFieldsetContents">
-
-                    <div class="settingEnclosure">
-
-                        <label for="fontForWorksheetPages">Font:</label>
-
-                        <select id="fontForWorksheetPages" name="fontForWorksheetPages">
-                           <optgroup label="Ductus Fonts">
-
-                                <option value="DraftingGothic-Ductus" fontGlyphNibWidth="6.5" ascenderRatio="0.3"
-                                capHeightRatio="0.34" descenderDepthRatio="0.8" fontGlyphScaleFactor="1.05"
-                                fontURL="fonts/DraftingGothic-Ductus.otf" fontYOffset="0">DraftingGothic-Ductus</option>
-    
-
-                                <option value="DurerEarlyBlackletter-Ductus" fontGlyphNibWidth="5" ascenderRatio="0.45"
-                                capHeightRatio="0.4" descenderDepthRatio="0.65" fontGlyphScaleFactor="1.0"
-                                fontURL="fonts/DurerEarlyBlackletter-Ductus.otf" fontYOffset="0" selected>DürerEarlyBlackletter-Ductus</option>
-    
-
-                            </optgroup>
-                        
-                            <optgroup label="Blackletter">
-
-                                <option value="Canterbury" fontGlyphNibWidth="4" ascenderRatio="0.45"
-                                    capHeightRatio="0.4" descenderDepthRatio="0.45" fontGlyphScaleFactor="0.85"
-                                    fontURL="fonts/Canterbury.ttf" fontYOffset="0">Canterbury</option>
-
-
-                                <option value="DSWallauOsF" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.3" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.0"
-                                    fontURL="fonts/DSWallauOsF.ttf" fontYOffset="0">DSWallauOsF</option>
-
-
-                                    <!--
-                                <option value="Deutsch-Gotisch" fontGlyphNibWidth="3.6" ascenderRatio="0.45"
-                                    capHeightRatio="0.5" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.0"
-                                    fontURL="fonts/Deutsch-Gotisch.otf" fontYOffset="0">Deutsch-Gotisch</option>
-                            -->
-
-
-
-                            </optgroup>
-                            <optgroup label="Fraktur">
-
-
-                                <option value="ZentenaerFraktur" fontGlyphNibWidth="5.6" ascenderRatio="0.1"
-                                    capHeightRatio="0.3" descenderDepthRatio="0.3" fontGlyphScaleFactor="1.05"
-                                    fontYOffset="0" fontURL="fonts/CATZentenaerFrakturUNZ1.ttf">
-                                    ZentenaerFraktur</option>
-
-                                <option value="DSLuthersche" fontGlyphNibWidth="5.2" ascenderRatio="0.1"
-                                    capHeightRatio="0.50" descenderDepthRatio="0.46" fontGlyphScaleFactor="1.1"
-                                    fontYOffset="0" fontURL="fonts/DSLuthersche.ttf">
-                                    DSLuthersche</option>
-
-                                <option value="DSLutherscheHalbfett" fontGlyphNibWidth="4" ascenderRatio="0.2"
-                                    capHeightRatio="0.40" descenderDepthRatio="0.4" fontGlyphScaleFactor="1.1"
-                                    fontYOffset="0" fontURL="fonts/DSLutherscheHalbfett.ttf">
-                                    DSLutherscheHalbfett</option>
-
-
-                                <option value="KabinettFraktur" fontGlyphNibWidth="4.7" ascenderRatio="0.2"
-                                    capHeightRatio="0.6" descenderDepthRatio="0.45" fontGlyphScaleFactor="1.2"
-                                    fontYOffset="0" fontURL="fonts/KabinettFraktur.ttf">
-                                    Kabinett Fraktur</option>
-
-                                <option value="BreitkopfFraktur" fontGlyphNibWidth="4" ascenderRatio="0.1"
-                                    capHeightRatio="0.5" descenderDepthRatio="0.4" fontGlyphScaleFactor="0.95"
-                                    fontYOffset="0" fontURL="fonts/BreitkopfFraktur.ttf">
-                                    Breitkopf Fraktur </option>
-
-
-                            </optgroup>
-
-                            <optgroup label="Engrossing">
-                                <option value="DSForelle" fontGlyphNibWidth="3" fontGlyphScaleFactor="1.1"
-                                    fontURL="fonts/DSForelle.ttf" ascenderRatio="0.0" capHeightRatio="1.9"
-                                    descenderDepthRatio="0.8" fontYOffset="0" slantAngle="11">DSForelle</option>
-
-
-                            </optgroup>
-                            <optgroup label="Other Calligraphy">
-                                <option value="Bridgnorth-Regular" fontGlyphNibWidth="5.1" fontGlyphScaleFactor="1.15"
-                                fontURL="fonts/Bridgnorth-Regular.ttf" ascenderRatio="0.3" capHeightRatio="0.95"
-                                descenderDepthRatio="0.35" fontYOffset="5" slantAngle="0">Bridgnorth-Regular</option>
-
-                            </optgroup>
-
-                            <optgroup label="Gothic Drafting">
-
-                                <option value="Routed Gothic Narrow" fontGlyphNibWidth="5"
-                                    fontURL="fonts/routed-gothic-narrow.ttf" ascenderRatio="0.0" capHeightRatio="0.44"
-                                    descenderDepthRatio="0.4" fontYOffset="0">Routed Gothic Narrow
-                                </option>
-
-                                <!--
-                            <option value="OSIFont" fontGlyphNibWidth="7.3"
-                                fontURL="fonts/osifont-gpl2fe.ttf" ascenderRatio="0.4" capHeightRatio="0.45"
-                                descenderDepthRatio="0.45" fontYOffset="0">OSIFont
-                            </option>
-                        -->
-
-                            </optgroup>
-
-                            
-                            <!--<option value="Drafting" >Drafting Gothic</option>-->
-                            <!--<option value="Blackletter">Blackletter</option>-->
-                            <!--<option value="Uncial">Uncial</option>-->
-
-
-
-
-
-                        </select>
-
-
-
-                    </div>
-
-
-
-                    <div class="settingEnclosure indent">
-                        <table>
-                            <tr>
-                                <td><button id="uploadFont" class="darkButton">Import...</button>
-                                    <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2"
-                                        style="display: none;">
-                                    <div class="labelNote" style="margin-top:6pt;display: inline-block;">
-                                        (.ttf,.otf,.woff, or .woff2)
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="color:White;padding:5pt;text-align: center;">or</div>
-                                </td>
-                                <td>
-                                    <div id="dropArea">
-                                        Drop font file here.
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-
-
-
-
-
-                    </div>
-
-                    <!-- FONT GLYPH NIB WIDTH -->
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="fontGlyphNibWidthEnclosure">
-                        <label for="fontGlyphNibWidth">Font's Nib Width:</label>
-                        <input class="fontAttribute" type="number" id="fontGlyphNibWidth" value="0" min="-100" max="100"
-                            step="0.1">
-
-                    </div>
-
-
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="fontGlyphScaleFactorEnclosure">
-                        <label for="fontGlyphScaleFactor">Font's Glyph Scaling:</label>
-                        <input class="fontAttribute" type="number" id="fontGlyphScaleFactor" value="1" min="-100"
-                            max="100" step="0.05">
-
-                    </div>
-
-
-                    <!--
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="fontXHeightScalingFactorEnclosure">
-                        <label for="fontXHeightScalingFactor">Adjust Font's X-Height Scaling:</label>
-                        <input class="fontAttribute" type="number" id="fontXHeightScalingFactor" value="0" min="-200" max="200"
-                            step="1">
-                    </div>
-                -->
-
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="fontYOffsetEnclosure">
-                        <label for="fontYOffset">Adjust Font's Vertical Offset:</label>
-                        <input class="fontAttribute" type="number" id="fontYOffset" value="0" min="-200" max="200"
-                            step="1">
-                    </div>
-
-                    <!-- declaredXHeightOverride - what the font says is its X-Height (SXHeight) -->
-                    <!--
-                    <div class="settingEnclosure indent indent2" style="background-color: #333;"
-                        id="declaredXHeightOverrideEnclosure">
-                        <label for="declaredXHeightOverride">Declared X-Height Override</label>
-                        <input class="fontAttribute" type="number" id="declaredXHeightOverride" value="0" min="-200"
-                            max="200" step="1">
-                    </div>
-                    -->
-
-
-
-                    <div class="settingEnclosure">
-                        <label for="caseSelection">Characters:</label>
-                        <select id="caseSelection" name="caseSelection">
-                            <option value="lowercaseOnly" >Lowercase Set</option>
-                            <option value="uppercaseOnly">Uppercase Set</option>
-                            <option value="bothUppercaseAndLowercase">Lowercase + Uppercase Sets</option>
-                            <option value="mixedCasePairsLowerFirst" selected>Pairs: Lowercase-Uppercase </option>
-
-                            <!--<option value="mixedCasePairs">Mixed Case Pairs</option>-->
-                            <option value="customText">Custom Practice Text</option>
-
-                        </select>
-
-
-                        <div class="vertSpacer2"></div>
-
-                        <div class="" id="includeNumberCharactersEnclosure">
-                        <table>
-                            <tr>
-                                <td valign="top"><input type="checkbox" id="includeNumberCharacters"></td>
-                                <td><label class="secondLevelLabel" for="includeNumberCharacters">Include Number Characters</label></td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-
-                    </div>
-
-                    <div class="settingEnclosure indent" id="customPracticeTextEnclosure">
-                        <label for="customPracticeText">Custom Practice Text:</label>
-                        <textarea id="customPracticeText" name="customPracticeText" rows="5"
-                            maxlength="450">custom text</textarea>
-                    </div>
-
-
-
-
-
-
-
-
-                    <!--
-<select id="extraCharacterSets" name="extraCharactersSets">
-    <option value="numbersOnly" checked>Numbers</option>
-    <option value="number">Numbers and Punctuation</option>
-</select>
 -->
 
-                    <div class="settingEnclosure indent">
-
-                        <label for="practiceCharactersArrangement">Character Arrangement:</label>
-
-                        <select id="practiceCharactersArrangement" name="practiceCharactersArrangement">
-                            <option value="rowsOfCharacters" selected>Rows: Alternating With Blank</option>
-                            <option value="rowsOfCharactersSpaced" >Rows: Extra Space Between Characters</option>
-                            <option value="rowOfSingleCharacter">Row for Each Character (Repeat)</option>
-                            <option value="pageOfSingleCharacter">A Page for Each Character</option>
-
-                            <option value="singleCharacterAtLeft">Row for Each Character (At Left)</option>
-
-                        </select>
-
-
-                    </div>
-
-
-                    <div class="settingEnclosure indent indent2" id="fontCharactersSpacingEnclosure">
-                        <label for="fontCharactersSpacing">Character Spacing:</label>
-                        <div class="vertSpacer"></div>
-                        <input type="range" style="width: 100%;" 
-                        class="biggerSlider1" value="30" id="fontCharactersSpacing" min="0" max="200"
-                            name="fontCharactersSpacing" oninput="makeWorksheetPages()">
-                            <div class="vertSpacer"></div>
-                    <!--  
-                            <input type="number" name="fontCharactersSpacing" id="fontCharactersSpacing" id="fontCharactersSpacing" min="-10" max="500">
-                    -->
-                    </div>
-
-
-                </div>
-
-
-            </fieldset>
-
-
-            <!-- NIB WIDTH AND GUIDE FIELDSET -->
-            <fieldset>
-                <legend>Nib Width and Guide</legend>
-
-                <div class="settingEnclosure">
-
-                    <!-- Input field with datalist -->
-                    <!-- Nib Width Input -->
-                    <label for="nibWidthMm">Nib Width:</label>
-
-                  
-                
-                    <select id="nibWidthStaticSelect" class="notWorksheetGenerating">
-                        <option value="" selected disabled>Select A Width...</option>
-                        <option value="" disabled>—————————————————</option>
-
-
-                        <optgroup label="Pilot Parallel Pens">
-                            <option value="1.5">1.5 mm</option>
-                            <option value="2.4">2.4 mm</option>
-                            <option value="3.0">3.0 mm</option>
-                            <option value="3.8">3.8 mm</option>
-                            <option value="4.5">4.5 mm</option>
-                            <option value="6.0">6.0 mm</option>
-                        </optgroup>
-
-                        <optgroup label="Speedball Broad-Edge Nibs">
-                            <!-- C-Series -->
-                            <option value="3.2">C0: 3.2 mm</option>
-                            <option value="2.4">C1: 2.4 mm</option>
-                            <option value="1.8">C2: 1.8 mm</option>
-                            <option value="1.4">C3: 1.4 mm</option>
-                            <option value="1.0">C4: 1.0 mm</option>
-                            <option value="0.7">C5: 0.7 mm</option>
-
-                            <!-- B-Series -->
-                            <option value="3.2">B0: 3.2 mm</option>
-                            <option value="2.4">B1: 2.4 mm</option>
-                            <option value="2.0">B½: 2.0 mm</option>
-                            <option value="1.8">B2: 1.8 mm</option>
-                            <option value="1.4">B3: 1.4 mm</option>
-                            <option value="1.0">B4: 1.0 mm</option>
-                            <option value="0.8">B5: 0.8 mm</option>
-                            <option value="0.5">B6: 0.5 mm</option>
-
-                            <!-- A-Series -->
-                            <option value="3.2">A0: 3.2 mm</option>
-                            <option value="2.4">A1: 2.4 mm</option>
-                            <option value="1.8">A2: 1.8 mm</option>
-                            <option value="1.4">A3: 1.4 mm</option>
-                            <option value="1.0">A4: 1.0 mm</option>
-                            <option value="0.5">A5: 0.5 mm</option>
-                        </optgroup>
-
-                        <optgroup label="Permanent Markers">
-                            <option value="15">15 mm (Jumbo)</option>
-                            <option value="10">10 mm (Jumbo)</option>
-                            <option value="5.0">5.0 mm (Broad)</option>
-                            <option value="3.0">3.0 mm (Broad)</option>
-                            <option value="2.0">2.0 mm (Medium)</option>
-                            <option value="1.5">1.5 mm (Medium)</option>
-                            <option value="1.0">1.0 mm (Fine)</option>
-                            <option value="0.7">0.7 mm (Fine)</option>
-                            <option value="0.4">0.4 mm (Extra Fine)</option>
-                          </optgroup>
-                          <optgroup label="Pencils (Graphite)">
-                            <option value="2.0">2.0 mm (Wooden - Blunt)</option>
-                            <option value="2.0">2.0 mm (Mechanical - Thick)</option>
-                            <option value="1.0">1.0 mm (Wooden - Sharp)</option>
-                            <option value="0.9">0.9 mm (Mechanical - Thick)</option>
-                            <option value="0.7">0.7 mm (Mechanical - Medium)</option>
-                            <option value="0.5">0.5 mm (Mechanical - Fine)</option>
-                            <option value="0.3">0.3 mm (Mechanical - Ultra Fine)</option>
-                          </optgroup>
-                          <optgroup label="Ballpoint Pens">
-                            <option value="1.6">1.6 mm (Broad)</option>
-                            <option value="1.2">1.2 mm (Broad)</option>
-                            <option value="1.0">1.0 mm (Medium)</option>
-                            <option value="0.7">0.7 mm (Fine)</option>
-                            <option value="0.5">0.5 mm (Extra Fine)</option>
-                            <option value="0.3">0.3 mm (Extra Fine)</option>
-                          </optgroup>
-                          <optgroup label="Gel Pens">
-                            <option value="1.2">1.2 mm (Broad)</option>
-                            <option value="1.0">1.0 mm (Broad)</option>
-                            <option value="0.7">0.7 mm (Medium)</option>
-                            <option value="0.5">0.5 mm (Fine)</option>
-                            <option value="0.38">0.38 mm (Ultra Fine)</option>
-                            <option value="0.28">0.28 mm (Ultra Fine)</option>
-                          </optgroup>
-                          <optgroup label="Fountain Pens">
-                            <option value="1.5">1.5 mm (Double Broad)</option>
-                            <option value="1.3">1.3 mm (Double Broad)</option>
-                            <option value="1.2">1.2 mm (Broad)</option>
-                            <option value="1.0">1.0 mm (Broad)</option>
-                            <option value="0.9">0.9 mm (Medium)</option>
-                            <option value="0.7">0.7 mm (Medium)</option>
-                            <option value="0.6">0.6 mm (Fine)</option>
-                            <option value="0.5">0.5 mm (Fine)</option>
-                            <option value="0.4">0.4 mm (Extra Fine)</option>
-                            <option value="0.3">0.3 mm (Extra Fine)</option>
-                          </optgroup>
-                          <optgroup label="Paint Markers">
-                            <option value="30">30 mm (Calligraphy)</option>
-                            <option value="15">15 mm (Wide)</option>
-                            <option value="10">10 mm (Wide)</option>
-                            <option value="5.0">5.0 mm (Broad)</option>
-                            <option value="4.0">4.0 mm (Medium Tip)</option>
-                            <option value="2.0">2.0 mm (Medium Tip)</option>
-                            <option value="1.0">1.0 mm (Fine Tip)</option>
-                            <option value="0.7">0.7 mm (Fine Tip)</option>
-                          </optgroup>
-                          <optgroup label="Highlighters">
-                            <option value="10">10 mm (Wide Chisel)</option>
-                            <option value="5.0">5.0 mm (Chisel)</option>
-                            <option value="3.0">3.0 mm (Chisel)</option>
-                            <option value="2.0">2.0 mm (Fine)</option>
-                            <option value="1.0">1.0 mm (Fine)</option>
-                          </optgroup>
-                        
-                    </select>
-
-                    <div class="vertSpacer"></div>
-
-                    <input type="number" id="nibWidthMm" value="1.5" min="0.1" step="0.1" min="0.5" max="50"
-                        style="height:28pt;width:70pt;font-size:15pt;text-align: center;">
-                    <span class="labelNote2" style="font-size: 15pt;">mm</span>
-
-                    <span class=" labelNote" id="nibWidthInPtDisplaySpan">
-                        (<span id="nibWidthInPtDisplay">10 </span> <span>pt</span>)
-                    </span>
-
-                </div>
-
-                <div class="settingEnclosure indent">
-
-                    <!-- Show Nib Guideline Labels -->
-                    <table>
-                        <tr>
-                            <td valign="top"><input type="checkbox" class="switchInput" id="showNibGuidelineLabels" checked></td>
-                            <td>
-                                <label for="showNibGuidelineLabels">Guideline Labels</label>
-                            </td>
-                        </tr>
-                    </table>
-
-
-
-
-                </div>
-
-                <div class="settingEnclosure indent">
-
-                    <!-- Show Nib Squares -->
-
-
-
-                    <table>
-                        <tr>
-                            <td valign="top"><input type="checkbox"  class="switchInput" id="showNibSquares" checked></td>
-                            <td>
-                                <label for="showNibSquares">Nib Squares</label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-
-
-            </fieldset>
-
-            <!-- x-height  Fieldset -->
-            <fieldset>
-                <!--  In calligraphy practice sheets, 
-                  the xheight is determined by 
-                  multiplying the nib width by a factor that makes it proportionate to the stroke of the script. 
-                  -->
-                <legend>x-height and metrics</legend>
-                <div class="settingEnclosure">
-
-                    <!-- x-height Input -->
-                    <label for="nibWidthsTall">X-Height = Nib Widths:</label>
-                    <input type="number" id="nibWidthsTall" value="4" min="0.1" step="0.1">
-
-                    <div id="xHeightDisplayContainer" class="valueAnnotation" style="text-align: center;">
-                        (<span id="xHeightDisplay"></span> <span>pt</span>)
-                    </div>
-
-                    
-                </div>
-
-                <div class="settingEnclosure indent hiddenTemporary">
-                    <!-- x-height Background Color Picker -->
-                    <label for="xHeightColor">Background Color:</label>
-                    <input type="color" id="xHeightColor" value="#f0f0f0">
-                </div>
-                <div class="settingEnclosure indent hiddenTemporary">
-                    <!-- x-height Background Opacity -->
-                    <label for="xHeightOpacity">Background Opacity (0-1):</label>
-                    <input type="number" id="xHeightOpacity" value="0.4" min="0" max="1" step="0.1">
-                </div>
-
-                <div class="settingEnclosure indent">
-
-                    <!-- Ascender Height Input -->
-                    <label class="fontAttribute" for="ascenderHeight">Ascender Height:</label><br>
-                    <input type="number" id="ascenderHeight" class="fontMetric" value="0.5" min="0" step="0.1"> <span
-                        class="labelNote">×
-                        x-height</span>
-                </div>
-                <div class="settingEnclosure indent">
-
-                    <!-- Capital Height Input -->
-                    <label class="fontAttribute" for="capitalHeight">Capital Height:</label><br>
-                    <input type="number" id="capitalHeight" class="fontMetric" value="0.4" min="0" step="0.1"> <span
-                        class="labelNote">×
-                        x-height</span>
-                </div>
-                <div class="settingEnclosure indent">
-
-                    <!-- Descender Depth Input -->
-                    <label for="descenderDepth">Descender Depth:</label><br>
-                    <input class="fontAttribute" type="number" class="fontMetric" id="descenderDepth" value="0.6"
-                        min="0" step="0.1"> <span class="labelNote">×
-                        x-height</span>
-                </div>
-            </fieldset>
-
-            <!-- Slant Guides Fieldset -->
-            <fieldset>
-                <legend>Grid Lines</legend>
-                <div class="settingEnclosure">
-
-                    <!-- Include Slant Guides Checkbox -->
-
-                    <table>
-                        <tr>
-                            <td valign="top"><input type="checkbox" class="switchInput" name="verticalLines" id="verticalLines"></td>
-                            <td><label for="verticalLines">Vertical Lines</label></td>
-                        </tr>
-                    </table>
-
-                </div>
-
-                <div class="settingEnclosure indent">
-
-                    <!-- Slant Angle Input -->
-                    <label for="verticalSlantAngle">Vertical Slant Angle:</label>
-                    <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
-                    <input type="number" id="verticalSlantAngle" value="0" min="0" max="60" step="1"> °
-                </div>
-
-                <div class="settingEnclosure indent">
-
-                    <!-- Slant Line Spacing -->
-                    <label for="verticalLineSpacing">Vertical Line Spacing:</label><br />
-                    <input type="number" id="verticalLineSpacing" value="1" min="0.1" max="20" step="0.1">
-                    <span class="labelNote">× nib width</span>
-                </div>
-            </fieldset>
-
-
-            <fieldset>
-                <legend>Page</legend>
-
-
-                <div class="settingEnclosure">
-
-                    <label for="orientation">
-                        Orientation:
-                    </label> <br />
-
-                    <input type="radio" name="orientation" id="orientationPortraitRadio" class="portrait" value="portrait" checked>
-
-                    <label for="orientationPortraitRadio" class="radioLabel">
-                        Portrait
-                    </label>
-                    &nbsp;
-                    <input type="radio" name="orientation" id="orientationLandscapeRadio" value="landscape">
-                    <label for="orientationLandscapeRadio" class="radioLabel">
-                        Landscape
-                    </label>
-
-                </div>
-
-                <div class="settingEnclosure">
-
-                    <label for="paperSize">Paper Size: </label><br />
-                    <select id="paperSize" name="paperSize">
-                        <option value="612,792" checked>Letter (8.5in x 11in)</option>
-                        <option value="612,1008">Legal (8.5in x 14in)</option>
-                        <option value="595,842">A4 (210mm x 297mm)</option>
-                        <option value="842,1191">A3 (297mm x 420mm)</option>
-                    </select>
-                </div>
-
-            </fieldset>
-
-
-            <fieldset id="effectsFieldset">
-                <legend>Effects</legend>
-                <div class="settingEnclosure">
-                    <label for="effectFilterSelect">Filter:</label>
-
-                    <select id="effectFilterSelect">
-                        <option value="" selected>None</option>
-                    </select>
-
-                    <div id="filterControlContainer" class="settingEnclosure" indent></div>
-
-                </div>
-
-
-                <div class="settingEnclosure" style="display:block">
-                    <label for="effectTransformSelect">Transforms:</label>
-
-                    <select id="effectTransformSelect">
-                        <option value="" selected>None</option>
-                    </select>
-
-                    <div id="transformControlContainer" class="settingEnclosure" indent></div>
-
-                </div>
-
-
-
-            </fieldset>
-
-            <fieldset id="extraFieldset">
-                <legend>Download
-                </legend>
-                <div class="settingEnclosure">
-
-                    
-                <button id="downloadFontButton" class="darkButton">Download Current Font</button>
-                <!--<br/><br/>
-                <button onclick="downloadPDF()" class="darkButton" 
-                                class="darkButton">Download Worksheet
-                                PDF</button>-->
-                    </div>
-            </fieldset>
+
+<h1>Noctivagous</h1>
+
+<hr>
+<p>Web Apps</p>
+<h2><a href="/calligraphy-practice-maker/">Calligraphy and Lettering Practice Sheet Generator</a> - Make practice sheets</h2>
+
+<hr>
+<!--<h2>In Progress: <a href="/ancientscience/EnteringAncientChineseScience.html">Entering Ancient Chinese Science</a></h2>-->
+
+<!--<h2>In Progress: <a href="/ai/NCTLLMWrapperApp.html">Noctivagous LLM Wrapper App Specifications</a></h2>-->
+
+
+
+<p>Articles</p>
+<h2>ARTICLE: Computer Code Is Antiquated In Its File Format; It Is Confined to 1970s Terminal Type</h2>
+
+
+<p>
+  <!-- Computer Code, Including Python, Is Still in Plain Text-->
+
+
+  <!-- 
+Though AI has introduced a new paradigm to the world, 
+there is still much about computers that needs to be upgraded.
+The paradigm shift that AI produced came about through code that is
+still formed out of the plain text (.TXT) file format,
+something too primitive for complex software development.
+
+If not ubiquitous and the de facto standard, 
+it would be called obsolete for modern computer programming.
+
+The assumed role that AI will serve in society is questionable,
+that it will take over everything for the better rather than
+exist as a specific culture of human existence.
+
+<p> 
+The generation of code is seen as evidence that the role of the
+programmer will diminish over time.  Who is saying, though,
+that the role of an architect will diminish over time with
+respect to building plans?  More likely than not AI will simply 
+alter the dynamic of writing code because it is only in a scenario
+in which computers are not instructed by professionals that professionals
+disappear from the situation.  What would make the future AGI, after
+all?  Any use of AI for writing
+computer programs will immediately hit the ceiling that 
+<p>
+-->
+
+Though AI has introduced a new paradigm to the world, 
+there is still much about computers that needs to be upgraded. The paradigm shift 
+that AI produced came about through code that is formed out of 
+the plain text (.TXT) file format, something too primitive for complex, modern 
+software development.  Computer code files should now be made out of 
+structured data, with their contents rendered in the editor window, 
+so that the presentation of code can become more capable and organizable.  
+For a single file, a programmer may end up scrolling up and down
+for 50 or more feet because there is no page layout possible in .TXT
+to condense and organize the information.  
+<p>
+The uses of code today have outgrown the confines of 1970s terminal type 
+and upgrades must occur to the file format to 
+accommodate the greater size and complexity of software being produced 
+compared to the 1970s. There can be no surprise that security 
+problems are common: the field of software engineering is using something 
+outdated and primitive for the situation, which is source code that 
+is written and edited in plain text.   Word processing went beyond
+monospaced type but computer code did not follow.  Too many software engineers have 
+come to believe that this is because there is something timeless 
+about .TXT for writing code. But there is actually an opposite trend unfolding
+today. There is a slow movement away from from the limitations .TXT imposes, 
+towards presentations of code that can grapple with growing software 
+complexity. There is no need to hold onto notions that .TXT is synonymous 
+with code; in practice, the unrecognized fact is that text is now re-interpreted 
+by IDEs and code editors to make it feel more modern, as if it can provide 
+the GUI features that a structured data document or application document 
+would naturally support.  Even though computer code remains a basic stream 
+of characters, code editors are trying to make it behave as if it 
+has been modernized. Plain text has been stretched far beyond its 
+natural limits. All recent trends in software development environments 
+are seeking this outcome, which is the modernization of code's 
+interactivity by placing IDE functional veneer on top of plain text. 
+Instead of upgrading the file format of code underneath, to structured data,
+so that it inherently supports these features, plain text is instead 
+declared as unsurpassable and these extra IDE features placed on top. 
+<p>
+Of course the software engineers  instinctively seek an upgrade to code's interactivity,
+as they are using code in larger volumes and in more challenging ways than in
+ previous decades. When IDE vendors add features to code editors with 
+ elaborate strategies to make interactivity work for plain text, they 
+ resist acknowledging what a contraption they have built now. 
+ What they need to do is going beyond .TXT to an application document
+ and make this a campaign.  When code's file format is upgraded, 
+ advanced interactivity will be providable   in a proper way, which then 
+ will open the door to improved forms of code and programming systems. 
+ The software engineering community is not awakening to the absurdity of 
+ the situation that this is plain text from the 1970s and it should never 
+ be treated as if it naturally supports features beyond the insertion of type. 
+ <p>
+ Initially, the upgrades were just about coloring the text in the early 1990s. 
+ Now there are interactive, collapsible code sections and generated image maps 
+ of the file. The notebook code editors (e.g. Jupyter Notebook) intended 
+ for data science and developing AI place the Python programming language 
+ (plain text) into an interactive format, providing an input prompt with 
+ graphical output responses, but this is actually just a well-constructed 
+ set of workarounds for inherent limitations; Python itself has not been upgraded 
+ to behave like this and it doesn't normally support this usage. All the same, 
+ after this upgrade to Python code was implemented, the interactive code 
+ notebook became an essential tool of the AI community. It is a demonstration 
+ that when code's form is actually upgraded, even in this superficial way, the 
+ results will provide immense benefits. It's just that these notebooks came about 
+ indirectly as a result of specific objectives; the people working in data science just wanted Python to behave in a certain way for their own particular needs and they weren't thinking about the broader implications, which is that if they want Python to behave in a more interactive way and also produce graphical output they have actually run up against the walls of how typewritten code has conventionally existed for making and sketching out software.
+
+The notebook code editors (e.g. Jupyter Notebook) intended 
+for data science and developing AI place the Python programming 
+language (plain text) into an interactive format, 
+providing an input prompt with graphical output responses, 
+but this is actually just a well-constructed set of workarounds
+for inherent limitations; 
+Python itself has not been upgraded to behave like this and 
+it doesn't normally support this usage. All the same, after 
+this upgrade to Python code was implemented, the interactive 
+code notebook became an essential tool of the AI community. 
+It is a demonstration that when code's form is actually upgraded,
+even in this superficial way, the results will provide 
+immense benefits. It's just that these notebooks came about 
+indirectly as a result of specific objectives; 
+the people working in data science just wanted Python to 
+behave in a certain way for their own particular needs 
+and they weren't thinking about the broader implications, 
+which is that if they want Python to behave in a more 
+interactive way and also produce graphical output they 
+have actually run up against the walls of how typewritten 
+code has conventionally existed for making and sketching out software.
+
+<!-- The software engineer is just proceeding to get what he wants
+out of it.-->
+
+ <!-- It's another example of where
+  the upgrade of computer code is taking an indirect, unconscious route and therefore
+  the process is quite slow compared to a concerted effort that would
+  design the code files with structured data .-->
+  
+  <!--
+  <p>AI is unlikely to displace the professionals who instruct
+  computers because as long as computers take complex
+  instructions there will be people who produce them for the computers.
+  Otherwise the computers would all turn into intelligent, autonomous black boxes,
+  accepting no complex commands from people, and they would have departed from
+  the condition that people even use instructions or commands (code)
+  to build them from the ground up.   The commands computers take will not 
+  be the same as literature.  
+ 
+  In the same way, if AI generates plans for office buildings, there will still need to be professionals like
+  architects who tell the AI what is wanted by the future building owners for the building and
+  this is always going to be a complex matter and will be the domain of professionals
+  for a long time even if it is the entirety of a moon-sized habitation being constructed 
+  with future technology within a matter of days, because, as we said elsewhere, whatever AI generates
+  today carries the style and characteristics of AI.  At issue is
+  society's (current lack of) understanding that human professional expertise extends
+  beyond skill and labor to what is also the menu of options suitable for
+  any situation that people want, such as what type of lobby would be desired for
+  that office building, the latest experimentation in styles of lobbies, etc.
+
+  If people are removed from what exists around people then it would be a culture of AI machines
+  evolving their own lobby styles over the years for the office buildings,
+  telling humans what they are to live in.
+  Human culture then would disappear because its evolution
+  would be taking place by AI and within AI and humans would just
+  be inhabitants of what AI made with the passage of time.
+  
+  If AI is made to generate code then the code should be more sophisticated than what exists today
+  within the plain text file format.
+  -->
+  
+  <p>
+    Meanwhile, in mainstream software development, IDEs are increasingly 
+    providing enhancements to code that improve its interactive capabilities
+    as well, to provide greater control and navigation.  But to do this, they 
+    have to project 
+     non-existent structure onto the plain text (.TXT) code for the benefit of 
+     the user: they analyze it constantly in the background to make 
+     collapsible code sections with GUI arrow controls, they generate
+     dropdown menus at the top of the window 
+     with organized sections of the file's contents, and they
+     display code completion popover windows. They extracted this information
+     by processing a basic file of plain text.
+     In other words, the common IDE has begun to treat 
+     a single file of code (.TXT) as a conventional application document (e.g. XML)
+     in the last decade, which is a very hacky activity, but the phenomenon is happening in an unrecognized 
+     way and it is a reaction to the growing problem that .TXT
+     does not scale for larger amounts of code. 
+     The code editor undertakes user interface gymnastics with this stream
+      of ASCII characters to implement all of the modern code editing features that appeared
+	 (such as the mini maps that now sit to the side)
+      and when those features are added they are a consequence of how code is
+      more complex than before.  This is why there has to be a retrofitting, like placing beams and columns in an
+      old building.  That retrofitting would be, to begin with, the onscreen rendering 
+      of current code syntax as it looks today by parsing files made out of XML or other markup,
+      to replace .TXT.
+
+      
+      <p>
+      The most honest picture of how code exists today is available 
+      by opening up a file in a basic text editor like Microsoft's Notepad. 
+      Everything else code can offer the software engineer today that is interactive
+      is actually a hack placed on top, including keyword coloring (ASCII-based code, of course, provides no coloring 
+      data in the plain text file data).  IDEs and the software engineering
+      community are avoiding the most important task a software engineer would
+      take up in any other situation, which is to
+      move up to an application document file format for each file of code.
+      Otherwise, the bizarre advances continue to play out, the hot-rodding of .TXT just to keep it
+	   around the primary medium of computer programming because programmers
+      are worried that a substantial upgrade won't fit into what exists now.
+      As we just said though, from the outset nothing has to change that will
+      break how people write software because it will start with just a conversion
+      from .TXT to an XML-based (or other markup document).
+
+<p>
+When computer code's file 
+format is upgraded to a document file format—
+comprised of markup like XML— and the contents are rendered 
+inside the code editor from the XML (no different from how a web page is 
+rendered from its HTML), the capabilities available to the
+programming language designers will become much broader,
+in many directions, from lines of code that contain multiple rows 
+to diagrams that describe complex processes. They won't necessarily start by
+changing code in dramatic ways but they will actually be able to do that.
+It will be possible to mix node-based programming and procedural
+code inside the same document, which is valuable flexibility for
+the programmer. There will be a 
+meaningful job for the graphic designer
+to assist in the layout and appearance of code documents, for the first time. 
+ A file of code will inherently permit generating more than one representation of 
+ its data because its data is made out of markup, but this will be natural to 
+ implement whereas it would be rough job to make this for today's 
+.TXT-based code.
+
+<p>
+  Many benefits will emerge when code is finally converted to a formal document format
+  from the ground up, in many different areas, including a leap in 
+  parseability by the compilers and the IDEs, as 
+  they will be parsing structured data like XML instead of plain text.
+   Plain text carries much ambiguity for live parsing of code and so the 
+   analyzers are not always accurate when just one character is off; 
+   deleting just one curly brace can totally confuse the compiler.  
+   When code is finally translated 
+   into a document format, which will support a live review of code naturally, 
+   the quality of users' experience with code will improve greatly and 
+   most typographic mistakes will be preventable that halt compilation (such as 
+   deleting a single character or omitting a semicolon).
+    Many features will become feasible that no one
+   would want to try with plain text today, such as the ability to
+    survey a project of code in the form of a
+    map or schematics overview.  It will be possible to zoom in and out of
+    code just like CAD because the code files will have 
+    formal structure inside them. 
+   
+   <p>
+   Especially if the code files are made out of XML, 
+   the ability to add attributes to the underlying markup will 
+   take computer programming languages to a new level.  Whatever someone
+   wants to render from the XML will specify what code can do, 
+   not merely what is typed out one text character at a time.
+    A function will not just show up in the markup as
+    &lt;function&gt; but allow the insertion of custom attributes inside the &lt;function&gt; XML element 
+      that provide for much broader configuration, rendered for the programmer code file.
+       In addition, an individual line of code will be more powerful
+        because it can contain more complex statements, permitting math notation,
+	 A section of the document can be made out of graphical components and even allowing 
+        interactive controls natively.  Assigning array object variables to 
+       interactive data tables will be possible and this is something people need today. 
+       A 3D object will be assignable to a 3D model viewer displaying the object inside the line of code.
+         An object variable with many settings will be assignable to a tab view control 
+         that has many configuration parameters for that object and it
+         will appear that with GUI settings inside the document, in the line of code.
+        A spline object variable will be assignable to a 
+      spline editor control, where it can be edited inside the line of code.
+      In the future, the programmer would be able to supply his own editors like this.
+
+
+<!--<p>Some programming language concepts will be straightforward to implement that cannot 
+enter the plain text file format, such as the following example.  Underneath the appearance
+of many software programs is a grid. Whether 
+it is checkers, chess, a calendar, tic-tac-toe, or the arcade snake game, they all could be viewed 
+as stemming from an abstract or conceptual grid, one starts in a most generic and unmodified form.  
+Many programmatic outcomes like these (anything whose form is a modified grid) 
+can be described in terms of increasing specification of a generically 
+existing grid component. Chess, checkers, and a calendar can come from the same programmatic component.
+In the code it would start from the most generic, initial state 
+and then the person begins customization.
+What the grid is for is progressively described with accessory components, 
+moving in the direction of a final outcome, and this would be included as 
+a possible activity of programming. If it is the game of solitaire being built,
+ then an accessory component related to stacks would be attached to the grid.  
+ To provide a component like this in code will require displaying 
+ graphics inside the code file and .TXT of course does not support this. 
+ This versatile grid component, which has capabilities in many directions, 
+ will need to display a representation of the grid itself, its components that specify what it does,
+  and the relationships between them so that a game of tic-tac-toe 
+  can be described in just a few diagrams. -->
+  <!-- What's more, when images 
+  are something that can be placed in the code file and made a feature 
+  of the programming language itself, a set of instructions for the computer 
+  can be described semiotically to show heuristic commands 
+  (e.g. "try to avoid objects with this description").
+  -->
+  
+  <p>
+  The upgrade of code's file format means that many scenarios will be easily described in 
+  terms of conditions, rules, states, etc. because computer code's presentation 
+  capabilities will exist beyond .TXT. With all of these newer features provided 
+  in code, existing software in use will be relatively easy and fast to rewrite 
+  and when they are redone they will have more available in them. <!-- Most programming languages
+  do not recognize state machines today. -->
+
+
+
+ <p> 
+  Resistance to changing the file format of code and modernizing 
+  it often comes out of a lack of understanding of the problems 
+  that result from keeping .TXT as the file format today, and addressing that 
+  starts with some discussion about graphic design, a topic hardly ever
+  paired with software engineering.
+ For the graphic designer, though not necessarily
+  the software engineer, once today's computer code is revealed as completely 
+  tied to the raw .TXT file format, all of the feature differences 
+  discussed among the programming languages are  
+  taking place inside a tiny frame of view, 
+  which is what can be typed into the .TXT file format, a sequence of ASCII or Unicode characters.   
+The graphic designer knows immediately how limiting this is because, to begin with, the means of dividing information
+on the page amounts to manually-typed line breaks, white space (tabs and spacebar), and nothing more. 
+  Consider that in some programming languages, functions start and end 
+ with the keywords "define" and "end" while in most others (C++, Java, C#) there are beginning and 
+ ending curly braces.  To the graphic designer, all of this is using typographic characters 
+ to establish box boundaries. The result is a mess of curly braces scattered
+ down the page.  The only provided way to keep code tidy is through the tab key and this
+ has no effect on how challenging it can be to track all of the nested curly braces and parentheses.  
+ It's too primitive of a situation.  There is only a vertical division of information 
+ (line breaks between sections of code) in plain text, 
+ and nothing can flow horizontally.
+ <p>
+ In a programming language that is not constrained by .TXT, there will be no typing out of beginning and 
+ ending curly braces just to establish the box boundaries of a body of code.  This a task the software
+ engineer shouldn't have to deal with, the maintenance of box boundaries.   
+ Instead, the contents of a function (or other code section) will be enclosed in a graphical, bordered box, 
+ as the file of text will no longer be .TXT but rendered from a document format (e.g. rendered from XML).
+ The bordered boxes (the containers for sections of code) will not only flow vertically as in plain text but 
+ will be flowable horizontally at the same time, like how a magazine layout has multiple columns.
+ At that point, the focus of the user interface will move away from simple typing to a more complex dynamic.
+<!-- Replacing the curly braces will be the modifying, adding, or removing the bordered graphical boxes rapidly (the ones
+that enclose the loops, functions, and other bodies of code). -->
+ It will involve making use of interactive keyboard commands to control the layout and insertion of code, 
+ not typing out '{' or '}', and the IDE will begin to resemble a media production app, like a vector-drawing program or animation program,
+ because the code will be modernized; the code document will offer modern software capabilities. 
+ The user interface principles will have to be more sophisticated than
+ what is currently used for code, which is typing, and so discussed on this page are the dual-input UI and
+ other user interface concepts such as Noctivagous' npsurfer web browsing extension that demonstrates
+ a UI for accessing a certain section of the screen quickly without the mouse. In short,
+ future code interactivity should not rely on the mouse unless the mouse is used as part of the dual-input UI.
+ Reluctance to upgrading code is also frequently a result of apprehension by software engineers
+ that the clicking mouse will be the focus instead of the much faster keyboard, which shows its
+ strengths in the classic command line interface.
+
+ 
+ <p>
+  The replacement of curly brace characters with bordered boxes brings with it broad-ranging
+  opportunities in other areas of code and what a document of code can offer the software engineer,
+  including interactive components in a line of code that have a lot of power and configuration built in.
+  Promisingly, it opens the possibility of customization of the programming language itself; the ability
+  to add features to the code document (through scripting and descriptions) will naturally
+  make sense as a feature of programming, far more than if the code is plain text.  The software engineer
+  will be able to program his own interactive components that make up a line of code, tailored for his
+  own project if necessary.
+  <p>
+  Just this one change demonstrates how the features of any mainstream programming language are currently
+  severely confined to what the .TXT file format provides, as .TXT cannot draw graphical boxes and so it cannot
+  draw anything else and is stuck in the early days of mainframe computing.  
+  Speaking within the constraints of that primitive file format, it is a debate about what characters should 
+  define the bounds of a function (will it be curly braces, line breaks, or keywords?) and all similar
+  personal preferences, such as whether a line should end in semicolon.  But that kind of debate
+ disappears when it is a graphical box enclosing the contents of a function.  When a line of code
+ is rendered from XML it doesn't need to have semicolons terminating it.  Omitting a semicolon or 
+ removing a single curly brace won't break the entire project of code, as is currently the case.
+ <p>
+ Thus, the design decisions that differentiate one programming language from another
+  actually just exist within this limited and ubiquitous file format, plain text. 
+  Since it is so restrictive, having no structured data inside it and being
+  a 1:1 monospaced rendering of the data contents of the file, what is actually the case is that the feature
+  differences between programming languages are rather miniscule compared to the open
+  vista that a document format will provide.  The
+  mainstream programming languages all currently exist within what characters .TXT accepts, but
+  a document format will extend far beyond lines of monospaced, typewritten characters.
+  A programming language can someday manifest as anything that involves
+  a more graphical and interactive dynamic: it can include semiotical diagrams, images,
+  multimedia, and a line of code can branch out into multiple lines.  Importantly,
+  the organization of the information on the page will finally include graphic design
+  layout, with a more compact and readable distribution of information, resulting in 
+  far less scrolling.
+
+ </p>
+
+<p>To the graphic designer it is deeply problematic that computer code always
+ looks like an undifferentiated mass of multi-colored ASCII keywords, something
+  exotic-looking to the lay public but actually mundane.  
+ When a code document, with markup underneath, is the medium, 
+ the process of entering code might continue
+  to emphasize typing out text characters but the end result, after 
+  a given code keyword, command, or instruction is completed (not just “func” 
+  but also “pop”, “push”, etc.), would be transformed in the code document 
+  so that every keyword is provided its own unique symbol.   An 
+  image variable referenced in the code will always have a symbol of an 
+  image to its left (🖼️<b>imageVar<b>) .  The document would be far more 
+  legible at a glance with this one change.  Every variable and object type 
+  present in the code should have a symbol preceding its typewritten name so 
+  that the page of code is legible at a glance.  
+  Different sections of code should be colored by their categories,
+  displaying distinctive font and styled box boundaries.
+  This is the sort of priority a typical software engineering team wouldn’t normally take on and 
+  it demonstrates the importance of emphasizing graphic design for the
+  future of computer code and programming.
+
+<h4>The Inclusion of External Physical Controls</h4>  
+
+<p>Code editors and IDEs have remained largely the same in appearance
+for decades, but now it makes sense for the programmer in the office to use hardware
+to interact with the IDE and insert code, regarding the situation as
+the same as how a video editor buys control decks.  At a minimum, Noctivagous suggests using
+one or more touchscreen computers, such as an iPad, set up next to the programmer's
+computer so that he or she can make use of a custom onscreen grid of 
+buttons that insert common code snippets and templates for functions, classes,
+loops, branching statements, variables of various types, etc.  
+
+<h4>JIT-Focused Software Development</h4>
+ <p>On another topic in software engineering, the work processes and what dynamic should be emphasized, it's 
+  also important to note that many software applications today
+  could be written in a live programming environment making use of JIT compilation, but for some
+   reason this is only treated by the computing industry as relevant for a web app.  
+   Many complex apps written for the web are fully ready for use as soon as "reload" is
+   executed in a web browser, and this is in stark contrast to the inconvenience
+   of compiling AOT (ahead-of-time compiled) code for equivalent 
+   apps in desktop and mobile software development.  
+   Something should be done to bring this JIT dynamic into mainstream software engineering
+   as the central activity so that at least the software is developed in real time 
+   but it can be compiled conventionally for optimization at the very end.
+   For instance, a calendar software application is very lightweight for today's computers,
+  and there is no reason that an application like that would need to
+  be written in code that has to be recompiled after every change.  But the tools offered for
+  web development, where live programming is most possible, are too undeveloped to replace
+  conventional software engineering.  A calendar app is so lightweight
+  that its code and user interface could be written and modified while it is opened, in a situation
+  even better than reloading a web page.  
+  The mindset of the software engineering community did not catch up
+  with the major increase in computing processing power, the gains that were provided to JIT compilers
+  as a result, and software applications today are written in a style that 
+  is a holdover of the slower machines of the 1990s.  With web apps today, 
+  they can be edited and then reloaded immediately, whereas the same app in an
+   IDE may take 30 seconds or more to be recompiled.
+  Of course, in the 1970s the original goal of Smalltalk-80 was to
+  allow the programmer to edit the software in real time and that is what it could do.
+  Other programming languages didn't adopt that feature, but now they can more easily than ever.
+  For many types of apps, their functionality could
+  be assembled and edited by the software engineer live because they
+  only have certain functions that are processing intensive.  GUI is always
+  lightweight for today's machines, but it wasn't for computers of the 1990s.
+  That is why large software applications could be sketched out and filled in during an 
+  execution mode.  Many professional apps could have their foundation assembled in
+  real time.  Instead, any app has to be rebuilt (recompiled) unless it is a web app
+  made out of JavaScript, because JIT code editing
+  not been made a priority for mainstream software development.
+
+ </p>
+
+ <p>
+ On another topic, the traditional UNIX command line interface also needs an upgrade
+because when long sequences of logs and operations occur, they fly by so fast that 
+they are completely unreadable, which often makes the situation absurd and pointless.  
+Take for example that the command line, the line where commands are entered, is entirely
+a vestige of the 1970s screens because it exist as part of the terminal output, 
+displayed inside the overall grid of monospaced characters.  Since GUI is available, 
+the command line can be separated from the output viewport and made its own
+text area, which has been the case for CAD programs for a long time.  Then, what
+is the terminal output area?  It no longer has to be confined to a VT100 emulation,
+a grid of ASCII characters.  It can be redesigned to include graphics.
+</p>
+
+<p>
+The command line should at least 
+ be upgraded such that graphical progress bars appear inside the terminal window when 
+ operations are taking place, and all terminal software should be graphics capable; 
+ they should be able to show thumbnails of images inside the terminal window after 
+ a command is executed, capable of showing them in a grid while listing a directory for example.
+A terminal should be able to play videos too, even 5 at a time simultaneously.  
+ Many aspects of the UNIX era should be upgraded.  Addressing the problem of a stream of 
+ unreadable logs that quickly passes by: all log entires should declare their category or purpose so they 
+ are grouped into boxes as they show up in the terminal.  Moreover, these boxes 
+ should appear in multi-column format.  
+ 
+</p>
+
+<p>
+
+</p>
+
+
+<ol>
+  <li>
+    <h3>
+    <a href="graphicdesignersandcode/">Future Code Requires The Integration of Graphic Design into Software Development Environments</a>
+  </h3>
+
+  </li>
+
+    <li>
+      <h3>
+      Opportunities to Upgrade Computer Code’s Form inside The Editor
+    </h3>
+
+    <P style="text-align: center;">
+      <img src="img/codeFileFormatUpgrade.webp" width="90%" style="border:1px solid gray"/>
+      
+          </P>
+
+          
+    <p>
+      Programming languages designed for application software development are more capable than a few decades
+      ago, but not by much. Any progress has occurred inside the plain text file format.
+      They haven't been upgraded in a comprehensive way that
+      utilizes the new graphical capabilities of computers.  It's all terminal type.
+      To give an illustrative example that adds to the two shown above, 
+      an object variable should be assignable to an interactive vector field
+      in the code editor.  A UI control embedded in a line of code can do much more than alphanumeric type
+      in complex situations, across a wide range of subjects.  Instructions can someday be expressed semiotically, even,
+      if graphics are embraced as elements inside a line of code.  So far, there has never been
+      a semiotical programming language system.
+      
+      <p>
+        When graphics are included, the resulting depth of command over the operations of a computer
+      will not be matched by any current sequence of plain text.  Small experiments
+      have shown that this is much superior,
+      it's just that there are doubts expressed by some over whether it can match the
+      speed of editing plain text&mdash; in other words the user interface. We address this here.  What seems like an insurmountable
+      obstacle, making graphical code's interface comparable to plain text in editing power, is
+      actually a matter of taking a different approach.  In every single case, previous attempts abandoned 
+      too much of what was in active use in the practice of programming inside plain text and tried to come up with something foreign, which means
+      that the code conventions did not match what people were trying to do when they program.
+      Instead, Noctivagous' plan is to gradually add augmentations to plain text as it exists today.  A little bit
+      later, code can break free from plain text and sit inside its own document file format.  (Already
+      there are movements in this direction with Jupyter Notebook, just not for the code itself, only the output.)
+      So, initially it is that UI and widgets additions are allowed inside a line of plain text code,
+      just like right now when a color can be assigned to a color picker control. 
+      After a color picker has been used in code for a while, it is felt as missing when not available. 
+      In this way, graphical widgets and controls won't only be a matter of convenience.  When they
+      are placed into code, they will be able to 
+      summarize large sequences of computer instructions such that
+      no one will want to go backwards to just typing out regular terminal type (monospaced type).
+      <!--
+          This is a path that makes sense because code's intricacies
+      might be difficult to impose from the outside with an artificial scheme.
+
+    -->
+
+      <p>
+        The importance of this effort can be explained in the following.
+      Producing a competing web browser engine that is as
+       complete as Chromium or WebKit can't be done in a short period
+      of time, and when this isn't possible it represents a dead end for software
+      development.  Those two software projects will never be unseated because
+      there is little incentive to surpass them, as what is written from scratch 
+      with current programming languages will
+      basically end up being the same in outcome.  Even with AI programming
+      assistants, this does not change because those engines have reached
+      the ceiling of what plain text code will produce without an upgrade.
+      
+      </p>
+      It is possible to escape this dead end and it is by breaking from
+      the fusion of computer code to the typewriter.  For a major upgrade to happen,
+      alterations like the above image have to occur, because code has to look more like
+      the software it produces, not just raw, monospaced type.  It has to be able to express
+      complex operations in terms of signs and symbol someday.
+       Computer science mindsets that refuse collaboration with graphic design
+       won't suffice, then, as software development has stayed inside terminal
+       type all this time.
+      When code is upgraded, the initial subjects of concern turn out to be different;
+      they will have to incorporate graphic design and media design
+      principles.  The areas of expertise involved are often outside of what is 
+      found in mainstream software engineering discussions.
+      
+      <p>
+      As explained in the articles on this page, the obstacle to a deeper level of
+      progress in software development is the confining, primitive offerings of the 
+      file format plain text, that it has been stretched far beyond
+      its bare capabilities to serve increasingly large and complex needs, blowing past 
+      the environment of 1980s and 1990s computing when it formed the programming languages
+      still in active use today, like C++, Python, and Java.
+      
+      This primitive code medium is largely accidental, it doesn't lend itself to a surveyable view, 
+      a zoomable map like CAD, and it of course by definition cannot accommodate rich text inside the code
+      without odd adaptations.  Since it has so many limitations for today's world, it has to be
+      transcended.
+    
+    <p>
+      A collection like an array or 
+      dictionary  is still not
+      editable by way of a data table GUI control inside a line of code.  Instead, the programmer clumsily
+      navigates through commas with the arrow keys.
+      In addition to this, future computer code needs to be editable in multiple newspaper-like columns to
+      make efficient use of screen space.  Plain text is too raw of a file format for programming software in the 21st century,
+      and it doesn't allow inclusion of modern GUI controls for formulating groups of instructions. 
+      
+    </p>
+
+    <p>Noctivagous starts with the plain text code 
+      as programmers work with it today and then adds GUI to that as the first step, continuing
+      the trend of exists today where the value of a color variable is controllable by an inline color picker.
+      It is believed that later the code file should be transformed into a document file format 
+      for truly rich code editing.   Each article below explains these issues.</p>
+ 
+        <ol type="a">
+            <li><a href="advancingmoderncodeeditor/">Advancing the Modern Code Editor By One UI Step</a> (Includes Demos)</li>
+            <li><a href="#">Computer Code Needs A Document File Format</a></li>
+            <li><a href="movingcomputercodeintoadocformat/">Moving Computer Code into a Document File Format</a></li>
+        </ol>
+    </li>
+
+    <li>
+      <h3>The Upgrade of User Interface</h3>
+        <ol type="a">
+            <li><a href="dualinput">The Dual-Input UI</a> (Demo)</li>
+            <li><a href="#">It’s Difficult for Users to Organize Files on Computers When Provided a Such a Basic File Tree Hierarchy.</a></li>
+            <li><a href="noctivagous/nctos-wiringupthewindows.txt">
             
+            Connect Some Windows with Node Wires If You Like. 
+            Software Applications Now Operate In Isolation From One Another.</a>
+            
+            <p>Noctivagous will let you wire up application windows as if they are nodes in node-based programming,
+               because the input and outputs will be on the back of the window and it can flip around. 
+               Different applications will interact with each other, providing their complex features to each other, publishing and receiving 
+               data as the user decides. 
 
-            <fieldset>
-                <legend>Reset</legend>
-
-                <div class="settingEnclosure">
-                    <button onclick="clearFontsFromIndexedDB()">Delete Imported Fonts</button>
-                </div>
-
-            </fieldset>
-
-
-
-
-
-
-            <!-- Generate Grid Button -->
-            <!-- <button onclick="makeWorksheetPages()" id="generateWorksheet" >Generate Sheet</button>-->
-
-            <p style="text-align: center;">
-                <!-- <button onclick="makeWorksheetPages()" id="resetSettingsButton" class="darkButton">Reset Settings</button>-->
-                <a id="emailLink" style="color:white;" href="mailto:calligraphy[-at-]noctivagous[-dot-]com">
-                    Email </a>
             </p>
-        </div>
+            </li>
+            <li><a href="movingpastios/movingpastios.txt">Moving Past The iOS And Android Touchscreen User Interface</a></li>
+        </ol>
+    </li>
 
-        <div id="controlsScrollbar" class="scrollbar"></div>
+    <li><h3>AI</h3>
+      <ol type="a">
+          <li><a href="ai/aifacilitationvstakeover.txt">AI Facilitation of Work Processes Vs. AI Takeover of Human Jobs</a>
+          <p>
+            Discussing What Should Be The Aim for AI Technology, Using The Example of a Vegetable-Cutting Kitchen Appliance That Is Driven by AI
+          </p>
+          </li>
+      </ol>
+  </li>
+
+    <li><h3>Graphics And File Formats</h3>
+        <ol type="a">
+            <li><a href="#">.NVAD - Noctivagous Vector Authoring. A vector 
+              graphics file format that acknowledges aesthetic needs and concerns 
+              at the code level.</a></li>
+        </ol>
+    </li>
+
+</ol>
+
+</div><!-- end container-->
 
 
-        <div id="generatedWorksheetArea">
-            <div class="worksheetAreaSpacer">
-                <div id="outputPageCount"></div>
-            </div>
 
-            <div id="worksheetPagesContainer">
 
-            </div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
-            <div class="worksheetAreaSpacer"></div>
+<script>
+  function disableHashLinks() {
+      // Get all anchor tags in the document
+      const links = document.querySelectorAll('a');
+      
+      // Loop through each link
+      links.forEach(link => {
+          if (link.getAttribute('href') === '#') {
+              link.removeAttribute('href');
+              link.classList.add('non-link');
+          }
+      });
+  }
+</script>
 
-        </div>
-
-        <div id="worksheetAreaScrollbar" class="scrollbar"></div>
-
-    </div>
-
-    <script src="js/settersAndGetters.js"></script>
-
-    <script src="js/practiceSheetMaker.js"></script>
 </body>
-
 </html>

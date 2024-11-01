@@ -233,7 +233,9 @@ function isFontInSelectControlList(fontName) {
     let fontExists = false;
     for (let i = 0; i < fontSelect.options.length; i++) {
         if (fontSelect.options[i].value === fontName) {
+            
             alert(`The font '${fontName}' has already been uploaded.`);
+            fontSelect.selectedIndex = i;
             fontExists = true;
             break;
         }
@@ -267,10 +269,11 @@ dropArea.addEventListener('drop', function (event) {
 
 
 function init() {
-
+    
     setDefaults();
     loadFontsFromIndexedDB();  // Load fonts at initialization
 
+    addEventListeners();
 
     var fontChangingControls = document.querySelectorAll('#showFont, #fontForWorksheetPages');
 
@@ -292,6 +295,56 @@ function init() {
     }
 }
 
+// Function to download the currently selected font
+
+
+function addEventListeners()
+{
+    // Function to download the currently selected font
+// Function to download the currently selected font
+document.getElementById('downloadFontButton').addEventListener('click', function () {
+    const fontSelect = document.getElementById('fontForWorksheetPages');
+    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+
+    const fontFileData = selectedOption.getAttribute('fontFileData'); // Base64 font data
+    const fontURL = selectedOption.getAttribute('fontURL'); // URL for built-in fonts
+    const fontName = selectedOption.textContent || "downloaded_font";
+
+    if (fontFileData) {
+        // Convert base64 to a binary blob
+        const byteString = atob(fontFileData);
+        const byteArray = new Uint8Array(byteString.length);
+        for (let i = 0; i < byteString.length; i++) {
+            byteArray[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([byteArray], { type: 'font/otf' });
+        const url = URL.createObjectURL(blob);
+
+        // Create a temporary download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = `${fontName}.otf`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        // Revoke the URL to free up memory
+        URL.revokeObjectURL(url);
+    } else if (fontURL) {
+        // Use the direct font URL for download if no base64 data is available
+        const downloadLink = document.createElement('a');
+        downloadLink.href = fontURL;
+        downloadLink.download = `${fontName}.otf`; // Adjust the extension if necessary based on font format
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    } else {
+        alert('No font data or URL available for download.');
+    }
+});
+
+
+}
 async function downloadPDF() {
     // Import jsPDF and svg2pdf modules
     const { jsPDF } = window.jspdf;

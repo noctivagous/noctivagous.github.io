@@ -13,6 +13,10 @@ var nibWidthsTall = document.getElementById('nibWidthsTall').value;
 function setDefaults() {
     setNibWidthPtFromMM(nibWidthMmDefault);
 
+    setShowVerticalLines(showVerticalLines);
+    setVerticalSlantAngle(verticalSlantAngle);
+    setVerticalLineSpacingMultiplier(verticalLineSpacingMultiplier);
+
     loadSelectedFontOptionSettingsIntoFields();
 
     if (isSafari()) {
@@ -97,9 +101,9 @@ var xHeightOpacity = 0.4;
 
 var showNibGuidelineLabels = true;
 var showNibSquares = true;
-var showVerticalLines = false;
-var verticalSlantAngle = 7;
-var verticalLineSpacingMultiplier = 2;
+var showVerticalLines = true;
+var verticalSlantAngle = 0;
+var verticalLineSpacingMultiplier = 1;
 var ascenderMultiplier = 0.5;
 var descenderMultiplier = 0.6;
 var capitalMultiplier = 0.4;
@@ -238,6 +242,12 @@ function setXHeightOpacity(value) {
     xHeightOpacity = value; // Update global variable
     document.getElementById('xHeightOpacity').value = value; // Update text field
     //console.log("X-Height Opacity updated to: " + value);
+}
+
+function setShowVerticalLines(value) {
+    document.getElementById('verticalLines').checked = value; 
+    showVerticalLines = value;
+
 }
 
 // Setter for Vertical Slant Angle

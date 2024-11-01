@@ -92,9 +92,9 @@ width:100%;margin:0;padding:0">
                                 fontURL="fonts/DraftingGothic-Ductus.otf" fontYOffset="0">DraftingGothic-Ductus</option>
     
 
-                                <option value="DurerAntiqueBlackletter-Ductus" fontGlyphNibWidth="5" ascenderRatio="0.45"
+                                <option value="DürerEarlyBlackletter-Ductus" fontGlyphNibWidth="5" ascenderRatio="0.45"
                                 capHeightRatio="0.4" descenderDepthRatio="0.65" fontGlyphScaleFactor="1.0"
-                                fontURL="fonts/DurerAntiqueBlackletter-Ductus.otf" fontYOffset="0" selected>DurerAntiqueBlackletter-Ductus</option>
+                                fontURL="fonts/DürerEarlyBlackletter-Ductus.otf" fontYOffset="0" selected>DürerEarlyBlackletter-Ductus</option>
     
 
                             </optgroup>
@@ -497,9 +497,9 @@ width:100%;margin:0;padding:0">
                     <!-- Show Nib Guideline Labels -->
                     <table>
                         <tr>
-                            <td valign="top"><input type="checkbox" id="showNibGuidelineLabels" checked></td>
+                            <td valign="top"><input type="checkbox" class="switchInput" id="showNibGuidelineLabels" checked></td>
                             <td>
-                                <label for="showNibGuidelineLabels">Show Nib Guideline Labels</label>
+                                <label for="showNibGuidelineLabels">Guideline Labels</label>
                             </td>
                         </tr>
                     </table>
@@ -517,9 +517,9 @@ width:100%;margin:0;padding:0">
 
                     <table>
                         <tr>
-                            <td valign="top"><input type="checkbox" id="showNibSquares" checked></td>
+                            <td valign="top"><input type="checkbox"  class="switchInput" id="showNibSquares" checked></td>
                             <td>
-                                <label for="showNibSquares">Show Nib Squares</label>
+                                <label for="showNibSquares">Nib Squares</label>
                             </td>
                         </tr>
                     </table>
@@ -595,8 +595,8 @@ width:100%;margin:0;padding:0">
 
                     <table>
                         <tr>
-                            <td valign="top"><input type="checkbox" name="verticalLines" id="verticalLines"></td>
-                            <td><label for="verticalLines">Show Vertical Lines</label></td>
+                            <td valign="top"><input type="checkbox" class="switchInput" name="verticalLines" id="verticalLines"></td>
+                            <td><label for="verticalLines">Vertical Lines</label></td>
                         </tr>
                     </table>
 
@@ -607,14 +607,14 @@ width:100%;margin:0;padding:0">
                     <!-- Slant Angle Input -->
                     <label for="verticalSlantAngle">Vertical Slant Angle:</label>
                     <!--<input type="range" id="verticalSlantAngleSlider" value="15" min="0" max="90" step="1"> °<br>-->
-                    <input type="number" id="verticalSlantAngle" value="7" min="0" max="60" step="1"> °
+                    <input type="number" id="verticalSlantAngle" value="0" min="0" max="60" step="1"> °
                 </div>
 
                 <div class="settingEnclosure indent">
 
                     <!-- Slant Line Spacing -->
                     <label for="verticalLineSpacing">Vertical Line Spacing:</label><br />
-                    <input type="number" id="verticalLineSpacing" value="2" min="0.1" max="20" step="0.1">
+                    <input type="number" id="verticalLineSpacing" value="1" min="0.1" max="20" step="0.1">
                     <span class="labelNote">× nib width</span>
                 </div>
             </fieldset>
@@ -630,7 +630,7 @@ width:100%;margin:0;padding:0">
                         Orientation:
                     </label> <br />
 
-                    <input type="radio" name="orientation" id="orientationPortraitRadio" value="portrait" checked>
+                    <input type="radio" name="orientation" id="orientationPortraitRadio" class="portrait" value="portrait" checked>
 
                     <label for="orientationPortraitRadio" class="radioLabel">
                         Portrait
@@ -686,6 +686,20 @@ width:100%;margin:0;padding:0">
 
             </fieldset>
 
+            <fieldset id="extraFieldset">
+                <legend>Download
+                </legend>
+                <div class="settingEnclosure">
+
+                    
+                <button id="downloadFontButton" class="darkButton">Download Current Font</button>
+                <!--<br/><br/>
+                <button onclick="downloadPDF()" class="darkButton" 
+                                class="darkButton">Download Worksheet
+                                PDF</button>-->
+                    </div>
+            </fieldset>
+            
 
             <fieldset>
                 <legend>Reset</legend>

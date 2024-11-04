@@ -28,6 +28,21 @@ a small number of fonts available.
 -->
 
 <body>
+    <svg width="0" height="0">
+        <defs>
+          <filter id="spotlight">
+            <!-- Lighting effect -->
+            <feDiffuseLighting in="SourceGraphic" result="light"
+                               lighting-color="white">
+              <!-- Spotlight characteristics -->
+              <feSpotLight x="50" y="50" z="30" 
+                           pointsAtX="150" pointsAtY="150" pointsAtZ="0"
+                           specularExponent="20" limitingConeAngle="20" />
+            </feDiffuseLighting>
+          </filter>
+        </defs>
+      </svg>
+      
     <div id="container">
         <!-- Configuration Area -->
         <div id="controls">
@@ -89,12 +104,12 @@ width:100%;margin:0;padding:0">
 
                                 <option value="DraftingGothic-Ductus" fontGlyphNibWidth="6.5" ascenderRatio="0.3"
                                 capHeightRatio="0.34" descenderDepthRatio="0.8" fontGlyphScaleFactor="1.05"
-                                fontURL="fonts/DraftingGothic-Ductus.otf" fontYOffset="0">DraftingGothic-Ductus</option>
+                                fontURL="fonts/DraftingGothic-Ductus.otf" fontYOffset="0" selected>MonolineDrafting-Ductus</option>
     
 
-                                <option value="DurerEarlyBlackletter-Ductus" fontGlyphNibWidth="5" ascenderRatio="0.45"
+                                <option value="DürerEarlyBlackletter-Ductus" fontGlyphNibWidth="5" ascenderRatio="0.45"
                                 capHeightRatio="0.4" descenderDepthRatio="0.65" fontGlyphScaleFactor="1.0"
-                                fontURL="fonts/DurerEarlyBlackletter-Ductus.otf" fontYOffset="0" selected>DürerEarlyBlackletter-Ductus</option>
+                                fontURL="fonts/DurerEarlyBlackletter-Ductus.otf" fontYOffset="0">DürerEarlyBlackletter-Ductus</option>
     
 
                             </optgroup>

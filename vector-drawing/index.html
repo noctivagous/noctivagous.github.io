@@ -364,6 +364,7 @@ margin:auto;
 
 
 
+    <br/><br/>
     <article>
       <h2>More About The Vector-Drawing Demo</h2>
 
@@ -383,9 +384,11 @@ can use the same vector line segments as the basis for:
     
       <p>In <i>Floating Marker</i>, 
         curves have been implemented with these straight segments through the 
-        b-spline (similar to Bezier paths). In combination with the dual-input UI,
-        Noctivagous uses its own data structure
-        made of composite spline points that bow (bend) the line, as shown in the video below.  <!-- The b-spline has the characteristic
+        b-spline (similar to Bezier paths). In combination with the dual-input UI
+        of key-clicks and mouse steering, Noctivagous uses a data structure
+        made of composite spline points that bow (bend) the line, as shown in the video below. 
+        
+        <!-- The b-spline has the characteristic
         that it is rather pliable.  It can be shaped for different purposes
         programmatically in combination with the dual-input UI.  For example, Noctivagous uses its own data structure
         made of composite spline points that bow (bend) the line, as shown in the video below.--></p>
@@ -398,20 +401,33 @@ can use the same vector line segments as the basis for:
 
    
    
-  <h2>More Than Just for Making Vector Graphics</h2>
+  <h2>Utilization for User Interface, Not Only Making Vector Shapes</h2>
     
-    <p>
-For the software developer, there are other 
-uses of the dual-input UI are possible besides making vector-graphics.
+  <p>What the vector line, the polyline, is used for is
+    entirely up to the programmer.  
+    Other 
+uses of the dual-input UI are possible besides making shapes,
+extending into conventions of the user interface.
+<ul>
+  <li>
+    If the line is used
+    for applying properties to objects it could be made part of a tool that 
+    does that.  It could be configured to apply the current fill color 
+    or the current stroke width to whatever intersects with the path of the drawn polyline.
+  </li>
+  </ul>
+
 
       <p>The vector line can serve as:</p>
     <ul>
-      <li>a polyline (polygonal shape) that selects objects inside (whether they are files or something else).</li>
+      <li>the polyline (polygonal shape) that selects objects inside (whether they are desktop documents or something else).</li>
       <li>the means of connecting nodes in node-based/patch-based programming.
-      	<ul><li>this has already been tested and is far superior to using the mouse for making node scripting diagrams</li></ul>
+      	<ul><li>this has already been tested and is far superior to using the mouse for making node scripting diagrams
+          
+        </li></ul>
       </li>
       <li>the diagonal of the live selection rectangle (such as when selecting files on a desktop).
-            	<ul><li>This is provided feature for selecting objects in the vector-drawing program Floating Marker.</li></ul>
+            	<ul><li>This is provided as a feature for selecting objects in the vector-drawing program Floating Marker.</li></ul>
       </li>
     </ul>
     

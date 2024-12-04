@@ -1,0 +1,700 @@
+    body {
+            margin: 0;
+            padding: 0;
+            background-color: #7f7f7f;
+            
+        }
+
+        p{
+font-size:14pt;
+        }
+        .ui-widget.ui-widget-content {
+border:0;
+        }
+        
+        /* Container for the two panels */
+        .main-container {
+            display: flex;
+            height: 100vh;
+            /* Full viewport height */
+            width: 100vw;
+            /* Full viewport width */
+            box-sizing: border-box;
+            padding: 5pt;
+            padding-left: 8pt;
+            padding-bottom: 8pt;
+            padding-right: 8pt;
+
+            gap: 6pt;
+        }
+
+        
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Left Panel Styles */
+        .left-panel {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+            border: 2px solid #252525;
+            border-radius: 8pt;
+            
+            padding-top: 0;
+
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            
+            /* Enable vertical stacking */
+        }
+
+        /* Commands/Settings Content */
+        .commands-content {
+            /* Styles for Commands/Settings content */
+        }
+
+        .commands-content button, .leftPanelButton {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            cursor: pointer;
+
+            border-radius: 4px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .commands-content button:hover {
+        }
+
+        /* Glyphs Tab Content */
+        .tab-content#chatInput {
+            flex: 1;
+            overflow-y: auto;
+            /* Enable vertical scrolling only for chatInput tab */
+        }
+
+       
+
+        /* Right Panel Styles */
+        .right-panel {
+            flex: 3;
+            border: 3pt solid #252525;
+            border-radius: 8pt;
+            
+            padding-top: 0;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            /* Enable vertical stacking */
+            align-items: stretch;
+            justify-content: flex-start;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* Additional Styling for Responsiveness */
+        @media (max-width: 768px) {
+
+            body {
+                margin: 0pt;
+                padding: 0pt;
+            }
+
+            .main-container {
+                flex-direction: column;
+                margin-left: 0pt;
+                padding: 8pt;
+                padding-top: 10pt;
+            }
+
+            .left-panel,
+            .right-panel {
+                max-width: none;
+                width: 100%;
+                height: 50vh;
+            }
+
+        }
+
+
+
+        #chatOutputAccordion {
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+        textarea {
+            height: 66.66%;
+        }
+        
+        textarea {
+            font-size: 20pt; /* Example font size */
+            font-family: Arial, sans-serif; /* Example font */
+            line-height: 1.5; /* Example line height */
+            background-image: linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+            background-size: 100% calc(1.5em); /* Adjust spacing based on font size and line height */
+            border: 1px solid cadetblue;
+            padding: 10px;
+            box-sizing: border-box;
+            resize: none;
+        }
+        
+
+        .ui-tabs{
+padding:0;
+border-top-right-radius: 6pt;
+border-top-left-radius: 6pt;
+        }
+        .ui-tabs .ui-tabs-nav {
+padding:0;
+        }
+
+        .ui-tabs-panel{
+            min-height:400pt;
+            height: 100%;
+        }
+
+        .ui-tabs .ui-tabs-panel {
+            
+padding:3pt;
+        }
+
+        .ui-tabs-anchor 
+{
+    
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-size:13pt;
+}
+
+.ui-tabs  .ui-state-active a, .ui-state-active a:link{
+font-weight: bold;
+}
+
+#textChatInput{
+    border:3pt solid cadetblue !important;
+}
+
+
+
+/* List View Styling */
+.list-view {
+    list-style-type: none;
+    
+    padding: 10px;
+}
+
+.list-view li {
+    margin-bottom: 10px;
+    border:1px solid gray;
+    padding:10pt;
+}
+
+/* Grid View Styling */
+.grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.grid-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+
+.ui-widget-header {
+    border:0;
+background-color: rgb(127, 127, 127);
+}
+
+fieldset{
+
+font-size:10pt;
+width:100%;
+padding:2pt;
+text-align: center;
+margin:0;
+}
+
+
+
+
+
+/* General UI Container */
+.ui-widget {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Buttons */
+.ui-button {
+    background: linear-gradient(to bottom, #ffffff, #dddddd);
+    border: 1px solid #ccc;
+    color: #333;
+    font-weight: bold;
+    text-shadow: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.ui-button:hover {
+    background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);
+    color: #111;
+}
+
+.ui-button:active {
+    background: linear-gradient(to bottom, #e6e6e6, #cccccc);
+    color: #000;
+}
+
+/* Tabs */
+.ui-tabs {
+    border: 1px solid #ccc;
+    background: linear-gradient(to bottom, #f9f9f9, #e0e0e0);
+}
+
+.ui-tabs .ui-tabs-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+    border-bottom:0;
+    margin-bottom:-2pt;
+    background: linear-gradient(to bottom, #cacaca, #acabab);
+}
+
+.ui-tabs .ui-tabs-nav li {
+    display: inline-block;
+    
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+   background:#eaeaea;
+   
+   margin-top:0;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    background: linear-gradient(to bottom, #ffffff, #f2f2f2);
+    border-bottom: 1px solid #ffffff;
+    color: #000;
+    z-index: 2;
+}
+
+.ui-tabs .ui-tabs-nav li:hover {
+    background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);
+    color: #111;
+}
+
+.ui-tabs .ui-tabs-panel {
+    border: 1px solid #ccc;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(to bottom, #ffffff, #f7f7f7);
+    padding: 10px;
+}
+
+/* Accordions */
+.ui-accordion .ui-accordion-header {
+    background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+    border: 1px solid #ccc;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.ui-accordion .ui-accordion-header-active {
+    background: linear-gradient(to bottom, #ffffff, #f2f2f2);
+    color: #000;
+    font-size:14pt;
+}
+
+.ui-accordion .ui-accordion-content {
+    background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+    border: 1px solid #ccc;
+    padding: 10px;
+    color: #333;
+}
+
+/* Sliders */
+.ui-slider {
+    background: linear-gradient(to bottom, #e6e6e6, #cccccc);
+    border: 1px solid #ccc;
+    height: 10px;
+    border-radius: 5px;
+}
+
+.ui-slider .ui-slider-handle {
+    background: linear-gradient(to bottom, #ffffff, #dddddd);
+    border: 1px solid #aaa;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.ui-slider .ui-slider-handle:hover {
+    background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);
+}
+
+/* Controlgroup */
+.ui-controlgroup {
+    background: linear-gradient(to bottom, #ffffff, #f5f5f5);
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.ui-controlgroup .ui-controlgroup-item {
+    margin: 2px;
+}
+
+/* Dialogs */
+.ui-dialog {
+    background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    color: #333;
+}
+
+.ui-dialog-titlebar {
+    background: linear-gradient(to bottom, #e6e6e6, #cccccc);
+    border: 1px solid #aaa;
+    color: #000;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Tooltips */
+.ui-tooltip {
+    background: linear-gradient(to bottom, #f9f9f9, #e0e0e0);
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .ui-tabs .ui-tabs-nav li,
+    .ui-button {
+        font-size: 12px;
+    }
+
+    .ui-accordion .ui-accordion-header {
+        padding: 8px;
+    }
+
+    .ui-dialog {
+        padding: 10px;
+    }
+}
+
+/* Buttons */
+.ui-button {
+    background: linear-gradient(to bottom, #ffffff, #dddddd); /* White to light gray gradient */
+    border: 1px solid #ccc; /* Light gray border */
+    color: #333; /* Dark gray text */
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+    text-shadow: none; /* Remove default text shadow */
+    transition: background 0.3s, color 0.3s; /* Smooth transition for hover/active states */
+}
+
+.ui-button:hover {
+    background: linear-gradient(to bottom, #f2f2f2, #d9d9d9); /* Slightly darker gradient on hover */
+    color: #111; /* Darker text */
+}
+
+.ui-button:active {
+    background: linear-gradient(to bottom, #e6e6e6, #cccccc); /* Even darker gradient when pressed */
+    color: #000; /* Black text */
+}
+
+/* Disabled Buttons */
+.ui-button.ui-state-disabled {
+    background: linear-gradient(to bottom, #f9f9f9, #eaeaea); /* Light gray for disabled state */
+    border: 1px solid #ddd; /* Subtle border */
+    color: #aaa; /* Light gray text */
+    cursor: not-allowed; /* Disabled cursor */
+}
+
+/* Controlgroup */
+.ui-controlgroup {
+    background: linear-gradient(to bottom, #ffffff, #f5f5f5); /* Subtle white-to-light gray gradient */
+    border: 1px solid #ccc; /* Border around control group */
+    padding: 5px; /* Inner padding */
+    border-radius: 5px; /* Rounded corners for the group */
+}
+
+/* Items within Controlgroup */
+.ui-controlgroup .ui-controlgroup-item {
+    margin: 2px; /* Spacing between items */
+    display: inline-block; /* Ensure items align properly */
+}
+
+/* Horizontal Controlgroup */
+.ui-controlgroup-horizontal .ui-controlgroup-item {
+    margin-right: 5px; /* Horizontal spacing between items */
+}
+
+/* Vertical Controlgroup */
+.ui-controlgroup-vertical .ui-controlgroup-item {
+    margin-bottom: 5px; /* Vertical spacing between items */
+}
+
+/* Controlgroup Button Hover States */
+.ui-controlgroup .ui-button:hover {
+    background: linear-gradient(to bottom, #e6e6e6, #cfcfcf); /* Slightly darker gradient */
+    color: #111;
+}
+
+/* Active State for Controlgroup Buttons */
+.ui-controlgroup .ui-button:active {
+    background: linear-gradient(to bottom, #cccccc, #b0b0b0); /* Dark gradient */
+    color: #000;
+}
+
+/* Controlgroup Fieldset Legend */
+.ui-controlgroup fieldset {
+    border: none; /* Remove default fieldset border */
+    padding: 0;
+    margin: 0;
+}
+
+.ui-controlgroup fieldset legend {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333; /* Dark gray text */
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited
+{
+color:black;
+}
+
+/* Define the custom font-face for Osifont */
+@font-face {
+    font-family: 'Arial Narrow';
+    src: url('fonts/osifont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.ui-widget {
+    font-family: 'Arial Narrow', 'Arial Narrow', Arial, sans-serif; 
+}
+
+/* Specific styling for buttons */
+.ui-button {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt; /* Adjust size as needed */
+    font-weight: bold;
+}
+
+/* Specific styling for tabs */
+.ui-tabs .ui-tabs-nav li {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt;
+}
+
+/* Specific styling for accordion headers */
+.ui-accordion .ui-accordion-header {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt;
+}
+
+/* Specific styling for controlgroup items */
+.ui-controlgroup .ui-controlgroup-item {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover 
+{
+background:#616161;
+}
+
+.ui-controlgroup .ui-controlgroup-item {
+font-size:12pt;
+
+}
+
+#chatControls{
+margin-bottom:10pt;
+border:0;
+background:transparent;
+padding-left:0;
+margin-top:1pt;
+padding:0;
+margin-top:-4pt;
+border-bottom:2pt solid rgb(106, 106, 106);
+border-radius:0;
+}
+
+.ui-accordion .ui-accordion-header{
+border:1pt solid black;
+border-bottom:2pt solid black;
+border-right:2pt solid black;
+}
+
+/* Active Tab: Bold font */
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    font-weight: bold; /* Bold font for active tab */
+    color: #000; /* Optional: Darker color for emphasis */
+}
+
+/* Inactive Tabs: Normal font */
+.ui-tabs .ui-tabs-nav li {
+    font-weight: normal; /* Normal font for inactive tabs */
+    color: #333; /* Optional: Standard color for inactive tabs */
+}
+
+/* Hover State: Slight Emphasis */
+.ui-tabs .ui-tabs-nav li:hover {
+    font-weight: normal; /* Keep hover same as inactive */
+    color: #111; /* Slightly darker color on hover */
+}
+
+
+.ui-tabs .ui-tabs-panel{
+background:#f3f3f3;
+
+}
+
+.ui-accordion .ui-accordion-header-active{
+color:#d0d0d0;
+}
+
+.ui-accordion .ui-accordion-content{
+border:1pt solid black;
+}
+
+/* Ensure the tabs container spans the height of its parent */
+.ui-tabs {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Allow the tabs to fill their container */
+    box-sizing: border-box;
+}
+
+/* Tab headers (navigation) */
+.ui-tabs .ui-tabs-nav {
+    flex: 0 0 auto; /* Tab headers do not stretch */
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 0px solid #ccc; /* Optional: Tab header border */
+    border-top-left-radius: 6pt;
+    border-top-right-radius: 6pt;
+
+}
+
+/* Tab panels */
+.ui-tabs .ui-tabs-panel {
+    flex: 1 1 auto; /* Allow the panels to stretch and take available space */
+    height: 0; /* Ensures flexbox handles height distribution */
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    padding: 10px; /* Optional: Add padding inside the panels */
+    border: 1px solid #ccc; /* Optional: Border around the panel */
+    border-top: none; /* Remove border overlap with tabs */
+    background: #f9f9f9; /* Optional: Background color */
+    box-sizing: border-box; /* Ensure padding and border are included in height/width */
+}
+
+
+
+#menuOverlay {
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Allow scrolling if the menu overflows */
+    width:500pt;
+    max-height: 300px; /* Optional: Limit the menu height */
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.menu li:hover {
+    background: #f0f0f0; /* Highlight menu item on hover */
+}
+
+.menu .ui-state-disabled {
+    color: #aaa;
+    pointer-events: none; /* Disable interaction for disabled items */
+}
+
+
+
+#pastedTextContainer {
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    max-height: 200px; /* Optional: Limit height with scrollable overflow */
+    overflow-y: auto;
+}
+
+#pastedTextGrid > div {
+    background: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    word-wrap: break-word; /* Ensure long words break */
+}
+
+#pasteInput {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 5px;
+}
+
+button.leftPanelSmallButton{
+border:2pt solid black;
+border-radius: 4pt;
+margin-bottom:4pt;
+}
+
+/* Apply border-radius to the first tab of every tab view */
+.ui-tabs .ui-tabs-nav li:first-child {
+    border-top-left-radius: 6pt; /* Top-left corner rounded */
+}

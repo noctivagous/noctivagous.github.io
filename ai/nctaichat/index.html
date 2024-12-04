@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NCT AI Chat</title>
+
+    <!-- Existing Stylesheets -->
+
+    <!-- Prevent default behavior for Space and Tab keys -->
+    <script>
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+
+
+    <!-- Include Paper.js (for SVG manipulations) -->
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>-->
+
+    <!-- Include OpenType.js (for font loading) -->
+    <!--    <script src="jslibs/opentype.min.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="css/appPage.css">
+
+
+</head>
+
+<body>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+
+
+        <!-- Left Panel: Tabs and Content -->
+        <div class="left-panel">
+
+            <div id="leftTabs">
+                <ul>
+                    <li><a href="#leftTab1" shortcut="~1">Input</a></li>
+                    <li><a href="#leftTab2" shortcut="~2">Settings</a></li>
+                </ul>
+
+                <div id="leftTab1">
+
+                    
+                    <div class="chatInput-grid" id="">
+
+                        <!-- Initially, you can have some placeholder glyphs or leave it empty -->
+                        <!--<p style="grid-column: span 4; text-align: center; color: #888;">Drop a font file here to load
+                glyphs.</p>-->
+
+                        <div>
+                            <!-- Button to activate the menu -->
+
+                            <div id="menuOverlay" style="display: none; position: absolute; z-index: 1000;">
+                                <ul class="menu">
+                                    <li>
+                                        <div>SUMMARIZE:</div>
+                                    </li>
+                                    <li>
+                                        <div>CONTINUE:</div>
+                                    </li>
+                                    <li>
+                                        <div>EXPLAIN:</div>
+                                    </li>
+                                    <li>
+                                        <div>REACT TO:</div>
+                                    </li>
+                                    <li>
+                                        <div>COMPARE</div>
+                                        
+                                    </li>
+                                    <li>
+                                        <div>EXPAND ON CONTENTS OF TEXT:</div>
+                                    </li>
+
+
+                                            <li>
+                                                <div>SUGGEST MODIFICATIONS:</div>
+                                            </li>
+                                            <li>
+                                                <div>SUGGEST ADDITIONS:</div>
+                                            </li>
+                                            <li>
+                                                <div>MAKE VARIATIONS OF:</div>
+                                            </li>
+                                        
+                                    
+                                    <li>
+                                        <div>VERIFY FACTUALITY:</div>
+                                    </li>
+                                   
+                                    <li>
+                                        <div>LIST INSTANCES OF _ FOUND IN:</div>
+                                    </li>
+                                    <li>
+                                        <div>MAKE OUTLINE OF:</div>
+                                    </li>
+                                    <li>
+                                        <div>DIAGNOSE PROBLEM:</div>
+                                    </li>
+                                    <li>
+                                        <div>SUGGEST SOLUTIONS FOR PROBLEM:</div>
+                                    </li>
+                                    <li>
+                                        <div>CONVERT:</div>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                    <button class="leftPanelSmallButton" id="activateMenuButton" style="margin-bottom: 0px;width:100%;" shortcut="~W">Show Keywords</button>
+                    <button class="leftPanelSmallButton" id="clearTextbox" style="margin-bottom: 0px;width:100%" shortcut="~U">Clear Textbox</button>
+                    <button class="leftPanelSmallButton" id="cursorInsideTextbox" style="border:0;margin-bottom: 0px;width:100%" shortcut="~I"
+                    onclick="$(#textChatInput).focus();"
+                    >Cursor Inside Textbox: </button>
+
+                            <textarea id="textChatInput" shortcut="~I" style="height:400pt;width:100%;box-sizing: border-box;border:2pt solid gray;font-size:20pt"></textarea>
+
+                                <div style="position: relative; width: 100%;">
+                                    <!-- Textarea for Pasting -->
+                                    <textarea
+                                        id="pasteInput"
+                                        placeholder="Paste data/large text here..."
+                                        style="width: 100%; height: 30px; resize: none; overflow: hidden;"
+                                    ></textarea>
+                                
+                                    <!-- Pasted Text Grid -->
+                                    <div id="pastedTextContainer" style="margin-top: 10px;display:none;">
+                                        <h4>Pasted Text:</h4>
+                                        <div
+                                            id="pastedTextGrid"
+                                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;"
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                
+
+                        </div>
+
+                    </div>
+
+                    <script>
+                        $(function () {
+                            $(".menu").menu();
+                        });
+                    </script>
+
+
+
+
+                    <button id="submit" class="leftPanelButton" shortcut="~Enter" shortcut="@a"><b>Submit</b></button>
+                    <button id="submitGetTable" class="leftPanelButton" shortcut="~K"><b>Submit + Get Table</b></button>
+                    <button id="submitGetList" class="leftPanelButton" shortcut="~J"><b>Submit + Get List</b></button>
+                    <!-- Add Input tab content -->
+                </div>
+                <div id="leftTab2">
+                    API Key:
+                    <input>
+
+                    <!-- Add Commands/Settings tab content -->
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div id="rightTabs">
+                <ul>
+                    <li><a href="#rightTab1" shortcut="~E">Current Chat</a></li>
+                    <li><a href="#rightTab2" shortcut="~R">Saved Sessions</a></li>
+                    <li><a href="#rightTab3" shortcut="~T">Working Data and Files</a></li>
+                </ul>
+                <div id="rightTab1">
+                    <!-- Controlgroup Container -->
+                    <div id="chatControls">
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <fieldset>
+                                        <!--        <legend>Show As:</legend>-->
+                                        <input type="radio" id="showAccordion" name="displayStyle" value="accordion"
+                                            checked />
+                                        <label for="showAccordion" shortcut="~6">Accordion</label>
+                                        <input type="radio" id="showList" name="displayStyle" value="list" />
+                                        <label for="showList" shortcut="~7">Flat List</label>
+                                        <input type="radio" id="showGrid" name="displayStyle" value="grid" />
+                                        <label for="showGrid" shortcut="~8">Grid</label>
+
+                                    </fieldset>
+                                </td>
+                                <td>
+                                    <fieldset style="margin-left:10pt">
+                                        <label for="autosave" shortcut="~9">Autosave Current Chat</label>
+                                        <input type="checkbox" id="autosave" />
+                                    </fieldset>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div id="chatOutputAccordion"></div>
+                </div>
+                <div id="rightTab2">
+                    <!-- Add Saved Sessions tab content -->
+                </div>
+                <div id="rightTab3">
+                    <!-- Add Working Data and Files tab content -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script src="js/nctaichat.js"></script>
+    <script src="js/nctaichatui.js"></script>
+
+
+</body>
+
+</html>

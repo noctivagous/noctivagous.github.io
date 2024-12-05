@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <title>NCT AI Chat</title>
 
-    <!-- Existing Stylesheets -->
-
-    <!-- Prevent default behavior for Space and Tab keys -->
-    <script>
-
-    </script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -191,21 +185,24 @@
                         <table>
                             <tr>
                                 <td>
-                                    <fieldset>
-                                        <!--        <legend>Show As:</legend>-->
+                                
+
+                                    <fieldset id="chatViewRadios">
+                                        View:
+                                        <legend></legend>
                                         <input type="radio" id="showAccordion" name="displayStyle" value="accordion"
                                             checked />
-                                        <label for="showAccordion" shortcut="~6">Accordion</label>
-                                        <input type="radio" id="showList" name="displayStyle" value="list" />
-                                        <label for="showList" shortcut="~7">Flat List</label>
+                                        <label tabindex="-1" for="showAccordion" shortcut="~6" id="showAccordionLabel">Accordion</label>
+                                        <input  type="radio" id="showList" name="displayStyle" value="list" />
+                                        <label tabindex="-1" for="showList" shortcut="~7" id="showListLabel">Flat List</label>
                                         <input type="radio" id="showGrid" name="displayStyle" value="grid" />
-                                        <label for="showGrid" shortcut="~8">Grid</label>
+                                        <label tabindex="-1" for="showGrid" shortcut="~8" id="showGridLabel">Grid</label>
 
                                     </fieldset>
                                 </td>
                                 <td>
-                                    <fieldset style="margin-left:10pt">
-                                        <label for="autosave" shortcut="~9">Autosave Current Chat</label>
+                                    <fieldset style="margin-left:10pt;">
+                                        <label tabindex="-1" style="border:0;font-weight:normal;outline:0;background: rgb(255, 255, 255);color:#929292;" for="autosave" shortcut="~9">Autosave Current Chat</label>
                                         <input type="checkbox" id="autosave" />
                                     </fieldset>
                                 </td>

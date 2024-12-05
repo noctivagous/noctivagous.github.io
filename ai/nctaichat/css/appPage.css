@@ -10,6 +10,7 @@ font-size:14pt;
         }
         .ui-widget.ui-widget-content {
 border:0;
+border-radius: 6pt;
         }
         
         /* Container for the two panels */
@@ -43,7 +44,7 @@ border:0;
             min-width: 200px;
             max-width: 300px;
             border: 2px solid #252525;
-            border-radius: 8pt;
+            border-radius: 9pt;
             
             padding-top: 0;
 
@@ -87,7 +88,7 @@ border:0;
         .right-panel {
             flex: 3;
             border: 3pt solid #252525;
-            border-radius: 8pt;
+            border-radius: 9pt;
             
             padding-top: 0;
             background-color: #fff;
@@ -170,7 +171,7 @@ padding:3pt;
         .ui-tabs-anchor 
 {
     
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-family:'Arial Narrow', Arial, sans-serif;
 font-size:13pt;
 }
 
@@ -283,18 +284,27 @@ margin:0;
     
     border: 1px solid #ccc;
     border-radius: 4px 4px 0 0;
-   background:#eaeaea;
+   background:#d1d1d1;
    
    margin-top:0;
     color: #333;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
+
+    border:1pt solid black;
+    border-bottom:0;
 }
+
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited, a.ui-button, a:link.ui-button, a:visited.ui-button, .ui-button {
+color:#3a3a3a;
+
+}
+
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
     background: linear-gradient(to bottom, #ffffff, #f2f2f2);
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 0;
     color: #000;
     z-index: 2;
 }
@@ -306,7 +316,7 @@ margin:0;
 
 .ui-tabs .ui-tabs-panel {
     border: 1px solid #ccc;
-    border-radius: 0 0 4px 4px;
+    border-bottom-left-radius: 6pt;
     background: linear-gradient(to bottom, #ffffff, #f7f7f7);
     padding: 10px;
 }
@@ -558,6 +568,7 @@ border-bottom:2pt solid rgb(106, 106, 106);
 border-radius:0;
 }
 
+
 .ui-accordion .ui-accordion-header{
 border:1pt solid black;
 border-bottom:2pt solid black;
@@ -610,7 +621,8 @@ border:1pt solid black;
     margin: 0;
     padding: 0;
     list-style: none;
-    border-bottom: 0px solid #ccc; /* Optional: Tab header border */
+    
+    border-bottom: 1pt solid #393939; /* Optional: Tab header border */
     border-top-left-radius: 6pt;
     border-top-right-radius: 6pt;
 
@@ -623,10 +635,24 @@ border:1pt solid black;
     overflow-y: auto; /* Enable vertical scrolling when content overflows */
     overflow-x: hidden; /* Prevent horizontal overflow */
     padding: 10px; /* Optional: Add padding inside the panels */
-    border: 1px solid #ccc; /* Optional: Border around the panel */
+   
     border-top: none; /* Remove border overlap with tabs */
     background: #f9f9f9; /* Optional: Background color */
     box-sizing: border-box; /* Ensure padding and border are included in height/width */
+    
+    border-bottom-left-radius: 6pt;
+    border-bottom-right-radius: 6pt;
+
+    background: linear-gradient(to top, #ffffff, #f2f2f2);
+
+}
+
+#leftTabs.ui-tabs, #leftTabs.ui-tabs-panel {
+
+    border-top-left-radius: 6pt;
+    border-top-right-radius: 6pt;
+        border:2pt solid black;
+    
 }
 
 
@@ -697,4 +723,61 @@ margin-bottom:4pt;
 /* Apply border-radius to the first tab of every tab view */
 .ui-tabs .ui-tabs-nav li:first-child {
     border-top-left-radius: 6pt; /* Top-left corner rounded */
+    border-left:0;
 }
+
+fieldset#chatViewRadios .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon
+{
+border-width:0;
+height:16px;
+width:16px;
+}
+
+fieldset#chatViewRadios .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon 
+{
+    border:0 ;
+    height:16px;
+    width:16px;
+
+}
+
+#chatViewRadios
+.ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon, .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon,
+.ui-icon-background, .ui-state-active .ui-icon-background 
+{
+    border: 0;
+    border-width:0;
+    height:16px;
+    width:16px;
+    
+}
+
+#showAccordionLabel .ui-checkboxradio-icon{
+    
+    border-radius: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000" viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 7h18v2H3zm0 7h18v2H3z"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>');
+
+}
+
+#showListLabel .ui-checkboxradio-icon{
+    border-radius: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000" viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 7h18v2H3zm0 7h18v2H3z"/></svg>');
+    
+}
+
+#showGridLabel .ui-checkboxradio-icon{
+    border-radius: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23000" viewBox="0 0 24 24"><path d="M3 3h7v7H3zm0 11h7v7H3zm11-11h7v7h-7zm0 11h7v7h-7z"/></svg>');
+        
+}
+
+

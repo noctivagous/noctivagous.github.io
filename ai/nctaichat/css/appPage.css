@@ -1,7 +1,7 @@
     body {
             margin: 0;
             padding: 0;
-            background-color: #7f7f7f;
+            background-color: #8b8b8b;
             
         }
 
@@ -22,9 +22,10 @@ border-radius: 6pt;
             /* Full viewport width */
             box-sizing: border-box;
             padding: 5pt;
+            /*
             padding-left: 8pt;
             padding-bottom: 8pt;
-            padding-right: 8pt;
+            padding-right: 8pt;*/
 
             gap: 6pt;
         }
@@ -276,15 +277,19 @@ margin:0;
     border-bottom: 1px solid #ccc;
     border-bottom:0;
     margin-bottom:-2pt;
+    /*
     background: linear-gradient(to bottom, #cacaca, #acabab);
+    */
+    background:  linear-gradient(to bottom, #525252, #242424);
+    
 }
 
 .ui-tabs .ui-tabs-nav li {
     display: inline-block;
     
-    border: 1px solid #ccc;
-    border-radius: 4px 4px 0 0;
+   /* border-radius: 4pt 4pt 0 0;*/
    background:#d1d1d1;
+   background:#000;
    
    margin-top:0;
     color: #333;
@@ -292,12 +297,13 @@ margin:0;
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
 
-    border:1pt solid black;
+    border:2pt solid black;
+    border-top:0;
     border-bottom:0;
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited, a.ui-button, a:link.ui-button, a:visited.ui-button, .ui-button {
-color:#3a3a3a;
+color:#494848;
 
 }
 
@@ -622,9 +628,9 @@ border:1pt solid black;
     padding: 0;
     list-style: none;
     
-    border-bottom: 1pt solid #393939; /* Optional: Tab header border */
+    border-bottom: 2pt solid #393939; /* Optional: Tab header border */
     border-top-left-radius: 6pt;
-    border-top-right-radius: 6pt;
+    border-top-right-radius: 4pt;
 
 }
 
@@ -639,6 +645,7 @@ border:1pt solid black;
     border-top: none; /* Remove border overlap with tabs */
     background: #f9f9f9; /* Optional: Background color */
     box-sizing: border-box; /* Ensure padding and border are included in height/width */
+
     
     border-bottom-left-radius: 6pt;
     border-bottom-right-radius: 6pt;
@@ -781,3 +788,61 @@ fieldset#chatViewRadios .ui-checkboxradio-radio-label.ui-checkboxradio-checked .
 }
 
 
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    margin-bottom: -2pt;
+    padding-bottom: 1pt;
+}
+
+
+
+/* Style for the shortcut box */
+.shortcut-box {
+    display: inline-block;
+    padding: 2px 6px;
+    margin-left: 5px;
+    font-size: 12pt;
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+    border-radius: 4px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+/* Optional: add a hover effect to highlight the shortcut box */
+.shortcut-box:hover {
+    background-color: #e8ffe8;  /* Light green background on hover */
+}
+
+/* Style for the shortcut box */
+.shortcut-box {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 12pt;
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+    border-radius: 4px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+/* Style for the dynamically created shortcut box next to textarea */
+.textarea-shortcut {
+    font-size: 12pt;
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;  /* Adjust this as needed */
+    right: 10px;
+    z-index: 10;  /* Ensure it is above other elements */
+}
+
+/* Optional: Add a hover effect to highlight the shortcut box */
+.shortcut-box:hover, .textarea-shortcut:hover {
+    background-color: #e8ffe8;  /* Light green background on hover */
+}

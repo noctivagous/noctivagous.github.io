@@ -79,6 +79,7 @@ $(function () {
             .replace('~', isMac ? (useControlForAltOnMac ? 'Ctrl-' : 'Opt-') : 'Alt-'); // Alt/Option key
         }
 
+        /*
     // Append shortcuts to the titles of elements with a "shortcut" attribute
     $("[shortcut]").each(function () {
         const $element = $(this);
@@ -97,8 +98,38 @@ $(function () {
 
         }
     });
+*/
 
+    // Append shortcuts to the titles of elements with a "shortcut" attribute
+   // Insert shortcut for each element with the "shortcut" attribute
+   $("[shortcut]").each(function () {
+    const $element = $(this);
+    const shortcut = $element.attr("shortcut");
 
+    if (shortcut) {
+        const formattedShortcut = formatShortcut(shortcut);
+        const shortcutHtml = `<span class="shortcut-box">${formattedShortcut}</span>`;  // Styled shortcut box
+
+        // Check if the element is a textarea, and dynamically add the shortcut box
+        if ($element.is("textarea")) {
+            // Insert the shortcut box outside the textarea
+            const $shortcutBox = $("<div class='textarea-shortcut'></div>").html(shortcutHtml);
+            $element.parent().append($shortcutBox);  // Append the shortcut box next to the textarea
+
+            // Position the shortcut box relative to the textarea
+            $shortcutBox.css({
+                position: 'absolute',
+                top: $element.position().top + 10,  // Adjust positioning as needed
+                right: 10,
+                zIndex: 10,
+            });
+        } else {
+            // For other elements, insert the shortcut inside them
+            const originalText = $element.text();
+            $element.html(`${originalText} ${shortcutHtml}`);
+        }
+    }
+});
 
 
     // Bind keyboard shortcuts to actions

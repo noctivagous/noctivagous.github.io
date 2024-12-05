@@ -120,7 +120,7 @@ $(function () {
             $shortcutBox.css({
                 position: 'absolute',
                 top: $element.position().top + 10,  // Adjust positioning as needed
-                right: 10,
+                right: 17,
                 zIndex: 10,
             });
         } else {

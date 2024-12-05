@@ -147,6 +147,7 @@ border-radius: 6pt;
             padding: 10px;
             box-sizing: border-box;
             resize: none;
+            border-radius:5pt;
         }
         
 
@@ -270,6 +271,7 @@ margin:0;
     background: linear-gradient(to bottom, #f9f9f9, #e0e0e0);
 }
 
+
 .ui-tabs .ui-tabs-nav {
     list-style: none;
     margin: 0;
@@ -303,7 +305,7 @@ margin:0;
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited, a.ui-button, a:link.ui-button, a:visited.ui-button, .ui-button {
-color:#494848;
+color:#777777;
 
 }
 
@@ -316,8 +318,14 @@ color:#494848;
 }
 
 .ui-tabs .ui-tabs-nav li:hover {
-    background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);
+    background: linear-gradient(to bottom, #313131, #0d0d0d);
     color: #111;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active:hover {
+    background: linear-gradient(to bottom, #ffffff, #f2f2f2);
+    color: #111;
+    cursor:pointer;
 }
 
 .ui-tabs .ui-tabs-panel {
@@ -384,6 +392,13 @@ color:#494848;
 
 .ui-controlgroup .ui-controlgroup-item {
     margin: 2px;
+    box-shadow: 3px 3px 3px gray;
+
+
+}
+
+textarea{
+    box-shadow: 3px 3px 3px gray;
 }
 
 /* Dialogs */
@@ -579,6 +594,10 @@ border-radius:0;
 border:1pt solid black;
 border-bottom:2pt solid black;
 border-right:2pt solid black;
+box-shadow: 3px 3px 3px gray;
+margin-bottom:3pt;
+margin-right:3pt;
+font-family: osifont;
 }
 
 /* Active Tab: Bold font */
@@ -791,6 +810,7 @@ fieldset#chatViewRadios .ui-checkboxradio-radio-label.ui-checkboxradio-checked .
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
     margin-bottom: -2pt;
     padding-bottom: 1pt;
+    border-bottom:2pt solid #f2f2f2;
 }
 
 
@@ -825,24 +845,75 @@ fieldset#chatViewRadios .ui-checkboxradio-radio-label.ui-checkboxradio-checked .
     border-radius: 4px;
     font-weight: bold;
     vertical-align: middle;
+    background-color: #e8ffe8;  /* Light green background */
+    
+    
+    font-weight: normal;
 }
+
 
 /* Style for the dynamically created shortcut box next to textarea */
 .textarea-shortcut {
     font-size: 12pt;
     background-color: transparent;
-    border: 1px solid limegreen;
+    border: 0px solid limegreen;
     color: limegreen;
     padding: 2px 6px;
     border-radius: 4px;
     font-weight: bold;
     position: absolute;
     top: 10px;  /* Adjust this as needed */
-    right: 10px;
+    right: 15pt;
     z-index: 10;  /* Ensure it is above other elements */
+
 }
 
 /* Optional: Add a hover effect to highlight the shortcut box */
 .shortcut-box:hover, .textarea-shortcut:hover {
     background-color: #e8ffe8;  /* Light green background on hover */
+}
+
+
+/* Use Flexbox on the button for alignment */
+button {
+    display: inline-flex;
+    align-items: center; /* Align vertically */
+    justify-content: space-between; /* Spread text and shortcut box apart */
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #fff; /* Example background color */
+}
+
+/* Shortcut box styles */
+.shortcut-box {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 12pt;
+    background-color: transparent;
+    border: 1px solid limegreen;
+    color: limegreen;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-weight: bold;
+}
+
+button .shortcut-box {
+    
+
+}
+
+/* Optional: Hover and active states for the button */
+button:hover {
+    background-color: #f0f0f0;
+}
+
+button:active {
+    background-color: #e0e0e0;
+}
+
+/* Optional: Style for floated shortcut box on hover */
+.shortcut-box:hover {
+    background-color: #e8ffe8; /* Light green background on hover */
 }

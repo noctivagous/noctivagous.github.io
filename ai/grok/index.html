@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grok2 API Interaction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-beta/jsrender.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .response {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Grok2 API Interaction</h1>
+    
+    <label for="apiKey">API Key:</label>
+    <input type="password" id="apiKey" placeholder="Enter your API key here">
+    <button id="saveKey">Save API Key</button>
+
+    <div id="promptArea">
+        <label for="prompt">Your Question:</label>
+        <input type="text" id="prompt" placeholder="What would you like to ask Grok?"> <!-- What is the weather in OKC for the next week?-->
+        <button id="sendPrompt">Send Prompt</button>
+        <br/>
+    
+        <br/>
+    <input type="checkbox" checked id="resultsInHTML" name="resultsInHTML"/><label for="resultsInHTML">Give results in HTML</label>
+    </div>
+
+
+    <h2>Responses:</h2>
+    <div id="responseList"></div>
+
+    <script id="responseTemplate" type="text/x-jsrender">
+        <div class="response">{{:response.choices[0].message.content}}</div>
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>

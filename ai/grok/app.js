@@ -96,6 +96,8 @@ $(document).ready(function () {
         const truncatedPrompt = truncateText(prompt, 250);
 
 
+        let finalPrompt = prompt;
+
 
         // MODIFY PROMPT
         // any modifications to the prompt
@@ -105,7 +107,9 @@ $(document).ready(function () {
             // finalPrompt += " give response formatted in HTML";
         }
 
-        let finalPrompt = prompt;
+
+
+        finalPrompt += "For information, don't make lists except when needed."
 
 
 
@@ -116,37 +120,40 @@ $(document).ready(function () {
     <span class="delete-button" data-id="${id}">X</span>
 </h3>
 <div class="accordion-content" id="response-${id}">
-    <p><strong>Prompt:</strong> ${prompt}</p>
+    <p class="promptTextAboveResponse"><strong>Prompt:</strong> ${prompt}</p>
+    
+    <div class="responseEnclosure">
     <div class="response">Response: </div>
+    </div>
 </div>
 `;
 
 
         // Append the new item to the accordion
-$("#accordion").append(newAccordionItem);
+        $("#accordion").append(newAccordionItem);
 
-// Refresh and activate the new accordion item
-$("#accordion").accordion("refresh");
-const headers = $("#accordion h3");
-$("#accordion").accordion("option", "active", headers.length - 1); // Activate the new item
+        // Refresh and activate the new accordion item
+        $("#accordion").accordion("refresh");
+        const headers = $("#accordion h3");
+        $("#accordion").accordion("option", "active", headers.length - 1); // Activate the new item
 
-// Scroll into view (optional)
-document.querySelector(`#response-${id}`).scrollIntoView({ behavior: "smooth" });
+        // Scroll into view (optional)
+        document.querySelector(`#response-${id}`).scrollIntoView({ behavior: "smooth" });
 
 
-     // ADD DELETE BUTTON LOGIC
-$(`#header-${id} .delete-button`).on("click", function () {
-    const itemId = $(this).data("id");
-    $(`#header-${itemId}`).remove();
-    $(`#response-${itemId}`).remove();
-    $("#accordion").accordion("refresh");
-});
+        // ADD DELETE BUTTON LOGIC
+        $(`#header-${id} .delete-button`).on("click", function () {
+            const itemId = $(this).data("id");
+            $(`#header-${itemId}`).remove();
+            $(`#response-${itemId}`).remove();
+            $("#accordion").accordion("refresh");
+        });
 
 
         // PAYLOAD FOR REQUEST TO API
         const payload = {
             "messages": [
-                { "role": "system", "content": "You are a helpful assistant." },
+                { "role": "system", "content": "You are a helpful AI assistant." },
                 { "role": "user", "content": finalPrompt }
             ],
             "model": "grok-beta",
@@ -220,6 +227,10 @@ $(`#header-${id} .delete-button`).on("click", function () {
                             if (sanitizedHTML !== lastRenderedHTML) {
                                 responseContainer.html(sanitizedHTML); // Update the entire container
                                 lastRenderedHTML = sanitizedHTML; // Update rendered state
+
+                                // Update column count based on word count
+                                updateColumnCount(responseContainer[0]); // Pass the raw DOM element
+
                             }
 
 
@@ -245,12 +256,26 @@ $(`#header-${id} .delete-button`).on("click", function () {
 });
 
 
+function updateColumnCount(responseElement) {
+    const wordCount = responseElement.textContent.split(/\s+/).length; // Count words
+    const wordsPerColumn = 100; // Adjust based on desired density
+    const columnCount = Math.ceil(wordCount / wordsPerColumn); // Calculate columns
+
+    // Update the CSS column count
+    responseElement.style.columnCount = columnCount;
+}
+
+
+
 
 $(document).ready(function () {
     // Set an initial random question in the prompt input
     $("#prompt").val(getRandomQuestion());
 
 });
+
+
+
 
 function randomPrompt() {
     $("#prompt").val(getRandomQuestion());

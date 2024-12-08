@@ -12,10 +12,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            
         }
+
+#mainContainer{
+    max-width: 1100pt;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top:0;
+}
 
         .accordion .accordion-item {
             margin-bottom: 10px;
@@ -34,22 +39,86 @@
             cursor: pointer;
             color: red;
         }
+
+        .responseEnclosure {
+    overflow-x: auto; /* Enable horizontal scrolling */
+  /*   white-space: nowrap;  Prevent line wrapping */
+ 
+}
+
+.accordion-content{
+  
+    height:500pt;
+}
+
+.promptTextAboveResponse{
+padding:5pt;
+margin:5pt;
+}
+
+.ui-accordion .ui-accordion-content{
+padding:0;
+height:550pt;
+overflow-x: auto;
+}
+
+pre{
+    border: 1pt solid black;
+    background-color: darkblue;
+    text-wrap-mode: wrap;
+    padding: 4pt
+}
+
+pre code{
+color:#afc1af;
+font-size: 10pt;
+}
+
+.response p:first{
+margin-top:0;
+}
+
+.response {
+    display: block;
+
+    text-align: justify;
+    height:500pt;
+    column-width: 280pt;
+    column-gap: 3em;
+    
+    column-rule: 1pt solid black;
+
+    font-family: Georgia;
+    font-size:14pt;
+    background-color: #eeeeee;
+    padding: 10pt;
+
+}
+
+#responsesHeading{
+font-size:12pt;
+}
     </style>
 </head>
 <body>
-    <h1>Grok-beta API Interaction</h1>
 
+    
 
-    <div style="margin-bottom: 15px;">
+    <div id="mainContainer">
+        <h1 style="font-size:14pt">Grok-beta API Interaction</h1>
+
+    <div style="margin-bottom: 10px;">
         <label for="apiKey" style="margin-right: 10px;">API Key:</label>
         <input type="password" id="apiKey" placeholder="Enter your API key here" style="margin-right: 10px;">
         <button id="saveKey">Save API Key</button>
     </div>
     
-    <div id="promptArea" style="margin-bottom: 15px;">
+    <div id="promptArea" style="margin-bottom: 10px;border-bottom:1pt solid silver">
         <label for="prompt" style="margin-right: 10px;">Prompt:</label>
         <input type="text" id="prompt" style="width:500pt; height:30pt; font-size:14pt;margin-right: 10px;" placeholder="What would you like to ask Grok?">
-        <br/><br/>
+        <button id="sendPrompt" 
+        >Send Prompt</button>
+        <button id="randomPrompt" onclick="randomPrompt()">Random Prompt</button><br/><br/>
         <style>
             #sendPrompt {
                 cursor: pointer;
@@ -76,13 +145,11 @@
                 transform: scale(0.98); /* Slightly "presses" the button */
             }
         </style>
-        <button id="sendPrompt" 
-        >Send Prompt</button>
-        <button id="randomPrompt" onclick="randomPrompt()">Random Prompt</button>
+        
     </div>
     
 
-    <h2>Responses:</h2>
+    <!--<h2 id="responsesHeading">Responses:</h2>-->
     <div id="accordion" class="accordion"></div>
 
 
@@ -95,6 +162,7 @@
         </div>
     </script>
 
+</div>
 
     <script src="app.js"></script>
 </body>

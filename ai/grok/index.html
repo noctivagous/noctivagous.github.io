@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grok2 API Interaction</title>
+    <!-- Existing Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.0-beta/jsrender.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.3/marked.min.js"></script>
+
+    <!-- Include jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,38 +16,85 @@
             margin: 0 auto;
             padding: 20px;
         }
-        .response {
-            border: 1px solid #ccc;
+
+        .accordion .accordion-item {
+            margin-bottom: 10px;
+        }
+
+        .accordion-header {
+            font-weight: bold;
+        }
+
+        .accordion-content {
             padding: 10px;
-            margin: 10px 0;
+        }
+
+        .delete-button {
+            float: right;
+            cursor: pointer;
+            color: red;
         }
     </style>
 </head>
 <body>
-    <h1>Grok2 API Interaction</h1>
-    
-    <label for="apiKey">API Key:</label>
-    <input type="password" id="apiKey" placeholder="Enter your API key here">
-    <button id="saveKey">Save API Key</button>
+    <h1>Grok-beta API Interaction</h1>
 
-    <div id="promptArea">
-        <label for="prompt">Your Question:</label>
-        <input type="text" id="prompt" placeholder="What would you like to ask Grok?"> <!-- What is the weather in OKC for the next week?-->
-        <button id="sendPrompt">Send Prompt</button>
-        <br/>
-    
-        <br/>
-    <input type="checkbox" checked id="resultsInHTML" name="resultsInHTML"/><label for="resultsInHTML">Give results in HTML</label>
+
+    <div style="margin-bottom: 15px;">
+        <label for="apiKey" style="margin-right: 10px;">API Key:</label>
+        <input type="password" id="apiKey" placeholder="Enter your API key here" style="margin-right: 10px;">
+        <button id="saveKey">Save API Key</button>
     </div>
-
+    
+    <div id="promptArea" style="margin-bottom: 15px;">
+        <label for="prompt" style="margin-right: 10px;">Prompt:</label>
+        <input type="text" id="prompt" style="width:500pt; height:30pt; font-size:14pt;margin-right: 10px;" placeholder="What would you like to ask Grok?">
+        <br/><br/>
+        <style>
+            #sendPrompt {
+                cursor: pointer;
+                margin-right: 10px;
+                height: 40pt;
+                padding: 5pt;
+                font-size: 15pt;
+                background-color: gray;
+                color: silver;
+                border-radius: 5pt;
+                border: 3pt solid black;
+                transition: background-color 0.3s, color 0.3s, transform 0.1s;
+            }
+        
+            #sendPrompt:hover {
+                background-color: darkgray;
+                color: white;
+                border-color: black;
+            }
+        
+            #sendPrompt:active {
+                background-color: black;
+                color: silver;
+                transform: scale(0.98); /* Slightly "presses" the button */
+            }
+        </style>
+        <button id="sendPrompt" 
+        >Send Prompt</button>
+        <button id="randomPrompt" onclick="randomPrompt()">Random Prompt</button>
+    </div>
+    
 
     <h2>Responses:</h2>
+    <div id="accordion" class="accordion"></div>
+
+
     <div id="responseList"></div>
 
     <script id="responseTemplate" type="text/x-jsrender">
-        <div class="response">{{:response.choices[0].message.content}}</div>
+        <div class="chat-item">
+            <div class="prompt">Prompt: {{:prompt}}</div>
+            <div class="response" id="response-{{:id}}">Response: </div>
+        </div>
     </script>
+
 
     <script src="app.js"></script>
 </body>
-</html>

@@ -123,7 +123,7 @@ $(document).ready(function () {
     <span class="delete-button" data-id="${id}">X</span>
 </h3>
 <div class="accordion-content" id="response-${id}">
-    <p class="promptTextAboveResponse"><strong>Prompt:</strong> ${prompt}</p>
+    <!--<p class="promptTextAboveResponse"><strong>Prompt:</strong> ${prompt}</p>-->
     
     <div class="responseEnclosure">
     <div class="response">Response: </div>
@@ -354,6 +354,9 @@ function fillBlankColumns(responseElement) {
 
 const questions = [
     "What is the Luoshu? What is Hetu?",
+    "What are some books I should read from ancient China?",
+    "Discuss The Book of Songs (Shī Jīng)",
+    "Discuss Records of the Grand Historian by Sima Qian",
     "Who is Yu The Great?",
     "List all of the dynasties of ancient China",
     "What is the Book of Changes (I Ching) and how does it relate to Wuxing?",

@@ -76,6 +76,9 @@ $(document).ready(function () {
     });
 
 
+    let fetchController; // Declare a global or scoped AbortController
+
+
     $("#sendPrompt").on("click", async function () {
         const prompt = $("#prompt").val();
         const apiKey = $("#apiKey").val();
@@ -130,12 +133,12 @@ $(document).ready(function () {
 
 
         // Append the new item to the accordion
-        $("#accordion").append(newAccordionItem);
+        $("#accordion").prepend(newAccordionItem);
 
         // Refresh and activate the new accordion item
         $("#accordion").accordion("refresh");
         const headers = $("#accordion h3");
-        $("#accordion").accordion("option", "active", headers.length - 1); // Activate the new item
+        $("#accordion").accordion("option", "active", 0); // Activate the new item
 
         // Scroll into view (optional)
         document.querySelector(`#response-${id}`).scrollIntoView({ behavior: "smooth" });
@@ -148,6 +151,16 @@ $(document).ready(function () {
             $(`#response-${itemId}`).remove();
             $("#accordion").accordion("refresh");
         });
+
+
+        // Abort any ongoing fetch before starting a new one
+        if (fetchController) {
+            fetchController.abort();
+            console.log("Previous fetch operation aborted.");
+        }
+
+        // Create a new AbortController for this fetch
+        fetchController = new AbortController();
 
 
         // PAYLOAD FOR REQUEST TO API
@@ -178,7 +191,9 @@ $(document).ready(function () {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${apiKey}`
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                signal: fetchController.signal // Pass the signal here
+
             });
 
             if (!response.body) {
@@ -200,6 +215,7 @@ $(document).ready(function () {
 
                 lines.forEach(line => {
                     if (line.trim() === "data: [DONE]") {
+                        responseContainer.append("&#13;");
                         console.log("Stream finished.");
                         return;
                     }
@@ -225,12 +241,27 @@ $(document).ready(function () {
 
                             // UPDATE THE ENTIRE CONTAINER
                             if (sanitizedHTML !== lastRenderedHTML) {
+
+                               
+
                                 responseContainer.html(sanitizedHTML); // Update the entire container
+
                                 lastRenderedHTML = sanitizedHTML; // Update rendered state
 
-                                // Update column count based on word count
-                                updateColumnCount(responseContainer[0]); // Pass the raw DOM element
+                               
 
+
+
+
+
+
+
+                                // Update column count based on word count
+                                //updateColumnCount(responseContainer[0]); // Pass the raw DOM element
+                                // Ensure the first 3 columns are filled
+
+
+                                //fillBlankColumns(responseContainer[0]); // Pass the DOM element
                             }
 
 
@@ -247,12 +278,29 @@ $(document).ready(function () {
             }
 
         } catch (error) {
-            console.error("Fetch error:", error);
-            alert("An error occurred while processing your request.");
+            if (error.name === "AbortError") {
+                console.log("Fetch operation aborted.");
+            } else {
+                console.error("Fetch error:", error);
+                alert("An error occurred while processing your request.");
+            }
         }
+        finally {
+            fetchController = null; // Reset the controller after completion
+        }
+
 
         $("#prompt").val(getRandomQuestion());
     });
+
+    $("#stopStream").on("click", function () {
+        if (fetchController) {
+            fetchController.abort(); // Abort the ongoing fetch
+            console.log("Fetch operation stopped by user.");
+        }
+    });
+    
+
 });
 
 
@@ -268,9 +316,12 @@ function updateColumnCount(responseElement) {
 
 
 
+
 $(document).ready(function () {
     // Set an initial random question in the prompt input
     $("#prompt").val(getRandomQuestion());
+
+    //alert('<p/>'.repeat(4));
 
 });
 
@@ -279,7 +330,27 @@ $(document).ready(function () {
 
 function randomPrompt() {
     $("#prompt").val(getRandomQuestion());
+
 }
+
+
+function fillBlankColumns(responseElement) {
+    const columnWidth = 250; // Set the column width in pixels (same as CSS)
+    const totalColumns = 3; // Ensure the first 3 columns are filled
+
+    // Measure the current content width
+    const currentContentWidth = responseElement.scrollWidth;
+    const currentColumns = Math.ceil(currentContentWidth / columnWidth);
+
+    // Calculate blank spaces needed
+    const blanksNeeded = Math.max(0, totalColumns - currentColumns);
+
+    // Add blank placeholders
+    for (let i = 0; i < blanksNeeded; i++) {
+        responseElement.innerHTML += '-'.repeat(400); // Adjust the number of spaces
+    }
+}
+
 
 const questions = [
     "What is the Luoshu? What is Hetu?",
@@ -311,3 +382,36 @@ const questions = [
 function getRandomQuestion() {
     return questions[Math.floor(Math.random() * questions.length)];
 }
+
+
+
+function copyResponse(id) {
+    const responseText = document.getElementById(`response-${id}`).textContent;
+    navigator.clipboard.writeText(responseText).then(() => {
+        alert("Response copied to clipboard!");
+    }).catch(err => {
+        console.error("Failed to copy text: ", err);
+    });
+}
+
+function emailResponse(id) {
+    const responseText = document.getElementById(`response-${id}`).textContent;
+    const mailtoLink = `mailto:?subject=Response&body=${encodeURIComponent(responseText)}`;
+    window.open(mailtoLink, '_blank');
+}
+
+function saveToFile(id) {
+    const responseText = document.getElementById(`response-${id}`).textContent;
+    const blob = new Blob([responseText], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `response-${id}.txt`;
+    link.click();
+}
+
+function saveToScrapbook(id) {
+    const responseText = document.getElementById(`response-${id}`).textContent;
+    // Placeholder: Replace with your scrapbook saving logic
+    alert(`Response saved to scrapbook:\n\n${responseText}`);
+}
+

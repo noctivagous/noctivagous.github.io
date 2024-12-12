@@ -1,3 +1,283 @@
+
+$(document).ready(function () {
+
+    $(document).on("keydown", function (e) {
+        // Detect Control + . on PC or Command + . on Mac
+        if ((e.ctrlKey || e.metaKey) && e.key === ".") {
+            e.preventDefault(); // Prevent default behavior
+            if (fetchController) {
+                fetchController.abort(); // Abort the ongoing fetch
+                console.log("Fetch operation stopped via keyboard shortcut.");
+                isStreaming = false;
+                $("#toggleStream").text("Send Prompt").css("background-color", "gray"); // Reset button state
+            }
+        }
+    });
+
+    
+      // Allow the return key to send the prompt or stop the stream
+      $("#prompt").on("keypress", function (e) {
+        if (e.which === 13) { // 13 is the key code for Enter
+            e.preventDefault();
+            $("#toggleStream").click(); // Trigger the toggle button's click handler
+        }
+    });
+
+
+    let fetchController; // Declare a global or scoped AbortController
+    let isStreaming = false; // Track the current state of the stream
+
+
+    $("#toggleStream").on("click", async function () {
+
+        if (isStreaming) {
+            // If streaming, stop the stream
+            if (fetchController) {
+                fetchController.abort(); // Abort the ongoing fetch
+                console.log("Fetch operation stopped by user.");
+            }
+            isStreaming = false;
+            $("#toggleStream").text("Send Prompt").css("background-color", "gray");
+        }
+        else {
+
+            const prompt = $("#prompt").val();
+            const apiKey = $("#apiKey").val();
+
+            if (!apiKey) {
+                alert("Please enter an API key.");
+                return;
+            }
+
+            if (!prompt) {
+                alert("Please enter a prompt.");
+                return;
+            }
+
+            // Get the current date
+            const id = Date.now();
+            // Prompt string truncated
+            const truncatedPrompt = truncateText(prompt, 250);
+
+
+            let finalPrompt = prompt;
+
+
+            // MODIFY PROMPT
+            // any modifications to the prompt
+            // take place here, such as appending
+            // instructions.
+            if ($("#resultsInHTML").is(":checked")) {
+                // finalPrompt += " give response formatted in HTML";
+            }
+
+
+
+            finalPrompt += "For information, don't make lists except when needed."
+
+
+
+            // ADD ACCORDION ITEM
+            const newAccordionItem = `
+<h3 class="accordion-header" id="header-${id}">
+    ${truncatedPrompt}
+    <span class="delete-button" data-id="${id}">X</span>
+</h3>
+<div class="accordion-content" id="response-${id}">
+    <!--<p class="promptTextAboveResponse"><strong>Prompt:</strong> ${prompt}</p>-->
+    
+    <div class="responseEnclosure">
+    <div class="response">Response: </div>
+    </div>
+</div>
+`;
+
+
+            // Append the new item to the accordion
+            $("#accordion").prepend(newAccordionItem);
+
+            // Refresh and activate the new accordion item
+            $("#accordion").accordion("refresh");
+            const headers = $("#accordion h3");
+            $("#accordion").accordion("option", "active", 0); // Activate the new item
+
+            // Scroll into view (optional)
+            document.querySelector(`#response-${id}`).scrollIntoView({ behavior: "smooth" });
+
+
+            // ADD DELETE BUTTON LOGIC
+            $(`#header-${id} .delete-button`).on("click", function () {
+                const itemId = $(this).data("id");
+                $(`#header-${itemId}`).remove();
+                $(`#response-${itemId}`).remove();
+                $("#accordion").accordion("refresh");
+            });
+
+
+
+
+        // Abort any ongoing fetch before starting a new one
+        if (fetchController) {
+            fetchController.abort();
+            console.log("Previous fetch operation aborted.");
+        }
+
+        // Create a new AbortController for this fetch
+        fetchController = new AbortController();
+
+
+        // PAYLOAD FOR REQUEST TO API
+        const payload = {
+            "messages": [
+                { "role": "system", "content": "You are a helpful AI assistant." },
+                { "role": "user", "content": finalPrompt }
+            ],
+            "model": "grok-beta",
+            "stream": true,
+            "temperature": 0
+        };
+
+
+        // SET UP THE RESPONSE CONTAINER
+        const responseContainer = $(`#response-${id} .response`);
+
+
+        // VARIABLES FOR TRACKING STREAMING DATA
+        let accumulatedMarkdown = ""; // Holds the full markdown content
+        let lastRenderedHTML = ""; // Tracks what has already been rendered
+
+        isStreaming = true;
+        $("#toggleStream").text("Stop Stream").css("background-color", "red");
+
+
+        try {
+            const response = await fetch('https://api.x.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(payload),
+                signal: fetchController.signal // Pass the signal here
+
+            });
+
+            if (!response.body) {
+                throw new Error("Streaming not supported by the response.");
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let done = false;
+
+            while (!done) {
+                const { value, done: readerDone } = await reader.read();
+                done = readerDone;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split("\n").filter(line => line.trim() !== "");
+
+
+
+                lines.forEach(line => {
+                    if (line.trim() === "data: [DONE]") {
+                        responseContainer.append("&#13;");
+                        console.log("Stream finished.");
+                        return;
+                    }
+
+                    if (line.startsWith("data:")) {
+                        try {
+                            const json = JSON.parse(line.slice(5).trim());
+                            const content = json.choices[0].delta?.content || "";
+
+                            // Accumulate the markdown content
+                            accumulatedMarkdown += content;
+
+
+                            // RE-RENDER THE HTML FROM MARKDOWN WITH EACH
+                            // INCOMING STREAMED TOKEN.
+                            // Convert the full accumulated markdown to HTML
+                            const fullHTML = marked.parse(accumulatedMarkdown);
+
+                            // Sanitize the HTML for security
+                            const sanitizedHTML = DOMPurify.sanitize(fullHTML);
+
+
+
+                            // UPDATE THE ENTIRE CONTAINER
+                            if (sanitizedHTML !== lastRenderedHTML) {
+
+
+
+                                responseContainer.html(sanitizedHTML); // Update the entire container
+
+                                lastRenderedHTML = sanitizedHTML; // Update rendered state
+
+
+
+
+
+
+
+
+
+                                // Update column count based on word count
+                                //updateColumnCount(responseContainer[0]); // Pass the raw DOM element
+                                // Ensure the first 3 columns are filled
+
+
+                                //fillBlankColumns(responseContainer[0]); // Pass the DOM element
+                            }
+
+
+                        } catch (err) {
+                            console.error("Error parsing JSON:", err, line);
+                        }
+                    }
+
+
+                });
+
+
+
+            }
+
+        } catch (error) {
+            if (error.name === "AbortError") {
+                console.log("Fetch operation aborted.");
+            } else {
+                console.error("Fetch error:", error);
+                alert("An error occurred while processing your request.");
+            }
+        }
+        finally {
+            $("#toggleStream").text("Send Prompt").css("background-color", "gray");
+
+            fetchController = null; // Reset the controller after completion
+        }
+
+
+        $("#prompt").val(getRandomQuestion());
+
+
+        }
+
+
+
+
+    });
+
+
+
+});
+
+// Function to truncate text
+function truncateText(text, maxLength) {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+}
+
+
 $(document).ready(function () {
 
     // Initialize jQuery UI Accordion
@@ -8,10 +288,6 @@ $(document).ready(function () {
     });
 
 
-    // Function to truncate text
-    function truncateText(text, maxLength) {
-        return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-    }
 
 
     // API KEY FROM INDEXDB
@@ -76,230 +352,8 @@ $(document).ready(function () {
     });
 
 
-    let fetchController; // Declare a global or scoped AbortController
 
 
-    $("#sendPrompt").on("click", async function () {
-        const prompt = $("#prompt").val();
-        const apiKey = $("#apiKey").val();
-
-        if (!apiKey) {
-            alert("Please enter an API key.");
-            return;
-        }
-
-        if (!prompt) {
-            alert("Please enter a prompt.");
-            return;
-        }
-
-        // Get the current date
-        const id = Date.now();
-        // Prompt string truncated
-        const truncatedPrompt = truncateText(prompt, 250);
-
-
-        let finalPrompt = prompt;
-
-
-        // MODIFY PROMPT
-        // any modifications to the prompt
-        // take place here, such as appending
-        // instructions.
-        if ($("#resultsInHTML").is(":checked")) {
-            // finalPrompt += " give response formatted in HTML";
-        }
-
-
-
-        finalPrompt += "For information, don't make lists except when needed."
-
-
-
-        // ADD ACCORDION ITEM
-        const newAccordionItem = `
-<h3 class="accordion-header" id="header-${id}">
-    ${truncatedPrompt}
-    <span class="delete-button" data-id="${id}">X</span>
-</h3>
-<div class="accordion-content" id="response-${id}">
-    <!--<p class="promptTextAboveResponse"><strong>Prompt:</strong> ${prompt}</p>-->
-    
-    <div class="responseEnclosure">
-    <div class="response">Response: </div>
-    </div>
-</div>
-`;
-
-
-        // Append the new item to the accordion
-        $("#accordion").prepend(newAccordionItem);
-
-        // Refresh and activate the new accordion item
-        $("#accordion").accordion("refresh");
-        const headers = $("#accordion h3");
-        $("#accordion").accordion("option", "active", 0); // Activate the new item
-
-        // Scroll into view (optional)
-        document.querySelector(`#response-${id}`).scrollIntoView({ behavior: "smooth" });
-
-
-        // ADD DELETE BUTTON LOGIC
-        $(`#header-${id} .delete-button`).on("click", function () {
-            const itemId = $(this).data("id");
-            $(`#header-${itemId}`).remove();
-            $(`#response-${itemId}`).remove();
-            $("#accordion").accordion("refresh");
-        });
-
-
-        // Abort any ongoing fetch before starting a new one
-        if (fetchController) {
-            fetchController.abort();
-            console.log("Previous fetch operation aborted.");
-        }
-
-        // Create a new AbortController for this fetch
-        fetchController = new AbortController();
-
-
-        // PAYLOAD FOR REQUEST TO API
-        const payload = {
-            "messages": [
-                { "role": "system", "content": "You are a helpful AI assistant." },
-                { "role": "user", "content": finalPrompt }
-            ],
-            "model": "grok-beta",
-            "stream": true,
-            "temperature": 0
-        };
-
-
-        // SET UP THE RESPONSE CONTAINER
-        const responseContainer = $(`#response-${id} .response`);
-
-
-        // VARIABLES FOR TRACKING STREAMING DATA
-        let accumulatedMarkdown = ""; // Holds the full markdown content
-        let lastRenderedHTML = ""; // Tracks what has already been rendered
-
-
-        try {
-            const response = await fetch('https://api.x.ai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify(payload),
-                signal: fetchController.signal // Pass the signal here
-
-            });
-
-            if (!response.body) {
-                throw new Error("Streaming not supported by the response.");
-            }
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder("utf-8");
-            let done = false;
-
-            while (!done) {
-                const { value, done: readerDone } = await reader.read();
-                done = readerDone;
-
-                const chunk = decoder.decode(value, { stream: true });
-                const lines = chunk.split("\n").filter(line => line.trim() !== "");
-
-
-
-                lines.forEach(line => {
-                    if (line.trim() === "data: [DONE]") {
-                        responseContainer.append("&#13;");
-                        console.log("Stream finished.");
-                        return;
-                    }
-
-                    if (line.startsWith("data:")) {
-                        try {
-                            const json = JSON.parse(line.slice(5).trim());
-                            const content = json.choices[0].delta?.content || "";
-
-                            // Accumulate the markdown content
-                            accumulatedMarkdown += content;
-
-
-                            // RE-RENDER THE HTML FROM MARKDOWN WITH EACH
-                            // INCOMING STREAMED TOKEN.
-                            // Convert the full accumulated markdown to HTML
-                            const fullHTML = marked.parse(accumulatedMarkdown);
-
-                            // Sanitize the HTML for security
-                            const sanitizedHTML = DOMPurify.sanitize(fullHTML);
-
-
-
-                            // UPDATE THE ENTIRE CONTAINER
-                            if (sanitizedHTML !== lastRenderedHTML) {
-
-                               
-
-                                responseContainer.html(sanitizedHTML); // Update the entire container
-
-                                lastRenderedHTML = sanitizedHTML; // Update rendered state
-
-                               
-
-
-
-
-
-
-
-                                // Update column count based on word count
-                                //updateColumnCount(responseContainer[0]); // Pass the raw DOM element
-                                // Ensure the first 3 columns are filled
-
-
-                                //fillBlankColumns(responseContainer[0]); // Pass the DOM element
-                            }
-
-
-                        } catch (err) {
-                            console.error("Error parsing JSON:", err, line);
-                        }
-                    }
-
-
-                });
-
-
-
-            }
-
-        } catch (error) {
-            if (error.name === "AbortError") {
-                console.log("Fetch operation aborted.");
-            } else {
-                console.error("Fetch error:", error);
-                alert("An error occurred while processing your request.");
-            }
-        }
-        finally {
-            fetchController = null; // Reset the controller after completion
-        }
-
-
-        $("#prompt").val(getRandomQuestion());
-    });
-
-    $("#stopStream").on("click", function () {
-        if (fetchController) {
-            fetchController.abort(); // Abort the ongoing fetch
-            console.log("Fetch operation stopped by user.");
-        }
-    });
-    
 
 });
 
@@ -355,7 +409,7 @@ function fillBlankColumns(responseElement) {
 const questions = [
     "What is the Luoshu? What is Hetu?",
     "What are some books I should read from ancient China?",
-    "Discuss The Book of Songs (Shī Jīng)",
+    "Discuss The Book of Songs",
     "Discuss Records of the Grand Historian by Sima Qian",
     "Who is Yu The Great?",
     "List all of the dynasties of ancient China",

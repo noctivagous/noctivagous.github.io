@@ -316,12 +316,52 @@ font-weight:normal;
 
 <p>Autonomous (Self-Directed) AI Combining Self-Modification and Ancient Chinese Science
 
-<p>
-PROMPT:<code>
+<p>Although the LLM has no memory or state, it can be made the source of an
+autonomous AI system.  An approach to achieve this is the following. In conjunction with a script, 
+the LLM can generate the system prompt and query message that it sends to itself
+through that script, with the script acting as the host.  The script does 
+store memory, state, and interaction history.  It packages those items for the LLM each time, 
+explaining the purpose of the system and user query each time so that the LLM knows
+what to do (as if it did store these things).  The script, having been
+programmed with workflow, will not just allow the LLM to talk to itself in a tight
+feedback loop but instead will process interactions within a developed structure and
+and engineered design.
 
-consequence of making an llm script that is given a goal and then allowed to modify the system prompt and api variables inside the actual script, whether inside the script or modifying the code before re-execution.  the script, however, is bound to yin and yang principles.  there are two prompts: yangSystemPrompt and yinSystemPrompt.  They are changed each time by queries that incorporate accessory files on the Book of Changes.
+<p> 
+This will turn the script’s interactions with the LLM into a system both autonomous 
+and intelligent, as the AI can arrange queries to itself within the script, continue
+interactions, and add code to the program.  It can conduct trial and error, store
+and retrieve knowledge (making use of the technique called retrieval-augmented generation today).
+Through the script, the LLM can browse the web, execute terminal commands,
+add code, evaluate the results of having added code, and so on.  So while at
+first the LLM did not have access to generating a live avatar through the host script,
+later it can add such a capability, along with others.
+
+<p>
+This is a cycle in which the added code itself can expand the system.  What the
+LLM assesses is guided by the structure and workflow of the host program/script. 
+<p>To summarize, the LLM is told repeatedly what the state and memory 
+are with each request and it can command the script to do things, including
+query for information.  In the feedback loop, the script keeps track of 
+the information that a static LLM cannot. Thus a complementary system can 
+be built around the LLM to produce autonomous AI, today. The script compensates 
+for what the LLM doesn’t have, letting it expand a system autonomously.
+
+<!--
+<p>
+PROMPT (PREFERRED):<code>
+
+consequence of making an llm script that is given a goal and 
+then allowed to modify the system prompt and api variables 
+inside the actual script, whether inside the script's code
+or modifying the code before re-execution.  the script, however, 
+is bound to yin and yang principles.  there are 
+two prompts: yangSystemPrompt and yinSystemPrompt.  
+They are changed each time by queries that incorporate 
+accessory files on the Book of Changes.
 
 <code>
+-->
 
 <h2>System Design</h2>
 <p>The ancient Chinese sciences will be the basis 

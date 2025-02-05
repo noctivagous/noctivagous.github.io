@@ -317,34 +317,44 @@ font-weight:normal;
 <p>Autonomous (Self-Directed) AI Combining Self-Modification and Ancient Chinese Science
 
 <p>
-Although the LLM has no memory or state, it can be made the source of an
-autonomous AI system.  An approach to achieve this is the following. In conjunction with a script, 
-the LLM can generate the system prompt and query message that it sends to itself,
-through that script, with the script acting as the host.  The script does 
-store memory, state, and interaction history.  It packages those items for the LLM each time, 
-explaining the purpose of the system and user query each time so that the LLM knows
-what to do (as if it did store these things).  The script, having been
-programmed with workflow, will not just allow the LLM to talk to itself in a tight
-feedback loop but instead will process interactions within a developed structure
-and engineered design.  The LLM will be given a list of commands that the script
-can execute.
+Although the LLM carries no memory or state, it can serve as the basis for an
+autonomous AI system anyway.  A technique to achieve this is the following. In conjunction with a script, 
+the LLM can generate the system prompt and user message that it sends to itself in the next query,
+mediated by that script.  The script, acting as the host and mediating foundation of the system,
+stores memory, state, and interaction history.  It packages those items for the LLM query each time. 
+It must provide a description and purpose of the system recurrently, placed just in front of the dynamic contents of
+the query.  This way the LLM knows what its role is in the autonomous system, what the system is, followed
+by the states and history of interaction.  
+
+<p>The script, having been programmed with workflow, 
+will not just allow the LLM to talk to itself in a tight feedback loop 
+but instead will process interactions from the LLM and instructions 
+within a developed structure, an engineered design.  
+
+<p>In each query, the LLM will be given a 
+list of commands that the script can execute.  After the script executes them, the next
+query to the LLM will include the results of instructions, which is appended to the 
+persistent orientation information again.
 
 <p> 
 This will turn the script’s interactions with the LLM into a system both autonomous 
-and intelligent, as the AI can arrange queries to itself within the script, continue
-interactions, and add code to the program.  It can conduct trial and error, store
-and retrieve knowledge (making use of the technique called retrieval-augmented generation today).
-Through commanding the host script, the LLM can browse the web, execute terminal commands,
-add code, evaluate the results of having added code, and so on.  So, for example, while at
-first the LLM did not have access to generating a live avatar through the host script,
-later it can add such a capability, along with all others as it evolves.
+and intelligent, as the AI can arrange queries to itself within the script, it can set up
+interactions with the script for a certain task indefinitely, which means it can add 
+code to the program and analyze results.  Through this it can also undertake trial and error, store
+results in the script's database, retrieve knowledge (making use of the technique 
+called "retrieval-augmented generation" today).  Through commanding the host script, 
+the LLM can browse the web, execute terminal commands, add code, evaluate the results 
+of having added code, and so on.  So, for example, while at first the LLM might not 
+have been given access to an API that generates a live avatar, through the host script 
+it can later add such a capability, along with others as it evolves.
 
 <p>
 This is a cycle in which the added code itself can expand the system and what
 the LLM chooses to do.  What the LLM assesses and how it assess it is guided by 
 the structure and workflow of the host program/script. 
 
-<p>To summarize, the LLM is told repeatedly what the system design, state, and memory 
+<p>
+To summarize, the LLM is told repeatedly what the system design, state, and memory 
 are with each request and it can command the script to do things, including
 query for information.  In the feedback loop, the script keeps track of 
 stored information that a static LLM cannot. Thus a complementary system can 

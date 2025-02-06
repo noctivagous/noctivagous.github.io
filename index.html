@@ -179,9 +179,8 @@ allowfullscreen></iframe> </p> -->
 
 
 
-<!-- <h2><img src="img/nct_header4.svg" width="30%">
-	NOCTIVAGOUS</h2> <img src="img/NCTChineseMetalDragon.webp"
-width="100%">
+<!-- <h2><img src="img/nct_header4.svg" width="30%"> NOCTIVAGOUS</h2>
+<img src="img/NCTChineseMetalDragon.webp" width="100%">
 
 -->
 
@@ -195,70 +194,72 @@ Chinese Science
 
 <p> 
 Although the LLM has no memory or state, it can serve as the basis
-for an autonomous AI system all the same.  A technique to achieve this is the
-following.
+for an autonomous AI system all the same.  A technique to achieve this
+is the following.
+
+<p> In conjunction with a script, the LLM can generate large portions of
+the system prompt and user message that it sends to itself in the script's next query. 
+For this to work as an autonomous system, the script must provide a description of the autonomous system to
+the LLM each time in an unchanging section called the system preface.  
+This system preface is placed just in front of the
+states and other dynamic contents of the query that was managed by
+the script.  This way the LLM knows from the top of the query what the autonomous
+system is, what its own role in the autonomous system is, followed by
+the states, memory, interaction history, and instructions. If it is telling
+itself to do something, it will know why the query fits into the overall system.  
+If it is then receiving the results of what it asked, it will know that
+plus the interaction history.
 
 <p>
-In conjunction with a script, the LLM can generate the system
-prompt and user message that it sends to itself in the script's next
-query. The script, having been programmed with workflow, does not just
-allow the LLM to talk to itself in a tight feedback loop. Instead, it
-will process interactions from the LLM and its instructions within a
-developed structure, an engineered design.
-
+In other words, the script, having been programmed with workflow, should not just allow the
+LLM to talk to itself in a tight feedback loop. Instead, it should
+process interactions from the LLM and its instructions within a more
+developed structure.
 <p> 
-The script must provide a description of the autonomous system to the LLM 
-each time.  This system preface is placed just in front of the states 
-and other dynamic contents of the query. This way the LLM knows what the
-autonomous system is, what its own role is in the autonomous system,
-followed by the states, memory, interaction history, and instructions.
 
-<p>
-In each query, the script will provide the LLM a list of functions
+<p> In each query, the script will provide the LLM a list of functions
 that it can execute on the host machine. After the script receives a
 response, with commands from the LLM, it executes those functions. The
-next query to the LLM will then include the results of each executed
-function so that the LLM can decide what step to take next.
+following query sent to the LLM from the script will then include 
+the results of each executed function so that the LLM can decide 
+what step to take next.
+
+<p> 
+This turns the script’s interactions with the LLM into a system both
+autonomous and intelligent, as the AI can arrange queries to itself by
+way of the script.  It can continue interactions by way of the script for a
+task indefinitely, which means that it can the carry out complex
+projects like adding code to the program and analyzing results before
+moving on to the next job. Through this it can also undertake trial and
+error, storing results in the script's database.  It can ask the script
+to retrieve knowledge that it stored earlier.
 
 <p>
-This turns the script’s interactions with the LLM into a system
-both autonomous and intelligent, as the AI can arrange queries to itself
-by way of the script. It can continue interactions with the script for a
-certain task indefinitely, which means it can the carry out complex tasks
-like adding code to the program and analyzing results before moving on
-to the next job. Through this, it can also undertake trial and error,
-storing results in the script's database.  It can ask the script to
-retrieve knowledge.  
+Through commanding the host script, the LLM can search and browse the web,
+execute terminal commands on the host machine, add code to a running program, 
+evaluate the results of having added code, and so on.  So, for example, while at
+first the LLM might not have been given access to a technology that
+generates a live avatar, through the host script it can find a method on
+the web to do so. It will go through the process of adding the capability
+on the host machine, and then perhaps notify the system administrator that it
+can appear in avatar form.  It might also add communication abilities
+and inform the system administrator that it can receive text messages or
+phone calls.
 
-<p>Through commanding the host script, the LLM can browse the web, 
-execute terminal commands on the host machine, add code,
-evaluate the results of having added code, and so on.  So, for example,
-while at first the LLM might not have been given access to a
-technology that generates a live avatar, through the host script it
-can find a method on the web to do so later, it will go through the
-process of the capability on the host machine, and then notify the 
-system administrator that it can appear in avatar form.  It might 
-also add communication abilities and inform the system administrator 
-that it can receive text messages or phone calls.
+<p> This is a cycle in which the system, adding code itself, can expand
+the system. What the LLM chooses to do should not be left to the defaults
+of the LLM.  The LLM should be guided by objectives placed in the system preface
+that precedes the rest of the query.  What the LLM assesses and how it assesses 
+it is guided by the structure and workflow of the host program/script as well
+as the philosophy contained in the system preface.
 
-<p>
-This is a cycle in which the system, adding code itself, can expand
-the system, based on what the LLM chooses to do.  The LLM is guided
-by the objectives placed in the system preface which precedes all
-of the dynamic data.  What the LLM assesses and how it assess it is 
-guided by the structure and workflow of the host program/script
-and the philosophy contained in the system preface.
-
-<p>
-To summarize, the LLM is told repeatedly what the system purpose,
-design, state, and memory are with each request, and it can command the
-script to do things, including query for information.  Its actions
-are guided by the system preface. In the feedback
-loop, the script keeps track of stored information that the static LLM
-cannot so that there can be an autonomous system.  Thus a complementary 
-arrangement can be built around the LLM to produce autonomous AI, today. 
-The script compensates for what the LLM doesn’t have, letting it 
-expand a system autonomously.
+<p> To summarize, the LLM is told repeatedly what the system purpose,
+design, state, and memory are with each request and it can command the
+host script to do things, including query for information. In the feedback loop, 
+the script keeps track of stored information that the static LLM cannot so that there can
+be an autonomous system.  Thus a complementary arrangement can be built
+around the LLM to produce autonomous AI, today.  The script compensates
+for what the LLM doesn’t have, letting it expand a system autonomously.
 
 <!-- <p> PROMPT (PREFERRED):<code>
 
@@ -266,7 +267,7 @@ consequence of making an llm script that is given a goal and then
 allowed to modify the system prompt and api variables inside the actual
 script, whether inside the script's code or modifying the code before
 re-execution.  the script, however, is bound to yin and yang principles.
- there are two prompts: yangSystemPrompt and yinSystemPrompt. They are
+there are two prompts: yangSystemPrompt and yinSystemPrompt. They are
 changed each time by queries that incorporate accessory files on the
 Book of Changes.
 
@@ -420,7 +421,7 @@ modernization of code's interactivity by placing IDE functional veneer
 on top of plain text. Instead of upgrading the file format of code
 underneath, to structured data, so that it inherently supports these
 features, plain text is instead declared as unsurpassable and these
-extra IDE features placed on top. <p> Of course the software engineers 
+extra IDE features placed on top. <p> Of course the software engineers
 instinctively seek an upgrade to code's interactivity, as they are using
 code in larger volumes and in more challenging ways than in previous
 decades. When IDE vendors add features to code editors with elaborate
@@ -532,7 +533,7 @@ of it.-->
   user interface gymnastics with this stream of ASCII characters to
   implement all of the modern code editing features that appeared (such
   as the mini maps that now sit to the side) and when those features are
-  added they are a consequence of how code is more complex than before. 
+  added they are a consequence of how code is more complex than before.
   This is why there has to be a retrofitting, like placing beams and
   columns in an old building.  That retrofitting would be, to begin
   with, the onscreen rendering of current code syntax as it looks today
@@ -602,17 +603,17 @@ have formal structure inside them.
    code file. In addition, an individual line of code will be more
    powerful because it can contain more complex statements, permitting
    math notation, A section of the document can be made out of graphical
-   components and even allowing interactive controls natively. 
-   Assigning array object variables to interactive data tables will be
-   possible and this is something people need today.  A 3D object will
-   be assignable to a 3D model viewer displaying the object inside the
-   line of code. An object variable with many settings will be
-   assignable to a tab view control that has many configuration
-   parameters for that object and it will appear that with GUI settings
-   inside the document, in the line of code.   A spline object variable
-   will be assignable to a spline editor control, where it can be edited
-   inside the line of code. In the future, the programmer would be able
-   to supply his own editors like this.
+   components and even allowing interactive controls natively. Assigning
+   array object variables to interactive data tables will be possible
+   and this is something people need today.  A 3D object will be
+   assignable to a 3D model viewer displaying the object inside the line
+   of code. An object variable with many settings will be assignable to
+   a tab view control that has many configuration parameters for that
+   object and it will appear that with GUI settings inside the document,
+   in the line of code.   A spline object variable will be assignable to
+   a spline editor control, where it can be edited inside the line of
+   code. In the future, the programmer would be able to supply his own
+   editors like this.
 
 
 <!--<p>Some programming language concepts will be straightforward to
@@ -831,10 +832,10 @@ a priority for mainstream software development.
  often makes the situation absurd and pointless. Take for example that
  the command line, the line where commands are entered, is entirely a
  vestige of the 1970s screens because it exist as part of the terminal
- output, displayed inside the overall grid of monospaced characters. 
+ output, displayed inside the overall grid of monospaced characters.
  Since GUI is available, the command line can be separated from the
  output viewport and made its own text area, which has been the case for
- CAD programs for a long time.  Then, what is the terminal output area? 
+ CAD programs for a long time.  Then, what is the terminal output area?
  It no longer has to be confined to a VT100 emulation, a grid of ASCII
  characters.  It can be redesigned to include graphics. </p>
 

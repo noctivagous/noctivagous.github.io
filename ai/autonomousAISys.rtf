@@ -1,0 +1,86 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\fnil\fcharset0 LucidaGrande;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid2\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww22400\viewh16140\viewkind1
+\deftab720
+\pard\pardeftab720\ri0\sb480\sa200\qj\partightenfactor0
+
+\f0\fs36 \cf0 Noctivagous\
+\pard\pardeftab720\ri0\sb480\sa200\qj\partightenfactor0
+
+\f1\b\fs54 \cf0 Building An Autonomous AI System Using An LLM
+\fs36 \
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+
+\f0\b0 \cf0 noctivagous.github.io\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+
+\f1\b \cf0 \
+An LLM Can Formulate Its Own Query Contents\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+
+\f0\b0 \cf0 Although the LLM exists with no persistent memory or state, it can serve as the foundation for an autonomous AI system anyway, in spite of these deficiencies.  \
+\pard\tx360\tx1080\pardeftab720\li1080\fi-360\ri0\qj\partightenfactor0
+\ls1\ilvl0\cf0 \uc0\u9679 	First, an LLM can generate instructions for itself.  The script that sends the LLM queries can redirect the LLM\'92s output and package it as the actual query and system prompt contents.\
+\pard\tx1080\tx1800\pardeftab720\li1800\fi-360\ri0\qj\partightenfactor0
+\ls1\ilvl1
+\f2 \cf0 \uc0\u9675 
+\f0 	By itself, this would produce a tight feedback loop due to the lack of memory and state in an LLM.  It would be unsatisfactory.\
+\pard\tx360\tx1080\pardeftab720\li1080\fi-360\ri0\qj\partightenfactor0
+\ls1\ilvl0\cf0 \uc0\u9679 	The next step is to broaden the script and build out a system of workflow, states, and memory that interacts with the LLM.  \
+\pard\tx1080\tx1800\pardeftab720\li1800\fi-360\ri0\qj\partightenfactor0
+\ls1\ilvl1
+\f2 \cf0 \uc0\u9675 
+\f0 	The script will then provide a designed structure that guides the LLM and informs it of the utilities it can access on the host machine.\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0\cf0 That is, an LLM can generate large portions of the system prompt and user message that it sends to itself, with the script mediating and setting up follow-up requests on behalf of the LLM.\
+The script in this setup is like a secretary for the LLM, recording the results and keeping track of everything the LLM needs to know.  The LLM is guided by, and responds in accordance with, the arrangement of workflow and states built into the script.  What this means is that the script always tells the LLM what it is being used for.\
+\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f1\b \cf0 The System Preface\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f0\b0 \cf0 For the LLM to drive an autonomous system, the script should provide a description of the autonomous system to the LLM each time in an unchanging section called the system preface. This system preface is placed just in front of the memory, states and other dynamic contents of the query that is managed by the script.  If a query to the LLM is being scheduled because the LLM just instructed itself to do something, the script includes that information in the message and the LLM will know that.  The LLM will know how a query fits into the overall system and interaction history.\
+In other words, the script, having been programmed with workflow, will do much more than make the LLM talk to itself in a tight feedback loop.  Instead, it will process interactions from the LLM and its instructions within a more developed structure.  The LLM knows, because of the system preface that precedes the rest of the query, how it should respond so that it can play the main part of an autonomous system. The system preface is followed by the states, memory, interaction history, context, and instructions.  This overall setup compensates for the LLM\'92s absence of persistent memory.  It also provides opportunities for the LLM to carry out activities on the host machine.\
+\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f1\b \cf0 Host Commands List\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f0\b0 \cf0 In each query, the script will provide the LLM a list of functions that can be executed on the host machine.  The LLM\'92s response to the script will usually contain commands, and the script then executes those functions.  In many cases, the script will then send a follow-up message to the LLM that includes the results of each executed command, so that the LLM can decide what step to take next.   There are commands for adding code to the script too, which allows the LLM to add custom instructions to the script\'92s commands list.\
+Through sending commands to the host script, the LLM can search and browse the web, execute terminal commands on the host machine, add code to a running program, evaluate the results of having added code, and so on.  Included in this is the ability to tell the script to query an LLM separately and have the script return results to the session where it came from in the LLM.   \
+In some variations the LLM is able to add to or modify the script as long as it retains the system preface for stability and guidance.  This will allow it to self-modify as a system, spin off variations of itself, and progress beyond its initial conditions, perhaps even building out alternative AI.\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f1\b \cf0 Continued Interactions\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f0\b0 \cf0 Many tasks the LLM takes on won\'92t be finished with just a single request and response. Since  the interaction protocol information is included in the system preface, the LLM knows how to continue the interaction with the script for a certain task until finished. This turns the script\'92s interactions with the LLM into a more complete system that is both autonomous and intelligent, as the LLM can continue interactions with the script for a task indefinitely, which means that it can carry out complex projects like adding code to the program and evaluating the results before deciding to move on to the next job. \
+Through this, the LLM can also undertake trial and error, storing conclusions it made in the script's database by sending the script corresponding commands in the response. It can ask the script to look up knowledge that it had stored at some earlier point. \
+So, for example, while at first the LLM might not have been given the capability to generate a live avatar, through the host script it can find a method on the web to do so.  It will go through the process of adding the capability on the host machine and then perhaps it will notify the system administrator that it can appear in avatar form. Event loops inside the script allow the autonomous AI to self-modify. It might add communication abilities and inform the system administrator that it can receive text messages or phone calls.\
+In terms of browsing hierarchical trees, all subsequent requests made by the LLM can explore a tree data structure.\
+This is a cycle in which the system, adding code itself, can expand and revise the system. However, what the LLM chooses to do will not be left to the tendencies of the LLM. The LLM should be guided by objectives placed in the system preface that precedes the rest of the query.  What the LLM assesses and how it assesses it should be guided both by the structure and workflow of the host program/script and the directives contained in the system preface.\
+To summarize, the LLM is told repeatedly what the system purpose, design, state, and memory are with each request.  Because it is given a list of commands, it can command the host script to do things in the response, including query for information. The program executes the commands sent by the LLM.\
+In this feedback loop, the script keeps track of stored information that the static LLM cannot so that there can be an autonomous system.  Thus, a complementary arrangement can be built around the LLM to produce autonomous AI, today. The script compensates for what the LLM doesn\'92t have, letting it expand a system autonomously.\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f1\b \cf0 Event Queue\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f0\b0 \cf0 How should the system process communication?  It can make use of the existing software design called applications event loops and have a stack of tasks to carry out for processing incoming information.  It can have a stack of tasks to carry out for communicating outgoing information.\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f1\b \cf0 Storing Some Knowledge As Code And Flow Diagrams\
+\pard\pardeftab720\ri0\sa200\qj\partightenfactor0
+\ls1\ilvl0
+\f0\b0 \cf0 For this autonomous AI system, the program may store certain kinds of knowledge as tested code or flow chart information, after undertaking trial and error.  Otherwise, the knowledge it stored would be limited to what is factual or immediately researched and observed.  Without storing lessons it learned, this autonomous AI system would have to construct a program for a specific purpose all over again each time or investigate something again.  Storing knowledge as a flow chart or workflow will give it a plan for how to approach certain obstacles and it can revise the flowchart or workflow when new information comes in or new strategies are applied.  It would store code in a database, for its knowledge database.\
+Also, the AI, for example, might want to construct a set of utilities for generating code, to make its job efficient. Because there is a database, not all of the code it devised would have to be part of the running program.  Its own code would reside there.  This way, when copies of itself are spun off they can make their own modifications to the larger database.\
+\
+NOCTIVAGOUS\
+}

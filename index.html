@@ -27,7 +27,8 @@ sans-serif; background-color:#efefef; color:#999; }
 
 p { color:#222; text-align: left; font-weight:normal; }
 
-ul li{color:#666666;
+ul li, ol li{
+color:#666666;
 
 }
 
@@ -165,7 +166,7 @@ padding-top: 10px; padding-bottom: 10px; }
 
  li{ padding-top:1em; }
 
-ol li{ font-weight:bold; }
+
 
 ol li ol li{ font-weight:normal; }
 
@@ -191,7 +192,7 @@ ol li ol li{ font-weight:normal; }
 
 <hr>
 
-<h2 style="font-size:40pt"> Building An Autonomous AI System Using An
+<h2 style="font-size:40pt"> Build An Autonomous AI System Using An
 LLM </h2>
 
 <p> noctivagous.github.io <p>
@@ -199,52 +200,64 @@ LLM </h2>
 <h3>An LLM Can Generate Its Own Instructions</h3>
 
 <p> Although LLMs exist without persistent memory or state, they can
-serve as the foundation for autonomous AI systems anyway in spite of
+serve as the foundation for autonomous AI systems anyway, in spite of
 these deficiencies.
 
-<ol> <li>An LLM can generate instructions for itself.  The
-program that sends queries to an LLM can use the LLM’s output as
-part of the next query and system prompt contents. <ul> <li> By
-itself, this would produce a tight feedback loop.  </ul> <li> The
-next step is to build out the script with workflow,
-states, and memory. The script needs to manage these resources 
+<ol> <li><b>An LLM can generate instructions for itself.</b>  The
+script that sends queries to an LLM can use the LLM’s output for
+making the next query and its system prompt contents. <ul> <li> By
+itself, this would produce a tight feedback loop.  </ul> <li> 
+<b>The next step is to build out the script with workflow,
+states, and memory. </b> The script needs to manage these resources 
 for the LLM.  The script will tell the LLM how to interact with it
-so that queries amount to exchanges and sessions.
+each time so that queries amount to exchanges and sessions.
 </li> <ul> <li> The script will then exist as a 
-designed structure for an autonomous system, one
+designed structure for governing an autonomous system, one
 that is acknowledged for what it is by the LLM in each response. 
-Additionally, the script informs it of the utilities it can access on the host machine. </li>
+The two entities (script and LLM) work in tandem.  </li>
 </ul> </ol>
 
 <p><!--
 In summary, an LLM can generate large portions of the system prompt and
 user message that it sends to itself by way of a script. The script mediates and
-sets up follow-up requests on behalf of the LLM. -->
+sets up follow-up requests on behalf of the LLM. 
+Additionally, the script informs it of the utilities it can access on the host machine.
+-->
 In this setup, the script is like a secretary for the LLM, recording results 
 and keeping track of everything the LLM needs to know.  The script always 
-tells the LLM what it is being used for in the query.
+tells the LLM what its purpose is.
 <!-- The LLM accommodate, the workflow and states
 built into the script.-->  <!--  -->
 
 
 <h3> The System Preface </h3>
 
-<p>In each query, the script should provide a description of the LLM's role in 
-the autonomous system in an unchanging section called 
+<p>
+In each query, the script should provide a description of
+the autonomous system for the LLM in an unchanging section called 
 the system preface. This system preface is placed just in front of the memory, states and other dynamic contents of
 the query that is managed by the script.  This orients the LLM each
-time, explaining how it is being utilized for autonomous AI.  
+time, explaining to it how it is being utilized for autonomous AI.
+The system preface includes essential information about the interaction protocol 
+that the script recognizes, so that the LLM can send commands to the script in
+the response, including to continue an exchange.
 
-<p>The system preface also includes essential information about interaction protocol 
-with the script so that the LLM can set up queries and send commands to the script in
-the response.
+<h3>Interaction History</h3>
+<p>
+The interaction history will tell the LLM what
+it asked for earlier and what it received. 
+This overall setup compensates for the LLM’s absence of persistent memory.  
+<!--The LLM will know how a query fits into what has occurred earlier.
+It also provides opportunities for the LLM to carry out activities on the host
+machine.-->
 
-<p>If a query to the LLM is being sent because the LLM instructed itself to do something, the
+<!--
+If a query to the LLM is being sent because the LLM instructed itself to do something, the
 script includes that information inside the message, the part that comes after the system preface.  
-The LLM will then know how a query fits into the overall system status and
-interaction history. 
+-->
 
-<!--<p>The script, having been programmed with workflow, will place 
+<!--
+<p>The script, having been programmed with workflow, will place 
 the LLM in a situation that produces autonomy when the two entities 
 (script and LLM) work in tandem. 
 The LLM knows, because of the system preface 
@@ -253,35 +266,30 @@ system.  The system preface is followed by the states, memory,
 interaction history, context, and instructions.  
 -->
 
-<p>
-This overall setup compensates for the LLM’s absence of persistent memory.  
-It also provides opportunities for the LLM to carry out activities on the host
-machine.
-
 <h3> Host Commands List </h3>
 
 <p> In each query, the script will provide the LLM a list of functions
 that can be executed on the host machine.  The LLM’s response to the
-script will usually contain commands, and the script then executes those
+script will usually make use of these commands and the then script executes those
 functions.  In many cases, the script will send a follow-up message
 to the LLM that includes the results of each executed command, so that
-the LLM can decide what step to take next.  If code was generated, for
-example, the script will return the results after executing it.
+the LLM can decide what step to take next.  If code was generated for
+example, the script will return the results so that the LLM can
+decide whether the results were successful or what should happen next.
 
-<p>In such a system there can be commands for adding code to the script too.
+<p>In such a system there can be some commands for adding code to the script too.
 This allows the LLM to add custom instructions to the script’s commands list
-as it determines necessary for its goals. 
+as it determines necessary for its goals.
 <p>
-Through sending commands to the host script, the LLM can search and browse the web, execute terminal
-commands on the host machine, add code to a running program, evaluate
-the results of having added code, and so on.  
+Through sending commands to the host script, the LLM can search and 
+browse the web, execute terminal commands on the host machine, 
+add code to a running program, evaluate the results of having added code, 
+and so on.  
 
 <p>In some variations the LLM is able to add to or modify the script as long
 as it retains the system preface for stability and guidance.  This will
 allow it to self-modify as a system, spin off variations of itself, and
-progress beyond its initial conditions, perhaps even building out
-an alternative AI technology that is more optimized than the initial
-conditions.
+progress beyond its initial conditions.
 
 <h3> Continued Interactions </h3>
 

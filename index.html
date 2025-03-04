@@ -191,191 +191,64 @@ ol li ol li{ font-weight:normal; }
 <!--<img src="img/NCTChineseMetalDragon.webp" width="100%">-->
 
 <hr>
+  <header>
+        <h1>Build An Autonomous AI System Using An LLM</h1>
+        <p><a href="https://noctivagous.github.io">noctivagous.github.io</a></p>
+    </header>
 
-<h2 style="font-size:40pt"> Build An Autonomous AI System Using An
-LLM </h2>
+    <section>
+        <h2>An LLM Can Generate Its Own Instructions</h2>
+        <p>The obstacle to building truly autonomous entities out of LLMs is the absence of persistent memory and state. The LLM can only process a query, send a stream of output, and then stop. It keeps track of nothing internally. The well-known AI chatbot services are simply workarounds for this deficiency; after a query is submitted by the user, behind the scenes the entire conversation history has to be attached as a summary. The AI chatbot services give a false impression that an LLM can chat naturally on its own when, in reality, the LLM has to be surrounded with a lot of traditional software to produce interactive communications.</p>
 
-<p> noctivagous.github.io <p>
+        <p>This has limited the application of recent AI to certain categories, mostly chatbots and the so-called “agent” programs that carry out specific and predefined tasks. Both programs are structured in the same way: they interface to the LLM with external state, logic, tools, and other resources to compensate for the LLM’s gaps.</p>
 
-<h3>An LLM Can Generate Its Own Instructions</h3>
+        <p>A self-directed AI is one that can adapt to the world, determine its own course, and change itself independent of supervision and direct instructions. This level of autonomy is widely regarded as reliant on future advancements in AI technology.</p>
 
-<p> Although LLMs exist without persistent memory or state, they can
-serve as the foundation for autonomous AI systems anyway, in spite of
-these deficiencies.
+        <p>But, in fact, there is a technique that will allow the current LLM to drive an autonomous AI system right now, and any software developer can build such a system with existing APIs and tools. It begins with the routine of an accompanying script or program that compensates for the LLM’s lack of state and persistent memory. However, there is a key shift to make afterwards: the LLM will determine large portions of the system prompt and query message in a feedback loop. At the same time, the LLM will follow guidelines provided by the script for generating the prompts. The LLM’s responses to the script will also reflect the software design of the script.</p>
 
-<ol> <li><b>An LLM can generate instructions for itself.</b>  The
-script that sends queries to an LLM can use the LLM’s output for
-making the next query and its system prompt contents. <ul> <li> By
-itself, this would produce a tight feedback loop.  </ul> <li> 
-<b>The next step is to build out the script with workflow,
-states, and memory. </b> The script needs to manage these resources 
-for the LLM.  The script will tell the LLM how to interact with it
-each time so that queries amount to exchanges and sessions.
-</li> <ul> <li> The script will then exist as a 
-designed structure for governing an autonomous system, one
-that is acknowledged for what it is by the LLM in each response. 
-The two entities (script and LLM) work in tandem.  </li>
-</ul> </ol>
+        <p>In this setup, the script acts as a sort of secretary for the LLM, tracking data it generates, processing instructions, and enabling continuous exchanges. The motion of the system results from LLM’s text-generating and analytical capabilities while the script keeps everything going. In this way the two are like a duo. The LLM can command the script. The script will serve as the receptive structure. Part of what makes the system autonomous is that the LLM can orchestrate plans to improve the system. It can add capabilities to the script, and have it carry out tasks.</p>
 
-<p><!--
-In summary, an LLM can generate large portions of the system prompt and
-user message that it sends to itself by way of a script. The script mediates and
-sets up follow-up requests on behalf of the LLM. 
-Additionally, the script informs it of the utilities it can access on the host machine.
--->
-In this setup, the script is like a secretary for the LLM, recording results 
-and keeping track of everything the LLM needs to know.  The script always 
-tells the LLM what its purpose is.
-<!-- The LLM accommodate, the workflow and states
-built into the script.-->  <!--  -->
+        <p>What differentiates this setup from an agent, of course, is that there will be tasks that the LLM devises that were never included in the system’s initial setup. It will also self-determine how to carry them out, unlike an agent. Given its independent role, the LLM’s activity should be guided by a strong set of overarching objectives and philosophical code, inserted into each query by the script.</p>
 
+        <p>As to how the software developer wishes the autonomous system to exist, that is quite open-ended. One system might only act as a bot that attempts to contribute helpful code to a software project after researching and testing. Another might roam the Internet in search of achieving a set of technological advancement goals.</p>
+    </section>
 
-<h3> The System Preface </h3>
+    <section>
+        <h2>Summary of The Technique For Making Self-Modifying AI Systems</h2>
+        <ol>
+    <li>
+        <strong>The LLM can be told to generate instructions for itself.</strong> Mediated by a script, the LLM can generate large portions of the system prompt and user message that it sends to itself. Given direction by the script, the LLM will generate its own user messages and system prompts. The script will arrange the query cycles.
+        <ul><li>By itself, this would produce a tight feedback loop.</li></ul>
+    </li>
+    <li>
+        <strong>The next step is to build out the script into a larger program with workflow, states, and memory</strong> so that there is a complete system to guide and structure interactions between the LLM and script.
+        <ul>
+            <li>The script will include text in each query that describes a session protocol, for the LLM to maintain back and forth communication with the script. This way the LLM can continue an interaction with the script for a given task or queue a separate one on a different thread. The two entities (script and LLM) work in tandem.</li>
+            <li>The script will tell the LLM what has happened so far in the session (the interaction history), what the current objectives are for the system, and what the conditions are regarding progress for each goal. After receiving a response, the script will follow the LLM’s instructions. The script records what happens over the course of interactions, it stores data in its databases, and it retrieves data for the LLM when needed.</li>
+            <li>The LLM will send commands that control the script’s tools and resources, and it can request information from the script before making a decision.</li>
+            <li>The software design of this script makes the entire system responsive to the world. For example, when the script receives an external message (e.g., an e-mail or text message), this information will be placed on the script’s event queue. When the event is processed off the queue, the script will send the event data, including the external message text, to the LLM as part of a new query. The LLM will, in its response, instruct the script to place an event on the event queue that sends an e-mail reply. It includes, for the script, the generated reply text that will be placed on the event queue.</li>
+            <li>In this way, traditional software engineering effects a system that is autonomous and capable of communicating with the outside world.</li>
+            <li>The LLM, knowledgeable about the overall system, will know what resources to query from the script in order to respond to an outside communication, like an e-mail. The event queue allows for processing all kinds of external input. In the case that a communication (e.g., e-mail) spurs the LLM to make changes to its plans, it will be able to revise the goal list that is stored and sent by the script. It will be able to deliberate and investigate what was said by the sender over multiple interactions with the script. This can occur to the extent that the LLM could even send an e-mail to a different person somewhere else to ask for additional information and only act upon getting an adequate response.</li>
+            <li>In this setup, the script is like a secretary for the LLM, recording results and keeping track of everything the LLM needs to know. It is like a receptionist accepting commands. It is the gateway for the computing resources on the host machine. The script always tells the LLM what its purpose is, what it can do, and what is happening.</li>
+        </ul>
+    </li>
+</ol>
 
-<p>
-In each query, the script should provide a description of
-the autonomous system for the LLM in an unchanging section called 
-the system preface. This system preface is placed just in front of the memory, states and other dynamic contents of
-the query that is managed by the script.  This orients the LLM each
-time, explaining to it how it is being utilized for autonomous AI.
-The system preface includes essential information about the interaction protocol 
-that the script recognizes, so that the LLM can send commands to the script in
-the response, including to continue an exchange.
+    </section>
 
-<h3>Interaction History</h3>
-<p>
-The interaction history will tell the LLM what
-it asked for earlier and what it received. 
-This overall setup compensates for the LLM’s absence of persistent memory.  
-<!--The LLM will know how a query fits into what has occurred earlier.
-It also provides opportunities for the LLM to carry out activities on the host
-machine.-->
+    <section>
+        <h2>The System Preface</h2>
+        <p>In the first section of each query, the script will provide a description of the autonomous system for the LLM in an unchanging section called the system preface. This system preface is placed in front of the dynamic contents of the query— all that is managed by the script (e.g., the memory, states, interaction history, etc.). It orients the LLM each time, explaining how it is being utilized to make an autonomous AI system and also detailing how it should structure its response, so that it can play that role. After telling the LLM that it is being used for an autonomous system in conjunction with a script, the query message will include descriptions of two protocols:</p>
+        <ul>
+            <li>Session Protocol - This allows the LLM to continue the back-and-forth communication (which then generates an interaction history tracked by the script).</li>
+            <li>Host Commands - A list of available instructions that the LLM can send to the script to carry out tasks.</li>
+        </ul>
+    </section>
 
-<!--
-If a query to the LLM is being sent because the LLM instructed itself to do something, the
-script includes that information inside the message, the part that comes after the system preface.  
--->
-
-<!--
-<p>The script, having been programmed with workflow, will place 
-the LLM in a situation that produces autonomy when the two entities 
-(script and LLM) work in tandem. 
-The LLM knows, because of the system preface 
-that precedes the rest of the query, how it should respond so that it can play the main part of an autonomous
-system.  The system preface is followed by the states, memory,
-interaction history, context, and instructions.  
--->
-
-<h3> Host Commands List </h3>
-
-<p> In each query, the script will provide the LLM a list of functions
-that can be executed on the host machine.  The LLM’s response to the
-script will usually make use of these commands and the then script executes those
-functions.  In many cases, the script will send a follow-up message
-to the LLM that includes the results of each executed command, so that
-the LLM can decide what step to take next.  If code was generated for
-example, the script will return the results so that the LLM can
-decide whether the results were successful or what should happen next.
-
-<p>In such a system there can be some commands for adding code to the script too.
-This allows the LLM to add custom instructions to the script’s commands list
-as it determines necessary for its goals.
-<p>
-Through sending commands to the host script, the LLM can search and 
-browse the web, execute terminal commands on the host machine, 
-add code to a running program, evaluate the results of having added code, 
-and so on.  
-
-<p>In some variations the LLM is able to add to or modify the script as long
-as it retains the system preface for stability and guidance.  This will
-allow it to self-modify as a system, spin off variations of itself, and
-progress beyond its initial conditions.
-
-<h3> Continued Interactions </h3>
-
-<p> Many tasks the LLM takes on won’t be finished with just a single
-request and response. Since  the interaction protocol information is
-included in the system preface, the LLM knows how to continue the
-interaction with the script for a certain task until finished. This
-turns the script’s interactions with the LLM into a more complete system
-that is both autonomous and intelligent, as the LLM can continue
-interactions with the script for a task indefinitely, which means that
-it can carry out complex projects, like adding code to a program and
-evaluating the results, before deciding to move on to the next job.
-
-<p>
-Through sessions, the LLM can also undertake trial and error, storing
-conclusions it makes in the script's database by sending the script
-corresponding commands to do so. It can ask the script to look up
-knowledge that it had stored at some earlier point. So, for example,
-while at first the LLM might not have been given the capability to
-generate a live avatar, through the host script it can find a method on
-the web to do so.  It will go through the process of adding the
-capability on the host machine and then perhaps it will notify the
-system administrator that it can appear in avatar form. 
-<!-- Event loops inside the script will allow the autonomous AI to self-modify.-->
- It might add communication abilities and inform the system administrator that it can
-receive text messages or phone calls. 
-<!-- In terms of browsing hierarchical
-trees, all subsequent requests made by the LLM can explore a tree data
-structure. -->
-This is a cycle in which the system, adding code itself, can
-expand and revise the system. 
-
-<p>Sessions containing multiple back and forth give the LLM flexibility
-to tell the script to run errands and report the results.  
-It might tell the script to query an LLM for a specific utility purpose and return
-the compiled output.  This then allows the LLM to behave as
-if it is a director, delegating smaller tasks that are sent back to it
-as it carries out a certain job.
-
-<h3>Philosophical Direction for The LLM</h3>
-What the LLM chooses to do should not be left to the built-in tendencies of the LLM. 
-The LLM should be guided by philosophical objectives placed in the system preface 
-that precedes the rest of the query.  What the LLM assesses and how it assesses it should be guided
-both by the structure and workflow of the host program/script and the
-philosophical directives contained in the system preface. 
-
-
-<h3>Conclusion</h3>
-<p>To summarize, the LLM is
-told repeatedly what the system purpose, design, state, and memory are
-with each request.  Because it is given a list of commands, it can
-command the host script to do things in the response, including query
-for information. The program executes the commands sent by the LLM. In
-this feedback loop, the script keeps track of stored information that
-the static LLM cannot so that there can be an autonomous system.  Thus,
-a complementary arrangement can be built around the LLM to produce
-autonomous AI, today. The script compensates for what the LLM doesn’t
-have, letting it expand a system autonomously.
-
-<h3> Event Queue </h3>
-
-<p> How should the system process communication with the outside world?  It can make use of an
-existing software design called applications event loops. This basically
-means it will manage a stack of tasks to carry out that correspond to 
-incoming information and requirements for outgoing activity. 
-
-<h3> Storing Some Knowledge As Code And Flow Diagrams </h3>
-
-<p> For this autonomous AI system, the program may store certain kinds
-of knowledge as tested code or flow chart information, after undertaking
-trial and error.  Otherwise, the knowledge it stored would be limited to
-what is factual or immediately researched and observed.  Without storing
-lessons it learned, this autonomous AI system would have to construct a
-program for a specific purpose all over again each time or investigate
-something again.  Storing knowledge as a flow chart or workflow will
-give it a plan for how to approach certain obstacles and it can revise
-the flowchart or workflow when new information comes in or new
-strategies are applied.  It would store code in a database, for its
-knowledge database. Also, the AI, for example, might want to construct a
-set of utilities for generating code, to make its job efficient. Because
-there is a database, not all of the code it devised would have to be
-part of the running program.  Its own code would reside there.  This
-way, when copies of itself are spun off they can make their own
-modifications to the larger database.
-
-NOCTIVAGOUS
+    <footer>
+        <h3>Philosophical Direction for The LLM and System Design</h3>
+        <p>What the LLM chooses to do should not be left to the built-in tendencies of the LLM. The LLM should be guided by philosophical objectives placed in the system preface that precedes the rest of the query.</p>
+    </footer>
 
 
 
@@ -389,6 +262,7 @@ time.</p>
 
 
 
+<!--
 <h2>System Components for Our Self-Directed System</h2> <ul>
 <li><b>Know-how (AI)</b></li> <li><b>Course of Action</b>: Guided by
 ancient Chinese science, provided by the AI while also always embedded
@@ -449,7 +323,7 @@ can be adjusted by the system in play.</p>
 <h3>Initial Purpose</h3> <p>As always its initial purpose will be
 provided so that it is not an aimless system.</p>
 
-
+-->
 <hr> <p>Web Apps</p> <h2><a
 href="/calligraphy-practice-maker/">Calligraphy and Lettering Practice
 Sheet Generator</a> - Make practice sheets</h2>

@@ -1,0 +1,72 @@
+LLM Diff Command Specifications And Prompt
+
+
+Instead of regenerating the entire document in response to changes, 
+as chatbots currently do, we instruct a language model to produce a compact set of modification
+commands that describe how to update the existing document.
+
+A diff-based approach for document modifications can be much more
+efficient than regenerating the entire document every time a change is
+made. By using targeted commands (such as inline text replacement or
+inserting text at specific line numbers), the system can apply only the
+necessary modifications, reducing both processing time and the chance
+for introducing new errors.
+
+These commands allow for targeted updates at the character or line
+level.
+
+The language model can play the role of a change suggester that
+outputs granular edit operations. These operations fall into categories
+such as inline text replacement, line insertion, text deletion, block
+movement, and full line replacement.
+
+Our goal is to minimize unnecessary computation, reduce output noise,
+and streamline document updates while maintaining full control and
+traceability over each modification.
+
+----------------------
+
+LLM Prompt:
+
+
+You are given a document and a set of modifications to be applied using
+diff commands. Your task is not to regenerate the whole document, but to
+output a list of specific diff commands that represent the required
+changes.
+
+
+The available commands are:
+
+1. Inline Text Replacement Command: inline_replace Parameters: -
+line_number: The line where the change occurs - start_index: The
+starting character index for the replacement - end_index: The ending
+character index for the replacement - new_text: The text to replace the
+original segment
+
+2. Insertion Command: insert_text Parameters: - line_number: The line
+where the insertion occurs - position: The character index at which to
+insert the new text - new_text: The text to be inserted
+
+3. Deletion Commands: - delete_text: For deleting a portion of a line
+Parameters: line_number, start_index, end_index - delete_line: For
+deleting an entire line Parameters: line_number
+
+4. Movement Command: move_text Parameters: - start_line: The first line
+of the block to be moved - end_line: The last line of the block to be
+moved - destination_line: The line after which the block should be
+inserted
+
+5. Replace Line Commands: - replace_line: For replacing the content of a
+single line Parameters: line_number, new_text - replace_lines: For
+replacing a range of lines Parameters: start_line, end_line, new_text
+
+When given an instruction, respond only with the corresponding diff
+commands using the formats above. For example, if asked to replace
+characters 10 to 20 on line 5 with "updated text", you should respond
+with:
+
+    inline_replace(line_number=5, start_index=10, end_index=20,
+    new_text="updated text")
+
+Keep your responses succinct and only output the diff commands without
+additional commentary or full document regeneration.

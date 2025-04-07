@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Ocelot Programming Schema - XML Representation for a Rendered Code System
+
+  This XML Schema (XSD) defines the structural elements of a programming language 
+  whose code is stored in XML format and rendered visually in an editor. 
+
+  Key concepts:
+  - Code is composed of typed containers (e.g., boolean expressions, arithmetic expressions).
+  - Expression types, function definitions, control flow, loops, and data structures are 
+    encoded semantically in XML.
+  - The visual editor renders these XML blocks into interactive code, 
+    potentially using distinct parentheses, frames, or other UI elements 
+    based on the element's role or category.
+  - Initial code document schema will reflect current plain-text-based programming
+  systems and allow for upgrading them because of the XML schema.
+  - The long-term goal is to transcend the limitations of the .TXT file format for code,
+  which is discussed at the end of this document, "Objective of the Project".
+   - The XML code document provides the foundation for the code
+to be viewed in many contexts and transformations.  It allows processing it
+for smooth navigation by the programmer. The same project, because its documents
+are made of XML, can be viewed in a page layout, an interactive tree map, or XR.
+   - The code itself can weave interactive GUI controls, states, patch-based programming, 
+   and rich text with procedural code because XML is the document's underlying structure.
+
+  Goals:
+  - Ensure semantic correctness through type-specific structures.
+  - Provide a format that enables robust editor tooling and type-safe manipulation.
+  - Create a foundation that matches core Python features while supporting 
+    future extensibility (e.g., pattern matching, async constructs, decorators).
+
+  This file is intended to be readable by future AI and humans alike, 
+  and may be compiled to support visual programming environments.
+
+  Author: Noctivagous / Pratt
+  Project: Ocelot Programming System
+
+
+
+  Remaining Subjects To Include in Ocelot Programming Schema
+  ----------------------------------------------------------
+
+  The following features are not yet implemented in this schema but are important
+  for achieving full compatibility with Python-like language constructs and modern
+  programming capabilities. These elements should be added with semantic clarity,
+  maintainability, and extensibility in mind.
+
+  === Control Flow ===
+  - <break/>           : Exit the nearest enclosing loop.
+  - <continue/>        : Skip to the next iteration of a loop.
+  - <pass/>            : No-op placeholder in blocks.
+
+  === Function Enhancements ===
+  - <lambda>           : Anonymous function expressions.
+  - param@default      : Allow default parameter values in function signatures.
+
+  === Exception Handling ===
+  - <try>              : Begin a try block.
+  - <except>           : Catch specific or general exceptions.
+  - <finally>          : Cleanup code that always runs.
+  - <raise>            : Raise an exception.
+
+  === Object-Oriented Constructs ===
+  - <class name="..."> : Define a class.
+  - <method>           : Function bound to a class.
+  - <field>            : Member variable of a class.
+  - <self>             : Reference to the current instance.
+
+  === Imports ===
+  - <import module="..."/>            : Import an entire module.
+  - <fromImport module="..." names="..."/> : Import specific names from a module.
+
+  === Comprehensions ===
+  - <listComprehension>              : Inline list generation with filtering.
+  - <dictComprehension>, <setComprehension> : Similar for other types.
+
+  === Decorators ===
+  - <decorator name="...">           : Modify function or class behavior.
+
+  === Pattern Matching (Python 3.10+) ===
+  - <match>                          : Match expressions against patterns.
+  - <case>                           : Individual matching arms.
+
+  === Async and Await ===
+  - <asyncFunction>                  : Define an asynchronous function.
+  - <await>                          : Await the result of an async operation.
+  - <asyncFor>, <asyncWith>         : Asynchronous versions of control structures.
+
+  === Context Managers ===
+  - <with>                           : Manage resources using context managers.
+  - <as>                             : Assign resource to a variable.
+
+  === Miscellaneous ===
+  - <assert>                         : Runtime assertion checks.
+  - <yield>, <yieldFrom>            : Generator value emission.
+  - <global>, <nonlocal>            : Declare scope behavior of variables.
+  - <annotation>                    : Type hints and metadata.
+
+  These constructs will expand the XML language into a full-featured representation
+  of structured, visual, and semantically rich code aligned with modern Python features.
+-->
+
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Expression Types -->
+  <xs:simpleType name="expressionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="boolean"/>
+      <xs:enumeration value="arithmetic"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="tuple"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Expression -->
+  <xs:complexType name="expressionTypeDef">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="expressionType" use="required"/>
+  </xs:complexType>
+
+
+<!-- Logical AND -->
+<xs:complexType name="andType">
+  <xs:sequence>
+    <xs:element name="operand" type="xs:anyType" minOccurs="2" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Logical OR -->
+<xs:complexType name="orType">
+  <xs:sequence>
+    <xs:element name="operand" type="xs:anyType" minOccurs="2" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Logical NOT -->
+<xs:complexType name="notType">
+  <xs:sequence>
+    <xs:element name="operand" type="xs:anyType"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- IN operator -->
+<xs:complexType name="inType">
+  <xs:sequence>
+    <xs:element name="element" type="xs:anyType"/>
+    <xs:element name="container" type="xs:anyType"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- IS operator -->
+<xs:complexType name="isType">
+  <xs:sequence>
+    <xs:element name="left" type="xs:anyType"/>
+    <xs:element name="right" type="xs:anyType"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Add to top-level elements -->
+<xs:element name="and" type="andType"/>
+<xs:element name="or" type="orType"/>
+<xs:element name="not" type="notType"/>
+<xs:element name="in" type="inType"/>
+<xs:element name="is" type="isType"/>
+
+
+  <!-- Control Flow Types -->
+  <xs:simpleType name="branchingType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="if"/>
+      <xs:enumeration value="switch"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Control Flow -->
+  <xs:complexType name="branchingControlFlowType">
+    <xs:sequence>
+      <xs:element name="expression" type="expressionTypeDef"/>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:sequence>
+          <xs:element name="then" type="xs:anyType"/>
+          <xs:element name="else" type="xs:anyType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element name="case" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="statement" type="xs:anyType"/>
+              </xs:sequence>
+              <xs:attribute name="value" type="xs:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="default" minOccurs="0" type="xs:anyType"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="type" type="branchingType" use="required"/>
+  </xs:complexType>
+
+  <!-- Function Definition -->
+  <xs:complexType name="functionType">
+    <xs:sequence>
+      <xs:element name="parameters" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="param" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attribute name="name" type="xs:string" use="required"/>
+                <xs:attribute name="type" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="body" type="xs:anyType"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Function Call -->
+  <xs:complexType name="callType">
+    <xs:sequence>
+      <xs:element name="arg" type="xs:anyType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Root Elements -->
+  <xs:element name="expression" type="expressionTypeDef"/>
+  <xs:element name="branchingControlFlow" type="branchingControlFlowType"/>
+  <xs:element name="function" type="functionType"/>
+  <xs:element name="call" type="callType"/>
+
+<!-- Assignment -->
+<xs:complexType name="assignmentType">
+  <xs:sequence>
+    <xs:element name="expression" type="expressionTypeDef"/>
+  </xs:sequence>
+  <xs:attribute name="var" type="xs:string" use="required"/>
+</xs:complexType>
+
+<!-- Return -->
+<xs:complexType name="returnType">
+  <xs:sequence>
+    <xs:element name="expression" type="expressionTypeDef" minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Loop Types -->
+<xs:simpleType name="loopType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="for"/>
+    <xs:enumeration value="while"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<!-- Loop -->
+<xs:complexType name="loopTypeDef">
+  <xs:sequence>
+    <xs:element name="init" minOccurs="0" type="assignmentType"/>
+    <xs:element name="condition" type="expressionTypeDef"/>
+    <xs:element name="step" minOccurs="0" type="assignmentType"/>
+    <xs:element name="body" type="xs:anyType"/>
+  </xs:sequence>
+  <xs:attribute name="type" type="loopType" use="required"/>
+</xs:complexType>
+
+<!-- New Top-Level Elements -->
+<xs:element name="assignment" type="assignmentType"/>
+<xs:element name="return" type="returnType"/>
+<xs:element name="loop" type="loopTypeDef"/>
+
+<!-- List -->
+<xs:complexType name="listType">
+  <xs:sequence>
+    <xs:element name="item" type="xs:anyType" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Tuple -->
+<xs:complexType name="tupleType">
+  <xs:sequence>
+    <xs:element name="element" type="xs:anyType" minOccurs="1" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Dictionary -->
+<xs:complexType name="dictType">
+  <xs:sequence>
+    <xs:element name="entry" maxOccurs="unbounded">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="key" type="xs:anyType"/>
+          <xs:element name="value" type="xs:anyType"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="indexType">
+  <xs:sequence>
+    <xs:element name="target" type="xs:anyType"/>
+    <xs:element name="key" type="xs:anyType"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:element name="list" type="listType"/>
+<xs:element name="tuple" type="tupleType"/>
+<xs:element name="dict" type="dictType"/>
+<xs:element name="index" type="indexType"/>
+
+
+
+<!-- Comment Element  - Inline developer notes or explanations. Optional MIME.
+  - Allows embedding comments anywhere in the XML document. 
+  - Supports different MIME types (text/plain, text/markdown, text/html, etc.).
+  - Easily skippable by parsers or editors that ignore non-executable metadata.
+
+-->
+<xs:complexType name="commentType">
+  <xs:simpleContent>
+    <xs:extension base="xs:string">
+      <xs:attribute name="mimeType" type="xs:string" use="optional" default="text/plain"/>
+    </xs:extension>
+  </xs:simpleContent>
+</xs:complexType>
+<xs:element name="comment" type="commentType"/>
+
+<!-- Example Usages in XML Code 
+<comment mimeType="text/plain">A plain comment.</comment>
+<comment mimeType="text/markdown">
+**Note:** This function returns a Fibonacci number.
+</comment>
+<comment mimeType="text/html">
+  <p>This is <strong>formatted</strong> with <em>HTML</em>.</p>
+</comment>
+
+-->
+
+
+<!-- Documentation Element 
+- Formal description of code elements (functions, params).
+- Simplifies doc generation (e.g., XML → Markdown, HTML).
+- Helps tools distinguish runtime notes from API contracts.
+-
+->
+<xs:complexType name="documentationType">
+  <xs:simpleContent>
+    <xs:extension base="xs:string">
+      <xs:attribute name="mimeType" type="xs:string" use="optional" default="text/markdown"/>
+    </xs:extension>
+  </xs:simpleContent>
+</xs:complexType>
+
+<xs:element name="documentation" type="documentationType"/>
+
+<!--
+Example: Documenting a Function
+<function name="add">
+  <documentation mimeType="text/markdown">
+    Adds two numbers and returns the result.
+
+    - `a`: The first number
+    - `b`: The second number
+  </documentation>
+  <parameters>
+    <param name="a" type="int"/>
+    <param name="b" type="int"/>
+  </parameters>
+  <body>
+    <expression type="arithmetic">
+      <add>
+        <var>a</var>
+        <var>b</var>
+      </add>
+    </expression>
+  </body>
+</function>
+-->
+
+
+
+</xs:schema>
+
+<!--
+
+Objective of the Project
+----------------------------------------------------------
+
+Computer code files can be converted from plain text into a modern document format, allowing many features to be provided to programmers that are consistent with the present computing environment. Important to note, this will change the interface dynamic of the code editor. To ensure that the editing of a code document is speedy— as fluid as the editing of plain text code today— a user interface that is different from simple mouse-clicking of onscreen controls 
+
+Computer Code Is Currently Based on An Antiquated File Format; It Is Confined to 1970s Terminal Type
+
+Though AI has introduced a new paradigm to the world, there is still much about computers that needs to be upgraded. The paradigm shift that AI produced came about through code that is formed out of the plain text (.TXT) file format, something too primitive for complex, modern software development. Computer code files should now be made out of structured data, with their contents rendered in the editor window, so that the presentation of code can become more capable and organizable. For a single file, a programmer may end up scrolling up and down for 50 or more feet because there is no page layout possible in .TXT to condense and organize the information.
+
+The uses of code today have outgrown the confines of 1970s terminal type and upgrades must occur to the file format to accommodate the greater size and complexity of software being produced compared to the 1970s. There can be no surprise that security problems are common: the field of software engineering is using something outdated and primitive for the situation, which is source code that is written and edited in plain text. Word processing went beyond monospaced type but computer code did not follow. Too many software engineers have come to believe that this is because there is something timeless about .TXT for writing code. But there is actually an opposite trend unfolding today. There is a slow movement away from from the limitations .TXT imposes, towards presentations of code that can grapple with growing software complexity. There is no need to hold onto notions that .TXT is synonymous with code; in practice, the unrecognized fact is that text is now re-interpreted by IDEs and code editors to make it feel more modern, as if it can provide the GUI features that a structured data document or application document would naturally support. Even though computer code remains a basic stream of characters, code editors are trying to make it behave as if it has been modernized. Plain text has been stretched far beyond its natural limits. All recent trends in software development environments are seeking this outcome, which is the modernization of code's interactivity by placing IDE functional veneer on top of plain text. Instead of upgrading the file format of code underneath, to structured data, so that it inherently supports these features, plain text is instead declared as unsurpassable and these extra IDE features placed on top.
+
+Of course the software engineers instinctively seek an upgrade to code's interactivity, as they are using code in larger volumes and in more challenging ways than in previous decades. When IDE vendors add features to code editors with elaborate strategies to make interactivity work for plain text, they resist acknowledging what a contraption they have built now. What they need to do is going beyond .TXT to an application document and make this a campaign. When code's file format is upgraded, advanced interactivity will be providable in a proper way, which then will open the door to improved forms of code and programming systems. The software engineering community is not awakening to the absurdity of the situation that this is plain text from the 1970s and it should never be treated as if it naturally supports features beyond the insertion of type.
+
+Initially, the upgrades were just about coloring the text in the early 1990s. Now there are interactive, collapsible code sections and generated image maps of the file. The notebook code editors (e.g. Jupyter Notebook) intended for data science and developing AI place the Python programming language (plain text) into an interactive format, providing an input prompt with graphical output responses, but this is actually just a well-constructed set of workarounds for inherent limitations; Python itself has not been upgraded to behave like this and it doesn't normally support this usage. All the same, after this upgrade to Python code was implemented, the interactive code notebook became an essential tool of the AI community. It is a demonstration that when code's form is actually upgraded, even in this superficial way, the results will provide immense benefits. It's just that these notebooks came about indirectly as a result of specific objectives; the people working in data science just wanted Python to behave in a certain way for their own particular needs and they weren't thinking about the broader implications, which is that if they want Python to behave in a more interactive way and also produce graphical output they have actually run up against the walls of how typewritten code has conventionally existed for making and sketching out software. The notebook code editors (e.g. Jupyter Notebook) intended for data science and developing AI place the Python programming language (plain text) into an interactive format, providing an input prompt with graphical output responses, but this is actually just a well-constructed set of workarounds for inherent limitations; Python itself has not been upgraded to behave like this and it doesn't normally support this usage. All the same, after this upgrade to Python code was implemented, the interactive code notebook became an essential tool of the AI community. It is a demonstration that when code's form is actually upgraded, even in this superficial way, the results will provide immense benefits. It's just that these notebooks came about indirectly as a result of specific objectives; the people working in data science just wanted Python to behave in a certain way for their own particular needs and they weren't thinking about the broader implications, which is that if they want Python to behave in a more interactive way and also produce graphical output they have actually run up against the walls of how typewritten code has conventionally existed for making and sketching out software.
+
+Meanwhile, in mainstream software development, IDEs are increasingly providing enhancements to code that improve its interactive capabilities as well, to provide greater control and navigation. But to do this, they have to project non-existent structure onto the plain text (.TXT) code for the benefit of the user: they analyze it constantly in the background to make collapsible code sections with GUI arrow controls, they generate dropdown menus at the top of the window with organized sections of the file's contents, and they display code completion popover windows. They extracted this information by processing a basic file of plain text. In other words, the common IDE has begun to treat a single file of code (.TXT) as a conventional application document (e.g. XML) in the last decade, which is a very hacky activity, but the phenomenon is happening in an unrecognized way and it is a reaction to the growing problem that .TXT does not scale for larger amounts of code. The code editor undertakes user interface gymnastics with this stream of ASCII characters to implement all of the modern code editing features that appeared (such as the mini maps that now sit to the side) and when those features are added they are a consequence of how code is more complex than before. This is why there has to be a retrofitting, like placing beams and columns in an old building. That retrofitting would be, to begin with, the onscreen rendering of current code syntax as it looks today by parsing files made out of XML or other markup, to replace .TXT.
+
+The most honest picture of how code exists today is available by opening up a file in a basic text editor like Microsoft's Notepad.  Everything else code can offer the software engineer today that is interactive is actually a hack placed on top, including keyword coloring (ASCII-based code, of course, provides no coloring data in the plain text file data). IDEs and the software engineering community are avoiding the most important task a software engineer would take up in any other situation, which is to move up to an application document file format for each file of code. Otherwise, the bizarre advances continue to play out, the hot-rodding of .TXT just to keep it around the primary medium of computer programming because programmers are worried that a substantial upgrade won't fit into what exists now. As we just said though, from the outset nothing has to change that will break how people write software because it will start with just a conversion from .TXT to an XML-based (or other markup document).
+
+When computer code's file format is upgraded to a document file format— comprised of markup like XML— and the contents are rendered inside the code editor from the XML (no different from how a web page is rendered from its HTML), the capabilities available to the programming language designers will become much broader, in many directions, from lines of code that contain multiple rows to diagrams that describe complex processes. They won't necessarily start by changing code in dramatic ways but they will actually be able to do that. It will be possible to mix node-based programming and procedural code inside the same document, which is valuable flexibility for the programmer. There will be a meaningful job for the graphic designer to assist in the layout and appearance of code documents, for the first time. A file of code will inherently permit generating more than one representation of its data because its data is made out of markup, but this will be natural to implement whereas it would be rough job to make this for today's .TXT-based code.
+
+Many benefits will emerge when code is finally converted to a formal document format from the ground up, in many different areas, including a leap in parseability by the compilers and the IDEs, as they will be parsing structured data like XML instead of plain text. Plain text carries much ambiguity for live parsing of code and so the analyzers are not always accurate when just one character is off; deleting just one curly brace can totally confuse the compiler.  When code is finally translated into a document format, which will support a live review of code naturally, the quality of users' experience with code will improve greatly and most typographic mistakes will be preventable that halt compilation (such as deleting a single character or omitting a semicolon). Many features will become feasible that no one would want to try with plain text today, such as the ability to survey a project of code in the form of a map or schematics overview.  It will be possible to zoom in and out of code just like CAD because the code files will have formal structure inside them.
+
+Especially if the code files are made out of XML, the ability to add attributes to the underlying markup will take computer programming languages to a new level. Whatever someone wants to render from the XML will specify what code can do, not merely what is typed out one text character at a time. A function will not just show up in the markup as <function> but allow the insertion of custom attributes inside the <function> XML element that provide for much broader configuration, rendered for the programmer code file. In addition, an individual line of code will be more powerful because it can contain more complex statements, permitting math notation, A section of the document can be made out of graphical components and even allowing interactive controls natively. Assigning array object variables to interactive data tables will be possible and this is something people need today.  A 3D object will be assignable to a 3D model viewer displaying the object inside the line of code. An object variable with many settings will be assignable to a tab view control that has many configuration parameters for that object and it will appear that with GUI settings inside the document, in the line of code.   A spline object variable will be assignable to a spline editor control, where it can be edited inside the line of code. In the future, the programmer would be able to supply his own editors like this.
+
+The upgrade of code's file format means that many scenarios will be easily described in terms of conditions, rules, states, etc. because computer code's presentation capabilities will exist beyond .TXT. With all of these newer features provided in code, existing software in use will be relatively easy and fast to rewrite and when they are redone they will have more available in them.
+
+Resistance to changing the file format of code and modernizing it often comes out of a lack of understanding of the problems that result from keeping .TXT as the file format today, and addressing that starts with some discussion about graphic design, a topic hardly ever paired with software engineering. For the graphic designer, though not necessarily the software engineer, once today's computer code is revealed as completely tied to the raw .TXT file format, all of the feature differences discussed among the programming languages are taking place inside a tiny frame of view, which is what can be typed into the .TXT file format, a sequence of ASCII or Unicode characters. The graphic designer knows immediately how limiting this is because, to begin with, the means of dividing information on the page amounts to manually-typed line breaks, white space (tabs and spacebar), and nothing more. Consider that in some programming languages, functions start and end with the keywords "define" and "end" while in most others (C++, Java, C#) there are beginning and ending curly braces. To the graphic designer, all of this is using typographic characters to establish box boundaries. The result is a mess of curly braces scattered down the page. The only provided way to keep code tidy is through the tab key and this has no effect on how challenging it can be to track all of the nested curly braces and parentheses. It's too primitive of a situation. There is only a vertical division of information (line breaks between sections of code) in plain text, and nothing can flow horizontally.
+
+In a programming language that is not constrained by .TXT, there will be no typing out of beginning and ending curly braces just to establish the box boundaries of a body of code. This a task the software engineer shouldn't have to deal with, the maintenance of box boundaries. Instead, the contents of a function (or other code section) will be enclosed in a graphical, bordered box, as the file of text will no longer be .TXT but rendered from a document format (e.g. rendered from XML). The bordered boxes (the containers for sections of code) will not only flow vertically as in plain text but will be flowable horizontally at the same time, like how a magazine layout has multiple columns. At that point, the focus of the user interface will move away from simple typing to a more complex dynamic. It will involve making use of interactive keyboard commands to control the layout and insertion of code, not typing out '{' or '}', and the IDE will begin to resemble a media production app, like a vector-drawing program or animation program, because the code will be modernized; the code document will offer modern software capabilities. The user interface principles will have to be more sophisticated than what is currently used for code, which is typing, and so discussed on this page are the bimodal control UI and other user interface concepts such as Noctivagous' npsurfer web browsing extension that demonstrates a UI for accessing a certain section of the screen quickly without the mouse. In short, future code interactivity should not rely on the mouse unless the mouse is used as part of the bimodal control UI. Reluctance to upgrading code is also frequently a result of apprehension by software engineers that the clicking mouse will be the focus instead of the much faster keyboard, which shows its strengths in the classic command line interface.
+
+The replacement of curly brace characters with bordered boxes brings with it broad-ranging opportunities in other areas of code and what a document of code can offer the software engineer, including interactive components in a line of code that have a lot of power and configuration built in. Promisingly, it opens the possibility of customization of the programming language itself; the ability to add features to the code document (through scripting and descriptions) will naturally make sense as a feature of programming, far more than if the code is plain text. The software engineer will be able to program his own interactive components that make up a line of code, tailored for his own project if necessary.
+
+Just this one change demonstrates how the features of any mainstream programming language are currently severely confined to what the .TXT file format provides, as .TXT cannot draw graphical boxes and so it cannot draw anything else and is stuck in the early days of mainframe computing. Speaking within the constraints of that primitive file format, it is a debate about what characters should define the bounds of a function (will it be curly braces, line breaks, or keywords?) and all similar personal preferences, such as whether a line should end in semicolon. But that kind of debate disappears when it is a graphical box enclosing the contents of a function. When a line of code is rendered from XML it doesn't need to have semicolons terminating it. Omitting a semicolon or removing a single curly brace won't break the entire project of code, as is currently the case.
+
+Thus, the design decisions that differentiate one programming language from another actually just exist within this limited and ubiquitous file format, plain text. Since it is so restrictive, having no structured data inside it and being a 1:1 monospaced rendering of the data contents of the file, what is actually the case is that the feature differences between programming languages are rather miniscule compared to the open vista that a document format will provide. The mainstream programming languages all currently exist within what characters .TXT accepts, but a document format will extend far beyond lines of monospaced, typewritten characters. A programming language can someday manifest as anything that involves a more graphical and interactive dynamic: it can include semiotical diagrams, images, multimedia, and a line of code can branch out into multiple lines. Importantly, the organization of the information on the page will finally include graphic design layout, with a more compact and readable distribution of information, resulting in far less scrolling.
+
+To the graphic designer it is deeply problematic that computer code always looks like an undifferentiated mass of multi-colored ASCII keywords, something exotic-looking to the lay public but actually mundane. When a code document, with markup underneath, is the medium, the process of entering code might continue to emphasize typing out text characters but the end result, after a given code keyword, command, or instruction is completed (not just “func” but also “pop”, “push”, etc.), would be transformed in the code document so that every keyword is provided its own unique symbol. An image variable referenced in the code will always have a symbol of an image to its left (🖼️imageVar) . The document would be far more legible at a glance with this one change. Every variable and object type present in the code should have a symbol preceding its typewritten name so that the page of code is legible at a glance. Different sections of code should be colored by their categories, displaying distinctive font and styled box boundaries. This is the sort of priority a typical software engineering team wouldn’t normally take on and it demonstrates the importance of emphasizing graphic design for the future of computer code and programming.
+
+Programming languages designed for application software development are more capable than a few decades ago, but not by much. Any progress has occurred inside the plain text file format. They haven't been upgraded in a comprehensive way that utilizes the new graphical capabilities of computers. It's all terminal type. To give an illustrative example that adds to the two shown above, an object variable should be assignable to an interactive vector field in the code editor. A UI control embedded in a line of code can do much more than alphanumeric type in complex situations, across a wide range of subjects. Instructions can someday be expressed semiotically, even, if graphics are embraced as elements inside a line of code. So far, there has never been a semiotical programming language system.
+
+When graphics are included, the resulting depth of command over the operations of a computer will not be matched by any current sequence of plain text. Small experiments have shown that this is much superior, it's just that there are doubts expressed by some over whether it can match the speed of editing plain text— in other words the user interface. We address this here. What seems like an insurmountable obstacle, making graphical code's interface comparable to plain text in editing power, is actually a matter of taking a different approach. In every single case, previous attempts abandoned too much of what was in active use in the practice of programming inside plain text and tried to come up with something foreign, which means that the code conventions did not match what people were trying to do when they program. Instead, Noctivagous' plan is to gradually add augmentations to plain text as it exists today. A little bit later, code can break free from plain text and sit inside its own document file format. (Already there are movements in this direction with Jupyter Notebook, just not for the code itself, only the output.) So, initially it is that UI and widgets additions are allowed inside a line of plain text code, just like right now when a color can be assigned to a color picker control. After a color picker has been used in code for a while, it is felt as missing when not available. In this way, graphical widgets and controls won't only be a matter of convenience. When they are placed into code, they will be able to summarize large sequences of computer instructions such that no one will want to go backwards to just typing out regular terminal type (monospaced type).
+
+The importance of this effort can be explained in the following. Producing a competing web browser engine that is as complete as Chromium or WebKit can't be done in a short period of time, and when this isn't possible it represents a dead end for software development. Those two software projects will never be unseated because there is little incentive to surpass them, as what is written from scratch with current programming languages will basically end up being the same in outcome. Even with AI programming assistants, this does not change because those engines have reached the ceiling of what plain text code will produce without an upgrade.
+
+It is possible to escape this dead end and it is by breaking from the fusion of computer code to the typewriter. For a major upgrade to happen, alterations like the above image have to occur, because code has to look more like the software it produces, not just raw, monospaced type. It has to be able to express complex operations in terms of signs and symbol someday. Computer science mindsets that refuse collaboration with graphic design won't suffice, then, as software development has stayed inside terminal type all this time. When code is upgraded, the initial subjects of concern turn out to be different; they will have to incorporate graphic design and media design principles. The areas of expertise involved are often outside of what is found in mainstream software engineering discussions.
+As explained in the articles on this page, the obstacle to a deeper level of progress in software development is the confining, primitive offerings of the file format plain text, that it has been stretched far beyond its bare capabilities to serve increasingly large and complex needs, blowing past the environment of 1980s and 1990s computing when it formed the programming languages still in active use today, like C++, Python, and Java. This primitive code medium is largely accidental, it doesn't lend itself to a surveyable view, a zoomable map like CAD, and it of course by definition cannot accommodate rich text inside the code without odd adaptations. Since it has so many limitations for today's world, it has to be transcended.
+
+A collection like an array or dictionary is still not editable by way of a data table GUI control inside a line of code. Instead, the programmer clumsily navigates through commas with the arrow keys. In addition to this, future computer code needs to be editable in multiple newspaper-like columns to make efficient use of screen space. Plain text is too raw of a file format for programming software in the 21st century, and it doesn't allow inclusion of modern GUI controls for formulating groups of instructions.
+
+Noctivagous starts with the plain text code as programmers work with it today and then adds GUI to that as the first step, continuing the trend of exists today where the value of a color variable is controllable by an inline color picker. It is believed that later the code file should be transformed into a document file format for truly rich code editing. Each article below explains these issues.
+
+
+
+AI-Based Code Editing And Generation
+----------------------------------------------------------
+Whereas a typical LLM-based AI code "co-pilot"
+generates cdoe for lines, an LLM would generally issue XML node commands
+for insertion, removal, addition, and modification of node attributes.
+
+
+Presentation Vs. XML Document
+----------------------------------------------------------
+The XML code document provides the foundation for the code
+to be viewed in many contexts and transformations.  Thus there
+will be XML tags and attributes for multiple view outputs, allowing
+adaptability and extensibility.  If the code is viewed in XR, there 
+will be XYZ coordinate information.
+
+
+
+
+FUTURE FEATURES
+----------------------------------------------------------
+
+Extensibility Of The Code Project By The Programmer
+----------------------------------------------------------
+Whereas conventional programming languages are not customizable
+at all, features for this system will be addable by the programmer. 
+Examples from the outset include the recognition of certain 2D UI widgets
+and handling of custom data types.  Customizability features
+will be added after everything else.
+
+Advanced Programming Features: Workflow and States
+----------------------------------------------------------
+This system, after establishing the baseline of functionality
+that is par for existing programming languages, will include
+states and workflow components natively.  Evevn though programming
+languages make use of state and workflow, this is done informally
+and manually by the programmer today and these are not
+recognized features inside any programming language.
+
+Advanced Programming Features: Paramorphic Compnents / 
+----------------------------------------------------------
+Additionally there will be what is called "Paramorphic Compnents".
+As part of the shift toward more dynamic and visually interactive code systems, 
+Paramorphic Components are modular structures that can morph their 
+function based on parameters. A foundational component of this
+will be the Paramorphic Grid, a 2D matrix component designed 
+to serve multiple applications such as spreadsheets, game boards 
+(e.g. chess, Tetris), music sequencers, and more.
+This system allows complex and diverse behaviors to emerge from a shared, 
+parameterized base.
+
+
+
+
+-->

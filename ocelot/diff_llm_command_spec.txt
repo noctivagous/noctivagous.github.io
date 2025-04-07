@@ -1,9 +1,10 @@
 LLM Diff Command Specifications And Prompt
 
 
-Instead of regenerating the entire document in response to changes, 
-as chatbots currently do, we instruct a language model to produce a compact set of modification
-commands that describe how to update the existing document.
+Instead of regenerating the entire document in response to changes, as
+chatbots currently do, we instruct a language model to produce a compact
+set of modification commands that describe how to update the existing
+document.
 
 A diff-based approach for document modifications can be much more
 efficient than regenerating the entire document every time a change is
@@ -13,12 +14,20 @@ necessary modifications, reducing both processing time and the chance
 for introducing new errors.
 
 These commands allow for targeted updates at the character or line
-level.
+level.  For instance, if it is just a set of dividers that should be
+inserted into the document, the LLM can provide the commands for the
+specific locations and the program updates it. If the LLM was instructed
+to reorganize the document with existing text, it can do that with the
+move_text commands. An LLM can assist the program in quickly
+reorganizing a document, eliminating redundancies, and fixing
+typographic errors.  If placed in a more complex programmatic
+arrangement, the LLM can repeatedly review and modify the document to
+achieve goals, doing researches, testing code, etc.
 
-The language model can play the role of a change suggester that
-outputs granular edit operations. These operations fall into categories
-such as inline text replacement, line insertion, text deletion, block
-movement, and full line replacement.
+The language model can play the role of a change suggester that outputs
+granular edit operations. These operations fall into categories such as
+inline text replacement, line insertion, text deletion, block movement,
+and full line replacement.
 
 Our goal is to minimize unnecessary computation, reduce output noise,
 and streamline document updates while maintaining full control and
@@ -70,3 +79,67 @@ with:
 
 Keep your responses succinct and only output the diff commands without
 additional commentary or full document regeneration.
+
+
+-----------------
+
+PYTHON CODE STUBS
+
+# 1) Inline Text Replacement: Replace a segment within a specific line.
+def inline_replace(line_number, start_index, end_index, new_text):
+    # Replace text between start_index and end_index on the given line
+    # with new_text
+    pass
+
+# Example: Replace characters 10-20 on line 5 with "updated text".
+inline_replace(line_number=5, start_index=10, end_index=20,
+new_text="updated text")
+
+# 2) Insertion: Add new text at a particular line and position.
+def insert_text(line_number, position, new_text):
+    # Insert new_text into the specified line at the given character
+    # position.
+    pass
+
+# Example: Insert "Inserted content" at position 0 (beginning) of line
+# 3.
+insert_text(line_number=3, position=0, new_text="Inserted content")
+
+# 3) Deletion: Remove specific portions of text or entire lines.
+def delete_text(line_number, start_index, end_index):
+    # Delete text from start_index to end_index on the given line.
+    pass
+
+def delete_line(line_number):
+    # Delete the entire line.
+    pass
+
+# Example: Delete characters 5-15 on line 8.
+delete_text(line_number=8, start_index=5, end_index=15)
+# Example: Delete the entire line 10.
+delete_line(line_number=10)
+
+# 4) Movement: Rearrange sections of text by moving a block of lines.
+def move_text(start_line, end_line, destination_line):
+    # Remove text from start_line to end_line and insert it at
+    # destination_line.
+    pass
+
+# Example: Move lines 12 through 14 to after line 20.
+move_text(start_line=12, end_line=14, destination_line=20)
+
+# 5) Replace Line: Replace one or more entire lines with new text.
+def replace_line(line_number, new_text):
+    # Replace the content of a specific line with new_text.
+    pass
+
+def replace_lines(start_line, end_line, new_text):
+    # Replace the content from start_line to end_line with new_text.
+    pass
+
+# Example: Replace line 20 with new text.
+replace_line(line_number=20, new_text="This line has been replaced.")
+# Example: Replace lines 25 to 27 with a block of new text.
+replace_lines(start_line=25, end_line=27, new_text="Block of text
+replacing multiple lines.")
+

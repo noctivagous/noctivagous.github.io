@@ -1,13 +1,11 @@
 LLM Diff Command Specifications And Prompt
 
-
-Instead of regenerating the entire document in response to changes, as
-chatbots currently do, we instruct a language model to produce a compact
-set of modification commands that describe how to update the existing
-document.
+Instead of regenerating an entire document in response to changes, as AI
+chatbots currently do, a language model can be told to generate
+modification commands that the receiving program follows. 
 
 A diff-based approach for document modifications can be much more
-efficient than regenerating the entire document every time a change is
+efficient than regenerating the entire document every time a few changes are
 made. By using targeted commands (such as inline text replacement or
 inserting text at specific line numbers), the system can apply only the
 necessary modifications, reducing both processing time and the chance
@@ -24,14 +22,26 @@ typographic errors.  If placed in a more complex programmatic
 arrangement, the LLM can repeatedly review and modify the document to
 achieve goals, doing researches, testing code, etc.
 
+(This also points to broader such situations such as personal computers
+assistants that could, if given commands to make directories and move
+files around on the filesystem, organize the contents of the filesystem 
+and tag files, often inspecting the contents.  The emphasis is 
+providing a set of commands that enable re-organization and editing.  
+This could include a situation where the AI delves into the contents of 
+a directory of files and organizes its contents without generating new text.)
+
 The language model can play the role of a change suggester that outputs
 granular edit operations. These operations fall into categories such as
 inline text replacement, line insertion, text deletion, block movement,
 and full line replacement.
 
-Our goal is to minimize unnecessary computation, reduce output noise,
+All of this will minimize unnecessary computation, reduce output noise,
 and streamline document updates while maintaining full control and
 traceability over each modification.
+
+In the case it is a tree structure that is being edited (e.g. XML), 
+the LLM should be given a list of tree operations to use
+instead and the program will use those to modify the files.
 
 ----------------------
 
@@ -142,4 +152,8 @@ replace_line(line_number=20, new_text="This line has been replaced.")
 # Example: Replace lines 25 to 27 with a block of new text.
 replace_lines(start_line=25, end_line=27, new_text="Block of text
 replacing multiple lines.")
+
+
+----------
+
 

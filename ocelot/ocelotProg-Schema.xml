@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?> <!-- Ocelot Programming Schema -
+<?xml version="1.0" encoding="UTF-8"?> 
+<!-- Ocelot Programming System Schema
+
 XML Representation for a Rendered Code System
 
   This XML Schema (XSD) defines the structural elements of a programming
@@ -38,7 +40,7 @@ XML Representation for a Rendered Code System
 
 
   Remaining Subjects To Include in Ocelot Programming Schema
-  ----------------------------------------------------------
+  ==================================================================
 
   The following features are not yet implemented in this schema but are
   important for achieving full compatibility with Python-like language
@@ -174,16 +176,8 @@ name="not" type="notType"/> <xs:element name="in" type="inType"/>
   type="branchingControlFlowType"/> <xs:element name="function"
   type="functionType"/> <xs:element name="call" type="callType"/>
 
-<!-- Example Function Call -->
-<!--
-<call name="makeCurve">
-  <arg>
-    <const>1.0</const>
-  </arg>
-  <arg>
-    <const>2.0</const>
-  </arg>
-</call>
+<!-- Example Function Call --> <!-- <call name="makeCurve"> <arg>
+<const>1.0</const> </arg> <arg> <const>2.0</const> </arg> </call>
 
 -->
 
@@ -211,31 +205,22 @@ type="loopType" use="required"/> </xs:complexType>
 type="assignmentType"/> <xs:element name="return" type="returnType"/>
 <xs:element name="loop" type="loopTypeDef"/>
 
-<!-- General Statement Wrapper -->
-<xs:complexType name="statementType">
-  <xs:choice minOccurs="1" maxOccurs="1">
-    <xs:element ref="assignment"/>
-    <xs:element ref="return"/>
-    <xs:element ref="loop"/>
-    <xs:element ref="call"/>
-    <xs:element ref="branchingControlFlow"/>
-    <xs:element ref="comment"/>
-    <xs:element ref="documentation"/>
-    <xs:element ref="break"/>
-    <xs:element ref="continue"/>
-    <xs:element ref="pass"/>
-    <!-- Additional statement types can be added here -->
-  </xs:choice>
+<!-- General Statement Wrapper --> <xs:complexType name="statementType">
+<xs:choice minOccurs="1" maxOccurs="1"> <xs:element ref="assignment"/>
+<xs:element ref="return"/> <xs:element ref="loop"/> <xs:element
+ref="call"/> <xs:element ref="branchingControlFlow"/> <xs:element
+ref="comment"/> <xs:element ref="documentation"/> <xs:element
+ref="break"/> <xs:element ref="continue"/> <xs:element ref="pass"/> <!--
+Additional statement types can be added here --> </xs:choice>
 </xs:complexType>
 
 
-<!-- Statement tags -->
-<xs:element name="statement" type="statementType"/>
+<!-- Statement tags --> <xs:element name="statement"
+type="statementType"/>
 
-<!-- Break -->
-<xs:element name="break" type="xs:empty"/>
-<xs:element name="continue" type="xs:empty"/>
-<xs:element name="pass" type="xs:empty"/>
+<!-- Break --> <xs:element name="break" type="xs:empty"/> <xs:element
+name="continue" type="xs:empty"/> <xs:element name="pass"
+type="xs:empty"/>
 
 
 <!-- List --> <xs:complexType name="listType"> <xs:sequence> <xs:element
@@ -285,7 +270,7 @@ mimeType="text/html"> <p>This is <strong>formatted</strong> with
 
 <!-- Documentation Element - Formal description of code elements
 (functions, params). - Simplifies doc generation (e.g., XML → Markdown,
-HTML). - Helps tools distinguish runtime notes from API contracts. - ->
+HTML). - Helps tools distinguish runtime notes from API contracts. -->
 <xs:complexType name="documentationType"> <xs:simpleContent>
 <xs:extension base="xs:string"> <xs:attribute name="mimeType"
 type="xs:string" use="optional" default="text/markdown"/>
@@ -304,17 +289,17 @@ the result.
     </function> -->
 
 
-<!-- LAYOUT --> 
+<!-- LAYOUT -->
 
-<!-- We can introduce a new XML element—<group>—that
-acts as a container for grouping elements (like functions) while
-allowing its presentation to be customized based on the viewing context.
-For example, if you wrap eight functions in a <group> element without
-specifying a presentation, then by default it might render as a
-reflowable group in 2D and as an outline container in XR. If you set the
-presentation attribute to "tabview", the group will render as a
-conventional tab in 2D but as a 3D tabview in XR. We can also support
-other presentations like "carousel" for a scrolling or rotating view.
+<!-- We can introduce a new XML element—<group>—that acts as a container
+for grouping elements (like functions) while allowing its presentation
+to be customized based on the viewing context. For example, if you wrap
+eight functions in a <group> element without specifying a presentation,
+then by default it might render as a reflowable group in 2D and as an
+outline container in XR. If you set the presentation attribute to
+"tabview", the group will render as a conventional tab in 2D but as a 3D
+tabview in XR. We can also support other presentations like "carousel"
+for a scrolling or rotating view.
 
 Below is a sample extension to our XML Schema that defines a <group>
 element with a "presentation" attribute. This attribute is an
@@ -322,7 +307,7 @@ enumeration that limits the presentation modes to "default" (or reflow),
 "tabview", and "carousel". You can later extend or refine these modes as
 needed:
 
---> 
+-->
 
 <!-- Define the allowed presentation types --> <xs:simpleType
 name="groupPresentationType"> <xs:restriction base="xs:string">
@@ -349,15 +334,18 @@ type="groupType"/>
 <!--
 
 Objective of the Project
-----------------------------------------------------------
+==================================================================
 
 Computer code files can be converted from plain text into a modern
-document format, allowing many features to be provided to programmers
-that are consistent with the present computing environment. Important to
-note, this will change the interface dynamic of the code editor. To
-ensure that the editing of a code document is speedy— as fluid as the
-editing of plain text code today— a user interface that is different
-from simple mouse-clicking of onscreen controls
+document format, allowing many features to be provided to software
+developers that are consistent with the present computing environment.
+Important to note, this will change the interface dynamic of the code
+editor. To ensure that the editing of a code document is speedy— as
+fluid as the editing of plain text code today— a user interface that is
+different from simple mouse-clicking of onscreen controls will be
+necessary.
+
+
 
 Computer Code Is Currently Based on An Antiquated File Format; It Is
 Confined to 1970s Terminal Type
@@ -373,17 +361,17 @@ single file, a programmer may end up scrolling up and down for 50 or
 more feet because there is no page layout possible in .TXT to condense
 and organize the information.
 
-The uses of code today have outgrown the confines of 1970s terminal type
-and upgrades must occur to the file format to accommodate the greater
-size and complexity of software being produced compared to the 1970s.
-There can be no surprise that security problems are common: the field of
-software engineering is using something outdated and primitive for the
-situation, which is source code that is written and edited in plain
-text. Word processing went beyond monospaced type but computer code did
-not follow. Too many software engineers have come to believe that this
-is because there is something timeless about .TXT for writing code. But
-there is actually an opposite trend unfolding today. There is a slow
-movement away from from the limitations .TXT imposes, towards
+The uses of code today have far outgrown the confines of 1970s terminal
+type and upgrades must occur to the file format to accommodate the
+greater size and complexity of software being produced compared to the
+1970s. There can be no surprise that security problems are common: the
+field of software engineering is using something outdated and primitive
+for the situation, which is source code that is written and edited in
+plain text. Word processing went beyond monospaced type but computer
+code did not follow. Too many software engineers have come to believe
+that this is because there is something timeless about .TXT for writing
+code. But there is actually an opposite trend unfolding today. There is
+a slow movement away from from the limitations .TXT imposes, towards
 presentations of code that can grapple with growing software complexity.
 There is no need to hold onto notions that .TXT is synonymous with code;
 in practice, the unrecognized fact is that text is now re-interpreted by
@@ -761,16 +749,17 @@ Each article below explains these issues.
 
 
 AI-Based Code Editing And Generation
----------------------------------------------------------- Whereas a
-typical LLM-based AI code "co-pilot" generates cdoe for lines, an LLM
-would generally issue XML node commands for insertion, removal,
-addition, and modification of node attributes.
+==================================================================
+Whereas a typical LLM-based AI code "co-pilot" generates code for lines,
+an LLM would generally send XML node commands for insertion, removal,
+addition of nodes as well as modification of node attributes.
+
 
 
 Presentation Vs. XML Document
----------------------------------------------------------- The XML code
-document provides the foundation for the code to be viewed in many
-contexts and transformations.  Thus there will be XML tags and
+================================================================== The
+XML code document provides the foundation for the code to be viewed in
+many contexts and transformations.  Thus there will be XML tags and
 attributes for multiple view outputs, allowing adaptability and
 extensibility.  If the code is viewed in XR, there will be XYZ
 coordinate information.
@@ -788,37 +777,88 @@ tab.  Other presentations include "carousel".
 
 
 FUTURE FEATURES
-----------------------------------------------------------
+==================================================================
 
 Extensibility Of The Code Project By The Programmer
----------------------------------------------------------- Whereas
-conventional programming languages are not customizable at all, features
-for this system will be addable by the programmer. Examples from the
-outset include the recognition of certain 2D UI widgets and handling of
-custom data types.  Customizability features will be added after
-everything else.
+==================================================================
+Whereas conventional programming languages are not customizable at all,
+features for this system will be addable by the programmer. Examples
+from the outset include the recognition of certain 2D UI widgets and
+handling of custom data types.  Customizability features will be added
+after everything else.
 
 Advanced Programming Features: Workflow and States
----------------------------------------------------------- This system,
-after establishing the baseline of functionality that is par for
+================================================================== This
+system, after establishing the baseline of functionality that is par for
 existing programming languages, will include states and workflow
 components natively.  Evevn though programming languages make use of
 state and workflow, this is done informally and manually by the
 programmer today and these are not recognized features inside any
 programming language.
 
-Advanced Programming Features: Paramorphic Compnents /
----------------------------------------------------------- Additionally
-there will be what is called "Paramorphic Compnents". As part of the
-shift toward more dynamic and visually interactive code systems,
-Paramorphic Components are modular structures that can morph their
-function based on parameters. A foundational component of this will be
-the Paramorphic Grid, a 2D matrix component designed to serve multiple
-applications such as spreadsheets, game boards (e.g. chess, Tetris),
-music sequencers, and more. This system allows complex and diverse
-behaviors to emerge from a shared, parameterized base.
+
+Advanced Programming Features: Paramorphic Components
+==================================================================
+
+Consider that the grid as a concept can act as the foundation
+for a myriad things: a calendar, a checkers game, a spreadsheet,
+an onscreen keyboard.  All that needs to happen is the provision
+of transformations, rules, and accessory structures that modify
+the base grid and move it into any one of these destinations,
+allowing progressive customization.
+
+Paramorphic Components are modular class structures that can morph their
+function based on parameters, to move a starting base of code, such
+as the paramorphic grid, into any one of these direcitons. 
+The Paramorphic Grid is a 2D matrix component with immense flexibility.
+The grid is not just a static matrix, but a foundational interaction and 
+layout system capable of adapting to many domains. The Paramorphic Grid is governed by universal
+rendering and behavior rules, such as alternating cell styles (used for
+checkerboards), and supports spatially distributed Occupants. An
+Occupant is a flexible abstraction that defines an entity which may
+occupy one or more cells of the grid. This applies equally well to a
+chess piece (a single-cell occupant), a Tetris block (multi-cell
+structure that moves and rotates), or a musical note (a toggled-on cell
+in a sequencer). By defining an occupant’s properties—such as which
+cells it spans, whether it responds to gravity, and how it interacts
+with other occupants—this system allows complex and diverse behaviors to
+emerge from a shared, parameterized base. These constructs are designed
+to be fully adaptable and semantically describable within the XML-based
+code representation of the Ocelot system. This concept demonstrates the
+power of componential morphism in programming: a single graphical and
+behavioral structure, defined generically, can instantiate vastly
+different functionalities across software categories, unified through
+parameters and presentation.
 
 
+
+
+Looping Components And Loop Types
+================================================================== "for"
+and "while" loops are reused for many purposes. The uses are not
+typically identified and then made into specific loop types. So, this is
+why this document will produce different loop tags, such as <iterator>
+</iterator>.  In some programming languages the case of generating a
+range is already included.
+
+What are loops used for? - Replication
+<replicator><objectToReplicate/><replicationRule/></replicator> - e.g.
+of graphical objects. - A subclass might be <gridReplicator cols="20"
+rows=20></grid> - The programmer in this system should be able to
+subclass the generic <replicator> tags to make these kinds of tags (e.g.
+<grid>).
+
+	- copying of data. - traversal of a list (tree traversal) -
+	operating on each item in that list. - applying logic on each item
+	as it shows up. - inspection of a list - is each item something or
+	other - culling - assembly of an onscreen event. - sorting (filter)
+	- the programming system has a sort(by:””) function built in.
+
+
+Function Types
+================================================================== Just
+like loops are used for different purposes, so are functions, and this
+will also be recognized as different subclasses of the function.
 
 
 -->

@@ -1,103 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<!-- Ocelot Programming System Schema
+<!--
 
-XML Representation for a Rendered Code System
+Ocelot Programming System Schema
+
+
+=== XML Representation for a Rendered Code System ===
 
   This XML Schema (XSD) defines the structural elements of a programming
-  language whose code is stored in XML format and rendered visually in
+  language whose code is stored in XML format.  It is to be rendered visually in
   an editor.
 
-  Key concepts: - Code is composed of typed containers (e.g., boolean
-  expressions, arithmetic expressions). - Expression types, function
-  definitions, control flow, loops, and data structures are encoded
-  semantically in XML. - The visual editor renders these XML blocks into
-  interactive code, potentially using distinct parentheses, frames, or
-  other UI elements based on the element's role or category. - Initial
-  code document schema will reflect current plain-text-based programming
-  systems and allow for upgrading them because of the XML schema. - The
-  long-term goal is to transcend the limitations of the .TXT file format
-  for code, which is discussed at the end of this document, "Objective
-  of the Project". - The XML code document provides the foundation for
-  the code to be viewed in many contexts and transformations.  It allows
-  processing it for smooth navigation by the programmer. The same
-  project, because its documents are made of XML, can be viewed in a
-  page layout, an interactive tree map, or XR. - The code itself can
-  weave interactive GUI controls, states, patch-based programming, and
-  rich text with procedural code because XML is the document's
-  underlying structure.
 
-  Goals: - Ensure semantic correctness through type-specific structures.
-  - Provide a format that enables robust editor tooling and type-safe
-  manipulation. - Create a foundation that matches core Python features
-  while supporting future extensibility (e.g., pattern matching, async
-  constructs, decorators).
+  Key concepts:
 
-  This file is intended to be readable by future AI and humans alike,
-  and may be compiled to support visual programming environments.
+  1. Function definitions, control flow, loops, expressions, and data structures
+  are encoded semantically in XML.
 
-  Author: Noctivagous / Pratt Project: Ocelot Programming System
+  2. The visual editor renders these XML blocks into interactive code, allowing
+  the use of distinct styling of UI based on the element's role or category.
+
+  3. The same code project, because its documents are made of XML, can be viewed
+  within many page layouts, interactive tree maps, or XR environments. The XML
+  code document provides the foundation for the code to be viewed in many
+  contexts and transformations.  It allows processing it for smooth navigation
+  by the programmer.
+
+  4. The long-term goal is to transcend the limitations of the .TXT file format
+  for code (which is discussed in greater length at the end of this document,
+  "Objective of the Project").  Features such as the <documentation> tag allow
+  documentation to take place separate from the <comment> tag.
+
+  5. The initial Ocelot code document schema will reflect current
+  plain-text-based programming systems, for translating the document to an
+  existing programming language.
+
+  6. The code document, because its underlying structure is XML, can naturally
+  weave interactive GUI controls, states, patch-based programming, and rich text
+  with conventional procedural code.
+
+  7. The rendering of code from an XML document eliminates many classes of
+  typographic problems for the programmer.  Typographic errors are now entirely
+  obsolete for keywords and variables: a keyword or variable will always be
+  typed in correctly or the editor will leave the line of code inactive for
+  compilation.  The editor will parse everything immediately and know what is
+  available because the document is XML. What's more, curly braces and
+  parentheses will no longer be used to define code containers in the editor and
+  semicolons are no longer relevant, as it is now graphical bounding box
+  outlines that enclose bodies of code. Comment characters are also replaced
+  with comment containers.
+
+  Goals:
+
+  - Ensure semantic correctness through type-specific structures. - Provide a
+  format that enables robust editor tooling and type-safe manipulation. - Create
+  a foundation that matches core Python features while supporting future
+  extensibility (e.g., pattern matching, async constructs, decorators).
+
+  This file is intended to be readable by future AI and humans alike, and may be
+  compiled to support visual programming environments.
+
+
 
 
 
   Remaining Subjects To Include in Ocelot Programming Schema
   ==================================================================
 
-  The following features are not yet implemented in this schema but are
-  important for achieving full compatibility with Python-like language
-  constructs and modern programming capabilities. These elements should
-  be added with semantic clarity, maintainability, and extensibility in
-  mind.
+  Discussed at end of this document.
 
-  === Control Flow === - <break/>           : Exit the nearest enclosing
-  loop. - <continue/>        : Skip to the next iteration of a loop. -
-  <pass/>            : No-op placeholder in blocks.
 
-  === Function Enhancements === - <lambda>           : Anonymous
-  function expressions. - param@default      : Allow default parameter
-  values in function signatures.
-
-  === Exception Handling === - <try>              : Begin a try block. -
-  <except>           : Catch specific or general exceptions. - <finally>
-  : Cleanup code that always runs. - <raise>            : Raise an
-  exception.
-
-  === Object-Oriented Constructs === - <class name="..."> : Define a
-  class. - <method>           : Function bound to a class. - <field> :
-  Member variable of a class. - <self>             : Reference to the
-  current instance.
-
-  === Imports === - <import module="..."/>            : Import an entire
-  module. - <fromImport module="..." names="..."/> : Import specific
-  names from a module.
-
-  === Comprehensions === - <listComprehension>              : Inline
-  list generation with filtering. - <dictComprehension>,
-  <setComprehension> : Similar for other types.
-
-  === Decorators === - <decorator name="...">           : Modify
-  function or class behavior.
-
-  === Pattern Matching (Python 3.10+) === - <match> : Match expressions
-  against patterns. - <case> : Individual matching arms.
-
-  === Async and Await === - <asyncFunction>                  : Define an
-  asynchronous function. - <await>                          : Await the
-  result of an async operation. - <asyncFor>, <asyncWith>         :
-  Asynchronous versions of control structures.
-
-  === Context Managers === - <with>                           : Manage
-  resources using context managers. - <as>                             :
-  Assign resource to a variable.
-
-  === Miscellaneous === - <assert>                         : Runtime
-  assertion checks. - <yield>, <yieldFrom>            : Generator value
-  emission. - <global>, <nonlocal>            : Declare scope behavior
-  of variables. - <annotation>                    : Type hints and
-  metadata.
-
-  These constructs will expand the XML language into a full-featured
-  representation of structured, visual, and semantically rich code
-  aligned with modern Python features. -->
+  Project: Ocelot Programming System Author: Noctivagous / Pratt -->
 
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">

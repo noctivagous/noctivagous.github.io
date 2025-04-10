@@ -271,7 +271,6 @@ addresses a different state dynamic than "Open --- Close". Pairs of buttons
 would have generic names which apply to many scenarios.
 
 
-
 Three Activation Options For The Touch Operation Buttons
 
 The first activation option is the conventional holding down of the button while
@@ -281,6 +280,58 @@ button active until it is touched again or another button is pressed (especially
 the Escape button in the upper left corner of the device).  The third is
 that the touch operation button is active for the next touch after
 being momentarily pressed, but only for one operation.
+
+
+Touch Operation Buttons: Dual Opposing Setup (Yang/Yin Pattern)
+
+Open / Close
+Open: Opens a window, starts playback, or turns something on (Yang).
+Close: Closes a window, stops playback, or turns something off (Yin).
+
+Add / Subtract
+Add: Adds an object or increases a value (Yang).
+Subtract: Removes an object or decreases a value (Yin).
+
+Show / Hide
+Show: Displays a hidden element or reveals content (Yang).
+Hide: Conceals an element or stows content (Yin).
+
+Expand / Collapse
+Expand: Enlarges or unfolds a view or content (Yang).
+Collapse: Compacts or folds a view or content (Yin).
+
+Generate / Remove
+Generate: Creates a new object at the touch point (Yang).
+Remove: Deletes the touched object (Yin).
+
+Apply / Extract
+Apply: Applies a property or style to an object (Yang).
+Extract: Copies a property or style from an object (Yin).
+
+Paste / Copy
+Paste: Places copied content at the touch point (Yang).
+Copy: Gathers content from the touched area (Yin).
+
+Teleport / Return
+Teleport: Moves an object to a new location (Yang).
+Return: Sends an object back to its original location (Yin).
+
+Select / Deselect
+Select: Marks objects or text for action (Yang).
+Deselect: Clears selections from objects or text (Yin).
+
+Group / Ungroup
+Group: Combines objects into a single unit (Yang).
+Ungroup: Separates a group into individual objects (Yin).
+
+Notes
+Yang/Yin Dynamic: Yang operations (left column) are about applying, 
+creating, or initiating; Yin operations (right column) are about receiving, 
+removing, or concluding.
+
+Operation: Hold a button, tap the screen to apply the action, and release to complete it.
+LCD-Backed: Buttons feature dynamic labels and can be color-coded or swapped for other pairs as needed.
+
 
 
 

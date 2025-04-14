@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablet Interface Demo with Paper.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            display: flex;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+       #left-panel {
+    width: 20%;
+    height: 100%;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    padding: 5pt;
+    padding-bottom: calc(5pt + env(safe-area-inset-bottom, 0));
+    box-sizing: border-box;
+    border-right: 2pt solid black;
+}
+        #control-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 3pt;
+        }
+        #buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(9, 1fr);
+            gap: 8px;
+            flex: 1;
+            min-height: 0; /* Prevent flex shrinkage issues */
+        }
+        .button {
+            border: 1px solid #333;
+            border-radius: 10px;
+            display: flex;
+            font-size:9pt;
+		padding:2pt;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            cursor: pointer;
+            user-select: none;
+            background-size: cover;
+            background-position: center;
+            background-size: contain; /* Scale image to fit */
+     	   	background-position: center; /* Center the background */
+        	background-repeat: no-repeat; /* Prevent repeating */
+     
+            color: #000000;
+            text-shadow: 0 0 3px #ffffff;
+            min-height: 40px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3), 
+                        inset -2px -2px 5px rgba(255, 255, 255, 0.3),
+                        1px 0px 3px rgba(0, 0, 0, 0.7);
+            transition: all 0.1s ease;
+            
+              display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+        }
+
+        .button:active {
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.4), 
+                        inset -3px -3px 6px rgba(255, 255, 255, 0.2),
+                        1px 1px 3px rgba(0, 0, 0, 0.1);
+            opacity: 0.9;
+            transform: translateY(1px);
+        }
+
+        .button.currentOperation {
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.4), 
+                        inset -3px -3px 6px rgba(255, 255, 255, 0.2),
+                        1px 1px 3px rgba(0, 0, 0, 0.1);
+            opacity: 0.9;
+            transform: translateY(1px);
+            filter:brightness(200%);
+            
+font-weight: bolder;
+            outline: 4px solid #f7f7f7; /* Green outline for locked state */
+            
+            outline-offset: 1px; /* Space between outline and button */
+
+        }
+
+      #arrows {
+    display: flex;
+    justify-content: center;
+    margin: 3px 0;
+    padding: 5px 0;
+    margin-bottom: calc(15pt + env(safe-area-inset-bottom, 0));
+    border-top:1pt solid #222;
+    background-color:#000;
+
+
+}
+        .arrow {
+            width: 55px;
+            height: 40px;
+            background-color: #333;
+            border-top: 2px solid #666666;
+                                 border-left: 2px solid #555;
+border-left: 2px solid #555;
+            color:#ccc;
+            border-radius: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-size: 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        .arrow:active {
+            background-color: #999999;
+        }
+        #canvas {
+            flex: 1;
+            background-color: #ffffff;
+            border-left: 1px solid #cccccc;
+        }
+        @media (orientation: landscape) {
+            #left-panel {
+                width: 15%;
+            }
+            .button {
+                font-size: 12px;
+                min-height: 30px;
+            }
+        }
+
+        #control-buttons .button {
+    width: 100%;
+}
+
+#rightPanel {
+    width: 60pt;
+    height: 100%;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 5pt;
+    box-sizing: border-box;
+}
+
+#rightPanel .button {
+    width: 100%;
+    height:40pt;
+    margin-bottom: 8px; /* Space between buttons */
+}
+
+
+    </style>
+</head>
+<!--
+
+TODO:
+1 - selectionDidChange
+    - change all action buttons modes to
+    either context operations or touch operations
+2 - actionButtons
+    - for touch operation mode
+    - for context operations mode
+3 - vertical line that offsets the event point vertically
+4 - preview slot, such as for "insert", "apply"
+5 - styles (fill, fillstroke, stroke, strokewidth)
+6 - Drag-Lift "Delete" is drag-lift if not single touch.
+Drag-lift is that the delete operation point is
+dragged and then upon lift the selected shape is
+deleted.
+7. scale and rotate buttons have multiple modes:
+constant dragging while holding down will
+be live scaling or live rotating.
+
+    -->
+
+<!--
+Specifications
+
+This is a touchscreen tablet UI demo.  
+
+- Action Buttons buttons arranged in dual opposing columns
+(Yang/Yin pattern) to the left of the canvas area (usually the app area)
+- A column of buttons on the right, 
+- A reaction buttons (e.g., Escape, Undo, Redo).
+
+The UI aims to minimize reliance on onscreen gestures,
+menus, and timing-based interactions, offering a 
+systematic, concept-driven UI suitable for all kinds of applications. 
+
+
+Action Buttons Dual Columns: 
+Two columns of physical buttons with opposing
+operations (e.g., Generate/Remove, Open/Close, Select/Deselect) specify touch
+and contextual actions.  In this demo they serve 
+to make a vector-drawing project.  (The demo uses the PaperJS library.)
+
+The two columns are loaded in groups of 9 rows, cycled through
+with arrow keys at the bottom.  Each group has a name.
+
+(Action buttons will often 
+have dynamic states changing based on the states of the app,
+especially if a selection is present.)
+
+An action button is in one of two modes Touch Operation
+or Context Operation:
+
+1) Touch Operations - for targeting elements and point locations (e.g. deposit
+shape at touch point, delete shape at touch point, apply color to shape at touch
+point, retrieve color from shape at touch point, select a shape at touch point).
+
+	a) single touch operations - (e.g. selecting objects one at a time.)
+	
+	b) multiple touch (state flow) operations - (e.g. drawing a polyline.)
+		
+	A single touch operation might be held down on the target for repeated
+	application of the function, such as scaling up or rotating.  This is
+	in contrast to tapping repeatedly.
+	
+	Buttons with visible parameters and properties 
+	If a touch operation retrieves a color from a shape, 
+	that color property will be visible inside the button.
+	It might also display a shape if its job is to deposit it.
+
+-> When there is a selection, some action buttons move from
+being touch operation to context operations.  (e.g. rotate clockwise
+touch operation targets a single shape.  but if there is a selection
+then rotate clockwise applies to it).
+
+-> Some action buttons acting in a touch operation mode might allow 
+double taps to make them context operations (e.g. deselect touch
+operation double tapped will deselect all)
+
+Activation Modes: 
+
+	Lock: By default, the current touch operation is in play until toggled off 
+or another button (e.g., Escape) is pressed.
+
+	Hold: Press and hold to apply the operation to tapped/dragged
+objects, releasing to complete.  So, without making a selection the
+drag button is held down and multiple objects can be dragged around
+consecutively.
+
+
+2) Context Operations - operations that apply to the
+context (e.g. copy selection, cut selection, delete selection) and the states of
+the app.
+
+
+Single-touch operations (e.g., deposit shape, select object) target point
+locations or elements.
+
+Multi-touch state flows (e.g., drawing polylines) support continuous
+interactions while held.
+
+Context switching: Buttons shift to context operations (e.g., rotate selection)
+when a selection exists.
+
+
+Buttons can display dynamic labels, colors, and states (e.g., showing a
+retrieved color or shape), categorized and color-coded for organization.
+Buttons can display properties like colors or shapes on buttons, e.g.,
+for Apply/Extract.   Since Apply/Extract applies to many properties, there
+is the Configure button that sits above the
+
+
+
+
+-->
+<body>
+    <div id="container">
+        <div id="left-panel">
+            <div id="control-buttons">
+                <!-- Escape, Undo, Redo buttons will be populated here -->
+            </div>
+            <div id="buttons">
+                <!-- Touch operation buttons will be populated dynamically -->
+            </div>
+            <div id="arrows">
+                <div class="arrow" id="left-arrow"><</div>
+                <div class="arrow" id="right-arrow">></div>
+            </div>
+        </div>
+        <!-- setting the paperjs canvas width to a fixed value makes it work with flexbox-->
+        <canvas id="canvas" resize="true" style="width: 250px; height: 100%;"></canvas>
+        <div id="rightPanel"></div>
+    </div>
+
+    <script >     // JSON dictionary for touch operation pairs
+        const touchOperations = [
+            {
+                pairs: [
+                
+                    {
+                        name: "Delete",
+                    //    background: "url('https://img.icons8.com/ios-filled/50/000000/minus.png')",
+                        color: "#999999",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                item.remove();
+                                addUndoAction({
+                                    type: 'remove',
+                                    item: item,
+                                    parent: item.parent,
+                                    index: item.index,
+                                    undo: () => item.parent.insertChild(item.index, item),
+                                    redo: () => item.remove()
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Insert",
+                    //    background: "url('https://img.icons8.com/ios-filled/50/000000/plus-math.png')",
+                        color: "#999",
+                        fn: (point) => {
+                            let circle = new paper.Path.Circle(point, 20);
+                            circle.fillColor = 'blue';
+                            addUndoAction({
+                                type: 'add',
+                                item: circle,
+                                undo: () => circle.remove(),
+                                redo: () => paper.project.activeLayer.addChild(circle)
+                            });
+                        }
+                    },
+                    {
+    name: "Deselect",
+    color: "#77cc77",
+    fn: (point) => {
+        const offsetPoint = new paper.Point(point.x, point.y - 50);
+        let hit = paper.project.hitTest(offsetPoint, { fill: true, tolerance: 5 });
+        if (hit && hit.item) {
+                        let item = hit.item;
+
+//if(item.selected)
+//{
+hit.item.selected = false;
+            
+            
+  // Create a clone for animation
+                let clone = item.clone();
+                clone.selected = false;
+                clone.opacity = 0.5;
+                let scale = 1;
+                let animation = setInterval(() => {
+                    scale += 0.1;
+                    clone.scale(1.1);
+                    clone.opacity -= 0.1;
+                    if (scale >= 1.5) {
+                        clone.remove();
+                        clearInterval(animation);
+                    }
+                }, 50);
+//}
+           
+        } else {
+            paper.project.deselectAll();
+        }
+    }
+},
+                    // Updated Select operation in touchOperations
+{
+    name: "Select",
+    color: "#77cc77",
+    fn: (point) => {
+        let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+        if (hit && hit.item) {
+            let item = hit.item;
+            if (!item.selected) {
+                // Create a clone for animation
+                let clone = item.clone();
+                clone.selected = false;
+                clone.opacity = 0.5;
+                let scale = 1;
+                let animation = setInterval(() => {
+                    scale += 0.1;
+                    clone.scale(1.1);
+                    clone.opacity -= 0.1;
+                    if (scale >= 1.5) {
+                        clone.remove();
+                        clearInterval(animation);
+                    }
+                }, 50); // Runs every 50ms for ~250ms animation
+                item.selected = true;
+            }
+        }
+    }
+},
+
+
+                  
+                    {
+                        name: "ScaleDn",
+                        color: "#ffaaff",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                let originalMatrix = item.matrix.clone();
+                                item.scale(0.833);
+                                addUndoAction({
+                                    type: 'scale',
+                                    item: item,
+                                    matrix: originalMatrix,
+                                    undo: () => item.matrix = originalMatrix,
+                                    redo: () => item.scale(0.833)
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "ScaleUp",
+                        color: "#ffaaff",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                let originalMatrix = item.matrix.clone();
+                                item.scale(1.2);
+                                addUndoAction({
+                                    type: 'scale',
+                                    item: item,
+                                    matrix: originalMatrix,
+                                    undo: () => item.matrix = originalMatrix,
+                                    redo: () => item.scale(1.2)
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Rotate CCW",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                let originalMatrix = item.matrix.clone();
+                                item.rotate(-15);
+                                addUndoAction({
+                                    type: 'rotate',
+                                    item: item,
+                                    matrix: originalMatrix,
+                                    undo: () => item.matrix = originalMatrix,
+                                    redo: () => item.rotate(45)
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Rotate CW",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                let originalMatrix = item.matrix.clone();
+                                item.rotate(15);
+                                addUndoAction({
+                                    type: 'rotate',
+                                    item: item,
+                                    matrix: originalMatrix,
+                                    undo: () => item.matrix = originalMatrix,
+                                    redo: () => item.rotate(45)
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Move",
+                        color: "#aaffff",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                hit.item.data.teleportStart = point;
+                            }
+                        }
+                    },
+                    {
+                        name: "Drag",
+                        color: "#aaffff",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item && hit.item.data.teleportStart) {
+                                let item = hit.item;
+                                let originalPosition = item.position.clone();
+                                item.position = hit.item.data.teleportStart;
+                                addUndoAction({
+                                    type: 'position',
+                                    item: item,
+                                    position: originalPosition,
+                                    undo: () => item.position = originalPosition,
+                                    redo: () => item.position = hit.item.data.teleportStart
+                                });
+                            }
+                        }
+                    },
+                
+                    {
+                        name: "Subtract",
+                        color: "#aaaaff",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                item.remove();
+                                addUndoAction({
+                                    type: 'remove',
+                                    item: item,
+                                    parent: item.parent,
+                                    index: item.index,
+                                    undo: () => item.parent.insertChild(item.index, item),
+                                    redo: () => item.remove()
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Add",
+                        color: "#aaaaff",
+                        fn: (point) => {
+                            let star = new paper.Path.Star(point, 5, 10, 20);
+                            star.fillColor = 'purple';
+                            addUndoAction({
+                                type: 'add',
+                                item: star,
+                                undo: () => star.remove(),
+                                redo: () => paper.project.activeLayer.addChild(star)
+                            });
+                        }
+                    },
+                   
+                   
+                   
+                    {
+                        name: "Apply",
+                        color: "#ffaa77",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                let originalColor = item.fillColor ? item.fillColor.clone() : null;
+                                item.fillColor = 'red';
+                                addUndoAction({
+                                    type: 'color',
+                                    item: item,
+                                    color: originalColor,
+                                    undo: () => item.fillColor = originalColor,
+                                    redo: () => item.fillColor = 'red'
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Extract",
+                        color: "#ffaa77",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                alert(`Color extracted: ${hit.item.fillColor.toCSS()}`);
+                            }
+                        }
+                    },
+               
+                    {
+                        name: "Paste",
+                        color: "#77aaff",
+                        fn: (point) => {
+                            let circle = new paper.Path.Circle(point, 15);
+                            circle.fillColor = 'orange';
+                            addUndoAction({
+                                type: 'add',
+                                item: circle,
+                                undo: () => circle.remove(),
+                                redo: () => paper.project.activeLayer.addChild(circle)
+                            });
+                        }
+                    },
+                    
+                    {
+                        name: "Copy",
+                        color: "#77aaff",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let clone = hit.item.clone();
+                                clone.position = point.add(new paper.Point(30, 30));
+                                addUndoAction({
+                                    type: 'add',
+                                    item: clone,
+                                    undo: () => clone.remove(),
+                                    redo: () => paper.project.activeLayer.addChild(clone)
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Toggle Stroke",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                // Clone the strokeColor to avoid reference issues; null if no stroke
+                                let originalStrokeColor = item.strokeColor ? item.strokeColor.clone() : null;
+                                let originalStrokeWidth = item.strokeWidth;
+                                if (item.strokeColor) {
+                                    // Remove stroke
+                                    item.strokeColor = null;
+                                } else {
+                                    // Add default stroke
+                                    item.strokeColor = 'black';
+                                    item.strokeWidth = 1;
+                                }
+                                addUndoAction({
+                                    type: 'toggleStroke',
+                                    item: item,
+                                    originalStrokeColor: originalStrokeColor,
+                                    originalStrokeWidth: originalStrokeWidth,
+                                    undo: () => {
+                                        if (originalStrokeColor) {
+                                            // Restore original stroke
+                                            item.strokeColor = originalStrokeColor;
+                                            item.strokeWidth = originalStrokeWidth;
+                                        } else {
+                                            // Remove stroke
+                                            item.strokeColor = null;
+                                        }
+                                    },
+                                    redo: () => {
+                                        if (originalStrokeColor) {
+                                            // Remove stroke
+                                            item.strokeColor = null;
+                                        } else {
+                                            // Reapply default stroke
+                                            item.strokeColor = 'black';
+                                            item.strokeWidth = 1;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Toggle Fill",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                // Clone the fillColor to avoid reference issues; null if no fill
+                                let originalFillColor = item.fillColor ? item.fillColor.clone() : null;
+                                if (item.fillColor) {
+                                    // Remove fill
+                                    item.privateFillColor = item.fillColor; // added private property
+                                    item.fillColor = null;
+                                } else {
+                                    // Add default fill
+                                    if(item.privateFillColor != undefined)
+                                    {
+                                        item.fillColor = item.privateFillColor;
+                                    }
+                                    else
+                                    {
+                                        item.fillColor = '#333333';
+                                    }
+                                }
+                                addUndoAction({
+                                    type: 'toggleFill',
+                                    item: item,
+                                    originalFillColor: originalFillColor,
+                                    undo: () => {
+                                        // Restore original fill state
+                                        item.fillColor = originalFillColor;
+                                    },
+                                    redo: () => {
+                                        if (originalFillColor) {
+                                            // Remove fill
+                                            item.fillColor = null;
+                                        } else {
+                                            // Reapply default fill
+                                            item.fillColor = 'white';
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                pairs: [
+                    {
+                        name: "Zoom Out",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let originalZoom = paper.view.zoom;
+                            paper.view.zoom *= 1.2;
+                            addUndoAction({
+                                type: 'zoom',
+                                zoom: originalZoom,
+                                undo: () => paper.view.zoom = originalZoom,
+                                redo: () => paper.view.zoom = originalZoom * 1.2
+                            });
+                        }
+                    },
+                                        {
+                                            name: "Zoom In",
+                                            color: "#ccffcc",
+                                            fn: (point) => {
+                                                let originalZoom = paper.view.zoom;
+                                                paper.view.zoom *= 1.2;
+                                                addUndoAction({
+                                                    type: 'zoom',
+                                                    zoom: originalZoom,
+                                                    undo: () => paper.view.zoom = originalZoom,
+                                                    redo: () => paper.view.zoom = originalZoom * 1.2
+                                                });
+                                            }
+                                        },
+                    {
+                        name: "Open",
+                        color: "#cc7777",
+                        fn: (point) => {
+                            let rect = new paper.Path.Rectangle(point, new paper.Size(50, 50));
+                            rect.fillColor = 'green';
+                            addUndoAction({
+                                type: 'add',
+                                item: rect,
+                                undo: () => rect.remove(),
+                                redo: () => paper.project.activeLayer.addChild(rect)
+                            });
+                        }
+                    },
+                    {
+                        name: "Close",
+                        color: "#cc7777",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                item.remove();
+                                addUndoAction({
+                                    type: 'remove',
+                                    item: item,
+                                    parent: item.parent,
+                                    index: item.index,
+                                    undo: () => item.parent.insertChild(item.index, item),
+                                    redo: () => item.remove()
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Hide",
+                        color: "#ffffaa",
+                        fn: () => {
+                            let wasVisible = paper.project.activeLayer.visible;
+                            paper.project.activeLayer.visible = false;
+                            if (wasVisible) {
+                                addUndoAction({
+                                    type: 'visibility',
+                                    layer: paper.project.activeLayer,
+                                    visible: true,
+                                    undo: () => paper.project.activeLayer.visible = true,
+                                    redo: () => paper.project.activeLayer.visible = false
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Show",
+                        color: "#ffffaa",
+                        fn: () => {
+                            let wasVisible = paper.project.activeLayer.visible;
+                            paper.project.activeLayer.visible = true;
+                            if (!wasVisible) {
+                                addUndoAction({
+                                    type: 'visibility',
+                                    layer: paper.project.activeLayer,
+                                    visible: false,
+                                    undo: () => paper.project.activeLayer.visible = false,
+                                    redo: () => paper.project.activeLayer.visible = true
+                                });
+                            }
+                        }
+                    },
+                  
+                    {
+                        name: "Swap",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item && paper.project.selectedItems.length === 1) {
+                                let selected = paper.project.selectedItems[0];
+                                let target = hit.item;
+                                let selectedPos = selected.position.clone();
+                                let targetPos = target.position.clone();
+                                selected.position = targetPos;
+                                target.position = selectedPos;
+                                addUndoAction({
+                                    type: 'swap',
+                                    item1: selected,
+                                    item2: target,
+                                    pos1: selectedPos,
+                                    pos2: targetPos,
+                                    undo: () => {
+                                        selected.position = selectedPos;
+                                        target.position = targetPos;
+                                    },
+                                    redo: () => {
+                                        selected.position = targetPos;
+                                        target.position = selectedPos;
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Classify",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                let originalClass = item.data.class;
+                                item.data.class = 'classified';
+                                addUndoAction({
+                                    type: 'classify',
+                                    item: item,
+                                    class: originalClass,
+                                    undo: () => item.data.class = originalClass,
+                                    redo: () => item.data.class = 'classified'
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Nest",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let group = new paper.Group(paper.project.selectedItems);
+                            group.position = point;
+                            addUndoAction({
+                                type: 'group',
+                                group: group,
+                                items: group.children.slice(),
+                                undo: () => group.ungroup(),
+                                redo: () => {
+                                    let newGroup = new paper.Group(group.children);
+                                    newGroup.position = point;
+                                }
+                            });
+                        }
+                    },
+                    {
+                        name: "Inspect",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                alert(`Item type: ${hit.item.className}`);
+                            }
+                        }
+                    },
+                    {
+                        name: "Group",
+                        color: "#ccffcc",
+                        fn: () => {
+                            let group = new paper.Group(paper.project.selectedItems);
+                            addUndoAction({
+                                type: 'group',
+                                group: group,
+                                items: group.children.slice(),
+                                undo: () => group.ungroup(),
+                                redo: () => new paper.Group(group.children)
+                            });
+                        }
+                    },
+                    {
+                        name: "Ungroup",
+                        color: "#ccffcc",
+                        fn: () => {
+                            let groups = paper.project.selectedItems.filter(item => item.className === 'Group');
+                            groups.forEach(group => {
+                                let items = group.children.slice();
+                                group.ungroup();
+                                addUndoAction({
+                                    type: 'ungroup',
+                                    items: items,
+                                    undo: () => new paper.Group(items),
+                                    redo: () => items.forEach(item => item.remove())
+                                });
+                            });
+                        }
+                    },
+                    {
+                        name: "Scroll",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let originalCenter = paper.view.center.clone();
+                            paper.view.center = point;
+                            addUndoAction({
+                                type: 'scroll',
+                                center: originalCenter,
+                                undo: () => paper.view.center = originalCenter,
+                                redo: () => paper.view.center = point
+                            });
+                        }
+                    },
+                    {
+                        name: "Lasso",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let lasso = new paper.Path();
+                            lasso.add(point);
+                            lasso.strokeColor = 'black';
+                            addUndoAction({
+                                type: 'add',
+                                item: lasso,
+                                undo: () => lasso.remove(),
+                                redo: () => paper.project.activeLayer.addChild(lasso)
+                            });
+                        }
+                    },
+                    {
+                        name: "Circle",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let circle = new paper.Path.Circle(point, 20);
+                            circle.fillColor = 'pink';
+                            addUndoAction({
+                                type: 'add',
+                                item: circle,
+                                undo: () => circle.remove(),
+                                redo: () => paper.project.activeLayer.addChild(circle)
+                            });
+                        }
+                    },
+                    {
+                        name: "Cut",
+                        color: "#ccffcc",
+                        fn: (point) => {
+                            let hit = paper.project.hitTest(point, { fill: true, tolerance: 5 });
+                            if (hit && hit.item) {
+                                let item = hit.item;
+                                item.remove();
+                                addUndoAction({
+                                    type: 'remove',
+                                    item: item,
+                                    parent: item.parent,
+                                    index: item.index,
+                                    undo: () => item.parent.insertChild(item.index, item),
+                                    redo: () => item.remove()
+                                });
+                            }
+                        }
+                    },
+                    {
+                        name: "Lock",
+                        color: "#ccffcc",
+                        fn: () => {
+                            let items = paper.project.selectedItems;
+                            items.forEach(item => {
+                                let wasLocked = item.locked;
+                                item.locked = true;
+                                addUndoAction({
+                                    type: 'lock',
+                                    item: item,
+                                    locked: wasLocked,
+                                    undo: () => item.locked = wasLocked,
+                                    redo: () => item.locked = true
+                                });
+                            });
+                        }
+                    },
+                    {
+                        name: "Unlock",
+                        color: "#ccffcc",
+                        fn: () => {
+                            let items = paper.project.selectedItems;
+                            items.forEach(item => {
+                                let wasLocked = item.locked;
+                                item.locked = false;
+                                addUndoAction({
+                                    type: 'lock',
+                                    item: item,
+                                    locked: wasLocked,
+                                    undo: () => item.locked = wasLocked,
+                                    redo: () => item.locked = false
+                                });
+                            });
+                        }
+                    }
+                ]
+            }
+        ];
+        
+   
+
+</script>
+    <script>
+    
+   
+
+        // Undo/Redo system
+        let undoStack = [];
+        let redoStack = [];
+
+        function addUndoAction(action) {
+            undoStack.push(action);
+            redoStack = []; // Clear redo stack when a new action is performed
+            console.log('Added undo action:', action.type);
+        }
+
+        function undo() {
+            if (undoStack.length > 0) {
+                let action = undoStack.pop();
+                action.undo();
+                redoStack.push(action);
+                console.log('Undid:', action.type);
+            }
+        }
+
+        function redo() {
+            if (redoStack.length > 0) {
+                let action = redoStack.pop();
+                action.redo();
+                undoStack.push(action);
+                console.log('Redid:', action.type);
+            }
+        }
+
+        // Setup Paper.js and buttons after DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Paper.js
+            paper.setup('canvas');
+
+			const tempLayer = new paper.Layer();
+			tempLayer.name = 'tempLayer'; // Optional, for easier identification
+
+            const controlButtonsContainer = document.getElementById('control-buttons');
+            const rightPanel = document.getElementById('rightPanel');
+
+            const buttonsContainer = document.getElementById('buttons');
+            const leftArrow = document.getElementById('left-arrow');
+            const rightArrow = document.getElementById('right-arrow');
+
+            // Current operation and lock state
+            let currentOperation = null;
+            
+            let lockedOperation = null;
+            let currentCategory = 0;
+
+            // Function to create control buttons (Escape, Undo, Redo)
+  /*
+            function createControlButtons() {
+                const controlButtons = [
+                    {
+    name: "Escape",
+    fn: () => {
+        if (paper.project.selectedItems.length > 0) {
+            paper.project.deselectAll();
+        }
+        currentOperation = null;
+        lockedOperation = null;
+        document.querySelectorAll('.button').forEach(b => b.classList.remove('currentOperation'));
+
+        document.querySelectorAll('.button').forEach(b => b.classList.remove('locked'));
+    }
+},
+                    {
+                        name: "Undo",
+                        fn: () => {
+                            undo();
+                        }
+                    },
+                    {
+                        name: "Redo",
+                        fn: () => {
+                            redo();
+                        }
+                    }
+                ];
+
+                controlButtons.forEach(control => {
+                    const button = document.createElement('div');
+                    button.className = 'button';
+                    button.textContent = control.name;
+                    button.addEventListener('click', control.fn);
+                    button.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        control.fn();
+                    });
+                    controlButtonsContainer.appendChild(button);
+                });
+            }
+*/
+            // Function to create touch operation buttons
+  
+            function createConfigureButton() {
+    const configureButton = document.createElement('div');
+    configureButton.className = 'button';
+    configureButton.textContent = 'Configure';
+    
+    configureButton.style.width = '100pt'; // Ensure it spans the width
+    configureButton.style.marginRight = '0';
+    configureButton.style.paddingRight = '0';
+    configureButton.addEventListener('click', () => {
+        console.log('Configure button clicked'); // Placeholder functionality
+    });
+    configureButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        console.log('Configure button touched');
+    });
+    controlButtonsContainer.appendChild(configureButton);
+}
+
+function createReactionButtons() {
+    const reactionButtons = [
+        {
+            name: "Escape",
+            fn: () => {
+                if (paper.project.selectedItems.length > 0) {
+                    paper.project.deselectAll();
+                }
+                currentOperation = null;
+                lockedOperation = null;
+                document.querySelectorAll('.button').forEach(b => b.classList.remove('currentOperation'));
+                document.querySelectorAll('.button').forEach(b => b.classList.remove('locked'));
+            }
+        },
+        {
+            name: "Undo",
+            fn: () => { undo(); }
+        },
+        {
+            name: "Redo",
+            fn: () => { redo(); }
+        }
+    ];
+
+    reactionButtons.forEach(control => {
+        const button = document.createElement('div');
+        button.className = 'button';
+        button.textContent = control.name;
+        button.addEventListener('click', control.fn);
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            control.fn();
+        });
+        rightPanel.appendChild(button);
+    });
+}
+
+            function createButtons() {
+                buttonsContainer.innerHTML = '';
+                const pairs = touchOperations[currentCategory].pairs;
+                console.log(`Creating ${pairs.length} buttons for category ${currentCategory}`);
+                pairs.forEach(pair => {
+                    const button = document.createElement('div');
+                    button.className = 'button';
+                    button.textContent = pair.name;
+                    button.dataset.operation = pair.name;
+                    button.style.background = pair.background || pair.color;
+                    button.style.backgroundColor = pair.color;
+                    button.style.backgroundRepeat = 'no-repeat';
+                                        button.style.backgroundPosition = 'center';
+                    button.style.backgroundSize = '80%'; /* Scale image to fit */
+
+
+                    buttonsContainer.appendChild(button);
+                    console.log(`Added button: ${pair.name}`);
+
+                    // Handle mousedown/touchstart
+                    button.addEventListener('mousedown', () => {
+                        if (!lockedOperation) {
+                            currentOperation = pair.fn;
+                            
+                                    document.querySelectorAll('.button').forEach(b => b.classList.remove('currentOperation'));
+                                                            button.classList.add('currentOperation');
+
+                            
+                            console.log(`Set currentOperation to ${pair.name}`);
+                        }
+                    });
+                    button.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        if (!lockedOperation) {
+                            currentOperation = pair.fn;
+                                    document.querySelectorAll('.button').forEach(b => b.classList.remove('currentOperation'));
+                                                            button.classList.add('currentOperation');
+
+                            console.log(`Set currentOperation to ${pair.name}`);
+                        }
+                    });
+
+                    // Double-tap to lock
+
+                    let lastTap = 0;
+/*                    button.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        const currentTime = new Date().getTime();
+                        const tapLength = currentTime - lastTap;
+                        if (tapLength < 300 && tapLength > 50) {
+                            if (lockedOperation === pair.fn) {
+                                lockedOperation = null;
+                                button.classList.remove('locked');
+                                console.log(`Unlocked ${pair.name}`);
+                            } else {
+                                lockedOperation = pair.fn;
+                                currentOperation = null;
+                                document.querySelectorAll('.button').forEach(b => b.classList.remove('locked'));
+                                button.classList.add('locked');
+                                console.log(`Locked ${pair.name}`);
+                            }
+                        }
+                        lastTap = currentTime;
+                    });*/
+                });
+            }
+
+            // Initial button creation
+            createConfigureButton();
+            createReactionButtons();
+                        createButtons();
+
+            // Event listeners for arrows
+            leftArrow.addEventListener('click', () => {
+                currentCategory = (currentCategory - 1 + touchOperations.length) % touchOperations.length;
+                createButtons();
+            });
+
+            rightArrow.addEventListener('click', () => {
+                currentCategory = (currentCategory + 1) % touchOperations.length;
+                createButtons();
+            });
+
+            // Canvas interaction
+            const tool = new paper.Tool();
+            tool.activate();
+
+            tool.onMouseDown = function(event) {
+
+    const operation = currentOperation;
+    console.log('onMouseDown - operation:', operation ? 'set' : 'null');
+    if (operation) {
+        const offsetPoint = new paper.Point(event.point.x, event.point.y - 50);
+        if (operation.length === 0) {
+            operation();
+        } else {
+            operation(offsetPoint);
+        }
+    }
+    
+};
+
+
+tool.onTouchStart = function(event) {
+
+    // Adjust touch point with 20pt upward offset
+    const point = new paper.Point(event.point.x, event.point.y - 20);
+
+    // Remove any existing line
+    if (tool.data.line) {
+        tool.data.line.remove();
+    }
+
+    // Create vertical line: bottom at point, top 50pt upward
+    // Create vertical line and add it to tempLayer
+    const line = new paper.Path.Line({
+        segments: [point, point.subtract([0, 50])],
+        strokeColor: 'black',
+        strokeWidth: 2,
+        insert: false // Prevents adding to active layer
+    });
+    tempLayer.addChild(line);
+    
+    
+    line.strokeColor = 'black';
+    line.strokeWidth = 2;
+    
+    tool.data.line = line;
+
+    // Record touch start time
+    tool.data.touchStartTime = Date.now();
+
+};
+
+tool.onTouchMove = function(event) {
+    // Adjust touch point with 20pt upward offset
+    const point = new paper.Point(event.point.x, event.point.y - 20);
+
+    // Update line position
+    if (tool.data.line) {
+        tool.data.line.segments[0].point = point;                    // Bottom point
+        tool.data.line.segments[1].point = point.subtract([0, 50]);  // Top point
+    }
+
+
+};
+
+tool.onTouchEnd = function(event) {
+    // Calculate touch duration and set linger time
+    const touchDuration = Date.now() - tool.data.touchStartTime;
+    const lingerTime = touchDuration < 200 ? 200 : 0; // 0.2s if brief
+
+    // Final touch point with offset
+    const finalPoint = new paper.Point(event.point.x, event.point.y - 20);
+
+    // Remove line after linger time
+    setTimeout(() => {
+        if (tool.data.line) {
+            tool.data.line.remove();
+            tool.data.line = null;
+        }
+    }, lingerTime);
+    
+    
+    
+};      
+   
+   
+           
+        });
+        
+     
+    </script>
+</body>
+</html>

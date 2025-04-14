@@ -1,0 +1,481 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Interactive Code Document Demo</title> 
+<style> 
+/* Base page and layout styles */ 
+body { font-family: Arial, sans-serif; margin: 10pt; background-color: #f7f7f7; color: #333; } 
+
+    /* Base display for custom XML-based code tags */
+    codeDocument, group, function, class, method, name, documentation, parameters, parameter, typeSymbol, type, return-type, codeBody, loop, initialization, condition, increment, variable, expression, statement, return {
+      display: block;
+      margin: 0;/*0.5em 0;*/
+      
+
+    }
+    
+    codeDocument { 
+    display: block;
+    max-width: 1200px; margin: auto; 
+    
+    column-count: 2; column-gap: 40px; 
+    column-rule: 4px solid gray;
+background-color: #969696;
+padding:10pt;
+border: 1pt solid black;
+
+}
+
+group{
+  border:2pt dotted black;
+  padding:10pt;
+  padding-left:10pt;
+  padding-bottom:0;
+  margin:4pt;
+  margin-left:0;
+  margin-bottom:10pt;
+  background-color: #aaa;
+  box-shadow: 8px 8px 6px rgb(34, 34, 34);
+}
+    
+    
+    documentation {
+        display: none;
+      font-style: italic;
+      color: #555;
+    }
+    
+    typeSymbol{
+display: inline-block;
+background-color: #bbb;
+    }
+
+   
+    
+    /* --- Return Type --- */
+    return-type {
+      font-family: monospace;
+      color: #990000;
+      padding: 4px;
+      background-color: #efefef;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 5px;
+      float:right;
+    }
+    
+     /* --- Function Element Styling --- */
+     function, method {
+      break-inside: avoid;
+      border:4pt solid black;
+      margin-bottom:20pt;
+      border-radius: 5pt;
+      overflow:hidden;
+      box-shadow: 5px 5px 6px rgb(77, 77, 77);
+    }
+
+    /* Place parameters box above function name */
+    function > parameters, method > parameters {
+      margin-bottom: 1px;
+      background-color: black;
+      
+      padding: 0pt;
+      padding-bottom:4pt;
+    }
+
+     /* --- Parameters and Variable Type Symbols --- */
+    /* Each parameter now has a <typeSymbol> to show the leading symbol. */
+        parameter {
+      display: inline-block;
+      margin-right: 15px;
+      background-color: #aaaaaa;
+    padding:0pt;
+    border:2pt solid rgb(51, 51, 51);
+    border-radius: 4pt;
+    
+    }
+    parameter > typeSymbol {
+        display: inline-block;
+
+      font-family: monospace;
+      background-color: #bbb;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 3px;
+      margin-right: 0px;
+      border:2px solid gray;
+
+    }
+    parameter > type {
+        
+        display:none;
+      font-family: monospace;
+      color: #990000;
+      background-color: transparent;
+    }
+    parameter > name {
+            display: inline-block;
+
+        font-family: monospace;
+      color: #c0c0c0;
+      background-color: #4b4b4b;
+      color: #9e9e9e;
+      padding:2pt;
+      margin-left: -6px;
+      border:1px solid rgb(20, 20, 20);
+    }
+
+    /* Function name styling and function symbol */
+    function > name, method > name {
+      font-family: Lekton, monospace;
+      text-decoration: underline;
+      font-weight: bold;
+      font-size: 18pt;
+      background-color: rgb(152, 99, 0);
+      color: #330bc4;
+      padding: 0px;
+      /*
+      border-top-left-radius: 10pt;
+      border-top-right-radius: 10pt;*/
+      position: relative;
+      text-shadow: 2px 2px 4px rgb(203, 203, 203);
+    }
+
+    function > name::before, method > name::before {
+      content: 'ℱ';
+      background-color: orange;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+    
+    /* --- Function Body --- */
+    function > codeBody, method > codeBody {
+        display: block;
+      
+      background-color: #005599;
+     
+      border:5px solid blue;
+      border-top:5pt solid blue;
+
+      color:white;
+      padding:4pt;
+      margin:0;
+    }
+    function.collapsed > codeBody {
+        display: none;
+    }
+    function.expanded > codeBody {
+      display: block;
+
+      border: 1px solid #ccc;
+      border-radius: 10pt;
+      background-color: rgb(249, 218, 160);
+      padding: 10px;
+    
+      
+    }
+    
+    /* --- Class and Methods --- */
+    class {
+      border: 2px solid #aaa;
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #f0f0f0;
+      break-inside: avoid;
+    }
+    class > name {
+      font-size: 18pt;
+      color: #005599;
+      font-weight: bold;
+      padding-bottom: 5px;
+    }
+    class > name::before
+    {
+        content: 'ℂ ';
+    }
+    
+    /* Methods inside class mimic function styling */
+    /*
+    method {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #f9f9f9;
+      border-radius: 8pt;
+    }
+    method > parameters {
+      margin-bottom: 8px;
+      background-color: transparent;
+      padding: 4px;
+    }
+    method > name {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-size: 14pt;
+      background-color: #4a4a4a;
+      color: #ddd;
+      padding: 6px;
+      border-top-left-radius: 8pt;
+      border-top-right-radius: 8pt;
+      position: relative;
+    }
+    method > name::before {
+      content: 'ℱ';
+      background-color: darkslategray;
+      color: white;
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }*/
+    
+
+    
+    /* --- Standalone Variable Declaration --- */
+    variable {
+        display: inline-block;
+      margin: 5px 0;
+      font-family: monospace;
+    
+    color:white;    
+    background-color: #fff;
+    padding:5pt;
+    border-radius: 4pt;
+}
+
+variable > documentation{
+    display: none;
+}
+
+    variable > name {
+        
+        display: inline-block;
+        font-family: monospace;
+      color: #005599;
+    background-color: #aaa;
+    }
+    
+    variable > typeSymbol {
+
+      font-family: monospace;
+      background-color: #bbb;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 3px;
+      margin-right: 2px;
+    }
+    
+    /* --- Loop Styling --- */
+    loop {
+      border: 1px dashed #aaa;
+      padding: 5px;
+      margin: 10px 0;
+    }
+    
+    /* --- Interactivity --- */
+    /* Clicking on a function or method name toggles the display of their bodies */
+    function > name, method > name {
+      cursor: pointer;
+    }
+    </style> </head> <body> 
+        
+        <codeDocument>
+    
+          <group>
+    <!-- Function Demo: Parameters appear above the function name with type symbols -->
+    <function>
+      <parameters>
+        <parameter>
+          <typeSymbol>#</typeSymbol>
+          <type>int</type>
+          <name>a</name>
+        </parameter>
+        <parameter>
+          <typeSymbol>#</typeSymbol>
+          <type>int</type>
+          <name>b</name>
+        </parameter>
+      </parameters>
+      
+
+      <name>sum <return-type>#</return-type></name>
+      
+        
+
+      <documentation>Returns the sum of two integers.</documentation>
+      <codeBody>
+        <return>
+          <expression>a + b</expression>
+        </return>
+      </codeBody>
+    </function>
+    
+    <!-- Function Demo: Supports float and string parameters with distinct symbols -->
+    <function>
+      <parameters>
+        <parameter>
+          <typeSymbol>#.</typeSymbol>
+          <type>float</type>
+          <name>xLocation</name>
+        </parameter>
+        <parameter>
+          <typeSymbol>$</typeSymbol>
+          <type>string</type>
+          <name>labelForUI</name>
+        </parameter>
+      </parameters>
+      <name>updatePosition       <return-type>void</return-type>      </name>
+      <documentation>Updates the UI element's position and label.</documentation>
+      <codeBody>
+        <statement>
+          <expression>
+          <functionCall>
+            <name>setPosition</name>
+            <parameters>
+              <parameter>
+                <typeSymbol>#.</typeSymbol>
+                <type>float</type>
+                <name>xLocation</name>
+              </parameter>
+            </parameters>
+          </functionCall>
+          </expression>
+        </statement>
+        <statement>
+          <expression>
+            <functionCall>
+              <name>setLabel</name>
+              <parameters>
+                <parameter>
+                  <typeSymbol>$</typeSymbol>
+                  <type>string</type>
+                  <name>labelForUI</name>
+                </parameter>
+              </parameters>
+            </functionCall>
+            </expression>
+
+
+        </statement>
+      </codeBody>
+    </function>
+    
+  </group>
+
+    <!-- Class Demo: A Calculator class with methods -->
+    <class>
+      <name>Calculator</name>
+      <documentation>A simple calculator class with add and subtract methods.</documentation>
+      <method>
+        <parameters>
+          <parameter>
+            <typeSymbol>#</typeSymbol>
+            <type>int</type>
+            <name>x</name>
+          </parameter>
+          <parameter>
+            <typeSymbol>#</typeSymbol>
+            <type>int</type>
+            <name>y</name>
+          </parameter>
+        </parameters>
+        <name>add</name>
+        <documentation>Adds two numbers.</documentation>
+        <return-type>int</return-type>
+        <codeBody>
+          <return>
+            <name>return</name>
+            <expression>x + y</expression>
+          </return>
+        </codeBody>
+      </method>
+      <method>
+        <parameters>
+          <parameter>
+            <typeSymbol>#</typeSymbol>
+            <type>int</type>
+            <name>x</name>
+          </parameter>
+          <parameter>
+            <typeSymbol>#</typeSymbol>
+            <type>int</type>
+            <name>y</name>
+          </parameter>
+        </parameters>
+        <name>subtract</name>
+        <documentation>Subtracts second number from the first.</documentation>
+        <return-type>#</return-type>
+        <codeBody>
+          <return>
+            <name>return</name>
+            <expression>x - y</expression>
+          </return>
+        </codeBody>
+      </method>
+    </class>
+    
+    <!-- Standalone Variable Declaration Demo -->
+    <variable>
+        <documentation>An integer variable used to index lists.</documentation>
+        <typeSymbol>#</typeSymbol>
+      <name>indexOfList</name>
+      
+    </variable>
+    
+
+    <function>
+        <parameters>
+          <parameter>
+            <typeSymbol>#</typeSymbol>
+            <type>int</type>
+            <name>a</name>
+          </parameter>
+          <parameter>
+            <typeSymbol>#</typeSymbol>
+            <type>int</type>
+            <name>b</name>
+          </parameter>
+        </parameters>
+        <name>product</name>
+        <documentation>Returns the sum of two integers.</documentation>
+        <return-type>#</return-type>
+        <codeBody>
+          <return>
+            <name>return</name>
+            <expression>a * b</expression>
+          </return>
+        </codeBody>
+      </function>
+      
+    <!-- Loop Demo: A function containing a loop -->
+    <function>
+      <parameters></parameters>
+      <name>printNumbers</name>
+      <return-type>void</return-type>
+      <documentation>Prints numbers from 0 to 9.</documentation>
+      
+      <codeBody>
+        <loop>
+          <initialization>
+            <variable>
+              <typeSymbol>#</typeSymbol>
+              <name>i</name>
+            </variable>
+            <expression>= 0</expression>
+          </initialization>
+          <condition>
+            <expression>i &lt; 10</expression>
+          </condition>
+          <increment>
+            <expression>i++</expression>
+          </increment>
+          <codeBody>
+            <statement>
+              <expression>print(i)</expression>
+            </statement>
+          </codeBody>
+        </loop>
+      </codeBody>
+    </function>
+    
+</codeDocument> 
+    
+    
+    <script> // Enable interactive toggling: clicking on a function or method name expands/collapses the code body. document.querySelectorAll('function > name, method > name').forEach(elem => { elem.addEventListener('click', () => { const parent = elem.parentElement; parent.classList.toggle('expanded'); }); }); </script> </body> </html>

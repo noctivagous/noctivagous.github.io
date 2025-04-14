@@ -10,22 +10,42 @@ Action Buttons
 
 -- Action Button Types --
 
-An action button indicates which mode it is in:
+An action button indicates which mode it is in, Touch Operation
+or Context Operation. Action buttons will often 
+have dynamic states changing based on the states of the app,
+especially if a selection is present.
 
 1) Touch Operations - for targeting elements and point locations (e.g. deposit
 shape at touch point, delete shape at touch point, apply color to shape at touch
 point, retrieve color from shape at touch point, select a shape at touch point).
 
-	a) single touch operations - selecting objects one at a time.
-	b) multiple touch (state flow) operations - drawing a polyline.
+	a) single touch operations - (e.g. selecting objects one at a time.)
+	
+	b) multiple touch (state flow) operations - (e.g. drawing a polyline.)
+	
+	
+	A single touch operation might be held down on the target for repeated
+	application of the function, such as scaling up or rotating.  This is
+	in contrast to tapping repeatedly.
+	
 	
 	Buttons with visible parameters and properties 
 	If a touch operation retrieves a color from a shape, 
 	that color property will be visible inside the button.
 	It might also display a shape if its job is to deposit it.
 
+--> When there is a selection, some action buttons move from
+being touch operation to context operations.  (e.g. rotate clockwise
+touch operation targets a single shape.  but if there is a selection
+then rotate clockwise applies to it).
+
+--> Some action buttons acting in a touch operation mode might allow 
+double taps to make them context operations (e.g. deselect touch
+operation double tapped will deselect all)
+
+
 2) Context Operations - operations that apply to the
-context (e.g. copy selection, deselect all, delete selection) and the states of
+context (e.g. copy selection, cut selection, delete selection) and the states of
 the app.
 
 An app uses a mixture of these two.
@@ -634,7 +654,18 @@ The touch operation slider works in the following way: the numeric value on the
 screen is touched by the right index finger and the left i
 
 
+-----
 
+Additional Notes Regarding Limitations of The Hardware
+
+Tablet computers currently do not detect finger position in the air—- the depth 
+and XY position of a finger before touch.  This would bridge the tablet interface
+to desktop software, as the XY coordinate would be available for the index finger
+similar to the mouse. As the user moves the index finger, a hot spot would move 
+on the tablet screen.
+
+
+-------
 The iOS UI Is Reductive; It Limits The Capabilities Of Tablet Computers
 
 

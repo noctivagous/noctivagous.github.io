@@ -1,0 +1,660 @@
+
+An Alternative Tablet UI
+
+
+NOCTIVAGOUS noctivagous.github.io
+
+------------------------
+
+Action Buttons
+
+-- Action Button Types --
+
+An action button indicates which mode it is in:
+
+1) Touch Operations - for targeting elements and point locations (e.g. deposit
+shape at touch point, delete shape at touch point, apply color to shape at touch
+point, retrieve color from shape at touch point, select a shape at touch point).
+
+	a) single touch operations - selecting objects one at a time.
+	b) multiple touch (state flow) operations - drawing a polyline.
+	
+	Buttons with visible parameters and properties 
+	If a touch operation retrieves a color from a shape, 
+	that color property will be visible inside the button.
+	It might also display a shape if its job is to deposit it.
+
+2) Context Operations - operations that apply to the
+context (e.g. copy selection, deselect all, delete selection) and the states of
+the app.
+
+An app uses a mixture of these two.
+
+
+External Functions Functions that support the app. Import, Save as, Print, etc.
+
+
+Touch Operation (Action Buttons)
+
+An object sits there on the tablet touchscreen, but what does touching it do?
+ In real life an object would respond according to physics.  On a touchscreen
+computer the object is interactive, as if somewhat alive, and currently the
+initial answer for what touching it does is vague, but generally "open" or
+"activate".  This is an operation, of course, and that is what differentiates
+the real world physics from the conventions of an interactive event on a tablet
+device— that the touch performs a computer operation on a screen object.  As
+mentioned, on iOS, an individual touch is confined to one operation, "activate".
+To make the touch do anything else beyond that function requires learning all of
+Apple's complicated steps afterwards, such as pressing down for more time to get
+something to appear. A simple touch could be made to perform other functions
+besides "Activate", though (other operations on the screen elements). Right now
+it can only perform "Activate". If Apple had set the touch mode to signify
+"Close", all that a touch would do is close something on screen (but that mode
+does not exist in iOS). Or, if the touch were set to "Circle", it would just
+draw a new circle at the point of a touch. So, for a new type of tablet device,
+the touch event can be predetermined just before the touch, with operations
+beyond the current "Activate/Open".  The touch operation is specified by holding
+down one of several buttons (e.g. "Close"), the touch is made by the user, then
+the user releases the button.
+
+If eight to ten physical buttons are arranged in a column just to the left of
+the screen, they can specify what a touch means when it makes contact, and this
+will broaden the tablet's interactive range an enormous amount and make the UI
+far more nimble.  Closing a window would not involve touching a tiny close "x"
+that appears on a window object but instead holding down the "Close" touch
+operation button on the left edge of the screen and then tapping any part of the
+window(s), tab view(s), panel(s), or object(s) that need to be closed, then
+releasing the "Close" button. While a certain touch operation button is held
+down, e.g. an "Inspect" button, whatever object the finger touches will be acted
+upon accordingly (it will be inspected, it will be copied to the clipboard,
+etc.).  More than one object can receive that operation while the touch
+operation button is held down, making for a quick and capable UI. So, closing a
+tab and its contents does not involve touching the small close button on the tab
+but instead holding down "Close" and touching any part of the tab or the
+viewport (such as a web page) that is associated with the tab, as whatever is
+touched will be closed. The user then does not need to be concerned with precise
+hit target accuracy, to hit the small close button, and this is a much more
+pleasant UI.
+
+To summarize: a touch operation button momentarily specifies what a touch means
+(e.g. "Close") just before the touch occurs and then the physical button is
+released by the user after the touch is finished.  The speed and
+straightforwardness of the interface improves: five objects can be deleted from
+a page quickly by holding down a "Remove" operation button, then tapping each of
+the five objects that need to be removed, then releasing the "Remove" touch
+operation button (that sits to the left of the screen in this column).   This
+setup will allow the user to control software with a wide range of touch
+operations loaded into the LCD-backed buttons, instead of searching for
+operations deep inside the interface through menus or convoluted maneuvers.  In
+addition, the column of physical touch operation buttons can have groups of
+operations swapped out because the buttons  each carry their own LCD screen.
+LCD-backed buttons are now a mainstream feature of consumer devices related to
+controlling media production desktop apps and live video streaming.
+
+"Close" applies to anything and all titles of the touch operations are similarly
+generic, applying broadly across many parts of all apps.  Thus what is
+convoluted to achieve today on a tablet will not be, and what is out of reach
+for the average user who does not bother to memorize specific features will
+become straightforward when these physical buttons are placed onto the tablet
+computer.  In other words, the key benefit when there are several touch
+operation buttons sitting to the left of the screen is that they can accommodate
+a wide range of touch objectives as soon as the tablet is picked up, and this is
+the core of a new tablet device framework for user interaction.  A “Generate”
+touch operation button will make the touch generate an object at the position of
+contact in an empty space (or it will generate a child object for the object
+that was touched).  To illustrate: five objects can be generated by holding down
+the "Generate" touch operation button and then tapping the desired locations for
+the five objects.   For power users, some of these touch operation buttons can
+designated for custom-programmed operations and scripts.  Each touch operation
+button has an LCD screen, which is why they are so configurable.
+
+In this scheme the user will always know how to accomplish tasks because the
+touch operation buttons will be general in their function names, covering a
+broad range of activities, and so they will naturally work in combination with
+each other. "Close" can apply to exiting or closing anything, usable for many
+types of objects on screen, not just windows.  "Inspect" can apply to a large
+number of objects as well.   Just these two example buttons already work in
+combination: any inspection popover opened with "Inspect" can be closed with the
+touch operation button "Close", demonstrating that the operations work
+systematically already just by being general.  "Open" can begin the playing of
+the touched song while "Close" can pause that song. A user can know how to do
+all sorts of tasks without specific instructions when the provided operation
+buttons are helpful.  The current procedure for the user in iOS is to extract
+these functions (e.g. making close buttons appear) and this replaces that
+unpleasant dynamic.
+
+More touch operation buttons:
+
+-- "Teleport" - This replaces dragging on the touchscreen.  The first touch
+establishes which object is to be transported to another part of the screen
+(what is to be dragged) and the second touch moves it to its desired location
+immediately, thus the name teleportation.  So there are only two touches to
+accomplish what dragging does today because "Teleport" is held down.  This is
+much faster than dragging objects on a touchscreen and will feel much more
+precise.  To recap, the "Teleport" touch operation button is held down during
+the first and second touch, then it is released.  This opens the door to other
+related operations: if it were "Copy" that were held down, the first touch would
+establish what is to be copied and the other touches afterwards would be copy
+destinations, with there just being one touch made after the initial one if
+there is only one copy destination.  Then after all of the touches, "Copy" is
+released.
+
+-- "Select" - While "Select" is held down, the finger can select text as it
+moves along the surface of the screen, or it can tap multiple objects.  Compare
+the use of this touch operation with the current, ambiguous situation in which
+the iPad's selection mode for text has to be triggered through timing (holding
+down the touch for a few seconds), which is confusing and can also be triggered
+on accident.  Touch operations announce to the tablet computer what is going to
+happen on the touchscreen just before the touch and the release of the button
+announces that that operation is over.  Also, another benefit of touch
+operations is in the following example: when "Lasso" is available as a touch
+operation button and it is held down, there is no need to take over the entire
+app with a tool mode, such as how the lasso tool in photo editing programs is
+used.  Instead "Lasso" is held down, the finger draws the selection outline and
+then "Lasso" is lifted, and the app doesn't work around tool modes anymore.  In
+the same way, a circle is drawn not by activating a circle tool but by pressing
+down the "Circle" touch operation button and drawing the diameter with the
+finger then releasing the touch operation button.
+
+-- "Toggle" - This will turn a touched setting or object on and off, opposite
+its current state and this can apply to many circumstances.
+
+-- "Replace" - The object to be replaced is tapped followed by the one that will
+replace it (works for graphical objects, text, and also fill colors).  This
+pairs with "Swap" in which the two objects' positions are swapped after tapping
+both of them.   With "Apply", the application of a style to a recipient object,
+such as a color setting applied to an article of clothing or font and color
+combination to a body of text, can be achieved easily by this touch operation
+button.  The style itself is loaded into "Apply" with the companion "Extract"
+touch operation button.  In all of these cases, whether it is "Replace",Swap",
+"Apply", "Extract" there is no predefined type of object that has to be the
+recipient of the operation.  With the style-related operations, there is no
+predefined type of property that they work on.   This demonstrates how touch
+operation buttons have wide applicability when they are given generic titles.
+
+-- "Classify" - For tagging and all kinds of classification.  This is the type
+of touch operation button that will require specifying what it does, what aspect
+of the object it will be classifying, so perhaps there could be an optional mode
+property on touch operation buttons.
+
+-- "Nest" - For enclosing the selection inside a container, including but not
+limited to file folders.
+
+
+Fortunately, the touch operation buttons can reduce the need for what are
+currently called "gestures" because even a replacement "Zoom" touch operation
+button will provide more precise control over the zoom while "Zoom" is being
+held down, allowing the user to go even slower than today.  Likewise, a "Rotate"
+touch operation button will provide greater real-time precision for the user
+than a rotate "gesture". In the case it is still desired to have "gestures,"
+there can be many types of swipe, rotate, or two-finger scrolling according to
+the touch operation buttons.  But since zoom, rotate, and pan are such commonly
+accessed features they may have their own dedicated touch operation buttons on
+the device anyway.   If they do not, the remaining advantage of accepting
+"gestures" is that they allow freeing up button space in the touch operations
+column.
+
+Touch operation buttons should serve to replace the current user interface
+conventions on tablets, which is timing-activated functionality (holding down
+for a few seconds) and digging into menus to find the desired function.  If
+these touch operation buttons are categorized, color-coded, and grouped
+adequately, an increase in the number of operations will not overwhelm the user
+but instead make it so the user does not need to be provided tutorials for most
+basic tasks.  On the device, touch operation buttons can be assigned background
+colors on the LCD-backed buttons according to category, allowing the user to
+know what a touch operation button is for.  How to swap out groups of touch
+operation buttons on the column of buttons becomes a question.  Forward and
+backward arrows are probably not sufficient.  Instead, the individual categories
+of touch operations can exist as separate buttons in a grid just beneath the
+column.  This way, touch operation buttons can be the center of interacting with
+an app's functionality.
+
+The goal of the tablet's design is that app functionality is activated primarily
+from outside the touchscreen itself, such as through the use of touch operation
+buttons, instead of having the user learn a wide variety of conventions specific
+to each app that are all inside the touchscreen.  Whether it is editing of text
+or rotating and scaling objects, many apps share functionality and they have
+common needs, so a tablet should be able to offer access to nearly all of those
+by way of physical controls placed on the surrounding the touchscreen screen,
+with the touchscreen just acting to communicate to the app where the user wants
+the touch point at any given time, as it is mediated by the surrounding
+controls.  Many types of apps, for example, need to constrain movement, whether
+it is on the X or Y axis or along a specific angle.   What has to be considered
+is how the controls are placed onto the device with a deeper, systematic plan,
+that they are not just for manipulating individual parameters (like a slider or
+rotary knob) as found on a kitchen appliance or home stereo, which is what
+controls have always been for.  Instead they embody concepts, because this is a
+computer that has to accommodate software with its controls and it is not a
+washing machine that has a static group of settings.  When the physical controls
+represent concepts related to apps and software, the software will not rely
+solely on the touchscreen to control the app, which presents problems.
+
+To unlock and lock the device, there can be a "Password" touch operation button
+that, when held down, accepts a simple finger pattern on any part of the
+touchscreen, at any scale of the original pattern, for either locking and
+unlocking the device (whether it is a very simple set of "x" strokes or
+something else).
+
+It's also worth noting that even the two-finger scroll gesture can be replaced
+for vertical scrolling with a single touch operation button.  The "Scroll" touch
+operation button is held down with the left hand and the two fingers on the
+right hand tap the screen, with each individually indicating whether it is to
+scroll up (index finger) or down (middle finger).  Light taps scrolling in a
+burst scrolling up or down  whereas holding down one of the two fingers on the
+screen results in continuous scrolling.  Typical scrolling activity would then
+commonly be characterized by a rapid sequence of finger taps in the same
+location, which may be less demanding on the user than two-finger gestures.
+
+Touch operation buttons also can serve to activate a horizontal or vertical
+slider that appears on the touchscreen or, more preferably, be the means of
+assigning what a primary rotary knob on the device does while the touch
+operation button is held down.  The goal is to reduce the amount of interaction
+with arrays of controls, such as sliders, on the touchscreen itself, to provide
+a situation that is superior to reproducing mechanical controls on a touchscreen
+(or even as they exist on the original machines).
+
+
+
+
+Opposing Touch Operation Buttons
+
+In this column of physical touch operation buttons on the left side of the
+screen, it might seem best at first to have just one column.   But often
+operations exist in opposition to each other (group --- ungroup,  add ---
+subtract,  generate --- remove, open --- close, show --- hide).  Two columns of
+opposing operations would likely be preferable, doubling the number of available
+buttons that are sitting to the left of the screen.
+
+The touch operation pairs are general purpose.  A window is closed with "Close,"
+but "Close" can also be used to turn a switch control to the off position and
+close just about anything else.  "Open" opens anything in the same way and turns
+something on. "Expand  --- Collapse" is about unfolding and stowing away and
+applies to windows but also collapsible controls.  That pair of operations
+addresses a different state dynamic than "Open --- Close". Pairs of buttons
+would have generic names which apply to many scenarios.
+
+
+Three Activation Options For The Touch Operation Buttons
+
+The first activation option is the conventional holding down of the button while
+tapping or dragging object(s) on the screen.  The second is when the "lock" mode
+of Touch Operations is on and this is when just a momentary press keeps that
+button active until it is touched again or another button is pressed (especially
+the Escape button in the upper left corner of the device).  The third is that
+the touch operation button is active for the next touch after being momentarily
+pressed, but only for one operation.
+
+-> When a touch operation button is tapped twice it "locks".
+
+Here is how generate will work.  The circle is a blue, filled circle.  On touch
+down it is only stroked and has 0.5 opacity.  Only on touch up will it become a
+blue, filled circle.  Before touch up, as long as the finger is still held down,
+it allow repositioning the circle.
+
+Touch Operation Buttons: Dual Opposing Setup (Yang/Yin Pattern)
+
+Open / Close Open: Opens a window, starts playback, or turns something on
+(Yang). Close: Closes a window, stops playback, or turns something off (Yin).
+
+Add / Subtract Add: Adds an object or increases a value (Yang). Subtract:
+Removes an object or decreases a value (Yin).
+
+Show / Hide Show: Displays a hidden element or reveals content (Yang). Hide:
+Conceals an element or stows content (Yin).
+
+Expand / Collapse Expand: Enlarges or unfolds a view or content (Yang).
+Collapse: Compacts or folds a view or content (Yin).
+
+Generate / Remove Generate: Creates a new object at the touch point (Yang).
+Remove: Deletes the touched object (Yin).
+
+Apply / Extract Apply: Applies a property or style to an object (Yang). Extract:
+Copies a property or style from an object (Yin).
+
+Paste / Copy Paste: Places copied content at the touch point (Yang). Copy:
+Gathers content from the touched area (Yin).
+
+Teleport / Return Teleport: Moves an object to a new location (Yang). Return:
+Sends an object back to its original location (Yin).
+
+Select / Deselect Select: Marks objects or text for action (Yang). Deselect:
+Clears selections from objects or text (Yin).
+
+Group / Ungroup Group: Combines objects into a single unit (Yang). Ungroup:
+Separates a group into individual objects (Yin).
+
+Notes Yang/Yin Dynamic: Yang operations (left column) are about applying,
+creating, or initiating; Yin operations (right column) are about receiving,
+removing, or concluding.
+
+Operation: Hold a button, tap the screen to apply the action, and release to
+complete it. LCD-Backed: Buttons feature dynamic labels and can be color-coded
+or swapped for other pairs as needed.
+
+
+
+
+The "Goto" Button Underneath the Touch Operation Buttons
+
+By holding down the "Goto" button that sits beneath the Touch Operation buttons,
+the buttons will change into an app launcher.  So, hold down "Goto" and press
+the e-mail symbol and the e-mail app opens up.  Also however, what can be
+launched will not be limited to apps.  The launch mode can also accept URLs,
+scripts, and documents. It is possible to add three or more "Goto" buttons next
+to each other (Goto 1, Goto 2, etc.), with the others having other purposes,
+such as opening specific windows of existing apps.  This demonstrates the
+possibility of repurposing Touch Operation buttons for secondary modes and they
+can be activated by the existence of other buttons, such as these "Goto"
+buttons.
+
+
+
+Achieving The Precision of the Mouse Cursor with Multi-Touch
+
+The first inclination technologists have had when implementing multi-touch on a
+device, and what has become accepted reality for this technology, is to make the
+touch point occur directly underneath the finger, at the center of the finger's
+contact with the screen. This is how all tablet devices work today. The first
+problem with this is that the finger tip then sits on top of, and thus conceals,
+the touch point.  This is in contrast with how the mouse's screen cursor is
+always visible.  It's why there is a loss of precision in interacting with the
+mobile computing device.  This is one of many reasons why the desktop computer
+setup continues to be essential for professional software applications, because
+there can't be a cursor this way.  Secondly, when the point of the touch is
+directly underneath the finger tip, the user of the device has a harder time
+achieving hit accuracy for objects on the screen, never feeling like it is
+possible to gain full dexterity while using the device, and that is actually the
+case.  So, a different track carries potential, which is that the actual point
+of contact sits above the finger by about 1 centimeter and a line is drawn to
+this point from the point that is directly underneath the finger. This
+offsetting of the touch point by a centimeter will likely require a short period
+of habituation by the user. As long as the user is willing to accustom himself
+or herself to this new dynamic, the quality of interaction with the device seems
+like it will improve significantly and offer a better experience, getting closer
+to a desktop computer.  It seems likely that most people will be able to better
+control the device when they are aiming for a point that sits slightly above the
+finger rather than the center point that is directly underneath it.  What this
+requires for the tablet device, though, is that there will be a 1 centimeter
+high blank space at the bottom of the device where there is no screen present,
+so that the bottommost pixels of the screen can be accessed.
+
+A cursor may still have some uses on a tablet device.  It is possible to
+implement a Cursor Mode, activated by a button on the device.  This would be a
+toggle button, meaning that pressing it once turns it on and pressing it again
+turns it off, and it isn't meant to be held down like the touch operation
+buttons.  When the Cursor Mode is turned on, there is a cursor but it has been
+adapted to the touchscreen in the following way.  The user is not asked to touch
+the location of the cursor each time, nor will each individual touch move the
+cursor to the finger's location.    Instead, the cursor will always require
+finger movement to be moved.   Each time the finger makes contact, a line is
+drawn from the point of the finger to the cursor.  So it doesn't matter where
+the finger first makes contact to control the cursor.  When the Cursor Mode is
+first turned on, a cursor appears in the middle of the screen or where it was
+last located, the user does not need to touch it directly, and whenever the
+finger touches down on the touchscreen that is the fixed distance established
+for controlling the cursor from a distance, until the finger leaves contact with
+the screen.  Each time the user controls the cursor it will usually be from a
+different position relative to the cursor.  In this mode, touching the screen
+will only change the cursor's position until Cursor Mode is turned off.   The
+touch operation buttons are transformed into the Cursor Mode and what they do is
+perform the "clicks" that are now on mouse buttons.
+
+
+
+The "Multiple" Touch Operation Modifier
+
+Like the shift key on the keyboard, the "Multiple" key on the device allows
+selecting more than one object at a time.  It is a modifier button, which is
+what the shift key is.  During typing would act as the shift key, too.  Where
+this key is placed is not certain currently, but could be on the side, where
+less frequently accessed keys are normally accessed.
+
+
+
+
+Mode Buttons Column
+
+On the right side of the device's screen can sit mode buttons that are utilized
+by all apps. These buttons do not modify the touch but instead the entirety of
+the app's mode or the mode of a certain context. All apps running on the tablet
+would utilize these buttons as a primary interface, because all complex apps
+have states or modes, a mode generally regarded as a large collection of states
+and functionality like on any consumer appliance.  Notably, modes are not
+usually brought up as an individual topic in software development but they are
+nevertheless a central aspect for many types of apps, as changing a tool in a
+photo editor is in fact changing a mode (a collection of states and workflows)
+and the toolbar is in fact just listing a collection of modes.  It is just that
+the names "toolbar" and "tools" were used instead of "modes" and "mode" for user
+friendliness.  Most apps carry a variety of modes, as even bold and italic are
+modes for text.  Viewing and editing modes could be said to be the most
+fundamental overall modes for apps that produce data. When apps can be written
+for a set of controls that are physical and also display modes and states, the
+apps will be higher quality for user interaction. The conceptual internals of an
+app and computing system will be better represented on the outside of this
+device, next to the screen.
+
+Again, each of these buttons will be backed by individual LCD screens to give
+the software developer flexibility. The purpose of these mode buttons is to
+support anything that is a mode or state. Configuring preferences is another
+mode, and when both the software developer and the user thinks in terms of
+"mode" because the device is built that way there is less need for the user to
+look up specific conventions, such as for opening the settings window.
+
+Other uses of modes include switching on and off submodes of editing in the app.
+The mode buttons should be able to accommodate anything needed involving this
+aspect of an app, including submodes, and states.
+
+One issue that we should point out is that though there are various edit modes,
+"Edit" might be a Touch Operation button to edit a certain object and so might
+"Configure" so that instead of shifting modes of the app the user immediately
+gets to the outcome he wants.  ("Configure" is actually the editing of
+settings.)  So, it is possible that these aspects of using a program have to be
+tested out for how they will exist between Touch Operations and the Mode
+Buttons.
+
+
+
+
+Thumb Input for Text Words and Characters: Mode Buttons and Touch Operation
+Buttons Simultaneously Enter a Meta Mode, to Replace The Conventional Onscreen
+Keyboard, Providing an Input Dynamic Through Alternating Thumb Input from Each
+Side
+
+When typing is needed, the LCD-backed buttons on the device enter a meta mode
+for this purpose.  At the same time, the mode buttons on the right and the touch
+operation buttons on the left transform into input buttons for a specific word
+and typing entry system, with each of the two sides able to receive input back
+and forth in alternation by the thumbs, for the user to enter words and
+characters.  The two sets of buttons have entered a meta mode for input,
+repurposed for entering words. What shows up on the LCD screens for each button
+on both sides can go beyond individual characters of a keyboard, to allow
+entering words without autocomplete. The entry will be both tactile and accurate
+because the buttons themselves are physical and it can be the alternation of
+pressing buttons on both sides that completes words.  The buttons can display
+anything, including full words and even symbols or images, so meta modes are an
+expansive area in the case there are other needs for all of the buttons.  What
+is static on the device are reaction buttons such as "Escape/Cancel" in the
+upper lefthand corner" and "Accept/Proceed" in the lower right corner.
+
+What is pressed on the buttons can affect what shows up on the left and right
+sides of the screen vertically, lining up with the buttons themselves, so that
+the user of the device can see the effects of pressing buttons in alternation on
+the screen.
+
+A meta mode is available for any app for when complex entry of data would
+benefit from taking over the device's buttons and putting them into a special
+mode, but it would be utilized less commonly than what is provided.  At all
+times the "Escape/Cancel" button on the device would exit such a custom meta
+mode.
+
+Lastly, it is possible to supplement this data entry meta mode through buttons
+placed on the underside of the device (as currently found on handheld video game
+consoles), and it is possible this would be an important part of text entry.
+
+
+
+
+Reaction Buttons Such as "Undo" and "Redo"
+
+One could say that pressing "Undo" is unlike other types of functions activated
+in that it is a reaction to a mistake, thus this is a reaction type of function
+or button.   When something relates to reacting, it is a candidate for a
+physical button instead of occupying space on the touchscreen.  In an app,
+"Undo" and "Redo" act on a maintained list of the user's operation history that
+is most often out of view.  The reason not to make "Undo" and "Redo" separate
+and fixed on the device is because they control the flow of doing an operation.
+They sit next to the touch operation buttons because they undo or redo what was
+just done by a touch operation.
+
+Reaction buttons can be said to be those which are used by the user quickly in
+response to an immediate change or request from the app. The periphery of the
+device is a suitable place to place these reaction buttons because the hands are
+close to them.  For example, if anything isn't right or should be exited, the
+user will want to press the "Escape" button in the top left of the device and it
+takes no time to press it because it is in the corner.  If something needs to be
+confirmed, the user can press the "Accept/Proceed" key in the bottom right
+corner of the device.  Why include physical buttons like this when a person can
+touch the screen itself? Because the less movement of the hands the better with
+respect to these types of user actions.
+
+
+
+Union (Add), Subtract, Intersection Buttons
+
+
+
+
+No Confirmation Dialog Boxes ("Are You Sure?") Needed Because of Implicit
+Confirmation Pathways
+
+If an object is selected and it is of sensitive value for deletion (deleting it
+could create a problem if done on accident), then the following is how to delete
+it: the "Remove" touch operation button is held down and that object is tapped
+three times, with the object darkening with each tap. On the third tap it is
+deleted. Thus, in this case there is no need to display a warning dialog box for
+the user that asks, "Are you sure you want to delete this?" The pathway for the
+actionhas been set up so that confirmation is implicit and takes place through
+the action. Many types of confirmation dialog boxes can be eliminated this way,
+such as through confirmation sequences where two objects are tapped in
+alternation or in a pattern.
+
+In addition to this, many functions of the hardware can exist in the following
+way. The "Close" and "Hide" touch operation buttons are held down at the same
+time and then the screen is tapped three times to put the tablet to sleep or
+wake it from sleep. If it is tapped four times, it powers off the device or
+powers it on. Tapping two times can quit the current app. So there is a related
+progression placed inside a category, which is a helpful concept for a new type
+of tablet UI, to eliminate the proliferation of individual functions in menus
+that have to be found.
+
+
+
+Scrolling-Averse System Conventions
+
+Noctivagous takes the position that a large amount of vertical scrolling is
+uncomfortable and is a substitute for what should actually exist more often,
+which is proper transitioning of content (sliding, for example) that prepared
+and sized for the device's frame dimensions.  That is, content should more often
+be swapped in and out carousel-style or otherwise, faded in smoothly instead of
+scrolled.  It can be paginated and the device itself would carry two buttons for
+forward and backwards, just like what is found on ebook readers.  Content should
+be clipped less and therefore require less scrolling.  Information in the future
+can be prepared and laid out such that it is fitted for the dimensions of the
+device. "Forward" and  "Backwards" slides or fades in content within the same
+frame, just like any ebook reader, and nothing has to be moved into the frame of
+the device through scrolling.  This is especially applicable to consumption of
+information.  The web itself should be refitted in this way for long pages.
+
+
+
+
+Separate X and Y Axis Touchpad Strips
+
+A hardware feature that is considered, but is optional, for a Noctivagous tablet
+is a pair of X (horizontal) and Y (vertical) axis touchpad strips with pressure
+sensitivity.  They would sit above and to the left of the screen respectively
+and match the lengths of the screen's width and height.  The Y axis (vertical)
+touchpad strip would sit on the left edge of the screen, sitting between the
+Touch Operation buttons and the screen.  These strips are available for all apps
+and the benefit is that they constrain movement.  Apps will be able to use these
+touchpad strips for horizontally and vertically constrained needs, something
+common.  For irregular and freeform movements the screen itself can be used. But
+touchpads can offer control. It is natural to select, for example, an app icon
+by lining up the x and y axes with both fingers as they are sliding along the
+touchpad and then pressing down on the two touchpad strips at the same time.
+
+
+
+
+Future Programming Through Touch Operation Buttons
+
+In many ways, programming involves the insertion of containers of operations, so
+there is no difficulty changing the purpose of the touch operation button
+columns such that it inserts various types of operations inside a document of
+code.  In addition, with some touch operation buttons repurposed for code, the
+arrows drawn by a touch can represent various types of functionality for a new
+type of computer code, one that is semiotical.  This shows the flexibility of
+having touch operation buttons, because the column can have various modes
+itself, the first one being that what is held down acts upon the recipient
+object, called the Command Mode, such as how "Close" will close the hit object.
+In the second mode the touch operation is a means to insert its operation title
+as data or content in a document, Content Mode.
+
+
+
+
+NOCTIVAGOUS.GITHUB.IO
+
+
+
+
+
+----
+
+
+
+
+---
+
+With touch operations, it is also possible that something is deleted not through
+the use of a "delete" modifier next to a "close" modifier but instead tapping an
+object twice with "close," with it darkening as a warning that it will be
+deleted will be the way to delete something.  Other modifier keys include
+"route" such as for opening a file in a specific application, because "route" is
+a very generic keyword that can apply to many situations.
+
+
+Instead of "cut [out]","copy [from]","paste [on/into]" more like "extract","
+
+
+
+  The Touch Operation Slider
+
+The touch operation slider works in the following way: the numeric value on the
+screen is touched by the right index finger and the left i
+
+
+
+The iOS UI Is Reductive; It Limits The Capabilities Of Tablet Computers
+
+
+For tablet computers, iOS (iPadOS) carries a major drawback: the simplest tasks
+are easy to achieve, but anything slightly complicated has to be specifically
+learned because it is invisible, offscreen, or nested in conventions.   The
+"user friendly experience" only describes the basics of launching an app,
+zooming inside a document with pinch-zooming, and scrolling with two fingers.
+After that, the system software interface features are tacked on, one after
+another.  As a consequence, the user can easily activate one of iOS's side
+features on accident, and this is a poor state of UI design.  But also, iOS is
+an undeveloped and prototype-level collection of user interface conventions in
+the first place, incomplete except for consumption of media, which is enough to
+make it a popular product.  Because it strives towards minimalism and commercial
+accessibility, it is nubby and dumbed down, limited when the task is
+professional usage.  For the user's control of the tablet software, Apple
+(characteristically) insists on withholding from the user any complementary
+physical controls such as knobs, sliders, and buttons, believing that those were
+the problem in the first place.
+
+
+
+NOCTIVAGOUS.GITHUB.IO

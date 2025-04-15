@@ -1,7 +1,11 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Interactive Code Document Demo</title> 
 <style> 
 /* Base page and layout styles */ 
-body { font-family: Arial, sans-serif; margin: 10pt; background-color: #f7f7f7; color: #333; } 
+body { 
+  font-family: Arial, sans-serif; 
+  margin: 10pt;
+   background-color: #f7f7f7; 
+   color: #333; } 
 
     /* Base display for custom XML-based code tags */
     codeDocument, group, function, class, method, name, documentation, parameters, parameter, typeSymbol, type, return-type, codeBody, loop, initialization, condition, increment, variable, expression, statement, return {
@@ -10,29 +14,77 @@ body { font-family: Arial, sans-serif; margin: 10pt; background-color: #f7f7f7; 
       
 
     }
-    
-    codeDocument { 
-    display: block;
-    max-width: 1200px; margin: auto; 
-    
-    column-count: 2; column-gap: 40px; 
-    column-rule: 4px solid gray;
-background-color: #969696;
-padding:10pt;
-border: 1pt solid black;
 
+    html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-group{
+
+    
+    codeDocument {
+  display: block;
+  max-width: 1200px;
+  margin: auto;
+  height: 100%; /* Fill the available height */
+
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  column-count: 2;
+  column-gap: 40px;
+  column-rule: 4px solid gray;
+  background-color: #969696;
+  padding: 10pt;
+  border: 1pt solid black;
+}
+
+
+
+statement{
+
+  border-top:1pt solid white;
+border-bottom:1pt solid white;  
+background-color: #330bc4;
+padding:2pt;
+display:inline-block;
+margin-bottom:5pt;
+}
+
+statement name{
+font-family: monospace;
+font-size:11pt;
+}
+
+/* Ensure return and its children are aligned horizontally */
+return {
+  display: flex;
+  align-items: center; /* Vertically align items */
+  gap: 5px; /* Add spacing between items if needed */
+  
+}
+
+return > name {
+  display: inline-block;
+  background-color: #330bc4;
+  padding:3pt;
+}
+
+return > expression {
+  display: inline-block;
+}
+
+group { 
   border:2pt dotted black;
   padding:10pt;
   padding-left:10pt;
   padding-bottom:0;
   margin:4pt;
   margin-left:0;
-  margin-bottom:10pt;
+  margin-bottom:20pt;
   background-color: #aaa;
   box-shadow: 8px 8px 6px rgb(34, 34, 34);
+  
 }
     
     
@@ -53,11 +105,14 @@ background-color: #bbb;
     return-type {
       font-family: monospace;
       color: #990000;
-      padding: 4px;
+      padding: 2px;
       background-color: #efefef;
-      border-radius: 5px;
+      border-radius: 0px;
       display: inline-block;
-      margin-top: 5px;
+      margin-top: 1px;
+      width:14pt;
+      text-align: center;
+      font-size:12pt;
       float:right;
     }
     
@@ -152,12 +207,16 @@ background-color: #bbb;
         display: block;
       
       background-color: #005599;
-     
+  
+      /*   
       border:5px solid blue;
       border-top:5pt solid blue;
+*/
+      background-color: blue;
 
       color:white;
       padding:4pt;
+      padding-top:8pt;
       margin:0;
     }
     function.collapsed > codeBody {
@@ -176,12 +235,14 @@ background-color: #bbb;
     
     /* --- Class and Methods --- */
     class {
-      border: 2px solid #aaa;
-      padding: 10px;
-      margin-bottom: 20px;
-      background-color: #f0f0f0;
-      break-inside: avoid;
-    }
+  border: 4px solid #525252;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  break-inside: avoid;
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
     class > name {
       font-size: 18pt;
       color: #005599;
@@ -229,14 +290,14 @@ background-color: #bbb;
 
     
     /* --- Standalone Variable Declaration --- */
-    variable {
+    variable, functionCall parameter {
         display: inline-block;
-      margin: 5px 0;
+      margin: 0px 0;
       font-family: monospace;
     
     color:white;    
     background-color: #fff;
-    padding:5pt;
+    padding:3pt;
     border-radius: 4pt;
 }
 
@@ -274,6 +335,32 @@ variable > documentation{
     function > name, method > name {
       cursor: pointer;
     }
+
+    /* Ensure functionCall and its children are aligned horizontally */
+functionCall {
+  display: flex;
+  align-items: center; /* Vertically align items */
+  gap: 5px; /* Add spacing between items if needed */
+  background-color: rgb(147, 95, 0);
+}
+
+functionCall > name {
+  background-color: rgb(213, 172, 96);
+  display: inline-block;
+  padding:4pt;
+
+}
+
+functionCall > name::before {
+  content: 'ℱ';
+  background-color: rgb(232, 205, 3);
+  padding:4pt;
+}
+
+functionCall > parameters {
+  display: inline-block;
+}
+
     </style> </head> <body> 
         
         <codeDocument>
@@ -301,9 +388,20 @@ variable > documentation{
 
       <documentation>Returns the sum of two integers.</documentation>
       <codeBody>
+        <statement>
+            
         <return>
-          <expression>a + b</expression>
+          <name>return</name>
+          <expression><variable>
+            <typeSymbol>#</typeSymbol>
+            <name>a</name>
+          </variable> + <variable>
+            <typeSymbol>#</typeSymbol>
+            <name>b</name>
+          </variable></expression>
+          
         </return>
+      </statement>
       </codeBody>
     </function>
     
@@ -316,12 +414,17 @@ variable > documentation{
           <name>xLocation</name>
         </parameter>
         <parameter>
+          <typeSymbol>#.</typeSymbol>
+          <type>float</type>
+          <name>yLocation</name>
+        </parameter>
+        <parameter>
           <typeSymbol>$</typeSymbol>
           <type>string</type>
           <name>labelForUI</name>
         </parameter>
       </parameters>
-      <name>updatePosition       <return-type>void</return-type>      </name>
+      <name>updatePosition       <return-type>∅</return-type>      </name>
       <documentation>Updates the UI element's position and label.</documentation>
       <codeBody>
         <statement>
@@ -334,6 +437,12 @@ variable > documentation{
                 <type>float</type>
                 <name>xLocation</name>
               </parameter>
+              <parameter>
+                <typeSymbol>#.</typeSymbol>
+                <type>float</type>
+                <name>yLocation</name>
+              </parameter>
+              
             </parameters>
           </functionCall>
           </expression>
@@ -378,12 +487,23 @@ variable > documentation{
         </parameters>
         <name>add</name>
         <documentation>Adds two numbers.</documentation>
-        <return-type>int</return-type>
+      
+        <return-type>#</return-type>
         <codeBody>
-          <return>
-            <name>return</name>
-            <expression>x + y</expression>
-          </return>
+          <statement>
+            
+            <return>
+              <name>return</name>
+              <expression><variable>
+                <typeSymbol>#</typeSymbol>
+                <name>x</name>
+              </variable> + <variable>
+                <typeSymbol>#</typeSymbol>
+                <name>y</name>
+              </variable></expression>
+              
+            </return>
+          </statement>
         </codeBody>
       </method>
       <method>
@@ -403,14 +523,27 @@ variable > documentation{
         <documentation>Subtracts second number from the first.</documentation>
         <return-type>#</return-type>
         <codeBody>
-          <return>
-            <name>return</name>
-            <expression>x - y</expression>
-          </return>
+          <statement>
+            
+            <return>
+              <name>return</name>
+              <expression><variable>
+                <typeSymbol>#</typeSymbol>
+                <name>x</name>
+              </variable> 
+                  - 
+              <variable>
+                <typeSymbol>#</typeSymbol>
+                <name>y</name>
+              </variable></expression>
+              
+            </return>
+          </statement>
         </codeBody>
       </method>
     </class>
     
+    <statement>
     <!-- Standalone Variable Declaration Demo -->
     <variable>
         <documentation>An integer variable used to index lists.</documentation>
@@ -418,7 +551,7 @@ variable > documentation{
       <name>indexOfList</name>
       
     </variable>
-    
+  </statement>
 
     <function>
         <parameters>
@@ -448,7 +581,7 @@ variable > documentation{
     <function>
       <parameters></parameters>
       <name>printNumbers</name>
-      <return-type>void</return-type>
+      <return-type>∅</return-type>
       <documentation>Prints numbers from 0 to 9.</documentation>
       
       <codeBody>

@@ -1,8 +1,12 @@
 LLM Diff Command Specifications And Prompt
 
-Instead of regenerating an entire document in response to changes, as AI
-chatbots currently do, a language model can be told to generate
+Instead of regenerating an entire document to include changes, as AI
+chatbots currently do by default, a language model can be told to generate
 modification commands that the receiving program follows. 
+
+Importantly, for an LLM the document fed to the LLM will be given 
+a line ID for each line number so that the LLM is working with
+line IDs instead of line numbers that change after each diff operation.
 
 A diff-based approach for document modifications can be much more
 efficient than regenerating the entire document every time a few changes are
@@ -40,8 +44,10 @@ and streamline document updates while maintaining full control and
 traceability over each modification.
 
 In the case it is a tree structure that is being edited (e.g. XML), 
-the LLM should be given a list of tree operations to use
+the LLM can be given a list of tree operations to use
 instead and the program will use those to modify the files.
+(If given a web page, the host program would receive commands for
+adding and removing tree elements from the DOM).
 
 ----------------------
 

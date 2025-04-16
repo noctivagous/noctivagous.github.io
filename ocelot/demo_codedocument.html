@@ -1,4 +1,18 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Interactive Code Document Demo</title> 
+
+  <!--
+  Interactive Code Document Demo
+
+  - Implements a custom code document UI with XML-like tags (function, class, group, etc).
+  - Supports bimodal control: mouse for navigation, keyboard for activation (key-clicks).
+    - Bimodal control: A user interface theory that separates navigation (steering) and activation (triggering actions) into two distinct input devices—typically using the mouse for cursor movement and the keyboard for function activation ("key-clicks"). This division, inspired by how a guitarist uses both hands for different tasks, reduces cognitive load and increases precision and efficiency in software interaction.
+  - Tracks the currently hovered element and updates a floating key command menu.
+  - Selection is limited to elements at the same tree level.
+  - Behaviors (selectable, draggable, etc.) are managed via a tagBehaviors dictionary.
+  - Features tabbed function views, collapsible code bodies, and a calculator button grid.
+  - Designed for extensibility and UI theory experimentation.
+-->
+
 <style> 
 /* Base page and layout styles */ 
 body { 
@@ -293,6 +307,7 @@ function > name:hover{
       margin-right: 4px;
     }
     
+
     /* --- Function Body --- */
     function > codeBody, method > codeBody {
         display: block;
@@ -351,6 +366,7 @@ group::after {
   pointer-events: none; /* So it doesn't interfere with clicks */
   z-index: 3; /* Places it in the background */
 }
+
 
 class > constructors > function{
 display:block;
@@ -604,9 +620,218 @@ guiArea button[aria-label="clear"] {
   
   transition: height 0.3s ease; /* Smooth height adjustment */
 }
+
+.selected {
+  outline: 3pt solid #60fa63;
+  background: #333 !important;
+}
+
+.key-command-header {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #ffe082;
+}
+
         </style>
         
         <script>
+
+let currentlyHoveredElem = null;
+
+document.addEventListener('mousemove', (e) => {
+  // Find the closest code document element under the cursor
+  const codeElem = e.target.closest('function, class, group, variable, statement, functionCall, parameter, codeBody');
+  if (codeElem !== currentlyHoveredElem) {
+    currentlyHoveredElem = codeElem;
+    selectionDidChange();
+  }
+});
+
+
+function selectionDidChange() {
+  updateKeyCommandMenu(currentlyHoveredElem);
+}
+
+
+const tagBehaviors = {
+  'function':      { hoverable: true, selectable: true, draggable: true },
+  'class':         { hoverable: true, selectable: true, draggable: false },
+  'group':         { hoverable: true, selectable: true, draggable: false },
+  'variable':      { hoverable: true, selectable: true, draggable: false },
+  'statement':     { hoverable: true, selectable: true, draggable: false },
+  'functioncall':  { hoverable: true, selectable: true, draggable: false },
+  'parameter':     { hoverable: true, selectable: false, draggable: false },
+  'codebody':      { hoverable: false, selectable: false, draggable: false }
+  
+  // Add more as needed
+};
+
+function getTagBehaviors(elem) {
+  if (!elem) return {};
+  const tag = elem.tagName ? elem.tagName.toLowerCase() : elem.nodeName.toLowerCase();
+  return tagBehaviors[tag] || {};
+}
+
+
+document.addEventListener('keydown', (e) => {
+    // Ignore if any modifier key is pressed (Cmd, Ctrl, Alt, Shift)
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+
+// Escape key should always work, even if not hovering
+if (e.key.toLowerCase() === 'escape') {
+  const selected = document.querySelectorAll('.selected');
+  if (selected.length) {
+    selected.forEach(sel => sel.classList.remove('selected'));
+    selectionDidChange();
+
+  }
+  return;
+}
+
+if (!currentlyHoveredElem) return;
+
+  switch (e.key.toLowerCase()) {
+    case 'd':
+      // Collapse/Expand
+      if (currentlyHoveredElem.matches('function')) {
+        const codeBody = currentlyHoveredElem.querySelector('codeBody');
+        if (codeBody) {
+          const isCollapsed = codeBody.style.display === 'none';
+          codeBody.style.display = isCollapsed ? 'block' : 'none';
+        }
+      }
+      break;
+      case 'f':
+  clearSelectionsNotAtSameLevel(currentlyHoveredElem);
+  currentlyHoveredElem.classList.toggle('selected');
+  selectionDidChange();
+  // (add drag-lock logic if needed)
+  break;
+    case 'e':
+      // Insert code element (implement insertion logic here)
+      alert('Insert code element (not implemented)');
+      break;
+    case 'r':
+      // Edit name/label
+      const nameElem = currentlyHoveredElem.querySelector(':scope > name');
+      if (nameElem) {
+        const newName = prompt('Edit name/label:', nameElem.textContent.trim());
+        if (newName !== null) nameElem.textContent = newName;
+      }
+      break;
+    case 'backspace':
+      // Delete
+      currentlyHoveredElem.remove();
+      break;
+      case 'tab':
+  e.preventDefault();
+  const behaviors = getTagBehaviors(currentlyHoveredElem);
+  // Check if cursor is over a selectable element
+  if (behaviors.selectable) {
+    clearSelectionsNotAtSameLevel(currentlyHoveredElem);
+    currentlyHoveredElem.classList.toggle('selected');
+    selectionDidChange();
+  } else {
+    // If the cursor is over the codeDocument (but not a selectable element), clear selection
+    const codeDoc = document.querySelector('codeDocument');
+    if (codeDoc && codeDoc.contains(e.target)) {
+      document.querySelectorAll('.selected').forEach(sel => sel.classList.remove('selected'));
+      selectionDidChange();
+    }
+  }
+  break;
+    case 'g':
+      // Group/Ungroup (implement logic here)
+      alert('Group/Ungroup (not implemented)');
+      break;
+    case 'v':
+      // Change view (implement logic here)
+      alert('Change view (not implemented)');
+      break;
+      case 'escape':
+  // Deselect all if there is a selection
+  if (document.querySelector('.selected')) {
+    document.querySelectorAll('.selected').forEach(sel => sel.classList.remove('selected'));
+  }
+  break;
+    }
+});
+
+
+function clearSelectionsNotAtSameLevel(targetElem) {
+  if (!targetElem) return;
+  // Get the parent node of the target element
+  const parent = targetElem.parentElement;
+  // Deselect all .selected elements that do NOT share the same parent
+  document.querySelectorAll('.selected').forEach(sel => {
+    if (sel.parentElement !== parent) {
+      sel.classList.remove('selected');
+    }
+  });
+}
+
+function updateKeyCommandMenu(elem) {
+  const list = document.getElementById('key-command-list');
+  const menu = document.getElementById('key-command-menu');
+  menu.querySelector('.key-command-persistent')?.remove();
+
+  const behaviors = getTagBehaviors(elem);
+
+  if (!elem || !behaviors.hoverable) {
+    list.innerHTML = "<em>Hover over a code element</em>";
+    menu.querySelector('.key-command-header')?.remove();
+    addPersistentMenuArea();
+    return;
+  }
+
+  // Get tag and name (if present)
+  const tag = elem.tagName ? elem.tagName.toLowerCase() : elem.nodeName.toLowerCase();
+  let name = elem.querySelector('name') ? elem.querySelector('name').textContent.trim() : '';
+  if (name) name = `: <b>${name}</b>`;
+
+  // Insert header with tag and name
+  menu.querySelector('.key-command-header')?.remove();
+  const header = document.createElement('div');
+  header.className = 'key-command-header';
+  header.style = "font-weight:bold; margin-bottom:8px; color:#ffe082;";
+  header.innerHTML = `&lt;${tag}&gt;${name}`;
+  menu.insertBefore(header, menu.children[1]);
+
+  // Build commands based on behaviors
+  let commands = [];
+  if (behaviors.selectable) {
+    commands.push("<b>Tab</b> - Select");
+    commands.push("<b>F</b> - Select &amp; Drag-lock");
+  }
+  if (behaviors.draggable) {
+    commands.push("<b>F</b> - Drag-lock");
+  }
+  commands.push("<b>D</b> - Collapse/Expand");
+  commands.push("<b>E</b> - Insert code element");
+  commands.push("<b>R</b> - Edit name/label");
+  commands.push("<b>Backspace</b> - Delete");
+  commands.push("<b>G</b> - Group/Ungroup");
+  commands.push("<b>V</b> - Change view");
+
+  list.innerHTML = commands.join("<br>");
+
+  addPersistentMenuArea();
+
+  function addPersistentMenuArea()
+{
+ // Add persistent command at the bottom if something is selected
+ const selected = document.querySelectorAll('.selected');
+  if (selected.length) {
+    const persistent = document.createElement('div');
+    persistent.className = 'key-command-persistent';
+    persistent.style = "margin-top:14px; color:#ffe082; font-weight:bold; border-top:1px solid #444; padding-top:8px;";
+    persistent.innerHTML = `<b>Esc</b> - Deselect All (${selected.length} selected)`;
+    menu.appendChild(persistent);
+  }
+}
+
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('function').forEach(funcElem => {
@@ -655,16 +880,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
           // Function to adjust the height of the function-container to match the tallest <function> element.
   function adjustFunctionContainerHeight(functionContainer) {
-  console.log("adjustFunctionContainerHeight called for:", functionContainer);
+  //console.log("adjustFunctionContainerHeight called for:", functionContainer);
   // Query for all <function> elements inside the functionContainer.
   const functions = functionContainer.querySelectorAll('function');
-  console.log("Number of <function> elements found:", functions.length);
+  //console.log("Number of <function> elements found:", functions.length);
   let maxHeight = 0;
   
   functions.forEach(funcElem => {
     // Log the current computed display for the <function> element.
     const currentDisplay = window.getComputedStyle(funcElem).display;
-    console.log("Current display for function:", currentDisplay, funcElem);
+    //console.log("Current display for function:", currentDisplay, funcElem);
     
     // Temporarily force the function element to be visible for measurement.
     funcElem.style.display = 'block';
@@ -673,7 +898,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Use scrollHeight to capture the full height of the <function> element.
     const height = funcElem.scrollHeight;
-    console.log("Measured height for function using scrollHeight:", height, funcElem);
+    //console.log("Measured height for function using scrollHeight:", height, funcElem);
     if (height > maxHeight) {
       maxHeight = height;
     }
@@ -681,7 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Restore the original display state.
     if (currentDisplay === 'none') {
       funcElem.style.display = 'none';
-      console.log("Restored display to 'none' for function:", funcElem);
+      //console.log("Restored display to 'none' for function:", funcElem);
     } else {
       funcElem.style.display = '';
     }
@@ -689,7 +914,7 @@ document.addEventListener('DOMContentLoaded', () => {
     funcElem.style.position = '';
   });
   
-  console.log("Tallest measured height:", maxHeight);
+  //console.log("Tallest measured height:", maxHeight);
   functionContainer.style.height = `${maxHeight + 5}pt`;
 }
 document.addEventListener('DOMContentLoaded', () => {
@@ -702,7 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function documentUIDidChange() {
-  console.log('Document UI did change');
+  
   document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
     const functionContainer = group.querySelector('.function-container');
     if (functionContainer) {
@@ -716,8 +941,8 @@ function documentUIDidChange() {
   const codeDoc = document.querySelector('codeDocument');
   if (codeDoc) {
     const observer = new MutationObserver(() => {
-      documentDidChange();
-    });
+      documentUIDidChange();
+      });
     observer.observe(codeDoc, { childList: true, subtree: true, characterData: true });
   }
 
@@ -1267,6 +1492,24 @@ function documentUIDidChange() {
     </variable>
   </statement>
 
+  <div id="key-command-menu" style="
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  background: #222;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0008;
+  padding: 18px 24px;
+  font-family: monospace;
+  font-size: 16px;
+  z-index: 10000;
+  min-width: 260px;
+  opacity: 0.95;
+">
+  <div style="font-weight:bold; margin-bottom:8px;">Key Commands</div>
+  <div id="key-command-list"></div>
+</div>
 </codeDocument> 
     
     

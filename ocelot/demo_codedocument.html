@@ -8,7 +8,7 @@ body {
    color: #333; } 
 
     /* Base display for custom XML-based code tags */
-    codeDocument, group, function, class, method, name, documentation, parameters, parameter, return-type, codeBody, loop, initialization, condition, increment, variable, expression, statement, return {
+    codeDocument, group, function, class, method, name, documentation, parameters, parameter, return-type, codeBody, loop, initialization, condition, increment, variable, statement, return {
       display: block;
       margin: 0;/*0.5em 0;*/
       
@@ -24,6 +24,7 @@ body {
 
     
     codeDocument {
+      cursor:crosshair;
   display: block;
   max-width: 1400px;
   margin: auto;
@@ -39,6 +40,9 @@ body {
   border: 1pt solid black;
 }
 
+expression{
+display:inline-block
+}
 
 statement {
     border-top: 1pt solid white;
@@ -90,11 +94,10 @@ group {
   border:2pt dotted black;
   padding:10pt;
   padding-left:10pt;
-  padding-bottom:0;
   margin:4pt;
   margin-left:0;
   margin-bottom:20pt;
-  background-color: #aaa;
+  background-color: #848484;
   box-shadow: 8px 8px 6px rgb(34, 34, 34);
   
 }
@@ -106,9 +109,33 @@ group {
       color: #555;
     }
     
-    typeSymbol{
-display: inline-block;
-background-color: #bbb;
+    typeSymbol {
+    display: inline-block;
+    background-color: #bbb;
+    padding: 2pt;
+    border-radius: 2pt;
+}
+
+parameter > typeSymbol {
+        display: inline-block;
+
+      font-family: monospace;
+      background-color: #bbb;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 3px;
+      margin-right: 0px;
+      border:2px solid gray;
+
+    }
+    variable > type > typeSymbol {
+
+      font-family: monospace;
+      background-color: #bbb;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 3px;
+      margin-right: 2px;
     }
 
     typeSymbol > type{
@@ -185,7 +212,7 @@ parameter:not(:last-child)::after {
 color:#994f00;
     }
 
-    functionCall > typeSymbol, methodCall > typeSymbol {
+    functionCall > typeSymbol{
     color: #994a00;
     padding: 1pt;
     font-size: 15pt;
@@ -194,30 +221,21 @@ color:#994f00;
 
   }
 
+  functionCall > parameters:empty {
+  padding: 5pt;
+height:10pt;
+}
 
-    parameter > typeSymbol {
-        display: inline-block;
 
-      font-family: monospace;
-      background-color: #bbb;
-      color: white;
-      padding: 2px 4px;
-      border-radius: 3px;
-      margin-right: 0px;
-      border:2px solid gray;
-
-    }
+    
     parameter > type {
         
-  
+
       font-family: monospace;
       color: #990000;
       background-color: transparent;
     }
   
-    parameter > type > typeName{
-      display:none;
-    }
   
     parameter > name {
             display: inline-block;
@@ -231,8 +249,14 @@ color:#994f00;
       border:1px solid rgb(20, 20, 20);
     }
 
+    parameter > type > typeName{
+      display:none;
+    }
+
+
     /* Function name styling and function symbol */
-    function > name, method > name {
+    function > name {
+      
     font-family: Lekton, monospace;
     text-decoration: underline;
     /* font-weight: bold; */
@@ -247,7 +271,7 @@ color:#994f00;
 }
 
 
-    function > name::before, method > name::before {
+    function > name::before {
       content: 'ℱ';
       background-color: orange;
       color:#640000;
@@ -291,26 +315,58 @@ color:#994f00;
     
     /* --- Class and Methods --- */
     class {
-  border: 4px solid #525252;
-  padding: 10px;
+  border: 1px solid #a8a8a8;
+  padding: 0px;
   margin-bottom: 20px;
-  background-color: #f0f0f0;
   break-inside: avoid;
-  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+  border-radius: 20pt;
+  box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+  padding: 10pt;
 }
 
-class > function > role{
-background-color: aqua;
+group {
+  position: relative; /* Needed to position the pseudo-element relative to the group */
 }
 
-    class > name {
-      margin-bottom:5pt;
-      display:block;
-      font-size: 18pt;
-      color: #005599;
-      font-weight: bold;
-      padding-bottom: 5px;
-    }
+group::after {
+  content: "GROUP";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 18px;
+  color: rgba(0, 0, 0, .4); /* Light and subtle */
+  pointer-events: none; /* So it doesn't interfere with clicks */
+  z-index: 3; /* Places it in the background */
+}
+
+class > constructors > function{
+display:block;
+padding:2pt;
+padding-top:5pt;
+  background-color: rgb(96, 148, 148);
+
+}
+class > constructors > function > role{
+background-color: rgb(104, 174, 174);
+}
+
+class > name {
+    margin-bottom: 5pt;
+    display: block;
+    font-size: 18pt;
+    color: #fff;
+    font-weight: bold;
+    padding-bottom: 5px;
+    
+    border-top-left-radius: 15pt;
+    border-top-right-radius: 15pt;
+    padding-left: 20pt;
+    color: rgb(0, 0, 0);
+    padding-top: 5pt;
+    font-size: 14pt;
+    border-bottom: 1pt solid white;
+}
+
     class > name::before
     {
         content: 'ℂ ';
@@ -379,15 +435,7 @@ variable > documentation{
 display:inline-block;
     }
 
-    variable > type > typeSymbol {
-
-      font-family: monospace;
-      background-color: #bbb;
-      color: white;
-      padding: 2px 4px;
-      border-radius: 3px;
-      margin-right: 2px;
-    }
+   
     
     /* --- Loop Styling --- */
     loop {
@@ -398,7 +446,7 @@ display:inline-block;
     
     /* --- Interactivity --- */
     /* Clicking on a function or method name toggles the display of their bodies */
-    function > name, method > name {
+    function > name {
       cursor: pointer;
     }
 
@@ -456,222 +504,282 @@ functionCall > parameters {
     background-color:#3a2773;
 }
 
+guiArea {
+  display: grid;
+  grid-template-columns: repeat(4, 56px);
+  grid-auto-rows: 56px;
+  gap: 8px;
+  background: #222;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #0008;
+  justify-content: center;
+  width: max-content;
+}
+
+guiArea button {
+  font-family: monospace;
+  font-size: 22px;
+  border: none;
+  border-radius: 5px;
+  background: #444;
+  color: #fff;
+  box-shadow: 0 2px 4px #0006;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+guiArea button:hover {
+  background: #ffb300;
+  color: #222;
+  transform: scale(1.07);
+}
+
+guiArea button[aria-label="clear"] {
+  grid-column: span 4;
+  background: #b71c1c;
+  color: #fff;
+  font-weight: bold;
+}
+
     </style> </head> <body> 
         
+        <style>
+          /* Styling for the tab container and individual tabs */
+          .tab-container {
+    display: flex;
+    border-bottom: 3pt solid #000000;
+    
+}
+          .tab {
+    margin-right: 5pt;
+    padding: 2pt 6pt;
+    cursor: pointer;
+    background-color: #ba9248;
+    
+    border-bottom: none;
+    border-top-left-radius: 5pt;
+    border-top-right-radius: 5pt;
+
+    border-top: 3pt solid rgb(151, 151, 151);
+    border-left: 3pt solid gray;
+    border-right: 3pt solid silver;
+}
+.tab.active {
+    background-color: #986300;
+    font-weight: bold;
+    color: #e4831f;
+    font-style: oblique;
+    border-top: 3pt solid rgb(114, 114, 114);
+    border-left: 3pt solid rgb(93, 93, 93);
+    border-right: 3pt solid rgb(142, 142, 142);
+    border: 3pt solid #444;
+    border-bottom: 0;
+}
+
+.function-container {
+  padding-top: 2pt;
+  
+  transition: height 0.3s ease; /* Smooth height adjustment */
+}
+        </style>
+        
+        <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('function').forEach(funcElem => {
+    const nameElem = funcElem.querySelector(':scope > name');
+    if (!nameElem) return; // Skip if there's no name
+
+    // Create a NEW SVG arrow for each function
+    const svgNS = "http://www.w3.org/2000/svg";
+    const arrow = document.createElementNS(svgNS, 'svg');
+    arrow.setAttribute('width', '24');
+    arrow.setAttribute('height', '24');
+    arrow.setAttribute('viewBox', '0 0 16 16');
+    arrow.style.transition = 'transform 0.3s ease';
+    arrow.style.marginLeft = '8px';
+    arrow.style.verticalAlign = 'middle';
+
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', 'M6 4l4 4-4 4z');
+    path.setAttribute('fill', '#000');
+    arrow.appendChild(path);
+
+    const codeBody = funcElem.querySelector('codeBody');
+    if (funcElem.getAttribute('collapsed') === 'true') {
+      arrow.style.transform = 'rotate(180deg)';
+      if (codeBody) codeBody.style.display = 'none';
+    } else {
+      arrow.style.transform = 'rotate(90deg)';
+    }
+
+    nameElem.appendChild(arrow);
+
+    nameElem.addEventListener('click', () => {
+      if (!codeBody) return;
+      if (codeBody.style.display === 'none') {
+        codeBody.style.display = 'block';
+        arrow.style.transform = 'rotate(90deg)';
+        funcElem.setAttribute('collapsed', 'false');
+      } else {
+        codeBody.style.display = 'none';
+        arrow.style.transform = 'rotate(180deg)';
+        funcElem.setAttribute('collapsed', 'true');
+      }
+    });
+  });
+});
+          // Function to adjust the height of the function-container to match the tallest <function> element.
+  function adjustFunctionContainerHeight(functionContainer) {
+  console.log("adjustFunctionContainerHeight called for:", functionContainer);
+  // Query for all <function> elements inside the functionContainer.
+  const functions = functionContainer.querySelectorAll('function');
+  console.log("Number of <function> elements found:", functions.length);
+  let maxHeight = 0;
+  
+  functions.forEach(funcElem => {
+    // Log the current computed display for the <function> element.
+    const currentDisplay = window.getComputedStyle(funcElem).display;
+    console.log("Current display for function:", currentDisplay, funcElem);
+    
+    // Temporarily force the function element to be visible for measurement.
+    funcElem.style.display = 'block';
+    funcElem.style.visibility = 'hidden';
+    funcElem.style.position = 'absolute';
+    
+    // Use scrollHeight to capture the full height of the <function> element.
+    const height = funcElem.scrollHeight;
+    console.log("Measured height for function using scrollHeight:", height, funcElem);
+    if (height > maxHeight) {
+      maxHeight = height;
+    }
+    
+    // Restore the original display state.
+    if (currentDisplay === 'none') {
+      funcElem.style.display = 'none';
+      console.log("Restored display to 'none' for function:", funcElem);
+    } else {
+      funcElem.style.display = '';
+    }
+    funcElem.style.visibility = '';
+    funcElem.style.position = '';
+  });
+  
+  console.log("Tallest measured height:", maxHeight);
+  functionContainer.style.height = `${maxHeight + 5}pt`;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
+    const functionContainer = group.querySelector('.function-container');
+    if (functionContainer) {
+      adjustFunctionContainerHeight(functionContainer);
+    }
+  });
+});
+
+function documentUIDidChange() {
+  console.log('Document UI did change');
+  document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
+    const functionContainer = group.querySelector('.function-container');
+    if (functionContainer) {
+      adjustFunctionContainerHeight(functionContainer);
+    }
+  });
+}
+
+       document.addEventListener('DOMContentLoaded', () => {
+  // Observe changes to the codeDocument element: trigger documentDidChange on mutations.
+  const codeDoc = document.querySelector('codeDocument');
+  if (codeDoc) {
+    const observer = new MutationObserver(() => {
+      documentDidChange();
+    });
+    observer.observe(codeDoc, { childList: true, subtree: true, characterData: true });
+  }
+
+  
+
+  // Process each group element that should use the tabifyingView presentation.
+  document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
+    // Gather all immediate function children in the group.
+    const functions = group.querySelectorAll(':scope > function');
+    if (functions.length > 0) {
+      // Create a container to hold the tabs.
+      const tabContainer = document.createElement('div');
+      tabContainer.className = 'tab-container';
+
+      // Create a container to hold the function views.
+      const functionContainer = document.createElement('div');
+      functionContainer.className = 'function-container';
+
+      // Create a tab for each function.
+      functions.forEach((funcElem, index) => {
+        const tab = document.createElement('div');
+        tab.className = 'tab';
+        // Use the text from the <name> element as the tab label. Fallback if not found.
+        const nameElem = funcElem.querySelector(':scope > name');
+        tab.textContent = (nameElem && nameElem.textContent.trim()) || `Function ${index + 1}`;
+        tab.dataset.index = index;
+
+        // Wrap the function in a separate container.
+        const funcWrapper = document.createElement('div');
+        funcWrapper.className = 'function-wrapper';
+        funcWrapper.style.display = index === 0 ? 'block' : 'none'; // Show only the first function by default.
+        funcWrapper.appendChild(funcElem);
+
+        // Add the function wrapper to the function container.
+        functionContainer.appendChild(funcWrapper);
+
+        // Activate the corresponding function on hover.
+        tab.addEventListener('mouseover', () => {
+          // Hide all function wrappers.
+          functionContainer.querySelectorAll('.function-wrapper').forEach(wrapper => {
+            wrapper.style.display = 'none';
+          });
+
+          // Show the selected function wrapper.
+          funcWrapper.style.display = 'block';
+
+          // Update the active tab style.
+          tabContainer.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          documentUIDidChange();
+        });
+
+        tabContainer.appendChild(tab);
+      });
+
+      // Insert the tab container and function container into the group.
+      group.insertBefore(tabContainer, group.firstChild);
+      group.appendChild(functionContainer);
+
+       // On page load, set the first tab as active.
+       const firstTab = tabContainer.querySelector('.tab');
+      if (firstTab) {
+        firstTab.classList.add('active');
+      }
+
+      
+    }
+  });
+});
+
+
+
+        </script>
+
         <codeDocument>
     
-          <group>
-    <!-- Function Demo: Parameters appear above the function name with type symbols -->
-    <function>
-      <parameters>
-        <parameter>
-          <type>
-            <typeSymbol>#</typeSymbol>
-            <typeName>int</typeName>
-          </type>
-          <name>a</name>
-        </parameter>
-        <parameter>
-          <type>
-            <typeSymbol>#</typeSymbol>
-            <typeName>int</typeName>
-          </type>
-          <name>b</name>
-        </parameter>
-      </parameters>
-      
-
-      <name>sum <return-type>#</return-type></name>
-      
-        
-
-      <documentation>Returns the sum of two integers.</documentation>
-      <codeBody>
-        <statement>
-            
-        <return>
-          <name>return</name>
-          <expression><variable>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>            
-            <name>a</name>
-          </variable> + <variable>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>            
-            <name>b</name>
-          </variable></expression>
-          
-        </return>
-      </statement>
-      </codeBody>
-    </function>
-    
-    <!-- Function Demo: Supports float and string parameters with distinct symbols -->
-    <function>
-      <parameters>
-        <parameter>
-          <type>
-            <typeSymbol>#.</typeSymbol>
-            <typeName>float</typeName>
-          </type>
-          <name>xLocation</name>
-        </parameter>
-        
-        <parameter>
-          <type>
-            <typeSymbol>#.</typeSymbol>
-            <typeName>float</typeName>
-          </type>
-          <name>yLocation</name>
-        </parameter>
-        
-        <parameter>
-          <type>
-            <typeSymbol>$</typeSymbol>
-            <typeName>string</typeName>
-          </type>
-
-          <name>labelForUI</name>
-        </parameter>
-      </parameters>
-      <name>updatePosition       <return-type>∅</return-type>      </name>
-      <documentation>Updates the UI element's position and label.</documentation>
-      <codeBody>
-        <statement>
-          <expression>
-          <functionCall>
-            <typeSymbol>ℱ</typeSymbol>
-            <name>setPosition</name>
-            <parameters>
-              <parameter>
-                <type>
-                  <typeSymbol>#.</typeSymbol>
-                  <typeName>float</typeName>
-                </type>
-                <name>xLocation</name>
-              </parameter>
-              <parameter>
-                <type>
-                  <typeSymbol>#.</typeSymbol>
-                  <typeName>float</typeName>
-                </type>
-                <name>yLocation</name>
-              </parameter>
-              
-              
-            </parameters>
-          </functionCall>
-          </expression>
-        </statement>
-        
-        <statement>
-          <expression>
-            <functionCall>
-              <typeSymbol>ℱ</typeSymbol>
-              <name>setLabel</name>
-              <parameters>
-                <parameter>
-                  <typeSymbol>$</typeSymbol>
-                  <type>string</type>
-                  <name>labelForUI</name>
-                </parameter>
-              </parameters>
-            </functionCall>
-            </expression>
-        </statement>
-        <statement>
-          <expression>
-            <functionCall>
-              <typeSymbol>ℱ</typeSymbol>
-              <name>setBackgroundColor</name>
-              <parameters>
-                <parameter>
-                  <type>
-                    <typeSymbol>$</typeSymbol>
-                    <typeName>string</typeName>
-                  </type>
-                  <name>color</name>
-                </parameter>
-              </parameters>
-            </functionCall>
-          </expression>
-        </statement>
-        
-        <statement>
-          <expression>
-            <functionCall>
-              <typeSymbol>ℱ</typeSymbol>
-              <name>setBorder</name>
-              <parameters>
-                <parameter>
-                  <type>
-                    <typeSymbol>#</typeSymbol>
-                    <typeName>int</typeName>
-                  </type>
-                  <name>width</name>
-                </parameter>
-                <parameter>
-                  <type>
-                    <typeSymbol>$</typeSymbol>
-                    <typeName>string</typeName>
-                  </type>
-                  <name>style</name>
-                </parameter>
-                <parameter>
-                  <type>
-                    <typeSymbol>$</typeSymbol>
-                    <typeName>string</typeName>
-                  </type>
-                  <name>color</name>
-                </parameter>
-              </parameters>
-            </functionCall>
-          </expression>
-        </statement>
-        
-        <statement>
-          <expression>
-            <functionCall>
-              <typeSymbol>ℱ</typeSymbol>
-              <name>setOpacity</name>
-              <parameters>
-                <parameter>
-                  <type>
-                    <typeSymbol>#.</typeSymbol>
-                    <typeName>float</typeName>
-                  </type>
-                  <name>opacityLevel</name>
-                </parameter>
-              </parameters>
-            </functionCall>
-          </expression>
-        </statement>
-        
-        <statement>
-          <expression>
-            <functionCall>
-              <typeSymbol>ℱ</typeSymbol>
-              <name>setFontSize</name>
-              <parameters>
-                <parameter>
-                  <type>
-                    <typeSymbol>#</typeSymbol>
-                    <typeName>int</typeName>
-                  </type>
-                  <name>size</name>
-                </parameter>
-              </parameters>
-            </functionCall>
-          </expression>
-        </statement>
-      </codeBody>
-    </function>
-    
-  </group>
+         
 
     <!-- Class Demo: A Calculator class with methods -->
     <class>
@@ -686,6 +794,7 @@ functionCall > parameters {
       </statement>
       
       <!-- Constructor (init function) -->
+     <constructors>
       <function>
         <role>
           <roleSymbol>c</roleSymbol>
@@ -709,60 +818,427 @@ functionCall > parameters {
                 <typeSymbol>#</typeSymbol>
                 <name>currentValue</name>
               </variable> = 
-              <variable>
-                <typeSymbol>#</typeSymbol>
-                <name>initialDisplayValue</name>
-              </variable>
+              <expression>
+                <functionCall>
+                  <typeSymbol>ℱ</typeSymbol>
+                  <name>getInitialValue</name>
+                  <parameters></parameters>
+                </functionCall>
+              </expression>
             </expression>
           </statement>
         </codeBody>
       </function>
-      
-      <!-- Existing methods -->
-      <method>
-        <parameters>
-          <parameter>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>
-            <name>x</name>
-          </parameter>
-          <parameter>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>
-            <name>y</name>
-          </parameter>
-        </parameters>
-        <name>add</name>
-        <documentation>Adds two numbers.</documentation>
-        <return-type>#</return-type>
-        <codeBody>
-          <statement>
+    </constructors>
+    
+      <group presentation="tabifyingView">
+        <!-- Function Demo: Parameters appear above the function name with type symbols -->
+        <function>
+          <parameters>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>a</name>
+            </parameter>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>b</name>
+            </parameter>
+          </parameters>
+          
+          <name>sum <return-type>#</return-type></name>
+          
+            
+    
+          <documentation>Returns the sum of two integers.</documentation>
+          <codeBody>
+            <statement>
+                
             <return>
               <name>return</name>
-              <expression>
-                <variable>
-                  <type>
-                    <typeSymbol>#</typeSymbol>
-                    <typeName>int</typeName>
-                  </type>
-                  <name>x</name>
-                </variable> + 
-                <variable>
-                  <type>
-                    <typeSymbol>#</typeSymbol>
-                    <typeName>int</typeName>
-                  </type>
-                  <name>y</name>
-                </variable>
-              </expression>
+              <expression><variable>
+                <type>
+                  <typeSymbol>#</typeSymbol>
+                  <typeName>int</typeName>
+                </type>            
+                <name>a</name>
+              </variable> + <variable>
+                <type>
+                  <typeSymbol>#</typeSymbol>
+                  <typeName>int</typeName>
+                </type>            
+                <name>b</name>
+              </variable></expression>
+              
             </return>
           </statement>
+          </codeBody>
+        </function>
+        <function>
+          <parameters>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>a</name>
+            </parameter>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>b</name>
+            </parameter>
+          </parameters>
+          <name>product</name>
+          <documentation>Returns the sum of two integers.</documentation>
+          <return-type>#</return-type>
+          <codeBody>
+            <statement>
+              <return>
+                <name>return</name>
+                <expression>
+                  <variable>
+                    <type>
+                      <typeSymbol>#</typeSymbol>
+                      <typeName>int</typeName>
+                    </type>
+                    <name>a</name>
+                  </variable> 
+                  <operation>*</operation> 
+                  <variable>
+                    <type>
+                      <typeSymbol>#</typeSymbol>
+                      <typeName>int</typeName>
+                    </type>
+                    <name>b</name>
+                  </variable>
+                </expression>
+              </return>
+            </statement>
+          </codeBody>
+        </function>
+        <function>
+          <parameters>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>a</name>
+            </parameter>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>b</name>
+            </parameter>
+          </parameters>
+          <name>quotient</name>
+          <documentation>Returns the sum of two integers.</documentation>
+          <return-type>#</return-type>
+          <codeBody>
+            <statement>
+              <return>
+                <name>return</name>
+                <expression>
+                  <variable>
+                    <type>
+                      <typeSymbol>#</typeSymbol>
+                      <typeName>int</typeName>
+                    </type>
+                    <name>a</name>
+                  </variable> 
+                  <operation>/</operation> 
+                  <variable>
+                    <type>
+                      <typeSymbol>#</typeSymbol>
+                      <typeName>int</typeName>
+                    </type>
+                    <name>b</name>
+                  </variable>
+                </expression>
+              </return>
+            </statement>
+          </codeBody>
+        </function>
+      
+        <function>
+          <parameters>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>x</name>
+            </parameter>
+            <parameter>
+              <type>
+                <typeSymbol>#</typeSymbol>
+                <typeName>int</typeName>
+              </type>
+              <name>y</name>
+            </parameter>
+          </parameters>
+          <name>difference</name>
+          <documentation>subtracts one number from the other.</documentation>
+          <return-type>#</return-type>
+          <codeBody>
+            <statement>
+              <return>
+                <name>return</name>
+                <expression>
+                  <variable>
+                    <type>
+                      <typeSymbol>#</typeSymbol>
+                      <typeName>int</typeName>
+                    </type>
+                    <name>x</name>
+                  </variable> 
+                  <operation>-</operation> 
+                  <variable>
+                    <type>
+                      <typeSymbol>#</typeSymbol>
+                      <typeName>int</typeName>
+                    </type>
+                    <name>y</name>
+                  </variable>
+                </expression>
+              </return>
+            </statement>
+          </codeBody>
+        </function>
+   
+
+      </group>
+      <!-- Existing methods -->
+
+
+    
+  <!-- Loop Demo: A function containing a loop -->
+  <function collapsed="true">
+    <parameters></parameters>
+    <name>printNumbers</name>
+    <return-type>∅</return-type>
+    <documentation>Prints numbers from 0 to 9.</documentation>
+    
+    <codeBody>
+      <loop>
+        <initialization>
+          <variable>
+            <typeSymbol>#</typeSymbol>
+            <name>i</name>
+          </variable>
+          <expression>= 0</expression>
+        </initialization>
+        <condition>
+          <expression>i &lt; 10</expression>
+        </condition>
+        <increment>
+          <expression>i++</expression>
+        </increment>
+        <codeBody>
+          <statement>
+            <expression>print(i)</expression>
+          </statement>
         </codeBody>
-      </method>
+      </loop>
+    </codeBody>
+  </function>
+  
+          <!-- Function Demo: Supports float and string parameters with distinct symbols -->
+          <function>
+            <parameters>
+              <parameter>
+                <type>
+                  <typeSymbol>#.</typeSymbol>
+                  <typeName>float</typeName>
+                </type>
+                <name>xLocation</name>
+              </parameter>
+              
+              <parameter>
+                <type>
+                  <typeSymbol>#.</typeSymbol>
+                  <typeName>float</typeName>
+                </type>
+                <name>yLocation</name>
+              </parameter>
+              
+              <parameter>
+                <type>
+                  <typeSymbol>$</typeSymbol>
+                  <typeName>string</typeName>
+                </type>
+                <name>labelForUI</name>
+              </parameter>
+
+
+            </parameters>
+            <name>updateDisplay       <return-type>∅</return-type>      </name>
+            <documentation>Updates the UI element's position and label.</documentation>
+            <codeBody>
+              <statement>
+                <expression>
+                <functionCall>
+                  <typeSymbol>ℱ</typeSymbol>
+                  <name>setPosition</name>
+                  <parameters>
+                    <parameter>
+                      <type>
+                        <typeSymbol>#.</typeSymbol>
+                        <typeName>float</typeName>
+                      </type>
+                      <name>xLocation</name>
+                    </parameter>
+                    <parameter>
+                      <type>
+                        <typeSymbol>#.</typeSymbol>
+                        <typeName>float</typeName>
+                      </type>
+                      <name>yLocation</name>
+                    </parameter>
+                    
+                    
+                  </parameters>
+                </functionCall>
+                </expression>
+              </statement>
+              
+              <statement>
+                <expression>
+                  <functionCall>
+                    <typeSymbol>ℱ</typeSymbol>
+                    <name>setLabel</name>
+                    <parameters>
+                      <parameter>
+                        <typeSymbol>$</typeSymbol>
+                        <typeName>string</typeName>
+                        <name>labelForUI</name>
+                      </parameter>
+                    </parameters>
+                  </functionCall>
+                  </expression>
+              </statement>
+              <statement>
+                <expression>
+                  <functionCall>
+                    <typeSymbol>ℱ</typeSymbol>
+                    <name>setBackgroundColor</name>
+                    <parameters>
+                      <parameter>
+                        <type>
+                          <typeSymbol>$</typeSymbol>
+                          <typeName>string</typeName>
+                        </type>
+                        <name>color</name>
+                      </parameter>
+                    </parameters>
+                  </functionCall>
+                </expression>
+              </statement>
+              
+              <statement>
+                <expression>
+                  <functionCall>
+                    <typeSymbol>ℱ</typeSymbol>
+                    <name>setBorder</name>
+                    <parameters>
+                      <parameter>
+                        <type>
+                          <typeSymbol>#</typeSymbol>
+                          <typeName>int</typeName>
+                        </type>
+                        <name>width</name>
+                      </parameter>
+                      <parameter>
+                        <type>
+                          <typeSymbol>$</typeSymbol>
+                          <typeName>string</typeName>
+                        </type>
+                        <name>style</name>
+                      </parameter>
+                      <parameter>
+                        <type>
+                          <typeSymbol>$</typeSymbol>
+                          <typeName>string</typeName>
+                        </type>
+                        <name>color</name>
+                      </parameter>
+                    </parameters>
+                  </functionCall>
+                </expression>
+              </statement>
+              
+              <statement>
+                <expression>
+                  <functionCall>
+                    <typeSymbol>ℱ</typeSymbol>
+                    <name>setOpacity</name>
+                    <parameters>
+                      <parameter>
+                        <type>
+                          <typeSymbol>#.</typeSymbol>
+                          <typeName>float</typeName>
+                        </type>
+                        <name>opacityLevel</name>
+                      </parameter>
+                    </parameters>
+                  </functionCall>
+                </expression>
+              </statement>
+              
+              <statement>
+                <expression>
+                  <functionCall>
+                    <typeSymbol>ℱ</typeSymbol>
+                    <name>setFontSize</name>
+                    <parameters>
+                      <parameter>
+                        <type>
+                          <typeSymbol>#</typeSymbol>
+                          <typeName>int</typeName>
+                        </type>
+                        <name>size</name>
+                      </parameter>
+                    </parameters>
+                  </functionCall>
+                </expression>
+              </statement>
+            </codeBody>
+          </function>
+          
+          <variable>
+            <name>buttons</name>
+            <typeSymbol>guiArea</typeSymbol>
+            <documentation>Calculator button layout and labels.</documentation>
+            <guiArea>
+              <button>7</button>
+              <button>8</button>
+              <button>9</button>
+              <button>÷</button>
+              <button>4</button>
+              <button>5</button>
+              <button>6</button>
+              <button>×</button>
+              <button>1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>−</button>
+              <button>0</button>
+              <button>.</button>
+              <button>=</button>
+              <button>+</button>
+              <button aria-label="clear">C</button>
+            </guiArea>
+          </variable>
     </class>
 
     <statement>
@@ -775,65 +1251,6 @@ functionCall > parameters {
     </variable>
   </statement>
 
-    <function>
-        <parameters>
-          <parameter>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>
-            <name>a</name>
-          </parameter>
-          <parameter>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>
-            <name>b</name>
-          </parameter>
-        </parameters>
-        <name>product</name>
-        <documentation>Returns the sum of two integers.</documentation>
-        <return-type>#</return-type>
-        <codeBody>
-          <return>
-            <name>return</name>
-            <expression>a * b</expression>
-          </return>
-        </codeBody>
-      </function>
-      
-    <!-- Loop Demo: A function containing a loop -->
-    <function>
-      <parameters></parameters>
-      <name>printNumbers</name>
-      <return-type>∅</return-type>
-      <documentation>Prints numbers from 0 to 9.</documentation>
-      
-      <codeBody>
-        <loop>
-          <initialization>
-            <variable>
-              <typeSymbol>#</typeSymbol>
-              <name>i</name>
-            </variable>
-            <expression>= 0</expression>
-          </initialization>
-          <condition>
-            <expression>i &lt; 10</expression>
-          </condition>
-          <increment>
-            <expression>i++</expression>
-          </increment>
-          <codeBody>
-            <statement>
-              <expression>print(i)</expression>
-            </statement>
-          </codeBody>
-        </loop>
-      </codeBody>
-    </function>
-    
 </codeDocument> 
     
     

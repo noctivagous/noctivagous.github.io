@@ -2,13 +2,13 @@
 <style> 
 /* Base page and layout styles */ 
 body { 
-  font-family: Arial, sans-serif; 
+  font-family: monospace;
   margin: 10pt;
    background-color: #f7f7f7; 
    color: #333; } 
 
     /* Base display for custom XML-based code tags */
-    codeDocument, group, function, class, method, name, documentation, parameters, parameter, typeSymbol, type, return-type, codeBody, loop, initialization, condition, increment, variable, expression, statement, return {
+    codeDocument, group, function, class, method, name, documentation, parameters, parameter, return-type, codeBody, loop, initialization, condition, increment, variable, expression, statement, return {
       display: block;
       margin: 0;/*0.5em 0;*/
       
@@ -25,7 +25,7 @@ body {
     
     codeDocument {
   display: block;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: auto;
   height: 100%; /* Fill the available height */
 
@@ -40,20 +40,29 @@ body {
 }
 
 
-
-statement{
-
-  border-top:1pt solid white;
-border-bottom:1pt solid white;  
-background-color: #330bc4;
-padding:2pt;
-display:inline-block;
-margin-bottom:5pt;
+statement {
+    border-top: 1pt solid white;
+    border: 1pt solid #000000;
+    /* border-bottom: 1pt solid gray; */
+    background-color: #330bc4;
+    padding: 4pt;
+    display: inline-block;
+    margin-bottom: 5pt;
+    box-shadow: 2pt 2pt 1pt #000000;
 }
 
 statement name{
 font-family: monospace;
 font-size:11pt;
+}
+
+type, name {
+  display: inline-block;
+
+}
+
+typename {
+display:none;
 }
 
 /* Ensure return and its children are aligned horizontally */
@@ -65,9 +74,12 @@ return {
 }
 
 return > name {
-  display: inline-block;
-  background-color: #330bc4;
-  padding:3pt;
+    display: inline-block;
+    background-color: #330bc4;
+    padding: 3pt;
+    border: 2pt dashed orange;
+    color: red;
+ 
 }
 
 return > expression {
@@ -99,7 +111,13 @@ display: inline-block;
 background-color: #bbb;
     }
 
+    typeSymbol > type{
+display:none;
+    }
    
+    typeSymbol > typeName{
+
+    }
     
     /* --- Return Type --- */
     return-type {
@@ -113,7 +131,7 @@ background-color: #bbb;
       width:14pt;
       text-align: center;
       font-size:12pt;
-      float:right;
+      
     }
     
      /* --- Function Element Styling --- */
@@ -124,7 +142,11 @@ background-color: #bbb;
       border-radius: 5pt;
       overflow:hidden;
       box-shadow: 5px 5px 6px rgb(77, 77, 77);
+      background: rgb(152, 99, 0);
+      
     }
+
+    
 
     /* Place parameters box above function name */
     function > parameters, method > parameters {
@@ -133,19 +155,46 @@ background-color: #bbb;
       
       padding: 0pt;
       padding-bottom:4pt;
+      border-bottom: 2pt solid white;
     }
 
      /* --- Parameters and Variable Type Symbols --- */
     /* Each parameter now has a <typeSymbol> to show the leading symbol. */
-        parameter {
-      display: inline-block;
-      margin-right: 15px;
-      background-color: #aaaaaa;
-    padding:0pt;
-    border:2pt solid rgb(51, 51, 51);
-    border-radius: 4pt;
-    
+      parameter {
+  display: inline-block;
+  margin-right: 15px;
+  background-color: #aaaaaa;
+  padding: 0pt;
+  border: 2pt solid rgb(51, 51, 51);
+  border-radius: 4pt;
+  position: relative;
+}
+
+parameter:not(:last-child)::after {
+  content: '•'; /* The dot separator */
+  position: absolute;
+  right: -11px; /* Adjust spacing */
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(130, 110, 241); /* Adjust color as needed */
+  font-size: 12pt; /* Adjust size as needed */
+}
+
+    function > typeSymbol, method > typeSymbol
+    {
+color:#994f00;
     }
+
+    functionCall > typeSymbol, methodCall > typeSymbol {
+    color: #994a00;
+    padding: 1pt;
+    font-size: 15pt;
+    background-color: rgb(232, 110, 3);
+
+
+  }
+
+
     parameter > typeSymbol {
         display: inline-block;
 
@@ -160,11 +209,16 @@ background-color: #bbb;
     }
     parameter > type {
         
-        display:none;
+  
       font-family: monospace;
       color: #990000;
       background-color: transparent;
     }
+  
+    parameter > type > typeName{
+      display:none;
+    }
+  
     parameter > name {
             display: inline-block;
 
@@ -172,31 +226,31 @@ background-color: #bbb;
       color: #c0c0c0;
       background-color: #4b4b4b;
       color: #9e9e9e;
-      padding:2pt;
+      
       margin-left: -6px;
       border:1px solid rgb(20, 20, 20);
     }
 
     /* Function name styling and function symbol */
     function > name, method > name {
-      font-family: Lekton, monospace;
-      text-decoration: underline;
-      font-weight: bold;
-      font-size: 18pt;
-      background-color: rgb(152, 99, 0);
-      color: #330bc4;
-      padding: 0px;
-      /*
-      border-top-left-radius: 10pt;
-      border-top-right-radius: 10pt;*/
-      position: relative;
-      text-shadow: 2px 2px 4px rgb(203, 203, 203);
-    }
+    font-family: Lekton, monospace;
+    text-decoration: underline;
+    /* font-weight: bold; */
+    font-size: 18pt;
+    background-color: rgb(152, 99, 0);
+    color: #e9ad5f;
+    padding: 4pt;
+    position: relative;
+    text-shadow: 2px 2px 4px rgb(93 47 9);
+    transform: skewX(-10deg);
+    
+}
+
 
     function > name::before, method > name::before {
       content: 'ℱ';
       background-color: orange;
-      color: white;
+      color:#640000;
       padding: 2px 6px;
       border-radius: 3px;
       margin-right: 4px;
@@ -207,13 +261,15 @@ background-color: #bbb;
         display: block;
       
       background-color: #005599;
-  
+
+      border-top: 4pt solid #000000;
       /*   
       border:5px solid blue;
       border-top:5pt solid blue;
 */
       background-color: blue;
 
+      background-color: #3737c1;
       color:white;
       padding:4pt;
       padding-top:8pt;
@@ -243,7 +299,13 @@ background-color: #bbb;
   box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
 }
 
+class > function > role{
+background-color: aqua;
+}
+
     class > name {
+      margin-bottom:5pt;
+      display:block;
       font-size: 18pt;
       color: #005599;
       font-weight: bold;
@@ -296,7 +358,7 @@ background-color: #bbb;
       font-family: monospace;
     
     color:white;    
-    background-color: #fff;
+    background-color: #000;
     padding:3pt;
     border-radius: 4pt;
 }
@@ -313,7 +375,11 @@ variable > documentation{
     background-color: #aaa;
     }
     
-    variable > typeSymbol {
+    variable > type{
+display:inline-block;
+    }
+
+    variable > type > typeSymbol {
 
       font-family: monospace;
       background-color: #bbb;
@@ -337,28 +403,57 @@ variable > documentation{
     }
 
     /* Ensure functionCall and its children are aligned horizontally */
+    
+    
 functionCall {
   display: flex;
   align-items: center; /* Vertically align items */
-  gap: 5px; /* Add spacing between items if needed */
-  background-color: rgb(147, 95, 0);
+  /*gap: 5px;  Add spacing between items if needed */
+  background-color: rgb(213 172 96);
+  border-top-right-radius: 10pt;
+  border-bottom-right-radius: 10pt;
+  border-top-left-radius: 10pt;
+  border-bottom-left-radius: 10pt;
+  padding-left: 5pt;
+
 }
+
+/* alt styling for function:*/
+
+functionCall {
+    display: flex;
+    align-items: center;
+    background-color: rgb(213 172 96);
+    border-top-right-radius: 5pt;
+    border-bottom-right-radius: 5pt;
+    border-top-left-radius: 5pt;
+    border-bottom-left-radius: 5pt;
+    padding-left: 5pt;
+    padding-right: 2pt;
+    box-shadow: 2px 0px 2px white;
+    border: 1pt solid white;
+}
+
 
 functionCall > name {
   background-color: rgb(213, 172, 96);
   display: inline-block;
   padding:4pt;
-
+  
+  margin:0;
+  color:black;
 }
 
-functionCall > name::before {
-  content: 'ℱ';
-  background-color: rgb(232, 205, 3);
-  padding:4pt;
-}
 
 functionCall > parameters {
-  display: inline-block;
+    display: inline-block;
+    border-left: 4pt solid #0f0909;
+    padding: 2pt;
+    border-radius: 10pt;
+    border-right: 4pt solid #0f0909;
+    padding-right: 4pt;
+    padding-left: 4pt;
+    background-color:#3a2773;
 }
 
     </style> </head> <body> 
@@ -370,13 +465,17 @@ functionCall > parameters {
     <function>
       <parameters>
         <parameter>
-          <typeSymbol>#</typeSymbol>
-          <type>int</type>
+          <type>
+            <typeSymbol>#</typeSymbol>
+            <typeName>int</typeName>
+          </type>
           <name>a</name>
         </parameter>
         <parameter>
-          <typeSymbol>#</typeSymbol>
-          <type>int</type>
+          <type>
+            <typeSymbol>#</typeSymbol>
+            <typeName>int</typeName>
+          </type>
           <name>b</name>
         </parameter>
       </parameters>
@@ -393,10 +492,16 @@ functionCall > parameters {
         <return>
           <name>return</name>
           <expression><variable>
-            <typeSymbol>#</typeSymbol>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>            
             <name>a</name>
           </variable> + <variable>
-            <typeSymbol>#</typeSymbol>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>            
             <name>b</name>
           </variable></expression>
           
@@ -409,18 +514,27 @@ functionCall > parameters {
     <function>
       <parameters>
         <parameter>
-          <typeSymbol>#.</typeSymbol>
-          <type>float</type>
+          <type>
+            <typeSymbol>#.</typeSymbol>
+            <typeName>float</typeName>
+          </type>
           <name>xLocation</name>
         </parameter>
+        
         <parameter>
-          <typeSymbol>#.</typeSymbol>
-          <type>float</type>
+          <type>
+            <typeSymbol>#.</typeSymbol>
+            <typeName>float</typeName>
+          </type>
           <name>yLocation</name>
         </parameter>
+        
         <parameter>
-          <typeSymbol>$</typeSymbol>
-          <type>string</type>
+          <type>
+            <typeSymbol>$</typeSymbol>
+            <typeName>string</typeName>
+          </type>
+
           <name>labelForUI</name>
         </parameter>
       </parameters>
@@ -430,26 +544,34 @@ functionCall > parameters {
         <statement>
           <expression>
           <functionCall>
+            <typeSymbol>ℱ</typeSymbol>
             <name>setPosition</name>
             <parameters>
               <parameter>
-                <typeSymbol>#.</typeSymbol>
-                <type>float</type>
+                <type>
+                  <typeSymbol>#.</typeSymbol>
+                  <typeName>float</typeName>
+                </type>
                 <name>xLocation</name>
               </parameter>
               <parameter>
-                <typeSymbol>#.</typeSymbol>
-                <type>float</type>
+                <type>
+                  <typeSymbol>#.</typeSymbol>
+                  <typeName>float</typeName>
+                </type>
                 <name>yLocation</name>
               </parameter>
+              
               
             </parameters>
           </functionCall>
           </expression>
         </statement>
+        
         <statement>
           <expression>
             <functionCall>
+              <typeSymbol>ℱ</typeSymbol>
               <name>setLabel</name>
               <parameters>
                 <parameter>
@@ -460,8 +582,91 @@ functionCall > parameters {
               </parameters>
             </functionCall>
             </expression>
-
-
+        </statement>
+        <statement>
+          <expression>
+            <functionCall>
+              <typeSymbol>ℱ</typeSymbol>
+              <name>setBackgroundColor</name>
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>$</typeSymbol>
+                    <typeName>string</typeName>
+                  </type>
+                  <name>color</name>
+                </parameter>
+              </parameters>
+            </functionCall>
+          </expression>
+        </statement>
+        
+        <statement>
+          <expression>
+            <functionCall>
+              <typeSymbol>ℱ</typeSymbol>
+              <name>setBorder</name>
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>#</typeSymbol>
+                    <typeName>int</typeName>
+                  </type>
+                  <name>width</name>
+                </parameter>
+                <parameter>
+                  <type>
+                    <typeSymbol>$</typeSymbol>
+                    <typeName>string</typeName>
+                  </type>
+                  <name>style</name>
+                </parameter>
+                <parameter>
+                  <type>
+                    <typeSymbol>$</typeSymbol>
+                    <typeName>string</typeName>
+                  </type>
+                  <name>color</name>
+                </parameter>
+              </parameters>
+            </functionCall>
+          </expression>
+        </statement>
+        
+        <statement>
+          <expression>
+            <functionCall>
+              <typeSymbol>ℱ</typeSymbol>
+              <name>setOpacity</name>
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>#.</typeSymbol>
+                    <typeName>float</typeName>
+                  </type>
+                  <name>opacityLevel</name>
+                </parameter>
+              </parameters>
+            </functionCall>
+          </expression>
+        </statement>
+        
+        <statement>
+          <expression>
+            <functionCall>
+              <typeSymbol>ℱ</typeSymbol>
+              <name>setFontSize</name>
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>#</typeSymbol>
+                    <typeName>int</typeName>
+                  </type>
+                  <name>size</name>
+                </parameter>
+              </parameters>
+            </functionCall>
+          </expression>
         </statement>
       </codeBody>
     </function>
@@ -472,77 +677,94 @@ functionCall > parameters {
     <class>
       <name>Calculator</name>
       <documentation>A simple calculator class with add and subtract methods.</documentation>
+
+      <statement>
+        <variable>
+          <typeSymbol>#</typeSymbol>
+          <name>currentValue</name>
+        </variable>
+      </statement>
+      
+      <!-- Constructor (init function) -->
+      <function>
+        <role>
+          <roleSymbol>c</roleSymbol>
+          <roleType>constructor</roleType>
+        </role>
+        <parameters>
+          <parameter>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>
+            <name>initialDisplayValue</name>
+          </parameter>
+        </parameters>
+        <name>init</name>
+        <documentation>Initializes the calculator with an initial value.</documentation>
+        <codeBody>
+          <statement>
+            <expression>
+              <variable>
+                <typeSymbol>#</typeSymbol>
+                <name>currentValue</name>
+              </variable> = 
+              <variable>
+                <typeSymbol>#</typeSymbol>
+                <name>initialDisplayValue</name>
+              </variable>
+            </expression>
+          </statement>
+        </codeBody>
+      </function>
+      
+      <!-- Existing methods -->
       <method>
         <parameters>
           <parameter>
-            <typeSymbol>#</typeSymbol>
-            <type>int</type>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>
             <name>x</name>
           </parameter>
           <parameter>
-            <typeSymbol>#</typeSymbol>
-            <type>int</type>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>
             <name>y</name>
           </parameter>
         </parameters>
         <name>add</name>
         <documentation>Adds two numbers.</documentation>
-      
         <return-type>#</return-type>
         <codeBody>
           <statement>
-            
             <return>
               <name>return</name>
-              <expression><variable>
-                <typeSymbol>#</typeSymbol>
-                <name>x</name>
-              </variable> + <variable>
-                <typeSymbol>#</typeSymbol>
-                <name>y</name>
-              </variable></expression>
-              
-            </return>
-          </statement>
-        </codeBody>
-      </method>
-      <method>
-        <parameters>
-          <parameter>
-            <typeSymbol>#</typeSymbol>
-            <type>int</type>
-            <name>x</name>
-          </parameter>
-          <parameter>
-            <typeSymbol>#</typeSymbol>
-            <type>int</type>
-            <name>y</name>
-          </parameter>
-        </parameters>
-        <name>subtract</name>
-        <documentation>Subtracts second number from the first.</documentation>
-        <return-type>#</return-type>
-        <codeBody>
-          <statement>
-            
-            <return>
-              <name>return</name>
-              <expression><variable>
-                <typeSymbol>#</typeSymbol>
-                <name>x</name>
-              </variable> 
-                  - 
-              <variable>
-                <typeSymbol>#</typeSymbol>
-                <name>y</name>
-              </variable></expression>
-              
+              <expression>
+                <variable>
+                  <type>
+                    <typeSymbol>#</typeSymbol>
+                    <typeName>int</typeName>
+                  </type>
+                  <name>x</name>
+                </variable> + 
+                <variable>
+                  <type>
+                    <typeSymbol>#</typeSymbol>
+                    <typeName>int</typeName>
+                  </type>
+                  <name>y</name>
+                </variable>
+              </expression>
             </return>
           </statement>
         </codeBody>
       </method>
     </class>
-    
+
     <statement>
     <!-- Standalone Variable Declaration Demo -->
     <variable>
@@ -556,13 +778,17 @@ functionCall > parameters {
     <function>
         <parameters>
           <parameter>
-            <typeSymbol>#</typeSymbol>
-            <type>int</type>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>
             <name>a</name>
           </parameter>
           <parameter>
-            <typeSymbol>#</typeSymbol>
-            <type>int</type>
+            <type>
+              <typeSymbol>#</typeSymbol>
+              <typeName>int</typeName>
+            </type>
             <name>b</name>
           </parameter>
         </parameters>

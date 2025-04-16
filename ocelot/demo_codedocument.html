@@ -44,6 +44,8 @@ expression{
 display:inline-block
 }
 
+
+
 statement {
     border-top: 1pt solid white;
     border: 1pt solid #000000;
@@ -162,7 +164,7 @@ display:none;
     }
     
      /* --- Function Element Styling --- */
-     function, method {
+     function {
       break-inside: avoid;
       border:4pt solid black;
       margin-bottom:20pt;
@@ -171,6 +173,14 @@ display:none;
       box-shadow: 5px 5px 6px rgb(77, 77, 77);
       background: rgb(152, 99, 0);
       
+    }
+
+    function > name{
+
+    }
+    function:hover{
+      background: rgb(216, 178, 107);
+
     }
 
     
@@ -256,19 +266,22 @@ height:10pt;
 
     /* Function name styling and function symbol */
     function > name {
-      
     font-family: Lekton, monospace;
     text-decoration: underline;
     /* font-weight: bold; */
-    font-size: 18pt;
-    background-color: rgb(152, 99, 0);
+    font-size: 15pt;
+    
     color: #e9ad5f;
-    padding: 4pt;
+    padding: 2pt;
     position: relative;
     text-shadow: 2px 2px 4px rgb(93 47 9);
     transform: skewX(-10deg);
-    
 }
+
+function > name:hover{
+  color: #845920;
+}
+
 
 
     function > name::before {
@@ -571,6 +584,8 @@ guiArea button[aria-label="clear"] {
     border-top: 3pt solid rgb(151, 151, 151);
     border-left: 3pt solid gray;
     border-right: 3pt solid silver;
+    border: 3pt solid darkgray;
+    border-bottom:0;
 }
 .tab.active {
     background-color: #986300;
@@ -634,6 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
         arrow.style.transform = 'rotate(180deg)';
         funcElem.setAttribute('collapsed', 'true');
       }
+      documentUIDidChange
     });
   });
 });
@@ -795,7 +811,7 @@ function documentUIDidChange() {
       
       <!-- Constructor (init function) -->
      <constructors>
-      <function>
+      <function collapsed="true">
         <role>
           <roleSymbol>c</roleSymbol>
           <roleType>constructor</roleType>
@@ -1054,7 +1070,7 @@ function documentUIDidChange() {
   </function>
   
           <!-- Function Demo: Supports float and string parameters with distinct symbols -->
-          <function>
+          <function collapsed="true">
             <parameters>
               <parameter>
                 <type>

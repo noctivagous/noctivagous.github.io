@@ -112,7 +112,18 @@ function updateSelectionInfoMenu() {
   list.innerHTML = selectedInfo;
 }
 
-
+document.addEventListener('mousedown', (e) => {
+  // Try to find a code element under the mouse
+  const codeElem = e.target.closest(hoverableSelector);
+  if (codeElem) {
+    // Attempt to collapse/expand if the element is collapsible
+    const behaviors = getTagBehaviors(codeElem);
+    if (behaviors.collapsible) {
+      handleCollapseExpand(codeElem);
+      e.preventDefault();
+    }
+  }
+});
 
 document.addEventListener('keydown', (e) => {
   
@@ -225,62 +236,31 @@ function handleMoveElement(elem, direction) {
     return;
   }
 
-  /*
-  // ---  trailing outline rectangles effect ---
-  const rect = elem.getBoundingClientRect();
-  const outlines = [];
-  const outlineCount = 4;
-  const outlineDelay = 30; // ms between outlines
-
-  for (let i = 0; i < outlineCount; i++) {
-    const outline = document.createElement('div');
-    outline.className = 'mac-trail-outline';
-    outline.style.top = `${rect.top + window.scrollY}px`;
-    outline.style.left = `${rect.left + window.scrollX}px`;
-    outline.style.width = `${rect.width}px`;
-    outline.style.height = `${rect.height}px`;
-    outline.style.opacity = `${1 - i * 0.2}`;
-    outline.style.transition = `top 200ms cubic-bezier(.4,1.6,.6,1), left 200ms cubic-bezier(.4,1.6,.6,1), opacity 200ms linear`;
-    outline.style.position = 'absolute';
-    outline.style.pointerEvents = 'none';
-    outline.style.zIndex = 9999;
-    document.body.appendChild(outline);
-    outlines.push(outline);
-  }*/
-
-  // Fade out both elements
-  const fadeDuration = 100;
+  // Set up a fade-out transition on both elements.
+  const fadeDuration = 100; // duration in ms
   elem.style.transition = `opacity ${fadeDuration}ms ease`;
   targetElem.style.transition = `opacity ${fadeDuration}ms ease`;
+  
+  // Fade both elements out.
   elem.style.opacity = '0.3';
   targetElem.style.opacity = '0.3';
-
-  // Animate outlines trailing to the new position
-  const targetRect = targetElem.getBoundingClientRect();
-  setTimeout(() => {
-    outlines.forEach((outline, i) => {
-      setTimeout(() => {
-        outline.style.top = `${targetRect.top + window.scrollY}px`;
-        outline.style.left = `${targetRect.left + window.scrollX}px`;
-        outline.style.opacity = '0';
-      }, i * outlineDelay);
-    });
-  }, fadeDuration);
-
-  // Cleanup after fade out and move
+  
+  // When the fade-out transition ends, swap the elements and fade them in.
   const cleanup = () => {
+    // Remove the listener so that subsequent transitions don't fire cleanup again.
     elem.removeEventListener('transitionend', cleanup);
-
+    
     // Swap the DOM positions.
     if (direction === '[') {
       parent.insertBefore(elem, targetElem);
     } else {
       parent.insertBefore(targetElem, elem);
     }
-
+    
+    // Immediately remove the transition to avoid flickering (optional).
     elem.style.transition = '';
     targetElem.style.transition = '';
-
+    
     // Fade back in.
     requestAnimationFrame(() => {
       elem.style.transition = `opacity ${fadeDuration}ms ease`;
@@ -288,16 +268,16 @@ function handleMoveElement(elem, direction) {
       elem.style.opacity = '1';
       targetElem.style.opacity = '1';
     });
-
-    // Remove outlines after animation
+    
+    // After fade in is complete, clear the transition styles.
     setTimeout(() => {
-      outlines.forEach(outline => outline.remove());
       elem.style.transition = '';
       targetElem.style.transition = '';
       documentUIDidChange();
-    }, fadeDuration + outlineCount * outlineDelay + 100);
+    }, fadeDuration);
   };
-
+  
+  // Use one of the element's transitionend event.
   elem.addEventListener('transitionend', cleanup);
 }
 
@@ -333,13 +313,56 @@ function activateTab(tab) {
 function handleCollapseExpand(elem) {
   if (elem.matches('function')) {
     const codeBody = elem.querySelector('codeBody');
+    const arrow = elem.querySelector('name > svg');
     if (codeBody) {
-      const isCollapsed = codeBody.style.display === 'none';
-      codeBody.style.display = isCollapsed ? 'block' : 'none';
+      const isCollapsed = codeBody.style.display === 'none' || codeBody.classList.contains('collapsing');
+      if (isCollapsed) {
+        // Expand with animation
+        codeBody.style.display = 'block';
+        codeBody.style.height = '0px';
+        codeBody.style.overflow = 'hidden';
+        const fullHeight = codeBody.scrollHeight;
+        requestAnimationFrame(() => {
+          codeBody.style.transition = 'height 0.25s cubic-bezier(.4,1.6,.6,1)';
+          codeBody.style.height = fullHeight + 'px';
+        });
+        codeBody.addEventListener('transitionend', function expandEnd(e) {
+          if (e.propertyName === 'height') {
+            codeBody.style.height = '';
+            codeBody.style.overflow = '';
+            codeBody.style.transition = '';
+            codeBody.classList.remove('collapsing');
+            codeBody.removeEventListener('transitionend', expandEnd);
+          }
+        });
+        if (arrow) arrow.style.transform = 'rotate(90deg)';
+        elem.setAttribute('collapsed', 'false');
+      } else {
+        // Collapse with animation
+        const fullHeight = codeBody.scrollHeight;
+        codeBody.style.height = fullHeight + 'px';
+        codeBody.style.overflow = 'hidden';
+        codeBody.classList.add('collapsing');
+        requestAnimationFrame(() => {
+          codeBody.style.transition = 'height 0.25s cubic-bezier(.4,1.6,.6,1)';
+          codeBody.style.height = '0px';
+        });
+        codeBody.addEventListener('transitionend', function collapseEnd(e) {
+          if (e.propertyName === 'height') {
+            codeBody.style.display = 'none';
+            codeBody.style.height = '';
+            codeBody.style.overflow = '';
+            codeBody.style.transition = '';
+            codeBody.classList.remove('collapsing');
+            codeBody.removeEventListener('transitionend', collapseEnd);
+          }
+        });
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+        elem.setAttribute('collapsed', 'true');
+      }
     }
   }
 }
-
 function handleSelect(elem) {
   if (elem.tagName.toLowerCase() === 'codedocument') {
     // Deselect all elements if codeDocument is clicked
@@ -509,6 +532,7 @@ function updateKeyCommandMenu(elem) {
   }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('function').forEach(funcElem => {
     const nameElem = funcElem.querySelector(':scope > name');
@@ -539,21 +563,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     nameElem.appendChild(arrow);
 
-    nameElem.addEventListener('click', () => {
-      if (!codeBody) return;
-      if (codeBody.style.display === 'none') {
-        codeBody.style.display = 'block';
-        arrow.style.transform = 'rotate(90deg)';
-        funcElem.setAttribute('collapsed', 'false');
-      } else {
-        codeBody.style.display = 'none';
-        arrow.style.transform = 'rotate(180deg)';
-        funcElem.setAttribute('collapsed', 'true');
-      }
-      documentUIDidChange
-    });
+    
   });
 });
+
+
           // Function to adjust the height of the function-container to match the tallest <function> element.
   function adjustFunctionContainerHeight(functionContainer) {
   //console.log("adjustFunctionContainerHeight called for:", functionContainer);
@@ -707,7 +721,7 @@ class GuiButton extends HTMLElement {
           font-size: 14pt;
           font-family:monospace;
           cursor: pointer;
-          background-color:rgb(247, 198, 39);
+          background-color:rgb(64, 63, 59);
           color: rgb(202, 89, 89);
           border: none;
           border-radius: 4px;

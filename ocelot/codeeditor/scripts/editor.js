@@ -289,6 +289,9 @@ function handleEscapeKey() {
   if (selected.length) {
     selected.forEach(sel => sel.classList.remove('selected'));
   }
+
+  // Update the key-command menu to reflect the cleared selection
+  updateKeyCommandMenu(null);
 }
 
 function activateTab(tab) {
@@ -489,10 +492,6 @@ function updateKeyCommandMenu(elem) {
   const functionContainer = elem.closest('.function-container');
   let commands = [];
   
-  // Add move commands if element is moveable
-  if (behaviors.draggable) {
-    commands.push("<kbd>[ or ]</kbd> - Move Up/Down");  // Updated shortcut display
-  }
 
   if (functionContainer) {
     commands.push("<kbd>Left/Right Arrows</kbd> - Cycle Tabs");
@@ -502,12 +501,22 @@ function updateKeyCommandMenu(elem) {
   // Build commands based on behaviors
   if (behaviors.selectable) {
     commands.push("<kbd>Tab</kbd> - Select");
-    commands.push("<kbd>F</kbd> - Select &amp; Drag-lock");
+   // commands.push("<kbd>F</kbd> - Select &amp; Drag-lock");
   }
+  if (behaviors.collapsible)
+  {
+    commands.push("<kbd>D</kbd> - Collapse/Expand");
+  }
+
+  // Add move commands if element is moveable
   if (behaviors.draggable) {
-    commands.push("<kbd>F</kbd> - Drag-lock");
+    commands.push("<kbd>[ or ]</kbd> - Move Up/Down");  // Updated shortcut display
   }
-  commands.push("<kbd>D</kbd> - Collapse/Expand");
+
+  if (behaviors.draggable) {
+  //  commands.push("<kbd>F</kbd> - Drag-lock");
+  }
+  
   commands.push("<kbd>E</kbd> - Insert code element");
   commands.push("<kbd>R</kbd> - Edit name/label");
   commands.push("<kbd>Backspace</kbd> - Delete");

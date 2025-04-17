@@ -739,11 +739,17 @@ kbd {
   min-height: 40pt;
   
   display:block;
+  
 }
 
 #hover-info-tag{
 color:#0155af;
 font-weight: bold;
+text-shadow: 0px 1px 2px white;
+background-color:#000;
+display:inline-block;
+padding:2pt;
+border-radius:5pt;
 }
 
 #hover-info-selected{
@@ -753,7 +759,7 @@ color:greenyellow;
 .hover-info-header {
   font-size: 18px;
   margin-bottom: 8px;
-  color: #108ceb;
+  color: #2e98e9;
   font-weight: bold;
   min-width: 300px;
 

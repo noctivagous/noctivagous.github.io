@@ -1,0 +1,75 @@
+  Interactive Code Document Demo
+
+  - Implements a custom code document UI with XML-like tags (function, class, group, etc).
+  - Supports bi-modal control: mouse for navigation, keyboard for activation (key-clicks).
+    - Bi-modal control: A user interface theory that separates navigation (steering) and activation (triggering actions) into two distinct input devices—typically using the mouse for cursor movement and the keyboard for function activation ("key-clicks"). This division, inspired by how a guitarist uses both hands for different tasks, reduces cognitive load and increases precision and efficiency in software interaction.
+  - Tracks the currently hovered element and updates a floating key command menu.
+  - Selection is limited to elements at the same tree level.
+  - Behaviors (selectable, draggable, etc.) are managed via a tagBehaviors dictionary.
+  - Features containers for compacting, expanding, and navigating through code elements, such as tabbed function views, 
+  collapsible code bodies, and others. This elevates the document above regular code
+  because only what is relevant is shown.  Collapse states are saved into the document.
+  - Designed for extensibility and UI theory experimentation.
+  - The code is designed to be modular and extensible, allowing for easy addition of new features and elements.
+
+  Code Elements:
+
+  functionCall - represents a function call
+  function - represents a function definition
+  variable - represents a variable declaration
+  assignment - represents an assignment operation
+  operator - represents an operator (e.g., +, -, *, /)
+  expression - represents an expression
+
+
+  Document Structure Code Elements:
+
+  codeProject - the root element of the code project containing code documents. features different available
+  navigation and presentation mechanisms. At this time only one code document is being provided in this demo page.
+  codeDocument - the root element of the code document
+  codeBody - container for code statements
+  statement - equivalent to a line of code
+
+
+  Organization and Presentation:
+  Organization code elements have a presentation attribute to indicate how the contents are displayed.
+
+    Groups:
+
+  group - manual grouping of code elements.
+    - presentation="tabifyingView" - tabbed presentation of code elements
+    - presentation="carouselView" - carousel-like presentation of code elements
+
+  codeBodyGroup - presentation mechanism for grouping code elements within a code body.
+    - the same presentation options as group.
+  
+  codeAlbum - carousel-like presentation of code elements, paginating organization of code elements
+
+
+  Editor GUI:
+ 
+  - Key Command Menu - 
+    - Displays key commands for the currently hovered element.
+    - Updates dynamically based on the hovered element's type and behaviors.
+    - Provides persistent commands for selected elements.
+  
+  - Overlay Editing -
+    - Edit the selected element as a full-page or modal window that overlays the current document.
+
+  - Code tracking -
+    - In the future, every declaration of a variable, function, class, etc. will have its own ID and this way
+    it will be known whether an element name is valid when it is being entered.  This will allow for autocomplete.
+    Each reference to the variable will contain an attribut "reference" carrying the declaration ID.  
+    This will allow for changing all references to variable names from the declaration (or one of the instances).
+    It replaces the need to use Find and Replace in the editor. This will also allow for tracking the scope of a variable.
+  
+
+  Implementation Notes:
+  - The editor will exist inside a web browser and will be a web application to begin with.
+  - The code project is a custom XML-like structure that defines the code documents, code elements 
+  and their relationships.
+    - In the future when a code project gets large it might be stored as in a SQLite database file.
+  - The code elements are styled using CSS to create a graphically-designed and interactive interface.
+  - The JavaScript code handles user interactions, such as hovering, selecting, and editing elements.
+  - The code document is designed to be extensible, allowing for the addition of new elements and behaviors as needed.
+

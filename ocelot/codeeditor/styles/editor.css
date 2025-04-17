@@ -139,17 +139,21 @@ return>expression {
 }
 
 group {
-  border: 2pt dotted black;
+  border: 4pt solid black;
   padding: 10pt;
   padding-left: 10pt;
   margin: 4pt;
   margin-left: 0;
   margin-bottom: 15pt;
-  background-color: #676767;
+  
+  background-color: #727272;
   box-shadow: 8px 8px 6px rgb(34, 34, 34);
-  border-radius: 5pt;
+  border-radius: 20pt;
 }
 
+group:hover {
+  background-color: #969696;
+}
 
 documentation {
   display: none;
@@ -215,7 +219,7 @@ function {
   margin-bottom: 15pt;
   border-radius: 5pt;
   overflow: hidden;
-  box-shadow: 5px 5px 6px rgb(77, 77, 77);
+  box-shadow: 8px 8px 6px rgb(34, 34, 34);
   background: rgb(152, 99, 0);
 
 }
@@ -315,10 +319,10 @@ parameter>type>typeName {
 
 /* Function name styling and function symbol */
 function>name {
-  font-family: Lekton, monospace;
+  font-family:  monospace;
   text-decoration: underline;
-  /* font-weight: bold; */
-  font-size: 15pt;
+   font-weight: bold; 
+  font-size: 13pt;
 
   color: #e9ad5f;
   padding: 2pt;
@@ -399,8 +403,8 @@ group::after {
   content: "GROUP";
   position: absolute;
   top: 5px;
-  right: 5px;
-  font-size: 18px;
+  right: 20px;
+  font-size: 15px;
   color: rgba(0, 0, 0, .4);
   /* Light and subtle */
   pointer-events: none;

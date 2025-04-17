@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
     const functionContainer = group.querySelector('.function-container');
     if (functionContainer) {
-      adjustFunctionContainerHeight(functionContainer);
+      //adjustFunctionContainerHeight(functionContainer);
     }
   });
 });
@@ -621,7 +621,7 @@ function documentUIDidChange() {
   document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
     const functionContainer = group.querySelector('.function-container');
     if (functionContainer) {
-      adjustFunctionContainerHeight(functionContainer);
+    //  adjustFunctionContainerHeight(functionContainer);
     }
   });
 }
@@ -770,3 +770,145 @@ class GuiButton extends HTMLElement {
   }
 }
 customElements.define('gui-button', GuiButton);
+
+
+// Function to generate an SVG pattern
+// Function to generate an SVG pattern with an optional lineAngle parameter
+function generatePattern(type, options = {}) {
+  const {
+    color = '#000',
+    strokeWidth = 2,
+    spacing = 10,
+    dashArray = '',
+    radius = 2,
+    lineAngle = 45, // Default angle for diagonal lines
+  } = options;
+
+  let svgContent = '';
+
+  switch (type) {
+    case 'diagonal-solid':
+      svgContent = `
+        <line x1="0" y1="${spacing}" x2="${spacing}" y2="0" 
+          stroke="${color}" stroke-width="${strokeWidth}" />
+      `;
+      break;
+
+    case 'diagonal-dashed':
+      svgContent = `
+        <line x1="0" y1="${spacing}" x2="${spacing}" y2="0" 
+          stroke="${color}" stroke-width="${strokeWidth}" stroke-dasharray="${dashArray}" />
+      `;
+      break;
+
+    case 'dotted':
+      svgContent = `
+        <circle cx="${spacing / 2}" cy="${spacing / 2}" r="${radius}" fill="${color}" />
+      `;
+      break;
+
+    case 'cross-hatch':
+      svgContent = `
+        <line x1="0" y1="${spacing}" x2="${spacing}" y2="0" 
+          stroke="${color}" stroke-width="${strokeWidth}" />
+        <line x1="0" y1="0" x2="${spacing}" y2="${spacing}" 
+          stroke="${color}" stroke-width="${strokeWidth}" />
+      `;
+      break;
+
+    default:
+      console.error('Unknown pattern type:', type);
+      return '';
+  }
+
+  // Apply rotation transform if lineAngle is specified
+  const rotation = lineAngle !== 45 ? `transform="rotate(${lineAngle} ${spacing / 2} ${spacing / 2})"` : '';
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${spacing}" height="${spacing}" viewBox="0 0 ${spacing} ${spacing}">
+      <g ${rotation}>
+        ${svgContent}
+      </g>
+    </svg>
+  `;
+
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
+
+// Function to apply patterns to elements based on their tag
+function applyPatternToElement(elem) {
+  const tag = elem.tagName.toLowerCase();
+
+  switch (tag) {
+    case 'codedocument':
+      elem.style.backgroundImage = generatePattern('diagonal-solid', {
+        color: '#000',
+        strokeWidth: 1,
+        spacing: 3,
+      });
+      break;
+
+      
+
+    case 'group':
+      elem.style.backgroundImage = generatePattern('dotted', {
+        color: '#bdbdbd',
+        spacing: 3,
+        radius: 1,
+        
+      });
+      break;
+
+      /*
+    case 'return':
+      elem.style.backgroundImage = generatePattern('cross-hatch', {
+        color: '#ffcccc',
+        strokeWidth: 1,
+        spacing: 6,
+      });
+      break;
+*/
+    case 'function':
+      elem.style.backgroundImage = generatePattern('diagonal-solid', {
+        color: 'rgb(155,155,155,0.4)',
+        strokeWidth: 1,
+        spacing: 5,
+        dashArray: '3,4',
+        
+      });
+      break;
+
+      /*
+    case 'class':
+      elem.style.backgroundImage = generatePattern('diagonal-solid', {
+        color: '#f5f5f5',
+        strokeWidth: 1,
+        spacing:4,
+      });
+      break;*/
+
+    default:
+      // No pattern for other tags
+      break;
+  }
+}
+
+// Apply patterns to existing elements on page load
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('codedocument, group, return, function, class').forEach(applyPatternToElement);
+});
+
+// Observe the document for dynamically added elements
+const observer = new MutationObserver((mutationsList) => {
+  mutationsList.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
+      if (node.nodeType === 1) {
+        // Apply pattern to the newly added element
+        applyPatternToElement(node);
+      }
+    });
+  });
+});
+
+// Start observing the document
+observer.observe(document.body, { childList: true, subtree: true });

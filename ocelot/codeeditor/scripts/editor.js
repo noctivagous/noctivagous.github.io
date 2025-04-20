@@ -209,7 +209,7 @@ document.addEventListener('keydown', (e) => {
       handleChangeView();
       break;
     case 'h':
-      handleCollapseExpandChildren(currentlyHoveredElem);
+      handleCollapseExpandSubnodes(currentlyHoveredElem);
       break;
   }
 });
@@ -219,7 +219,7 @@ function handleMoveElement(elem, direction) {
   if (!parent) return;
 
   // Filter siblings based on draggable behavior using tagBehaviors.
-  const siblings = Array.from(parent.children).filter(child => {
+  const siblings = Array.from(parent.subnodes).filter(child => {
     if (child.nodeType !== 1) return false;
     const behaviors = getTagBehaviors(child);
     return behaviors.draggable;
@@ -417,12 +417,12 @@ function handleChangeView() {
   alert('Change view (not implemented)');
 }
 
-function handleCollapseExpandChildren(elem) {
+function handleCollapseExpandSubnodes(elem) {
   if (elem) {
-    const children = elem.querySelectorAll(':scope > function, :scope > group');
-    if (children.length) {
-      const shouldCollapse = !children[0].classList.contains('collapsed');
-      children.forEach(child => {
+    const subnodes = elem.querySelectorAll(':scope > function, :scope > group');
+    if (subnodes.length) {
+      const shouldCollapse = !subnodes[0].classList.contains('collapsed');
+      subnodes.forEach(child => {
         if (shouldCollapse) {
           child.classList.add('collapsed');
           child.classList.remove('expanded');
@@ -522,7 +522,7 @@ function updateKeyCommandMenu(elem) {
   commands.push("<kbd>Backspace</kbd> - Delete");
   commands.push("<kbd>G</kbd> - Group/Ungroup");
   commands.push("<kbd>V</kbd> - Change view");
-  commands.push("<kbd>H</kbd> - Collapse/Expand Children");
+  commands.push("<kbd>H</kbd> - Collapse/Expand subnodes");
 
   list.innerHTML = commands.join("<br>");
 
@@ -648,7 +648,7 @@ function documentUIDidChange() {
   
   // Process each group element that should use the tabifyingView presentation.
   document.querySelectorAll('group[presentation="tabifyingView"]').forEach(group => {
-    // Gather all immediate function children in the group.
+    // Gather all immediate function subnodes in the group.
     const functions = group.querySelectorAll(':scope > function');
     if (functions.length > 0) {
       // Create a container to hold the tabs.

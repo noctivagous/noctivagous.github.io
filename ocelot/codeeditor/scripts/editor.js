@@ -219,7 +219,7 @@ function handleMoveElement(elem, direction) {
   if (!parent) return;
 
   // Filter siblings based on draggable behavior using tagBehaviors.
-  const siblings = Array.from(parent.subnodes).filter(child => {
+  const siblings = Array.from(parent.children).filter(child => {
     if (child.nodeType !== 1) return false;
     const behaviors = getTagBehaviors(child);
     return behaviors.draggable;

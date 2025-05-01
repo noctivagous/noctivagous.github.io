@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG Patterns For HTML Backgrounds</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f0f0f0;
+    }
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    .pattern-box {
+      width: 140px;
+      height: 140px;
+      border: 1px solid #ccc;
+      background: white;
+      position: relative;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+    .pattern-box svg {
+      width: 100%;
+      height: 100%;
+    }
+    .pattern-label {
+      position: absolute;
+      bottom: 4px;
+      width: 100%;
+      text-align: center;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SVG Patterns with Spacing</h1>
+
+  <!-- Hidden defs container -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs id="pattern-defs"></defs>
+  </svg>
+
+  <div class="pattern-grid" id="patternGrid"></div>
+  <div id="patternControls"></div>
+
+  <script>
+    /**
+     * Clone or create a <pattern> with the given parameters.
+     * @param {Object} options
+     * @param {'diagonal-solid'|'diagonal-dashed'|'dotted'|'cross-hatch'|'filled-squares'} options.preset
+     * @param {number} options.angle           Rotation angle, in degrees
+     * @param {string} options.strokeColor     Color for lines/circles
+     * @param {number} options.strokeWidth     Line thickness or dot radius
+     * @param {number} options.spacing         Tile size (width = height = spacing)
+     * @param {string} [options.dashArray]     e.g. '4,4' for dashed lines
+     * @param {string} [options.fillColor]     Color for filled-squares
+     */
+
+function clonePattern({
+  preset,
+  angle        = 0,
+  strokeColor  = '#000',
+  strokeWidth  = 10,
+  spacing      = 20,
+  dashArray    = '',
+  fillColor    = '#000',
+  xOffset      = 0,
+  yOffset      = 0,
+}) {
+  const defs = document.getElementById('pattern-defs');
+  const id = [
+    'pat',
+    preset,
+    angle,
+    strokeColor?.replace('#',''),
+    strokeWidth,
+    spacing,
+    dashArray || 'solid',
+    fillColor?.replace('#',''),
+    xOffset, yOffset
+  ].join('-');
+
+  if (document.getElementById(id)) return id;
+
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
+  p.id = id;
+  p.setAttribute('patternUnits', 'userSpaceOnUse');
+  p.setAttribute('patternContentUnits', 'userSpaceOnUse');
+  p.setAttribute('width', spacing);
+  p.setAttribute('height', spacing);
+  p.setAttribute('viewBox', `0 0 ${spacing} ${spacing}`);
+  p.setAttribute('preserveAspectRatio', 'none');
+  // Compose transform: translate then rotate
+  let transform = '';
+  if (xOffset || yOffset) transform += `translate(${xOffset},${yOffset}) `;
+  if (angle) transform += `rotate(${angle})`;
+  if (transform) p.setAttribute('patternTransform', transform.trim());
+
+  let shape;
+  switch (preset) {
+    case 'diagonal-solid':
+    case 'diagonal-dashed':
+      shape = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      shape.setAttribute('x1', 0);
+      shape.setAttribute('y1', spacing / 2);
+      shape.setAttribute('x2', spacing);
+      shape.setAttribute('y2', spacing / 2);
+      shape.setAttribute('stroke', strokeColor);
+      shape.setAttribute('stroke-width', strokeWidth);
+      if (preset === 'diagonal-dashed') {
+        shape.setAttribute('stroke-dasharray', dashArray || `${strokeWidth*2},${strokeWidth}`);
+      }
+      p.appendChild(shape);
+      break;
+
+    case 'dotted':
+      shape = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      shape.setAttribute('cx', spacing / 2);
+      shape.setAttribute('cy', spacing / 2);
+      shape.setAttribute('r', strokeWidth);
+      shape.setAttribute('fill', strokeColor);
+      p.appendChild(shape);
+      break;
+
+    case 'cross-hatch':
+      ['horizontal','vertical'].forEach(dir => {
+        const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        if (dir === 'horizontal') {
+          l.setAttribute('x1', 0);
+          l.setAttribute('y1', spacing/2);
+          l.setAttribute('x2', spacing);
+          l.setAttribute('y2', spacing/2);
+        } else {
+          l.setAttribute('x1', spacing/2);
+          l.setAttribute('y1', 0);
+          l.setAttribute('x2', spacing/2);
+          l.setAttribute('y2', spacing);
+        }
+        l.setAttribute('stroke', strokeColor);
+        l.setAttribute('stroke-dasharray', dashArray || `${strokeWidth*2},${strokeWidth}`);
+        l.setAttribute('stroke-width', strokeWidth);
+        p.appendChild(l);
+      });
+      break;
+
+    case 'filled-squares':
+      shape = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      const sq = spacing / 2;
+      shape.setAttribute('x', (spacing - sq) / 2);
+      shape.setAttribute('y', (spacing - sq) / 2);
+      shape.setAttribute('width', sq);
+      shape.setAttribute('height', sq);
+      shape.setAttribute('fill', fillColor);
+      p.appendChild(shape);
+      break;
+
+    default:
+      console.warn('Unknown preset:', preset);
+      return id;
+  }
+
+  defs.appendChild(p);
+  return id;
+}
+    /**
+     * Build a box showing the pattern over a background color.
+     */
+     function makePatternBox({
+  width           = 140,
+  height          = 140,
+  preset,
+  angle,
+  strokeColor,
+  strokeWidth,
+  spacing,
+  dashArray,
+  fillColor,
+  backgroundColor = '#fff',
+  label           = '',
+  xOffset         = 0,
+  yOffset         = 0
+}) {
+  const patternId = clonePattern({
+    preset, angle, strokeColor, strokeWidth,
+    spacing, dashArray, fillColor, xOffset, yOffset
+  });
+
+  const div = document.createElement('div');
+  div.className = 'pattern-box';
+  div.innerHTML = `
+    <svg width="${width}" height="${height}">
+      <rect width="100%" height="100%" fill="${backgroundColor}" />
+      <rect width="100%" height="100%" fill="url(#${patternId})" />
+    </svg>
+    <div class="pattern-label">${label}</div>
+  `;
+  return div;
+}
+
+    // Examples demonstrating spacing for each preset
+    const examples = [
+      {
+        preset: 'diagonal-solid',
+        angle: 45,
+        strokeColor: '#c00',
+        strokeWidth: 2,
+        spacing: 10,
+        backgroundColor: '#38c27b',
+        label: 'Diagonal Solid'
+      },
+      {
+        preset: 'diagonal-dashed',
+        angle: 60,
+        strokeColor: '#060',
+        strokeWidth: 20,
+        spacing: 24,
+        dashArray: '4,4',
+        backgroundColor: '#efe',
+        label: 'Diagonal Dashed'
+      },
+      {
+        preset: 'dotted',
+        angle: 45,
+        strokeColor: '#00c',
+        strokeWidth: 2,
+        spacing: 8,
+        backgroundColor: '#eef',
+        label: 'Dotted'
+      },
+      {
+        preset: 'cross-hatch',
+        angle: 45,
+        strokeColor: '#333',
+        strokeWidth: 2,
+        spacing: 20,
+        backgroundColor: '#ddd',
+        dashArray: '2,2',
+
+        label: 'Cross Hatch'
+      },
+      {
+        preset: 'filled-squares',
+        angle: 45,
+        fillColor: '#f80',
+        spacing: 30,
+        backgroundColor: '#fff8e1',
+        label: 'Filled Squares'
+      }
+    ];
+
+    const grid = document.getElementById('patternGrid');
+    examples.forEach(cfg => grid.appendChild(makePatternBox(cfg)));
+
+    let selectedIdx = 0;
+
+// Add xOffset and yOffset to all patterns (default 0)
+examples.forEach(cfg => {
+  if (cfg.xOffset === undefined) cfg.xOffset = 0;
+  if (cfg.yOffset === undefined) cfg.yOffset = 0;
+});
+
+function renderGrid() {
+  grid.innerHTML = '';
+  examples.forEach((cfg, i) => {
+    const box = makePatternBox(cfg);
+    box.dataset.idx = i;
+    if (i === selectedIdx) box.style.border = '4px solid #0074d9';
+    box.onclick = () => {
+      selectedIdx = i;
+      renderGrid();
+      renderControls();
+    };
+    grid.appendChild(box);
+  });
+}
+
+function renderControls() {
+  const cfg = examples[selectedIdx];
+  const controls = document.getElementById('patternControls');
+  controls.innerHTML = `
+    <div style="margin-top:1rem;padding:1rem;background:#fafafa;border:1px solid #ccc;max-width:340px;display:inline-block;vertical-align:top">
+      <strong>${cfg.label}</strong><br>
+      Angle: 
+      <input type="range" id="angle" step="0.1" min="0" max="360" value="${cfg.angle}" style="width:120px">
+      <input type="number" id="angle_num" value="${cfg.angle}" min="0" max="360" style="width:50px">°
+      <br>
+      X Offset: 
+      <input type="range" id="xOffset" min="-100" max="100" value="${cfg.xOffset ?? 0}" style="width:80px">
+      <input type="number" id="xOffset_num" value="${cfg.xOffset ?? 0}" min="-100" max="100" style="width:50px">
+      <br>
+      Y Offset: 
+      <input type="range" id="yOffset" min="-100" max="100" value="${cfg.yOffset ?? 0}" style="width:80px">
+      <input type="number" id="yOffset_num" value="${cfg.yOffset ?? 0}" min="-100" max="100" style="width:50px">
+      <br>
+      ${cfg.preset !== 'filled-squares' ? `
+      Stroke Color: <input type="color" id="strokeColor" value="${toColorInput(cfg.strokeColor)}">
+      <br>
+      Stroke Width: 
+      <input type="range" id="strokeWidth" min="1" max="40" value="${cfg.strokeWidth}" style="width:120px">
+      <input type="number" id="strokeWidth_num" value="${cfg.strokeWidth}" min="1" max="20" style="width:50px">
+      <br>
+      ` : `
+      Fill Color: <input type="color" id="fillColor" value="${toColorInput(cfg.fillColor)}">
+      <br>
+      `}
+      Spacing: 
+      <input type="range" id="spacing" min="1" max="100" value="${cfg.spacing}" style="width:120px">
+      <input type="number" id="spacing_num" value="${cfg.spacing}" min="4" max="100" style="width:50px">
+      <br>
+      Background: <input type="color" id="backgroundColor" value="${toColorInput(cfg.backgroundColor)}">
+      <br>
+      ${cfg.preset === 'diagonal-dashed' || cfg.preset === 'cross-hatch' ? `
+      Dash Array: <input type="text" id="dashArray" value="${cfg.dashArray || ''}" style="width:80px">
+      <br>
+      ` : ''}
+    </div>
+    <pre id="jsObjCode" style="display:inline-block;vertical-align:top;margin-left:2rem;background:#222;color:#fff;padding:1rem 1.5rem;border-radius:8px;max-width:400px;overflow:auto"></pre>
+  `;
+
+  // Sync sliders and number inputs for all numeric fields
+  // Sync sliders and number inputs for all numeric fields
+[
+  {id: 'angle', min: 0, max: 360},
+  {id: 'strokeWidth', min: 1, max: 20},
+  {id: 'spacing', min: 4, max: 100},
+  {id: 'xOffset', min: -100, max: 100},
+  {id: 'yOffset', min: -100, max: 100}
+].forEach(({id, min, max}) => {
+  const slider = document.getElementById(id);
+  const number = document.getElementById(id + '_num');
+  if (slider && number) {
+    slider.oninput = () => {
+      number.value = slider.value;
+      examples[selectedIdx][id] = Number(slider.value);
+      renderGrid();
+      updateJsObjCode(examples[selectedIdx]);
+    };
+    number.oninput = () => {
+      let val = Math.max(min, Math.min(max, Number(number.value)));
+      slider.value = val;
+      examples[selectedIdx][id] = val;
+      renderGrid();
+      renderControls();
+    };
+  }
+});
+
+// Other controls
+['strokeColor','backgroundColor','dashArray','fillColor'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.oninput = (e) => {
+      examples[selectedIdx][id] = e.target.value;
+      renderGrid();
+      updateJsObjCode(examples[selectedIdx]);
+    };
+  }
+});
+
+
+
+
+  // Show the JS object code for the selected preset
+  const jsObj = {...cfg};
+  delete jsObj.label;
+  document.getElementById('jsObjCode').textContent =
+    'const pattern = ' + JSON.stringify(jsObj, null, 2) + ';';
+}
+
+// Utility: always return a valid #rrggbb for color input
+function toColorInput(val) {
+  if (!val) return '#000000';
+  if (/^#[0-9a-f]{6}$/i.test(val)) return val;
+  if (/^#[0-9a-f]{3}$/i.test(val)) {
+    // Expand #abc to #aabbcc
+    return '#' + val[1]+val[1]+val[2]+val[2]+val[3]+val[3];
+  }
+  // Try to convert named colors or rgb() to hex (fallback to black)
+  const ctx = document.createElement('canvas').getContext('2d');
+  ctx.fillStyle = val;
+  return ctx.fillStyle.match(/^#[0-9a-f]{6}$/i) ? ctx.fillStyle : '#000000';
+}
+
+// Helper to update the code block with JSON
+function updateJsObjCode(cfg) {
+  const jsObj = {...cfg};
+  delete jsObj.label;
+  document.getElementById('jsObjCode').textContent =
+    JSON.stringify(jsObj, null, 2);
+}
+
+renderGrid();
+renderControls();
+
+    
+  </script>
+</body>
+</html>

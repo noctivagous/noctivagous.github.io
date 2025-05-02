@@ -155,9 +155,9 @@
               <name>b</name>
             </parameter>
           </parameters>
-          <name>product</name>
+          <name>product <return-type>#</return-type></name>
           <documentation>Returns the sum of two integers.</documentation>
-          <return-type>#</return-type>
+          
           <codeBody>
             <statement>
               <return>
@@ -200,9 +200,9 @@
               <name>b</name>
             </parameter>
           </parameters>
-          <name>quotient</name>
+          <name>quotient <return-type>#</return-type></name>
           <documentation>Returns the sum of two integers.</documentation>
-          <return-type>#</return-type>
+          
           <codeBody>
             <statement>
               <return>
@@ -246,9 +246,9 @@
               <name>y</name>
             </parameter>
           </parameters>
-          <name>difference</name>
+          <name>difference <return-type>#</return-type></name>
           <documentation>subtracts one number from the other.</documentation>
-          <return-type>#</return-type>
+          
           <codeBody>
             <statement>
               <return>
@@ -284,8 +284,8 @@
   <!-- Loop Demo: A function containing a loop -->
   <function collapsed="true">
     <parameters></parameters>
-    <name>printNumbers</name>
-    <return-type>∅</return-type>
+    <name>printNumbers <return-type>∅</return-type></name>
+    
     <documentation>Prints numbers from 0 to 9.</documentation>
     
     <codeBody>
@@ -479,6 +479,7 @@
             <typeSymbol>guiArea</typeSymbol>
             <documentation>Calculator button layout and labels.</documentation>
             <guiArea>
+              
               <gui-button is="gui-button">7</gui-button>
               <gui-button is="gui-button">8</gui-button>
               <gui-button is="gui-button">9</gui-button>
@@ -496,6 +497,7 @@
               <gui-button is="gui-button">=</gui-button>
               <gui-button is="gui-button">+</gui-button>
               <gui-button  is="gui-button" aria-label="clear">C</gui-button>
+            
             </guiArea>
           </variable>
         </codebody>
@@ -533,6 +535,11 @@
   <div class="selection-info-header">Selection Info</div>
   <div id="selection-info-list"></div>
 </div>
+
+<!-- Include jQuery and jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <script src="scripts/nctbgpatterns.js"></script>
 <script src="scripts/editor.js"></script>
@@ -595,5 +602,50 @@
     });
   });
   </script>
+
+<script>
+$(document).ready(function(){
+  // Place this after your DOM is ready
+$(function() {
+  // Initialize collapse state for all <function> elements
+  $('function').each(function() {
+    const $fn = $(this);
+    const isCollapsed = $fn.attr('collapsed') === 'true';
+    $fn.children('codebody').toggle(!isCollapsed);
+  });
+
+  
+});
+
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('codeBody').forEach(codeBody => {
+    // Only wrap if not already wrapped
+    if (!codeBody.querySelector('.sortable-container')) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'sortable-container';
+      // Move all direct children into the wrapper
+      Array.from(codeBody.children).forEach(child => wrapper.appendChild(child));
+      codeBody.appendChild(wrapper);
+    }
+  });
+});
+
+$(function() {
+  $('.sortable-container').sortable({
+    items: '> *', // All direct children (your code elements)
+    handle: '> name', // Drag by the <name> child if you want
+    placeholder: "sortable-placeholder",
+    update: function(event, ui) {
+      // Optionally call your documentUIDidChange() or similar update routine here
+      documentUIDidChange && documentUIDidChange();
+    }
+  });
+});
+
+
+
+</script>
 
    </body> </html>

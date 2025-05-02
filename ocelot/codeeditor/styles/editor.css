@@ -5,8 +5,13 @@
 
 :root {
   --hover-outline: #9b0fe6;
+  --hover-menu-bg: #9b0fe653;
+  --selection-color:#bdf982;
 }
 
+.hoveredText{
+color:var(--hover-outline);
+}
 
 :host {
   cursor: var(--crosshair-cursor) !important;
@@ -176,6 +181,10 @@ group:hover {
   background-color: #969696;
 }
 
+function:hover > name{ 
+
+}
+
 documentation {
   display: none;
   font-style: italic;
@@ -219,7 +228,7 @@ typeSymbol>type {
 typeSymbol>typeName {}
 
 /* --- Return Type --- */
-return-type {
+function > name > return-type {
   font-family: monospace;
   color: #990000;
   padding: 2px;
@@ -230,6 +239,7 @@ return-type {
   width: 14pt;
   text-align: center;
   font-size: 12pt;
+  border-radius: 4pt;
 
 }
 
@@ -343,7 +353,7 @@ function>name {
   font-family:  monospace;
   text-decoration: underline;
    font-weight: bold; 
-  font-size: 12pt;
+  font-size: 13pt;
 
   color: #e9ad5f;
   color:black;
@@ -414,7 +424,7 @@ class {
   padding: 0px;
   margin-bottom: 20px;
   break-inside: avoid;
-  border-radius: 20pt;
+  border-radius: 17pt;
   box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
   padding: 10pt;
 }
@@ -439,23 +449,34 @@ group::after {
 }
 
 
-
-class  > name {
-  margin-bottom: 5pt;
+class > name {
+  margin-bottom: 8pt;
   display: block;
   font-size: 18pt;
   color: #fff;
   font-weight: bold;
-  padding-bottom: 5px;
-background-color: #000;
-
-  border-top-left-radius: 15pt;
-  border-top-right-radius: 15pt;
+  padding-bottom: 4pt;
+  background-color: #000;
+  border-top-left-radius: 17pt;
+  border-top-right-radius: 17pt;
   padding-left: 10pt;
-  color:White;
+  color: White;
   padding-top: 5pt;
   font-size: 14pt;
-  border-bottom: 1pt solid white;
+  border-bottom: 2pt solid #363636;
+  margin-left: -10pt;
+  margin-right: -10pt;
+  margin-top: -10pt;
+  border-top:3pt solid rgb(97, 97, 97);
+  border-right:3pt solid rgb(182, 182, 182);
+  border-left:3pt solid rgb(68, 68, 68);
+  box-shadow: 0px 4px 6px black;
+}
+
+.moving-animate {
+  transition: transform 0.25s cubic-bezier(.4,1.1,.6,1), box-shadow 0.25s;
+  z-index: 10;
+  box-shadow: 0 4px 16px #ffe082;
 }
 
 class > name::before {
@@ -539,6 +560,7 @@ loop {
 /* Clicking on a function or method name toggles the display of their bodies */
 function > name {
 /*  cursor: pointer;*/
+display: block;
 }
 
 /* Ensure functionCall and its children are aligned horizontally */
@@ -691,7 +713,7 @@ kbd {
 
 .hovered:not(.selected) {
   box-shadow: 3px 3px 3px 6pt #323932;
-  outline: 3pt solid var(--hover-outline) !important;
+  outline: 5pt solid var(--hover-outline) !important;
   
 }
 
@@ -701,6 +723,19 @@ kbd {
   outline: 3pt solid var(--hover-outline); /* Green outline for selected */
   
 }
+
+.visibilityArrow {
+  position: absolute;
+  right: 5pt;
+  top: 0;
+  transform: translateY(-50%) rotate(90deg); /* default: down */
+  width: 25px;
+  height: 25px;
+  transition: transform 0.2s;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
 
 .moving-element {
   transition: transform 0.2s ease-in-out;
@@ -717,7 +752,7 @@ kbd {
 #key-command-menu {
   position: fixed;
   right: 24px;
-  top: 115px; /* 200px less than the bottom of the viewport */
+  top: 125px; /* 200px less than the bottom of the viewport */
   background: #222;
   color: #fff;
   border-radius: 12px;
@@ -733,11 +768,11 @@ kbd {
 
 #selection-info-menu {
   position: fixed;
-  bottom: 20px; /* Move it below the hover menu */
+  top: 520px; /* Move it below the hover menu */
 
   right: 24px;
   background: rgba(34, 34, 34, 0.7);
-  color: #bdf982;
+  color: var(--selection-color);
   border-radius: 12px;
   box-shadow: 0 4px 24px #0008;
   padding: 18px 24px;
@@ -746,6 +781,7 @@ kbd {
   z-index: 10001; /* Above key-command-menu if overlapping */
   min-width: 300px;
   opacity: 0.95;
+  background-color: rgba(214, 236, 180, 0.579);
 }
 .selection-info-header {
   font-size: 18px;
@@ -759,7 +795,7 @@ kbd {
   top: 24px;
   right: 24px;
   background: rgba(40, 40, 40, 0.5); /* Only background is semi-transparent */
-
+background: var(--hover-menu-bg);
   color: var(--hover-outline);
   border-radius: 12px;
   box-shadow: 0 4px 24px #0008;
@@ -797,7 +833,7 @@ border-radius:5pt;
 }
 
 #hover-info-selected{
-color:greenyellow;
+color:var(--selection-color);
 }
 
 .hover-info-header {

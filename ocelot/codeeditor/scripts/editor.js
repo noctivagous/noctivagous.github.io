@@ -1,22 +1,37 @@
 const tagBehaviors = {
-  'codedocument': { hoverable: true, selectable: false, draggable: false, pasteboardCopyable: false, collapsible: false },
-  'function':      { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
-  'class':         { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true},
-  'group':         { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
-  'constructors':      { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
-  'variable':      { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
-  'statement':     { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'functioncall':  { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'parameter':     { hoverable: true, selectable: false, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'codebody':      { hoverable: false, selectable: false, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'return':    { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'expression': { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'operator': { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
-  'literal': { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'codedocument': { hoverable: true, sortable:false, selectable: false, draggable: false, pasteboardCopyable: false, collapsible: false },
+  'function':      { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
+  'class':         { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true},
+  'group':         { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
+  'constructors':      { hoverable: true, sortable:false, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
+  'variable':      { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
+  'statement':     { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'functioncall':  { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'parameter':     { hoverable: true, sortable:true, selectable: false, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'codebody':      { hoverable: false, sortable:false, selectable: false, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'return':    { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'expression': { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'operator': { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'literal': { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
   'gui-button': { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },
+  'guiArea':      { hoverable: true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
   // Add more as 
 };
 
+
+
+
+$(function() {
+  $('.sortable-container').sortable({
+    items: '> *', // All direct children (your code elements)
+    handle: '> name', // Drag by the <name> child if you want
+    placeholder: "sortable-placeholder",
+    update: function(event, ui) {
+      // Optionally call your documentUIDidChange() or similar update routine here
+      documentUIDidChange && documentUIDidChange();
+    }
+  });
+});
 
 function getTagBehaviors(elem) {
   if (!elem) return {};
@@ -112,6 +127,7 @@ function updateSelectionInfoMenu() {
 
   list.innerHTML = selectedInfo;
 }
+
 
 document.addEventListener('mousedown', (e) => {
   // Try to find a code element under the mouse
@@ -215,6 +231,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+/*
 function handleMoveElement(elem, direction) {
   const parent = elem.parentNode;
   if (!parent) return;
@@ -281,6 +298,55 @@ function handleMoveElement(elem, direction) {
   // Use one of the element's transitionend event.
   elem.addEventListener('transitionend', cleanup);
 }
+*/
+
+function handleMoveElement(elem, direction) {
+  if (!elem) return;
+  const parent = elem.parentNode;
+  if (!parent) return;
+
+  if (!parent.classList.contains('sortable-container')) return;
+
+  const siblings = Array.from(parent.children).filter(child => {
+    if (child.nodeType !== 1) return false;
+    const behaviors = getTagBehaviors(child);
+    return behaviors.draggable;
+  });
+
+  const currentIndex = siblings.indexOf(elem);
+  let targetIndex = -1;
+
+  if (direction === '[' && currentIndex > 0) {
+    targetIndex = currentIndex - 1;
+  } else if (direction === ']' && currentIndex < siblings.length - 1) {
+    targetIndex = currentIndex + 1;
+  } else {
+    return;
+  }
+
+  const targetElem = siblings[targetIndex];
+
+  // Animate the move
+  elem.classList.add('moving-animate');
+  elem.style.transform = `translateY(${direction === '[' ? '-24px' : '24px'})`;
+
+  // Move in DOM after a short delay to allow the transform to show
+  setTimeout(() => {
+    elem.style.transform = '';
+    if (direction === '[') {
+      parent.insertBefore(elem, targetElem);
+    } else {
+      parent.insertBefore(targetElem, elem);
+    }
+    // Remove animation class after transition
+    setTimeout(() => {
+      elem.classList.remove('moving-animate');
+    }, 250);
+    if (typeof documentUIDidChange === 'function') {
+      documentUIDidChange();
+    }
+  }, 50);
+}
 
 
 // Function Definitions
@@ -314,6 +380,40 @@ function activateTab(tab) {
   documentUIDidChange();
 }
 
+function handleCollapseExpand(elem) {
+  if (!elem) return;
+  // Check if the element is collapsible according to tagBehaviors
+  const behaviors = getTagBehaviors(elem);
+  if (!behaviors.collapsible) return;
+
+  // Find the first child named 'codebody' (case-insensitive)
+  let codeBody = elem.querySelector(':scope > codebody');
+  if (!codeBody) return;
+
+  // Determine current state
+  const isCollapsed = elem.getAttribute('collapsed') === 'true' || codeBody.style.display === 'none';
+
+  // Animate and update attribute
+  if (isCollapsed) {
+    $(codeBody).stop(true, true).slideDown(125);
+    elem.setAttribute('collapsed', 'false');
+  } else {
+    $(codeBody).stop(true, true).slideUp(125);
+    elem.setAttribute('collapsed', 'true');
+  }
+
+  // After toggling collapsed attribute
+const arrow = elem.querySelector(':scope > name > svg.visibilityArrow');
+if (arrow) {
+  if (elem.getAttribute('collapsed') === 'true') {
+    arrow.style.transform = 'rotate(180deg)'; // left
+  } else {
+    arrow.style.transform = 'rotate(90deg)'; // down
+  }
+}
+
+}
+/*
 function handleCollapseExpand(elem) {
   if (elem.matches('function')) {
     const codeBody = elem.querySelector('codeBody');
@@ -367,6 +467,8 @@ function handleCollapseExpand(elem) {
     }
   }
 }
+*/
+
 function handleSelect(elem) {
   if (elem.tagName.toLowerCase() === 'codedocument') {
     // Deselect all elements if codeDocument is clicked
@@ -511,7 +613,7 @@ function updateKeyCommandMenu(elem) {
 
   // Add move commands if element is moveable
   if (behaviors.draggable) {
-    commands.push("<kbd>[ or ]</kbd> - Move Up/Down");  // Updated shortcut display
+    commands.push("<kbd>[ or ]</kbd> - <span class=\"hoveredText\">Move Up/Down Obj</span>");  // Updated shortcut display
   }
 
   if (behaviors.draggable) {
@@ -544,13 +646,14 @@ function updateKeyCommandMenu(elem) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('function').forEach(funcElem => {
+  document.querySelectorAll('function, class').forEach(funcElem => {
     const nameElem = funcElem.querySelector(':scope > name');
     if (!nameElem) return; // Skip if there's no name
 
     // Create a NEW SVG arrow for each function
     const svgNS = "http://www.w3.org/2000/svg";
     const arrow = document.createElementNS(svgNS, 'svg');
+    arrow.classList.add('visibilityArrow');
     arrow.setAttribute('width', '24');
     arrow.setAttribute('height', '24');
     arrow.setAttribute('viewBox', '0 0 16 16');
@@ -560,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const path = document.createElementNS(svgNS, 'path');
     path.setAttribute('d', 'M6 4l4 4-4 4z');
-    path.setAttribute('fill', '#000');
+    path.setAttribute('fill', '#eee');
     arrow.appendChild(path);
 
     const codeBody = funcElem.querySelector('codeBody');

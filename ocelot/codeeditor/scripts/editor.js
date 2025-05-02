@@ -80,6 +80,7 @@ function updateHoverInfoMenu() {
     hoverMenu.innerHTML = `
       <div id="hover-info">
         <div id="hover-info-tag">${tag}</div>
+        <br/>
         <div id="hover-info-name">${name ? ' <b>' + name + '</b>' : ''}</div>
         ${isSelected ? '<div id="hover-info-selected">(selected)</div>' : ''}
       </div>`;
@@ -783,7 +784,7 @@ customElements.define('gui-button', GuiButton);
 
 // Function to generate an SVG pattern
 // Function to generate an SVG pattern with an optional lineAngle parameter
-function generatePattern(type, options = {}) {
+/*function generatePattern(type, options = {}) {
   const {
     color = '#000',
     strokeWidth = 2,
@@ -868,15 +869,7 @@ function applyPatternToElement(elem) {
       });
       break;
 
-      /*
-    case 'return':
-      elem.style.backgroundImage = generatePattern('cross-hatch', {
-        color: '#ffcccc',
-        strokeWidth: 1,
-        spacing: 6,
-      });
-      break;
-*/
+     
     case 'function':
       elem.style.backgroundImage = generatePattern('diagonal-solid', {
         color: 'rgb(155,155,155,0.4)',
@@ -887,14 +880,7 @@ function applyPatternToElement(elem) {
       });
       break;
 
-      /*
-    case 'class':
-      elem.style.backgroundImage = generatePattern('diagonal-solid', {
-        color: '#f5f5f5',
-        strokeWidth: 1,
-        spacing:4,
-      });
-      break;*/
+    
 
     default:
       // No pattern for other tags
@@ -921,3 +907,58 @@ const observer = new MutationObserver((mutationsList) => {
 
 // Start observing the document
 observer.observe(document.body, { childList: true, subtree: true });
+
+*/
+
+function setCustomCursor(state) {
+  const root = document.documentElement;
+  switch (state) {
+    case 'crosshair':
+      root.style.cursor = "var(--crosshair-cursor)";
+      break;
+    case 'pointer':
+      root.style.cursor = "pointer";
+      break;
+    case 'move':
+      root.style.cursor = "move";
+      break;
+    // Add more states as needed
+    default:
+      root.style.cursor = "var(--crosshair-cursor)";
+  }
+}
+
+// Set to crosshair (default)
+//setCustomCursor('crosshair');
+
+// Set to pointer on hover over a button
+/*document.addEventListener('mouseover', (e) => {
+  if (e.target.matches('guiArea button')) {
+    setCustomCursor('pointer');
+  }
+});
+document.addEventListener('mouseout', (e) => {
+  if (e.target.matches('guiArea button')) {
+    setCustomCursor('crosshair');
+  }
+});
+
+*/
+
+
+function setCrosshairCursor(size = 35, color = 'black', strokeWidth = 2, shadowColor = 'rgba(0,0,0,0.25)', shadowOffset = 2) {
+  const half = size / 2;
+  // Draw shadow lines first, then main lines
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'>
+    <line x1='${half + shadowOffset}' y1='${0 + shadowOffset}' x2='${half + shadowOffset}' y2='${size + shadowOffset}' stroke='${shadowColor}' stroke-width='${strokeWidth + 1}'/>
+    <line x1='${0 + shadowOffset}' y1='${half + shadowOffset}' x2='${size + shadowOffset}' y2='${half + shadowOffset}' stroke='${shadowColor}' stroke-width='${strokeWidth + 1}'/>
+    <line x1='${half}' y1='0' x2='${half}' y2='${size}' stroke='${color}' stroke-width='${strokeWidth}'/>
+    <line x1='0' y1='${half}' x2='${size}' y2='${half}' stroke='${color}' stroke-width='${strokeWidth}'/>
+  </svg>`;
+  const url = `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}") ${half} ${half}, crosshair`;
+  document.documentElement.style.setProperty('--crosshair-cursor', url);
+}
+
+// Example usage:
+setCrosshairCursor(35, 'black', 2, 'rgba(0,0,0,0.25)', 2); // black crosshair with a subtle shadow
+setCrosshairCursor(65, 'blue', 3, 'rgba(193, 193, 228, 0.55)', 2); // blue crosshair with blue shadow

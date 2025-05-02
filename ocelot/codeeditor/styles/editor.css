@@ -1,4 +1,25 @@
 /* Base page and layout styles */
+:root {
+  --crosshair-cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='25' height='25'><line x1='7.5' y1='0' x2='7.5' y2='25' stroke='black' stroke-width='2'/><line x1='0' y1='7.5' x2='25' y2='7.5' stroke='black' stroke-width='2'/></svg>") 7 7, crosshair;
+}
+
+:root {
+  --hover-outline: #9b0fe6;
+}
+
+
+:host {
+  cursor: var(--crosshair-cursor) !important;
+}
+
+body, codeDocument {
+  cursor: var(--crosshair-cursor);
+}
+
+html, body, * {
+  cursor: var(--crosshair-cursor) !important;
+}
+
 body {
   font-family: monospace;
   margin: 10pt;
@@ -43,7 +64,7 @@ body {
 
 
 codeDocument {
-  cursor: crosshair;
+  cursor: var(--crosshair-cursor);
   display: block;
   max-width: 1400px;
   margin: auto;
@@ -239,8 +260,8 @@ method>parameters {
   margin-bottom: 1px;
   background-color: black;
 
-  padding: 0pt;
-  padding-bottom: 4pt;
+  padding: 3pt;
+  padding-bottom: 6pt;
   border-bottom: 2pt solid white;
 }
 
@@ -322,9 +343,11 @@ function>name {
   font-family:  monospace;
   text-decoration: underline;
    font-weight: bold; 
-  font-size: 13pt;
+  font-size: 12pt;
 
   color: #e9ad5f;
+  color:black;
+  
   padding: 2pt;
   position: relative;
   text-shadow: 2px 2px 4px rgb(93 47 9);
@@ -332,18 +355,20 @@ function>name {
 }
 
 function>name:hover {
-  color: #845920;
+  color: #ffdcaf;
 }
 
 
-
+/* 'ℱ' */
 function>name::before {
-  content: 'ℱ';
-  background-color: orange;
-  color: #640000;
+  content: 'ƒ';
+  background-color: #4a3207;
+  color: #96650f;
   padding: 2px 6px;
-  border-radius: 3px;
-  margin-right: 4px;
+  border-radius: 9px;
+  text-decoration: none;
+  margin-right: 8pt;
+  font-weight:normal;
 }
 
 
@@ -513,7 +538,7 @@ loop {
 /* --- Interactivity --- */
 /* Clicking on a function or method name toggles the display of their bodies */
 function > name {
-  cursor: pointer;
+/*  cursor: pointer;*/
 }
 
 /* Ensure functionCall and its children are aligned horizontally */
@@ -575,7 +600,7 @@ guiArea button {
   background: #444;
   color: #fff;
   box-shadow: 0 2px 4px #0006;
-  cursor: pointer;
+  /*cursor: pointer;*/
   transition: background 0.15s, transform 0.1s;
   width: 100%;
   height: 100%;
@@ -620,7 +645,7 @@ kbd {
 .tab {
   margin-right: 5pt;
   padding: 2pt 6pt;
-  cursor: pointer;
+  
   background-color: #ba9248;
 
   border-bottom: none;
@@ -630,7 +655,7 @@ kbd {
   border-top: 3pt solid rgb(151, 151, 151);
   border-left: 3pt solid gray;
   border-right: 3pt solid silver;
-  border: 3pt solid darkgray;
+  border: 3pt solid rgb(91, 91, 91);
   border-bottom: 0;
 }
 
@@ -642,8 +667,9 @@ kbd {
   border-top: 3pt solid rgb(114, 114, 114);
   border-left: 3pt solid rgb(93, 93, 93);
   border-right: 3pt solid rgb(142, 142, 142);
-  border: 3pt solid #444;
+  border: 3pt solid #000;
   border-bottom: 0;
+  margin-bottom:-2pt;
 }
 
 .function-container {
@@ -654,18 +680,26 @@ kbd {
 }
 
 .selected {
-  outline: 3pt solid #60fa63;
+  
+  /*
+  outline: 5pt solid #60fa63;
+  outline-style: dashed;*/
   background: #333 !important;
+  filter: brightness(100%);
+  box-shadow: 3px 3px 3px 6pt #60fa63;
 }
 
 .hovered:not(.selected) {
-  outline: 4pt solid #2196f3 !important;
+  box-shadow: 3px 3px 3px 6pt #323932;
+  outline: 3pt solid var(--hover-outline) !important;
+  
 }
+
 
 /* For elements that are both selected and hovered */
 .selected.hovered {
-  outline: 3pt solid #60fa63; /* Green outline for selected */
-  box-shadow: 0 0 0 6pt #2196f3; /* Blue outline for hovered */
+  outline: 3pt solid var(--hover-outline); /* Green outline for selected */
+  
 }
 
 .moving-element {
@@ -726,7 +760,7 @@ kbd {
   right: 24px;
   background: rgba(40, 40, 40, 0.5); /* Only background is semi-transparent */
 
-  color: #22c0fe;
+  color: var(--hover-outline);
   border-radius: 12px;
   box-shadow: 0 4px 24px #0008;
   padding: 14px 22px;
@@ -743,13 +777,23 @@ kbd {
 }
 
 #hover-info-tag{
-color:#0155af;
+color:var(--hover-outline);
+font-size:16pt;
 font-weight: bold;
 text-shadow: 0px 1px 2px white;
 background-color:#000;
 display:inline-block;
 padding:2pt;
 border-radius:5pt;
+}
+
+#hover-info-name
+{
+  background-color:#1a1a1a;
+  display: inline-block;
+  padding:5pt;
+  border-radius: 5pt;
+  margin-top:2pt;
 }
 
 #hover-info-selected{

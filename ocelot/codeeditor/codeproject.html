@@ -534,7 +534,66 @@
   <div id="selection-info-list"></div>
 </div>
 
-
+<script src="scripts/nctbgpatterns.js"></script>
 <script src="scripts/editor.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    bgPatterns.observe('codedocument', {
+      preset: 'dotted',
+      strokeColor: '#000',
+      strokeWidth: 1,
+      spacing: 4,
+      angle: -45,
+      backgroundColor: '#555'
+    });
+
+
+    bgPatterns.observe('function > codebody', {
+      "preset": "diagonal-solid",
+  "angle": 90,
+  "strokeColor": "#333",
+  "strokeWidth": 1,
+  "spacing": 3,
+  "dashArray": "0",
+  "backgroundColor": "black",
+  "xOffset": 0,
+  "yOffset": 0
+    });
+
+    
+    
+
+
+    bgPatterns.observe('class', {
+      preset: 'cross-hatch',
+      strokeColor: '#444',
+      strokeWidth: 1,
+      spacing: 5,
+      angle: 45,
+      backgroundColor: '#666'
+    });
+  
+    bgPatterns.observe('group', {
+      preset: 'cross-hatch',
+      strokeColor: '#bdbdbd',
+      strokeWidth: 1,
+      spacing: 5,
+      angle: 45,
+      
+      backgroundColor: '#727272'
+    });
+  
+    bgPatterns.observe('function', {
+      preset: 'diagonal-solid',
+      strokeColor: '#e9ad5f',
+      strokeWidth: 2,
+      spacing: 3,
+      angle:-35,
+      backgroundColor: '#986300'
+    });
+  });
+  </script>
 
    </body> </html>

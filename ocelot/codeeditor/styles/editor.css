@@ -32,6 +32,17 @@ body {
   color: #333;
 }
 
+codeproject {
+  display: block;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: transparent; /* Let bgPatterns handle background if needed */
+}
+
 /* Base display for custom XML-based code tags */
 codeDocument,
 group,
@@ -311,7 +322,9 @@ functionCall>typeSymbol {
   padding: 1pt;
   font-size: 15pt;
   background-color: rgb(232, 110, 3);
-
+border-radius:5pt;
+padding-right:2pt;
+padding-left:2pt;
 
 }
 
@@ -320,6 +333,13 @@ functionCall>parameters:empty {
   height: 10pt;
 }
 
+typeSymbol {
+min-width:10pt;
+min-height:10pt;
+text-align: center;
+font-style: italic;
+
+}
 
 
 parameter>type {
@@ -541,6 +561,9 @@ variable>name {
   font-family: monospace;
   color: #005599;
   background-color: #aaa;
+  padding-right:5pt;
+  padding-left:5pt;
+  color:black;
 }
 
 variable>type {
@@ -853,4 +876,45 @@ color:var(--selection-color);
   position: absolute;
   opacity: 0.8;
   transition: top 200ms cubic-bezier(.4,1.6,.6,1), left 200ms cubic-bezier(.4,1.6,.6,1), opacity 200ms linear;
+}
+
+
+#project-tabs {
+  display: flex;
+  gap: 8pt;
+  margin-bottom:0pt;
+  background-color: gray;
+  position: sticky;
+  margin:0;
+  padding:0;
+  margin-bottom:5pt;
+}
+.project-tab {
+  font-family: monospace;
+  font-size: 11pt;
+  padding: 3pt 24pt;
+  border: none;
+  border-radius: 4pt 4pt 0 0;
+  
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  
+
+  background: #986300;
+  color: #ffe082;
+  border: 3pt solid #9a770e;
+  font-weight: bold;
+  border-bottom:0;
+}
+.project-tab.active {
+  border: 3pt solid #222;
+  background: #444;
+  transition: background 0.15s;
+  border-bottom:0;
+}
+
+#output-viewport{
+  width:500pt; height:600pt; background:#222; color:#fff; border-radius:12pt; box-shadow:0 4px 24px #0008; display:flex; align-items:center; justify-content:center; font-size:18pt;
+  margin:auto;
 }

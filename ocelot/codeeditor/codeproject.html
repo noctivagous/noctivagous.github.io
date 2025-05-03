@@ -6,6 +6,14 @@
     </head> <body> 
         
       <link rel="stylesheet" href="styles/editor.css">
+
+      <div id="project-tabs" >
+        <button class="project-tab active" data-tab="code" kbshortcut="^1">Project Code</button>
+        <button class="project-tab" data-tab="output" kbshortcut="^2">Output</button>
+      </div>
+      <div id="project-tab-content">
+        <div id="code-tab-content">
+   
         <codeProject  
         title="Calculator Demo"
         author="Your Name"
@@ -79,7 +87,7 @@
               </variable> = 
               <expression>
                 <functionCall>
-                  <typeSymbol>ℱ</typeSymbol>
+                  <typeSymbol>ƒ</typeSymbol>
                   <name>getInitialValue</name>
                   <parameters></parameters>
                 </functionCall>
@@ -347,7 +355,7 @@
               <statement>
                 <expression>
                 <functionCall>
-                  <typeSymbol>ℱ</typeSymbol>
+                  <typeSymbol>ƒ</typeSymbol>
                   <name>setPosition</name>
                   <parameters>
                     <parameter>
@@ -374,7 +382,7 @@
               <statement>
                 <expression>
                   <functionCall>
-                    <typeSymbol>ℱ</typeSymbol>
+                    <typeSymbol>ƒ</typeSymbol>
                     <name>setLabel</name>
                     <parameters>
                       <parameter>
@@ -389,7 +397,7 @@
               <statement>
                 <expression>
                   <functionCall>
-                    <typeSymbol>ℱ</typeSymbol>
+                    <typeSymbol>ƒ</typeSymbol>
                     <name>setBackgroundColor</name>
                     <parameters>
                       <parameter>
@@ -407,7 +415,7 @@
               <statement>
                 <expression>
                   <functionCall>
-                    <typeSymbol>ℱ</typeSymbol>
+                    <typeSymbol>ƒ</typeSymbol>
                     <name>setBorder</name>
                     <parameters>
                       <parameter>
@@ -439,7 +447,7 @@
               <statement>
                 <expression>
                   <functionCall>
-                    <typeSymbol>ℱ</typeSymbol>
+                    <typeSymbol>ƒ</typeSymbol>
                     <name>setOpacity</name>
                     <parameters>
                       <parameter>
@@ -457,7 +465,7 @@
               <statement>
                 <expression>
                   <functionCall>
-                    <typeSymbol>ℱ</typeSymbol>
+                    <typeSymbol>ƒ</typeSymbol>
                     <name>setFontSize</name>
                     <parameters>
                       <parameter>
@@ -518,6 +526,15 @@
    
 </codeProject>
     
+</div>
+<div id="output-tab-content" style="display:none;">
+  <div id="output-viewport" >
+    Program output will appear here.
+  </div>
+</div>
+</div>
+
+
 
 <div id="key-command-menu">
   <div style="font-weight:bold; margin-bottom:8px;">Key Commands</div>
@@ -527,7 +544,6 @@
 <div id="hover-info-menu">
   <!-- Populated by JS -->
 </div>
-
 
 
 <!-- Selection Info Menu -->
@@ -556,6 +572,15 @@
       backgroundColor: '#555'
     });
 
+    bgPatterns.observe('body', {
+  preset: 'diagonal-solid',
+  strokeColor: '#222',
+  strokeWidth: 2,
+  spacing: 5,
+  angle:0,
+  backgroundColor: '#111'
+});
+
 
     bgPatterns.observe('function > codebody', {
       "preset": "diagonal-solid",
@@ -570,6 +595,7 @@
     });
 
     
+
     
 
 
@@ -600,6 +626,17 @@
       angle:-35,
       backgroundColor: '#986300'
     });
+
+    bgPatterns.observe('functioncall', {
+      preset: 'diagonal-solid',
+      strokeColor: '#e9ad5f',
+      strokeWidth: 2,
+      spacing: 3,
+      angle:-35,
+      backgroundColor: '#986300'
+    });
+
+    
   });
   </script>
 
@@ -645,7 +682,100 @@ $(function() {
 });
 
 
-
 </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.project-tab');
+    const codeContent = document.getElementById('code-tab-content');
+    const outputContent = document.getElementById('output-tab-content');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        if (this.dataset.tab === 'code') {
+          codeContent.style.display = '';
+          outputContent.style.display = 'none';
+        } else {
+          codeContent.style.display = 'none';
+          outputContent.style.display = '';
+        }
+      });
+    });
+  });
+  </script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Place this after your DOM is ready
+document.addEventListener('keydown', function(e) {
+  // Build the shortcut string for this event
+  let shortcut = '';
+  if (e.ctrlKey) shortcut += '^';
+  if (e.shiftKey) shortcut += '$';
+  if (e.metaKey) shortcut += '@';
+  if (e.altKey) shortcut += '~';
+  // Use e.key for the key pressed (normalize to lower case for letters)
+  let key = e.key;
+  if (key.length === 1) key = key.toLowerCase();
+  shortcut += key;
+
+  // Find any element with matching kbshortcut
+  const match = document.querySelector(`[kbshortcut="${shortcut}"]`);
+  if (match) {
+    // If it's a tab, trigger click
+    match.click();
+    e.preventDefault();
+  }
+});
+
+});
+
+function showKbShortcutsInTitles() {
+  document.querySelectorAll('[kbshortcut]').forEach(el => {
+    const shortcut = el.getAttribute('kbshortcut');
+    if (!shortcut) return;
+    // Human-readable version
+    let label = shortcut
+      .replace(/\^/g, 'Ctrl+')
+      .replace(/\$/g, 'Shift+')
+      .replace(/@/g, 'Cmd+')
+      .replace(/~/g, 'Opt+');
+    // Add to title (tooltip)
+    if (!el.title || !el.title.includes(label)) {
+      el.title = (el.title ? el.title + ' ' : '') + `[${label}]`;
+    }
+    // If it's a button, append to its visible label (if not already present)
+    if (el.tagName === 'BUTTON') {
+      // Only add if not already present
+      if (!el.textContent.includes(`[${label}]`)) {
+        el.textContent = el.textContent.trim() + ` [${label}]`;
+      }
+    }
+  });
+}
+// Call after DOM is ready
+document.addEventListener('DOMContentLoaded', showKbShortcutsInTitles);
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('typeSymbol').forEach(ts => {
+    const txt = ts.textContent.trim();
+    if (txt === '#') {
+      ts.style.backgroundColor = 'green';
+      ts.style.color = 'black';
+    } else if (txt === '#.') {
+      ts.style.backgroundColor = '#326ba8';
+      ts.style.color = 'black';
+    }
+    else if (txt === '$') {
+      ts.style.backgroundColor = 'purple';
+      ts.style.color = 'black';
+    }
+  });
+});
+</script>
+
+
 
    </body> </html>

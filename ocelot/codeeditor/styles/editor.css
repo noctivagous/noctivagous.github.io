@@ -101,7 +101,7 @@ codeDocument {
 
 expression {
   display: inline-block;
-  vertical-align: middle;
+ 
 }
 
 role {
@@ -124,6 +124,31 @@ statement {
   margin-bottom: 10pt;
   box-shadow: 2pt 2pt 1pt #000000;
   margin-right:10pt;
+
+  /*
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+);*/
+}
+
+.beveled{
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+);
 }
 
 statement name {
@@ -456,8 +481,14 @@ class {
 
 group {
   position: relative;
-  /* Needed to position the pseudo-element relative to the group */
+  border-radius: 10pt;
+border:1pt solid black;
+padding-left:5pt;
+padding-right:5pt;
+padding-bottom:1pt;
+margin-bottom:10pt;
 }
+
 
 group::after {
   content: "GROUP";

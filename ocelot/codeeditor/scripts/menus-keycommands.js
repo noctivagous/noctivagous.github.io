@@ -198,18 +198,23 @@ document.addEventListener('keydown', (e) => {
       }
 
 
-   // Insert menu logic
-   if (e.key.toLowerCase() === 'c' || e.key.toLowerCase() === 'v') {
+// Insert menu logic
+if (e.key.toLowerCase() === 'c' || e.key.toLowerCase() === 'v' || e.key.toLowerCase() === 'e') {
     e.preventDefault();
+    let position;
+    if (e.key.toLowerCase() === 'c') position = 'before';
+    else if (e.key.toLowerCase() === 'v') position = 'after';
+    else if (e.key.toLowerCase() === 'e') position = 'inside';
+  
     pendingInsert = {
-      position: e.key.toLowerCase() === 'c' ? 'before' : 'after',
+      position: position,
       target: currentlyHoveredElem
     };
-    
+  
     showInsertMenu(e); // Show your custom insert menu UI here
     return;
   }
-
+  
 
 
   // If insert menu is active, handle secondary key
@@ -315,7 +320,6 @@ document.addEventListener('keydown', (e) => {
 });
 
 
-// Example insert function
 function insertCodeElement(type, position, refElem) {
     let newElem;
     if (type === 'function') {
@@ -323,15 +327,42 @@ function insertCodeElement(type, position, refElem) {
       newElem.innerHTML = '<name>New Function</name><codebody></codebody>';
     } else if (type === 'integer') {
       newElem = document.createElement('variable');
-      newElem.innerHTML = '<type><typeName>int</typeName></type><name>newInt</name>';
+      newElem.innerHTML = '<type><typeSymbol>#</typeSymbol><typeName>int</typeName></type><name>newInt</name>';
     }
   
-    if (position === 'before') {
-      refElem.parentNode.insertBefore(newElem, refElem);
+   
+
+    // Always insert into codebody if possible
+    if (position === 'inside') {
+        // Prefer codebody if present
+        let codeBody = refElem.querySelector(':scope > codebody');
+        if (!codeBody && refElem.tagName && refElem.tagName.toLowerCase() === 'codebody') {
+          codeBody = refElem;
+        }
+        // Expand the element if it is collapsed
+        if (refElem.getAttribute && refElem.getAttribute('collapsed') === 'true') {
+          handleCollapseExpand(refElem);
+        }
+        if (codeBody) {
+          codeBody.appendChild(newElem);
+        } else {
+          // Fallback: append directly to refElem
+          refElem.appendChild(newElem);
+        }
+      } else if (position === 'before') {
+      // If refElem is a codebody, insert at the start
+      if (refElem.tagName && refElem.tagName.toLowerCase() === 'codebody') {
+        refElem.insertBefore(newElem, refElem.firstChild);
+      } else {
+        refElem.parentNode.insertBefore(newElem, refElem);
+      }
     } else if (position === 'after') {
-      refElem.parentNode.insertBefore(newElem, refElem.nextSibling);
-    } else if (position === 'inside') {
-      refElem.appendChild(newElem);
+      // If refElem is a codebody, insert at the end
+      if (refElem.tagName && refElem.tagName.toLowerCase() === 'codebody') {
+        refElem.appendChild(newElem);
+      } else {
+        refElem.parentNode.insertBefore(newElem, refElem.nextSibling);
+      }
     }
   
     documentUIDidChange && documentUIDidChange();
@@ -956,7 +987,7 @@ function finishBracketDrag() {
       tabContainer.appendChild(tab);
   
       tab.addEventListener('mouseenter', () => activateTab(tab));
-      
+
       // Wrapper
       const wrapper = document.createElement('div');
       wrapper.className = 'function-wrapper';

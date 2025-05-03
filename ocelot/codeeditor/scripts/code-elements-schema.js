@@ -14,7 +14,8 @@ const tagBehaviors = {
     'codedocument': { hoverable: true, sortable:false, selectable: false, draggable: false, pasteboardCopyable: false, collapsible: false },
     'function':      { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
     'class':         { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true},
-    'functiongroup':         { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
+    'group':         { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
+    
     'constructors':      { hoverable: true, sortable:false, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
     'variable':      { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: true },
     'statement':     { hoverable: true, sortable:true, selectable: true, draggable: true, pasteboardCopyable: true, collapsible: false },

@@ -338,56 +338,66 @@ function insertCodeElement(type, position, refElem) {
   }
   
   function handleMoveElement(elem, direction) {
-    if (!elem) return;
-    const parent = elem.parentNode;
-    if (!parent) return;
-  
-    // Allow move if parent is .sortable-container, codebody, or statement
-    const parentTag = parent.tagName ? parent.tagName.toLowerCase() : '';
-    if (
-      !parent.classList.contains('sortable-container') &&
-      parentTag !== 'codebody' &&
-      parentTag !== 'statement'
-    ) return;
-  
-    const siblings = Array.from(parent.children).filter(child => {
-      if (child.nodeType !== 1) return false;
-      const behaviors = getTagBehaviors(child);
-      return behaviors.draggable;
-    });
-  
-    const currentIndex = siblings.indexOf(elem);
-    let targetIndex = -1;
-  
-    if (direction === '[' && currentIndex > 0) {
-      targetIndex = currentIndex - 1;
-    } else if (direction === ']' && currentIndex < siblings.length - 1) {
-      targetIndex = currentIndex + 1;
-    } else {
-      return;
-    }
-  
-    const targetElem = siblings[targetIndex];
-  
-    // Animate the move
-    elem.classList.add('moving-animate');
-    elem.style.transform = `translateY(${direction === '[' ? '-24px' : '24px'})`;
-  
-    setTimeout(() => {
-      elem.style.transform = '';
-      if (direction === '[') {
-        parent.insertBefore(elem, targetElem);
-      } else {
-        parent.insertBefore(targetElem, elem);
-      }
-      setTimeout(() => {
-        elem.classList.remove('moving-animate');
-      }, 250);
-      if (typeof documentUIDidChange === 'function') {
-        documentUIDidChange();
-      }
-    }, 50);
+  if (!elem) return;
+
+  // Check if the element is inside a group
+  const group = elem.closest('group');
+  if (group) {
+    // If inside a group, move the group instead
+    elem = group;
   }
+
+  const parent = elem.parentNode;
+  if (!parent) return;
+
+  // Allow move if parent is .sortable-container, codebody, statement, or group
+  const parentTag = parent.tagName ? parent.tagName.toLowerCase() : '';
+  if (
+    !parent.classList.contains('sortable-container') &&
+    parentTag !== 'codebody' &&
+    parentTag !== 'statement' &&
+    parentTag !== 'codedocument' &&
+    parentTag !== 'group'
+  ) return;
+
+  const siblings = Array.from(parent.children).filter(child => {
+    if (child.nodeType !== 1) return false;
+    const behaviors = getTagBehaviors(child);
+    return behaviors.draggable;
+  });
+
+  const currentIndex = siblings.indexOf(elem);
+  let targetIndex = -1;
+
+  if (direction === '[' && currentIndex > 0) {
+    targetIndex = currentIndex - 1;
+  } else if (direction === ']' && currentIndex < siblings.length - 1) {
+    targetIndex = currentIndex + 1;
+  } else {
+    return;
+  }
+
+  const targetElem = siblings[targetIndex];
+
+  // Animate the move
+  elem.classList.add('moving-animate');
+  elem.style.transform = `translateY(${direction === '[' ? '-24px' : '24px'})`;
+
+  setTimeout(() => {
+    elem.style.transform = '';
+    if (direction === '[') {
+      parent.insertBefore(elem, targetElem);
+    } else {
+      parent.insertBefore(targetElem, elem);
+    }
+    setTimeout(() => {
+      elem.classList.remove('moving-animate');
+    }, 250);
+    if (typeof documentUIDidChange === 'function') {
+      documentUIDidChange();
+    }
+  }, 50);
+}
 
 // Function Definitions
 
@@ -574,9 +584,6 @@ function handleTabKey(e, elem, behaviors) {
   }
 }
 
-function handleGroupUngroup() {
-  alert('Group/Ungroup (not implemented)');
-}
 
 function handleChangeView() {
   alert('Change view (not implemented)');
@@ -903,3 +910,105 @@ function finishBracketDrag() {
       drawBracketLine();
     }
   });
+
+
+  function handleGroupUngroup() {
+    // If a group is hovered, ungroup it
+    if (currentlyHoveredElem && currentlyHoveredElem.tagName && currentlyHoveredElem.tagName.toLowerCase() === 'group') {
+      ungroupElement(currentlyHoveredElem);
+      return;
+    }
+  
+    // Otherwise, group selected functions
+    const selected = Array.from(document.querySelectorAll('.selected')).filter(el => el.tagName && el.tagName.toLowerCase() === 'function');
+    if (selected.length < 2) {
+      alert('Select two or more functions to group.');
+      return;
+    }
+  
+    // Ensure all selected have the same parent
+    const parent = selected[0].parentNode;
+    if (!selected.every(el => el.parentNode === parent)) {
+      alert('All selected functions must have the same parent to group.');
+      return;
+    }
+  
+    // Insert new group before the first selected function
+    const group = document.createElement('group');
+    group.setAttribute('presentation', 'tabifyingView');
+    parent.insertBefore(group, selected[0]);
+  
+    // --- Packing logic (mimics document load) ---
+    // Create tab container and function container
+    const tabContainer = document.createElement('div');
+    tabContainer.className = 'tab-container';
+    const functionContainer = document.createElement('div');
+    functionContainer.className = 'function-container';
+  
+    // For each selected function, create a tab and wrapper, then move the function inside
+    selected.forEach((fn, i) => {
+      // Tab
+      const tab = document.createElement('div');
+      tab.className = 'tab';
+      tab.dataset.index = i;
+      const nameElem = fn.querySelector(':scope > name');
+      tab.textContent = nameElem ? nameElem.textContent.trim() : `Function ${i + 1}`;      if (i === 0) tab.classList.add('active');
+      tabContainer.appendChild(tab);
+  
+      tab.addEventListener('mouseenter', () => activateTab(tab));
+      
+      // Wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'function-wrapper';
+      if (i !== 0) wrapper.style.display = 'none';
+      wrapper.appendChild(fn);
+      functionContainer.appendChild(wrapper);
+  
+      fn.classList.remove('selected');
+    });
+  
+    // Add containers to group
+    group.appendChild(tabContainer);
+    group.appendChild(functionContainer);
+  
+    // Optionally select the new group
+    group.classList.add('selected');
+    documentUIDidChange && documentUIDidChange();
+  }
+
+
+  function ungroupElement(groupElem) {
+    if (!groupElem || groupElem.tagName.toLowerCase() !== 'group') return;
+    const parent = groupElem.parentNode;
+    if (!parent) return;
+  
+    // Find all top-level functions in the group, including those inside .function-container > .function-wrapper
+    // but NOT inside nested groups
+    // 1. Direct children
+    let functions = Array.from(groupElem.querySelectorAll(':scope > function'));
+  
+    // 2. Functions inside .function-container > .function-wrapper (tabifyingView)
+    const functionContainer = groupElem.querySelector('.function-container');
+    if (functionContainer) {
+      // Only get function-wrapper children that are not inside nested groups
+      const wrappers = Array.from(functionContainer.querySelectorAll(':scope > .function-wrapper'));
+      wrappers.forEach(wrapper => {
+        const fn = wrapper.querySelector(':scope > function');
+        if (fn) functions.push(fn);
+      });
+    }
+  
+    // Move all found functions before the group
+    functions.forEach(fn => {
+      parent.insertBefore(fn, groupElem);
+    });
+  
+    // Remove tab container and function container if present
+    const tabContainer = groupElem.querySelector('.tab-container');
+    if (tabContainer) tabContainer.remove();
+    if (functionContainer) functionContainer.remove();
+  
+    // Remove the group element
+    groupElem.remove();
+    documentUIDidChange && documentUIDidChange();
+  }

@@ -45,7 +45,7 @@ codeproject {
 
 /* Base display for custom XML-based code tags */
 codeDocument,
-group,
+functiongroup,
 function,
 class,
 method,
@@ -82,9 +82,9 @@ body {
 codeDocument {
   cursor: var(--crosshair-cursor);
   display: block;
-  max-width: 1400px;
+  max-width: 1500px;
   margin: auto;
-  height: 100%;
+  margin-left:0;
   /* Fill the available height */
 
   overflow-y: auto;
@@ -100,7 +100,8 @@ codeDocument {
 }
 
 expression {
-  display: inline-block
+  display: inline-block;
+  vertical-align: middle;
 }
 
 role {
@@ -115,13 +116,14 @@ roletype {
 
 statement {
   border-top: 1pt solid white;
-  border: 1pt solid #000000;
+  border: 0pt solid #000000;
   /* border-bottom: 1pt solid gray; */
   background-color: #330bc4;
-  padding: 4pt;
+  padding: 8pt;
   display: inline-block;
   margin-bottom: 10pt;
   box-shadow: 2pt 2pt 1pt #000000;
+  margin-right:10pt;
 }
 
 statement name {
@@ -175,7 +177,7 @@ return>expression {
   display: inline-block;
 }
 
-group {
+functiongroup {
   border: 4pt solid black;
   padding: 10pt;
   padding-left: 10pt;
@@ -188,7 +190,7 @@ group {
   border-radius: 20pt;
 }
 
-group:hover {
+functiongroup:hover {
   background-color: #969696;
 }
 
@@ -318,7 +320,7 @@ method>typeSymbol {
 }
 
 functionCall>typeSymbol {
-  color: #994a00;
+  color: #1b0d00;
   padding: 1pt;
   font-size: 15pt;
   background-color: rgb(232, 110, 3);
@@ -361,6 +363,9 @@ parameter>name {
 
   margin-left: -6px;
   border: 1px solid rgb(20, 20, 20);
+  padding-left:2pt;
+  padding-right:2pt;
+  margin-right:2pt;
 }
 
 parameter>type>typeName {
@@ -459,7 +464,8 @@ group::after {
   position: absolute;
   top: 5px;
   right: 20px;
-  font-size: 15px;
+  font-size: 12pt;
+  font-weight:bold;
   color: rgba(0, 0, 0, .4);
   /* Light and subtle */
   pointer-events: none;
@@ -543,7 +549,7 @@ functionCall parameter {
 
   color: white;
   background-color: #000;
-  padding: 3pt;
+  /*padding: 3pt;*/
   border-radius: 4pt;
 }
 
@@ -598,7 +604,7 @@ functionCall {
   padding-left: 5pt;
   padding-right: 2pt;
   box-shadow: 2px 0px 2px white;
-  border: 1pt solid white;
+  border: 3pt solid rgb(0, 0, 0);
 }
 
 
@@ -685,13 +691,18 @@ kbd {
   display: flex;
   border-bottom: 3pt solid #000000;
 
+padding-top:4pt;
+
+margin-bottom:-3pt;
+padding-left:0pt;
+overflow: hidden;
 }
 
 .tab {
   margin-right: 5pt;
   padding: 2pt 6pt;
   
-  background-color: #ba9248;
+  background-color: #2f2c28;
 
   border-bottom: none;
   border-top-left-radius: 5pt;
@@ -700,14 +711,18 @@ kbd {
   border-top: 3pt solid rgb(151, 151, 151);
   border-left: 3pt solid gray;
   border-right: 3pt solid silver;
-  border: 3pt solid rgb(91, 91, 91);
+  border: 3pt solid rgba(19, 19, 19, 0.965);
   border-bottom: 0;
+  color:rgb(113, 83, 19);
+  box-shadow: 8px 8px 6px rgb(34, 34, 34);
 }
 
+
+
 .tab.active {
-  background-color: #986300;
+  background-color: #583e0f;
   font-weight: bold;
-  color: #e4831f;
+  color: #ffefe0;
   font-style: oblique;
   border-top: 3pt solid rgb(114, 114, 114);
   border-left: 3pt solid rgb(93, 93, 93);
@@ -909,7 +924,7 @@ color:var(--selection-color);
 }
 .project-tab.active {
   border: 3pt solid #222;
-  background: #444;
+  background: #000;
   transition: background 0.15s;
   border-bottom:0;
 }
@@ -917,4 +932,123 @@ color:var(--selection-color);
 #output-viewport{
   width:500pt; height:600pt; background:#222; color:#fff; border-radius:12pt; box-shadow:0 4px 24px #0008; display:flex; align-items:center; justify-content:center; font-size:18pt;
   margin:auto;
+}
+
+/* Insert menu styling */
+#insert-menu {
+  animation: fadeInInsertMenu 0.18s;
+}
+@keyframes fadeInInsertMenu {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: none;}
+}
+#insert-menu .insert-menu-item:hover {
+  background: #444;
+  color: #fff;
+  border-radius: 4px;
+}
+
+#bracket-drag-line {
+  pointer-events: none;
+}
+
+/* Flexbox container for the project */
+#project-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden;
+}
+
+/* Document browser on the left */
+#document-browser {
+  width: 200px;
+  background-color: #3333335c;
+  color: white;
+  padding: 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+#document-tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#document-tabs li {
+  margin-bottom: 15px;
+}
+
+#document-tabs button {
+  width: 100%;
+  padding: 8px;
+  background-color: #b8b7b7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 5pt;
+  
+}
+
+#document-tabs button:hover {
+  background-color: #555;
+}
+
+#document-tabs button.active {
+  background-color: #6a6a6a;
+  outline:5pt solid #bababa;
+  
+  
+}
+
+#document-tabs button{
+color:black;
+}
+#document-tabs button h3{
+  margin:0;
+  margin-bottom:3pt;
+  
+}
+
+#document-tabs button.active {
+color:#333;
+}
+#document-tabs button.active h3{
+  color:rgb(228, 226, 226);
+  margin:0;
+  margin-bottom:3pt;
+  
+
+}
+
+/* Code document container */
+#code-document-container {
+  flex-grow: 1; /* Take up remaining horizontal space */
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Hide inactive code documents */
+codeDocument.hidden {
+  display: none;
+}
+
+codeDocument.active {
+  display: block;
+}
+
+#project-title {
+  width: 100%;
+  background-color: #4444445a;
+  color: #fff;
+  text-align: left;
+ box-sizing: border-box;
+  padding: 0px;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10pt;
+  display:block;
 }

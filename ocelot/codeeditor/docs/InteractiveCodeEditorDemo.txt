@@ -1,5 +1,6 @@
   Interactive Code Document Demo
 
+
   - Implements a custom code document UI with XML-like tags (function, class, group, etc).
   - Supports bi-modal control: mouse for navigation, keyboard for activation (key-clicks).
     - Bi-modal control: A user interface theory that separates navigation (steering) and activation (triggering actions) into two distinct input devices—typically using the mouse for cursor movement and the keyboard for function activation ("key-clicks"). This division, inspired by how a guitarist uses both hands for different tasks, reduces cognitive load and increases precision and efficiency in software interaction.

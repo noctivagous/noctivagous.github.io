@@ -7,526 +7,459 @@
         
       <link rel="stylesheet" href="styles/editor.css">
 
+
+      
       <div id="project-tabs" >
         <button class="project-tab active" data-tab="code" kbshortcut="^1">Project Code</button>
         <button class="project-tab" data-tab="output" kbshortcut="^2">Output</button>
       </div>
+
       <div id="project-tab-content">
         <div id="code-tab-content">
-   
-        <codeProject  
-        title="Calculator Demo"
-        author="Your Name"
-        created="2024-04-16"
-        lastModified="2025-04-16"
-        version="1.0"
-        language="custom"
-        description="A demo interactive code project for a calculator app."
-        presentation="default"
-        navigation="default"
-        theme="light"
-        editable="true"
-        collaborative="false">
-
-        <codeDocument
-        id="main-code-document"
-        created="2024-04-16"
-        lastModified="2025-04-16"
-        description="The calculator class and its methods."
-        presentation="default"
-        navigation="default"
-        columns="2"
-        theme="light"
-        editable="true"
-        collaborative="false"
-        class="interactive-code-doc"
-        data-purpose="code-editor-demo"
-        data-language="custom"
-        data-version="1.0"
-        >
-    
-         
-
-    <!-- Class Demo: A Calculator class with methods -->
-    <class>
-      <name><className>Calculator</className><classExtendsName>Object</classExtendsName></name>
-      <documentation>A simple calculator class with add and subtract methods.</documentation>
-
-      <codebody>
-      <statement>
-        <variable>
-          <typeSymbol>#</typeSymbol>
-          <name>currentValue</name>
-        </variable>
-      </statement>
-      
-      <!-- Constructor (init function) -->
-     
-      <function collapsed="true" functionRole="constructor">
-        <role>
-          <roleSymbol>c</roleSymbol>
-          <roleType>constructor</roleType>
-        </role>
-        <parameters>
-          <parameter>
-            <type>
-              <typeSymbol>#</typeSymbol>
-              <typeName>int</typeName>
-            </type>
-            <name>initialDisplayValue</name>
-          </parameter>
-        </parameters>
-        <name>init</name>
-        <documentation>Initializes the calculator with an initial value.</documentation>
-        <codeBody>
-          <statement>
-            <expression>
-              <variable>
-                <typeSymbol>#</typeSymbol>
-                <name>currentValue</name>
-              </variable> = 
-              <expression>
-                <functionCall>
-                  <typeSymbol>ƒ</typeSymbol>
-                  <name>getInitialValue</name>
-                  <parameters></parameters>
-                </functionCall>
-              </expression>
-            </expression>
-          </statement>
-        </codeBody>
-      </function>
-    
-    
-      <group presentation="tabifyingView">
-        <!-- Function Demo: Parameters appear above the function name with type symbols -->
-        <function>
-          <parameters>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>a</name>
-            </parameter>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>b</name>
-            </parameter>
-          </parameters>
-          
-          <name>sum <return-type>#</return-type></name>
-          
-            
-    
-          <documentation>Returns the sum of two integers.</documentation>
-          <codeBody>
-            <statement>
+          <div id="project-container">
+            <div id="document-browser">
+              <div id="project-title">
+                <!-- The project title will be dynamically inserted here -->
+              </div>
+              <ul id="document-tabs"></ul>
+            </div>
+            <div id="code-document-container">
+          <codeProject  
+          title="Calculator Demo"
+          author="Your Name"
+          created="2024-04-16"
+          lastModified="2025-04-16"
+          version="1.0"
+          language="custom"
+          description="An interactive code project for a Calculator application with basic arithmetic and advanced functions."
+          presentation="default"
+          navigation="default"
+          theme="light"
+          editable="true"
+          collaborative="false">
+        
+          <!-- Code Document 1: Calculator Core -->
+          <codeDocument
+            id="calc-core-document"
+            created="2024-04-16"
+            lastModified="2025-04-16"
+            description="Defines the Calculator class with its basic arithmetic methods.">
+            <class>
+              <name>
+                <className>Calculator</className>
+                <classExtendsName>Object</classExtendsName>
+              </name>
+              <documentation>A simple calculator class for performing basic arithmetic operations.</documentation>
+              <codebody>
+                <statement>
+                  <variable>
+                    <typeSymbol>#</typeSymbol>
+                    <name>currentValue</name>
+                  </variable>
+                </statement>
                 
-            <return>
-              <name>return</name>
-              <expression><variable>
-                <type>
-                  <typeSymbol>#</typeSymbol>
-                  <typeName>int</typeName>
-                </type>            
-                <name>a</name>
-              </variable> + <variable>
-                <type>
-                  <typeSymbol>#</typeSymbol>
-                  <typeName>int</typeName>
-                </type>            
-                <name>b</name>
-              </variable></expression>
-              
-            </return>
-          </statement>
-          </codeBody>
-        </function>
-        <function>
-          <parameters>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>a</name>
-            </parameter>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>b</name>
-            </parameter>
-          </parameters>
-          <name>product <return-type>#</return-type></name>
-          <documentation>Returns the sum of two integers.</documentation>
-          
-          <codeBody>
-            <statement>
-              <return>
-                <name>return</name>
-                <expression>
-                  <variable>
-                    <type>
-                      <typeSymbol>#</typeSymbol>
-                      <typeName>int</typeName>
-                    </type>
-                    <name>a</name>
-                  </variable> 
-                  <operation>*</operation> 
-                  <variable>
-                    <type>
-                      <typeSymbol>#</typeSymbol>
-                      <typeName>int</typeName>
-                    </type>
-                    <name>b</name>
-                  </variable>
-                </expression>
-              </return>
-            </statement>
-          </codeBody>
-        </function>
-        <function>
-          <parameters>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>a</name>
-            </parameter>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>b</name>
-            </parameter>
-          </parameters>
-          <name>quotient <return-type>#</return-type></name>
-          <documentation>Returns the sum of two integers.</documentation>
-          
-          <codeBody>
-            <statement>
-              <return>
-                <name>return</name>
-                <expression>
-                  <variable>
-                    <type>
-                      <typeSymbol>#</typeSymbol>
-                      <typeName>int</typeName>
-                    </type>
-                    <name>a</name>
-                  </variable> 
-                  <operation>/</operation> 
-                  <variable>
-                    <type>
-                      <typeSymbol>#</typeSymbol>
-                      <typeName>int</typeName>
-                    </type>
-                    <name>b</name>
-                  </variable>
-                </expression>
-              </return>
-            </statement>
-          </codeBody>
-        </function>
-      
-        <function>
-          <parameters>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>x</name>
-            </parameter>
-            <parameter>
-              <type>
-                <typeSymbol>#</typeSymbol>
-                <typeName>int</typeName>
-              </type>
-              <name>y</name>
-            </parameter>
-          </parameters>
-          <name>difference <return-type>#</return-type></name>
-          <documentation>subtracts one number from the other.</documentation>
-          
-          <codeBody>
-            <statement>
-              <return>
-                <name>return</name>
-                <expression>
-                  <variable>
-                    <type>
-                      <typeSymbol>#</typeSymbol>
-                      <typeName>int</typeName>
-                    </type>
-                    <name>x</name>
-                  </variable> 
-                  <operation>-</operation> 
-                  <variable>
-                    <type>
-                      <typeSymbol>#</typeSymbol>
-                      <typeName>int</typeName>
-                    </type>
-                    <name>y</name>
-                  </variable>
-                </expression>
-              </return>
-            </statement>
-          </codeBody>
-        </function>
-   
-
-      </group>
-      <!-- Existing methods -->
-
-
-    
-  <!-- Loop Demo: A function containing a loop -->
-  <function collapsed="true">
-    <parameters></parameters>
-    <name>printNumbers <return-type>∅</return-type></name>
-    
-    <documentation>Prints numbers from 0 to 9.</documentation>
-    
-    <codeBody>
-      <loop>
-        <initialization>
-          <variable>
-            <typeSymbol>#</typeSymbol>
-            <name>i</name>
-          </variable>
-          <expression>= 0</expression>
-        </initialization>
-        <condition>
-          <expression>i &lt; 10</expression>
-        </condition>
-        <increment>
-          <expression>i++</expression>
-        </increment>
-        <codeBody>
-          <statement>
-            <expression>print(i)</expression>
-          </statement>
-        </codeBody>
-      </loop>
-    </codeBody>
-  </function>
-  
-          <!-- Function Demo: Supports float and string parameters with distinct symbols -->
-          <function collapsed="true">
-            <parameters>
-              <parameter>
-                <type>
-                  <typeSymbol>#.</typeSymbol>
-                  <typeName>float</typeName>
-                </type>
-                <name>xLocation</name>
-              </parameter>
-              
-              <parameter>
-                <type>
-                  <typeSymbol>#.</typeSymbol>
-                  <typeName>float</typeName>
-                </type>
-                <name>yLocation</name>
-              </parameter>
-              
-              <parameter>
-                <type>
-                  <typeSymbol>$</typeSymbol>
-                  <typeName>string</typeName>
-                </type>
-                <name>labelForUI</name>
-              </parameter>
-
-
-            </parameters>
-            <name>updateDisplay       <return-type>∅</return-type>      </name>
-            <documentation>Updates the UI element's position and label.</documentation>
-            <codeBody>
-              <statement>
-                <expression>
-                <functionCall>
-                  <typeSymbol>ƒ</typeSymbol>
-                  <name>setPosition</name>
+                <!-- Constructor -->
+                <function collapsed="true" functionRole="constructor">
                   <parameters>
                     <parameter>
                       <type>
-                        <typeSymbol>#.</typeSymbol>
-                        <typeName>float</typeName>
+                        <typeSymbol>#</typeSymbol>
+                        <typeName>int</typeName>
                       </type>
-                      <name>xLocation</name>
+                      <name>initialValue</name>
                     </parameter>
+                  </parameters>
+                  <name>init</name>
+                  <documentation>Initializes the calculator with an initial value.</documentation>
+                  <codeBody>
+                    <statement>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                        = 
+                        <expression>
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>initialValue</name>
+                          </variable>
+                        </expression>
+                      </expression>
+                    </statement>
+                  </codeBody>
+                </function>
+        
+                <group presentation="tabifyingView">
+                <!-- Addition -->
+                <function collapsed="false">
+                  <parameters>
                     <parameter>
                       <type>
-                        <typeSymbol>#.</typeSymbol>
-                        <typeName>float</typeName>
+                        <typeSymbol>#</typeSymbol>
+                        <typeName>int</typeName>
                       </type>
-                      <name>yLocation</name>
+                      <name>operand</name>
                     </parameter>
-                    
-                    
                   </parameters>
-                </functionCall>
-                </expression>
-              </statement>
-              
-              <statement>
-                <expression>
-                  <functionCall>
-                    <typeSymbol>ƒ</typeSymbol>
-                    <name>setLabel</name>
-                    <parameters>
-                      <parameter>
-                        <typeSymbol>$</typeSymbol>
-                        <typeName>string</typeName>
-                        <name>labelForUI</name>
-                      </parameter>
-                    </parameters>
-                  </functionCall>
+                  <name>add <return-type>#</return-type></name>
+                  <documentation>Adds the given operand to the current value.</documentation>
+                  <codeBody>
+                    <statement>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                        =
+                        <expression>
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>currentValue</name>
+                          </variable>
+                          +
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>operand</name>
+                          </variable>
+                        </expression>
+                      </expression>
+                    </statement>
+                    <return>
+                      <name>return</name>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                      </expression>
+                    </return>
+                  </codeBody>
+                </function>
+                
+                <!-- Subtraction -->
+                <function collapsed="false">
+                  <parameters>
+                    <parameter>
+                      <type>
+                        <typeSymbol>#</typeSymbol>
+                        <typeName>int</typeName>
+                      </type>
+                      <name>operand</name>
+                    </parameter>
+                  </parameters>
+                  <name>subtract <return-type>#</return-type></name>
+                  <documentation>Subtracts the given operand from the current value.</documentation>
+                  <codeBody>
+                    <statement>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                        =
+                        <expression>
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>currentValue</name>
+                          </variable>
+                          -
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>operand</name>
+                          </variable>
+                        </expression>
+                      </expression>
+                    </statement>
+                    <return>
+                      <name>return</name>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                      </expression>
+                    </return>
+                  </codeBody>
+                </function>
+
+                <!-- Multiplication -->
+                <function collapsed="false">
+                  <parameters>
+                    <parameter>
+                      <type>
+                        <typeSymbol>#</typeSymbol>
+                        <typeName>int</typeName>
+                      </type>
+                      <name>operand</name>
+                    </parameter>
+                  </parameters>
+                  <name>multiply <return-type>#</return-type></name>
+                  <documentation>Multiplies the given operand by the current value.</documentation>
+                  <codeBody>
+                    <statement>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                        =
+                        <expression>
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>currentValue</name>
+                          </variable>
+                          *
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>operand</name>
+                          </variable>
+                        </expression>
+                      </expression>
+                    </statement>
+                    <return>
+                      <name>return</name>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                      </expression>
+                    </return>
+                  </codeBody>
+                </function>
+                
+                <!-- Division -->
+                <function collapsed="false">
+                  <parameters>
+                    <parameter>
+                      <type>
+                        <typeSymbol>#</typeSymbol>
+                        <typeName>int</typeName>
+                      </type>
+                      <name>operand</name>
+                    </parameter>
+                  </parameters>
+                  <name>divide <return-type>#</return-type></name>
+                  <documentation>Divides the given operand by the current value.</documentation>
+                  <codeBody>
+                    <statement>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                        =
+                        <expression>
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>currentValue</name>
+                          </variable>
+                          /
+                          <variable>
+                            <typeSymbol>#</typeSymbol>
+                            <name>operand</name>
+                          </variable>
+                        </expression>
+                      </expression>
+                    </statement>
+                    <return>
+                      <name>return</name>
+                      <expression>
+                        <variable>
+                          <typeSymbol>#</typeSymbol>
+                          <name>currentValue</name>
+                        </variable>
+                      </expression>
+                    </return>
+                  </codeBody>
+                </function>
+                
+
+              </group>
+
+              </codebody>
+            </class>
+          </codeDocument>
+        
+          <!-- Code Document 2: Advanced Functions & UI Interactivity -->
+          <codeDocument
+            id="calc-ui-document"
+            created="2024-04-16"
+            lastModified="2025-04-16"
+            description="Defines memory functions, UI update routines, and event handlers for Calculator interactivity.">
+            <!-- Memory Operations -->
+            <function collapsed="true">
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>#</typeSymbol>
+                    <typeName>float</typeName>
+                  </type>
+                  <name>value</name>
+                </parameter>
+              </parameters>
+              <name>storeMemory</name>
+              <documentation>Stores the specified value in the calculator's memory.</documentation>
+              <codeBody>
+                <statement>
+                  <expression>
+                    <variable>
+                      <typeSymbol>#</typeSymbol>
+                      <name>memory</name>
+                    </variable>
+                    =
+                    <variable>
+                      <typeSymbol>#</typeSymbol>
+                      <name>value</name>
+                    </variable>
                   </expression>
-              </statement>
-              <statement>
-                <expression>
-                  <functionCall>
-                    <typeSymbol>ƒ</typeSymbol>
-                    <name>setBackgroundColor</name>
-                    <parameters>
-                      <parameter>
-                        <type>
-                          <typeSymbol>$</typeSymbol>
-                          <typeName>string</typeName>
-                        </type>
-                        <name>color</name>
-                      </parameter>
-                    </parameters>
-                  </functionCall>
-                </expression>
-              </statement>
-              
-              <statement>
-                <expression>
-                  <functionCall>
-                    <typeSymbol>ƒ</typeSymbol>
-                    <name>setBorder</name>
-                    <parameters>
-                      <parameter>
-                        <type>
-                          <typeSymbol>#</typeSymbol>
-                          <typeName>int</typeName>
-                        </type>
-                        <name>width</name>
-                      </parameter>
-                      <parameter>
-                        <type>
-                          <typeSymbol>$</typeSymbol>
-                          <typeName>string</typeName>
-                        </type>
-                        <name>style</name>
-                      </parameter>
-                      <parameter>
-                        <type>
-                          <typeSymbol>$</typeSymbol>
-                          <typeName>string</typeName>
-                        </type>
-                        <name>color</name>
-                      </parameter>
-                    </parameters>
-                  </functionCall>
-                </expression>
-              </statement>
-              
-              <statement>
-                <expression>
-                  <functionCall>
-                    <typeSymbol>ƒ</typeSymbol>
-                    <name>setOpacity</name>
-                    <parameters>
-                      <parameter>
-                        <type>
-                          <typeSymbol>#.</typeSymbol>
-                          <typeName>float</typeName>
-                        </type>
-                        <name>opacityLevel</name>
-                      </parameter>
-                    </parameters>
-                  </functionCall>
-                </expression>
-              </statement>
-              
-              <statement>
-                <expression>
-                  <functionCall>
-                    <typeSymbol>ƒ</typeSymbol>
-                    <name>setFontSize</name>
-                    <parameters>
-                      <parameter>
-                        <type>
-                          <typeSymbol>#</typeSymbol>
-                          <typeName>int</typeName>
-                        </type>
-                        <name>size</name>
-                      </parameter>
-                    </parameters>
-                  </functionCall>
-                </expression>
-              </statement>
-            </codeBody>
-          </function>
-          
-          <variable>
-            <name>buttons</name>
-            <typeSymbol>guiArea</typeSymbol>
-            <documentation>Calculator button layout and labels.</documentation>
-            <guiArea>
-              
-              <gui-button is="gui-button">7</gui-button>
-              <gui-button is="gui-button">8</gui-button>
-              <gui-button is="gui-button">9</gui-button>
-              <gui-button is="gui-button">÷</gui-button>
-              <gui-button is="gui-button">4</gui-button>
-              <gui-button is="gui-button">5</gui-button>
-              <gui-button is="gui-button">6</gui-button>
-              <gui-button is="gui-button">×</gui-button>
-              <gui-button is="gui-button">1</gui-button>
-              <gui-button is="gui-button">2</gui-button>
-              <gui-button is="gui-button">3</gui-button>
-              <gui-button is="gui-button">−</gui-button>
-              <gui-button is="gui-button">0</gui-button>
-              <gui-button is="gui-button">.</gui-button>
-              <gui-button is="gui-button">=</gui-button>
-              <gui-button is="gui-button">+</gui-button>
-              <gui-button  is="gui-button" aria-label="clear">C</gui-button>
+                </statement>
+              </codeBody>
+            </function>
             
-            </guiArea>
-          </variable>
-        </codebody>
-    </class>
+            <function collapsed="true">
+              <parameters></parameters>
+              <name>recallMemory <return-type>#</return-type></name>
+              <documentation>Recalls the stored memory value.</documentation>
+              <codeBody>
+                <statement>
+                  <return>
+                    <name>return</name>
+                    <expression>
+                      <variable>
+                        <typeSymbol>#</typeSymbol>
+                        <name>memory</name>
+                      </variable>
+                    </expression>
+                  </return>
+                </statement>
+              </codeBody>
+            </function>
+            
+            <!-- UI Update Function -->
+            <function collapsed="false">
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>$</typeSymbol>
+                    <typeName>string</typeName>
+                  </type>
+                  <name>displayText</name>
+                </parameter>
+              </parameters>
+              <name>updateDisplay <return-type>∅</return-type></name>
+              <documentation>Updates the Calculator UI with the provided display text.</documentation>
+              <codeBody>
+                <statement>
+                  <expression>
+                    <functionCall>
+                      <typeSymbol>ƒ</typeSymbol>
+                      <name>setDisplayValue</name>
+                      <parameters>
+                        <parameter>
+                          <typeSymbol>$</typeSymbol>
+                          <name>displayText</name>
+                        </parameter>
+                      </parameters>
+                    </functionCall>
+                  </expression>
+                </statement>
+              </codeBody>
+            </function>
+            
+            <!-- Event Handling -->
+            <function collapsed="false">
+              <parameters></parameters>
+              <name>handleButtonPress <return-type>∅</return-type></name>
+              <documentation>Processes UI button press events for digit and operation inputs.</documentation>
+              <codeBody>
+                <statement>
+                  <expression>
+                    <variable>
+                      <typeSymbol>$</typeSymbol>
+                      <name>input</name>
+                    </variable>
+                    =
+                    <functionCall>
+                      <typeSymbol>ƒ</typeSymbol>
+                      <name>readButtonInput</name>
+                      <parameters></parameters>
+                    </functionCall>
+                  </expression>
+                </statement>
+                <statement>
+                  <expression>
+                    <functionCall>
+                      <typeSymbol>ƒ</typeSymbol>
+                      <name>processInput</name>
+                      <parameters>
+                        <parameter>
+                          <typeSymbol>$</typeSymbol>
+                          <name>input</name>
+                        </parameter>
+                      </parameters>
+                    </functionCall>
+                  </expression>
+                </statement>
+              </codeBody>
+            </function>
+            
+            <!-- Advanced Operation: Percentage Calculation -->
+            <function collapsed="false">
+              <parameters>
+                <parameter>
+                  <type>
+                    <typeSymbol>#</typeSymbol>
+                    <typeName>int</typeName>
+                  </type>
+                  <name>percentValue</name>
+                </parameter>
+              </parameters>
+              <name>calculatePercentage <return-type>#</return-type></name>
+              <documentation>Calculates the new current value after applying a percentage adjustment.</documentation>
+              <codeBody>
+                <statement>
+                  <expression>
+                    <variable>
+                      <typeSymbol>#</typeSymbol>
+                      <name>currentValue</name>
+                    </variable>
+                    =
+                    <expression>
+                      <variable>
+                        <typeSymbol>#</typeSymbol>
+                        <name>currentValue</name>
+                      </variable>
+                      *
+                      <variable>
+                        <typeSymbol>#</typeSymbol>
+                        <name>percentValue</name>
+                      </variable>
+                      / 100
+                    </expression>
+                  </expression>
+                </statement>
+                <statement>
+                  <return>
+                    <name>return</name>
+                    <expression>
+                      <variable>
+                        <typeSymbol>#</typeSymbol>
+                        <name>currentValue</name>
+                      </variable>
+                    </expression>
+                  </return>
+                </statement>
+              </codeBody>
+            </function>
+          </codeDocument>
+        
+        </codeProject>
+      </div>
+    </div>
 
-    <statement>
-    <!-- Standalone Variable Declaration Demo -->
-    <variable>
-        <documentation>An integer variable used to index lists.</documentation>
-        <typeSymbol>#</typeSymbol>
-      <name>indexOfList</name>
-      
-    </variable>
-  </statement>
-
-</div>
-</codeDocument> 
-   
-</codeProject>
-    
-</div>
+      </div>
 <div id="output-tab-content" style="display:none;">
   <div id="output-viewport" >
     Program output will appear here.
@@ -557,7 +490,11 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
+
+
 <script src="scripts/nctbgpatterns.js"></script>
+<script src="scripts/code-elements-schema.js"></script>
+<script src="scripts/menus-keycommands.js"></script>
 <script src="scripts/editor.js"></script>
 
 <script>
@@ -571,6 +508,17 @@
       angle: -45,
       backgroundColor: '#555'
     });
+
+    bgPatterns.observe('statement', {
+      preset: 'dotted',
+      strokeColor: '#000',
+      strokeWidth: 1,
+      spacing: 4,
+      angle: -45,
+      backgroundColor: '#330bc4'
+    });
+
+    
 
     bgPatterns.observe('body', {
   preset: 'diagonal-solid',
@@ -776,6 +724,47 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+$(document).ready(function () {
+  // Get the project title from the <codeProject> element
+  const projectTitle = $('codeProject').attr('title') || 'Untitled Project';
 
+  // Insert the project title into the #project-title div
+  $('#project-title').text(projectTitle);
+
+  // Find all <codeDocument> elements
+  const codeDocuments = $('codeDocument');
+
+  // Generate tabs dynamically
+  codeDocuments.each(function (index) {
+    const docId = $(this).attr('id');
+    const docDescription = $(this).attr('description') || docId || `Document ${index + 1}`;
+
+    // Add a tab for each document
+    $('#document-tabs').append(`
+      <li>
+        <button class="document-tab" data-doc="${docId}"><h3>${docId}</h3>${docDescription}</button>
+      </li>
+    `);
+  });
+
+  // Show the first document by default
+  codeDocuments.addClass('hidden');
+  codeDocuments.first().removeClass('hidden').addClass('active');
+  $('#document-tabs button').first().addClass('active');
+
+  // Handle tab clicks
+  $('#document-tabs').on('click', '.document-tab', function () {
+    const docId = $(this).data('doc');
+
+    // Highlight the active tab
+    $('#document-tabs button').removeClass('active');
+    $(this).addClass('active');
+
+    // Show the selected document and hide others
+    codeDocuments.removeClass('active').addClass('hidden');
+    $(`#${docId}`).removeClass('hidden').addClass('active');
+  });
+});</script>
 
    </body> </html>

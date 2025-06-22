@@ -1,0 +1,22 @@
+Non-deterministic, AI-generated GUI can address with cases where people would
+like their own GUI for inspecting app data that is superior to the one provided
+for the needs given.  Users will be able to add features to apps as well.  The
+user will be able to use the app as a technological base and when the native GUI
+isn't sufficient or functionality is missing, the user can approach the data
+that it processes in a custom way.  It allows setting up preferences for what
+style of GUI is preferable on the outside.
+
+----
+
+The code that our AI is now making for us is within the paradigm of computer
+code that predates recent AI advances.  Therefore, the kind of code that AI
+generates for us should be upgraded to accommodate our new situation and the
+presence of AI.  This way the AI can use code more effectively than the
+inherited code we use now and we will not get overwhelmed by what is generated. 
+No one will have to be "vibe coding" while not knowing what is going on behind the
+curtain if it is possible to work with a different kind of generated code, one
+that is updated for the recent circumstances of AI playing a role.
+Put differently, we should work with AI-tailored programming frameworks.  They
+should be cognizant of AI and thus ready for the task of what is "vibe coding"
+today.  Then, at each step of "vibe coding" you will just be building program
+schematics and it won't be that you aren't sure what is in the schematics.

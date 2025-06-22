@@ -1,0 +1,47 @@
+Paramorphic Programming Components
+
+Paramorphic programming components is a concept I am putting together as part of
+a Fa-validation project.  A Fa-validation project means, in this case, that I am
+making use of technologies or modern science to validate the truth of Falun Dafa
+as a genuine science.  I am addressing issues that programmers face which they
+may not realize as problems.
+
+Checkers, chess, a calendar, a spreadsheet, a drum sequencer program, and a
+block game like Tetris or Arkanoid all can be viewed as carrying a common
+underlying concept, that of a grid-- one that is could be progressively
+modified from a raw state of grid for each case and its interactivity.  It just
+depends on how the grid and its cells are configured to behave whether it turns
+into any of the above outcomes.  It would be the job of the programmer to move
+it into these outcomes.  Today, programmers don't start with a generic grid
+component like this, though.  They don't move towards these specific cases from
+a blank foundation.  Instead, they instead program each situation with a set of
+more concrete functions provided to them by the computer vendors, functions
+which are usually close to the outcome they are trying to achieve.   It is
+specific, premade components like "data table" that are used for making a
+spreadsheet app and then another like "tiling map" is used for a block-based
+video game, when in actuality it can all be placed underneath a completely
+generic grid component first that is customizable towards what is needed.  This
+is to say, the generic grid component should be able to cover both the cases of
+a spreadsheet or a tiling map.
+
+A calendar has a grid's appearance, but today you don't start with a generic
+grid concept and then turn it into a calendar.  You must program the calendar's
+grid by using specific functions that are very close to what a calendar is
+already.  We can instead program our projects by starting with morphing
+foundation components.  Calling it paramorphic is possibly more accurate since
+it is not completely transforming the grid component, just altering it
+progressively towards a desired outcome.  For this component, what is
+configurable is both the form (a grid's design is progressively configured and
+shaped into a calendar layout)  and the functionality (a grid is progressively
+shaped to behave and respond interactively as a calendar).  A paramorphic grid
+starts with the generic state of grid, both in appearance and behavior.  It's a
+paramorphic base that can be moved in any direction: checkers, chess, a
+calendar, a spreadsheet, a block game like Tetris.  This does not exist today
+and is a product of cultivation practice (xiulian).   Because this grid should
+allow for granular adjustments and layering, you anything that can start out
+from a grid can be made rapidly, such as an onscreen keyboard, by including
+layout adjustments and behavior instructions.  In other words, a rectilinear
+grid is adjusted to become a keyboard layout through the programmer's
+specifications.  Whatever can begin as a variation of a grid can be programmed
+quickly.  This a type of component that AI can make use of as a base library and
+many complex projects will be faster to assemble.

@@ -12,11 +12,164 @@ The code that our AI is now making for us is within the paradigm of computer
 code that predates recent AI advances.  Therefore, the kind of code that AI
 generates for us should be upgraded to accommodate our new situation and the
 presence of AI.  This way the AI can use code more effectively than the
-inherited code we use now and we will not get overwhelmed by what is generated. 
-No one will have to be "vibe coding" while not knowing what is going on behind the
-curtain if it is possible to work with a different kind of generated code, one
-that is updated for the recent circumstances of AI playing a role.
-Put differently, we should work with AI-tailored programming frameworks.  They
+inherited code we use now and we will not get overwhelmed by what is generated.
+No one will have to be "vibe coding" while not knowing what is going on behind
+the curtain if it is possible to work with a different kind of generated code,
+one that is updated for the recent circumstances of AI playing a role. Put
+differently, we should work with AI-tailored programming frameworks.  They
 should be cognizant of AI and thus ready for the task of what is "vibe coding"
 today.  Then, at each step of "vibe coding" you will just be building program
 schematics and it won't be that you aren't sure what is in the schematics.
+
+----
+
+When the AI can take a thing that humans have done and consistently put it in
+better condition than how it came across it, not in just one aspect but in all
+the ways that a person would approve of, this is different than high-powered
+artificial intelligence that can unload complex responses and activity on
+people.
+
+----
+
+In controlling a smart home, it would be better if the smart home recognized
+shorthand or other signals you gave it rather than speech.  It is a longstanding
+misconception people have is that controlling machines with speech is the most
+powerful.  It is better to do things along the lines of The Clapper gadget,
+which listen for shorthand from the person.
+
+----
+
+
+Often in computer technology there just isn't enough structure placed into the
+situation, so this is one approach I am investigating for making AI "agent."
+When planning and carrying out complex projects, real life workplaces often use
+two resources: project management charts and sometimes decision-making steps. An
+example project management concept is a Gantt chart, which plots a list of tasks
+and their expected duration on a timeline. This is often compared to a similar
+strategy, the Kanban board.  A more freeform project management diagram is the
+PERT chart. The possible benefit of an LLM making use of these techniques for an
+AI agent is that the convention matches what people are familiar with already
+and the progress it makes on a goal or project can be displayed in a window
+where it is monitored by the user in real time.  Whatever it is attemping to
+accomplish and how it is doing it will then be comprehensible to the AI user in
+a way consistent with existing work practices. In some cases, the user can
+intervene and give the AI “agent” instructions to add, remove, or modify tasks
+while it is carrying out the project.   When the AI “agent” generates, manages,
+and tracks the contents of the Gantt charts, it will be able to manage long-term
+issues according to its own analyses.  It can decide to use an alternative
+project management strategy if it is a better fit for a situation.  It can be
+told, in any given area in which it works, to choose the relevant project
+tracking frameworks that will assist it. For example, when working on
+construction projects, it might take up Building Information Modeling (BIM) or
+Integrated Project Delivery (IPD).  These are topics that have yet to be
+evaluated with the use of an LLM.  Going along with these are decision-making
+frameworks, which provide a workflow for analyzing a situation, assessing what
+is relevant from it for the goal, taking action, evaluating results, and then
+starting the loop again.  For some projects, the AI user may prefer to guide the
+AI “agent” through these types of decision-making frameworks so that results are
+more predictable.  This is the sort of LLM-generated planning and implementation
+that could make the system capable of bringing long-term tasks to completion
+according to guidelines.
+
+----
+
+With the current LLMs, I would say they are in a mode of response where they
+just oblige.  You can structure what they do, but they are still on their own
+path a lot of the time.
+
+
+----
+
+In any domain, the LLM will go every which way, so it is important to give it
+guidance on every topic of execution, whether it is designing 3D model buildings
+or writing programs.  Giving it guidance on how to write a program in terms of
+its sensibility and judgment is important, because then the output will be more
+predictable.  This might involve giving it statements about how code ought to be
+organized.
+
+----
+
+The AI (LLM) shouldn't be set up where it has to make up for the deficiencies of
+a tool. The tools provided to it should be well-rounded so that it doesn't have
+to fill in. An example where this is happening is code.  Because AI doesn't have
+the right kind of software development frameworks to work with, it spends a lot
+of time compensating for what is missing in them in any query response.
+
+----
+
+With the current LLMs, I would say they are in a mode of response where they
+just oblige.  You can structure what they do, but they are still on their own
+path a lot of the time.
+
+----
+
+What is wrong with the current AI chatbot?  The first is that there are times
+when the AI needs to ask for clarification before generating a response.  It
+should provide a menu of options where just pressing a number key will proceed
+with the response.  The chatbot could sometimes ask multiple clarifying
+questions within a tree of menu options and thus the result would be tailored to
+what the user really is going for.
+
+Another issue with AI chatbots is that the response length should be adjustable
+by the user, perhaps with a set of controls placed next to the text box (
+"short," "medium", "long", "longest", "chosen by AI"). It would also be
+beneficial to let the user insert shorthand into the prompt, like "rl-1." for
+response-length:shortest.  There is also the possibility of allowing the user to
+choose response length with a keyboard shortcut.
+
+-----
+
+The lay user of AI doesn't know that the AI chatbot (ChatGPT) is a superficial
+layer of chat software interacting with the enormous AI server center.  It is
+this superficial layer of software that @karpathy mentioned hasn't been built
+out into a finished state.  To put it in different terms, OpenAI really just
+made a prototype chat interface to their AI in 2022, which they called ChatGPT,
+and they haven't done much with that app since that time, in a way that
+corresponds to traditional software practices.  It's not a finished app.  There
+is a lot of room for improvement. The first issue is that there are times when
+the AI should be allowed to ask for clarification before generating a response.
+OpenAI and other AI companies could easily put that feature in there-- it's a
+relatively easy thing.  This would involve the AI providing a menu of options
+("Are you saying you want ...?") where just pressing a number key will let the
+user clarify to the AI what he or she intended and the AI will proceed.  The
+chatbot could sometimes ask multiple clarifying questions using a tree of menu
+options and thus the result would be accurately tailored for what the user
+really is going for.   The AI often needs this kind of extra information before
+giving an accurate response and it can't get it, which is a major reason the
+chatbots give an unsatisfactory impression. The AI companies set them up so that
+they just act on whatever they think the person was asking for.
+
+
+-----
+
+The actual AI models behind AI chatbots do not have any memory built into them.
+They can't directly learn from being corrected by users and they aren't
+interacting with you like you believe.  They are static networks of information
+that respond.  The chatbot session is an illusion: the entire chat session is
+fed back to the AI each time you say something, and it just gives the impression
+with each response that it has remembered what you said.
+
+
+-----
+
+Sometimes the AI chatbot user doesn't anticipate the different directions the
+response could go, or the variations in contents it could have, especially when
+asking about a topic that is unfamiliar. This is definitely true for programming
+projects where a seemingly simple query to the AI can entail many possible
+approaches for the code. This points to the need for an intermediate stage of
+response, which is a clarification menu that shows up before the output is
+generated (a feature that is turned off if desired).  The AI would use it only
+when necessary.  Initially I would try mapping the ASDF keys to a 4-option menu,
+so that the user can proceed rapidly just by pressing a key and not get hung up
+by intermediate clarification questions. "For this code, for the [topic] do you
+want A) S) D) or F) ?" This menu would only appear when the AI determined it is
+beneficial.  (The user could also insert shorthand into the prompt for
+requesting varying degrees of clarification menus.)  When relevant, for more
+involved matters, the clarification menu would carry multiple layers of
+questions (a tree of questions) when the AI knows that a satisfactory response
+likely requires that the user give multiple specifications in advance. The key
+issue is that the user does not always know the issues implied by a query, and
+so pages and pages are generated in the chat session as the user tries to refine
+the output, whereas often the AI could have asked clarifying questions.
+
+

@@ -164,12 +164,24 @@ so that the user can proceed rapidly just by pressing a key and not get hung up
 by intermediate clarification questions. "For this code, for the [topic] do you
 want A) S) D) or F) ?" This menu would only appear when the AI determined it is
 beneficial.  (The user could also insert shorthand into the prompt for
-requesting varying degrees of clarification menus.)  When relevant, for more
-involved matters, the clarification menu would carry multiple layers of
-questions (a tree of questions) when the AI knows that a satisfactory response
-likely requires that the user give multiple specifications in advance. The key
-issue is that the user does not always know the issues implied by a query, and
-so pages and pages are generated in the chat session as the user tries to refine
-the output, whereas often the AI could have asked clarifying questions.
+requesting varying degrees of clarification menus.)  Pressing RETURN will just
+move past the menu. When relevant, for more involved matters, the clarification
+menu would carry multiple layers of questions (a tree of questions) when the AI
+knows that a satisfactory response likely requires that the user give multiple
+specification answers in advance. The key issue is that the user does not always know
+the issues implied by a query, and so many pages of text are generated in the chat
+session as the user tries to refine the output, whereas often the AI could have
+asked clarifying questions.
+
+For the shorthand, the user can dictate inside the prompt which issues of specifications
+it wants the AI to ask questions about.  For a code project, the user might
+type [specq: programming library, variable naming. depth:4, quantity:4] and then get 
+questions from the AI in these areas in a quantity of questioning level 4/10
+and tree depth of 4. Thus the user can be proactive about the output from the AI.
+
+
+
+
+
 
 

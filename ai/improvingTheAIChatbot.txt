@@ -1,0 +1,57 @@
+
+Improving the AI Chatbot
+
+CLARIFICATION INTERMEDIATE QUESTIONS
+
+Sometimes the AI chatbot user doesn't anticipate the different directions the
+response could go, or the variations in contents it could have, especially when
+asking about a topic that is unfamiliar. This is definitely true for programming
+project,s where a seemingly simple query to the AI can entail many possible
+approaches for the code. This points to the need for an intermediate stage of
+response, which is a clarification menu that shows up before the output is
+generated (a feature that is turned off if desired).  The AI would use it only
+when necessary.  Initially I would try mapping the ASDF keys to a 4-option menu,
+so that the user can proceed rapidly just by pressing a key and not get hung up
+by intermediate clarification questions. "For this code, for the [topic] do you
+want A) S) D) or F) ?" This menu would only appear when the AI determined it is
+beneficial.  (The user could also insert shorthand into the prompt for
+requesting varying degrees of clarification menus.)  Pressing RETURN will just
+move past the menu. When relevant, for more involved matters, the clarification
+menu would carry multiple layers of questions (a tree of questions) when the AI
+knows that a satisfactory response likely requires that the user give multiple
+specification answers in advance. The key issue is that the user does not always
+know the issues implied by a query, and so many pages of text are generated in
+the chat session as the user tries to refine the output, whereas often the AI
+could have asked clarifying questions.
+
+For the shorthand, the user can dictate inside the prompt which issues of
+specifications it wants the AI to ask questions about.  For a code project, the
+user might type [specq: programming library, variable naming. depth:4,
+quantity:4] and then get questions from the AI in these areas in a quantity of
+questioning level 4/10 and tree depth of 4. Thus the user can be proactive about
+the output from the AI.
+
+
+INTERACTIVE FORMS
+
+The AI chatbot could also respond to the user's code (programming) query with an
+interactive form where it has generated an outline of what it plans to do for
+the project.  Underneath each outline point are text boxes where the user can
+change or refine the AI's plans.  At the end of the form, the user can then
+choose to either receive an updated interactive form or it can have the AI
+proceed.  In another variation, the AI would include questions inside the
+outline and the next step would be the interactive form that the user reviews.
+
+
+BRANCHING OFF AND SIDE QUERIES
+
+One issue is that there are times when the user wants to know more about a
+subject found within the generated text but not necessarily interrupting the
+stream with a query about it (which will also affect later responses).  There
+can be a mode provided in the AI chatbot where sentences and paragraphs can be
+clicked on, which opens up accessory or marginal tabs for exploring topics in
+the original generated response.  The output will be associated with the main
+chat sequence but sit to the side or behind it.  In other words, the user should
+be able to branch off from the initial chat session and return to it.  The AI
+chatbot can certainly have other tools too, like built-in dictionaries and the
+ability to add categorization tags to chat sessions.

@@ -42,6 +42,15 @@ choose to either receive an updated interactive form or it can have the AI
 proceed.  In another variation, the AI would include questions inside the
 outline and the next step would be the interactive form that the user reviews.
 
+This also shows that the interaction with the chatbot that the user has with the
+AI doesn't have be at the end of response and separated from it but can be
+interacting with controls and textfields that the AI embedded inside it.
+
+The AI isn't always going to generate what you want. The AI chatbots could
+certainly implement intermediate steps where the user can get an overview of its
+plans, especially for programming projects, and then refine them iteratively
+before anything is generated.
+
 
 BRANCHING OFF AND SIDE QUERIES
 
@@ -55,3 +64,26 @@ chat sequence but sit to the side or behind it.  In other words, the user should
 be able to branch off from the initial chat session and return to it.  The AI
 chatbot can certainly have other tools too, like built-in dictionaries and the
 ability to add categorization tags to chat sessions.
+
+
+INTERACTIVE FORMS II
+
+The AI is given a list of tags that it can send to the client to represent
+controls (for example,  <aichat:textfield>) and the AI can send these inside a
+type of chat response that it uses as an intermediate step, to gather information
+before generating the final output.  These include 1D and 2D sliders
+(<aichat:slider>), multiple choice lists, checkboxes, etc.  Replying to the AI
+after it embeds these in its response is then about interacting with the chat
+response, not typing in the followup chat textbox as is the case for everything now.  At
+the bottom of this interactive chat response, the AI will have generated different
+submit buttons according to the situation.  The AI can also, after receiving a
+submission, update the contents of this interactive form in the place where it sits
+instead of generating a new one underneath.  (It would send a command to the client
+like <aichat:updateinplace>). What this implies for chatbots is that the the AI can 
+generate different types of chat responses (data types), some of which include embedded 
+interactive controls that allow it to tailor its output extensively in tandem with the user. 
+It can get a lot of information before carrying out the request.  In a more advanced
+version, the interactive form that it generates will be running code so that the
+AI can collect information from interactive diagrams that the user modified.
+
+

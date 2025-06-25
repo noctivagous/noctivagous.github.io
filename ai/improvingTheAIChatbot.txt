@@ -101,8 +101,8 @@ plans or they can include sample details of how the AI intends to execute the
 task, such as sample text or code.  In a translation effort, for example, the AI
 can generate multiple options for the style of translation.
 
-Other tags include <aichat:curveeditor>, <aichat:sequencer1d cols="8"> for a
-drum sequencer, <aichat:sequencer2d rows="5" cols="8"> for a musical note
+Other tags include <aichat-control:curveeditor>, <aichat-control:sequencer1d cols="8"> for a
+drum sequencer, <aichat-control:sequencer2d rows="5" cols="8"> for a musical note
 sequencer. In the software, the user would be able to add custom control tags
 for custom use.
 
@@ -115,11 +115,37 @@ feedback in place by the user, who decides whether to update the response in pla
 using the corresponding submit button at the bottom.  The alternative is that
 the user just uses the existing text box to respond as usual.  This means that every
 response would make use of some of the control tags sent to the client (e.g.
-<aichat:flexboxcontainer>) so that the AI produces complex layouts with
+<aichat-layout:flexboxcontainer>) so that the AI produces complex layouts with
 interactive controls.  The issue is that the AI usually can only do one thing
 well at a time, so it might require a second request to reformat the response
-within the tags. The benefit of this is that
+within the tags.
 
+
+INTERACTIVE FORM TAGS REFERENCE
+
+<!-- gui controls -->
+<aichat-gui-control:button>
+<aichat-gui-control:textfield dataformat="plaintext"> // richtext
+<aichat-gui-control:numberfield" > // integer, float
+<aichat-gui-control:checkbox>
+<aichat-gui-control:radiogroup>
+<aichat-gui-control:radiobutton>
+<aichat-gui-control:slider-1d>
+<aichat-gui-control:slider-2d>
+<aichat-gui-control:slider-circular>
+<aichat-gui-control:colorpicker>
+<aichat-gui-control:sequencer-1d>
+<aichat-gui-control:sequencer-2d>
+
+<!-- layout -->
+<aichat-layout:flexboxcontainer>
+
+<!-- external data -->
+<ai-chat-document-viewer type="pdf"> // for fetched documents
+<ai-chat-iframe url="">
+
+The client will construct the various interactive components on the fly based
+on the provided tags, amounting to mini-applets in any given response.
 
 
 

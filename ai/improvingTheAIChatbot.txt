@@ -1,55 +1,64 @@
 
 Improving the AI Chatbot
 
-CLARIFICATION INTERMEDIATE QUESTIONS
+INTERMEDIATE RESPONSES: CLARIFICATION QUESTIONS
 
 Sometimes the AI chatbot user doesn't anticipate the different directions the
 response could go, or the variations in contents it could have, especially when
 asking about a topic that is unfamiliar. This is definitely true for programming
-project,s where a seemingly simple query to the AI can entail many possible
+projects, where a seemingly simple query to the AI can entail many possible
 approaches for the code. This points to the need for an intermediate stage of
 response, which is a clarification menu that shows up before the output is
 generated (a feature that is turned off if desired).  The AI would use it only
-when necessary.  Initially I would try mapping the ASDF keys to a 4-option menu,
-so that the user can proceed rapidly just by pressing a key and not get hung up
-by intermediate clarification questions. "For this code, for the [topic] do you
-want A) S) D) or F) ?" This menu would only appear when the AI determined it is
-beneficial.  (The user could also insert shorthand into the prompt for
-requesting varying degrees of clarification menus.)  Pressing RETURN will just
-move past the menu. When relevant, for more involved matters, the clarification
-menu would carry multiple layers of questions (a tree of questions) when the AI
-knows that a satisfactory response likely requires that the user give multiple
-specification answers in advance. The key issue is that the user does not always
-know the issues implied by a query, and so many pages of text are generated in
-the chat session as the user tries to refine the output, whereas often the AI
-could have asked clarifying questions.
+when necessary.  Initially I would try mapping the ASDF keys in reverse order
+[FDSA] to a 4-option menu, so that the user can proceed rapidly just by pressing
+a key and not get hung up by intermediate clarification questions. "For this
+code, for the [topic] do you want F) D) S) or A) ?". This menu would only appear
+when the AI determined it is beneficial.  It would not be limited to code
+situations but rather is present at any time.  (The user could also insert
+shorthand into the prompt for requesting varying degrees of clarification
+menus.) Pressing RETURN will just move past the menu. When relevant, for more
+involved matters, the clarification menu would carry multiple layers of
+questions (a tree of questions) when the AI knows that a satisfactory response
+likely requires that the user give multiple specification answers in advance.
+The key issue is that the user does not always know the issues implied by a
+query, and so many pages of text are generated in the chat session as the user
+tries to refine the output, whereas often the AI could have asked clarifying
+questions.
 
 For the shorthand, the user can dictate inside the prompt which issues of
 specifications it wants the AI to ask questions about.  For a code project, the
 user might type [specq: programming library, variable naming. depth:4,
 quantity:4] and then get questions from the AI in these areas in a quantity of
-questioning level 4/10 and tree depth of 4. Thus the user can be proactive about
-the output from the AI.
+questioning level 4/10 and tree depth of 4/10. Thus the user can be proactive
+about the output from the AI.
+
+What this means is that for any prompt there will potentially be two API calls:
+there will be two when the AI has determined that clarification is needed for
+the prompt while there will be just one, the response as usual, if it doesn't
+need clarification and no menu will appear.  The AI will be given a
+clarification frequency value ranging from 0-10, with 0 being never ask for
+clarification and 10 being always ask for clarification.  The default is 5 which
+means ask for clarification whenever the prompt from the user is vague or there
+is information the user did not anticipate.  These instructions about the
+clarification menu will reside in the system prompt.  When the client receives a
+response with <aichat:clarification-response></aichat:clarification-response> it
+will render the menu and options accordingly and also handle key and mouse down
+events for the menu items.
 
 
-INTERACTIVE FORMS
+INTERMEDIATE RESPONSES II. MANUALLY-TURNED ON AND OFF: "SPECIFICATION QUESTIONNAIRES"
 
-The AI chatbot could also respond to the user's code (programming) query with an
-interactive form where it has generated an outline of what it plans to do for
-the project.  Underneath each outline point are text boxes where the user can
-change or refine the AI's plans.  At the end of the form, the user can then
-choose to either receive an updated interactive form or it can have the AI
-proceed.  In another variation, the AI would include questions inside the
-outline and the next step would be the interactive form that the user reviews.
+The user may choose to deliberately write vague requests or questions and then, when the mode
+"Specification Questionnaires" is turned on with a checkbox, the AI will generate specification 
+information collection forms, of a length determined by the user.  An example:
 
-This also shows that the interaction with the chatbot that the user has with the
-AI doesn't have be at the end of response and separated from it but can be
-interacting with controls and textfields that the AI embedded inside it.
+Q: Write a sort algorithm
+R: What type of algorithm, language, and instructions do you want?
+-- Algorithm Type - Specify which sorting algorithm, like bubble sort or quicksort.
+-- Programming Language - Choose a language, such as Python, Java, or C++.
+-- Other Details - Provide any additional preferences, like complexity or examples.
 
-The AI isn't always going to generate what you want. The AI chatbots could
-certainly implement intermediate steps where the user can get an overview of its
-plans, especially for programming projects, and then refine them iteratively
-before anything is generated.
 
 
 BRANCHING OFF AND SIDE QUERIES
@@ -73,6 +82,28 @@ metadata features to the text.  These might include definitions for certain
 terms, especially for translated materials, and contextual information.  The AI
 can generate hypertext features, assisting in the use of text.
 
+When the question mark cursor is activated during hypertext mode, clicking on
+a term will open up a bubble explaining it, querying the AI for the popover.
+
+
+INTERACTIVE FORMS
+
+The AI chatbot could also respond to the user's code (programming) query with an
+interactive form where it has generated an outline of what it plans to do for
+the project.  Underneath each outline point are text boxes where the user can
+change or refine the AI's plans.  At the end of the form, the user can then
+choose to either receive an updated interactive form or it can have the AI
+proceed.  In another variation, the AI would include questions inside the
+outline and the next step would be the interactive form that the user reviews.
+
+This also shows that the interaction with the chatbot that the user has with the
+AI doesn't have be at the end of response and separated from it but can be
+interacting with controls and textfields that the AI embedded inside it.
+
+The AI isn't always going to generate what you want. The AI chatbots could
+certainly implement intermediate steps where the user can get an overview of its
+plans, especially for programming projects, and then refine them iteratively
+before anything is generated.
 
 INTERACTIVE FORMS II
 
@@ -80,7 +111,7 @@ The AI is given a list of tags that it can send to the client to represent
 controls (for example,  <aichat:textfield>) and the AI can send these inside a
 type of chat response that it uses as an intermediate step, to gather
 information before generating the final output.  These include 1D and 2D sliders
-(<aichat:slider>), multiple choice lists, color pickers, checkboxes, etc. 
+(<aichat:slider>), multiple choice lists, color pickers, checkboxes, etc.
 Replying to the AI after it embeds these in its response is then about
 interacting with the chat response, not typing in the followup chat textbox as
 is the case for everything now.  At the bottom of this interactive chat
@@ -101,51 +132,93 @@ plans or they can include sample details of how the AI intends to execute the
 task, such as sample text or code.  In a translation effort, for example, the AI
 can generate multiple options for the style of translation.
 
-Other tags include <aichat-control:curveeditor>, <aichat-control:sequencer1d cols="8"> for a
-drum sequencer, <aichat-control:sequencer2d rows="5" cols="8"> for a musical note
-sequencer. In the software, the user would be able to add custom control tags
-for custom use.
+Other tags include <aichat-control:curveeditor>, <aichat-control:sequencer1d
+cols="8"> for a drum sequencer, <aichat-control:sequencer2d rows="5" cols="8">
+for a musical note sequencer. In the software, the user would be able to add
+custom control tags for custom use.
 
 
 INTERACTIVE FORMS III
 
-Every response from the AI chatbot could make use of an interactive form, which would
-reduce the page length of any chat session by allowing modification and
-feedback in place by the user, who decides whether to update the response in place by
-using the corresponding submit button at the bottom.  The alternative is that
-the user just uses the existing text box to respond as usual.  This means that every
-response would make use of some of the control tags sent to the client (e.g.
-<aichat-layout:flexboxcontainer>) so that the AI produces complex layouts with
-interactive controls.  The issue is that the AI usually can only do one thing
-well at a time, so it might require a second request to reformat the response
-within the tags.
+Every response from the AI chatbot could make use of an interactive form, which
+would reduce the page length of any chat session by allowing modification and
+feedback in place by the user, who decides whether to update the response in
+place by using the corresponding submit button at the bottom.  The alternative
+is that the user just uses the existing text box to respond as usual.  This
+means that every response would make use of some of the control tags sent to the
+client (e.g. <aichat-layout:flexboxcontainer>) so that the AI produces complex
+layouts with interactive controls.  The issue is that the AI usually can only do
+one thing well at a time, so it might require a second request to reformat the
+response within the tags.
 
 
 INTERACTIVE FORM TAGS REFERENCE
 
-<!-- gui controls -->
-<aichat-gui-control:button>
-<aichat-gui-control:textfield dataformat="plaintext"> // richtext
-<aichat-gui-control:numberfield" > // integer, float
-<aichat-gui-control:checkbox>
-<aichat-gui-control:radiogroup>
-<aichat-gui-control:radiobutton>
-<aichat-gui-control:slider-1d>
-<aichat-gui-control:slider-2d>
-<aichat-gui-control:slider-circular>
-<aichat-gui-control:colorpicker>
-<aichat-gui-control:sequencer-1d>
+<!-- gui controls --> <aichat-gui-control:button> <aichat-gui-control:textfield
+dataformat="plaintext"> // richtext <aichat-gui-control:numberfield" > //
+integer, float <aichat-gui-control:checkbox> <aichat-gui-control:radiogroup>
+<aichat-gui-control:radiobutton> <aichat-gui-control:slider-1d>
+<aichat-gui-control:slider-2d> <aichat-gui-control:slider-circular>
+<aichat-gui-control:colorpicker> <aichat-gui-control:sequencer-1d>
 <aichat-gui-control:sequencer-2d>
 
-<!-- layout -->
-<aichat-layout:flexboxcontainer>
+<!-- layout --> <aichat-layout:flexboxcontainer> <aichat-layout:tabview>
+<aichat-layout:tabview-tab>
 
-<!-- external data -->
-<ai-chat-document-viewer type="pdf"> // for fetched documents
-<ai-chat-iframe url="">
 
-The client will construct the various interactive components on the fly based
-on the provided tags, amounting to mini-applets in any given response.
+<!-- external data --> <ai-chat-document-viewer type="pdf"> // for fetched
+documents <ai-chat-iframe url="">
+
+The client will construct the various interactive components on the fly based on
+the provided tags, amounting to mini-applets in any given response.
+
+
+CUSTOM PARAMETERS (AND ACCOMPANYING GUI CONTROLS) FOR AI CHATBOT
+
+The clarification frequency is a parameter controlled by a slider 
+in our AI Chatbot Lab, for determining how often the AI interjects with 
+an intermediate clarification menu for vague questions or cases where there is information that could assist
+forming the answer, including when the user could not have anticipated 
+that the question would be highly beneficial.  The user should be 
+able to add custom parameters and matching GUI controls like this of
+his own that affect the output, such as tone.  There can also be presets 
+from a library. 
+
+In settings, these can be defined by the user, represented by this tag:
+<aichatclient:customparam min="" max"" effect="">
+
+
+
+DESIGNED CHATBOT OUTPUT
+
+The first call to the LLM only generates design layout placeholders in a
+wireframe containing a sentence in each container about what it should contain.
+Then the wireframe contents of this response are sent with the initial prompt to
+the AI again to fill in the containers with text.
+
+
+THE AI CHAT APP HAS DIFFERENT LAYOUT PRESETS FOR DIFFERENT USES
+
+Quick interaction for just getting an answer.
+
+
+
+THE AI CLIENT RECEIVES DIFF COMMANDS INSTEAD OF REGENERATING ENTIRE FILES
+
+A problem some software developers mention with the AI chatbots is that while
+working with them they will write over their good code or remove sections that
+were working.  This has to do with the AI having to do too much in one query
+because it regenerates the entire code file from scratch rather than making
+changes to specific sections.  When it regenerates the code, it can't handle all
+of the different aspects from the beginning and omits things that were there.  I
+think there is potential in having the the client receive a list of diff
+commands, with insertions and deletions being generated by the AI instead of the
+entire file.  To do this, it might be beneficial to generate unique IDs for each
+line number.
+
+
+
+
 
 
 

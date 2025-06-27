@@ -42,56 +42,58 @@ clarification and 10 being always ask for clarification.  The default is 5 which
 means ask for clarification whenever the prompt from the user is vague or there
 is information the user did not anticipate.  These instructions about the
 clarification menu will reside in the system prompt.  When the client receives a
-response with 	</aichat:clarification-response> it
-will render the menu and options accordingly and also handle key and mouse down
-events for the menu items.
+response with 	</aichat:clarification-response> it will render the menu and
+options accordingly and also handle key and mouse down events for the menu
+items.
 
-The user should be able to make the clarification response longer or take
-it in different directions, because at the time the clarification response appears
-the user will know other implications in the project or query.
+The user should be able to make the clarification response longer or take it in
+different directions, because at the time the clarification response appears the
+user will know other implications in the project or query.
 
 There is another case where, if the user makes an observation and sends it to
 the AI, such as the user is correcting the AI's response, the AI should, just
-like a person, make a statement that validates the comment but then also 
-show a clarification menu for what to do next.  For example:
-"What I see in the code is that lines 100-123 in api.js are in the middle of [computer task]
-and it isn't the place to detect [some kind of state in the program].
-"  The user might not have an answer as to what to do right there but the 
-AI can express agreement and then provide some options as what to do next.
-This situation also points to the need to have subqueries, or subprompts that
-are present only within the clarification menu so that the user can refine
-the plans of the AI before the next step.  Chat sequence steps will then have hierarchy.
-The overall one is the one today and it is flat.  But in this example there
-is a possible nested layer.
+like a person, make a statement that validates the comment but then also show a
+clarification menu for what to do next.  For example: "What I see in the code is
+that lines 100-123 in api.js are in the middle of [computer task] and it isn't
+the place to detect [some kind of state in the program]. "  The user might not
+have an answer as to what to do right there but the AI can express agreement and
+then provide some options as what to do next. This situation also points to the
+need to have subqueries, or subprompts that are present only within the
+clarification menu so that the user can refine the plans of the AI before the
+next step.  Chat sequence steps will then have hierarchy. The overall one is the
+one today and it is flat.  But in this example there is a possible nested layer.
 
-Alt+LeftClick/Opt+LeftClick on a clarification option will open it in a tab of the current session,
-which is in keeping with our section below, "BRANCHING OFF AND SIDE QUERIES."
-On mobile and desktop there will be a small button affixed to the side of
-the button that is a symbole for "branch off" that puts it in a tab.
+Alt+LeftClick/Opt+LeftClick on a clarification option will open it in a tab of
+the current session, which is in keeping with our section below, "BRANCHING OFF
+AND SIDE QUERIES." On mobile and desktop there will be a small button affixed to
+the side of the button that is a symbole for "branch off" that puts it in a tab.
 
 We also want dropdown menus to happen, such as "Programming Language : [Python]"
-which will be represented by <nct:configoption-dropdownmenu><option>Python</option>
+which will be represented by
+<nct:configoption-dropdownmenu><option>Python</option>
 <option>JavaScript</option></nct:configoption>.
 
 
 INTERMEDIATE RESPONSES II. MANUALLY-TURNED ON AND OFF: "SPECIFICATION
 QUESTIONNAIRES" (WITH SWITCH NEAR PROMPT TEXT BOX)
 
-The user may choose to deliberately write initial requests or questions and then,
-when the mode "Specification Questionnaires" is turned on with a checkbox, the
-AI will generate specification information collection forms or questionnaires, 
-of a length determined by the user.  This allows the user to have the AI collect
-all of the implications it finds for a project.  It has multiple uses.  There are
-a lot of times when the user knows that there are aspects of the projects that will
-come up that the AI will know about that the user might not consider.  The user
-might make some objective with slightly ambiguous implications that require distinctions, 
-issues which the AI will often recognize and bring up.
+The user may choose to deliberately write initial requests or questions and
+then, when the mode "Specification Questionnaires" is turned on with a checkbox,
+the AI will generate specification information collection forms or
+questionnaires, of a length determined by the user.  This allows the user to
+have the AI collect all of the implications it finds for a project.  It has
+multiple uses.  There are a lot of times when the user knows that there are
+aspects of the projects that will come up that the AI will know about that the
+user might not consider.  The user might make some objective with slightly
+ambiguous implications that require distinctions, issues which the AI will often
+recognize and bring up.
 
-Additionally, there is the case with these questionnaires where the AI will gather feedback
-from the first screen, process it, and then have new questions to ask based on that information.
-So then it will generate a new questionnaire screen in place to get more information.
-In this way it will have a much better impact on the final result than the user pushing
-back and forth with AI chat responses like right now.
+Additionally, there is the case with these questionnaires where the AI will
+gather feedback from the first screen, process it, and then have new questions
+to ask based on that information. So then it will generate a new questionnaire
+screen in place to get more information. In this way it will have a much better
+impact on the final result than the user pushing back and forth with AI chat
+responses like right now.
 
 
 An example:
@@ -104,8 +106,17 @@ complexity or examples.
 
 Whether it is automatic clarification questions that appear or specification
 questionnaires, in both cases a breadcrumb or history can be stored, including
-in the form of sequential tabs from left to right, so that the user can
-explore different aspects of the same topic.
+in the form of sequential tabs from left to right, so that the user can explore
+different aspects of the same topic.
+
+
+INTERMEDIATE RESPONSES IIb. SAMPLE SELECTIONS MENUS
+
+For tasks such as translation, the output can have different variations
+possible.  The user can ask the AI to give a list of sample output, allowing the
+user to choose what style, for example, will be applied. This can apply to color
+schemes, design layouts.  The AI can give previews of different solutions it
+will make for a code problem.
 
 
 INTERMEDIATE RESPONSES III: MODIFIABLE OUTLINE AND PLANS
@@ -129,8 +140,15 @@ be able to branch off from the initial chat session and return to it.  The AI
 chatbot can certainly have other tools too, like built-in dictionaries and the
 ability to add categorization tags to chat sessions.
 
-"Send to Scrapbook" button on any chat response allows sending the contents
-of that specific response to the client's scrapbook.
+From a menu of options (e.g. clarification menu), once a user selections one of
+them, the result is a new tab.  The user can then go back to the first menu and
+select a different option and a tab will open next to the previously generated
+tab.  Each time a question menu or interactive form shows up, it will occupy its
+own tab. This allows the user to go traverse the AI output, backwards and
+forwards.
+
+"Send to Scrapbook" button on any chat response allows sending the contents of
+that specific response to the client's scrapbook.
 
 
 HYPERTEXT FEATURES
@@ -282,8 +300,8 @@ outline window or tab for projects, optional. Updated as project progresses
 while also editable. A maintained tracking window.
 
 A similar window for writing code is one, driven by an AI agent, that maintains
-a navigable diagram (MermaidJS) of the project, where clicking on an element will
-go to that section in the code.
+a navigable diagram (MermaidJS) of the project, where clicking on an element
+will go to that section in the code.
 
 
 CLIENT-SIDE COMPONENTS
@@ -291,10 +309,40 @@ CLIENT-SIDE COMPONENTS
 Webview and code editing in two different tabs for updating the result.
 
 
+PHILOSOPHICAL COMMENTS
 
-
-
-
+People are generally focused first on what the AI can do for them directly, how
+they can gain from it.  The software developers think this way, and from this
+mindset comes their treating AI as a way to automate or achieve without effort. 
+They make products around these limited goals.  This is a dead end, because when
+software is built from this mindset, the AI can never play the role as a tool,
+only carry out tasks as a servant.  Those are two different states. A better
+starting point for the software developer is to identify what the gaps in
+capability and knowledge are between the person trying to use AI and what the AI
+itself can do and has available, for any task.  Let's say the person wants to
+write code for a project.  The AI knows all the ways the person's code can be
+written and how his or her project can be put together, as well as the
+implications of any given move he makes, at any given step.  It's extremely
+capable in this respect.  The person doesn't have that range of knowledge, so
+why is he dictating to the AI step by step, as if he the one who knows?  An LLM
+has inconceivable amounts information available on any given topic, and if you
+ask it a question it has to select  from its information and summarize.  This
+means the software developer didn't give it a chance to tell him what it knows
+before he gave it instructions and he goes down a narrow path of reacting to its
+responses (ChatGPT today) and struggling to get what he wants.  Then he can't
+truly make use of the AI as a tool, because he isn't acknowledging what it has
+versus himself.   In many cases, the available instructions should be generated
+by the AI itself.   You react to those and thereby continuously inform the AI
+based on what it tells you.   This is genuine interaction with the AI and it
+will produce superior results.  You have allowed the AI to play its role as the
+thing that knows, and you equip it with preliminary information at any given
+step from options it generated from its knowledge.  The AI helps you instruct it
+by giving you relevant instructions to give it for the current situation or step
+in the process.  The AI has to be allowed to interject under certain conditions,
+such as if the person's request is too vague and needs clarification, because it
+knows more factual information.   By allowing the AI to interject, and telling
+it how to interject and under what conditions, it gets valuable information for
+the user's next step based on its vast collection of knowledge.
 
 
 

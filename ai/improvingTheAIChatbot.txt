@@ -1,7 +1,7 @@
 
 Improving the AI Chatbot
 
-INTERMEDIATE RESPONSES: CLARIFICATION QUESTIONS
+INTERMEDIATE RESPONSES I: CLARIFICATION QUESTIONS
 
 Sometimes the AI chatbot user doesn't anticipate the different directions the
 response could go, or the variations in contents it could have, especially when
@@ -42,22 +42,77 @@ clarification and 10 being always ask for clarification.  The default is 5 which
 means ask for clarification whenever the prompt from the user is vague or there
 is information the user did not anticipate.  These instructions about the
 clarification menu will reside in the system prompt.  When the client receives a
-response with <aichat:clarification-response></aichat:clarification-response> it
+response with 	</aichat:clarification-response> it
 will render the menu and options accordingly and also handle key and mouse down
 events for the menu items.
 
+The user should be able to make the clarification response longer or take
+it in different directions, because at the time the clarification response appears
+the user will know other implications in the project or query.
 
-INTERMEDIATE RESPONSES II. MANUALLY-TURNED ON AND OFF: "SPECIFICATION QUESTIONNAIRES"
+There is another case where, if the user makes an observation and sends it to
+the AI, such as the user is correcting the AI's response, the AI should, just
+like a person, make a statement that validates the comment but then also 
+show a clarification menu for what to do next.  For example:
+"What I see in the code is that lines 100-123 in api.js are in the middle of [computer task]
+and it isn't the place to detect [some kind of state in the program].
+"  The user might not have an answer as to what to do right there but the 
+AI can express agreement and then provide some options as what to do next.
+This situation also points to the need to have subqueries, or subprompts that
+are present only within the clarification menu so that the user can refine
+the plans of the AI before the next step.  Chat sequence steps will then have hierarchy.
+The overall one is the one today and it is flat.  But in this example there
+is a possible nested layer.
 
-The user may choose to deliberately write vague requests or questions and then, when the mode
-"Specification Questionnaires" is turned on with a checkbox, the AI will generate specification 
-information collection forms, of a length determined by the user.  An example:
+Alt+LeftClick/Opt+LeftClick on a clarification option will open it in a tab of the current session,
+which is in keeping with our section below, "BRANCHING OFF AND SIDE QUERIES."
+On mobile and desktop there will be a small button affixed to the side of
+the button that is a symbole for "branch off" that puts it in a tab.
 
-Q: Write a sort algorithm
-R: What type of algorithm, language, and instructions do you want?
--- Algorithm Type - Specify which sorting algorithm, like bubble sort or quicksort.
--- Programming Language - Choose a language, such as Python, Java, or C++.
--- Other Details - Provide any additional preferences, like complexity or examples.
+We also want dropdown menus to happen, such as "Programming Language : [Python]"
+which will be represented by <nct:configoption-dropdownmenu><option>Python</option>
+<option>JavaScript</option></nct:configoption>.
+
+
+INTERMEDIATE RESPONSES II. MANUALLY-TURNED ON AND OFF: "SPECIFICATION
+QUESTIONNAIRES" (WITH SWITCH NEAR PROMPT TEXT BOX)
+
+The user may choose to deliberately write initial requests or questions and then,
+when the mode "Specification Questionnaires" is turned on with a checkbox, the
+AI will generate specification information collection forms or questionnaires, 
+of a length determined by the user.  This allows the user to have the AI collect
+all of the implications it finds for a project.  It has multiple uses.  There are
+a lot of times when the user knows that there are aspects of the projects that will
+come up that the AI will know about that the user might not consider.  The user
+might make some objective with slightly ambiguous implications that require distinctions, 
+issues which the AI will often recognize and bring up.
+
+Additionally, there is the case with these questionnaires where the AI will gather feedback
+from the first screen, process it, and then have new questions to ask based on that information.
+So then it will generate a new questionnaire screen in place to get more information.
+In this way it will have a much better impact on the final result than the user pushing
+back and forth with AI chat responses like right now.
+
+
+An example:
+
+Q: Write a sort algorithm R: What type of algorithm, language, and instructions
+do you want? -- Algorithm Type - Specify which sorting algorithm, like bubble
+sort or quicksort. -- Programming Language - Choose a language, such as Python,
+Java, or C++. -- Other Details - Provide any additional preferences, like
+complexity or examples.
+
+Whether it is automatic clarification questions that appear or specification
+questionnaires, in both cases a breadcrumb or history can be stored, including
+in the form of sequential tabs from left to right, so that the user can
+explore different aspects of the same topic.
+
+
+INTERMEDIATE RESPONSES III: MODIFIABLE OUTLINE AND PLANS
+
+The AI provides an interactive form, with textboxes underneath each section and
+editable outline points, that indicates what it plans to do next.  The user then
+gets a chance to make changes.
 
 
 
@@ -74,6 +129,9 @@ be able to branch off from the initial chat session and return to it.  The AI
 chatbot can certainly have other tools too, like built-in dictionaries and the
 ability to add categorization tags to chat sessions.
 
+"Send to Scrapbook" button on any chat response allows sending the contents
+of that specific response to the client's scrapbook.
+
 
 HYPERTEXT FEATURES
 
@@ -82,8 +140,8 @@ metadata features to the text.  These might include definitions for certain
 terms, especially for translated materials, and contextual information.  The AI
 can generate hypertext features, assisting in the use of text.
 
-When the question mark cursor is activated during hypertext mode, clicking on
-a term will open up a bubble explaining it, querying the AI for the popover.
+When the question mark cursor is activated during hypertext mode, clicking on a
+term will open up a bubble explaining it, querying the AI for the popover.
 
 
 INTERACTIVE FORMS
@@ -175,14 +233,13 @@ the provided tags, amounting to mini-applets in any given response.
 
 CUSTOM PARAMETERS (AND ACCOMPANYING GUI CONTROLS) FOR AI CHATBOT
 
-The clarification frequency is a parameter controlled by a slider 
-in our AI Chatbot Lab, for determining how often the AI interjects with 
-an intermediate clarification menu for vague questions or cases where there is information that could assist
-forming the answer, including when the user could not have anticipated 
-that the question would be highly beneficial.  The user should be 
-able to add custom parameters and matching GUI controls like this of
-his own that affect the output, such as tone.  There can also be presets 
-from a library. 
+The clarification frequency is a parameter controlled by a slider in our AI
+Chatbot Lab, for determining how often the AI interjects with an intermediate
+clarification menu for vague questions or cases where there is information that
+could assist forming the answer, including when the user could not have
+anticipated that the question would be highly beneficial.  The user should be
+able to add custom parameters and matching GUI controls like this of his own
+that affect the output, such as tone.  There can also be presets from a library.
 
 In settings, these can be defined by the user, represented by this tag:
 <aichatclient:customparam min="" max"" effect="">
@@ -215,6 +272,24 @@ think there is potential in having the the client receive a list of diff
 commands, with insertions and deletions being generated by the AI instead of the
 entire file.  To do this, it might be beneficial to generate unique IDs for each
 line number.
+
+
+PLANNING AND PROJECT TRACKING WINDOW
+
+This represents a broader usage of the LLM within an app beyond simple back and
+forth chatting, where the app integrates other aspects. Persistent planning and
+outline window or tab for projects, optional. Updated as project progresses
+while also editable. A maintained tracking window.
+
+A similar window for writing code is one, driven by an AI agent, that maintains
+a navigable diagram (MermaidJS) of the project, where clicking on an element will
+go to that section in the code.
+
+
+CLIENT-SIDE COMPONENTS
+
+Webview and code editing in two different tabs for updating the result.
+
 
 
 

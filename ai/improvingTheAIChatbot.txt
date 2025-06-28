@@ -5,26 +5,25 @@ INTERMEDIATE RESPONSES I: CLARIFICATION QUESTIONS
 
 Sometimes the AI chatbot user doesn't anticipate the different directions the
 response could go, or the variations in contents it could have, especially when
-asking about a topic that is unfamiliar. This is definitely true for programming
-projects, where a seemingly simple query to the AI can entail many possible
-approaches for the code. This points to the need for an intermediate stage of
-response, which is a clarification menu that shows up before the output is
-generated (a feature that is turned off if desired).  The AI would use it only
-when necessary.  Initially I would try mapping the ASDF keys in reverse order
-[FDSA] to a 4-option menu, so that the user can proceed rapidly just by pressing
-a key and not get hung up by intermediate clarification questions. "For this
-code, for the [topic] do you want F) D) S) or A) ?". This menu would only appear
-when the AI determined it is beneficial.  It would not be limited to code
-situations but rather is present at any time.  (The user could also insert
-shorthand into the prompt for requesting varying degrees of clarification
-menus.) Pressing RETURN will just move past the menu. When relevant, for more
-involved matters, the clarification menu would carry multiple layers of
-questions (a tree of questions) when the AI knows that a satisfactory response
-likely requires that the user give multiple specification answers in advance.
-The key issue is that the user does not always know the issues implied by a
-query, and so many pages of text are generated in the chat session as the user
-tries to refine the output, whereas often the AI could have asked clarifying
-questions.
+asking about a topic that requires experience or is unfamiliar to the user. This
+is definitely true for programming projects, where a seemingly simple query to
+the AI can imply many possible approaches for the code. This points to the need
+for an intermediate stage of response, which is a clarification menu that shows
+up before the output is generated.  The AI would use it when the user decides. 
+Initially I would try mapping the ASDF keys in reverse order [FDSA] to a
+4-option menu, so that the user can proceed rapidly just by pressing a key and
+not get hung up by intermediate clarification questions. "For this code, for the
+[topic] do you want F) D) S) or A) ?". This menu would only appear when the AI
+determined it is beneficial.  It would not be limited to code situations but
+rather is present at any time.  (The user could also insert shorthand into the
+prompt for requesting varying degrees of clarification menus.) Pressing RETURN
+will just move past the menu. When relevant, for more involved matters, the
+clarification menu would carry multiple layers of questions (a tree of
+questions) when the AI knows that a satisfactory response likely requires that
+the user give multiple specification answers in advance. The key issue is that
+the user does not always know the issues implied by a query, and so many pages
+of text are generated in the chat session as the user tries to refine the
+output, whereas often the AI could have asked clarifying questions.
 
 For the shorthand, the user can dictate inside the prompt which issues of
 specifications it wants the AI to ask questions about.  For a code project, the
@@ -344,6 +343,25 @@ knows more factual information.   By allowing the AI to interject, and telling
 it how to interject and under what conditions, it gets valuable information for
 the user's next step based on its vast collection of knowledge.
 
+
+NOT MUCH CAN BE PROVIDED BY THE USER IN A PROMPT.
+
+There is a noticeable limitation in the chatbot software's usefulness despite
+the AI's immense power, because the chatbots don't ever provide one or more
+preliminary questions before responding to queries, which could give them a
+broader picture of the user's goals.  As a result, they can't know that much
+about what you are trying to get from them, apart from what you type out one
+prompt at a time.  And typing out prompts in reaction to generated output is not
+an adequate protocol.  Why not offload the work of informing the AI about what
+you want onto to the AI itself?  It will be better this way: the AI can ask a
+question, provide some pertinent options, and get some input before responding.
+The AI will have more information that it needs to respond satisfactory, which
+you can't be expected to put together by yourself in a prompt.  The AI can
+present some preliminary questions accompanied with menu options, mentioning
+aspects of the original query that a person hadn't considered.  Then the path
+the interaction with the AI is different than the current chatbot.
+
+
 DISCUSSING THE CODE-GENERATING EDITORS
 
 On the one hand, it is impressive to see code inserted into a project, entire
@@ -380,14 +398,15 @@ to the software developer but all good practices like this should be included as
 options in a development environment and made convenient too.
 
 
+
 UTILIZING PRELIMINARY DIALOGUES / INTERMEDIATE MENUS FOR GUIDING CODE GENERATION
 AND EDITING FOR DIFFERENT LEVELS OF THE PROJECT
 
 When a code editor assists a person in generating code, what is left out of
 these code-generation editors is an acknowledgment that there are different
-approaches to code and corresponding guidelines that the AI agents can follow. 
+approaches to code and corresponding guidelines that the AI agents can follow.
 This is opposed to the current situation where it just write code for a request.
- Should the AI, when generating the code and analyzing the project, move it
+Should the AI, when generating the code and analyzing the project, move it
 towards procedural, declarative, or some other programming philosophy?
 
 As is said above, what is important is that the user be provided options
@@ -415,6 +434,46 @@ would include how a line of code is written, how variables are declared, how .
 Though the user could hypothetically do all of these by himself or herself, the
 reality is that they should all be managed by the AI.
 
+
+NOTES SECTION 1.
+
+A preliminary response dialogue or intermediate dialogue is an interactive step
+generated by the AI in response to what the user asked.  The goal is to go
+beyond just answering directly what the user asked in a prompt and treat the
+prompt as a starting point that requires the AI's involvement, where the AI
+generates forms. It can appear in multi-step form, with a decision tree carrying
+the paths the user can travel for the single question or multiple questions
+within an interactive form. In another situation, it can just be a single
+question carrying a few different menu options. Some may have controls.   In the
+case that a feature called "automatic clarification dialogues" is turned on, the
+AI recognizes when the user's prompt, without providing more information, will
+lead to an unpredictable outcome for the user's goals.  This includes cases
+where the user may not have anticipated aspects implied by his or her own query
+and the AI can.  When manually triggered by the user, this kind of dialogue
+allows
+
+Preliminary dialogue sequences can take on different forms and serve different
+purposes, ranging from just a single question to generation of actual GUI
+controls for the AI to gather complex information.  For collecting information
+for a project before proceeding, the AI may generate one or more pages of
+interactive forms.  Importantly, these forms can be modified by the user, and
+not necessarily in the current static way.  AI can be integrated anywhere, and
+the modification of the interactive form is a sub-location where the user can
+once again be in dialogue and collaboration with the AI to shape it, so that the
+questions asked reflect the project and are informed.  He or she does not have
+to leave the interactive form to revise it with more information from AI, in
+other words.
+
+In future AI chatbot software, selecting one of the options from the provided
+menu of options opens a new tab within the pane.  You can return to the original
+menu pane and open another option in another tab.  You will be able to interact
+with an AI-generated menu, including regenerate it in place with revisions.
+
+You will be able to customize the AI chatbot interface and add different submit
+buttons beneath the main prompt. "Get Questions First" asks a certain number of
+questions (configured by you) to get the kinds of preliminary messages that
+serve you want. Another button might be "Get Interactive Form" and you use it to
+trigger an interactive form.
 
 
 

@@ -1,5 +1,34 @@
-
 Improving the AI Chatbot
+
+INTRODUCTION
+
+Steering AI responses towards satisfactory outcomes involves having it ask 
+questions before answering or allowing it to mention a range of options for
+a situation.  Then the user can be given an opportunity to revise or refine what
+the AI offers to generate, within a sequence of interaction. Before taking action for the user, the
+AI should be set up to collect information on important points, ranging from
+large to small depending on the usage of AI. There are times when the AI can
+interject to ask for clarification because some aspect of the project is ambiguous or incomplete
+or perhaps the question asked by the user has other implications.
+Many times, the user will instruct the AI to provide him or her questions.  It
+is important that the user is able to ask it to do more than just ask for questions 
+but also steer the AI towards the right kinds of questions for the situation and revise
+the questions being asked.  This is the beginning of introducing genuine process
+to the use of AI when currently the interactivity is structured as long responses from
+queries.  Because they are not informed, the responses have to make many assumptions on 
+many points, traveling far into any endeavor before the user has a chance to tell the AI 
+whether it strayed from the goal of the request anywhere, on any point.  The user then has to pull the AI
+back to what he or she wants, sometimes laboriously pointing out what wasn't wanted, all
+because there was an absence of any questions at the outset.  If there are any questions, 
+they are currently tacked on to the very end of a response. The AI is only doing what it
+is set up to do, which is generate long answers with the limited information put in the
+prompt.
+
+The first move to make is an AI chatbot app that is provided a multi-purpose
+interactive form file format that is tailored for each situation where the AI
+will be involved in collecting preliminary information or asking questions to
+know the needs and goals of the situation.
+
 
 INTERMEDIATE RESPONSES I: CLARIFICATION QUESTIONS
 
@@ -830,7 +859,7 @@ will see what needs to be added to the project and what needs to be worked on
 and the AI can work backwards.
 
 What is also important is that an introductory guide is addressing the end user
-with an overview instead of just the person or persons developing the product. 
+with an overview instead of just the person or persons developing the product.
 By giving a picture ahead of time for how the product will be used and received,
 it shows what needs to be done.  The description of what the product is is more
 helpful when it is explaining it to the intended audience.  From the very start
@@ -861,26 +890,6 @@ PROMPT: "Make an example app with <nct:app></nct:app> as the enclosing tag. You
 can make any tags up that you need and any conventions necessary that fit into
 our philosophy."
 
-
-ASK THE AI HOW TO DO THINGS (TELLING IT THAT EACH QUESTION IMPLIES THAT IT
-SHOULD FILL IN ANY REQUIRED FEATURES IN THAT ARE NOT YET THERE).
-
-
-The questions asked of the AI, (e.g. "How do I get NCT Framework to make a three
-column tree view for browsing the contents of a JSON file?") will then give the
-AI the opportunity to find out 1) whether the software can do it already  2)
-what needs to be made to address the aspects that cannot yet be accomplished  3)
- What, if anything, should be changed when one of these aspects is implemented
-to ensure that the whole is integrated and reflects the philosophy of the
-project.
-
-PROMPT: "I am going to ask questions of you, as if I am a user of the end
-software, that reveal what aspects of the software need to be made. The
-questions asked of you. will then give you opportunity to find out 1) whether
-the software can do it already 2) what needs to be made to address the aspects
-that cannot yet be accomplished  3) What, if anything, should be changed when
-one of these aspects is implemented to ensure that the whole is integrated and
-reflects the philosophy of the project."
 
 
 AI-GENERATED CODE VS. CRAFTED PRODUCTS
@@ -927,6 +936,60 @@ Prompt text: "Add features that you think would help or fill in gaps, in keeping
 with our philosophy for the project."
 
 
+
+ASK THE AI HOW TO DO THINGS (TELLING IT THAT EACH QUESTION IMPLIES THAT IT
+SHOULD FILL IN ANY REQUIRED FEATURES IN THAT ARE NOT YET THERE).
+
+
+The questions asked of the AI, (e.g. "How do I get NCT Framework to make a three
+column tree view for browsing the contents of a JSON file?") will then give the
+AI the opportunity to find out 1) whether the software can do it already  2)
+what needs to be made to address the aspects that cannot yet be accomplished  3)
+What, if anything, should be changed when one of these aspects is implemented to
+ensure that the whole is integrated and reflects the philosophy of the project.
+
+Prompt: "I am going to ask questions of you, as if I am a user of the end
+software, that reveal what aspects of the software need to be made. The
+questions asked of you will then give you opportunity to find out 1) whether the
+software can do it already 2) what needs to be made to address the aspects that
+cannot yet be accomplished  3) What, if anything, should be changed when one of
+these aspects is implemented, to ensure that the whole is integrated and
+reflects the goals and philosophy of the project."
+
+Prompt: "Here is a basic situation for our product [e.g. sample code for a to-do
+list app for a software development framework]. I am going to ask you questions,
+as if I am a user of the end software [e.g. the dev framework ], that reveal
+what aspects of the software need to be made if our software cannot accommodate
+the situation. The questions asked of you will then give you opportunity to find
+out 1) whether the software can do it already 2) what needs to be made to
+address the aspects that cannot yet be accomplished  3) What, if anything,
+should be changed when one of these aspects is implemented, to ensure that the
+whole is integrated and reflects the goals and philosophy of the project."
+
+For a software development framework this is especially important because there
+are all kinds of scenarios that have to be anticipated and this would require a
+team usually to work on it.  But if you have the AI start with a basic app and
+then ask it how it would add certain features to the app, it can then
+simultaneously come up with the features that are needed, fit them into the
+existing structure of the project.
+
+
+REFERENCES FOR HAVING THE APPROACH A PRODUCT
+
+If you want the AI to approach the product development a certain way, it is best
+to give it lots of references and a background on the goals and philosophy of
+the project. This would mean lots of instances on how to handle different
+circumstances.  If it were an Apple type of consumer app you wanted it to make,
+you would give it lots of examples of how the software is to be put together,
+how to handle different situations for the end user, how the GUI is constructed.
+
+For apps made with Bimodal Control Theory, the AI can be given a document that
+explains the theory, featuring explanations and guides for how to use existing
+pieces of software that implement it (NPSurfer, the vector-drawing demo, the
+tablet computer demo).  You explain to it in this document that every control
+makes use of key-clicks, which comes from the Bimodal Control Theory.
+
+
 PROBLEM RESOLUTION STRATEGIES
 
 
@@ -961,4 +1024,23 @@ LOGIC TAGS GENERATED BY THE AI FOR THE PROGRAM
 
 
 
+INTERACTIVE FORMS FOR AI (.iformai)
 
+For the AI. Provides the form configuration for intermediate step, such as
+collecting information.
+
+- includes gui controls - everything editable and deletable by the user for
+responding. - user can add questions to the form and answer them such as when
+the form's goal is to assemble goals or requirements for a project. - allows for
+asking questions to the AI inline. - user can send interactive form back to AI
+with revision notes for form updates before submitting it.
+
+- form has different aspects defined for use by the AI: "preform" which is the
+example outline, "allowable" which is the types of controls permitted,
+"objective" which is the purpose of the form. "config" is the max or minimum
+count of questions. "arrangement" is the layout of the form, whether it is a
+slideshow, tab, etc.
+
+- form tree: can end up asking just a single question to begin with, which then
+branches out into larger form of questions.  or can just ask a single question
+and return with multiple choice.  

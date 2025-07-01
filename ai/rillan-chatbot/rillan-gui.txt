@@ -1,0 +1,186 @@
+Information is separated into tab views and accordions. The
+viewer allows switching between either one with the same
+control.
+
+- tab views
+- accordion
+- slide show
+
+
+FORMATTING FOR TUTORIALS AND STEP-BY-STEP GUIDES: SLIDE SHOWS
+
+The AI chatbot front-end should treat tutorials and step-by-step guides
+differently by allowing multiple views.  By default, I would show them in a
+slideshow layout, with back and forward buttons.  Then, in any given slide the
+user should be able to ask questions and the answers appear on that slide as a
+new tab.  If the step's information takes up more than one slide the same tabs
+would appear on all of the slides for that step.
+
+TAGS USED
+
+Below is a comprehensive list of tags extracted from the provided document related to improving the AI chatbot, followed by additional tags inferred or suggested based on the context of the document. The document outlines various enhancements to AI chatbot interactions, focusing on preliminary questions, interactive forms, plan notifications, and post-production stages, among other features. The tags are categorized for clarity and reflect both the explicit mentions in the text and potential extensions aligned with the document’s goals.
+
+---
+
+### Tags Extracted from the Document
+
+When the AI client receives input, it processes all tags that come with the
+<aichat- prefix so that it can structure content, define interactive elements, 
+and control the AI chatbot interface.  This list is sent to the LLM each
+time, so it is good that when it is compact and consolidated.
+
+#### 1. Structural and Layout Tags
+- `<aichat-layout:flexboxcontainer>` - Defines a flexible box layout container for organizing content.
+
+A titled list is rendered as a list (default), an accordion, a tab view, a slideshow, or a grid.
+The controlView attribute is what determines whether it is rendered
+as a list (default), a tabview, an accordion, or 
+a grid.  Controls that have these names in them are just subclasses of <aichat-control:titledlist>
+
+
+- `<aichat-control:titledlist>` - A list with titled items, customizable via attributes like `controlView`.
+- `<aichat-control:titledListItem>` - An item within a titled list, containing title, description, and contents.
+- `<aichat-control:title>` - Specifies the title of a list item or section.  The tab's title.
+- `<aichat-control:description>` - Provides a description for a list item or section.  The tab's description (in tool tip)
+- `<aichat-control:contents>` - Holds the main content of a list item or section. The tab's contents
+
+attributes: gridCols, gridRows for controlView="grid"
+
+
+Subclasses of <aichat-control:titledlist> that have defaults for the controlView attribute.
+
+
+- `<aichat-layout:tabview>` - Creates a tabbed view for separating content into navigable sections.
+- `<aichat-layout:accordion>` - Creates an accordion view for separating content into navigable sections.
+- `<aichat-layout:grid>` - Creates an grid view for separating content into navigable sections.
+- `<aichat-layout:slideshow>` - Creates an grid view for separating content into navigable sections.
+
+
+#### 2. GUI Control Tags
+- `<aichat-gui-control:button>` - A clickable button for user actions.
+- `<aichat-gui-control:textfield dataformat="plaintext">` - A text input field, with a specified data format (e.g., plaintext).
+- `<aichat-gui-control:numberfield>` - An input field for numeric values (e.g., integer, float).
+- `<aichat-gui-control:checkbox>` - A checkbox for binary selections.
+- `<aichat-gui-control:radiogroup>` - A group of radio buttons for mutually exclusive options.
+- `<aichat-gui-control:radiobutton>` - An individual radio button within a radiogroup.
+- `<aichat-gui-control:slider-1d>` - A one-dimensional slider for selecting a value along a single axis.
+- `<aichat-gui-control:slider-2d>` - A two-dimensional slider for selecting values on two axes.
+- `<aichat-gui-control:slider-circular>` - A circular slider for radial value selection.
+- `<aichat-gui-control:colorpicker>` - A control for selecting colors.
+- `<aichat-gui-control:sequencer-1d>` - A one-dimensional sequencer (e.g., for drum patterns).
+- `<aichat-gui-control:sequencer-2d>` - A two-dimensional sequencer (e.g., for musical notes).
+- `<aichat-control:curveeditor>` - An editor for manipulating curves or graphs.
+- `<aichat-control:sequencer1d cols="8">` - A 1D sequencer with 8 columns, used for structured input.
+- `<aichat-control:sequencer2d rows="5" cols="8">` - A 2D sequencer with 5 rows and 8 columns.
+
+#### 3. Interactive Form Tags
+- `<aichat:textfield>` - A basic text input field within an interactive form.
+- `<aichat:slider>` - A slider control for selecting values within a form.
+- `<nct:configoption-dropdownmenu>` - A dropdown menu for selecting configuration options.
+- `<option>` - An individual option within a dropdown menu.
+- `<aichat:updateinplace>` - Updates the content of an interactive form in its current location.
+
+#### 4. Document and External Data Tags (Future)
+- `<ai-chat-document-viewer type="pdf">` - Displays a document (e.g., PDF) within the chatbot interface.
+- `<ai-chat-iframe url="">` - Embeds an external webpage or resource via an iframe.
+
+#### 5. Custom Parameter Tags (Future)
+- `<aichatclient:customparam min="" max="" effect="">` - Defines custom parameters with minimum, maximum, and effect attributes.
+
+#### 6. Logic and Action Tags (Future)
+- `<actionBlock>` - Encapsulates a block of actions or logic.
+- `<condition name="" states="">` - Specifies a condition with a name and possible states.
+- `<sequence>` - Defines a sequence of actions or steps.
+- `<action>` - An individual action within a sequence or block.
+
+#### 7. Special Tags
+- `<aichat:clarification-response>` - Indicates a response requiring user clarification, often with a menu.
+
+
+---
+
+### Additional Tags Inferred from the Document
+
+Based on the document’s focus on enhancing AI chatbot interactivity, user guidance, and structured processes, the following tags are suggested to complement the existing ones and support the proposed features (e.g., preliminary dialogues, plan notifications, branching queries, and post-production overviews).
+
+#### 1. Form and Input Tags
+- `<aichat-form:submit>` - A submit button for sending form data to the AI.
+- `<aichat-form:reset>` - Resets the form to its initial state.
+- `<aichat-form:fieldset>` - Groups related form elements together.
+- `<aichat-form:legend>` - Provides a caption for a fieldset.
+- `<aichat-form:label>` - Labels a form control for better usability.
+
+#### 2. Navigation and Menu Tags
+
+- `<aichat-menu:dropdown>` - A dropdown menu for navigation or selections.
+- `<aichat-menu:item>` - An item within a menu.
+- `<aichat-menu:submenu>` - A nested menu within a dropdown or main menu.
+- `<aichat-navigation:breadcrumb>` - Displays a breadcrumb trail for navigation history.
+- `<aichat-navigation:tab>` - A standalone tab for navigation purposes.
+
+#### 3. Feedback and Notification Tags
+- `<aichat-feedback:success>` - Displays a success message to the user.
+- `<aichat-feedback:error>` - Shows an error message.
+- `<aichat-feedback:warning>` - Presents a warning to the user.
+- `<aichat-notification:alert>` - A prominent alert notification.
+- `<aichat-notification:toast>` - A temporary, non-intrusive notification.
+
+#### 4. Media and Content Tags
+- `<aichat-media:image src="">` - Embeds an image with a source URL.
+- `<aichat-media:video src="">` - Embeds a video with a source URL.
+- `<aichat-media:audio src="">` - Embeds an audio file with a source URL.
+- `<aichat-content:blockquote>` - Formats a block quotation.
+- `<aichat-content:codeblock language="">` - Displays code with a specified programming language.
+
+#### 5. Accessibility Tags
+- `<aichat-accessibility:aria-label>` - Adds an ARIA label for accessibility.
+- `<aichat-accessibility:aria-describedby>` - Links a description to an element.
+- `<aichat-accessibility:aria-hidden>` - Hides an element from assistive technologies.
+
+#### 6. Styling and Theming Tags
+- `<aichat-style:theme name="">` - Applies a named theme to the interface.
+- `<aichat-style:css class="">` - Applies custom CSS classes.
+- `<aichat-style:inline>` - Defines inline styles for an element.
+
+#### 7. Data Binding and Dynamic Content Tags
+- `<aichat-data:bind property="">` - Binds data to a property for dynamic updates.
+- `<aichat-data:repeat for="">` - Repeats content based on a data set.
+- `<aichat-data:if condition="">` - Conditionally displays content.
+- `<aichat-data:else>` - Provides an alternative for an `if` condition.
+
+#### 8. Event Handling Tags
+- `<aichat-event:onClick>` - Triggers an action on a click event.
+- `<aichat-event:onChange>` - Responds to changes in a control’s value.
+- `<aichat-event:onSubmit>` - Handles form submission events.
+- `<aichat-event:onLoad>` - Executes an action when content loads.
+
+#### 9. AI-Specific Interaction Tags
+- `<aichat-ai:generate>` - Instructs the AI to generate content.
+- `<aichat-ai:regenerate>` - Requests the AI to regenerate content.
+- `<aichat-ai:suggest>` - Prompts the AI to provide suggestions.
+- `<aichat-ai:clarify>` - Asks the AI to seek clarification from the user.
+- `<aichat-ai:preview>` - Displays a preview of AI-generated content.
+
+#### 10. User Interaction Tags
+- `<aichat-user:profile>` - Displays or manages user profile information.
+- `<aichat-user:preferences>` - Allows editing of user preferences.
+- `<aichat-user:history>` - Shows the user’s interaction history.
+- `<aichat-user:feedback>` - Collects feedback from the user.
+
+---
+
+### Explanation of Tag Usage and Additions
+
+The extracted tags from the document are primarily focused on creating an interactive AI chatbot interface that supports preliminary information collection (e.g., `<aichat:textfield>`, `<aichat:slider>`), plan notifications (e.g., `<aichat-control:titledlist>`), and structured layouts (e.g., `<aichat-layout:tabview>`). They also include controls for dynamic user input (e.g., `<aichat-gui-control:slider-2d>`) and logic for decision-making (e.g., `<actionBlock>`).
+
+The additional tags enhance these capabilities by addressing gaps identified in the document:
+- **Form and Input Tags**: Support the creation of detailed interactive forms for collecting user input, as emphasized in the “Preliminary Questions” and “Interactive Forms” sections.
+- **Navigation and Menu Tags**: Facilitate branching queries and side explorations, as described in “Branching Off and Side Queries.”
+- **Feedback and Notification Tags**: Enable the AI to communicate plans and outcomes clearly, aligning with “Plan Notification” and “Post-Production Stage.”
+- **Media and Content Tags**: Allow richer responses with multimedia, supporting the document’s vision of engaging interactions.
+- **Accessibility Tags**: Ensure the interface is usable by all, a consideration implied by the focus on user-friendly design.
+- **Styling and Dynamic Tags**: Provide customization and responsiveness, crucial for tailoring the chatbot to different use cases.
+- **Event and AI-Specific Tags**: Enhance interactivity and AI-driven features like clarification menus and content generation.
+- **User Interaction Tags**: Personalize the experience, supporting user-driven refinements as outlined throughout the document.
+
+These tags collectively enable the AI chatbot to implement the proposed enhancements, such as asking preliminary questions, notifying users of plans, and providing post-production summaries, while offering a robust, interactive, and user-centric interface.

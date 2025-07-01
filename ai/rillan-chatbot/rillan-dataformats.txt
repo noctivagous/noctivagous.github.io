@@ -1,0 +1,20 @@
+INTERACTIVE FORMS FOR AI (.iformai)
+
+For the AI. Provides the form configuration for intermediate step, such as
+collecting information.
+
+- includes gui controls - everything editable and deletable by the user for
+responding. - user can add questions to the form and answer them such as when
+the form's goal is to assemble goals or requirements for a project. - allows for
+asking questions to the AI inline. - user can send interactive form back to AI
+with revision notes for form updates before submitting it.
+
+- form has different aspects defined for use by the AI: "preform" which is the
+example outline, "allowable" which is the types of controls permitted,
+"objective" which is the purpose of the form. "config" is the max or minimum
+count of questions. "arrangement" is the layout of the form, whether it is a
+slideshow, tab, etc.
+
+- form tree: can end up asking just a single question to begin with, which then
+branches out into larger form of questions.  or can just ask a single question
+and return with multiple choice.

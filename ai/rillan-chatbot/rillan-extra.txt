@@ -1,0 +1,2 @@
+In one kind of intermediate menu, you can check off the kinds of questions you
+want the AI to ask you about the topic.

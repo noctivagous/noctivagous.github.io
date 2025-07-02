@@ -2,6 +2,26 @@
 AI Chatbot App : Rillan
 
 
+Rillan introduces preliminary and intermediate steps inside
+the current process of engaging with AI, to make an altogether different AI
+chatbot.  To summarize: one or more questions often will be
+asked by the AI before it gives a response, or the AI offers pathways
+for the user to traverse first before it goes about generating information 
+or carrying out tasks.  The user can intervene, modify, or move
+the direction of the AI at any step.  The user knows generally how
+to get quick answers to questions or long questionnaires for big projects
+and will be familiar with what kinds of menus will come up,
+(though the AI will be given adjustable range on determining this too).
+A longer questionnaire can have its questions edited, moved, changed, etc.
+The user can ask the AI for a solution to a problem located
+in a certain document and the AI will provide a menu of options for
+how to approach it, with the user moving down the pathway or shifting it.  
+The AI will then have so many conventions place don top that it is far
+away from the conventional chat where it just flatly responds to
+query by generating a text response or attempts to do a thing in
+an arrangement of agent processes. 
+
+
 INCORPORATING PROCESS INTO THE USAGE OF AN LLM WITH AN AI CHATBOT
 
 Today the AI does not ask anything or provide any information to the user as an
@@ -201,6 +221,8 @@ is the preview stage, which can give the user expectations about what is going
 to happen (e.g. response length) as well as  an opportunity to tweak the AI's
 plans just before it carries them out.
 
+For step 2), this can be initiated by the user when he wants to check in first and 
+ask, "tell me what you plan to do next."
 
 In both 1) and 2), the user can be given the opportunity to revise the AI's
 trajectory before it proceeds.  For step 1, the user can add or change questions

@@ -1,0 +1,107 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Interaction Demo</title>
+  <style>
+    .slideshow { display: none; }
+    .active { display: block; }
+    button { margin: 5px; padding: 10px; }
+    .container { max-width: 800px; margin: 20px auto; font-family: Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI Interaction Demo</h1>
+    
+    <!-- Quick Response Mode -->
+    <div id="quick-response">
+      <h2>Quick Response</h2>
+      <p>User Query: "What's the weather like?"</p>
+      <p>AI: "Sunny, 75°F."</p>
+    </div>
+
+    <!-- Enhanced Quick Response Mode -->
+    <div id="enhanced-quick">
+      <h2>Enhanced Quick Response</h2>
+      <p>User Query: "Give me a recipe."</p>
+      <p>AI: "Please select an option:"</p>
+      <button onclick="alert('Vegetarian recipe coming up!')">Vegetarian</button>
+      <button onclick="alert('Non-vegetarian recipe coming up!')">Non-Vegetarian</button>
+    </div>
+
+    <!-- Tutorial Mode with Slideshow -->
+    <div id="tutorial">
+      <h2>Tutorial Mode: How to Bake a Cake</h2>
+      <div id="slide1" class="slideshow active">
+        <h3>Step 1: Gather Ingredients</h3>
+        <p>Flour, sugar, eggs, butter...</p>
+        <button onclick="nextSlide('slide1', 'slide2')">Next</button>
+        <button onclick="askQuestion('Step 1')">Ask a Question</button>
+      </div>
+      <div id="slide2" class="slideshow">
+        <h3>Step 2: Mix Ingredients</h3>
+        <p>Combine dry and wet ingredients...</p>
+        <button onclick="nextSlide('slide2', 'slide3')">Next</button>
+        <button onclick="askQuestion('Step 2')">Ask a Question</button>
+      </div>
+      <div id="slide3" class="slideshow">
+        <h3>Step 3: Bake</h3>
+        <p>Bake at 350°F for 30 minutes.</p>
+        <button onclick="alert('Cake complete!')">Finish</button>
+        <button onclick="askQuestion('Step 3')">Ask a Question</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function nextSlide(current, next) {
+      document.getElementById(current).classList.remove('active');
+      document.getElementById(next).classList.add('active');
+    }
+    function askQuestion(step) {
+      let question = prompt(`Ask a question about ${step}:`);
+      if (question) alert(`AI: Let me help with "${question}"!`);
+    }
+  </script>
+</body>
+</html>

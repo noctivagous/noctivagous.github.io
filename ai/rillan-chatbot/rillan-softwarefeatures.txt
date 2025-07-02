@@ -1,0 +1,16 @@
+rillan software features
+
+history for going back and forth.
+
+What we want is for there to be an active target context for the "Send" and "Get
+Questions First" buttons.  If the target context is the main accordion, it is
+the conversation will add another accordion item like it does now.  If the
+target is the accordion item, it will add a tab to the accordion item and place
+the answer there.  the first without the Shift key held down adds
+
+
+In the long-term, you will be able to interact with the generated menu, 
+including regenerate them in place with alterations. 
+You will be able to customize the AI chatbot interface 
+and add different submit buttons ("Get Questions First") 
+to get the kinds of preliminary messages that you want.

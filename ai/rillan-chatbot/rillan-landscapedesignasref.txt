@@ -1,0 +1,64 @@
+
+We can use the process of landscape designer and client to improve AI, that
+the AI needs to know a lot more and the AI user needs to have menus of options
+
+The activity of working with a landscape designer provides a reference for
+stages of process and interaction between the AI and the user.  It has involves
+many factors that serve as a reference, as there are considerations for costs,
+preferences, timelines for implementations, and more.
+
+
+LANDSCAPE DESIGN
+
+Initial Consultation is Standard:
+
+Professional landscape designers typically start with a consultation to
+understand the client’s goals, lifestyle, aesthetic preferences, and functional
+needs (e.g., outdoor entertaining, low maintenance, or sustainability). Without
+this, as you noted, the outcome may not reflect the client’s desires. Similarly,
+AI systems like me require specific prompts to generate tailored outputs. For
+example, a vague AI prompt like “design a garden” is akin to telling a designer,
+“make my yard nice,” without specifying preferences for plants, layout, or
+style.
+
+
+Iterative Feedback:
+
+Landscape design is often an iterative process. Designers present concepts,
+sketches, or 3D renderings and refine them based on client feedback. This
+mirrors effective AI use, where users refine prompts based on initial outputs.
+Your scenario suggests the designer completes the project without input, which
+is less common. Instead, a more accurate analogy might be a client who provides
+minimal initial guidance and skips feedback rounds, leading to a final design
+that feels disconnected from their vision.
+
+
+Site-Specific Considerations:
+
+Landscape design requires analyzing the property’s physical characteristics
+(e.g., soil type, climate, topography, and existing vegetation). A designer
+working without this data might make poor choices, like planting water-intensive
+species in a drought-prone area. Similarly, AI needs context to produce relevant
+results. For example, an AI prompt lacking details about climate or yard size
+might suggest inappropriate plants or layouts.
+
+
+Client Involvement Varies:
+
+Busy professionals may delegate heavily, as you mentioned, but even they provide
+some direction (e.g., “I want a modern, low-maintenance yard”). Without any
+input, the designer’s choices might prioritize their signature style or
+cost-saving measures, which may not suit the client. In AI terms, this is like
+relying on default settings without customizing parameters, leading to generic
+or misaligned outputs.
+
+
+Post-Implementation Adjustments:
+
+Post-installation adjustments (e.g., replacing plants or tweaking layouts) are
+common but costly. This aligns with AI, where users should consider refine
+prompts or edit outputs after seeing initial results, emphasizing the importance
+of clear initial guidance.
+
+
+

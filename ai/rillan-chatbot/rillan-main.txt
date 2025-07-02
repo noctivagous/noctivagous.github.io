@@ -1,0 +1,268 @@
+
+AI Chatbot App : Rillan
+
+
+INCORPORATING PROCESS INTO THE USAGE OF AN LLM WITH AN AI CHATBOT
+
+Today the AI does not ask anything or provide any information to the user as an
+intermediate step before responding. Steering AI chatbot responses towards
+satisfactory outcomes first involves having it ask questions before answering or
+allowing it to present a range of options for a task, project, or request. This
+approach gives the user an opportunity to revise or refine what the AI offers
+before it proceeds to generate information, enabling a more effective sequence
+of interaction.  The AI can generate more preliminary menus and intermediate
+steps to achieve interactions that fit the dynamic of working with a computer
+and AI.
+
+If you hire a landscape designer to improve your property, isn't it speculating
+that you would get an outcome you are satisfied with just by saying, "come take
+care of my property"?  Professional landscape designers typically start with a
+consultation to understand the client’s goals, lifestyle, aesthetic preferences,
+and functional needs (e.g., outdoor entertaining, low maintenance, or
+sustainability).
+
+Sometimes busy professionals will provide minimal input and just let the
+designer do the rest, but without giving the designer any information, you will
+get whatever the person chooses, for aspects large and small, and if making it
+tailored to your interests is something that in any way matters to you, the
+results might not be what you want.  This is highly relevant to using today's AI
+software, in which the process exists as if you asked the landscape designer
+this prompt: ("Carry out a landscape design project on my property and implement
+[this and that feature]"). In this case, only after it was done were questions
+asked by the designer and that is point you started giving the landscape
+designer guidance.
+
+When you begin a landscape design project and hire someone, there are books and
+materials that can guide you and you can point to them during planning.  After
+opening up a book of portfolio properties the person has finished, you will
+still need to interact with the designer you hired, walk along the property
+together and discuss different aspects of the project, how it fits your
+property. There are many factors for any project, including cost. When getting
+started with and planning a project, there is actual back and forth.
+
+Let's consider why this is very important for an AI chatbot to have as well. If
+you were to run a simulated computing environment and you were working with an
+AI landscape architect, you would expect it ask about your specific goals (e.g.,
+low-maintenance plants, outdoor seating) or offer a set of design styles (e.g.,
+modern, rustic, native), options for you to choose from before proceeding and
+interactive menu paths you can follow.  Just by the AI offering you a menu of
+options you are being informed, as someone who isn't experienced in landscape
+design.  This is the kind of interactive sequence and preliminary the AI needs
+to take for a user of an AI chatbot (or other AI generator-based software) to
+achieve projects.
+
+Landscape design is often an iterative process. Designers present concepts,
+sketches, or 3D renderings and refine them based on client feedback.  The AI
+chatbots are not equipped with the types of interactions required to truly
+enable iterative feedback.
+
+To give another example, you don't have to know about hairstyles to get a
+haircut you want. At the hairstyle salon or barber shop, usually you will find a
+book of examples (called a "lookbook") and you can point to one as a guide for
+the hair stylist or barber. Then, after pointing to that you can be more
+specific and the barber will ask you questions too. If instead you say, "do
+whatever you think looks good," you could get anything if you don't know the
+person.  You won't even know how short the hair will be cut.
+
+
+In Example 1 below, the user asked for something but was vague. This triggered
+the clarification menu (a setting was turned to on). (In terms of features, 
+selecting an item does not selecting one of the options from the menu below 
+but instead opens a new tab within the pane and you can return to this menu 
+pane and open another option into another tab.
+
+
+EXAMPLE 1:
+
+User: Talk about Classical Chinese dance. AI: What aspect of Classical Chinese
+dance would you like me to focus on?
+
+[F] Overview – A general introduction to Classical Chinese dance.
+
+[D] History – The origins and historical development.
+
+[S] Techniques – Key movements, styles, and training methods.
+
+[A] Cultural Significance – Its role in Chinese culture and traditions.
+
+[G] Famous Examples – Notable performers, performances, or pieces.
+
+[H] Learning It – How to get started or resources for beginners.
+
+[J] Comparisons – How it differs from other dance forms.
+
+[K] Modern Adaptations – Contemporary versions or influences.
+
+[L] Other – Specify your own topic in the box: [Text Box].
+
+[Enter] My default - Overview – A general introduction to Classical Chinese
+dance.
+
+Press F, D, S, A, G, H, J, K, L, ; to select, or ⏎ to skip.
+
+
+Before taking action on behalf of the user, the AI should be configured to
+collect information on key points, ranging from broad to specific, depending on
+the context in which it is used. This ensures that the AI operates with a
+clearer understanding of the user's goals and constraints.
+
+There are times when the AI should interject to ask for clarification—when it
+detects ambiguity, encounters incomplete input, or identifies a potential issue
+during its process. In other instances, the AI may present a menu or set of
+options because the user’s original question has implications that were not
+anticipated. Through these interactive sequences, users can guide the AI toward
+generating more relevant questions and can revise those questions to better
+align with the task at hand.
+
+
+
+EXAMPLE 2:
+
+User: Build a calculator.
+
+AI: What kind of calculator would you like to build? This will help me provide a
+more accurate response.
+
+Programming Language: [Python] (dropdown menu, includes a dozen programming
+languages plus "Other" which makes a text box for entering one manually)
+
+[F] Basic arithmetic - A simple calculator for addition, subtraction,
+multiplication, and division.
+
+[D] Scientific - Includes advanced functions like trigonometry, logarithms, and
+exponents.
+
+[S] Web-based - An interactive calculator that runs in a web browser.
+
+[A] Mobile app - A calculator designed for smartphones, such as for Android or
+iOS.
+
+[G] Command-line - A text-based calculator that runs in the terminal.
+
+[H] Library/module - A reusable code component for calculations in other
+programs.
+
+[J] GUI desktop app - A graphical interface calculator for Windows, Mac, or
+Linux.
+
+[K] Specify details - Provide more information about features, platform, or
+programming language.
+
+[L] Other - Something else not listed here. [Text Box]
+
+[Enter] My default: I was going to suggest building a basic command-line
+calculator in Python.
+
+Press F, D, S, A, G, H, J, K, L, ; to select, or Enter to skip.
+
+
+
+Whether or not a prompt requires extended interaction depends on its purpose.
+Introducing such interactive depth marks the beginning of a genuine process in
+AI use, in contrast to the current model, where interaction typically consists
+of lengthy responses generated from brief queries. Because the AI lacks
+sufficient initial information, its responses often rely on numerous
+assumptions. As a result, it may proceed too far into a task before the user can
+assess whether the response aligns with the original intent. This forces users
+to manually correct the AI’s course—sometimes in painstaking detail—largely
+because no questions were asked at the outset. If questions are included at all,
+they are typically added at the very end of the response.
+
+Ultimately, the AI is only doing what it was designed to do: generate long-form
+answers from limited prompts. The first step toward a more effective model is
+the development of an AI chatbot application that incorporates a multi-purpose
+interactive form file format. This format should be tailored to each use case in
+which the AI must collect preliminary information or ask structured questions to
+understand the user's needs and objectives before proceeding.
+
+
+
+-------
+
+
+For queries that require short answers: the user presses submit button that
+skips step 1 and goes to step 3. For queries that.
+
+
+1) PRELIMINARY QUESTIONS
+
+The AI chatbot collects information from the user before generating a response,
+ranging from a quick four-item menu list to a multi-page interactive form.  This
+is the main point where the user is steering the AI, especially if the forms are
+in a mode where they have back-and-forth.
+
+
+
+2) PLANS NOTIFICATION
+
+The AI chatbot needs to inform the user about what it is about to generate or do
+after it has gathered enough information from the user and other sources.  This
+is the preview stage, which can give the user expectations about what is going
+to happen (e.g. response length) as well as  an opportunity to tweak the AI's
+plans just before it carries them out.
+
+
+In both 1) and 2), the user can be given the opportunity to revise the AI's
+trajectory before it proceeds.  For step 1, the user can add or change questions
+on a form and answer them.  For step 2, the user can change some of the
+parameters.
+
+Parameters for step 1 inform the AI about what it supposed to do.  Parameters
+for step 2 inform the AI about how to shape its execution.
+
+This step is where, if an option is checked, the user can choose to receive
+samples of different output, whether it is sets of color schemes, translation
+paragraphs, and other things.
+
+
+3) EXECUTION BY AI
+
+The AI displays a checklist and reports what it is doing by checking off the
+list.
+
+
+3a) POST-PRODUCTION OPTIONS AND ACCESSORY ACTIVITIES
+
+What is generated by the AI is not always easily reviewed when it is in large
+quantities. So, summaries of what was generated or what it did can be provided
+and this is also when documentation, such as for a software project, is made and
+inserted.  The post-generation stage is the step that assists the user in
+reviewing what was generated by the AI. For a software project where lots of
+code was generated, a diagram file (e.g. MermaidJS) will be generated so that
+the AI user can get an overview first instead of having to read each line of
+code.
+
+
+-----
+
+SAMPLES FOR STEP 2, PLANS NOTIFICATION ---
+
+sample a: My response will be about [summary]. It will be this long: [slider].
+
+Here are the sections I'm about to generate. [[accordion] (Change, reorder, add,
+delete any).]
+
+[Here are the tasks I'm about to carry out. [list view] (Change, reorder, add,
+delete any).]
+
+
+sample b: (user has pressed button for one sentence reply): [My one sentence
+response is: [...]]
+
+buttons:[Continue with elaboration]  [OK, That's all.]] ---
+
+sample c: (user has pressed button for one paragraph reply): [ My one paragraph
+response is: [...] ] buttons: [Continue with elaboration]  [OK, That's all.]]
+
+
+-----
+
+
+After a response, the AI generates a series of collapsed accordions with titles
+and short descriptions.  They are all editable before opening with the "Edit"
+button. After opening one of them, the AI starts to generate a response for that
+section and fills it in.  This offers the user the option to get responses
+formatted as collapsed, empty accordion list items with section headings.  This
+way the user can choose which sections to open and when the section is opened
+only then does the AI generate the information.
+

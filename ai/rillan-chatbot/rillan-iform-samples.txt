@@ -1,0 +1,100 @@
+
+Instead of just a single submit button:
+
+[Send ⌘⏎] [PRELIM. OPTIONS] [GUIDANCE][guidance level:4]
+
+
+Buttons:
+ | Get Questions First ⌘K
+
+---------------------------
+
+CLARIFICATION IFORM SAMPLE 1
+
+
+User: Talk about Classical Chinese dance.
+
+AI:  What aspect of Classical Chinese dance would you like me to focus on?
+
+[F] Overview – A general introduction to Classical Chinese dance.
+
+[D] History – The origins and historical development.
+
+[S] Techniques – Key movements, styles, and training methods.
+
+[A] Cultural Significance – Its role in Chinese culture and traditions.
+
+[G] Famous Examples – Notable performers, performances, or pieces.
+
+[H] Learning It – How to get started or resources for beginners.
+
+[J] Comparisons – How it differs from other dance forms.
+
+[K] Modern Adaptations – Contemporary versions or influences.
+
+[L] Other – Specify your own topic in the box below.
+
+Press F, D, S, A, G, H, J, K, L, ; to select, or ⏎ to skip.
+
+
+
+
+---------------------------
+
+QUESTIONNAIRE IFORM SAMPLE 1
+
+USER: "Make a game"  ("interactive guidance" button pressed detail level 1) 
+
+
+AI:
+
+
+**Please provide more details about the game you want to make:**
+
+1. Specify the type of game (e.g., video, board, text-based): [Dropdown] \[Enter text...]
+2. Describe the theme or genre (e.g., adventure, puzzle):[Dropdown] \[Enter text...]
+3. Indicate the platform or medium (e.g., PC, mobile, physical): [Dropdown] \[Enter text...]
+4. Provide a brief idea or story for the game: \[Enter text...]
+5. Share other details (e.g., number of players, age group): \[Enter text...]
+6. Use a simple default example (e.g., basic text-based game)
+7. Make it educational or skill-based [Dropdown] \[Enter text...]
+8. Tailor it for a specific audience (e.g., kids, adults)
+9. Include multiplayer [checkbox]
+10. Surprise me with a random game concept
+11. Proceed without details; AI suggests a simple text-based guessing game as an example.
+
+
+**Press 1–10 to select, or 11 to skip.**
+
+
+---------------------------
+
+CLARIFICATION FORM SAMPLE 2
+
+USER: Build a calculator.
+
+AI:
+
+What kind of calculator would you like to build? This will help me provide a more accurate response.
+
+[F] Basic arithmetic - A simple calculator for addition, subtraction, multiplication, and division.
+
+[D] Scientific - Includes advanced functions like trigonometry, logarithms, and exponents.
+
+[S] Web-based - An interactive calculator that runs in a web browser.
+
+[A] Mobile app - A calculator designed for smartphones, such as for Android or iOS.
+
+[G] Command-line - A text-based calculator that runs in the terminal.
+
+[H] Library/module - A reusable code component for calculations in other programs.
+
+[J] GUI desktop app - A graphical interface calculator for Windows, Mac, or Linux.
+
+[K] Specify details - Provide more information about features, platform, or programming language.
+
+[L] Other - Something else not listed here.
+
+[;] My default: I was going to suggest building a basic command-line calculator in Python.
+
+Press F, D, S, A, G, H, J, K, L, ; to select, or Enter to skip.

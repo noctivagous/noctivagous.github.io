@@ -1,0 +1,9 @@
+
+LLMs have issues with what is called "context length".
+
+AI chatbot software should show, perhaps in a progress bar,
+how much context length is left for the input box.
+
+The other end of the output needs to be addressed which is
+that sometimes the AI stops before finishing a job because
+it doesn't deliver the results in one response.  

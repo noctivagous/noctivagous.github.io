@@ -1156,7 +1156,7 @@ get those in American products).
 keep their usage from interfering with the main output and have them direct output external
 to it.
 
-// This is how people usually write code solo whereas Cursor starts trying to construct
+// The following is how people usually write code solo whereas Cursor starts trying to construct
 // a rather complete product for the smallest of projects, which ends up making tons of code
 // and the use of the program deviates from how people actually write their own projects
 // when they can track every change:
@@ -1164,6 +1164,15 @@ to it.
 minimal form so that we can see something working first and after that we'll look at the 
 results and decide how to build on top and refactor.
 
+
+- (project rule)  Instructions given to you for making code are for making diagram files in MermaidJS
+(.mmd files).  You are given the specifications of what technologies will be used.  Your
+diagrams will be a guide for you when you are ready to follow them and actually write the code.
+You will be told when to convert a .mmd file to code.  Naturally they won't have all of the
+functions built it, which is why you are writing diagrams.
+
+	- related: "Make a task list file out of the Product Requirements Document for making
+	.mmd files for the project."
 
 
 

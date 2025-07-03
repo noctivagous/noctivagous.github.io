@@ -2,33 +2,93 @@ Improving the AI Chatbot
 
 INTRODUCTION
 
-Steering AI responses towards satisfactory outcomes involves having it ask 
-questions before answering or allowing it to mention a range of options for
-a situation.  Then the user can be given an opportunity to revise or refine what
-the AI offers to generate, within a sequence of interaction. Before taking action for the user, the
-AI should be set up to collect information on important points, ranging from
-large to small depending on the usage of AI. There are times when the AI can
-interject to ask for clarification because some aspect of the project is ambiguous or incomplete
-or perhaps the question asked by the user has other implications.
-Many times, the user will instruct the AI to provide him or her questions.  It
-is important that the user is able to ask it to do more than just ask for questions 
-but also steer the AI towards the right kinds of questions for the situation and revise
-the questions being asked.  This is the beginning of introducing genuine process
-to the use of AI when currently the interactivity is structured as long responses from
-queries.  Because they are not informed, the responses have to make many assumptions on 
-many points, traveling far into any endeavor before the user has a chance to tell the AI 
-whether it strayed from the goal of the request anywhere, on any point.  The user then has to pull the AI
-back to what he or she wants, sometimes laboriously pointing out what wasn't wanted, all
-because there was an absence of any questions at the outset.  If there are any questions, 
-they are currently tacked on to the very end of a response. The AI is only doing what it
-is set up to do, which is generate long answers with the limited information put in the
-prompt.
+Steering AI responses towards satisfactory outcomes involves having it ask
+questions before answering or allowing it to mention a range of options for a
+situation.  Then the user can be given an opportunity to revise or refine what
+the AI offers to generate, within a sequence of interaction. Before taking
+action for the user, the AI should be set up to collect information on important
+points, ranging from large to small depending on the usage of AI. There are
+times when the AI can interject to ask for clarification because some aspect of
+the project is ambiguous or incomplete or perhaps the question asked by the user
+has other implications. Many times, the user will instruct the AI to provide him
+or her questions.  It is important that the user is able to ask it to do more
+than just ask for questions but also steer the AI towards the right kinds of
+questions for the situation and revise the questions being asked.  This is the
+beginning of introducing genuine process to the use of AI when currently the
+interactivity is structured as long responses from queries.  Because they are
+not informed, the responses have to make many assumptions on many points,
+traveling far into any endeavor before the user has a chance to tell the AI
+whether it strayed from the goal of the request anywhere, on any point.  The
+user then has to pull the AI back to what he or she wants, sometimes laboriously
+pointing out what wasn't wanted, all because there was an absence of any
+questions at the outset.  If there are any questions, they are currently tacked
+on to the very end of a response. The AI is only doing what it is set up to do,
+which is generate long answers with the limited information put in the prompt.
 
 The first move to make is an AI chatbot app that is provided a multi-purpose
 interactive form file format that is tailored for each situation where the AI
 will be involved in collecting preliminary information or asking questions to
 know the needs and goals of the situation.
 
+THE PRELIMINARY MENUS FOR INTERACTING WITH CURRENT AI
+
+For an AI chatbot, two types of intermediate steps should be implemented:
+
+1) PRELIMINARY QUESTIONS: The AI chatbot needs to collect information from the user before generating a response, ranging from a quick four-item menu list to a multi-page interactive form.  This is the main point where the user is steering the AI, especially if the forms are in a mode where they have back-and-forth.
+
+2) PLAN NOTIFICATION: The AI chatbot needs to inform the user about what it is about to generate or do after it has gathered enough information from the user and other sources.  This is the preview stage, which can give the user expectations about what is going to happen (e.g. response length) as well as  an opportunity to tweak the AI's plans just before it carries them out.
+
+In both cases, the user can be given the opportunity to revise the AI's trajectory before it proceeds.  For step 1, the user can add or change questions on a form and answer them.  For step 2, the user can change some of the parameters.
+
+Parameters for step 1 inform the AI about what it supposed to do.  Parameters for step 2 inform the AI about how to shape its execution.  
+
+To summarize, the AI chatbot today doesn't collect clarifying or followup information before generating a response and it doesn't tell the user about what it is about to do.
+
+SAMPLES FOR STEP 2:
+---
+[My response will be about [summary]
+It will be this long: [slider].
+---
+Here are the sections I'm about to generate. (Change, reorder, add, delete any).]
+---
+[Here are the tasks I'm about to carry out.
+(Change, reorder, add, delete any).]
+---
+[ My one sentence response is: [...]
+[Continue with elaboration]  [OK, That's all.]]
+---
+[ My one paragraph response is: [...]
+[Continue with elaboration]  [OK, That's all.]]
+---
+
+THE POST-PRODUCTION STAGE: OVERVIEWS AND DOCUMENTATION
+
+What is generated by the AI is not always known, especially
+in large quantities.  So summaries of what is generated can be provided
+afterwards and this is also when documentation is made
+and inserted.  The post-generation stage is the step when the user can review
+what was generation by the AI.  But since the AI may have generated
+a lot, the summaries of what it did will be included in a document
+where the information is separated into tab views and accordions
+(the viewer allows switching between either one).
+
+When the post-generation stage is included the whole sequence looks
+like this:
+
+1) PRELIMINARY QUESTIONS
+
+2) PLANS NOTIFICATION
+
+3) EXECUTION BY AI
+
+4) POST-PRODUCTION
+
+
+----
+
+
+
+----
 
 INTERMEDIATE RESPONSES I: CLARIFICATION QUESTIONS
 
@@ -630,7 +690,7 @@ As people work in software development, new considerations and issues crop up as
 the project progresses, unlike the standards established for building design and
 construction and the relatively straightforward expectations in that industry.
 Those too can have back-and-forth periods, but most of that is in the site
-planning and design stage.  With software development, the implementation and
+planning and design stage.  With individual software development, the implementation and
 design can be said to be merged, unlike building construction. The computer code
 documents can be said to be the actual program, even though there is a
 compilation process that occurs to turn them into it, which means that every
@@ -711,8 +771,8 @@ Some responses should be divided up into tab controls so that scrolling isn't
 necessary.
 
 
-ASKING ABOUT WHAT TO ASK, PRELIMINARY INTERMEDIATE QUESTION: "DO YOU WANT ME TO
-ASK ABOUT [1,2,3]?"
+ASKING ABOUT WHAT QUESTIONS TO ASK, PRELIMINARY INTERMEDIATE QUESTION: "DO YOU WANT ME TO
+ASK ABOUT [1,2,3,...]?"
 
 In one kind of intermediate menu, you can check off the kinds of questions you
 want the AI to ask you about the topic.
@@ -1043,4 +1103,132 @@ slideshow, tab, etc.
 
 - form tree: can end up asking just a single question to begin with, which then
 branches out into larger form of questions.  or can just ask a single question
-and return with multiple choice.  
+and return with multiple choice.
+
+
+IMAGE GENERATORS
+
+Interactions with AI image generators can go through the same process as what I
+am talking about with respect to text: first the user goes through different
+AI-generated menus to refine the description of the image, next the AI displays
+its plan for what it is about to generate, and then it generates it after
+approval.  Another feature addition is that the images generated carry multiple
+image layers with different elements of the image separated.  The user can then
+click on any of the elements to move them around and change them.
+
+
+
+WRITING PROGRAM CODE BY GENERATING MERMAIDJS DIAGRAMS FIRST FOR THE APP AND EACH FILE
+
+- Make Product Requirements Document.
+- Right-clickable objects in MermaidJS diagrams for giving cursor instructions.
+- Code is always marked to match MermaidJS diagrams.
+- Once elements in a MermaidJS diagram are double-clicked, it goes to that
+section in code.
+
+
+FEEDBACK IN CURSOR DIALOG IS PLACED INTO MULTI-COLUMN (NEWSPAPER COLUMN)
+LAYOUT AS IT COMES IN SO THAT IT IS READABLE.
+
+
+CURSOR RULES
+
+- Keep track of what is added by adding a paragraph or a few each time you add sections of 
+code.  It goes in a file called “featureadditiontracking.txt” One purpose: 
+to reimplement the project for a different platform.
+
+- (project rule) Maintain a file with each addition and change: Platform-Independent 
+Technical Documentation that includes the purpose of the app.
+
+- At the end of implementing any request, provide options at the end in a numbered menu list
+for the next steps, if there is more to do.
+
+- At the end of implementing any request, if you have your own numbered menu list for the
+next steps, make sure to hold onto that and present it again after carrying out each one,
+checking off each one with an [x].
+
+- Go out of your way to make accessory things that anticipate what the software developer 
+might need while working with the project code in the following way: you get extra objects 
+in the product box that was made in China today that helps you use it (but you don't 
+get those in American products).
+
+- When diagnosing problems and inserting debug lines, defensive checks, and error handling, as much as possible
+keep their usage from interfering with the main output and have them direct output external
+to it.
+
+// This is how people usually write code solo whereas Cursor starts trying to construct
+// a rather complete product for the smallest of projects, which ends up making tons of code
+// and the use of the program deviates from how people actually write their own projects
+// when they can track every change:
+- When making this project, appraoch it how people usually write code solo: trying to get a compact,
+minimal form so that we can see something working first and after that we'll look at the 
+results and decide how to build on top and refactor.
+
+
+
+
+CURSOR TIPS
+
+- PROMPT: "Make a task list for [given task], put it in a file in the tasks directory, and then 
+implement it."
+
+- PROMPT (output evaluation 1): "Execute [task or command], look at the results, fix any source of the errors(s),
+and then repeat until you don't get errors." 
+
+- PROMPT (output evaluation 2): "Execute [task or command], look at the results and identify glitches or issues, 
+change the code to make sure the output is satisfactory and matches [output requirement] and 
+is free of glitches and issues, and then repeat until you determine the job is done. You
+can add debug output, defensive checks, and error handling to quickly diagnose the root 
+cause of anything but don't harm any existing output that is working through debug. 
+You can use the internet to research a problem." 
+
+- PROMPT: "We had something working earlier.  Go back to that."
+
+
+
+
+
+SOFTWARE DEVELOPMENT
+
+When writing software, it is often the case that you don't know what to do next
+until you have done a portion of a task, and in the middle of the task you realize
+what you will have to do to just to finish it.
+
+
+THE AI'S EVALUATION OF PRODUCT RESULTS AND SENSIBILITY TOWARDS USER EXPERIENCE AND GUI
+
+The main feature that the AI (LLM) doesn't have is judgment,
+which has to be distinguished from what it does do very well.
+It has a sophisticated ability to anticipate needs and issues, but
+this is different than having judgment, because it also makes
+basic mistakes and cannot identify them afterwards.  The first characteristic
+allows the AI to write very complex apps, but the second characteristic,
+judgment and sensibility, is what would make the end-product make sense 
+automatically and enable the AI to revise a product for usability.
+When it contemplates usability, it is in the terms from training.
+How to instruct the AI or set it up in an "agentic" setup to
+give it judgment and sensibility is a good question.
+
+When talking about what the AI models can do, it is
+important to remember that the LLM can only answering queries
+one at a time and after responding it has no persistent memory built in.
+Anything beyond that today was set up after the fact as an add-on.
+
+AI: While an LLM might write a complex app, the end product may not be practical or user-friendly without human refinement. Their contemplation of usability is limited to patterns in their training data, not an innate sense of what works best.
+
+
+
+What it does
+In the immediate term, it can't finish a project because
+it doesn't have any planning capabilities without being
+tied into a larger agent arrangement.
+
+
+
+
+
+
+
+
+
+

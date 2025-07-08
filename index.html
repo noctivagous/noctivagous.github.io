@@ -192,11 +192,17 @@ ol li ol li{ font-weight:normal; }
 
 <p>Styling plain text code with graphic design makes it more legible.</p>
 <h2 style="margin-top:0;font-family:serif"></h2>
-<style>
+<div class="codeStylingSampleWrapper">
+  <!-- SVG Overlay -->
+
+  <!-- Original code block -->
+  <style>
   
     div.codeStylingSample  code{
 
   }
+
+
 
     div.codeStylingSample    pre {
       background-color: #bcbcbc; /* Light peach editor background */
@@ -206,6 +212,13 @@ ol li ol li{ font-weight:normal; }
       padding: 10px;
 
     }
+    
+        div.codeStylingSample    .curlybrace{
+        
+        color:white;
+        
+        }
+    
     div.codeStylingSample    .nesting-level-1 {
       background-color: #C8FFC8; /* Light green for level 1 */
       border: 5pt solid #007bff;
@@ -298,9 +311,9 @@ ol li ol li{ font-weight:normal; }
     color:white;
     }
     
-     div.codeStylingSample   .functionsignature .parenthesis{
-color:green;
-    }
+  div.codeStylingSample   .functionsignature .parenthesis {
+    color: #6a79c7;
+}
     
     div.codeStylingSample    .string{
     
@@ -368,51 +381,103 @@ color:#ff00d9;
 .codeStylingSample{
 font-size:14pt;
 }
+
+
+span.curlybrace.start{
+ font-weight: bold;
+    text-shadow: 1pt 1pt 1pt black;
+    color: green;
+}
+
+span.curlybrace.end {
+    font-weight: bold;
+    text-shadow: 1pt 1pt 1pt black;
+    color: red;
+}
+
+.globalvar {
+    padding: 2px;
+    border-radius: 4pt;
+    text-decoration: underline;
+    font-weight: bold;
+    color: #0635ad;
+    background: #68686840;
+}
+
+span.curlybrace{
+font-family:monospace;
+font-size:16pt;
+}
    
+   .codeStylingSample{
+   color:#ccff33;
+   }
+   
+   .number{
+   font-family:serif;
+   font-size:1.1em;
+   border-bottom: 1pt solid black;
+   }
+  
+  .bool.true{
+  color:black;
+  background:white;
+  padding:1pt;
+  } 
+  .bool.false{
+  color:white;
+  background:black;
+  padding:1pt;
+  } 
+  
+  .letkeyword{
+color:  darkorange;
+  }
+
+.null{
+color:#e97a10;
+background-color:#521e1e;
+}
   </style>
 <div class="codeStylingSample">
  <pre><code>
 
-<span class="nesting-level-1 functionblock"><span class="functionkeyword">function</span>  <span class="functionsignature"><span class="functionname">processData</span><span class="parenthesis">(</span><span class="variable">data</span><span class="parenthesis">)</span></span> {
-  <span class="nesting-level-2 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">data</span>.length > 0) {
-    <span class="nesting-level-3 forloop"><span class="forkeyword">for</span> (<span class="letkeyword">let</span> <span class="variable">i</span> = 0; <span class="variable">i</span> < <span class="variable">data</span>.length; <span class="variable">i</span>++) {
+<span class="nesting-level-1 functionblock"><span class="functionkeyword">function</span>  <span class="functionsignature"><span class="functionname">processData</span><span class="parenthesis">(</span><span class="variable">data</span><span class="parenthesis">)</span></span> <span class="curlybrace start">{</span>
+  <span class="nesting-level-2 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">data</span>.length &gt; <span class="number">0</span>) <span class="curlybrace start">{</span>
+    <span class="nesting-level-3 forloop"><span class="forkeyword">for</span> (<span class="letkeyword">let</span> <span class="variable">i</span> = <span class="number">0</span>; <span class="variable">i</span> &lt; <span class="variable">data</span>.length; <span class="variable">i</span>++) <span class="curlybrace start">{</span>
       <span class="nesting-level-4"><span class="letkeyword">let</span> <span class="variable">item</span> = <span class="variable">data</span>[<span class="variable">i</span>];</span>
-      <span class="nesting-level-4 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">item</span>.value > 10) {
-        console.<span class="functioncall">log("High value:", <span class="variable">item</span>)</span>;
-      } <span class="elsekeyword">else</span> {
-        console.<span class="functioncall">log("Low value:", <span class="variable">item</span>)</span>;
-      }</span>
-    }</span>
-  } <span class="elsekeyword">else</span> {
-    <span class="nesting-level-3 whileloop"><span class="whilekeyword">while</span> (<span class="variable">count</span> < 5) {
-      <span class="nesting-level-4">console.<span class="functioncall">log("Counting:", <span class="variable">count</span>++)</span>;</span>
-    }</span>
-  }</span>
-}</span>
+      <span class="nesting-level-4 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">item</span>.value &gt; <span class="number">10</span>) <span class="curlybrace start">{</span>
+        <span class="globalvar">console</span>.<span class="functioncall">log("High value:", <span class="variable">item</span>)</span>;
+      <span class="curlybrace end">}</span> <span class="elsekeyword">else</span> <span class="curlybrace start">{</span>
+        <span class="globalvar">console</span>.<span class="functioncall">log("Low value:", <span class="variable">item</span>)</span>;
+      <span class="curlybrace end">}</span></span>
+    <span class="curlybrace end">}</span></span>
+  <span class="curlybrace end">}</span> <span class="elsekeyword">else</span> <span class="curlybrace start">{</span>
+    <span class="nesting-level-3 whileloop"><span class="whilekeyword">while</span> (<span class="variable">count</span> &lt; <span class="number">5</span>) <span class="curlybrace start">{</span>
+      <span class="nesting-level-4"><span class="globalvar">console</span>.<span class="functioncall">log("Counting:", <span class="variable">count</span>++)</span>;</span>
+    <span class="curlybrace end">}</span></span>
+  <span class="curlybrace end">}</span></span>
+<span class="curlybrace end">}</span></span>
 
-<span class="nesting-level-1 functionblock"><span class="functionkeyword">function</span>  <span class="functionsignature"><span class="functionname">validateInput</span><span class="parenthesis">(</span><span class="variable">input</span><span class="parenthesis">)</span></span> {
-  <span class="nesting-level-2 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">input</span> === null) {
-    <span class="nesting-level-3"><span class="returnkeyword">return</span> false;</span>
-  } <span class="elsekeyword">else</span> {
-    <span class="nesting-level-3 forloop"><span class="forkeyword">for</span> (<span class="letkeyword">let</span> <span class="variable">j</span> = 0; <span class="variable">j</span> < <span class="variable">input</span>.length; <span class="variable">j</span>++) {
-      <span class="nesting-level-4 ifelseblock"><span class="ifkeyword">if</span> (!<span class="functioncall">isNaN(<span class="variable">input</span>[<span class="variable">j</span>])</span>) {
-        <span class="nesting-level-5"><span class="returnkeyword">return</span> true;</span>
-      }</span>
-    }</span>
-  }</span>
-}</span>
+<span class="nesting-level-1 functionblock"><span class="functionkeyword">function</span>  <span class="functionsignature"><span class="functionname">validateInput</span><span class="parenthesis">(</span><span class="variable">input</span><span class="parenthesis">)</span></span> <span class="curlybrace start">{</span>
+  <span class="nesting-level-2 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">input</span> === <span class="null">null</span>) <span class="curlybrace start">{</span>
+    <span class="nesting-level-3"><span class="returnkeyword">return</span> <span class="bool false">false</span>;</span>
+  <span class="curlybrace end">}</span> <span class="elsekeyword">else</span> <span class="curlybrace start">{</span>
+    <span class="nesting-level-3 forloop"><span class="forkeyword">for</span> (<span class="letkeyword">let</span> <span class="variable">j</span> = <span class="number">0</span>; <span class="variable">j</span> &lt; <span class="variable">input</span>.length; <span class="variable">j</span>++) <span class="curlybrace start">{</span>
+      <span class="nesting-level-4 ifelseblock"><span class="ifkeyword">if</span> (!<span class="functioncall">isNaN(<span class="variable">input</span>[<span class="variable">j</span>])</span>) <span class="curlybrace start">{</span>
+        <span class="nesting-level-5"><span class="returnkeyword">return</span> <span class="bool true">true</span>;</span>
+      <span class="curlybrace end">}</span></span>
+    <span class="curlybrace end">}</span></span>
+  <span class="curlybrace end">}</span></span>
+<span class="curlybrace end">}</span></span>
 
-<!--<span class="letkeyword">let</span> sampleData = [
-  { <span class="json-key">"id"</span>: <span class="json-value">1</span>, <span class="json-key">"value"</span>: <span class="json-value">5</span> },
-  { <span class="json-key">"id"</span>: <span class="json-value">2</span>, <span class="json-key">"value"</span>: <span class="json-value">15</span> },
-  { <span class="json-key">"id"</span>: <span class="json-value">3</span>, <span class="json-key">"value"</span>: <span class="json-value">7</span> }
-];
-
-processData(sampleData);
-validateInput(sampleData);-->
 </code></pre>
 </div>
 
+  
+</div>
+
+ 
 <hr>
   <header>
         <h1>Build An Autonomous AI System Using An LLM</h1>

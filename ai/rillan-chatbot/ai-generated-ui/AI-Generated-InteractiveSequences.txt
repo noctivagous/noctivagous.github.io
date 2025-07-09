@@ -1,0 +1,8 @@
+
+The AI sends a .mmd diagram file to the client that represents logic
+instructions and interactive sequences.  This follows a diagram protocol that
+was established that allows the AI to show its own contextual interactive
+sequences that collect information.  It get the results after the user interacts
+with the UI to the final point that sends the information back. This allows it
+to produce a number of GUI interactive engagements with the user on its own,
+outside of any fixed. 

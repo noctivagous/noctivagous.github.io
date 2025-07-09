@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tabbed Code Example</title>
+
+  <!-- Bootstrap CSS (required for styling) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    /* Your original styles */
+    p {
+      margin-bottom: 1rem;
+    }
+    h2 {
+      margin-top: 0;
+      font-family: serif;
+    }
+    /* Paste your full CSS codeStylingSample styles here */
+    div.codeStylingSample code {}
+    div.codeStylingSample pre {
+      background-color: #bcbcbc;
+      border-radius: 10px;
+      font-family: monospace;
+      white-space: pre;
+      padding: 10px;
+    }
+    div.codeStylingSample .curlybrace {
+      color: white;
+    }
+    div.codeStylingSample .nesting-level-1 {
+      background-color: #C8FFC8;
+      border: 5pt solid #007bff;
+      border-radius: 8px;
+      padding: 5px;
+      margin: 5px 0;
+      display: inline-block;
+      box-shadow: 3pt 3pt 3pt #1d1b1e;
+    }
+    div.codeStylingSample .nesting-level-1.functionblock {
+      border-top-width: 8pt;
+      display: block;
+    }
+    div.codeStylingSample .nesting-level-2 {
+      background-color: #C8B4FF;
+      border: 3pt solid #000000;
+      border-top-width: 6pt;
+      border-radius: 8px;
+      padding: 5px;
+      margin: 5px 0;
+      display: inline-block;
+      box-shadow: 3pt 3pt 3pt #626262;
+    }
+    div.codeStylingSample .nesting-level-3 {
+      background-color: #a4a4a4;
+      border: 3pt solid #121212;
+      border-top-width: 6pt;
+      border-left-width: 5pt;
+      border-radius: 8px;
+      padding: 5px;
+      margin: 5px 0;
+      display: inline-block;
+      box-shadow: 3pt 3pt 3pt #a4a4a4;
+    }
+    div.codeStylingSample .nesting-level-4 {
+      background-color: #9a9a9a;
+      border: 1pt solid #262626;
+      border-top-width: 3pt;
+      border-left-width: 4pt;
+      border-radius: 8px;
+      padding: 5px;
+      margin: 5px 0;
+      display: inline-block;
+      box-shadow: 3pt 3pt 3pt rebeccapurple;
+    }
+    div.codeStylingSample .variable {
+      padding: 2px;
+      border-radius: 4pt;
+      text-decoration: underline;
+      font-weight: bold;
+      color: #000000;
+      background: #80808061;
+    }
+    div.codeStylingSample .functionkeyword {
+      padding: 2px;
+      border-radius: 4pt;
+      text-decoration: underline;
+      color: #47adff;
+      font-style: italic;
+    }
+    div.codeStylingSample .functioncall {
+      color: blue;
+      font-style: italic;
+      text-decoration: underline;
+      padding: 2pt;
+      display: inline-block;
+    }
+    div.codeStylingSample .functionname {
+      color: white;
+    }
+    div.codeStylingSample .functionsignature .parenthesis {
+      color: #6a79c7;
+    }
+    div.codeStylingSample .forloop {
+      background: #522765;
+    }
+    div.codeStylingSample .whileloop {
+      background: #A08CFF;
+    }
+    div.codeStylingSample .functionblock {
+      background: #333;
+      border: 4pt solid white;
+      border-radius: 13pt;
+    }
+    div.codeStylingSample .ifelseblock {
+      background: #ae8b17;
+    }
+    div.codeStylingSample .nesting-level-3 .ifelseblock {
+      background-color: #765f10;
+    }
+    div.codeStylingSample .json-key {
+      outline: 1px solid red;
+      padding: 2px;
+    }
+    div.codeStylingSample .json-value {
+      outline: 1px solid blue;
+      padding: 2px;
+    }
+    .returnkeyword {
+      color: #ff0000;
+      border-bottom: 2pt dashed red;
+    }
+    .ifkeyword, .elsekeyword, .whilekeyword, .forkeyword {
+      color: #3dff00;
+      font-weight: bold;
+      border: 2pt dotted white;
+      padding: 1pt;
+    }
+    .ifkeyword, .elsekeyword {
+      color: #ffdb62;
+    }
+    .forkeyword {
+      color: #ff00d9;
+      border: 2pt dotted #7d2f71;
+    }
+    .whilekeyword {
+      color: #3c306a;
+      border: 2pt dotted #746a9d;
+    }
+    .codeStylingSample {
+      font-size: 14pt;
+      color: #ccff33;
+    }
+    span.curlybrace.start {
+      font-weight: bold;
+      text-shadow: 1pt 1pt 1pt black;
+      color: green;
+    }
+    span.curlybrace.end {
+      font-weight: bold;
+      text-shadow: 1pt 1pt 1pt black;
+      color: #9e2a2a;
+    }
+    .globalvar {
+      padding: 2px;
+      border-radius: 4pt;
+      text-decoration: underline;
+      font-weight: bold;
+      color: #0635ad;
+      background: #68686840;
+    }
+    span.curlybrace {
+      font-family: monospace;
+      font-size: 16pt;
+    }
+    .number {
+      font-family: serif;
+      font-size: 1.1em;
+    }
+    .bool.true {
+      color: black;
+      background: white;
+      padding: 1pt;
+    }
+    .bool.false {
+      color: white;
+      background: black;
+      padding: 1pt;
+    }
+    .letkeyword {
+      color: darkorange;
+    }
+    .null {
+      color: #e97a10;
+      background-color: #521e1e;
+    }
+  </style>
+  <style>
+    /* Original detailed styling omitted here for brevity; same as previously provided */
+
+    /* Simplified "before" tab styles resembling a normal code editor */
+    pre.code-before {
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      font-family: Consolas, Monaco, 'Courier New', monospace;
+      font-size: 14px;
+      padding: 15px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    /* Syntax highlighting for "before" tab */
+    .keyword { color: #569cd6; font-weight: bold; }
+    .function-name { color: #dcdcaa; }
+    .variable { color: #9cdcfe; }
+    .string { color: #ce9178; }
+    .number { color: #b5cea8; }
+    .comment { color: #6a9955; font-style: italic; }
+    .operator { color: #d4d4d4; }
+    .punctuation { color: #d4d4d4; }
+  </style>
+  <style>
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: var(--bs-nav-tabs-link-active-color);
+    background-color: var(--bs-nav-tabs-link-active-bg);
+    border-color: var(--bs-nav-tabs-link-active-border-color);
+    font-weight: bold;
+    background-color: silver;
+        border: 2pt solid gray;
+    border-bottom: 0;
+}
+
+.nav-tabs .nav-link {
+    margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
+    border: var(--bs-nav-tabs-border-width) solid transparent;
+    border-top-left-radius: var(--bs-nav-tabs-border-radius);
+    border-top-right-radius: var(--bs-nav-tabs-border-radius);
+    background-color: #ebebeb;
+    color: gray;
+    margin-right: 3pt;
+}
+</style>
+
+</head>
+<body>
+  <p>Improving the appearance of plain text code with graphic design makes it more readable.</p>
+  <h2></h2>
+
+  <div class="container mt-3">
+    <!-- Tabs nav -->
+    <ul class="nav nav-tabs" id="codeTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="after-tab" data-bs-toggle="tab" data-bs-target="#after" type="button" role="tab" aria-controls="after" aria-selected="true">after</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="before-tab" data-bs-toggle="tab" data-bs-target="#before" type="button" role="tab" aria-controls="before" aria-selected="false">before</button>
+      </li>
+    </ul>
+
+    <!-- Tabs content -->
+    <div class="tab-content" id="codeTabContent" style="margin-top: 1rem;">
+      <div class="tab-pane fade show active" id="after" role="tabpanel" aria-labelledby="after-tab">
+        <div class="codeStylingSampleWrapper">
+          <div class="codeStylingSample">
+            <pre><code>
+<span class="nesting-level-1 functionblock"><span class="functionkeyword">function</span>  <span class="functionsignature"><span class="functionname">processData</span><span class="parenthesis">(</span><span class="variable">data</span><span class="parenthesis">)</span></span> <span class="curlybrace start">{</span>
+  <span class="nesting-level-2 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">data</span>.length &gt; <span class="number">0</span>) <span class="curlybrace start">{</span>
+    <span class="nesting-level-3 forloop"><span class="forkeyword">for</span> (<span class="letkeyword">let</span> <span class="variable">i</span> = <span class="number">0</span>; <span class="variable">i</span> &lt; <span class="variable">data</span>.length; <span class="variable">i</span>++) <span class="curlybrace start">{</span>
+      <span class="nesting-level-4"><span class="letkeyword">let</span> <span class="variable">item</span> = <span class="variable">data</span>[<span class="variable">i</span>];</span>
+      <span class="nesting-level-4 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">item</span>.value &gt; <span class="number">10</span>) <span class="curlybrace start">{</span>
+        <span class="globalvar">console</span>.<span class="functioncall">log("High value:", <span class="variable">item</span>)</span>;
+      <span class="curlybrace end">}</span> <span class="elsekeyword">else</span> <span class="curlybrace start">{</span>
+        <span class="globalvar">console</span>.<span class="functioncall">log("Low value:", <span class="variable">item</span>)</span>;
+      <span class="curlybrace end">}</span></span>
+    <span class="curlybrace end">}</span></span>
+  <span class="curlybrace end">}</span> <span class="elsekeyword">else</span> <span class="curlybrace start">{</span>
+    <span class="nesting-level-3 whileloop"><span class="whilekeyword">while</span> (<span class="variable">count</span> &lt; <span class="number">5</span>) <span class="curlybrace start">{</span>
+      <span class="nesting-level-4"><span class="globalvar">console</span>.<span class="functioncall">log("Counting:", <span class="variable">count</span>++)</span>;</span>
+    <span class="curlybrace end">}</span></span>
+  <span class="curlybrace end">}</span></span>
+<span class="curlybrace end">}</span></span>
+
+<span class="nesting-level-1 functionblock"><span class="functionkeyword">function</span>  <span class="functionsignature"><span class="functionname">validateInput</span><span class="parenthesis">(</span><span class="variable">input</span><span class="parenthesis">)</span></span> <span class="curlybrace start">{</span>
+  <span class="nesting-level-2 ifelseblock"><span class="ifkeyword">if</span> (<span class="variable">input</span> === <span class="null">null</span>) <span class="curlybrace start">{</span>
+    <span class="nesting-level-3"><span class="returnkeyword">return</span> <span class="bool false">false</span>;</span>
+  <span class="curlybrace end">}</span> <span class="elsekeyword">else</span> <span class="curlybrace start">{</span>
+    <span class="nesting-level-3 forloop"><span class="forkeyword">for</span> (<span class="letkeyword">let</span> <span class="variable">j</span> = <span class="number">0</span>; <span class="variable">j</span> &lt; <span class="variable">input</span>.length; <span class="variable">j</span>++) <span class="curlybrace start">{</span>
+      <span class="nesting-level-4 ifelseblock"><span class="ifkeyword">if</span> (!<span class="functioncall">isNaN(<span class="variable">input</span>[<span class="variable">j</span>])</span>) <span class="curlybrace start">{</span>
+        <span class="nesting-level-5"><span class="returnkeyword">return</span> <span class="bool true">true</span>;</span>
+      <span class="curlybrace end">}</span></span>
+    <span class="curlybrace end">}</span></span>
+  <span class="curlybrace end">}</span></span>
+<span class="curlybrace end">}</span></span>
+            </code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="before" role="tabpanel" aria-labelledby="before-tab">
+        <pre class="code-before">
+<span class="keyword">function</span> <span class="function-name">processData</span>(<span class="variable">data</span>) {
+  <span class="keyword">if</span> (<span class="variable">data</span>.length &gt; <span class="number">0</span>) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> <span class="variable">i</span> = <span class="number">0</span>; <span class="variable">i</span> &lt; <span class="variable">data</span>.length; <span class="variable">i</span>++) {
+      <span class="keyword">let</span> <span class="variable">item</span> = <span class="variable">data</span>[<span class="variable">i</span>];
+      <span class="keyword">if</span> (<span class="variable">item</span>.value &gt; <span class="number">10</span>) {
+        <span class="variable">console</span>.log(<span class="string">"High value:"</span>, <span class="variable">item</span>);
+      } <span class="keyword">else</span> {
+        <span class="variable">console</span>.log(<span class="string">"Low value:"</span>, <span class="variable">item</span>);
+      }
+    }
+  } <span class="keyword">else</span> {
+    <span class="keyword">while</span> (<span class="variable">count</span> &lt; <span class="number">5</span>) {
+      <span class="variable">console</span>.log(<span class="string">"Counting:"</span>, <span class="variable">count</span>++);
+    }
+  }
+}
+
+<span class="keyword">function</span> <span class="function-name">validateInput</span>(<span class="variable">input</span>) {
+  <span class="keyword">if</span> (<span class="variable">input</span> === <span class="keyword">null</span>) {
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  } <span class="keyword">else</span> {
+    <span class="keyword">for</span> (<span class="keyword">let</span> <span class="variable">j</span> = <span class="number">0</span>; <span class="variable">j</span> &lt; <span class="variable">input</span>.length; <span class="variable">j</span>++) {
+      <span class="keyword">if</span> (!isNaN(<span class="variable">input</span>[<span class="variable">j</span>])) {
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+      }
+    }
+  }
+}
+        </pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle JS (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

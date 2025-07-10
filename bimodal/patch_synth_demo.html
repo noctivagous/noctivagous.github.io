@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patch‑Based Synth Demo – Dual‑Input UI</title>
+
+  <!-- Paper.js for cable overlay -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+  <style>
+    html,body{height:100%;margin:0;overflow:hidden;font-family:"Arial",sans-serif;background:#f4f6fa;}
+    #patchArea{position:relative;width:100%;height:100%;}
+
+    /* —— Patch block —— */
+    .patch{position:absolute;z-index:10;width:170px;background:#fff;border:2px solid #0d6efd;border-radius:6px;box-shadow:2px 2px 4px rgba(0,0,0,.15);cursor:pointer;user-select:none;}
+    .patch header{background:#0d6efd;color:#fff;font-size:0.9rem;padding:4px 8px;border-radius:4px 4px 0 0;}
+
+    /* —— Ports —— */
+    .port{width:14px;height:14px;border:2px solid #333;border-radius:50%;display:inline-block;margin:6px;vertical-align:middle;pointer-events:auto;}
+    .port.input{background:#ffd7d7;border-color:#c0392b;}
+    .port.output{background:#d7ffd9;border-color:#27ae60;float:right;}
+    .port.hover{outline:3px solid #f1c40f;}
+
+    /* —— Selection & drag-lock state —— */
+    .selected{outline:3px solid #dc3545 !important;}
+    .dragging{opacity:0.7;}
+
+    /* —— Cable canvas overlays patches —— */
+    #cablesCanvas{position:absolute;inset:0;z-index:20;pointer-events:none;}
+    
+    #cablesCanvas {
+    display: block; /* Removes any extra space below the canvas */
+    width: 100vw;   /* Sets width to 100% of viewport width */
+    height: 100vh;  /* Sets height to 100% of viewport height */
+}
+
+  </style>
+  
+  <style>
+  /* Light dotted grid for the patch area */
+  #patchArea{
+    background-image: radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px);
+    background-size: 18px 18px;      /* grid pitch */
+  }
+  /* Slightly larger pitch on Hi-DPI screens */
+  @media (min-resolution: 2dppx){
+    #patchArea{ background-size: 24px 24px; }
+  }
+
+  /* ─────────── 2. CSS for the instruction bar ─────────── */
+#instructionsBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 40;
+    background: rgb(0 0 0 / 95%);
+    border-bottom: 1px solid #0d6efd;
+    color: silver;
+    padding: 6px 12px;
+    font-size: 14pt;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    line-height: 25pt;
+}
+
+kbd{
+border:1pt solid silver;
+border-radius:3pt;
+padding:2pt;
+text-align:Center;
+padding-left:3pt;
+padding-right:3pt;
+margin-right:3pt;
+background:gray;
+color:#444;
+}
+
+</style>
+<style>
+  /* Cursor styles for different interaction states */
+  #patchArea               { cursor: default;    }
+  #patchArea.connecting    { cursor: crosshair;  }
+  #patchArea.over-port     { cursor: pointer;    }
+  #patchArea.hover-cable   { cursor: pointer;    }
+  #patchArea.invalid-connect{cursor: not-allowed;}
+</style>
+
+</head>
+<body>
+  <div id="instructionsBar">
+    <strong>Instructions:&nbsp;</strong>
+
+<div style="color:white;margin-left:10pt;">    
+    1. To make a selection, hover over a node and press <kbd>Tab</kbd>.
+    <br/>
+    2. Start dragging the selection by pressing <kbd>Spacebar</kbd> once. Then move the mouse. Press <kbd>Spacebar</kbd> a second time to unlock the drag.
+
+    <br/>
+    3. Connect node outlets by hovering over a circle and pressing <kbd>F</kbd>. Then move the mouse.
+    Press <kbd>F</kbd> again at the other outlet.  To cancel, press <kbd>Esc</kbd>.
+
+    <br/>
+    4. To delete a cable, hover over it and press <kbd>D</kbd>.
+    <br/>
+</div>
+
+  </div>
+
+  <div id="patchArea">
+
+    <!-- Example Synth Patches -->
+    <div class="patch" style="left:60px;top:290px;" data-id="osc">
+      <header>Oscillator</header>
+      <span class="port output" data-dir="out" data-name="audio"></span>
+    </div>
+
+    <div class="patch" style="left:350px;top:350px;" data-id="filter">
+      <header>Filter</header>
+      <span class="port input" data-dir="in" data-name="audio"></span>
+      <span class="port output" data-dir="out" data-name="audio"></span>
+    </div>
+
+    <div class="patch" style="left:640px;top:410px;" data-id="amp">
+      <header>Amplifier</header>
+      <span class="port input"  data-dir="in"  data-name="audio"></span>
+      <span class="port output" data-dir="out" data-name="audio"></span>
+    </div>
+
+    <div class="patch" style="left:930px;top:470px;" data-id="out">
+      <header>Output</header>
+      <span class="port input" data-dir="in" data-name="audio"></span>
+    </div>
+
+    <!-- Overlay for cables (now above .patch) -->
+    <canvas id="cablesCanvas" resize></canvas>
+  </div>
+
+<script>
+
+/*************************************************
+ *  Globals
+ *************************************************/
+const patchArea   = document.getElementById('patchArea');
+const cableCanvas = document.getElementById('cablesCanvas');
+const patches     = [...document.querySelectorAll('.patch')];
+let hoverCable = null;   // paper.Path currently under the cursor
+
+/* Paper.js setup */
+const paperScope = new paper.PaperScope();
+paperScope.setup(cableCanvas);
+
+/* Data for active drag-lock & cables */
+let selectedPatch = null;
+let dragLock      = false;
+let dragOffset    = {x:0,y:0};
+
+/* Connection‑state data */
+let connecting   = false;        // true → awaiting 2nd port
+let connectStart = null;         // HTMLElement (first port)
+let previewPath  = null;         // paper.Path for live preview
+const connections = [];          // {from:HTMLElement, to:HTMLElement, path:paper.Path}
+
+/*************************************************
+ *  Utility helpers
+ *************************************************/
+function centerOf(el){
+  const r = el.getBoundingClientRect();
+  return {x:r.left + r.width/2 + window.scrollX, y:r.top + r.height/2 + window.scrollY};
+}
+function clearSelection(){
+  if(selectedPatch){selectedPatch.classList.remove('selected'); selectedPatch=null;}
+}
+/** Update an existing cubic path's 4 control points to new endpoints */
+function refreshPath(path, p1, p2){
+  const midX=(p1.x+p2.x)/2;
+  const segs = path.segments;
+  if(segs.length!==4){ path.removeSegments(); path.moveTo(p1.x,p1.y); path.cubicCurveTo(midX,p1.y, midX,p2.y, p2.x,p2.y); return; }
+  segs[0].point.set(p1.x,p1.y);
+  segs[1].point.set(midX,p1.y);
+  segs[2].point.set(midX,p2.y);
+  segs[3].point.set(p2.x,p2.y);
+}
+function redrawCables(){
+  for(const c of connections){
+    const p1=centerOf(c.from);
+    const p2=centerOf(c.to);
+    if(c.path){
+      refreshPath(c.path, p1, p2);
+    }else{
+      const path=new paperScope.Path();
+      path.strokeColor='#333'; path.strokeWidth=2;
+      path.moveTo(p1.x,p1.y);
+      const midX=(p1.x+p2.x)/2;
+      path.cubicCurveTo(midX,p1.y, midX,p2.y, p2.x,p2.y);
+      c.path=path;
+    }
+  }
+  paperScope.view.update();
+}
+function disconnect(from,to){
+  const idx = connections.findIndex(c=>c.from===from && c.to===to);
+  if(idx>-1){
+    connections[idx].path.remove();
+    connections.splice(idx,1);
+    paperScope.view.update();
+  }
+}
+function abortPreview(){
+  if(previewPath){ previewPath.remove(); previewPath=null; }
+  connecting=false;
+  connectStart=null;
+}
+
+/*************************************************
+ *  Pointer tracking
+ *************************************************/
+let mouse={x:0,y:0};
+patchArea.addEventListener('mousemove',e=>{
+ const mouse1 = { x: e.clientX, y: e.clientY };
+  mouse.x=e.clientX; mouse.y=e.clientY;
+  if(dragLock && selectedPatch){
+    selectedPatch.style.left=(mouse.x-dragOffset.x)+'px';
+    selectedPatch.style.top =(mouse.y-dragOffset.y)+'px';
+    redrawCables();
+  }
+  
+  /* Cable hover detection */
+      if (!connecting){                          // skip while drawing a new cable
+        const hit = paperScope.project.hitTest(
+          new paperScope.Point(mouse.x + window.scrollX, mouse.y + window.scrollY),
+          { stroke: true, fill: false, segments: false, tolerance: 6 });
+
+        const target = (hit && hit.item &&
+                        connections.some(c => c.path === hit.item))
+                       ? hit.item : null;
+
+        if (target !== hoverCable){
+          if (hoverCable){ hoverCable.strokeColor = '#333'; hoverCable.strokeWidth = '3'}
+          hoverCable = target;
+          if (hoverCable){ hoverCable.strokeColor = '#895010'; hoverCable.strokeWidth = '5' }
+          paperScope.view.update();
+        }
+      }
+  
+  
+  
+  
+});
+
+/*************************************************
+ *  Hover state for ports
+ *************************************************/
+let hoverPort=null;
+patchArea.addEventListener('mouseover',e=>{
+  const p=e.target.closest('.port');
+  if(p){hoverPort=p; p.classList.add('hover');}
+});
+patchArea.addEventListener('mouseout',e=>{
+  const p=e.target.closest('.port');
+  if(p){p.classList.remove('hover'); if(hoverPort===p) hoverPort=null;}
+});
+
+/*************************************************
+ *  Keyboard control (Tab / Space / F / Esc)
+ *************************************************/
+document.addEventListener('keydown',e=>{
+
+ if(e.key==='Escape' || (e.key.toLowerCase()==='d' && hoverCable)){
+      setCursor(null);
+    }
+  /* —— Tab : selection click —— */
+  if(e.key==='Tab'){
+    e.preventDefault();
+    const el=document.elementFromPoint(mouse.x,mouse.y)?.closest('.patch');
+    if(el){ (selectedPatch===el)? clearSelection() : (clearSelection(), selectedPatch=el, el.classList.add('selected')); }
+    return;
+  }
+
+  /* —— Space : drag-lock toggle —— */
+  if(e.key===' '){ // spacebar
+    e.preventDefault();
+    if(!selectedPatch) return;
+
+    if(!dragLock){ // engage drag
+      dragLock=true; selectedPatch.classList.add('dragging');
+      const r=selectedPatch.getBoundingClientRect();
+      dragOffset.x=mouse.x-r.left; dragOffset.y=mouse.y-r.top;
+    }else{          // release drag
+      dragLock=false; selectedPatch.classList.remove('dragging'); redrawCables();
+    }
+    return;
+  }
+
+  /* —— F : port click (connect / disconnect) —— */
+  if(e.key.toLowerCase()==='f'){
+    e.preventDefault();
+    if(!hoverPort) return;
+
+    /* — First press: begin connection — */
+    if(!connecting){
+      abortPreview(); // remove any stray preview
+      connecting=true; connectStart=hoverPort;
+
+      const startPt=centerOf(connectStart);
+      previewPath=new paperScope.Path.Line({from:startPt, to:startPt, strokeColor:'#f39c12', strokeWidth:2, dashArray:[6,4]});
+      return;
+    }
+
+    /* — Second press: attempt to finalise — */
+    const start=connectStart; const end=hoverPort;
+    abortPreview();
+
+    if(start===end) return; // same port → cancel
+
+    // Only allow out → in (or reverse) combinations
+    const isValidForward  = start.dataset.dir==='out' && end.dataset.dir==='in';
+    const isValidBackward = start.dataset.dir==='in'  && end.dataset.dir==='out';
+
+    if(!(isValidForward || isValidBackward)) return;
+
+    const from = isValidForward ? start : end;
+    const to   = isValidForward ? end   : start;
+
+    const exists = connections.some(c=>c.from===from && c.to===to);
+    if(exists){ disconnect(from,to); } else { connections.push({from,to,path:null}); redrawCables(); }
+    return;
+  }
+  
+   /* D : delete highlighted cable */
+      if (e.key.toLowerCase() === 'd'){
+        if (hoverCable){
+          const idx = connections.findIndex(c => c.path === hoverCable);
+          if (idx > -1){
+            connections[idx].path.remove();
+            connections.splice(idx, 1);
+          }
+          hoverCable = null;
+          paperScope.view.update();
+        }
+        return;                                   // prevent further handling
+      }
+
+
+  /* —— Escape : cancel operations —— */
+  if(e.key==='Escape'){
+    if(dragLock && selectedPatch){ dragLock=false; selectedPatch.classList.remove('dragging'); }
+    abortPreview();
+    clearSelection();
+    paperScope.view.update();
+    return;
+  }
+});
+
+/*************************************************
+ *  Live update of preview connection during mousemove (when connecting)
+ *************************************************/
+patchArea.addEventListener('mousemove',()=>{
+  if(connecting && previewPath && connectStart){
+    const p1=centerOf(connectStart);
+    const p2={x:mouse.x+window.scrollX,y:mouse.y+window.scrollY};
+    refreshPath(previewPath, p1, p2);
+    paperScope.view.update();
+  }
+});
+
+/*************************************************
+ *  Ensure canvas resizes with window
+ *************************************************/
+function resizeCanvas(){
+  cableCanvas.width=window.innerWidth; cableCanvas.height=window.innerHeight;
+  paperScope.view.update();
+}
+
+/* Utility: centralised cursor state handler */
+  function setCursor(state){           // state ∈ null | class-name string
+    patchArea.classList.remove(
+      'connecting','over-port','hover-cable','invalid-connect');
+    if(state){ patchArea.classList.add(state); }
+  }
+
+  /* —— A.  start of a cable drag —— */
+  let startPort=null;                  // remember first port
+  document.addEventListener('mousedown',e=>{
+    if(e.target.classList && e.target.classList.contains('port')){
+      startPort=e.target;
+      connecting=true;                 // your existing flag
+      setCursor('connecting');
+      /* …existing cable-start code… */
+    }
+  });
+  
+    patchArea.addEventListener('mousemove',e=>{
+    const tgt=e.target;
+
+    if(connecting){
+      /* while dragging, show not-allowed when same-patch */
+      const overPort = tgt.classList && tgt.classList.contains('port');
+      const invalid  = overPort && startPort &&
+                       (startPort.closest('.patch')===tgt.closest('.patch'));
+      setCursor(invalid ? 'invalid-connect' : 'connecting');
+      return;                           // nothing else while dragging
+    }
+
+    /* not dragging: highlight cable or port */
+    if(hoverCable){                     // set in previous answer
+      setCursor('hover-cable');
+    }else if(tgt.classList && tgt.classList.contains('port')){
+      setCursor('over-port');
+    }else{
+      setCursor(null);
+    }
+  });
+  
+   /* —— C.  end of a drag / clear cursor —— */
+  document.addEventListener('mouseup',()=>{
+    if(connecting){
+      connecting=false;
+      setCursor(null);
+      startPort=null;
+    }
+  });
+
+window.addEventListener('resize',resizeCanvas); resizeCanvas();
+</script>
+</body>
+</html>

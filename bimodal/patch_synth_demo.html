@@ -90,7 +90,7 @@ color:#444;
 </style>
 
 </head>
-<body>
+<body >
   <div id="instructionsBar">
     <strong>Instructions:&nbsp;</strong>
 
@@ -144,6 +144,7 @@ color:#444;
 
 <script>
 
+
 /*************************************************
  *  Globals
  *************************************************/
@@ -178,6 +179,24 @@ let connectStart = null;         // HTMLElement (first port)
 let previewPath  = null;         // paper.Path for live preview
 const connections = [];          // {from:HTMLElement, to:HTMLElement, path:paper.Path}
 
+
+// Ensure the page captures keyboard events as soon as it is shown
+window.addEventListener('load', () => document.body.focus(), { once:true });
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) document.body.focus();            // regain focus on tab-switch
+});
+
+
+
+patchArea.addEventListener('mousedown', e => {
+  if (e.button !== 0) return;                              // left-button only
+  if (!e.target.closest('.patch')) {                       // clicked outside any node
+    clearSelection();
+    selectedPatch = null;
+    paperScope.view.update();
+  }
+});
+
 /*************************************************
  *  Utility helpers
  *************************************************/
@@ -185,9 +204,16 @@ function centerOf(el){
   const r = el.getBoundingClientRect();
   return {x:r.left + r.width/2 + window.scrollX, y:r.top + r.height/2 + window.scrollY};
 }
+/* Replace the old single-selection helper with this multi-selection version */
 function clearSelection(){
-  if(selectedPatch){selectedPatch.classList.remove('selected'); selectedPatch=null;}
+  /* remove the “selected” class from every patch that has it */
+  document.querySelectorAll('.patch.selected')
+          .forEach(el => el.classList.remove('selected'));
+
+  /* reset single-patch state, if in use elsewhere */
+  selectedPatch = null;
 }
+
 /** Update an existing cubic path's 4 control points to new endpoints */
 function refreshPath(path, p1, p2){
   const midX=(p1.x+p2.x)/2;
@@ -291,66 +317,63 @@ patchArea.addEventListener('mouseout',e=>{
 /*************************************************
  *  Keyboard control (Tab / Space / F / Esc)
  *************************************************/
+/*  Focus the canvas whenever the mouse enters it  */
+patchArea.tabIndex = 0;                 // make the element focus-able
+patchArea.addEventListener('mouseenter', () => {
+  patchArea.focus();                    // direct subsequent key events here
+});
+
 
 /* ──────────────────────────────────────────────────────────────────────────────
-   Unified key-down handler
-   --   S  : detach nearest end of the hovered cable; press S again to attach
-   --   D  : delete the hovered cable
-   --   F  : make / break a normal port-to-port connection
-   --   ⎵  : toggle drag-lock on the selected patch
-   --   Tab: select patch under cursor
-   --   Esc: cancel current modes (drag, preview, re-patch, selection)
+   Unified key-down handler  (revised)
+   –  S  : detach nearest end of hovered cable; press S again to attach
+   –  D  : delete the hovered cable
+   –  F  : make / break a normal port-to-port connection
+   –  ⎵  : toggle drag-lock on the *last* selected patch
+   –  Tab: MULTI-SELECT patch under cursor; Tab in empty space clears selection
+   –  Esc: cancel current modes (drag, preview, re-patch, selection)
    ────────────────────────────────────────────────────────────────────────────*/
 document.addEventListener('keydown', e => {
 
   const key   = e.key;
   const lower = key.toLowerCase();
 
-  /* ──────────────────────  S : detach / re-attach a cable end  ───────────────────── */
+  /* ──────────────────────  S : detach / re-attach a cable end  ─────────────────── */
   if (lower === 's') {
-
-    /* 1 ▸ Finish a reconnection if we already have a loose end */
+    /* 1 ▸ finish reconnection if a loose end exists */
     if (reattachCable && connecting) {
       const portElem = document.elementFromPoint(lastMouse.x, lastMouse.y);
-
-      /* must be a port on a *different* patch from the fixed end */
       if (!(portElem && portElem.classList.contains('port'))) return;
       if (portElem.closest('.patch') === startPort.closest('.patch')) return;
 
-      /* snap free end to the centre of the new port */
       const r = portElem.getBoundingClientRect();
       reattachCable.segments[reattachEnd].point =
         new paperScope.Point(r.left + r.width / 2 + window.scrollX,
                              r.top  + r.height / 2 + window.scrollY);
 
-      /* update bookkeeping */
       const conn = connections.find(c => c.path === reattachCable);
       if (reattachEnd === 0) { conn.from = portElem; } else { conn.to = portElem; }
 
-      /* clear transient state */
       reattachCable = null; connecting = false; startPort = null;
       setCursor?.(null);
       paperScope.view.update();
       return;
     }
 
-    /* 2 ▸ Not reconnecting yet: detach the nearest end of the hovered cable */
+    /* 2 ▸ not reconnecting yet: detach nearest end of hovered cable */
     if (hoverCable && !connecting && !reattachCable) {
       const conn = connections.find(c => c.path === hoverCable);
       if (!conn) return;
 
-      /* choose the cable end closer to the cursor */
       const p0  = hoverCable.segments[0].point;
       const p1  = hoverCable.segments[1].point;
       const cur = new paperScope.Point(lastMouse.x + window.scrollX,
                                        lastMouse.y + window.scrollY);
       reattachEnd = (p0.getDistance(cur) < p1.getDistance(cur)) ? 0 : 1;
 
-      /* sever bookkeeping on that end */
       if (reattachEnd === 0) { conn.from = null; startPort = conn.to; }
       else                   { conn.to   = null; startPort = conn.from; }
 
-      /* enter “loose-end” mode */
       reattachCable = hoverCable;
       connecting    = true;
       setCursor?.('connecting');
@@ -361,7 +384,7 @@ document.addEventListener('keydown', e => {
   /* ───────── Esc : cancel a pending re-patch (remove orphan if needed) ───────── */
   if (key === 'Escape' && reattachCable) {
     const conn = connections.find(c => c.path === reattachCable);
-    if (!conn.from || !conn.to) {                        // now orphaned ⇒ delete
+    if (!conn.from || !conn.to) {
       reattachCable.remove();
       connections.splice(connections.indexOf(conn), 1);
     }
@@ -371,33 +394,45 @@ document.addEventListener('keydown', e => {
     return;
   }
 
-  /* ───────── Cursor tidy-up for Esc and D (when not in re-patch) ───────── */
+  /* ───────── Cursor tidy-up for Esc and D (outside re-patch mode) ───────── */
   if (key === 'Escape' || (lower === 'd' && hoverCable)) {
     setCursor?.(null);
   }
 
-  /* ───────────────────────  Tab : (de)select patch  ─────────────────────── */
-  if (key === 'Tab') {
-    e.preventDefault();
-    const el = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
-    if (el) {
-      (selectedPatch === el)
-        ? clearSelection()
-        : (clearSelection(), selectedPatch = el, el.classList.add('selected'));
-    }
-    return;
-  }
 
-  /* ───────────────────────  Space : drag-lock toggle  ────────────────────── */
-  if (key === ' ') {                           // spacebar
+/* ───────── Tab : multi-select toggle, or clear selection in empty space ───────── */
+if (e.key === 'Tab') {
+  e.preventDefault();
+
+  const patchAtCursor =
+        document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+
+  if (patchAtCursor) {
+    /* Toggle selection state of the patch under the cursor */
+    if (patchAtCursor.classList.contains('selected')) {
+      patchAtCursor.classList.remove('selected');
+      if (selectedPatch === patchAtCursor) selectedPatch = null;
+    } else {
+      patchAtCursor.classList.add('selected');     // add to multi-selection
+      selectedPatch = patchAtCursor;               // remember last-active patch
+    }
+  } else {
+    /* Cursor in empty space: clear all selected patches */
+    clearSelection();
+    selectedPatch = null;
+  }
+  return;
+}
+  /* ───────────────────────  Space : drag-lock toggle  ─────────────────────── */
+  if (key === ' ') {
     e.preventDefault();
     if (!selectedPatch) return;
 
-    if (!dragLock) {                           // engage drag
+    if (!dragLock) {
       dragLock = true; selectedPatch.classList.add('dragging');
-      const r = selectedPatch.getBoundingClientRect();
+      const r  = selectedPatch.getBoundingClientRect();
       dragOffset.x = mouse.x - r.left; dragOffset.y = mouse.y - r.top;
-    } else {                                   // release drag
+    } else {
       dragLock = false; selectedPatch.classList.remove('dragging');
       redrawCables();
     }
@@ -409,12 +444,11 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     if (!hoverPort) return;
 
-    /* First press → start a connection */
-    if (!connecting) {
+    if (!connecting) {                       /* first press: begin */
       abortPreview();
-      connecting = true; connectStart = hoverPort;
+      connecting   = true; connectStart = hoverPort;
 
-      const startPt  = centerOf(connectStart);
+      const startPt = centerOf(connectStart);
       previewPath = new paperScope.Path.Line({
         from: startPt, to: startPt,
         strokeColor: '#f39c12', strokeWidth: 2, dashArray: [6, 4]
@@ -422,26 +456,21 @@ document.addEventListener('keydown', e => {
       return;
     }
 
-    /* Second press → attempt to finalise the connection */
-    const start = connectStart;
-    const end   = hoverPort;
+    /* second press: finalise */
+    const start = connectStart; const end = hoverPort;
     abortPreview();
-    if (start === end) return;                 // same port ⇒ cancel
+    if (start === end) return;
 
-    /* only allow out→in or in→out */
-    const okForward  = start.dataset.dir === 'out' && end.dataset.dir === 'in';
-    const okBackward = start.dataset.dir === 'in'  && end.dataset.dir === 'out';
-    if (!(okForward || okBackward)) return;
+    const okFwd  = start.dataset.dir === 'out' && end.dataset.dir === 'in';
+    const okBack = start.dataset.dir === 'in'  && end.dataset.dir === 'out';
+    if (!(okFwd || okBack)) return;
 
-    const from = okForward ? start : end;
-    const to   = okForward ? end   : start;
+    const from = okFwd ? start : end;
+    const to   = okFwd ? end   : start;
 
     const exists = connections.some(c => c.from === from && c.to === to);
-    if (exists) {
-      disconnect(from, to);
-    } else {
-      connections.push({ from, to, path: null });
-      redrawCables();
+    if (exists) { disconnect(from, to); } else {
+      connections.push({ from, to, path: null }); redrawCables();
     }
     return;
   }
@@ -470,6 +499,7 @@ document.addEventListener('keydown', e => {
     paperScope.view.update();
   }
 });
+
 
 /*************************************************
  *  Live update of preview connection during mousemove (when connecting)

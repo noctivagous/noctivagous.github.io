@@ -383,5 +383,53 @@
 })();
     
   </script>
+  <script>
+/* =========================================================
+   Cross-platform Delete / Undo / Redo
+   ========================================================= */
+const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+
+/* ----- 1.  Put the right shortcut into each button title */
+document.getElementById('deleteBtn').title = isMac
+  ? 'Delete (⌫)'
+  : 'Delete (Del)';
+
+document.getElementById('undoBtn').title = isMac
+  ? 'Undo (⌘Z)'
+  : 'Undo (Ctrl Z)';
+
+document.getElementById('redoBtn').title = isMac
+  ? 'Redo (⌘⇧Z)'
+  : 'Redo (Ctrl Y / Ctrl ⇧ Z)';
+
+/* ----- 2.  Helper: “meta or ctrl” ⇢ the platform modifier */
+function modKey(ev) { return isMac ? ev.metaKey : ev.ctrlKey; }
+
+/* ----- 3.  Keyboard shortcuts */
+document.addEventListener('keydown', ev => {
+  /* ---------- 3 a.  Delete */
+  if (ev.key === 'Delete' || (isMac && ev.key === 'Backspace')) {
+    ev.preventDefault();
+    performDelete();
+    return;
+  }
+
+  /* ---------- 3 b.  Undo */
+  if (modKey(ev) && !ev.shiftKey && ev.key.toLowerCase() === 'z') {
+    ev.preventDefault();
+    restore(undo, redo);
+    return;
+  }
+
+  /* ---------- 3 c.  Redo (⌘⇧Z, Ctrl Y, Ctrl ⇧ Z) */
+  if (modKey(ev) &&
+      (ev.key.toLowerCase() === 'y' ||
+       (ev.shiftKey && ev.key.toLowerCase() === 'z'))) {
+    ev.preventDefault();
+    restore(redo, undo);
+  }
+});
+</script>
+
 </body>
 </html>

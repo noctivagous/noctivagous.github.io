@@ -50,27 +50,33 @@
   }
 
   /* ─────────── 2. CSS for the instruction bar ─────────── */
-#instructionsBar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 40;
-    background: rgb(0 0 0 / 95%);
-    border-bottom: 1px solid #0d6efd;
-    color: silver;
-    padding: 6px 12px;
-    font-size: 14pt;
-    pointer-events: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    line-height: 25pt;
-    box-shadow: 5pt 5pt 5pt gray;
+ #instructionsBar{
+    position:fixed;           /* was: fixed */
+    top:0; z-index:40;
+    width:100%;
+    background:rgba(255,255,255,0.95);
+    border-bottom:1px solid #0d6efd;
+    padding:6px 12px;
+    font-size:1rem;
+    font-family:Tahoma;
+    line-height:1.5rem;
+    pointer-events:none;
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+  background:black;
+  }
+  
+  @media (min-width: 800px){      /* applies when width > 650 px */
+  #instructionsBar{
+    font-size: 1rem;            /* raise from 0.85 rem (≈ 14 px) to 1 rem (≈ 16 px) */
+        font-size:1.2rem;
+    line-height:1.8rem;
+  }
 }
-
+  
 kbd{
 border:1pt solid silver;
 border-radius:3pt;
-padding:2pt;
+padding:1pt;
 text-align:Center;
 padding-left:3pt;
 padding-right:3pt;
@@ -87,12 +93,16 @@ color:#444;
   #patchArea.over-port     { cursor: pointer;    }
   #patchArea.hover-cable   { cursor: pointer;    }
   #patchArea.invalid-connect{cursor: not-allowed;}
+  
+  
 </style>
 
 </head>
 <body >
+
   <div id="instructionsBar">
-    <strong>Instructions:&nbsp;</strong>
+<h3 style="margin:0;color:gray;">Patch/Node Programming GUI Demo</h3>
+    <div style="color:#e0e0e0">Instructions:&nbsp;</div>
 
 <div style="color:white;margin-left:10pt;">    
     1. To make a selection, hover over a node and press <kbd>Tab</kbd>.
@@ -100,14 +110,14 @@ color:#444;
     2. Start dragging the selection by pressing <kbd>Spacebar</kbd> once, then move the mouse. Press <kbd>Spacebar</kbd> again to unlock the dragging.
 
     <br/>
-    3. Connect outlets by hovering over a circle and pressing <kbd>F</kbd>. Then move the mouse.
-    Press <kbd>F</kbd> again while hovering over the other outlet.  To cancel, press <kbd>Esc</kbd>.
+    3. Connect outlets by hovering over the circle and pressing <kbd>F</kbd>. Then move the mouse.
+    While hovering over the other outlet, press <kbd>F</kbd> again.  To cancel, press <kbd>Esc</kbd>.
 
     <br/>
-    4. To delete a cable, move the cursor on top of it and press <kbd>D</kbd>.
+    4. To delete a cable, hover over it and press <kbd>D</kbd>.
     <br/>
-	5. To unhook a cable for placing it on a different outlet, press <kbd>S</kbd> while hovering 
-	over its outlet to detach it.  After finding the other outlet, press <kbd>S</kbd> again
+	5. To unhook a cable, to place it on a different outlet, press <kbd>S</kbd> while hovering 
+	over the outlet to detach.  After hovering over the other outlet, press <kbd>S</kbd> again
 	to attach.
 </div>
 
@@ -116,24 +126,24 @@ color:#444;
   <div id="patchArea">
 
     <!-- Example Synth Patches -->
-    <div class="patch" style="left:60px;top:290px;" data-id="osc">
+    <div class="patch" style="left:60px;top:340px;" data-id="osc">
       <header>Oscillator</header>
       <span class="port output" data-dir="out" data-name="audio"></span>
     </div>
 
-    <div class="patch" style="left:350px;top:350px;" data-id="filter">
+    <div class="patch" style="left:350px;top:400px;" data-id="filter">
       <header>Filter</header>
       <span class="port input" data-dir="in" data-name="audio"></span>
       <span class="port output" data-dir="out" data-name="audio"></span>
     </div>
 
-    <div class="patch" style="left:640px;top:410px;" data-id="amp">
+    <div class="patch" style="left:640px;top:460px;" data-id="amp">
       <header>Amplifier</header>
       <span class="port input"  data-dir="in"  data-name="audio"></span>
       <span class="port output" data-dir="out" data-name="audio"></span>
     </div>
 
-    <div class="patch" style="left:930px;top:470px;" data-id="out">
+    <div class="patch" style="left:930px;top:520px;" data-id="out">
       <header>Output</header>
       <span class="port input" data-dir="in" data-name="audio"></span>
     </div>

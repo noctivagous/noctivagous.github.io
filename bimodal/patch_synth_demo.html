@@ -97,15 +97,18 @@ color:#444;
 <div style="color:white;margin-left:10pt;">    
     1. To make a selection, hover over a node and press <kbd>Tab</kbd>.
     <br/>
-    2. Start dragging the selection by pressing <kbd>Spacebar</kbd> once. Then move the mouse. Press <kbd>Spacebar</kbd> a second time to unlock the drag.
+    2. Start dragging the selection by pressing <kbd>Spacebar</kbd> once, then move the mouse. Press <kbd>Spacebar</kbd> again to unlock the dragging.
 
     <br/>
-    3. Connect node outlets by hovering over a circle and pressing <kbd>F</kbd>. Then move the mouse.
-    Press <kbd>F</kbd> again at the other outlet.  To cancel, press <kbd>Esc</kbd>.
+    3. Connect outlets by hovering over a circle and pressing <kbd>F</kbd>. Then move the mouse.
+    Press <kbd>F</kbd> again while hovering over the other outlet.  To cancel, press <kbd>Esc</kbd>.
 
     <br/>
-    4. To delete a cable, hover over it and press <kbd>D</kbd>.
+    4. To delete a cable, move the cursor on top of it and press <kbd>D</kbd>.
     <br/>
+	5. To unhook a cable for placing it on a different outlet, press <kbd>S</kbd> while hovering 
+	over its outlet to detach it.  After finding the other outlet, press <kbd>S</kbd> again
+	to attach.
 </div>
 
   </div>
@@ -148,6 +151,17 @@ const patchArea   = document.getElementById('patchArea');
 const cableCanvas = document.getElementById('cablesCanvas');
 const patches     = [...document.querySelectorAll('.patch')];
 let hoverCable = null;   // paper.Path currently under the cursor
+
+/*────────────────────────────  S-key “re-patch” support  ───────────────────────────
+   ▸  Hover any cable, press **S** → one end is detached and follows the cursor.
+   ▸  Press **F** while the cursor is over a *different* port to finish the move.
+   ▸  Press **Esc** to cancel.                                                         */
+
+let reattachCable = null;   // paper.Path currently being moved
+let reattachEnd   = 1;      // 0 = start-segment, 1 = end-segment
+let startPort     = null;   // port that remains fixed
+let lastMouse     = {x:0, y:0};   // updated on every mouse-move
+
 
 /* Paper.js setup */
 const paperScope = new paper.PaperScope();
@@ -220,6 +234,16 @@ function abortPreview(){
  *************************************************/
 let mouse={x:0,y:0};
 patchArea.addEventListener('mousemove',e=>{
+  lastMouse = {x:e.clientX, y:e.clientY};                 // keep latest position
+
+ if(reattachCable){                                      // move the floating end
+    reattachCable.segments[reattachEnd].point =
+      new paperScope.Point(e.clientX + window.scrollX,
+                           e.clientY + window.scrollY);
+    paperScope.view.update();
+  }
+
+
  const mouse1 = { x: e.clientX, y: e.clientY };
   mouse.x=e.clientX; mouse.y=e.clientY;
   if(dragLock && selectedPatch){
@@ -267,91 +291,183 @@ patchArea.addEventListener('mouseout',e=>{
 /*************************************************
  *  Keyboard control (Tab / Space / F / Esc)
  *************************************************/
-document.addEventListener('keydown',e=>{
 
- if(e.key==='Escape' || (e.key.toLowerCase()==='d' && hoverCable)){
-      setCursor(null);
-    }
-  /* —— Tab : selection click —— */
-  if(e.key==='Tab'){
-    e.preventDefault();
-    const el=document.elementFromPoint(mouse.x,mouse.y)?.closest('.patch');
-    if(el){ (selectedPatch===el)? clearSelection() : (clearSelection(), selectedPatch=el, el.classList.add('selected')); }
-    return;
-  }
+/* ──────────────────────────────────────────────────────────────────────────────
+   Unified key-down handler
+   --   S  : detach nearest end of the hovered cable; press S again to attach
+   --   D  : delete the hovered cable
+   --   F  : make / break a normal port-to-port connection
+   --   ⎵  : toggle drag-lock on the selected patch
+   --   Tab: select patch under cursor
+   --   Esc: cancel current modes (drag, preview, re-patch, selection)
+   ────────────────────────────────────────────────────────────────────────────*/
+document.addEventListener('keydown', e => {
 
-  /* —— Space : drag-lock toggle —— */
-  if(e.key===' '){ // spacebar
-    e.preventDefault();
-    if(!selectedPatch) return;
+  const key   = e.key;
+  const lower = key.toLowerCase();
 
-    if(!dragLock){ // engage drag
-      dragLock=true; selectedPatch.classList.add('dragging');
-      const r=selectedPatch.getBoundingClientRect();
-      dragOffset.x=mouse.x-r.left; dragOffset.y=mouse.y-r.top;
-    }else{          // release drag
-      dragLock=false; selectedPatch.classList.remove('dragging'); redrawCables();
-    }
-    return;
-  }
+  /* ──────────────────────  S : detach / re-attach a cable end  ───────────────────── */
+  if (lower === 's') {
 
-  /* —— F : port click (connect / disconnect) —— */
-  if(e.key.toLowerCase()==='f'){
-    e.preventDefault();
-    if(!hoverPort) return;
+    /* 1 ▸ Finish a reconnection if we already have a loose end */
+    if (reattachCable && connecting) {
+      const portElem = document.elementFromPoint(lastMouse.x, lastMouse.y);
 
-    /* — First press: begin connection — */
-    if(!connecting){
-      abortPreview(); // remove any stray preview
-      connecting=true; connectStart=hoverPort;
+      /* must be a port on a *different* patch from the fixed end */
+      if (!(portElem && portElem.classList.contains('port'))) return;
+      if (portElem.closest('.patch') === startPort.closest('.patch')) return;
 
-      const startPt=centerOf(connectStart);
-      previewPath=new paperScope.Path.Line({from:startPt, to:startPt, strokeColor:'#f39c12', strokeWidth:2, dashArray:[6,4]});
+      /* snap free end to the centre of the new port */
+      const r = portElem.getBoundingClientRect();
+      reattachCable.segments[reattachEnd].point =
+        new paperScope.Point(r.left + r.width / 2 + window.scrollX,
+                             r.top  + r.height / 2 + window.scrollY);
+
+      /* update bookkeeping */
+      const conn = connections.find(c => c.path === reattachCable);
+      if (reattachEnd === 0) { conn.from = portElem; } else { conn.to = portElem; }
+
+      /* clear transient state */
+      reattachCable = null; connecting = false; startPort = null;
+      setCursor?.(null);
+      paperScope.view.update();
       return;
     }
 
-    /* — Second press: attempt to finalise — */
-    const start=connectStart; const end=hoverPort;
-    abortPreview();
+    /* 2 ▸ Not reconnecting yet: detach the nearest end of the hovered cable */
+    if (hoverCable && !connecting && !reattachCable) {
+      const conn = connections.find(c => c.path === hoverCable);
+      if (!conn) return;
 
-    if(start===end) return; // same port → cancel
+      /* choose the cable end closer to the cursor */
+      const p0  = hoverCable.segments[0].point;
+      const p1  = hoverCable.segments[1].point;
+      const cur = new paperScope.Point(lastMouse.x + window.scrollX,
+                                       lastMouse.y + window.scrollY);
+      reattachEnd = (p0.getDistance(cur) < p1.getDistance(cur)) ? 0 : 1;
 
-    // Only allow out → in (or reverse) combinations
-    const isValidForward  = start.dataset.dir==='out' && end.dataset.dir==='in';
-    const isValidBackward = start.dataset.dir==='in'  && end.dataset.dir==='out';
+      /* sever bookkeeping on that end */
+      if (reattachEnd === 0) { conn.from = null; startPort = conn.to; }
+      else                   { conn.to   = null; startPort = conn.from; }
 
-    if(!(isValidForward || isValidBackward)) return;
+      /* enter “loose-end” mode */
+      reattachCable = hoverCable;
+      connecting    = true;
+      setCursor?.('connecting');
+      return;
+    }
+  }
 
-    const from = isValidForward ? start : end;
-    const to   = isValidForward ? end   : start;
-
-    const exists = connections.some(c=>c.from===from && c.to===to);
-    if(exists){ disconnect(from,to); } else { connections.push({from,to,path:null}); redrawCables(); }
+  /* ───────── Esc : cancel a pending re-patch (remove orphan if needed) ───────── */
+  if (key === 'Escape' && reattachCable) {
+    const conn = connections.find(c => c.path === reattachCable);
+    if (!conn.from || !conn.to) {                        // now orphaned ⇒ delete
+      reattachCable.remove();
+      connections.splice(connections.indexOf(conn), 1);
+    }
+    reattachCable = null; connecting = false; startPort = null;
+    setCursor?.(null);
+    paperScope.view.update();
     return;
   }
-  
-   /* D : delete highlighted cable */
-      if (e.key.toLowerCase() === 'd'){
-        if (hoverCable){
-          const idx = connections.findIndex(c => c.path === hoverCable);
-          if (idx > -1){
-            connections[idx].path.remove();
-            connections.splice(idx, 1);
-          }
-          hoverCable = null;
-          paperScope.view.update();
-        }
-        return;                                   // prevent further handling
+
+  /* ───────── Cursor tidy-up for Esc and D (when not in re-patch) ───────── */
+  if (key === 'Escape' || (lower === 'd' && hoverCable)) {
+    setCursor?.(null);
+  }
+
+  /* ───────────────────────  Tab : (de)select patch  ─────────────────────── */
+  if (key === 'Tab') {
+    e.preventDefault();
+    const el = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+    if (el) {
+      (selectedPatch === el)
+        ? clearSelection()
+        : (clearSelection(), selectedPatch = el, el.classList.add('selected'));
+    }
+    return;
+  }
+
+  /* ───────────────────────  Space : drag-lock toggle  ────────────────────── */
+  if (key === ' ') {                           // spacebar
+    e.preventDefault();
+    if (!selectedPatch) return;
+
+    if (!dragLock) {                           // engage drag
+      dragLock = true; selectedPatch.classList.add('dragging');
+      const r = selectedPatch.getBoundingClientRect();
+      dragOffset.x = mouse.x - r.left; dragOffset.y = mouse.y - r.top;
+    } else {                                   // release drag
+      dragLock = false; selectedPatch.classList.remove('dragging');
+      redrawCables();
+    }
+    return;
+  }
+
+  /* ───────────────────  F : connect / disconnect ports  ──────────────────── */
+  if (lower === 'f') {
+    e.preventDefault();
+    if (!hoverPort) return;
+
+    /* First press → start a connection */
+    if (!connecting) {
+      abortPreview();
+      connecting = true; connectStart = hoverPort;
+
+      const startPt  = centerOf(connectStart);
+      previewPath = new paperScope.Path.Line({
+        from: startPt, to: startPt,
+        strokeColor: '#f39c12', strokeWidth: 2, dashArray: [6, 4]
+      });
+      return;
+    }
+
+    /* Second press → attempt to finalise the connection */
+    const start = connectStart;
+    const end   = hoverPort;
+    abortPreview();
+    if (start === end) return;                 // same port ⇒ cancel
+
+    /* only allow out→in or in→out */
+    const okForward  = start.dataset.dir === 'out' && end.dataset.dir === 'in';
+    const okBackward = start.dataset.dir === 'in'  && end.dataset.dir === 'out';
+    if (!(okForward || okBackward)) return;
+
+    const from = okForward ? start : end;
+    const to   = okForward ? end   : start;
+
+    const exists = connections.some(c => c.from === from && c.to === to);
+    if (exists) {
+      disconnect(from, to);
+    } else {
+      connections.push({ from, to, path: null });
+      redrawCables();
+    }
+    return;
+  }
+
+  /* ─────────────────────  D : delete the hovered cable  ───────────────────── */
+  if (lower === 'd') {
+    if (hoverCable) {
+      const idx = connections.findIndex(c => c.path === hoverCable);
+      if (idx > -1) {
+        connections[idx].path.remove();
+        connections.splice(idx, 1);
       }
+      hoverCable = null;
+      paperScope.view.update();
+    }
+    return;
+  }
 
-
-  /* —— Escape : cancel operations —— */
-  if(e.key==='Escape'){
-    if(dragLock && selectedPatch){ dragLock=false; selectedPatch.classList.remove('dragging'); }
+  /* ─────────────────────  Esc : cancel other operations  ──────────────────── */
+  if (key === 'Escape') {
+    if (dragLock && selectedPatch) {
+      dragLock = false; selectedPatch.classList.remove('dragging');
+    }
     abortPreview();
     clearSelection();
     paperScope.view.update();
-    return;
   }
 });
 
@@ -383,7 +499,7 @@ function resizeCanvas(){
   }
 
   /* —— A.  start of a cable drag —— */
-  let startPort=null;                  // remember first port
+   startPort=null;                  // remember first port
   document.addEventListener('mousedown',e=>{
     if(e.target.classList && e.target.classList.contains('port')){
       startPort=e.target;

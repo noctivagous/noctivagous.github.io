@@ -110,7 +110,7 @@ color:#444;
     2. Start dragging the selection by pressing <kbd>Spacebar</kbd> once, then move the mouse. Press <kbd>Spacebar</kbd> again to unlock the dragging.
 
     <br/>
-    3. Connect outlets by hovering over the circle and pressing <kbd>F</kbd>. Then move the mouse.
+    3. Connect outlets by hovering over a circle and pressing <kbd>F</kbd>. Then move the mouse.
     While hovering over the other outlet, press <kbd>F</kbd> again.  To cancel, press <kbd>Esc</kbd>.
 
     <br/>
@@ -153,6 +153,22 @@ color:#444;
   </div>
 
 <script>
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MULTI-PATCH DRAG SUPPORT
+   •  Space-bar engages “drag-lock” for every .patch in the current selection.
+   •  All selected patches follow the mouse as a rigid group.
+   •  Press Space again (or release mouse) to drop them, then cables redraw.
+   ───────────────────────────────────────────────────────────────────────*/
+
+/* 1 ▸ New global to keep per-patch offsets from the cursor */
+const dragOffsets = new Map();       // Map<HTMLElement,{dx,dy}>
+/* ───── globals ───── */
+const initialPos  = new Map();   // original {left,top} of each .patch
+let   dragStart   = {x:0,y:0};   // mouse position at drag-start
+
+
+
 
 
 /*************************************************
@@ -271,6 +287,8 @@ function abortPreview(){
 let mouse={x:0,y:0};
 patchArea.addEventListener('mousemove',e=>{
   lastMouse = {x:e.clientX, y:e.clientY};                 // keep latest position
+  mouse.x = e.clientX; mouse.y = e.clientY;            // keep global mouse
+
 
  if(reattachCable){                                      // move the floating end
     reattachCable.segments[reattachEnd].point =
@@ -280,13 +298,31 @@ patchArea.addEventListener('mousemove',e=>{
   }
 
 
+  /* — group dragging — */
+ 
+/* mouse-move: reuse the stored offsets so every patch keeps its original spacing */
+if (dragLock && initialPos.size) {
+  const dx = mouse.x - dragStart.x;
+  const dy = mouse.y - dragStart.y;
+  initialPos.forEach((pos, el) => {
+    el.style.left = (pos.left + dx) + 'px';
+    el.style.top  = (pos.top  + dy) + 'px';
+  });
+  redrawCables();                // maintain connections
+  
+  return;
+}
+
+
  const mouse1 = { x: e.clientX, y: e.clientY };
   mouse.x=e.clientX; mouse.y=e.clientY;
   if(dragLock && selectedPatch){
     selectedPatch.style.left=(mouse.x-dragOffset.x)+'px';
     selectedPatch.style.top =(mouse.y-dragOffset.y)+'px';
     redrawCables();
+    
   }
+
   
   /* Cable hover detection */
       if (!connecting){                          // skip while drawing a new cable
@@ -434,20 +470,34 @@ if (e.key === 'Tab') {
   return;
 }
   /* ───────────────────────  Space : drag-lock toggle  ─────────────────────── */
-  if (key === ' ') {
-    e.preventDefault();
-    if (!selectedPatch) return;
+  /* 3 ▸ Space-bar toggles drag-lock for the *entire* selection */
+if (e.key === ' ') {           // inside your key-down handler
+  e.preventDefault();
 
-    if (!dragLock) {
-      dragLock = true; selectedPatch.classList.add('dragging');
-      const r  = selectedPatch.getBoundingClientRect();
-      dragOffset.x = mouse.x - r.left; dragOffset.y = mouse.y - r.top;
-    } else {
-      dragLock = false; selectedPatch.classList.remove('dragging');
-      redrawCables();
-    }
-    return;
+
+  const selected = [...document.querySelectorAll('.patch.selected')];
+  if (!selected.length) return;           // nothing selected
+
+  
+/* engage drag: build the reference tables once, like Swift’s initialMouseDragged */
+if (!dragLock) {                 // (inside the space-bar handler)
+  dragLock  = true;
+  dragStart = {x: mouse.x, y: mouse.y};
+  initialPos.clear();
+  document.querySelectorAll('.patch.selected').forEach(el => {
+    const r = el.getBoundingClientRect();
+    initialPos.set(el, {left: r.left, top: r.top});
+  });
+}
+  else{                                  /* ── release drag ── */
+    dragLock = false;
+    dragOffsets.forEach((_, el) => el.classList.remove('dragging'));
+    dragOffsets.clear();
+    redrawCables();
   }
+  return;
+}
+
 
   /* ───────────────────  F : connect / disconnect ports  ──────────────────── */
   if (lower === 'f') {

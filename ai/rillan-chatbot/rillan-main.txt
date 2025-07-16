@@ -5,76 +5,109 @@ AI Chatbot App : Rillan
 The way that AI chatbots and AI code editors are set up today, they carry out a
 large portion of the work without seeking the user's input. Right after the
 initial prompt is sent, they venture off on their own and execute. They generate 
-large volumes of output and then the user has to inspect and revise what was done. W
-hy did it do so much without first presenting some possible paths for what it can do, 
-so that the user can interact with it and guide it first? Without that, it can't 
-tell you enough about what it is about to do, so that you can avoid undesirable 
-or irrelevant outcomes. In actuality, software development is hardly an 
-automate-able process, because almost any project requires custom planning. 
-The app usually has to be shaped by the software developer. These AI code editors 
-aren't set up to recognize this fact, that nearly every project has to be tailored 
-along the way, and changes made in the middle, unless it is the most plain kind. 
-In the current arrangement, the AI models will generate lots of unexpected code 
-and insert text without having gathered information from the user or presented 
-a menu of options. It's not the AI models causing this but that there are no 
-intermediate steps or preliminary questions programmed into these apps so that 
-they first ask the user about what path that can be taken, before AI's execution 
-happens. It makes an unnecessarily runaway state of AI products.
+large volumes of output and then the user has to inspect and revise what was done. 
+Why did it do so much without first presenting some possible paths for what it can do, 
+so that the user can guide it somewhat first?  After that, it can
+tell you about what it is about to do, so that you can avoid undesirable outcomes
+or irrelevant output. In actuality, software development is hardly an 
+automate-able process, because nearly any project requires custom plans. 
+At the minimum, the app usually has to be shaped in terms of details by the 
+software developer. These AI code editors aren't set up to recognize this fact, 
+that nearly every project has to be tailored along the way, not just at the outset.
+Changes are made by software developers in the middle of a project, 
+unless it is the most plain kind.  In the current arrangement, the AI models will 
+generate lots of unexpected code and insert text without having gathered information 
+from the user or presented a menu of options. It's not the AI models causing this but 
+that there are no intermediate steps or preliminary questions programmed into these apps so that 
+they ask the user about what path that can be taken before doing anything, certainly
+before AI's execution happens. Doing nothing like this produces an unnecessarily 
+runaway form of AI products.  When you wrote code in the past without AI, you dealt 
+with all of the implications of the program at every step.  But when the AI makes the 
+code, you are currently left out of these details and it decides them without 
+asking you anything.  The software developer has to be able to make decisions again.
+This isn't limited to the AI code editor but applies generally to an AI chatbot.
 
-When you write code without AI, you deal with all of the implications of the program 
-at every step.  But when the AI makes the code, it outlines all of these
-details without asking you anything.
-
-Rillan introduces preliminary and intermediate steps inside the current process
-of engaging with AI, to make an altogether different AI chatbot.  To summarize:
+Rillan introduces preliminary and intermediate steps inside the current convention
+for engaging with AI, to make an altogether different AI chatbot product.  Generally,
 one or more questions often will be asked by the AI before it gives a response,
-or the AI offers path for the user to traverse first before it goes about
-generating information or carrying out tasks.  The user can intervene, modify,
-or move the direction of the AI at any point.  The user is supposed to be able to know 
-generally how to get what is needed, whether it is quick answers to questions or long
-questionnaires for big projects and will be familiar with what kinds of menus
-will come up, (though there will be adjustable range for letting the AI
-determine this too).  A longer questionnaire can have its questions edited,
-moved, changed, etc.  The user can ask the AI for a solution to a problem
-located in a certain document and the AI will provide a menu of options for how
-to approach it, with the user moving down the pathway or shifting it. A menu
-traveled down doesn't disappear after an item is selected but is part of the
-history of that interaction so that the user can go back to it and branch off
-and select another item.   The AI will then have so many conventions placed on
-top that it is far away from the conventional chat where it just flatly responds
-to query by generating a text response or attempts to do a thing.
+or the AI offers a decision tree for the user to traverse before it goes about
+generating information or carrying out tasks.  The user can intervene, modify, backtrack,
+or move the direction of the AI at any point of a chat sequences.  
+
+When should the chatbot asked short questions to get quick answers? When is the
+user prompting it to gather information?  Long questionnaires might be relevant for big 
+projects.  The kinds of menus that come up should be appropriate to the situation and 
+accepted by the user.  A longer questionnaire can have its questions edited,
+moved, changed, etc.  
+
+The AI doesn't just go out and do things. Let's say the user can asks the AI for a 
+solution to a problem that is located in a certain document. After the AI examines it,
+it can provide a menu of options for how to approach that problem, with the user moving 
+down the decision tree or shifting it. A menu tree that is traversed doesn't have to 
+disappear after an option is selected but can be kept as part of the history of 
+that interaction so that the user can go back to it and branch off and select another 
+item to see how that outcome would work.   When the AI has more conventions placed on
+top, it moves far away from the conventional chat of today where it only responds
+to query by generating a text response and attempting to do a thing.
 
 It's hard to know all of the things that the AI is doing. Sometimes the user
-makes a request and doesn't realize that the thing he or she wants to change is
-there for a reason or moving it will affect other elements or affect the overall
-goals provided. Sometimes the the thing is there already and the AI should
-mention it. This is also a time when the AI should be told not to just follow
-what is asked but point out first what is happening that makes sense within the
-user's rules.  This addition to AI chatbot software (and other uses of AI
-software) will help avert times when the AI makes changes only because the user
-asked, not because it is what is right for the situation.
+makes a request and doesn't realize that the thing he or she wants to change in
+a file of code is there for a reason or moving it will affect other elements 
+or affect the overall goals provided. Right now the AI will just comply with
+the request rather than warn the user that it is there for a reason.  It doesn't
+ever warn the user about anything before proceeding, which is absurd.
+Sometimes the the thing that the user wants is there already and the AI should
+mention it. The AI should be told not just to follow what is asked but point out 
+first what is happening that makes sense (within the user's rules).  
+This addition to AI chatbot software will help avert times when the AI makes 
+changes only because the user asked, not because it is what is right for the situation.
 
+The use of preliminary questions and intermediate steps has to be inserted carefully into 
+the process so as not to become a drag on the user.  We might establish a convention for 
+describing how the AI interacts and also how much interaction time is allowed. Once
+this convention is established, the AI can use it on its own to determine how to
+answer and what kinds of decision trees to produce.
 
-For our chatbot app we need a convention for relaying how the AI interacts and
-how much is allowed.  This may be generated by the AI for any situation for
-itself to generate the menus.
-
-For a tutorial with fixed path but flexibility in steps (ingredient
+For a tutorial with fixed path but flexibility in steps (e.g. cooking ingredient
 substitution):
 
 Making a Vegan Chocolate Cake
 
-Mutability Goal: 0 // Recipe item is fixed. 
-Mutability of Main Steps to Goal: 5 
-// 10 is it doesn't matter how you get there. 
-Mutability of Materials and Methods Info: 
-Generation of Main Steps by AI: 0 // 0 is the main steps are
-determined ahead of time by a guide. 
-10 is the path is collected by AI. 0 is
-every step is determined 
-Feature enabled: allows branching off by user to solve
-problems before coming back. User branching reporting: logs any branching off by
-user to solve problems.
+Mutability Goal: 0 
+The goal is to make a vegan cake.
+So in this case, the recipe item is fixed
+and the goal is not mutable.
+
+Mutability of Main Steps to Goal: 3.
+The AI is given flexibility for the path
+towards the final outcome.  If the value is 0
+there is an absolute series of steps.
+If the value is 10, it doesn't matter how you
+get to the goal.  It does matters how 
+you make a vegan chocolate cake but there 
+are different ways, so we would set a value
+at 3.
+
+Mutability of Materials and Methods Info: 3
+You can use an oven but there are other ways to
+cook it.  There are a few ingredient substitutions
+but not much for vegan chocolate cake.  The
+user is able to ask the AI for substitutions.
+
+Generation of Main Steps by AI: 10 
+0 is the main steps are determined ahead of 
+time, provided to the AI and the AI doesn't alter any steps
+provided and just assists in answering questions
+along the way.  10 is it can generate the whole thing
+by itself.
+
+Feature enabled: 
+Allows branching off by user to solve problems 
+before coming back. 
+
+User branching reporting: logs any branching off by
+user to solve problems so that the process can
+be updated.
 
 
 
@@ -84,34 +117,37 @@ INCORPORATING PROCESS INTO THE USAGE OF AN LLM WITH AN AI CHATBOT
 
 Today the AI does not ask anything or provide any information to the user as an
 intermediate step before responding. Steering AI chatbot responses towards
-satisfactory outcomes first involves having it ask questions before answering or
+satisfactory outcomes involves having it first ask questions before answering,
 allowing it to present a range of options for a task, project, or request. This
-approach gives the user an opportunity to revise or refine what the AI offers
-before it proceeds to generate information, enabling a more effective sequence
+approach gives the user an opportunity to revise or refine what the AI offers the
+user before it proceeds to generate information, enabling a more effective sequence
 of interaction.  The AI can generate more preliminary menus and intermediate
 steps to achieve interactions that fit the dynamic of working with a computer
 and AI.
 
-If you hire a landscape designer to improve your property, isn't it speculating
-that you would get an outcome you are satisfied with just by saying, "come take
-care of my property"?  Professional landscape designers typically start with a
+If you hire a landscape designer to improve your property, isn't it an act of
+speculation that you would get an outcome you are satisfied with just by saying, 
+"come take care of my property"?  Professional landscape designers typically start with a
 consultation to understand the client’s goals, lifestyle, aesthetic preferences,
 and functional needs (e.g., outdoor entertaining, low maintenance, or
-sustainability).
+sustainability).  This is a useful analogy, with the client being the AI chatbot
+user and the landscape designer being the AI.
 
-Sometimes busy professionals will provide minimal input and just let the
-designer do the rest, but without giving the designer any information, you will
-get whatever the person chooses, for aspects large and small, and if making it
-tailored to your interests is something that in any way matters to you, the
-results might not be what you want.  This is highly relevant to using today's AI
-software, in which the process exists as if you asked the landscape designer
+Sometimes busy professionals (user) will provide minimal input and just let the
+designer (AI) do the rest, but without giving the designer any information, you will
+get whatever the person (AI) chooses, for aspects large and small, and if making the
+project tailored to your interests is something that in any way matters to you, the
+results won't be what you want.  This is highly relevant to using today's AI
+software, in which the process exists as if you gave the landscape designer
 this prompt: ("Carry out a landscape design project on my property and implement
-[this and that feature]"). In this case, only after it was done were questions
-asked by the designer and that is point you started giving the landscape
-designer guidance.
+[this and that feature]").  There is more than just doing the thing that is wanted. 
+In the case of today's AI chatbots, only after the project was finished were questions 
+asked by the designer (AI) and that is point you (user) started giving the 
+landscape designer guidance.  This is in the reverse order, as feedback should
+take place from the outset.
 
 When you begin a landscape design project and hire someone, there are books and
-materials that can guide you and you can point to them during planning.  After
+materials that can guide you and you can point to them during planning.  Yet, after
 opening up a book of portfolio properties the person has finished, you will
 still need to interact with the designer you hired, walk along the property
 together and discuss different aspects of the project, how it fits your
@@ -123,36 +159,37 @@ you were to run a simulated computing environment and you were working with an
 AI landscape architect, you would expect it ask about your specific goals (e.g.,
 low-maintenance plants, outdoor seating) or offer a set of design styles (e.g.,
 modern, rustic, native), options for you to choose from before proceeding and
-interactive menu paths you can follow.  Just by the AI offering you a menu of
-options you are being informed, as someone who isn't experienced in landscape
-design.  This is the kind of interactive sequence and preliminary the AI needs
-to take for a user of an AI chatbot (or other AI generator-based software) to
-achieve projects.
+it would produce interactive menu paths that you can traverse.  Just by having
+the AI offering you a menu of options you are also being informed, as someone 
+who isn't experienced in landscape design.  This is the kind of 
+interactive sequence and preliminary the AI needs to take for a user of an 
+AI chatbot (or other AI generator-based software) to achieve projects.
 
 Landscape design is often an iterative process. Designers present concepts,
 sketches, or 3D renderings and refine them based on client feedback.  The AI
-chatbots are not equipped with the types of interactions required to truly
-enable iterative feedback.
+chatbots are not equipped with the types of interaction conventions required to
+enable genuine iterative feedback, which has to occur at the beginning, not the
+end.
 
-To give another example, you don't have to know about hairstyles to get a
-haircut you want. At the hairstyle salon or barber shop, usually you will find a
+To give another example, at the hairstyle salon or barber shop, usually you will find a
 book of examples (called a "lookbook") and you can point to one as a guide for
-the hair stylist or barber. Then, after pointing to that you can be more
+the hair stylist or barber.  Then, after pointing to that you can be more
 specific and the barber will ask you questions too. If instead you say, "do
 whatever you think looks good," you could get anything if you don't know the
-person.  You won't even know how short the hair will be cut.
+person.  You won't even know how short the hair will be cut.   An AI would
+present you with a sequence of menus and as you make choices, the next menu
+and its question(s) will relate to the path you are going down, perhaps showing
+you a preview.
 
-
-In Example 1 below, the user asked for something but was vague. This triggered
-the clarification menu (a setting was turned to on). (In terms of features,
-selecting an item does not selecting one of the options from the menu below but
-instead opens a new tab within the pane and you can return to this menu pane and
-open another option into another tab.
+In Example 1 below, the user asked for something but was especially vague. 
+This triggered the preliminary menu (the setting was turned to 'on'). 
 
 
 EXAMPLE 1:
 
-User: Talk about Classical Chinese dance. AI: What aspect of Classical Chinese
+User: Talk about Classical Chinese dance. 
+
+AI: What aspect of Classical Chinese
 dance would you like me to focus on?
 
 [F] Overview – A general introduction to Classical Chinese dance.
@@ -179,13 +216,21 @@ dance.
 Press F, D, S, A, G, H, J, K, L, ; to select, or ⏎ to skip.
 
 
+(Note: In terms of specific features for the menu above, selecting an option does not 
+make the menu disappear but rather opens a new tab within the pane and you can 
+return to this menu pane and open another option into another tab.)
+
+
+
 Before taking action on behalf of the user, the AI should be configured to
-collect information on key points, ranging from broad to specific, depending on
-the context in which it is used. This ensures that the AI operates with a
+collect information on key points.  What it collects will vary from in
+quantity and level of generality, from broad to specific, depending on
+the context in which it is used.  This ensures that the AI operates with a
 clearer understanding of the user's goals and constraints.
 
+
 There are times when the AI should interject to ask for clarification—when it
-detects ambiguity, encounters incomplete input, or identifies a potential issue
+encounters ambiguity, incomplete input, or identifies a potential issue
 during its process. In other instances, the AI may present a menu or set of
 options because the user’s original question has implications that were not
 anticipated. Through these interactive sequences, users can guide the AI toward
@@ -257,6 +302,7 @@ understand the user's needs and objectives before proceeding.
 
 -------
 
+OVERALL PROCESS FOR THE AI CHATBOT
 
 For queries that require short answers: the user presses submit button that
 skips step 1 and goes to step 3. For queries that.

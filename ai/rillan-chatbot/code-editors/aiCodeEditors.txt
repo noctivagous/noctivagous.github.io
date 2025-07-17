@@ -1,0 +1,361 @@
+PROBLEMS WITH TODAY'S AI CODE EDITORS:
+
+1) They produce more code than a person would make on his own, or is necessary,
+for a small project. 
+2) They expand a given code base that is given to them. 
+3) Tracking all of their additions to the code files is unfeasible.
+4) They jump ahead of you and schedule code tasks beyond what you
+can handle. 
+5) They do things without asking.
+6) They make software designs with
+too many tasks for independent software developers and make code that would be
+managed by teams.
+
+
+ISSUES TO ADDRESS
+
+The AI editors lack features for guiding the AI during the evolution of the
+project. The AI editors are set up to rely on specs and product requirements
+documents.  Invariably though, a software developer will make changes in the middle of
+the project, even with specs.  At that point, the AI will go out and do
+things that you didn't expect and it will expand the code base, usually
+in the name of software design robustness.
+
+Before AI, when a software developer wrote code without AI, the software design implications 
+of the program were handled manually at every step and naturally the end result matched 
+project objectives and needs. But when the AI makes the code, it fills in too many
+details without gathering information.  It makes additions rapidly, often
+without asking anything. The software developer is disconnected from the chance to make 
+decisions on important software design details when they come up like before. 
+So, while the end result of the AI making code is an impressive technological feat, 
+it isn't usually the path the software developer would have preferred because there 
+wasn't a chance to truly guide the AI at every step along the way.  For the AI
+to be guided, it has to provide menus of options that provide a decision tree,
+so that the user is in control of the AI's choices.
+
+
+
+FEATURES TO ADD
+
+Inside the agent chat, a question is asked by the AI in a menu (see the examples below) 
+before it proceeds on any given request. This way, the AI offers 
+multiple paths for the user to traverse and consider during the evolution of the project,
+before it fulfills a request and produces code. The results are naturally
+tailored.  Such menus allow the AI to be well-informed about details the user
+might not anticipate, which the user would. The AI's work will better
+reflect what the user is hoping to get and the style of code base desired.  
+These menus carry an added benefit of teaching the user what possibilities are 
+available for the software project at any step.  They incidentally enhance software
+development knowledge.
+
+
+
+
+AI-GENERATED MENUS
+
+-------------------------------------------------------
+EXAMPLE 1: ADDING USER AUTHENTICATION
+
+
+Example 1A: Starting a New Feature
+Context: The user is working on a web application and wants to add user authentication.
+
+USER: Add user authentication to my web app.
+
+AI: To ensure the authentication feature aligns with your project’s needs, please specify the type of authentication you’d like to implement:
+
+[A] Email/password - Standard login with email and password, with optional password reset.
+
+[B] OAuth - Integrate third-party authentication (e.g., Google, GitHub, or Facebook).
+
+[C] JWT-based - Token-based authentication for APIs, suitable for stateless applications.
+
+[D] SSO - Single Sign-On for integrating with enterprise systems or multiple apps.
+
+[E] Multi-factor - Add an extra layer of security, like SMS or authenticator apps.
+
+[F] Minimal - A simple, lightweight authentication system for quick setup.
+
+[G] Specify details - Provide more details about your requirements (e.g., framework, database).
+
+[H] Other - Something else not listed here.
+
+[;] My default: I was going to suggest implementing a basic email/password system using Firebase Authentication.
+
+Press A, B, C, D, E, F, G, H, ; to select, or Enter to skip.
+
+
+
+
+Example 1B: After Choosing Authentication Type
+Context: The user selected [A] Email/password from the previous menu for adding user authentication to their web app.
+
+AI: You’ve selected [A] Email/password for adding authentication to your web app. I plan to implement a basic email/password system with user registration, login, and logout functionality, using a backend framework like Node.js with Express and a database like PostgreSQL for storing user credentials securely (hashed passwords). The frontend will include a simple login form using React.
+
+Before I proceed, please review and tweak the planned approach:
+
+[A] Confirm - Proceed with the described email/password system using Node.js, Express, PostgreSQL, and React.
+
+[B] Change framework - Use a different backend framework (e.g., Django, Flask, or Laravel).
+
+[C] Change database - Use a different database (e.g., MongoDB, SQLite, or Firebase).
+
+[D] Add features - Include additional features like password reset or email verification.
+
+[E] Simplify - Reduce the scope (e.g., backend-only or frontend-only implementation).
+
+[F] Edit details - Specify custom details, like specific libraries or styling preferences.
+
+[G] Other - Suggest a different approach or additional tweaks.
+
+[;] My default: Proceed with the described plan (Node.js, Express, PostgreSQL, React).
+
+Press A, B, C, D, E, F, G, ; to select, or Enter to skip.
+
+
+-------------------------------------------------------
+
+
+
+Example Exchange 2: Refactoring Code
+Context: The user wants to refactor a piece of code to improve its performance or readability.
+
+USER: Refactor my sorting function to make it more efficient.
+
+AI: I’ve analyzed your sorting function. To guide the refactoring process, please choose the primary goal for this change:
+
+[A] Optimize for speed - Focus on improving runtime performance (e.g., use a faster algorithm).
+
+[B] Optimize for memory - Reduce memory usage, even if it slightly impacts speed.
+
+[C] Improve readability - Make the code more maintainable and easier to understand.
+
+[D] Add error handling - Include checks for edge cases or invalid inputs.
+
+[E] Modularize - Break the function into smaller, reusable components.
+
+[F] Specify details - Provide more context, like the data size or language constraints.
+
+[G] Other - Something else not listed here.
+
+[;] My default: I was going to suggest optimizing for speed by switching to a quicksort algorithm (if applicable).
+
+Press A, B, C, D, E, F, G, ; to select, or Enter to skip.
+
+
+Example Exchange 2: After Choosing Refactoring Goal
+Context: The user selected [A] Optimize for speed for refactoring their sorting function.
+
+AI: You’ve selected [A] Optimize for speed for refactoring your sorting function. Based on my analysis, I plan to replace the current sorting function (e.g., bubble sort) with a quicksort algorithm, which has an average time complexity of O(n log n). I’ll implement this in the same language as your existing code (e.g., Python) and ensure it handles your typical input sizes efficiently.
+
+Before I proceed, please review and tweak the planned approach:
+
+[A] Confirm - Proceed with implementing quicksort in Python.
+
+[B] Change algorithm - Use a different sorting algorithm (e.g., mergesort, heapsort).
+
+[C] Change language - Implement the function in a different language (e.g., JavaScript, C++).
+
+[D] Add tests - Include unit tests to verify the new function’s correctness.
+
+[E] Keep original - Retain the original function alongside the new one for comparison.
+
+[F] Edit details - Specify constraints, like handling specific edge cases or input types.
+
+[G] Other - Suggest a different approach or additional tweaks.
+
+[;] My default: Proceed with implementing quicksort in Python.
+
+-------------------------------------------------------
+
+
+Example Exchange 3: Adding a Database
+Context: The user is building a backend and needs to integrate a database.
+
+USER: Set up a database for my project.
+
+AI: To tailor the database setup to your project, please select the type of database and configuration you prefer:
+
+[A] Relational (SQL) - Use a relational database like PostgreSQL or MySQL for structured data.
+
+[B] NoSQL - Use a document-based or key-value store like MongoDB or Redis.
+
+[C] Lightweight - Use SQLite for a simple, serverless database suitable for small projects.
+
+[D] In-memory - Use an in-memory database like Redis for high-speed, temporary data storage.
+
+[E] Cloud-based - Integrate with a managed cloud service like AWS RDS or Google Firestore.
+
+[F] Specify details - Provide more details about your data model, scale, or framework.
+
+[G] Other - Something else not listed here.
+
+[;] My default: I was going to suggest setting up a PostgreSQL database with a basic schema.
+
+Press A, B, C, D, E, F, G, ; to select, or Enter to skip.
+
+
+Example Exchange 3: After Choosing Database Type
+Context: The user selected [C] Lightweight for setting up a database.
+
+AI: You’ve selected [C] Lightweight for your project’s database. I plan to set up SQLite as a serverless, lightweight database, ideal for small to medium-sized projects. I’ll create a basic schema for your data (e.g., a users table) and provide a simple connection setup using your project’s language (e.g., Python with sqlite3).
+
+Before I proceed, please review and tweak the planned approach:
+
+[A] Confirm - Proceed with SQLite and a basic schema in Python.
+
+[B] Change language - Use a different language for database integration (e.g., Node.js, Java).
+
+[C] Customize schema - Define a specific schema or additional tables.
+
+[D] Add ORM - Use an Object-Relational Mapping tool like SQLAlchemy or Sequelize.
+
+[E] Simplify - Use SQLite with minimal setup (e.g., no schema, just a connection).
+
+[F] Edit details - Specify additional requirements, like data types or indexes.
+
+[G] Other - Suggest a different approach or additional tweaks.
+
+[;] My default: Proceed with SQLite and a basic schema in Python.
+
+
+-------------------------------------------------------
+
+Example Exchange 4: Debugging an Issue
+Context: The user encounters a bug in their application and asks the AI to help debug it.
+
+USER: Help me debug why my API endpoint is returning a 500 error.
+
+AI: To effectively debug the 500 error in your API endpoint, please choose how you’d like to proceed:
+
+[A] Check logs - Analyze server logs to identify the error’s source.
+
+[B] Add debug statements - Insert logging or print statements to trace the execution flow.
+
+[C] Review code - Perform a line-by-line review of the endpoint’s code.
+
+[D] Test inputs - Run the endpoint with different inputs to isolate the issue.
+
+[E] Check dependencies - Verify external services (e.g., database, third-party APIs).
+
+[F] Specify details - Provide more context, like the framework, error message, or recent changes.
+
+[G] Other - Something else not listed here.
+
+[;] My default: I was going to suggest checking the server logs for detailed error messages.
+
+Press A, B, C, D, E, F, G, ; to select, or Enter to skip.
+
+
+Example Exchange 4: After Choosing Debugging Approach
+Context: The user selected [A] Check logs for debugging the API endpoint’s 500 error.
+
+AI: You’ve selected [A] Check logs to debug the 500 error in your API endpoint. I plan to analyze the server logs to identify the error’s source, focusing on stack traces, error messages, and recent changes to the codebase. I’ll also check for common issues like database connection failures or unhandled exceptions in your framework (e.g., Express).
+
+Before I proceed, please review and tweak the planned approach:
+
+[A] Confirm - Proceed with analyzing server logs for the 500 error.
+
+[B] Specify log source - Focus on a specific log file or service (e.g., application logs, cloud provider logs).
+
+[C] Add monitoring - Integrate a logging tool like Winston or Morgan for better visibility.
+
+[D] Check code - Combine log analysis with a code review of the endpoint.
+
+[E] Simulate error - Reproduce the error with controlled inputs to verify the cause.
+
+[F] Edit details - Provide more context, like the framework, recent changes, or log access.
+
+[G] Other - Suggest a different approach or additional tweaks.
+
+[;] My default: Proceed with analyzing server logs for the 500 error.
+
+
+-------------------------------------------------------
+
+Example Exchange 5: Adding a Front-End Component
+Context: The user is building a front-end interface and wants to add a new component.
+
+USER: Create a user profile card for my React app.
+
+AI: To ensure the user profile card fits your project’s design and functionality, please select the desired approach:
+
+[A] Simple card - A minimal card with basic info (e.g., name, avatar, bio).
+
+[B] Interactive - Include interactive elements like buttons for editing or following.
+
+[C] Styled with CSS - Use plain CSS for styling, matching your app’s theme.
+
+[D] Component library - Use a library like Material-UI or Tailwind for prebuilt styles.
+
+[E] Responsive - Prioritize mobile-friendly design with responsive layouts.
+
+[F] Specify details - Provide more details about styling, functionality, or framework version.
+
+[G] Other - Something else not listed here.
+
+[;] My default: I was going to suggest a simple card styled with Tailwind CSS.
+
+Press A, B, C, D, E, F, G, ; to select, or Enter to skip.
+
+
+
+Context: The user selected [A] Simple card for creating a user profile card in their React app.
+
+AI: You’ve selected [A] Simple card for the user profile card in your React app. I plan to create a React component for a user profile card displaying name, avatar, and bio, styled with basic CSS to match your app’s theme. The component will be reusable and accept props for user data.
+
+Before I proceed, please review and tweak the planned approach:
+
+[A] Confirm - Proceed with a simple card using React and basic CSS.
+
+[B] Change styling - Use a different styling approach (e.g., Tailwind CSS, Material-UI).
+
+[C] Add props - Include additional props (e.g., social links, status).
+
+[D] Add interactivity - Add buttons or links (e.g., “View Profile” or “Edit”).
+
+[E] Simplify - Reduce the card to minimal fields (e.g., name only).
+
+[F] Edit details - Specify custom styling, props, or integration details.
+
+[G] Other - Suggest a different approach or additional tweaks.
+
+[;] My default: Proceed with a simple card using React and basic CSS.
+
+
+
+
+Example Exchange: Making a Calculator app
+--------------------------
+Context: The user is making a incomplete statement about wanting to
+make a calculator app.
+
+
+USER: Build a calculator.
+
+AI:  What kind of calculator would you like to build? This will help me provide a more accurate response.
+
+[F] Basic arithmetic - A simple calculator for addition, subtraction, multiplication, and division.
+
+[D] Scientific - Includes advanced functions like trigonometry, logarithms, and exponents.
+
+[S] Web-based - An interactive calculator that runs in a web browser.
+
+[A] Mobile app - A calculator designed for smartphones, such as for Android or iOS.
+
+[G] Command-line - A text-based calculator that runs in the terminal.
+
+[H] Library/module - A reusable code component for calculations in other programs.
+
+[J] GUI desktop app - A graphical interface calculator for Windows, Mac, or Linux.
+
+[K] Specify details - Provide more information about features, platform, or programming language.
+
+[L] Other - Something else not listed here.
+
+[;] My default: I was going to suggest building a basic command-line calculator in Python.
+
+Press F, D, S, A, G, H, J, K, L, ; to select, or Enter to skip.
+
+--------------------------
+

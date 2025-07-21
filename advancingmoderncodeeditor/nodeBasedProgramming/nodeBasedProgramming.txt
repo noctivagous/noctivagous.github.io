@@ -5,19 +5,47 @@ IF-ELSE VS. WHEN
 
 In the context of a node-based programming
 environment, an "IF-ELSE" node is for procedures
-that make up the program whereas a "WHEN" 
-node (not available yet) would be used for 
-the running program, the observed the states 
-and conditions.  This assists in explaining
-that node-based programming environments need
-to be recognized as starting out as live
-whereas a program made with conventional 
-computer code is based in descriptions
+of the program whereas a "WHEN" node 
+(not available yet) would be used to 
+observed the states and conditions of
+the running program.  This assists in explaining
+that node-based programming environments should
+be recognized as starting out as live flow 
+diagrams whereas a program made with conventional 
+computer code is based on descriptions
 that are followed step-by-step.
 
-The "WHEN" node would observe certain conditions
-within a global or specified scope of the running program
-and take action when conditions are met.  
+The "WHEN" node would be used to observe
+provided conditions within a global or 
+specified scope of the running program
+and take action when conditions are met. 
+
+
+------------
+
+WHEN 
+-> THE USER CLICKS [ELEMENT] AND [STATE1-IS_ACTIVE]
+			 -OR-
+-> [STATE2-JUST_ACTIVATED]
+DO:[FUNCTION1][FUNCTION2] [ETC.]
+EMIT-EVENT:[EVENT1]
+
+
+vs.
+
+
+function mouseDown()
+{
+	if(states["state1"].isActive == true)
+	{
+  	function1();
+  	function2();
+ 	 dispatchEvent(event1);
+	}
+}
+
+------------
+
 For this reason, in a node-based programming environment
 the use of state machines and observation of
 event notifications can make the convention 

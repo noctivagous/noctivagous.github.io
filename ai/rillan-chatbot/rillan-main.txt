@@ -2,53 +2,80 @@
 AI Chatbot App : Rillan
 
 
+Many times, AI chatbots demonstrate some amazing or unexpected approaches,
+They might become helpful in pleasantly surprising ways that carry all kinds 
+of implications for improving a product or learning about a subject.  
+Yet apart from replying to the output, there is no control over this. It 
+isn't guided, only responded to.  Put in the Five Elements theory,
+it is like Water flowing in any direction that needs Earth to guide it 
+and Wood branching out that needs Metal to shape it.
+
 The way that AI chatbots and AI code editors are set up today, they carry out a
 large portion of the work without seeking the user's input. Right after the
 initial prompt is sent, they venture off on their own and execute. They generate 
 large volumes of output and then the user has to inspect and revise what was done. 
-Why did it do so much without first presenting some possible paths for what it can do, 
-so that the user can guide it somewhat first?  After that, it can
-tell you about what it is about to do, so that you can avoid undesirable outcomes
-or irrelevant output. In actuality, software development is hardly an 
-automate-able process, because nearly any project requires custom plans. 
-At the minimum, the app usually has to be shaped in terms of details by the 
+Why did it do so much without first presenting some possible paths for what it can do
+and what it would like to do, so that the user can direct it somewhat first?  After that, it can
+give you plans for what it is about to generate, so that you can avoid undesirable outcomes
+and extraneous output. 
+
+Except for the most plain situations, software development is far from an automate-able 
+process, because nearly any project carries custom objectives.
+At the minimum, the app has to be shaped in terms of details by the 
 software developer. These AI code editors aren't set up to recognize this fact, 
 that nearly every project has to be tailored along the way, not just at the outset.
 Changes are made by software developers in the middle of a project, 
 unless it is the most plain kind.  In the current arrangement, the AI models will 
-generate lots of unexpected code and insert text without having gathered information 
-from the user or presented a menu of options. It's not the AI models causing this but 
-that there are no intermediate steps or preliminary questions programmed into these apps so that 
-they ask the user about what path that can be taken before doing anything, certainly
-before AI's execution happens. Doing nothing like this produces an unnecessarily 
-runaway form of AI products.  When you wrote code in the past without AI, you dealt 
+generate lots of unexpected code and insert text without having gathered any additional
+information from the user or presented a menu of options. 
+
+It's not the AI models causing this but that there are no intermediate steps or 
+preliminary questions programmed into these apps so that they ask the user about what 
+path that can be taken before doing anything, certainly before AI's execution happens. 
+Doing nothing like this produces an unnecessarily runaway interactive state of AI products.  
+
+When you wrote code in the past without AI, you dealt 
 with all of the implications of the program at every step.  But when the AI makes the 
-code, you are currently left out of these details and it decides them without 
-asking you anything.  The software developer has to be able to make decisions again.
-This isn't limited to the AI code editor but applies generally to an AI chatbot.
+code, you are currently left out of too many details and, while generating more code
+than you would write yourself, it decides many implementation details without 
+asking you anything.  The software developer has to be able to make decisions again
+in the entire process of building the app and never feel like something was taken out
+of his hands.  This isn't limited to the AI code editor making code but applies generally 
+to how people make use of calls to AI models for interactive applications, mostly
+the AI chatbot.
 
-Rillan introduces preliminary and intermediate steps inside the current convention
-for engaging with AI, to make an altogether different AI chatbot product.  Generally,
-one or more questions often will be asked by the AI before it gives a response,
-or the AI offers a decision tree for the user to traverse before it goes about
-generating information or carrying out tasks.  The user can intervene, modify, backtrack,
-or move the direction of the AI at any point of a chat sequences.  
+The goal of Rillan is to introduce preliminary and intermediate steps inside the current convention
+for engaging with AI, to make an altogether different AI sequence.  One or more questions 
+often will be asked by the AI before it gives a response.  In the form of menus, the 
+AI offers a decision tree for the user to traverse before it goes about
+generating information or executing tasks.  The user can intervene, modify, backtrack,
+or move the direction of the AI at any point of a chat sequence so that the AI is
+providing guidance while not taking the reins.  
 
-When should the chatbot asked short questions to get quick answers? When is the
-user prompting it to gather information?  Long questionnaires might be relevant for big 
-projects.  The kinds of menus that come up should be appropriate to the situation and 
-accepted by the user.  A longer questionnaire can have its questions edited,
-moved, changed, etc.  
+There are questions that come up when intermediate menus are a key part of interacting
+with the software.  When should the chatbot asked short questions to get quick answers
+and move on quickly? When is the user prompting it in situations where it should 
+gather information?  Long questionnaires might be relevant for big projects and the AI
+can offer to generate them.  Filling out forms on websites is tedious, so it cannot 
+resemble something that produces drag on the user.  The kinds of menus that come up should 
+be appropriate to the situation and accepted by the user.  While the AI should provide
+menus with paths for a project that are fitting, the user shouldn't be confined to what 
+the AI asks in those menus either and then have to start over. A questionnaire can 
+have its questions edited, moved, changed, etc. and a menu can be re-generated by
+the user to change the direction that the interaction is going before it goes off
+track.
 
-The AI doesn't just go out and do things. Let's say the user can asks the AI for a 
-solution to a problem that is located in a certain document. After the AI examines it,
+In this software, the AI doesn't just go out and do things unexpectedly but instead
+lets the user know what it would do or can. Let's say the user can asks the AI for a 
+ways to solve to a problem that is located in a certain document. After the AI examines it,
 it can provide a menu of options for how to approach that problem, with the user moving 
-down the decision tree or shifting it. A menu tree that is traversed doesn't have to 
+through the decision tree or shifting it. A menu tree that is traversed doesn't have to 
 disappear after an option is selected but can be kept as part of the history of 
 that interaction so that the user can go back to it and branch off and select another 
-item to see how that outcome would work.   When the AI has more conventions placed on
-top, it moves far away from the conventional chat of today where it only responds
-to query by generating a text response and attempting to do a thing.
+item to see how that path would work.   When the AI has more conventions placed on
+top like this, it moves far away from the undeveloped chat of today, where it only responds
+to a query by generating a text response or attempts to do a thing.  There is insertion
+of preliminary engagement by the AI before it responds.
 
 It's hard to know all of the things that the AI is doing. Sometimes the user
 makes a request and doesn't realize that the thing he or she wants to change in

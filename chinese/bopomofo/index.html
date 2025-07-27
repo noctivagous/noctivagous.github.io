@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>keyboard for learning ㄅㄆㄇㄈ / bopomofo / Zhùyīn fúhào / 注音符號 </title>
+  <link rel="stylesheet" href="keyboardGrid.css?v=0.3114">
+    <link rel="stylesheet" href="toggleSwitch.css?v=0.2">
+
+<meta charset="utf-8"> 
+
+<script>
+
+// SETTINGS VARIABLES
+var showImg = false;
+var showPinyin = false;
+var femaleKeyString = ""; 
+// if F is added to sound file URL, 
+// then uses female sound.
+
+// KEYS THAT HAVE PHONETICS ANATOMY IMAGES
+var hasImg = ["KeyY",
+"Digit5",
+"KeyB",
+"KeyF",
+"KeyG",
+"KeyH",
+"KeyN",
+"KeyR",
+"KeyT",
+"KeyV"]
+</script>
+
+</head>
+
+
+<body >
+<!--<h1 style="margin:0px;">keyboard for learning ㄅㄆㄇㄈ</h1>-->
+
+<div id="surroundingContainer">
+
+<div id="mainContainer">
+
+<div id="outputContainer">
+
+
+
+<h1 style="margin-left:20px">Chinese Phonetic Character Keyboard <br/>
+<span style="font-weight:normal;"> </span></h1>
+
+<!--<h3 style="margin-left:20px">Only meant for desktop computers (until later). <br/>Last updated on 1-10-22. 
+<br/> <br/> More features to follow, including character writing instructions, pinyin display, mobile compatibility.
+<br/><br/> E-mail: </h3>-->
+
+
+
+</div>
+
+<div id="keyboardContainer">
+
+<div class="container">
+<div class="escKey functionRow"></div>
+<div class="f1Key functionRow phonetic" ><span class="phoneticType labial">labials</span></div>
+      <div class="f2Key functionRow phonetic"><span class="phoneticType alveolar">alveolars</span></div>
+      <div class="f3Key functionRow phonetic"><span class="phoneticType gutteral velar">velars</span></div>
+      <div class="f4Key functionRow phonetic"><span class="phoneticType palatal">palatals</span></div>
+      <div class="f5Key functionRow phonetic"><span class="phoneticType retroflex">retroflexes</span></div>
+      <div class="f6Key functionRow phonetic"><span class="phoneticType sibilant">sibilants</span></div>
+      <div class="f7Key functionRow phonetic"><span class="phoneticType medial">medials</span></div>
+      <div class="f8Key functionRow phonetic"><span class="phoneticType simpleVowel">simple vowels</span></div>
+      <div class="f9Key functionRow phonetic"><span class="phoneticType diphthong">diphthongs</span></div>
+      <div class="f10Key functionRow phonetic"><span class="phoneticType nasalVowel">nasal vowels</span></div>
+      <div class="f11Key functionRow phonetic"><span class="phoneticType tongueRollVowel">tongue-roll vowel</span></div>
+      <div class="f12Key functionRow"></div>
+      <div class="f13Key functionRow"></div>
+      <div class="f14Key functionRow"></div>
+  <div id="Space" class="spacebarKey"></div>
+  <div id="Tab" class="tabKey"></div>
+  <div id="ShiftLeft" class="shiftKeyLeft"></div>
+  
+  <div id="CapsLock" class="capsLockKey"></div>
+  
+  <div id="KeyQ" class="KeyQ zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter labial">ㄆ <span class="pinyin">p</span><span></div>
+  <div id="KeyW" class="wKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter alveolar">ㄊ <span class="pinyin">t</span></span></div>
+  <div id="KeyE" class="eKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter gutteral velar">ㄍ <span class="pinyin">g</span></span></div>
+  <div id="KeyR" class="rKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter palatal">ㄐ <span class="pinyin">j</span></span></div>
+  <div id="KeyT" class="tKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter retroflex initial">ㄔ<span class="pinyin">ch</span></span></div>
+  <div id="KeyY" class="yKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter sibilant initial">ㄗ <span class="pinyin">z</span></span></div>
+  <div id="KeyU" class="uKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter semivowel medial">ㄧ <span class="pinyin smaller">i/y</span></span></div>
+  <div id="KeyI" class="iKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter simpleVowel final">ㄛ <span class="pinyin">o</span></span></div>
+  <div id="KeyO" class="oKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter diphthong final">ㄟ <span class="pinyin">ei</span></span></div>
+  <div id="KeyP" class="pKey zhuyinFuhaoPhoneticKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter nasalVowel final">ㄣ <span class="pinyin">en</span</span></div>
+  <div id="BracketLeft" class="bracketLeftKey zhuyinFuhaoOtherKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter">「</span></div>
+  <div id="BracketRight" class="bracketRightKey zhuyinFuhaoOtherKey" style="transform: translate(-48%, 0%)"><span class="keyboardCharacter">」</span></div>
+  <div id="Backslash" class="pipeKey zhuyinFuhaoOtherKey" style="transform: translate(-28%, 0%)"><span class="keyboardCharacter">、</span></div>
+  
+ 
+  <div id="KeyA" class="KeyA zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter labial">ㄇ <span class="pinyin">m</span></span></div>
+  <div id="KeyS" class="sKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)" ><span class="keyboardCharacter alveolar">ㄋ <span class="pinyin">n</span></span></div>
+  <div id="KeyD" class="dKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter gutteral velar">ㄎ <span class="pinyin">k</span></span></div>
+  <div id="KeyF" class="fKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter palatal">ㄑ<span class="pinyin">q</span></span></div>
+  <div id="KeyG" class="gKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter retroflex">ㄕ <span class="pinyin">sh</span></span></div>
+  <div id="KeyH" class="hKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter sibilant">ㄘ <span class="pinyin">c</span></span></div>
+  <div id="KeyJ" class="jKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter semivowel medial">ㄨ<span class="pinyin smaller">u/w</span></span></div>
+  <div id="KeyK" class="kKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter simpleVowel">ㄜ <span class="pinyin">e</span></span></div>
+  <div id="KeyL" class="lKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter diphthong">ㄠ <span class="pinyin">ao</span></span></div>
+  <div id="Semicolon" class="semicolonKey zhuyinFuhaoPhoneticKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter nasalVowel">ㄤ <span class="pinyin">ang</span></span></div>
+  <div id="Quote" class="singleQuoteKey zhuyinFuhaoOtherKey" style="transform: translate(-27%, 0%)"><span class="keyboardCharacter">‘</span></div>
+  <div id="Enter" class="returnKey" style="transform: translate(-5%, 0%)">
+  <span class="keyboardCharacter">&#9166;</span>
+</div>
+  <div  id="KeyZ" class="KeyZ zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter labial labio-alveolar">ㄈ <span class="pinyin">f</span></span></div>
+  <div  id="KeyX"  class="xKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter alveolar">ㄌ <span class="pinyin">l</span></span></div>
+  <div id="KeyC" class="cKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter gutteral">ㄏ <span class="pinyin">h</span></span></div>
+  <div id="KeyV" class="vKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter palatal">ㄒ <span class="pinyin">x</span></span></div>
+  <div id="KeyB" class="bKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter retroflex">ㄖ <span class="pinyin">r</span></span></div>
+  <div id="KeyN" class="nKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter sibilant">ㄙ <span class="pinyin">s</span></span></div>
+  <div id="KeyM" class="mKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter medial">ㄩ <span class="pinyin smaller">ü/yu</span></span></div>
+  <div id="Comma" class="commaKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter simpleVowel">ㄝ <span class="pinyin"><i>e</i></span></span></div>
+  <div id="Period" class="periodKey zhuyinFuhaoPhoneticKey" style="transform: translate(38%, 0%)"><span class="keyboardCharacter diphthong">ㄡ<span class="pinyin">ou</span></span></div>
+  <div id="Slash" class="forwardSlashKey zhuyinFuhaoPhoneticKey"  style="transform: translate(38%, 0%)"><span class="keyboardCharacter nasalVowel">ㄥ<span class="pinyin">eng</span></span></div>
+  
+    <div id="ShiftRight" class="shiftKeyRight" style="transform: translate(15%, 0%)"></div>
+
+
+  <div id="Backquote" class="backquoteKey zhuyinFuhaoOtherKey"><span class="keyboardCharacter">·</span></div>
+  <div id="Digit1" class="Digit1 zhuyinFuhaoPhoneticKey"><span class="keyboardCharacter labial">ㄅ <span class="pinyin">b</span></span>	</div>
+  <div id="Digit2" class="twoKey zhuyinFuhaoPhoneticKey alveolar"><span class="keyboardCharacter alveolar">ㄉ <span class="pinyin">d</span></span></span></div>
+  <div id="Digit3" class="threeKey zhuyinFuhaoOtherKey"><span class="keyboardCharacter">ˇ</span></div>
+  <div id="Digit4" class="fourKey zhuyinFuhaoOtherKey"><span class="keyboardCharacter">ˋ</span></div>
+  <div id="Digit5" class="fiveKey zhuyinFuhaoPhoneticKey"><span class="keyboardCharacter retroflex">ㄓ <span class="pinyin">zh</span></span></div>
+  <div id="Digit6" class="sixKey zhuyinFuhaoOtherKey"><span class="keyboardCharacter">ˊ</span></div>
+  <div id="Digit7" class="sevenKey zhuyinFuhaoOtherKey"><span class="keyboardCharacter">˙</span></div>
+  <div id="Digit8" class="eightKey zhuyinFuhaoPhoneticKey"><span class="keyboardCharacter simpleVowel">ㄚ<span class="pinyin">a</span></span></div>
+  <div id="Digit9" class="nineKey zhuyinFuhaoPhoneticKey"><span class="keyboardCharacter diphthong">ㄞ <span class="pinyin">ai</span></span></div>
+  <div id="Digit0" class="zeroKey zhuyinFuhaoPhoneticKey"><span class="keyboardCharacter nasalVowel">ㄢ <span class="pinyin">an</span></span></div>
+  <div  id="Minus" class="minusKey zhuyinFuhaoPhoneticKey"><span class="keyboardCharacter tongueRollVowel">ㄦ <span class="pinyin">er</span></span></div>
+  <div id="Equal" class="equalsKey"><span class="keyboardCharacter">＝</span></div>
+  <div id="Backspace" class="deleteKey"><span class="keyboardCharacter">&#9249;</span></div>
+</div>
+</div><!-- END keyboardContainer-->
+
+</div>
+
+
+<div id="settings">
+<h1>SETTINGS  <br/>
+<span style="text-decoration:none;color:gray;display:inline-block;">(open and close this window with <span class="settingsShortcut">shift + s</span>)</span></h1>
+
+<table cellspacing="10vh" width="100%">
+
+<tr>
+
+<td style="width:20vh;">
+<span class="settingsShortcut">shift + r</span>
+</td>
+
+<td>
+<label class="switch">
+  <input id="pronunciationCheckbox" type="checkbox">
+  <span class="slider"></span>
+</label>
+</td>
+
+
+<td>
+show pronunciation images for <i>j q x</i>, <i>zh ch sh</i>,  and <i>z c s</i>
+(taken from "grace mandarin")
+</td>
+
+
+</tr>
+
+<tr>
+
+<td>
+<span class="settingsShortcut">shift + p</span>
+</td>
+
+<td>
+<label class="switch">
+  <input id="pinyinCheckbox" type="checkbox">
+  <span class="slider"></span>
+</label>
+</td>
+
+
+<td>
+show pinyin
+</td>
+
+
+</tr>
+
+
+</table>
+</div><!-- END settings -->
+
+
+
+</div>
+
+
+
+<script>
+var pronunciationCheckbox = document.getElementById("pronunciationCheckbox");
+
+var pinyinCheckbox = document.getElementById("pinyinCheckbox");
+
+//console.log(pronunciationCheckbox);
+
+pronunciationCheckbox.onclick = 
+ function(event) 
+{
+   showImg = this.checked;
+};
+
+
+pinyinCheckbox.onclick = 
+ function(event) 
+{
+   showPinyin = this.checked;
+   
+   var keysLookup = document.getElementsByClassName('keyboardCharacter');
+   
+   for (key of keysLookup)
+   {
+       if(showPinyin)
+       {
+		key.classList.add('pinyinVisible');
+       }
+       else
+       {
+		key.classList.remove('pinyinVisible');
+           
+        }
+       
+   }
+   
+};
+
+
+
+document.body.onkeydown = function(event) 
+{
+
+/*
+   const elements = document.getElementsByClassName("zhuyinFuhaoPhoneticKey");
+   for (el of elements)
+   {
+		el.classList.remove('active');
+   }
+    */
+	var elementLookup = document.getElementById(String(event.code))
+
+    // highlight the key with active state
+    // if it is non-alphanumeric.
+    if( (elementLookup != null) && (event.metaKey == false) )
+   {
+		elementLookup.classList.add('active');
+    }
+    
+    // make sure the key is alphanumeric
+    // before proceeding.
+	if ((elementLookup != null) && (event.metaKey == false) 
+	&& (event.shiftKey == false) 
+	&& (event.altKey == false) 
+	&& (event.ctrlKey == false) 
+	) 
+	{
+		elementLookup.classList.add('active');
+		if (elementLookup.classList.contains('zhuyinFuhaoPhoneticKey')) 
+		{
+			var audiofileString = "audiofiles/" + String(event.code) + ".wav"
+			var audio = new Audio(audiofileString);
+			audio.play();
+			
+			var output = document.getElementById("outputContainer")
+
+			if(hasImg.includes(String(event.code)) && showImg)
+			{
+			
+			var imgFileString = "img/" + String(event.code) + ".png"
+			var img = new Image();
+			img.src = imgFileString;
+			output.innerHTML = "";
+				
+            if(img != null)
+            {
+					img.style.height = "260px";
+        			output.appendChild(img);
+            }
+            else
+            {
+            }
+            }
+            else
+            {
+              const newDiv = document.createElement("div");
+
+     newDiv.innerHTML = elementLookup.innerHTML;
+     newDiv.style.fontSize = "200px";
+          newDiv.style.margin = "auto";
+
+       output.innerHTML = "";
+                 output.appendChild(newDiv);   
+            }
+            
+            //output.innerHTML = document.getElementById(String(event.code)).innerHTML;
+		}
+	}
+};
+
+
+const elements = document.getElementsByClassName("zhuyinFuhaoPhoneticKey");
+for (el of elements)
+ {
+	el.onmousedown = function(event) {
+		var fileString = "audiofiles/" + String(this.id) + ".wav"
+		var audio = new Audio(fileString);
+		audio.play();
+		
+			var output = document.getElementById("outputContainer")
+			output.innerHTML = "";
+			
+		if( hasImg.includes(String(this.id)) && showImg )
+			{
+		
+		    var imgFileString = "img/" + String(this.id) + ".png"
+			
+			var img = new Image();
+			img.src = imgFileString;
+		
+				
+            if(img != null)
+            {
+					img.style.height = "260px";
+    			output.appendChild(img);
+            }
+            else
+            {
+                  
+            }
+            }
+              else
+            {
+              const newDiv = document.createElement("div");
+              newDiv.innerHTML = this.innerHTML;
+           newDiv.style.fontSize = "200px";
+          newDiv.style.margin = "auto";
+
+            output.appendChild(newDiv);
+  
+            }
+
+
+	};
+} // END for
+
+
+document.body.onkeyup = function(event) 
+{
+	var elementLookup = document.getElementById(event.code)
+	if (elementLookup != null) {
+		elementLookup.classList.remove('active');
+	}
+	
+	
+	/*
+		
+function playAudio() {
+    audio.play();
+}   
+
+function pauseAudio() {
+    audio.pause();
+}
+
+function cancelAudio() {
+    audio.pause();
+    audio.currentTime = 0;
+}
+
+*/
+
+}
+
+
+
+</script>
+
+
+</body>
+</html>

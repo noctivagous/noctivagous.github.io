@@ -1,0 +1,64 @@
+Language Overview - Linguistic Topics
+
+
+Traditional Chinese thought favors the union of sound and meaning, avoiding total arbitrariness.
+
+
+
+### 1. **Phonetics and Pronunciation**
+
+| Topic                   | Description                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| **Pinyin system**       | Romanization of Chinese sounds; essential for reading and input              |
+| **Tones** (声调)          | Mandarin has 4 main tones + neutral tone; crucial for distinguishing meaning |
+| **Initials and Finals** | Consonant + vowel combinations; mastering them improves pronunciation        |
+| **Tone changes**        | Rules like 3rd tone sandhi, 一/不 tone changes                                 |
+
+---
+
+### 2. **Character Composition and Writing**
+
+| Topic                         | Description                                                             |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| **Stroke order rules**        | Standardized writing order aids memorization and recognition            |
+| **Character components**      | Learn radicals and phonetic parts for decoding unfamiliar characters    |
+| **Simplified vs Traditional** | Understand differences and usage regions (Mainland vs Taiwan/Hong Kong) |
+| **Character frequency**       | Focus on the most common \~1000–2000 characters first                   |
+
+---
+
+### 3. **Grammar and Sentence Structure**
+
+| Topic                  | Description                                                        |
+| ---------------------- | ------------------------------------------------------------------ |
+| **Basic word order**   | Subject–Verb–Object (SVO), similar to English                      |
+| **Particles (助词)**     | e.g., 的, 了, 吗—function words that structure sentences              |
+| **Measure words (量词)** | Required with nouns when counting or describing quantity           |
+| **Aspect vs Tense**    | Chinese uses aspect markers (e.g., 了, 着) rather than tense         |
+| **Negation patterns**  | 不 (bù) vs 没 (méi), and how they are used with verbs and adjectives |
+
+---
+
+### 4. **Vocabulary Development**
+
+| Topic                     | Description                                             |
+| ------------------------- | ------------------------------------------------------- |
+| **Thematic vocabulary**   | Focus on topics like family, numbers, time, food, etc.  |
+| **Collocations**          | Words that commonly occur together; improves fluency    |
+| **Synonyms and antonyms** | Deepens understanding and expression                    |
+| **Chengyu (成语)**          | Four-character idioms—cultural and literary expressions |
+
+---
+
+### 5. **Listening, Speaking, Reading, Writing (LSRW)**
+
+| Skill     | Focus Areas                                                 |
+| --------- | ----------------------------------------------------------- |
+| Listening | Comprehension practice, tone recognition, rapid speech      |
+| Speaking  | Tone accuracy, fluency, proper rhythm                       |
+| Reading   | Character recognition, syntax awareness                     |
+| Writing   | Stroke accuracy, grammar application, expressive vocabulary |
+
+---
+
+Would you like to dive into one of these areas next—perhaps phonetics, grammar, or character memorization strategies?

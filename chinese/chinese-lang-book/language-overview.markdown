@@ -1,29 +1,61 @@
 Language Overview - Linguistic Topics
 
+Chinese is a **logically structured and historically evolved** language—not random 
+symbols, phonetics, and rules to memorize.  Understanding that Chinese is not 
+arbitrary gives learners the advantage of leveraging its internal logic.  
+There are texts, such as the Three Character Classic and the Thousand Character
+Classic that can serve as future points of reference for learning both the language 
+and the concepts of the ancient Chinese culture at the same time.
 
-Understanding that Chinese is not arbitrary gives learners the advantage of leveraging 
-its internal logic.  Middle Chinese (300AD-1200AD), preceding modern Chinese, 
+Learning vocabulary and characters down to elements of the characters themselves 
+should be integrated into a history of their evolution along the way.  
+This is the only meaningful way that the language can make sense to a foreigner from 
+the beginning.
+
+Ancient resources hardly mentioned by pedagogical texts today are valuable to the serious
+learner of Chinese, such as The **六书 (liù shū)**—literally "Six Writings" or 
+"Six Principles of Character Formation", and their concepts are vital for having
+setting up a solid foundation for learning the language. One has to completely reject 
+the modern methods of learning this language directly by its exterior features alone 
+(pronunciation, vocabulary, etc.).
+
+Middle Chinese (300AD-1200AD), preceding modern Chinese, 
 carried the most features and reliable indicators of pronunciation, but 
 there is still much leftover that is consistent.
+
+CHINESE CHARACTERS
 
 Chinese characters fall into a few major structural categories. 
 Most are **phono-semantic compounds**, but others follow different principles.
 
 | Type                         | Description                                    | Example                                         | Notes                         |
 | ---------------------------- | ---------------------------------------------- | ----------------------------------------------- | ----------------------------- |
-| **Pictographs (象形)**         | Stylized drawings of objects                   | 山 (mountain), 月 (moon)                          | Very small subset             |
-| **Ideographs (指事)**          | Abstract symbols representing concepts         | 上 (up), 本 (root)                                | Limited use                   |
-| **Compound Ideographs (会意)** | Combine meanings of components                 | 明 (bright: sun + moon), 休 (rest: person + tree) | Meaning from synergy          |
-| **Phono-semantic (形声)**      | One part gives meaning, the other gives sound  | 河 (river), 情 (emotion)                          | Over 80% of modern characters |
+| **Pictographs (象形)**         | Characters based on stylized drawings of physical objects   | 山 (mountain), 月 (moon), 日 (sun), 木 (tree), 口 (mouth)                           | Very small subset             |
+| **Ideographs (指事)**          | Abstract symbols representing concepts         | 上 (up), 本 (root), 下 (below), 一 (one)                                  | Limited use                   |
+| **Compound Ideographs (会意)** | Combining pictographs and/or ideographs to suggest meaning                 | 明 (bright: sun + moon), 休 (rest: person + tree) | Meaning from combination. These often retain pictorial and ideographic features          |
+| **Phono-semantic (形声)**      | One part indicates meaning, the other gives pronunciation  | 河 (river = 氵 + 可), 情 (emotion)                          | Over 80% of modern characters. Meaning is often tied to radicals rooted in pictographic/ideographic origins |
 | **Loan characters (假借)**     | Borrowed for sound or meaning, often irregular | 来 (come), 自 (self)                              | Historical accidents          |
 
 
-Chinese characters
+The method of writing numbers in Chinese is closely related to the principles of 
+ideographic character formation, particularly in the 指事 (indicative) and 会意 
+(compound ideograph) categories.
 
-Over 80% of Chinese characters are phono-semantic.  Out of these, 80% are
-arranged as a radical or semantic component placed on the left and the phonetic component on 
-the right (both carry meaning but the phonetic component often gives pronunciation clues).  
-For the radical or semantic component, these are often made from ideographic characters.
+
+
+PHONO-SEMANTIC COMPOUNDS
+
+Over 80% of Chinese characters are phono-semantic.  One part of them is often made
+from a pictographic or ideographic character which has been stylized for its inclusion
+as part of the character.
+
+Out of these phono-semantic characters, 80% are arranged as a radical or semantic component 
+placed on the left and the phonetic component on the right (both carry meaning but the 
+phonetic component often gives pronunciation clues).  Other arrangements place the radical
+and semantic component in other places.
+
+As mentioned, for the radical or semantic component, this often made from an ideographic 
+character.
 
 
 | **Aspect**                        | **Description**                                                                                       | **Learning Benefit**                                                                                     |
@@ -32,7 +64,9 @@ For the radical or semantic component, these are often made from ideographic cha
 | **Phonetic Components (声旁)**      | Parts of a character that suggest pronunciation.                                                      | Helps in recognizing pronunciation patterns across characters (e.g., 清、情、请 share the "青" sound).         |
 
 
+WORD FORMATION            
 
+Most words are disyllabic compounds (e.g., 火车 = train, lit. "fire vehicle").
 
 
 

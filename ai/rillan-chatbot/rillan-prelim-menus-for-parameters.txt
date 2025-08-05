@@ -1,55 +1,96 @@
 
-Though it depends on the situation, quite often
-too much labor is required of the user to put together a
-complete and detailed text prompt to get a satisfactory
-result.  This is a key reason that usage of AI falls
-short of expectations.
+THE AI IDENTIFIES AND GENERATES PARAMETERS FOR THE SITUATION:
+PRELIMINARY AND INTERMEDIATE MENUS ALLOW THE AI TO
+GUIDE THE USER TO USE AI FOR THE GIVEN TASK BEFORE THE AI
+UNDERTAKES WORK
 
-Take for example the generation of an image.
-I said to the AI, "Make a playing card with the
-image of a joker on it."  I found out, after getting
-the result, that what the AI had in its defaults 
-was far from what I was expecting. It made an 
-image of a joker from a recent movie in a photorealistic 
-style inside a playing card frame.  It turns out I was really 
-going to have to tell it a significant number of 
-specifying details upfront:
-	- what illustration style (photorealistic).
+--> In Many Cases, After The User Submits The Initial Prompt,
+The AI Should Generate Parameters for The Situation
+For The User to Fill Out or Configure Before It Generates Output. 
+
+
+---
+
+
+Though it depends on the situation, quite often too much labor is required of
+the user to put together a complete and detailed text prompt to get a
+satisfactory result from AI.  The usual sequence involves the user reacting
+to what the AI generated repeatedly because the user didn't provide comprehensive
+details to prevent.  This is a key reason that usage of AI falls short of
+expectations.  The AI should be involved in collecting those details. 
+
+Take for example the generation of an image.  I said to the AI, "Make a playing
+card with the image of a joker on it."  I found out, after getting the result,
+that what the AI had in its assumptions was far from what I was expecting (or perhaps
+what other people would exist too). It made an image of a joker featuring an actor 
+from a recent movie in a photorealistic style inside a playing card frame.  
+It turns out that I was going to have to tell it a significant
+number of specifying details upfront: 
+	- what illustration style (photorealistic). 
 	- what the joker should look like. 
-	- what the joker should be doing.
+	- what the joker should be doing. 
+	- The position of the joker.
+	- The clothing.
 	- etc.
 
-For routine usage of AI, all of these parameters take 
-too much work to come up with.  It's way too much to expect 
-from the user at the first step and its also work that
-the AI should be providing in an intermediate step before
-generation of the image occures.
- 
-So, the situation should really be the AI coming up
-with these kinds of parameters first and asking them 
-in a preliminary menu that features GUI controls.
+For routine usage of AI, all of these parameters take too much work to come up
+with on the spot.  It's way too much to expect from the user at the first step and it 
+is also work that the AI should be generate for an intermediate step before generation
+of the image occures.
+
+In short, the situation should really be the AI coming up with these kinds of
+parameters first and asking them in a preliminary menu that features GUI
+controls.
 
 Example:
 
----
-AI: You said you want a joker on a playing card
-	- What illustration style? [dropdown menu options]
+--- AI: You said you want a joker on a playing card. 
+
+	- What illustration style? [dropdown menu] 
 	- What kind of joker? [dropdown menu] Other: [Textfield]
-	- What position should the joker be in? [dropdown menu] Other: [Textfield].
-	- More specifying information: [].
----
+	- What position should the joker be in? [dropdown menu] Other: [Textfield]. 
+	- What clothing? [dropdown menu]
+	More specifying information: [Textfield].
 
+-------
 
-If this is image is being generated in a node flow diagram
-environment then it would be the AI asking questions before
-generating the nodes.  
+This is a set of the details that the user might not fully anticipate and will 
+only find out are relevant after the image has been generated.  Then the user 
+will have to laboriously revise with new images being generated.
 
-It should be that the AI is taking care of the intermediate 
-work of providing the menu of parameters, the parameters 
-that currently aren't specified by the user until after
-finding out how the AI made the image and departed from 
+If this is image is being generated in a node flow diagram environment then it
+would be the AI asking questions before generating the nodes.
+
+It should be that the AI is taking care of the intermediate work of providing
+the menu of parameters, the parameters that currently aren't specified by the
+user until after finding out how the AI made the image and departed from
 expectations.
 
+
+
+--
+
+A software application is useful proportionate to the amount of control the user
+has over the output, with an application like Excel demonstrating high levels of
+user control.  The usability of those controls and a smooth arrangement of 
+them is what makes quality software.  When, however, software produces flashy, 
+advanced output but the user's ability to control the output is limited, e.g.
+AI-generated images produced just from text prompts, then this is largely
+a novelty or an uncomfortable and unfinished situation.  The effort required
+to turn the output into something of value is too high.  AI generation of images
+can be put into other software contexts where user control is higher, such as node 
+flow diagram scripting environments.  
+
+During an onstage interview, an OpenAI executive called ChatGPT "the world's greatest 
+parlor trick."  People everywhere have managed since the time he said that to make 
+ChatGPT work for them in spite of the undeveloped state of the front-end.  It is 
+still the case that ChatGPT produces a novelty effect because the front-end software 
+is incomplete. The amount of control the user can have over the output is much less 
+than it should be (e.g. there is no control over output length, it is hard to steer 
+responses, etc.).  Addressing this gap requires more than just the addition of gui
+controls.  The AI should generate parameters for any situation.  Intermediate menus are 
+important for AI chatbot software like ChatGPT to assist the user in making use
+of the AI.
 
 
 

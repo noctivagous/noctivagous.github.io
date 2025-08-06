@@ -473,4 +473,62 @@ How do you want it made?
 	- What programming techniques and philosphies?
 
 
+---------------------
+---------------------
+
+
+WORKFLOW STAGES FOR AI PROJECTS
+
+Mixed command-line and chat interface
+that also embeds menus, tables and GUI
+controls in AI responses.
+
+Progressively collects information
+about the project and interacts with
+the user along the way.
+
+
+----------
+
+USER: begin
+
+AI: 
+	-SOFTWARE REQUIREMENTS STAGE-
+	
+Enter software target platform,
+programming language and any other requirements.
+
+USER: *ENTERS SOFTWARE TARGET PLATFORM
+	AND PROGRAMMING LANGUAGE*
+
+AI: OK.  What is this project about?  
+
+USER: I want to write [this kind of app].
+
+AI:
+	-CONSIDERATIONS STAGE-
+Before getting started, 
+here are some of the considerations
+for this project:
+-		-		-
+-		-		-
+-		-		-
+-		-		-
+-		-		-
+
+Next: type (q) for the questionnaire step 
+or continue talking and responses will
+occur within considerations step
+to inform the questionnaire stage.
+
+USER: q
+
+	-QUESTIONNAIRE STAGE-
+
+Here is a questionnaire form for
+your project before we get started.
+It will address code style and all
+other factors.
+
+
 

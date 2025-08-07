@@ -97,12 +97,176 @@ color:#444;
   
 </style>
 
+<style>
+#instructions {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 500px;
+  bottom:10pt;
+
+  background: rgba(28, 28, 30, 0.95); /* dark semi-opaque */
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: sans-serif;
+  font-size: 14pt;
+  color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  z-index: 999;
+}
+
+#instructions h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #66b0ff;
+  border-bottom: 1px solid #555;
+  padding-bottom: 4px;
+}
+
+#instructions ul {
+  padding-left: 20px;
+  margin: 6px 0 12px 0;
+}
+
+#instructions li {
+  margin-bottom: 4px;
+  line-height: 1.5;
+  color:gray;
+  font-family:arial;
+}
+
+#instructions kbd {
+  display: inline-block;
+  background: #333;
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 13px;
+  font-family: monospace;
+  color: #f0f0f0;
+  box-shadow: inset 0 -1px 0 #000;
+}
+
+#instructions p {
+  margin: 8px 0 4px 0;
+  font-weight: bold;
+  color: #dddddd;
+}
+
+#instructions {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 450px;
+	bottom:10pt;
+  background: rgba(28, 28, 30, 0.95);
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px 16px 12px 12px;
+    font-size:1.2rem;
+    font-family:Tahoma;
+    line-height:1.5rem;
+  color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  overflow: hidden;
+}
+
+#instructions .scroll-content {
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 16px; /* space for fake scrollbar */
+  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+#instructions .scroll-content::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.scrollbar-track {
+  position: absolute;
+  top: 12px;
+  right: 4px;
+  width: 6px;
+  height: calc(100% - 24px);
+  background: #222;
+  border-radius: 3px;
+}
+
+.scrollbar-thumb {
+  width: 100%;
+  background: #555;
+  border-radius: 3px;
+  position: absolute;
+  top: 0;
+  height: 40px;
+  cursor: pointer;
+}
+
+
+</style>
 </head>
 <body >
 
-  <div id="instructionsBar">
+
+<!--
 <h3 style="margin:0;color:gray;">Patch/Node Programming GUI Demo</h3>
-    <div style="color:#e0e0e0">Instructions:&nbsp;</div>
+-->
+
+<div id="instructions">
+
+  <div class="scroll-content">
+  <h3>Patch/Node Programming GUI Demo</h3>
+
+  <p><strong>1. Drag-Line (G key)</strong></p>
+  <ol>
+    <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.</li>
+    <li>A dashed line appears from the patch center to your mouse.</li>
+    <li>Move the cursor to a new position.</li>
+    <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
+  </ol>
+
+  <p><strong>2. Drag Lock (Spacebar)</strong></p>
+  <ol>
+    <li>Press and hold <kbd>Spacebar</kbd> to drag the patch under the mouse.</li>
+    <li>Move the mouse to reposition the patch.</li>
+    <li>Release <kbd>Spacebar</kbd> to drop the patch.</li>
+  </ol>
+
+  <p><strong>3. Selection (Tab key)</strong></p>
+  <ol>
+    <li>Hover over a patch and press <kbd>Tab</kbd> to select it.</li>
+    <li>After selecting one or more patches, press the <kbd>Spacebar</kbd>
+    to begin the drag lock.</li>
+  </ol>
+
+  <p><strong>4. Connect Cables (F key)</strong></p>
+  <ol>
+    <li>Hover over an outlet circle and press <kbd>F</kbd> to start a connection.</li>
+    <li>Move the mouse to the other outlet and press <kbd>F</kbd> again to complete.</li>
+    <li>Press <kbd>Esc</kbd> at any time to cancel.</li>
+  </ol>
+
+  <p><strong>5. Delete Cables (D key)</strong></p>
+  <ol>
+    <li>Hover over an existing cable and press <kbd>D</kbd> to delete it.</li>
+  </ol>
+
+  <p><strong>6. Swap Cable Outlet (S key)</strong></p>
+  <ol>
+    <li>Hover over an outlet with a connected cable and press <kbd>S</kbd> to detach it.</li>
+    <li>Move to a new outlet and press <kbd>S</kbd> again to attach.</li>
+  </ol>
+    </div>
+  
+    <div class="scrollbar-track">
+    <div class="scrollbar-thumb"></div>
+  </div>
+  
+</div>
+
+<!--
 
 <div style="color:white;margin-left:10pt;">    
     1. To make a selection, hover over a node and press <kbd>Tab</kbd>.
@@ -119,40 +283,39 @@ color:#444;
 	5. To unhook a cable, to place it on a different outlet, press <kbd>S</kbd> while hovering 
 	over the outlet to detach.  After hovering over the other outlet, press <kbd>S</kbd> again
 	to attach.
-</div>
-
-  </div>
-
+</div>-->
   <div id="patchArea">
 
-    <!-- Example Synth Patches -->
-    <div class="patch" style="left:60px;top:340px;" data-id="osc">
-      <header>Oscillator</header>
-      <span class="port output" data-dir="out" data-name="audio"></span>
-    </div>
+  <div class="patch" style="left:580px;top:100px;" data-id="osc">
+  <header>Oscillator</header>
+  <span class="port output" data-dir="out" data-name="audio"></span>
+</div>
 
-    <div class="patch" style="left:350px;top:400px;" data-id="filter">
-      <header>Filter</header>
-      <span class="port input" data-dir="in" data-name="audio"></span>
-      <span class="port output" data-dir="out" data-name="audio"></span>
-    </div>
+<div class="patch" style="left:620px;top:220px;" data-id="filter">
+  <header>Filter</header>
+  <span class="port input" data-dir="in" data-name="audio"></span>
+  <span class="port output" data-dir="out" data-name="audio"></span>
+</div>
 
-    <div class="patch" style="left:640px;top:460px;" data-id="amp">
-      <header>Amplifier</header>
-      <span class="port input"  data-dir="in"  data-name="audio"></span>
-      <span class="port output" data-dir="out" data-name="audio"></span>
-    </div>
+<div class="patch" style="left:680px;top:340px;" data-id="amp">
+  <header>Amplifier</header>
+  <span class="port input"  data-dir="in"  data-name="audio"></span>
+  <span class="port output" data-dir="out" data-name="audio"></span>
+</div>
 
-    <div class="patch" style="left:930px;top:520px;" data-id="out">
-      <header>Output</header>
-      <span class="port input" data-dir="in" data-name="audio"></span>
-    </div>
-
+<div class="patch" style="left:720px;top:460px;" data-id="out">
+  <header>Output</header>
+  <span class="port input" data-dir="in" data-name="audio"></span>
+</div>
     <!-- Overlay for cables (now above .patch) -->
     <canvas id="cablesCanvas" resize></canvas>
   </div>
 
 <script>
+
+  function getNodePosition(node) {
+        return {x: node.offsetLeft, y: node.offsetTop};
+    }
 
 /* ─────────────────────────────────────────────────────────────────────────
    MULTI-PATCH DRAG SUPPORT
@@ -198,12 +361,19 @@ paperScope.setup(cableCanvas);
 let selectedPatch = null;
 let dragLock      = false;
 let dragOffset    = {x:0,y:0};
+/* tracks a patch selected automatically by the space-bar */
+let autoSelectedPatch = null;
 
 /* Connection‑state data */
 let connecting   = false;        // true → awaiting 2nd port
 let connectStart = null;         // HTMLElement (first port)
 let previewPath  = null;         // paper.Path for live preview
 const connections = [];          // {from:HTMLElement, to:HTMLElement, path:paper.Path}
+
+/* ——— Drag-Line relocation (G key) ——— */
+let dragLineActive = false;   // true while drawing
+let dragLinePatch  = null;    // HTMLElement being moved
+let dragLinePath   = null;    // paper.Path preview line
 
 
 // Ensure the page captures keyboard events as soon as it is shown
@@ -323,6 +493,13 @@ if (dragLock && initialPos.size) {
     
   }
 
+/* live update for G drag-line */
+if (dragLineActive && dragLinePath) {
+  dragLinePath.lastSegment.point.set(mouse.x + window.scrollX,
+                                     mouse.y + window.scrollY);
+  paperScope.view.update();
+}
+
   
   /* Cable hover detection */
       if (!connecting){                          // skip while drawing a new cable
@@ -360,6 +537,9 @@ patchArea.addEventListener('mouseout',e=>{
   if(p){p.classList.remove('hover'); if(hoverPort===p) hoverPort=null;}
 });
 
+
+
+
 /*************************************************
  *  Keyboard control (Tab / Space / F / Esc)
  *************************************************/
@@ -384,6 +564,82 @@ document.addEventListener('keydown', e => {
   const key   = e.key;
   const lower = key.toLowerCase();
 
+ /* ─────────────────────  G : drag-line relocation  ───────────────────── */
+/* ─────────────────────  G : drag-line relocation  ───────────────────── */
+if (lower === 'g') {
+  e.preventDefault();
+  if (!dragLineActive) {
+    // Begin drag-line
+    const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+    if (!tgt) return; // no patch under cursor
+    dragLineActive = true;
+    dragLinePatch  = tgt;
+    const start = centerOf(tgt);
+    dragLinePath = new paperScope.Path.Line({
+      from: start,
+      to:   start,
+      strokeColor: '#0d6efd',
+      strokeWidth: 2,
+      dashArray: [4, 4]
+    });
+    return;
+  } else {
+  
+  // Animate patch from original position to cursor location
+const endX = mouse.x + window.scrollX;
+const endY = mouse.y + window.scrollY;
+const r = dragLinePatch.getBoundingClientRect();
+const startX = r.left + window.scrollX;
+const startY = r.top  + window.scrollY;
+
+const targetX = endX - r.width / 2;
+const targetY = endY - r.height / 2;
+
+const dx = targetX - startX;
+const dy = targetY - startY;
+
+const duration = 100; // ms
+const steps = 15;
+let frame = 0;
+
+function animate() {
+  const t = ++frame / steps;
+  if (t >= 1) {
+    dragLinePatch.style.left = targetX + 'px';
+    dragLinePatch.style.top  = targetY + 'px';
+    dragLinePath.remove();
+    dragLineActive = false;
+    dragLinePatch = null;
+    dragLinePath  = null;
+    redrawCables();
+    return;
+  }
+  const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // ease-in-out
+  const x = startX + dx * ease;
+  const y = startY + dy * ease;
+  dragLinePatch.style.left = x + 'px';
+  dragLinePatch.style.top  = y + 'px';
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+  /*
+    // Complete drag-line by moving patch
+    const endX = mouse.x + window.scrollX;
+    const endY = mouse.y + window.scrollY;
+    const r = dragLinePatch.getBoundingClientRect();
+    dragLinePatch.style.left = (endX - r.width  / 2) + 'px';
+    dragLinePatch.style.top  = (endY - r.height / 2) + 'px';
+    dragLinePath.remove();
+    dragLineActive = false;
+    dragLinePatch = null;
+    dragLinePath  = null;
+    redrawCables();*/
+    return;
+  }
+}
+
+            
   /* ──────────────────────  S : detach / re-attach a cable end  ─────────────────── */
   if (lower === 's') {
     /* 1 ▸ finish reconnection if a loose end exists */
@@ -469,35 +725,57 @@ if (e.key === 'Tab') {
   }
   return;
 }
-  /* ───────────────────────  Space : drag-lock toggle  ─────────────────────── */
-  /* 3 ▸ Space-bar toggles drag-lock for the *entire* selection */
-if (e.key === ' ') {           // inside your key-down handler
+
+/* ───────────────────────  Space : drag-lock toggle  ─────────────────────── */
+if (e.key === ' ') {          // inside your key-down handler
   e.preventDefault();
 
+  /* current selection, if any */
+  let selected = [...document.querySelectorAll('.patch.selected')];
 
-  const selected = [...document.querySelectorAll('.patch.selected')];
-  if (!selected.length) return;           // nothing selected
-
-  
-/* engage drag: build the reference tables once, like Swift’s initialMouseDragged */
-if (!dragLock) {                 // (inside the space-bar handler)
-  dragLock  = true;
-  dragStart = {x: mouse.x, y: mouse.y};
-  initialPos.clear();
-  document.querySelectorAll('.patch.selected').forEach(el => {
-    const r = el.getBoundingClientRect();
-    initialPos.set(el, {left: r.left, top: r.top});
-  });
-}
-  else{                                  /* ── release drag ── */
-    dragLock = false;
-    dragOffsets.forEach((_, el) => el.classList.remove('dragging'));
-    dragOffsets.clear();
-    redrawCables();
+  /* auto-select the patch under the cursor when none is selected */
+  if (!selected.length) {
+    const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+    if (!tgt) return;                         // nothing under cursor
+    tgt.classList.add('selected');
+    selected = [tgt];
+    autoSelectedPatch = tgt;                  // remember for later un-select
   }
+
+  /* ── engage drag-lock ─────────────────────────────────────────────── */
+  if (!dragLock) {
+    dragLock  = true;
+    dragStart = { x: mouse.x, y: mouse.y };
+
+    initialPos.clear();
+    selected.forEach(el => {
+      const r = el.getBoundingClientRect();
+      initialPos.set(el, { left: r.left, top: r.top });
+      el.classList.add('dragging');
+    });
+  }
+  /* ── release drag-lock ────────────────────────────────────────────── */
+/* ── release drag-lock ────────────────────────────────────────────── */
+else {
+  dragLock = false;
+
+  /* remove .dragging from all affected patches */
+  document.querySelectorAll('.patch.dragging')
+          .forEach(el => el.classList.remove('dragging'));
+
+  initialPos.clear();
+  dragOffsets.clear();          // remains empty in current logic
+  redrawCables();
+
+  /* deselect the patch that was auto-selected at lock-start */
+  if (autoSelectedPatch) {
+    autoSelectedPatch.classList.remove('selected');
+    autoSelectedPatch = null;
+  }
+}
+
   return;
 }
-
 
   /* ───────────────────  F : connect / disconnect ports  ──────────────────── */
   if (lower === 'f') {
@@ -555,6 +833,11 @@ if (!dragLock) {                 // (inside the space-bar handler)
       dragLock = false; selectedPatch.classList.remove('dragging');
     }
     abortPreview();
+    if (dragLineActive) {
+  if (dragLinePath) dragLinePath.remove();
+  dragLineActive = false; dragLinePatch = null; dragLinePath = null;
+	}
+
     clearSelection();
     paperScope.view.update();
   }
@@ -628,9 +911,64 @@ function resizeCanvas(){
       setCursor(null);
       startPort=null;
     }
+    
+    /* complete drag-line – move patch to cursor */
+if (dragLineActive && dragLinePatch && dragLinePath) {
+  const endX = lastMouse.x + window.scrollX;
+  const endY = lastMouse.y + window.scrollY;
+  const r = dragLinePatch.getBoundingClientRect();
+  dragLinePatch.style.left = (endX - r.width  / 2) + 'px';
+  dragLinePatch.style.top  = (endY - r.height / 2) + 'px';
+  dragLinePath.remove();
+  dragLineActive = false; dragLinePatch = null; dragLinePath = null;
+  redrawCables();
+}
+
+    
   });
 
 window.addEventListener('resize',resizeCanvas); resizeCanvas();
 </script>
+
+<script>
+  const container = document.querySelector('#instructions');
+  const content = container.querySelector('.scroll-content');
+  const track = container.querySelector('.scrollbar-track');
+  const thumb = container.querySelector('.scrollbar-thumb');
+
+  function updateThumb() {
+    const ratio = content.scrollTop / (content.scrollHeight - content.clientHeight);
+    const thumbHeight = Math.max((content.clientHeight / content.scrollHeight) * track.clientHeight, 30);
+    thumb.style.height = thumbHeight + 'px';
+    thumb.style.top = (ratio * (track.clientHeight - thumbHeight)) + 'px';
+  }
+
+  content.addEventListener('scroll', updateThumb);
+  window.addEventListener('resize', updateThumb);
+  window.addEventListener('load', updateThumb);
+
+  let dragging = false;
+  let startY, startScroll;
+
+  thumb.addEventListener('mousedown', (e) => {
+    dragging = true;
+    startY = e.clientY;
+    startScroll = content.scrollTop;
+    document.body.style.userSelect = 'none';
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const deltaY = e.clientY - startY;
+    const scrollRatio = (content.scrollHeight - content.clientHeight) / (track.clientHeight - thumb.clientHeight);
+    content.scrollTop = startScroll + deltaY * scrollRatio;
+  });
+
+  window.addEventListener('mouseup', () => {
+    dragging = false;
+    document.body.style.userSelect = '';
+  });
+</script>
+
 </body>
 </html>

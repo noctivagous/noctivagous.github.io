@@ -24,7 +24,7 @@
     .port.hover{outline:3px solid #f1c40f;}
 
     /* —— Selection & drag-lock state —— */
-    .selected{outline:3px solid #dc3545 !important;}
+    .selected{outline:4pt solid #dc3545 !important;}
     .dragging{opacity:0.7;}
 
     /* —— Cable canvas overlays patches —— */
@@ -237,7 +237,13 @@ color:#444;
 
   <p><strong>3. Selection (Tab key)</strong></p>
   <ol>
-    <li>Hover over a patch and press <kbd>Tab</kbd> to select it.</li>
+    <li>Hover over a patch and press <kbd>Tab</kbd> to select it.
+
+    	<ul>
+		<li>Repeat to make a group selection.</li>
+    	<li>The <kbd>Escape</kbd> key will clear the selection, as will
+    	pressing <kbd>Tab</kbd> when the cursor is outside of a patch.</li></ul>
+    </li>
     <li>After selecting one or more patches, press the <kbd>Spacebar</kbd>
     to begin the drag lock.</li>
   </ol>
@@ -928,23 +934,29 @@ if (affected.length > 1) {
 
 
 /* ───────── Tab : multi-select toggle, or clear selection in empty space ───────── */
+/* ───────── Tab : multi-select toggle, or clear selection in empty space ───────── */
 if (e.key === 'Tab') {
   e.preventDefault();
+
+  // Do nothing if drag-lock is active.
+  if (dragLock) {
+    return;
+  }
 
   const patchAtCursor =
         document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
 
   if (patchAtCursor) {
-    /* Toggle selection state of the patch under the cursor */
+    // Toggle selection state of the patch under the cursor
     if (patchAtCursor.classList.contains('selected')) {
       patchAtCursor.classList.remove('selected');
       if (selectedPatch === patchAtCursor) selectedPatch = null;
     } else {
-      patchAtCursor.classList.add('selected');     // add to multi-selection
-      selectedPatch = patchAtCursor;               // remember last-active patch
+      patchAtCursor.classList.add('selected'); // add to multi-selection
+      selectedPatch = patchAtCursor;           // remember last-active patch
     }
   } else {
-    /* Cursor in empty space: clear all selected patches */
+    // Cursor in empty space: clear all selected patches
     clearSelection();
     selectedPatch = null;
   }
@@ -1153,11 +1165,10 @@ if (liveSelActive && liveSelLine) {
     to:   { x: Math.max(liveSelStart.x, curX),
             y: Math.max(liveSelStart.y, curY) },
     strokeColor: '#00d1ff',
-    strokeWidth: 1,
-    dashArray: [4, 4],
+    strokeWidth: 0,
   fillColor: '#00d1ff'
 });
-liveSelRectOutline.fillColor.alpha = 0.1; // light, transparent cyan
+liveSelRectOutline.fillColor.alpha = 0.15; // light, transparent cyan
 
   /* update selection membership */
   const box = {

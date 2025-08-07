@@ -1,0 +1,60 @@
+
+A SET OF TOOLS FOR AN LLM TO GENERATE 2D VECTORS
+
+A person says, "generate an SVG of a person riding a motorcycle" to an LLM but the LLM 
+does not have the utilities necessary to construct helpful images.  So we want to give 
+it some based on traditional vector graphics.
+
+For example, to make bowling pins, the LLM will use metaballs to make a single pin,
+apply a subtract combinatoric operation on the bottom to apply perspective.  It will
+make the bowling lane from vertical columns and then apply a perspective transform.
+
+Designs and scenes generally feature organic shapes and geometric shapes.  Page design
+is entirely a geometric process while a landscape painting is entirely organic.  
+Buildings are generally made of geometric shapes and operations.  
+Grass, trees, mountains, are generally made of organic shapes and related operations.
+
+For grass and trees we might give it L-systems.  For textures like fur we might give it 
+vector fields and allow warping transformations of the mesh.   On the geometric side 
+we will provide it the all-purpose supershape formula utility.  We will provide 
+combinatoric operations so that it can make complex shapes (e.g. a shape taken out of another).  
+
+Shading can be textured or smooth.  A human or animal figure is usually estimated 
+with its geometric primitives and then details are progressively specified and operations applied.  
+A wallpaper pattern is first provided the units to repeat and then the given repeat 
+pattern is applied.  There is the establishment of a base shape, the manipulation of it
+through addition, subtraction, and union with other shapes or other effects.
+
+
+
+
+Each entry has a brief description, key parameters, and a sample usage scenario.
+
+| **Utility Name**                 | **Description**                                                                                                                          | **Key Parameters**                                                                                                                      | **Sample Usage**                                                                                                                          |                                                                                                                            |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Basic Primitives**             | Standard geometric building blocks (circles, ellipses, polygons, arcs, right triangles, b-splines, Bézier curves).                                                   | - Center coords, radii<br>- Number of sides or control points<br>- Stroke/fill style                                                    | “Create a regular hexagon with side length 40px and a red fill.”                                                                          |                                                                                                                            |
+| **Metaballs**                    | Generates smooth, blobby shapes by combining radial fields in an isosurface calculation. Great for organic forms.                        | - Centers & radii of each “ball”<br>- Blending intensity<br>- Threshold (isosurface level)                                              | “Create a puddle-like shape by merging three overlapping metaballs with a high blending factor.”                                          |                                                                                                                            |
+| **Perlin Noise Warp**            | Displaces the coordinates of an existing path by sampling Perlin noise (1D or 2D) for natural, irregular forms (mountains, terrain).     | - `basePath` (points array or `<path>`)<br>- `frequency` (noise scale)<br>- `amplitude` (max displacement)<br>- `octaves` (multi-scale) | “Make a rock out of a circle. Turn a smooth Bézier line into a jagged mountain ridge by applying vertical Perlin noise with frequency=0.02 and amplitude=20.”          |                                                                                               |
+| **Boolean Operations**           | Union, subtraction, and intersection of two or more shapes, enabling complex silhouette edits.                                           | - Paths A, B<br>- Operation type (union, subtract, intersect)                                                                           | “Subtract a small circle from a bigger supershape to create a ring-like structure.”                                                       |                                                                                                                            |
+| **Vector Fields (Warp)**         | Warps or distorts existing paths based on a user-defined vector field (e.g., swirl or curl).                                             | - Input path<br>- Vector field definition (noise type, intensity)<br>- Warp scale                                                       | “Apply a swirl warp to a circle path to make a wavy, fluid shape.”                                                                        |                                                                                                                            |
+| **L-systems**                    | Produces fractal structures (trees, branches, coral) via iterative rewriting rules and turtle graphics.                                  | - Axiom string<br>- Production rules<br>- Iteration count<br>- Angles, line length                                                      | “Generate a tree-like shape at 5 iterations with branching angle 25° for a stylized forest.”                                              |                                                                                                                            |
+| **Supershapes**                  | Uses the superformula to produce circles, polygons, star shapes, or more exotic symmetrical forms.                                       | - m, n1, n2, n3<br>- a, b (scaling)<br>- Number of points (resolution)                                                                  | “Draw a star-like shape by setting m=6, n1=0.5, n2=1, n3=1, a=1, b=1 with 200 sample points.”                                             |                                                                                                                            |
+| **Particle System**              | Generates and places many small shapes following certain physics (e.g. gravity, random drift), simulating scattered objects or effects.  | - Particle count<br>- Emission area<br>- Velocity/noise parameters                                                                      | “Scatter 50 leaf-like shapes drifting downward, each rotating and changing color slightly over time.”                                     |                                                                                                                            |
+| **Grids**						   | Everything related to making grids or using them for positioning of objects.															  | - columns, rows, gap, etc.
+| **3D or Isometric Transform**    | Simulates 3D perspective or isometric projection for 2D shapes, adding depth illusions.  For example, motorcycle wheels in perspective   | - Perspective matrix / isometric angles<br>- Scaling factors                                                                            | “Transform a rectangle into an isometric 3D box shape by applying an isometric matrix transform.”                                         |                                                                                                                            |
+| **Grouping & Hierarchy**         | Organize multiple paths and apply transformations (translate, rotate, scale) by nesting them in `<g>` elements.                          | - Array of shapes<br>- Optional transforms (rotate, scale, translate)<br>- Optional styles/opacity                                      | “Combine a L-system tree and a circle in one `<g>`; rotate 45°, and place at x=100, y=50.”                                                |                                                                                                                            |
+| **Conway Notation for Symmetry** | Uses symbolic notation (like Conway’s polyhedron/kaleidoscopic symmetry) to replicate or transform shapes with group-theoretic patterns. | - Notation (e.g. ‘○’, ‘                                                                                                                 | ’, ‘T’, ‘R’ for certain transformations)<br>- Base shape<br>- Iteration depth                                                             | “Replicate a simple star shape in a ring according to Conway’s ‘r5’ notation, producing a fivefold kaleidoscopic pattern.” |
+| **Gradient & Pattern Fills**     | Applies linear/radial gradients or tiled patterns to shapes for richer styling.                                                          | - Gradient type (linear, radial)<br>- Color stops (positions)<br>- Pattern tile definitions                                             | “Create a spiral background with a radial gradient from yellow to red.”                                                                   |                                                                                                                            |
+| **Mesh Gradients for Shading**   | Creates advanced gradient fills that vary across a mesh of control points, producing soft shading or 3D illusions in vector.             | - Mesh grid definition<br>- Color stops at each mesh point<br>- Interpolation method (bilinear, bicubic)                                | “Apply a mesh gradient to a circle to get a spherical shading effect that transitions from light green to darker green around the edges.” |                                                                                                                            |
+
+
+At a later time, higher-level utilities might be provided such as "Textures" that
+have preconfigured parameters for making use of Perlin Noise and other utilities
+like particle systems.
+
+
+* **Perlin Noise Warp**: For irregular outlines like mountain silhouettes or random “rough” textures.
+* **Portrait Building**: Since an LLM isn’t specialized in face geometry, a parametric or cartoon-like approach can help it reliably produce basic facial features. Achieving a true likeness is more difficult without image references or advanced shape fitting.
+* **Conway Notation for Symmetry**: You can abstract symmetrical replications (like kaleidoscopes or polyhedral transformations) into short codes. The LLM can replicate shapes in repeating patterns with minimal instructions.
+* **Mesh Gradients for Shading**: Mesh gradients let you define multiple gradient stops within a single shape, so you can create smooth, multi-directional shading. This is more flexible than a simple linear or radial gradient.
+

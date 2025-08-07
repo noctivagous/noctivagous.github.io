@@ -1,0 +1,90 @@
+To begin making an alternative GUI for a terminal, we can first sort
+the most commonly used command-line interface (CLI) commands across 
+Unix-like systems (e.g., Linux, macOS) by category.
+
+
+### **Directory and File Commands**
+
+| Command | Description                                                         |
+| ------- | ------------------------------------------------------------------- |
+| `ls`    | Lists files and directories in the current directory.               |
+| `cd`    | Changes the current working directory.                              |
+| `pwd`   | Prints the current working directory path.                          |
+| `mkdir` | Creates a new directory.                                            |
+| `rmdir` | Removes an empty directory.                                         |
+| `rm`    | Deletes files or directories.                                       |
+| `cp`    | Copies files or directories.                                        |
+| `mv`    | Moves or renames files or directories.                              |
+| `touch` | Creates an empty file or updates the timestamp of an existing file. |
+| `find`  | Searches for files and directories.                                 |
+| `chmod` | Changes file or directory permissions.                              |
+| `chown` | Changes ownership of files or directories.                          |
+
+
+
+### **File Viewing and Content Inspection Commands**
+
+| Command | Description                                                        |
+| ------- | ------------------------------------------------------------------ |
+| `cat`   | Displays the entire content of a file.                             |
+| `more`  | Views file content one screen at a time (forward navigation only). |
+| `less`  | Views file content with forward and backward navigation.           |
+| `head`  | Displays the first lines of a file (default is 10 lines).          |
+| `tail`  | Displays the last lines of a file (default is 10 lines).           |
+| `grep`  | Searches for text patterns within files and prints matching lines. |
+| `echo`  | Prints text or variable values to the terminal.                    |
+
+
+
+### **Process and System Monitoring Commands**
+
+| Command   | Description                                                                 |
+| --------- | --------------------------------------------------------------------------- |
+| `ps`      | Displays information about currently running processes.                     |
+| `top`     | Shows a dynamic real-time view of system processes and resource usage.      |
+| `htop`    | Enhanced version of `top` (if installed), with interactive process control. |
+| `kill`    | Sends a signal to terminate a process by its PID.                           |
+| `df`      | Displays available and used disk space on mounted filesystems.              |
+| `du`      | Displays the size of files and directories.                                 |
+| `history` | Lists previously executed commands in the current session.                  |
+
+
+
+### **Archive and Compression Commands**
+
+| Command  | Description                                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `tar`    | Archives multiple files into a single `.tar` file; can also compress with options like `-z` (gzip) or `-j` (bzip2). |
+| `zip`    | Compresses one or more files into a `.zip` archive.                                                                 |
+| `unzip`  | Extracts files from a `.zip` archive.                                                                               |
+| `gzip`   | Compresses a single file using the Gzip algorithm.                                                                  |
+| `gunzip` | Decompresses a `.gz` file.                                                                                          |
+
+
+
+
+### **Networking and Remote Access Commands**
+
+| Command    | Description                                                                       |
+| ---------- | --------------------------------------------------------------------------------- |
+| `ssh`      | Connects securely to a remote system via the SSH protocol.                        |
+| `scp`      | Securely copies files between local and remote systems over SSH.                  |
+| `wget`     | Downloads files from a URL using HTTP, HTTPS, or FTP.                             |
+| `curl`     | Transfers data from or to a server using various protocols (HTTP, FTP, etc.).     |
+| `ping`     | Tests connectivity to a host by sending ICMP echo requests.                       |
+| `netstat`  | Displays network connections, routing tables, interface statistics, etc.          |
+| `ifconfig` | Displays or configures network interface parameters (deprecated on many systems). |
+| `ip`       | Modern replacement for `ifconfig` to manage network interfaces and routing.       |
+
+
+
+### **Manuals and Help Commands**
+
+| Command   | Description                                                                 |
+| --------- | --------------------------------------------------------------------------- |
+| `man`     | Displays the manual (help) page for a command, including options and usage. |
+| `--help`  | Used with most commands (e.g., `ls --help`) to display usage information.   |
+| `info`    | Shows a more detailed and structured help system for commands (GNU-style).  |
+| `whatis`  | Provides a brief description of a command.                                  |
+| `apropos` | Searches manual page names and descriptions for a given keyword.            |
+

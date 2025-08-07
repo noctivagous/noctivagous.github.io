@@ -216,14 +216,15 @@ color:#444;
 
 <div id="instructions">
 
-  <div class="scroll-content">
   <h3>Patch/Node Programming GUI Demo</h3>
+
+  <div class="scroll-content">
 
   <p><strong>1. Drag-Line (G key)</strong></p>
   <ol>
     <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.</li>
     <li>A dashed line appears from the patch center to your mouse.</li>
-    <li>Move the cursor to a new position.</li>
+    <li>Move the cursor to a new location.</li>
     <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
   </ol>
 
@@ -258,6 +259,39 @@ color:#444;
     <li>Hover over an outlet with a connected cable and press <kbd>S</kbd> to detach it.</li>
     <li>Move to a new outlet and press <kbd>S</kbd> again to attach.</li>
   </ol>
+  
+  <p><strong>7. Tidy Rectangle (T key)</strong></p>
+<ol>
+  <li>Press <kbd>T</kbd> anywhere on the canvas to start a tidy rectangle outline
+  for aligning patches.</li>
+  <li>Move the mouse to size the rectangle; all patches intersecting or inside the outline are candidates for alignment.</li>
+  <li>Press <kbd>T</kbd> again to tidy the patches:  
+
+<ul>
+<li>A <em>wide</em> rectangle aligns them horizontally (same&nbsp;<em>y</em>).  </li>
+<li>    A <em>tall</em> rectangle aligns them vertically (same&nbsp;<em>x</em>).</li>
+        </ul>
+    </li>
+
+  <li>Press <kbd>Esc</kbd> at any time before the second <kbd>T</kbd> to cancel.</li>
+</ol>
+
+<p><strong>8. Live Selection Rectangle (Y key)</strong></p>
+<ol>
+  <li>Press <kbd>Y</kbd> anywhere on the canvas to begin drawing a live selection rectangle.</li>
+  <li>Move the mouse to grow or shrink the rectangle diagonally.</li>
+	<ul>
+
+  <li>As patches intersect or enter the rectangle, they are automatically selected.</li>
+  <li>If a patch exits the rectangle, it is removed from the selection.</li>
+  </ul>
+  <li>Press <kbd>Y</kbd> again to finalize the selection and remove the outline.</li>
+  <li>Press <kbd>Esc</kbd> at any time to cancel the selection rectangle.</li>
+</ol>
+
+
+<br/><br/>
+  
     </div>
   
     <div class="scrollbar-track">
@@ -352,10 +386,43 @@ let reattachEnd   = 1;      // 0 = start-segment, 1 = end-segment
 let startPort     = null;   // port that remains fixed
 let lastMouse     = {x:0, y:0};   // updated on every mouse-move
 
+/* ——— Tidy Rectangle (T key) ——— */
+let tidyRectActive     = false;   // true while drawing
+let tidyStartPoint     = null;    // first corner (mouse-down or patch-centre)
+let tidyLinePath       = null;    // preview diagonal
+let tidyRectOutline    = null;    // preview upright rectangle
+
+/* ——— Live Selection Rectangle (Y key) ——— */
+let liveSelActive      = false;   // true while drawing
+let liveSelStart       = null;    // first corner (mouse position)
+let liveSelLine        = null;    // preview diagonal
+let liveSelRectOutline = null;    // preview upright rectangle
+
 
 /* Paper.js setup */
 const paperScope = new paper.PaperScope();
 paperScope.setup(cableCanvas);
+
+/* ─────────────  Auto-connect Oscillator → Filter  ───────────── */
+window.addEventListener('load', () => {
+  const oscOut   = document.querySelector('.patch[data-id="osc"]   .port.output');
+  const filterIn = document.querySelector('.patch[data-id="filter"] .port.input');
+  if (!(oscOut && filterIn)) return;          // ports not found
+
+  const p1   = centerOf(oscOut);
+  const p2   = centerOf(filterIn);
+  const path = new paperScope.Path({
+    strokeColor: '#333',
+    strokeWidth: 2
+  });
+  const midX = (p1.x + p2.x) / 2;
+  path.moveTo(p1.x, p1.y);
+  path.cubicCurveTo(midX, p1.y, midX, p2.y, p2.x, p2.y);
+
+  connections.push({ from: oscOut, to: filterIn, path });
+  paperScope.view.update();
+});
+
 
 /* Data for active drag-lock & cables */
 let selectedPatch = null;
@@ -619,6 +686,7 @@ function animate() {
   const y = startY + dy * ease;
   dragLinePatch.style.left = x + 'px';
   dragLinePatch.style.top  = y + 'px';
+  redrawCables();                          // refresh cables each frame
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
@@ -700,6 +768,163 @@ requestAnimationFrame(animate);
   if (key === 'Escape' || (lower === 'd' && hoverCable)) {
     setCursor?.(null);
   }
+
+/* ────────────────────  Y : live selection rectangle  ──────────────────── */
+if (lower === 'y') {
+  e.preventDefault();
+
+  /* ── first Y ▶ begin preview ─────────────────────────────────────────── */
+  if (!liveSelActive) {
+    /* start rectangle where the cursor is */
+    liveSelStart  = { x: mouse.x + window.scrollX,
+                      y: mouse.y + window.scrollY };
+
+    liveSelActive = true;
+
+    /* clear existing selection — rectangle defines a new one */
+    clearSelection();
+
+    liveSelLine = new paperScope.Path.Line({
+      from: liveSelStart,
+      to:   liveSelStart,
+      strokeColor: '#00d1ff',
+      strokeWidth: 0,
+      dashArray: [4, 4]
+    });
+
+    liveSelRectOutline = new paperScope.Path.Rectangle({
+      from: liveSelStart,
+      to:   liveSelStart,
+      strokeColor: '#00d1ff',
+      strokeWidth: 1,
+      dashArray: [4, 4],
+      fillColor: null
+    });
+
+    return;                                           // wait for 2nd Y
+  }
+
+  /* ── second Y ▶ finish selection ─────────────────────────────────────── */
+  liveSelActive      = false;
+  liveSelStart       = null;
+  liveSelLine.remove();
+  liveSelRectOutline.remove();
+  liveSelLine        = null;
+  liveSelRectOutline = null;
+  return;
+}
+
+/* ────────────────────  T : tidy-rectangle alignment  ──────────────────── */
+/* ────────────────────  T : tidy-rectangle alignment  ──────────────────── */
+if (lower === 't') {
+  e.preventDefault();
+
+  /* ── first T ▶ begin preview ─────────────────────────────────────────── */
+  if (!tidyRectActive) {
+    /* start at mouse position (centre of patch if present) */
+    const patchUnder = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+    tidyStartPoint = patchUnder ? centerOf(patchUnder)
+                                : { x: mouse.x + window.scrollX,
+                                    y: mouse.y + window.scrollY };
+
+    tidyRectActive = true;
+
+    tidyLinePath = new paperScope.Path.Line({
+      from: tidyStartPoint,
+      to:   tidyStartPoint,
+      strokeColor: '#ffc107',
+      strokeWidth: 0,
+      dashArray: [4, 4]
+    });
+
+    tidyRectOutline = new paperScope.Path.Rectangle({
+      from: tidyStartPoint,
+      to:   tidyStartPoint,
+      strokeColor: '#ffc107',
+      strokeWidth: 4,
+      dashArray: [1, 1],
+      fillColor: null
+    });
+
+    return;                                           // wait for second T
+  }
+
+  /* ── second T ▶ apply alignment ──────────────────────────────────────── */
+  if (!tidyLinePath || !tidyStartPoint) return;
+
+  const endPt = { x: mouse.x + window.scrollX, y: mouse.y + window.scrollY };
+  const box   = {
+    left:   Math.min(tidyStartPoint.x, endPt.x),
+    right:  Math.max(tidyStartPoint.x, endPt.x),
+    top:    Math.min(tidyStartPoint.y, endPt.y),
+    bottom: Math.max(tidyStartPoint.y, endPt.y)
+  };
+  const w = box.right  - box.left;
+  const h = box.bottom - box.top;
+
+  /* collect patches that intersect or lie within the rectangle */
+  const affected = [];
+  document.querySelectorAll('.patch').forEach(el => {
+    const r = el.getBoundingClientRect();
+    const p = {
+      left:   r.left + window.scrollX,
+      right:  r.left + r.width  + window.scrollX,
+      top:    r.top  + window.scrollY,
+      bottom: r.top  + r.height + window.scrollY
+    };
+    const hit = !(p.right < box.left || p.left > box.right ||
+                  p.bottom < box.top || p.top  > box.bottom);
+    if (hit) affected.push(el);
+  });
+
+/* ── align patches without overlap ───────────────────────────────────── */
+if (affected.length > 1) {
+  const margin = 20;                       // gap between neighbouring patches
+
+  if (w >= h) {                            // ‼ wide rectangle → horizontal row
+    // sort by current x-position (left edge), leftmost first
+    affected.sort((a, b) => a.offsetLeft - b.offsetLeft);
+
+    // common y (row) is the arithmetic mean of current tops
+    const rowY = affected.reduce((s, e) => s + e.offsetTop, 0) / affected.length;
+
+    // lay patches left-to-right with no overlap (+ margin)
+    let cursorX = Math.min(...affected.map(e => e.offsetLeft));
+    affected.forEach(el => {
+      el.style.left = cursorX + 'px';
+      el.style.top  = rowY  + 'px';
+      const width   = el.getBoundingClientRect().width;
+      cursorX += width + margin;
+    });
+  } else {                                 // ‼ tall rectangle → vertical column
+    // sort by current y-position (top edge), topmost first
+    affected.sort((a, b) => a.offsetTop - b.offsetTop);
+
+    // common x (column) is the arithmetic mean of current lefts
+    const colX = affected.reduce((s, e) => s + e.offsetLeft, 0) / affected.length;
+
+    // lay patches top-to-bottom with no overlap (+ margin)
+    let cursorY = Math.min(...affected.map(e => e.offsetTop));
+    affected.forEach(el => {
+      el.style.left = colX + 'px';
+      el.style.top  = cursorY + 'px';
+      const height  = el.getBoundingClientRect().height;
+      cursorY += height + margin;
+    });
+  }
+
+  redrawCables();                          // refresh all connections
+}
+
+  /* cleanup preview */
+  tidyRectActive  = false;
+  tidyStartPoint  = null;
+  tidyLinePath.remove();
+  tidyRectOutline.remove();
+  tidyLinePath    = null;
+  tidyRectOutline = null;
+  return;
+}
 
 
 /* ───────── Tab : multi-select toggle, or clear selection in empty space ───────── */
@@ -827,8 +1052,33 @@ else {
     return;
   }
 
+
   /* ─────────────────────  Esc : cancel other operations  ──────────────────── */
   if (key === 'Escape') {
+  
+  /* cancel live selection rectangle */
+if (liveSelActive) {
+  if (liveSelLine)        liveSelLine.remove();
+  if (liveSelRectOutline) liveSelRectOutline.remove();
+  liveSelActive      = false;
+  liveSelStart       = null;
+  liveSelLine        = null;
+  liveSelRectOutline = null;
+}
+
+
+/* cancel tidy rectangle */
+if (tidyRectActive) {
+  if (tidyLinePath)    tidyLinePath.remove();
+  if (tidyRectOutline) tidyRectOutline.remove();
+  tidyRectActive  = false;
+  tidyStartPoint  = null;
+  tidyLinePath    = null;
+  tidyRectOutline = null;
+}
+
+
+
     if (dragLock && selectedPatch) {
       dragLock = false; selectedPatch.classList.remove('dragging');
     }
@@ -854,6 +1104,85 @@ patchArea.addEventListener('mousemove',()=>{
     refreshPath(previewPath, p1, p2);
     paperScope.view.update();
   }
+  /* live update for T tidy rectangle */
+if (tidyRectActive && tidyLinePath) {
+  tidyLinePath.lastSegment.point.set(mouse.x + window.scrollX,
+                                     mouse.y + window.scrollY);
+  paperScope.view.update();
+}
+
+/* live update for T tidy rectangle */
+if (tidyRectActive && tidyLinePath) {
+  const curX = mouse.x + window.scrollX;
+  const curY = mouse.y + window.scrollY;
+
+  /* update diagonal */
+  tidyLinePath.lastSegment.point.set(curX, curY);
+
+  /* update / recreate rectangle outline */
+  if (tidyRectOutline) tidyRectOutline.remove();
+  tidyRectOutline = new paperScope.Path.Rectangle({
+    from: { x: Math.min(tidyStartPoint.x, curX),
+            y: Math.min(tidyStartPoint.y, curY) },
+    to:   { x: Math.max(tidyStartPoint.x, curX),
+            y: Math.max(tidyStartPoint.y, curY) },
+    strokeColor: '#ffc107',
+    strokeWidth: 1,
+    dashArray: [4, 4],
+  fillColor: '#ffc107'          // give it the same hue …
+});
+tidyRectOutline.fillColor.alpha = 0.2;   // … but almost fully transparent
+
+  paperScope.view.update();
+}
+
+
+/* live update for Y selection rectangle */
+if (liveSelActive && liveSelLine) {
+  const curX = mouse.x + window.scrollX;
+  const curY = mouse.y + window.scrollY;
+
+  /* update diagonal */
+  liveSelLine.lastSegment.point.set(curX, curY);
+
+  /* update rectangle outline */
+  if (liveSelRectOutline) liveSelRectOutline.remove();
+  liveSelRectOutline = new paperScope.Path.Rectangle({
+    from: { x: Math.min(liveSelStart.x, curX),
+            y: Math.min(liveSelStart.y, curY) },
+    to:   { x: Math.max(liveSelStart.x, curX),
+            y: Math.max(liveSelStart.y, curY) },
+    strokeColor: '#00d1ff',
+    strokeWidth: 1,
+    dashArray: [4, 4],
+  fillColor: '#00d1ff'
+});
+liveSelRectOutline.fillColor.alpha = 0.1; // light, transparent cyan
+
+  /* update selection membership */
+  const box = {
+    left:   Math.min(liveSelStart.x, curX),
+    right:  Math.max(liveSelStart.x, curX),
+    top:    Math.min(liveSelStart.y, curY),
+    bottom: Math.max(liveSelStart.y, curY)
+  };
+
+  document.querySelectorAll('.patch').forEach(el => {
+    const r = el.getBoundingClientRect();
+    const p = {
+      left:   r.left + window.scrollX,
+      right:  r.left + r.width  + window.scrollX,
+      top:    r.top  + window.scrollY,
+      bottom: r.top  + r.height + window.scrollY
+    };
+    const hit = !(p.right < box.left || p.left > box.right ||
+                  p.bottom < box.top || p.top  > box.bottom);
+    el.classList.toggle('selected', hit);
+  });
+
+  paperScope.view.update();
+}
+
 });
 
 /*************************************************

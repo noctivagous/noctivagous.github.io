@@ -199,7 +199,7 @@ color:#444;
   font-family: sans-serif;
   font-size: 14pt;
   color: #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 8px rgba(0, 0, 0, 0.7);
   z-index: 999;
 }
 
@@ -275,7 +275,7 @@ color:#444;
   position: absolute;
   top: 12px;
   right: 4px;
-  width: 6px;
+  width: 10px;
   height: calc(100% - 24px);
   background: #222;
   border-radius: 3px;
@@ -460,16 +460,16 @@ color:#444;
 
 <div id="instructions">
 
-  <h3>Patch/Node GUI Demo - <span style="font-weight:normal">Keyboard-Driven (Bimodal)</span></h3>
+  <h3>Patch/Node GUI Demo - <span style="font-weight:normal">Keyboard-Driven (Bimodal UI)</span></h3>
 
-<p style="font-family:arial">Node-based or patch-based programming is found in all kinds of professional
+<p style="font-family:arial; color:#c9c9c9;">Node-based (or patch-based) programming is found in many kinds of professional
 software.  To provide a better GUI, this demo utilizes keyboard keys instead of mouse buttons to move
 and manipulate patches.  Follow the instructions below step-by-step to experience this different
 kind of GUI.</p>
 
 <hr/>
 
-  <div class="scroll-content">
+  <div class="scroll-content" style="box-styling:border-box;padding:10pt;">
 
   <p><strong>1. Drag-Line (G key)</strong></p>
   <span class="instructions-description">For dragging patches (option 1)</span>
@@ -528,13 +528,13 @@ kind of GUI.</p>
   </ol>
 
   <p><strong>6. Delete Cables (D key)</strong></p>
-      <span class="instructions-description">For removing connections.</span>
+      <span class="instructions-description">For removing cable connections.</span>
   <ol>
     <li>Hover over an existing cable and press <kbd>D</kbd> to delete it.</li>
   </ol>
 
   <p><strong>7. Swap Cable Outlet (S key)</strong></p>
-        <span class="instructions-description">For changing connections.</span>
+        <span class="instructions-description">For changing cable connections.</span>
   <ol>
     <li>Hover over an outlet with a connected cable and press <kbd>S</kbd> to detach it.</li>
     <li>Move to a new outlet and press <kbd>S</kbd> again to attach.</li>
@@ -564,9 +564,9 @@ kind of GUI.</p>
 <!-- Insert inside #instructions -->
 
 <p><strong>9. Numeric Field: Bracket Keys</strong></p>
-   <span class="instructions-description">For stepping values up or down without mouse clicks.</span>
+   <span class="instructions-description">For stepping up or down numeric values without mouse clicks.</span>
 <ol>
-  <li>Hover over a numeric value (or begin typing into it) to target the field.</li>
+  <li>Hover over a numeric value to target the field.</li>
   <li>Press <kbd>[</kbd> to decrement or <kbd>]</kbd> to increment the value.</li>
   <li>Use modifiers to change the step size:
     <ul>
@@ -575,6 +575,7 @@ kind of GUI.</p>
     </ul>
   </li>
   <li>Values are clamped to the patch’s <em>min</em>/<em>max</em> and quantized to its step.</li>
+  <li>To change the value directly, begin typing the new value after hover.</li>
 </ol>
 
 <p><strong>10. Slider: Spacebar Drag</strong></p>
@@ -588,23 +589,10 @@ kind of GUI.</p>
 
 <!-- Insert inside #instructions (next item) -->
 
-<p><strong>11. Toggle Disabled State (W key)</strong></p>
-<span class="instructions-description">For testing during programming.</span>
-
-<ol>
-  <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
-  <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
-  <li>Behavior:
-    <ul>
-      <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
-      <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
-    </ul>
-  </li>
-
-</ol>
 
 
-<p><strong>12. Collapse/Expand Patches (E key)</strong></p>
+
+<p><strong>11. Collapse/Expand Patches (E key)</strong></p>
 <span class="instructions-description">Hide patch contents for a compact layout; cables re-anchor to the header.</span>
 
 <ol>
@@ -619,19 +607,38 @@ kind of GUI.</p>
   <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
 </ol>
 
-<p><strong>13. Duplication Line (M key)</strong></p>
+<p><strong>12. Copy Line (M key)</strong></p>
 <span class="instructions-description">Create a copy of a patch at a new location.</span>
 
 <ol>
-  <li>Hover over a patch and press <kbd>M</kbd> to begin a duplication line (distinct dashed guide).</li>
+  <li>Hover over a patch and press <kbd>M</kbd> to begin a copy line (a line with spaced red dots).</li>
   <li>Move the mouse; the guide follows the cursor from the patch’s center.</li>
   <li>Press <kbd>M</kbd> again (or release the mouse button) to place a copy centered at the cursor. The original remains in place.</li>
   <li>Press <kbd>Esc</kbd> at any time before the second <kbd>M</kbd> to cancel.</li>
-  <li>Note: Only the patch is duplicated; existing cables are not copied.</li>
+<!--  <li>Note: Only the patch is duplicated; existing cables are not copied.</li>-->
 </ol>
 
+<p><strong>13. Toggle Disabled State (W key)</strong></p>
+<span class="instructions-description">For testing output during programming.</span>
+
+<ol>
+  <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
+  <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
+  <li>Behavior:
+    <ul>
+      <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
+      <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
+    </ul>
+  </li>
+
+</ol>
 
 <br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+
   
     </div>
   
@@ -659,9 +666,9 @@ kind of GUI.</p>
 	over the outlet to detach.  After hovering over the other outlet, press <kbd>S</kbd> again
 	to attach.
 </div>-->
-  <div id="patchArea">
+<div id="patchArea">
   
-<div class="patch numeric" style="left:720px;top:320px;"
+<div class="patch numeric" style="left:620px;top:320px;"
      data-id="num1"
      data-min="0" data-max="127"
      data-step="1" data-small-step="0.1" data-big-step="10"
@@ -674,7 +681,7 @@ kind of GUI.</p>
   <span class="port output" data-dir="out" data-name="cv"></span>
 </div>
 
-<div class="patch slider-numeric" style="left:720px;top:560px;"
+<div class="patch slider-numeric" style="left:620px;top:560px;"
      data-id="param1"
      data-min="0" data-max="100"
      data-step="1" data-small-step="0.5" data-big-step="10"
@@ -689,7 +696,7 @@ kind of GUI.</p>
 
 
 <!-- Pitch CV Receiver -->
-<div class="patch cv-receiver" style="left:980px;top:400px;" data-id="pitchRecv">
+<div class="patch cv-receiver" style="left:880px;top:400px;" data-id="pitchRecv">
   <header>Pitch CV (Receiver)</header>
   <div class="recv-body">
    
@@ -702,7 +709,7 @@ kind of GUI.</p>
 </div>
 
 <!-- Level CV Receiver -->
-<div class="patch cv-receiver" style="left:980px;top:620px;" data-id="levelRecv">
+<div class="patch cv-receiver" style="left:880px;top:620px;" data-id="levelRecv">
   <header>Level CV (Receiver)</header>
   <div class="recv-body">
    <!-- <span class="recv-label">Value</span>
@@ -713,24 +720,24 @@ kind of GUI.</p>
 </div>
 
 
-<div class="patch" style="left:760px;top:120px;" data-id="osc">
+<div class="patch" style="left:660px;top:120px;" data-id="osc">
   <header>Oscillator</header>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:980px;top:220px;" data-id="filter">
+<div class="patch" style="left:880px;top:220px;" data-id="filter">
   <header>Filter</header>
   <span class="port input" data-dir="in" data-name="audio"></span>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:1200px;top:320px;" data-id="amp">
+<div class="patch" style="left:1100px;top:120px;" data-id="amp">
   <header>Amplifier</header>
   <span class="port input"  data-dir="in"  data-name="audio"></span>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:1420px;top:420px;" data-id="out">
+<div class="patch" style="left:1320px;top:120px;" data-id="out">
   <header>Output</header>
   <span class="port input" data-dir="in" data-name="audio"></span>
 </div>
@@ -1712,10 +1719,25 @@ if (sliderDragLock) {
 }
 
 
+ 
+  if (dragLock) {
+    dragLock = false;
+    document.querySelectorAll('.patch.dragging')
+            .forEach(el => el.classList.remove('dragging'));
+    initialPos.clear();
+    if (typeof dragOffsets?.clear === 'function') dragOffsets.clear();
+    // If a patch was auto-selected only to start the drag, keep it selected on Esc:
+    autoSelectedPatch = null;
+    redrawCables?.();
+  }
+
+
     if (dragLock && selectedPatch) {
       dragLock = false; selectedPatch.classList.remove('dragging');
     }
+
     abortPreview();
+
     if (dragLineActive) {
   if (dragLinePath) dragLinePath.remove();
   dragLineActive = false; dragLinePatch = null; dragLinePath = null;

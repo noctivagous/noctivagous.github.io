@@ -1,6 +1,81 @@
+ALTERNATIVE TO THE DATED UNIX TERMINAL
+
+When a system has been built up and developed around a paradigm
+for a long time, rewiring it is not a simple matter, which
+is a cause for the UNIX terminal remaining unchallenged and being
+confused with something timeless. Rather, it is an extensive and
+deep effort that is required to convert the UNIX terminal to
+a keyboard-driven GUI.  There is a multitude of unrecognized
+concepts that have to be identified, such as the current working
+directory and then understand why this is different from the file
+navigator GUI.  Foremost, the file navigator GUI does not operate
+on the files in the same compact way and for the advanced user
+it departs a main stream of interaction to accomplish certain tasks.  
+For example, changing permissions on a file in the GUI file navigator
+leaves the navigator window and opens up a separate properties panel
+which then has a separate tab or section that has to be navigated
+to and then clicked on.  In this way, there are nested diversions from
+the main stream of interaction compared to the UNIX terminal.  
+Also, generally, the file navigator doesn't allow rapid and direct
+manipulation of the files and the data contained in them like the 
+UNIX terminal does (such as with the pipe operator).  The programs
+executed by the UNIX terminal are also different in that they
+typically exit after being run whereas the file navigator is set up
+only to execute persistent GUI apps that have to be manually exited.
+
 To begin making an alternative GUI for a terminal, we can first sort
 the most commonly used command-line interface (CLI) commands across 
-Unix-like systems (e.g., Linux, macOS) by category.
+Unix-like systems (e.g., Linux, macOS) by category.  It starts with
+moving across directories.
+
+The UNIX terminal is a print-out style of UI, with the shell
+reacting to commands by streaming feedback in the form of monospaced 
+characters.  There is only one stream for the information; the shell
+does not have by default any tabs for separating output.  The shell
+scrolls the terminal with each additional line.  Issues caused by that 
+today include that it is a very monolithic form of user-computer interaction 
+without any major differences indicated during different uses of the computer, 
+the output is often in large quantities and is only shown inside this small
+frame called the terminal.  No matter what is happening it is
+all output within the same stream and not, as in a GUI, redirected
+to a different tab or separate window which can be opened electively.
+It was designed for an era when the responses from the computer were
+relatively short.  When the shell command's output is long, it is 
+inconvenient to scroll up to view what happened.  There are, despite
+no real technical limitation, no graphical elements inserted into
+the terminal and neither can the terminal control the computer's
+GUI and open up adjacent panels with data and direct output there
+instead of the solitary stream of data from the shell.
+
+
+Directory and File Commands
+
+The first thing we notice is that the the command 'pwd' was provided
+in part because the current working directory is not displayed persistently 
+in the UNIX terminal for lack of screen space on the display.
+Another reason that it has relevance today is that sometimes the user might
+want to hide it if it were always visible (which can be addressed through
+a keyboard shortcut in a GUI version of the terminal) or the working path
+is longer than would fit on one line, so we would make it multi-line.  
+
+For a GUI terminal app, many of the commands that we see like 'pwd' can 
+be mapped instead to shortcuts, such as Command/Control + L for listing a 
+directory.  Upgrading the terminal to a GUI conversion has to go far past 
+that step, though.
+
+Just like this, what we want to do is identify all of the commands and functions 
+that are consequences of the limitations of the early UNIX era computers and
+their displays.  First, the displays were only capable of showing a grid of 
+monospaced characters and this is the root of how the terminal UI evolved. 
+
+So we now know that a fundamental of the terminal is the current working directory.
+and we can have a persistent display of it.  But we might want to change it around
+into a vertical stack to the left of the terminal window, with each item in the
+stack being a component of the directory path.  This would be persistent.
+It would then allow placing key-activated tags or labels on each of the
+path components to activate them by keyboard, possibly Command/Control+1 for
+the root, going up to 9.  To the right of the terminal window could be
+the contents of the current working directory.
 
 
 ### **Directory and File Commands**

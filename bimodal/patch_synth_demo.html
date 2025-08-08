@@ -463,9 +463,9 @@ color:#444;
   <h3>Patch/Node GUI Demo - <span style="font-weight:normal">Keyboard-Driven (Bimodal)</span></h3>
 
 <p style="font-family:arial">Node-based or patch-based programming is found in all kinds of professional
-software.  To provide a better GUI, this demo utilizes keyboard keys instead of mouse buttons manipulating
-patches.  Follow the instructions below step-by-step to experience this
-and how it has the potential to improve all desktop software in the future.</p>
+software.  To provide a better GUI, this demo utilizes keyboard keys instead of mouse buttons to move
+and manipulate patches.  Follow the instructions below step-by-step to experience this different
+kind of GUI.</p>
 
 <hr/>
 
@@ -475,8 +475,8 @@ and how it has the potential to improve all desktop software in the future.</p>
   <span class="instructions-description">For dragging patches (option 1)</span>
   <ol>
     <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.
-    A drag line will transport the patch to a different location.</li>
-    <li>Move the mouse. A dashed line appears from the patch's center to your mouse.</li>
+    </li>
+    <li> Move the mouse. A dashed line appears from the patch's center to your mouse.</li>
     <li>Move the cursor to the desired location for the patch.</li>
     <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
   </ol>
@@ -617,6 +617,17 @@ and how it has the potential to improve all desktop software in the future.</p>
     </ul>
   </li>
   <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
+</ol>
+
+<p><strong>13. Duplication Line (M key)</strong></p>
+<span class="instructions-description">Create a copy of a patch at a new location.</span>
+
+<ol>
+  <li>Hover over a patch and press <kbd>M</kbd> to begin a duplication line (distinct dashed guide).</li>
+  <li>Move the mouse; the guide follows the cursor from the patch’s center.</li>
+  <li>Press <kbd>M</kbd> again (or release the mouse button) to place a copy centered at the cursor. The original remains in place.</li>
+  <li>Press <kbd>Esc</kbd> at any time before the second <kbd>M</kbd> to cancel.</li>
+  <li>Note: Only the patch is duplicated; existing cables are not copied.</li>
 </ol>
 
 
@@ -762,6 +773,11 @@ const cableCanvas = document.getElementById('cablesCanvas');
 const patches     = [...document.querySelectorAll('.patch')];
 let hoverCable = null;   // paper.Path currently under the cursor
 
+/* ——— Duplication Line (M key) ——— */
+let dupLineActive       = false;  // true while drawing
+let dupLineSourcePatch  = null;   // source .patch to duplicate
+let dupLinePath         = null;   // paper.Path preview line
+let patchIdCounter      = 1;
 
 
 /* Visual: bracket from knob to cursor while dragging */
@@ -1007,6 +1023,13 @@ if (dragLock && initialPos.size) {
 if (dragLineActive && dragLinePath) {
   dragLinePath.lastSegment.point.set(mouse.x + window.scrollX,
                                      mouse.y + window.scrollY);
+  paperScope.view.update();
+}
+
+/* Copy-line */
+if (dupLineActive && dupLinePath) {
+  dupLinePath.lastSegment.point.set(mouse.x + window.scrollX,
+                                    mouse.y + window.scrollY);
   paperScope.view.update();
 }
 
@@ -1565,6 +1588,45 @@ if (lower === 'w') {
   return;
 }
 
+/* ─────────────────────  M : duplication-line  ───────────────────── */
+/* ➌ REPLACE your current M-key block with this version to give Copy Line
+      a DISTINCT style (color + dash) compared to G Drag Line. */
+if (lower === 'm') {
+  e.preventDefault();
+
+  // First M: begin from patch under cursor
+  if (!dupLineActive) {
+    const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+    if (!tgt) return; // must start on a patch
+    dupLineActive = true;
+    dupLineSourcePatch = tgt;
+
+    const start = centerOf(tgt);
+    dupLinePath = new paperScope.Path.Line({
+      from: start,
+      to:   start,
+      strokeColor: '#d63384',   // distinct magenta
+      strokeWidth: 2,
+      dashArray: [2, 8]         // distinct dash pattern
+    });
+    paperScope.view.update();
+    return;
+  }
+
+  // Second M: place a copy at the cursor
+  const endX = mouse.x + window.scrollX;
+  const endY = mouse.y + window.scrollY;
+  duplicatePatchAt(dupLineSourcePatch, endX, endY);
+
+  dupLinePath.remove();
+  dupLineActive = false;
+  dupLineSourcePatch = null;
+  dupLinePath = null;
+
+  redrawCables();
+  return;
+}
+
 /* ─────────────────────  E : collapse/expand patches  ─────────────────────
    Behavior:
    - If there is a selection: 
@@ -1635,6 +1697,15 @@ if (tidyRectActive) {
   tidyLinePath    = null;
   tidyRectOutline = null;
 }
+
+/* cancel duplication line */
+if (dupLineActive) {
+  if (dupLinePath) dupLinePath.remove();
+  dupLineActive = false;
+  dupLineSourcePatch = null;
+  dupLinePath = null;
+}
+
 
 if (sliderDragLock) {
   stopSliderDrag();
@@ -1741,6 +1812,8 @@ liveSelRectOutline.fillColor.alpha = 0.15; // light, transparent cyan
     el.classList.toggle('selected', hit);
   });
 
+
+
   paperScope.view.update();
 }
 
@@ -1817,6 +1890,19 @@ if (dragLineActive && dragLinePatch && dragLinePath) {
   dragLineActive = false; dragLinePatch = null; dragLinePath = null;
   redrawCables();
 }
+
+/* complete duplication line – copy patch to cursor */
+if (dupLineActive && dupLineSourcePatch && dupLinePath) {
+  const endX = lastMouse.x + window.scrollX;
+  const endY = lastMouse.y + window.scrollY;
+  duplicatePatchAt(dupLineSourcePatch, endX, endY);
+  dupLinePath.remove();
+  dupLineActive = false;
+  dupLineSourcePatch = null;
+  dupLinePath = null;
+  redrawCables();
+}
+
 
     
   });
@@ -2209,6 +2295,53 @@ function styleCable(conn, hover = false) {
   }
 }
 
+/* Unique id for new patches */
+function generatePatchId(base = 'patch') {
+  return `${base}-copy-${Date.now().toString(36)}-${patchIdCounter++}`;
+}
+
+/* Duplicate a patch and place its center at (pageX, pageY) */
+function duplicatePatchAt(srcPatch, pageX, pageY) {
+  if (!srcPatch) return null;
+
+  const clone = srcPatch.cloneNode(true);
+  clone.classList.remove('selected', 'dragging'); // keep collapsed state if any
+
+  // Ensure a unique data-id
+  const base = srcPatch.dataset?.id || 'patch';
+  clone.dataset.id = generatePatchId(base);
+
+  // Position so the clone's center lands at (pageX, pageY)
+  const r = srcPatch.getBoundingClientRect();
+  const w = r.width, h = r.height;
+  clone.style.left = (pageX - w / 2) + 'px';
+  clone.style.top  = (pageY - h / 2) + 'px';
+
+  // Insert into patch area
+  patchArea.appendChild(clone);
+
+  // If this is a slider+numeric patch, bind the slider to its numeric value
+  const valueEl = clone.querySelector('.num-value');
+  const slider  = clone.querySelector('.num-slider');
+  if (valueEl && slider && typeof getNumConfig === 'function') {
+    const cfg = getNumConfig(valueEl);
+    if (Number.isFinite(cfg.min))  slider.min  = String(cfg.min);
+    if (Number.isFinite(cfg.max))  slider.max  = String(cfg.max);
+    if (Number.isFinite(cfg.step)) slider.step = String(cfg.step);
+    slider.addEventListener('input', () => {
+      let v = parseFloat(slider.value);
+      v = clamp(v, cfg.min, cfg.max);
+      displayNumber(valueEl, v);
+      window.updateCvReceivers?.();
+    });
+  }
+
+  // If you auto-insert min/max labels, re-run your helper here if needed
+  // window.addMinMaxLabels?.(clone);
+
+  window.updateCvReceivers?.();
+  return clone;
+}
 </script>
 </body>
 </html>

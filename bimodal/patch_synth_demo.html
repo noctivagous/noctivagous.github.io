@@ -3,7 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Patch‑Based Synth Demo – Dual‑Input UI</title>
+  <title>Keyboard-Driven Node UI</title>
+
+
+<!--
+Project: Patch-Based Synth Demo — Keyboard-First Node UI (Updated)
+
+Purpose
+- Demonstrates a keyboard-driven patch/node interface where HTML “patch” panels are linked by Paper.js “cables.”
+- Replaces common mouse gestures with explicit key commands for selection, movement, cabling, alignment, test toggles, and layout compaction.
+- Serves as a reference scaffold for adapting keyboard-centric interaction patterns to other applications.
+
+Architecture Overview
+- DOM
+  • #patchArea — absolute-positioned container for all .patch nodes and the cables canvas.  
+  • .patch — node with <header> plus content; may include .port elements (data-dir="in" | "out").  
+    – Special types:  
+      ▸ .patch.numeric — numeric textfield (“type-on-hover”).  
+      ▸ .patch.slider-numeric — slider + numeric textfield combo.  
+      ▸ .patch.cv-receiver — displays values received via cable.  
+  • #cablesCanvas — Paper.js canvas (overlays patches) for cubic Bézier cables.  
+  • #instructions — dark sidebar with custom, always-visible JS scrollbar.
+- Paper.js
+  • One PaperScope bound to #cablesCanvas.  
+  • Each connection stored in `connections: { from, to, path, disabled? }`.  
+  • Hit-testing highlights hovered cables; styles are centralized via `styleCable()`.
+
+Core Data/State
+- Selection: `.patch.selected` (multi-select). `clearSelection()` removes it.  
+- Drag-lock (patches): `dragLock`, `dragStart`, `initialPos` Map<patch,{left,top}>.  
+- Slider drag-lock: `sliderDragLock`, `sliderDragEl`, `sliderDragStart`, window-level mousemove during session, and a live bracket path from knob→cursor.  
+- Cable editing: `connecting`, `connectStart`, `previewPath`, `hoverCable`, `reattachCable` + `reattachEnd`.  
+- Drag-line relocate (G): `dragLineActive`, `dragLinePatch`, `dragLinePath`.
+
+Geometry Helpers
+- `centerOf(el)` — element center in page coords.  
+- `portAnchorPoint(portEl)` — if the owning patch is collapsed, anchors to the header’s vertical midline (left for inputs, right for outputs); otherwise uses the port center.  
+- `refreshPath(path, p1, p2)` and `redrawCables()` — keep Bézier paths in sync as patches move/collapse.
+
+Keyboard Map (document keydown)
+- Tab — toggle selection of patch under cursor; Tab in empty space clears selection.  
+  • Suppressed while any drag-lock is active (patch or slider).  
+- Space — drag-lock toggle.  
+  • Over a slider: locks the knob to horizontal mouse movement (no click), draws a bracket guide to the cursor; Space/Esc releases.  
+  • Over patches: locks the entire selection; if none selected, auto-selects the patch under cursor for a single-item drag, then deselects on release.  
+- F — connect/disconnect ports (F to start on a port, F again on a compatible port to finish; Esc cancels).  
+- S — detach nearest end of hovered cable, then re-attach on another port with S.  
+- D — delete hovered cable.  
+- G — drag-line relocate: first G starts a dashed line from patch center; second G animates the patch to the cursor, redrawing cables every frame.  
+- T — Tidy Rectangle (two-press): uses a dashed diagonal + transparent rectangle as a selector.  
+  • Wide rectangle → horizontal alignment (same y); tall → vertical (same x).  
+  • Prevents overlap by spacing with a configurable margin.  
+- Y — Live Selection Rectangle (two-press): same visuals as T; selection updates live as patches enter/exit the rectangle.  
+- W — Toggle disabled state for the targeted item.  
+  • Cable: dashed, light gray; visual only unless additional logic is added.  
+  • Patch: dimmed, dashed border; ports grayed; selection outline suppressed.  
+- E — Collapse/Expand patches.  
+  • Selection present: all-expanded → collapse all; all-collapsed → expand all; mixed → majority decides.  
+  • Collapse hides everything except the header; cables re-anchor to the header midline via `portAnchorPoint()`.  
+- Esc — cancels active modes (connect preview, re-patch, drag-line, tidy/live rectangles, slider drag-lock) and restores cursors/overlays.
+
+Numeric Textfield & Slider Combo
+- “Type-on-hover”: hovering `.num-value` and typing digits/“.”/“-” begins inline edit (`.editing`).  
+  • Enter commits (clamp to [min,max], quantize to data-step, apply data-precision).  
+  • Escape reverts; leaving the value commits with validation.  
+- Brackets on hover or while editing:  
+  • `[` decrement / `]` increment; Shift = big step; Alt/Option (Meta on macOS) = small step.  
+  • Uses `e.code` ('BracketLeft'/'BracketRight') for layout-independent detection.  
+- Slider visuals: block track with full-height rectangular thumb (WebKit/Firefox).  
+- Min/Max labels: injected `.num-range` row inside numeric patches from `data-min` / `data-max`.  
+- Sources/Receivers: numeric and slider patches expose `cv` outputs; cv-receiver patches display values when connected.
+
+Initialization
+- PaperScope is created and bound to `#cablesCanvas`.  
+- Auto-connections on load (examples): Oscillator→Filter (audio), Pitch Number→Pitch Receiver (cv), Level Slider→Level Receiver (cv).  
+- Instructions sidebar installs a custom scrollbar and keeps its thumb synced.
+
+Reliability & UX Notes
+- Window-level mousemove is used during slider drag-lock to ensure responsive updates outside `#patchArea`.  
+- Cable styles (normal/hover/disabled) are applied centrally; `redrawCables()` reapplies styling after geometry updates.  
+- Tab selection is blocked during any drag-lock to avoid state conflicts.  
+- All preview overlays and session listeners are removed on completion or Esc.
+
+Extensibility
+- New patch types can be added by composing HTML within `.patch` and providing ports; all routing is port-based.  
+- To make “disabled” affect logic (not only visuals), gate your processing on `conn.disabled` and/or `.patch.disabled`.  
+- Keep this comment synchronized when features or key bindings change; update the #instructions HTML accordingly.
+-->
+
 
   <!-- Paper.js for cable overlay -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
@@ -206,29 +293,196 @@ color:#444;
 
 
 </style>
+
+<style>
+  /* Numeric patches */
+  .patch.numeric, .patch.slider-numeric { width: 220px; }
+
+  .num-body {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .num-label { font-size: 0.9rem; color: #666; }
+
+  .num-value {
+    font-family: "Courier New", monospace;
+    font-size: 28px;
+    padding: 4px 8px;
+    border: 2px solid #66b0ff;
+    border-radius: 6px;
+    cursor: text;
+    user-select: none;
+    min-width: 72px;
+    text-align: right;
+  }
+  .num-value.hover   { border-color: #66b0ff; background: rgba(102,176,255,0.08); }
+  .num-value.editing { border-color: #ffc107; background: rgba(255,193,7,0.10); }
+
+  /* Block slider with rectangular, full-height thumb */
+  .num-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 32px;                /* block track height */
+    background: transparent;     /* track drawn via vendor pseudo-elements */
+    margin: 6px 0;
+  }
+  /* WebKit */
+  .num-slider::-webkit-slider-runnable-track {
+    height: 32px;
+    background: #e9ecef;
+    border: 2px solid #0d6efd;
+    border-radius: 6px;
+  }
+  .num-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 32px;                /* full height to be rectangular */
+    background: #0d6efd;
+    border: 0;
+    border-radius: 4px;
+    margin-top: 0;
+    cursor: pointer;
+  }
+  /* Firefox */
+  .num-slider::-moz-range-track {
+    height: 32px;
+    background: #e9ecef;
+    border: 2px solid #0d6efd;
+    border-radius: 6px;
+  }
+  .num-slider::-moz-range-thumb {
+    width: 16px;
+    height: 32px;
+    background: #0d6efd;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .num-slider:focus { outline: none; box-shadow: 0 0 0 2px rgba(13,110,253,0.25); }
+  
+  .instructions-description{
+  color:#a0a0a0;
+  font-family:courier;
+  }
+  
+  /* Optional: highlight slider while drag-locked via Space */
+.num-slider.dragging {
+  outline: 2px solid #ffc107;
+  outline-offset: 2px;
+}
+
+/* Inline min/max labels row inside numeric patches */
+.num-range {
+  grid-column: 1 / -1;           /* span full width of the grid */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #6c757d;                /* muted */
+  font-variant-numeric: tabular-nums;
+}
+.num-min, .num-max { opacity: 0.9; }
+
+/* Receiver patches reuse numeric look */
+.patch.cv-receiver { width: 220px; }
+
+.recv-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+.recv-label { font-size: 0.9rem; color: #666; }
+
+.recv-value {
+  font-family: "Courier New", monospace;
+  font-size: 24px;
+  padding: 4px 8px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  min-width: 72px;
+  text-align: right;
+  color: #222;
+  background: rgba(0,0,0,0.03);
+}
+
+/* Disabled patch: dimmed, dashed border; ports grayed */
+.patch.disabled {
+  opacity: 0.55;
+  filter: grayscale(40%);
+  border-color: #bbb !important;
+  border-style: dashed;
+}
+.patch.disabled header {
+  background: #6c757d !important;
+}
+.patch.disabled .port {
+  border-color: #aaa !important;
+  background: #ddd !important;
+  box-shadow: none;
+}
+/* Optional: suppress selection outline when disabled */
+.patch.disabled.selected {
+  outline: none !important;
+}
+
+/* Collapse: hide all patch contents including ports; show only the header */
+.patch.collapsed {
+  overflow: hidden;
+}
+
+/* Hide everything except the header */
+.patch.collapsed > :not(header) {
+  display: none !important;
+}
+
+/* Optional: tighter header look when collapsed */
+.patch.collapsed header {
+
+  background-color:purple;
+}
+
+</style>
+
 </head>
 <body >
 
 
-<!--
-<h3 style="margin:0;color:gray;">Patch/Node Programming GUI Demo</h3>
--->
+
 
 <div id="instructions">
 
-  <h3>Patch/Node Programming GUI Demo</h3>
+  <h3>Patch/Node GUI Demo - <span style="font-weight:normal">Keyboard-Driven (Bimodal)</span></h3>
+
+<p style="font-family:arial">Node-based or patch-based programming is found in all kinds of professional
+software.  To provide a better GUI, this demo utilizes keyboard keys instead of mouse buttons manipulating
+patches.  Follow the instructions below step-by-step to experience this
+and how it has the potential to improve all desktop software in the future.</p>
+
+<hr/>
 
   <div class="scroll-content">
 
   <p><strong>1. Drag-Line (G key)</strong></p>
+  <span class="instructions-description">For dragging patches (option 1)</span>
   <ol>
-    <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.</li>
-    <li>A dashed line appears from the patch center to your mouse.</li>
-    <li>Move the cursor to a new location.</li>
+    <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.
+    A drag line will transport the patch to a different location.</li>
+    <li>Move the mouse. A dashed line appears from the patch's center to your mouse.</li>
+    <li>Move the cursor to the desired location for the patch.</li>
     <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
   </ol>
 
   <p><strong>2. Drag Lock (Spacebar)</strong></p>
+    <span class="instructions-description">For dragging patches (option 2).</span>
   <ol>
     <li>Press and hold <kbd>Spacebar</kbd> to drag the patch under the mouse.</li>
     <li>Move the mouse to reposition the patch.</li>
@@ -236,37 +490,61 @@ color:#444;
   </ol>
 
   <p><strong>3. Selection (Tab key)</strong></p>
+      <span class="instructions-description">For selecting patches (option 1).</span>
   <ol>
     <li>Hover over a patch and press <kbd>Tab</kbd> to select it.
 
     	<ul>
-		<li>Repeat to make a group selection.</li>
+
     	<li>The <kbd>Escape</kbd> key will clear the selection, as will
-    	pressing <kbd>Tab</kbd> when the cursor is outside of a patch.</li></ul>
+    	pressing <kbd>Tab</kbd> when the cursor is located outside of a patch.</li></ul>
     </li>
     <li>After selecting one or more patches, press the <kbd>Spacebar</kbd>
     to begin the drag lock.</li>
   </ol>
 
-  <p><strong>4. Connect Cables (F key)</strong></p>
+ <p><strong>4. Live Selection Rectangle (Y key)</strong></p>
+          <span class="instructions-description">For selecting patches (option 2).</span>
+<ol>
+  <li>Press <kbd>Y</kbd> anywhere on the workspace to begin drawing a live selection rectangle.</li>
+  <li>Move the mouse to grow or shrink the rectangle diagonally.</li>
+	<ul>
+
+  <li>As patches intersect or enter the rectangle, they are automatically selected.</li>
+  <li>If a patch is no longer inside the rectangle, it is removed from the selection.</li>
+  </ul>
+  <li>Press <kbd>Y</kbd> again to finalize the selection and remove the outline.</li>
+  <li>Press <kbd>Esc</kbd> at any time to cancel the selection rectangle.</li>
+  <li>Use in combination with the Drag Lock (<kbd>Spacebar</kbd>) for dragging.
+</ol>
+
+
+  <p><strong>5. Connect Cables (F key)</strong></p>
+    <span class="instructions-description">For wiring up patches.</span>
   <ol>
     <li>Hover over an outlet circle and press <kbd>F</kbd> to start a connection.</li>
     <li>Move the mouse to the other outlet and press <kbd>F</kbd> again to complete.</li>
     <li>Press <kbd>Esc</kbd> at any time to cancel.</li>
   </ol>
 
-  <p><strong>5. Delete Cables (D key)</strong></p>
+  <p><strong>6. Delete Cables (D key)</strong></p>
+      <span class="instructions-description">For removing connections.</span>
   <ol>
     <li>Hover over an existing cable and press <kbd>D</kbd> to delete it.</li>
   </ol>
 
-  <p><strong>6. Swap Cable Outlet (S key)</strong></p>
+  <p><strong>7. Swap Cable Outlet (S key)</strong></p>
+        <span class="instructions-description">For changing connections.</span>
   <ol>
     <li>Hover over an outlet with a connected cable and press <kbd>S</kbd> to detach it.</li>
     <li>Move to a new outlet and press <kbd>S</kbd> again to attach.</li>
   </ol>
   
-  <p><strong>7. Tidy Rectangle (T key)</strong></p>
+ 
+
+  <p><strong>8. Tidy Rectangle (T key)</strong></p>
+       <span class="instructions-description">For tidying up the workspace.</span>
+
 <ol>
   <li>Press <kbd>T</kbd> anywhere on the canvas to start a tidy rectangle outline
   for aligning patches.</li>
@@ -282,17 +560,63 @@ color:#444;
   <li>Press <kbd>Esc</kbd> at any time before the second <kbd>T</kbd> to cancel.</li>
 </ol>
 
-<p><strong>8. Live Selection Rectangle (Y key)</strong></p>
-<ol>
-  <li>Press <kbd>Y</kbd> anywhere on the canvas to begin drawing a live selection rectangle.</li>
-  <li>Move the mouse to grow or shrink the rectangle diagonally.</li>
-	<ul>
 
-  <li>As patches intersect or enter the rectangle, they are automatically selected.</li>
-  <li>If a patch exits the rectangle, it is removed from the selection.</li>
-  </ul>
-  <li>Press <kbd>Y</kbd> again to finalize the selection and remove the outline.</li>
-  <li>Press <kbd>Esc</kbd> at any time to cancel the selection rectangle.</li>
+<!-- Insert inside #instructions -->
+
+<p><strong>9. Numeric Field: Bracket Keys</strong></p>
+   <span class="instructions-description">For stepping values up or down without mouse clicks.</span>
+<ol>
+  <li>Hover over a numeric value (or begin typing into it) to target the field.</li>
+  <li>Press <kbd>[</kbd> to decrement or <kbd>]</kbd> to increment the value.</li>
+  <li>Use modifiers to change the step size:
+    <ul>
+      <li><kbd>Shift</kbd> + <kbd>[</kbd>/<kbd>]</kbd> → large step</li>
+      <li><kbd>Alt</kbd>/<kbd>Option</kbd> + <kbd>[</kbd>/<kbd>]</kbd> → small step</li>
+    </ul>
+  </li>
+  <li>Values are clamped to the patch’s <em>min</em>/<em>max</em> and quantized to its step.</li>
+</ol>
+
+<p><strong>10. Slider: Spacebar Drag</strong></p>
+   <span class="instructions-description">For manipulating a slider without mouse clicks.</span>
+<ol>
+  <li>Hover over a slider and press <kbd>Space</kbd> to begin drag-lock of the knob.</li>
+  <li>Move the mouse horizontally to change the slider value. The paired numeric field updates in real time. A bracket guide may be displayed from the knob to the cursor.</li>
+  <li>Press <kbd>Space</kbd> again or <kbd>Esc</kbd> to release the drag-lock.</li>
+  <li>While drag-lock is active, selection changes via <kbd>Tab</kbd> are disabled.</li>
+</ol>
+
+<!-- Insert inside #instructions (next item) -->
+
+<p><strong>11. Toggle Disabled State (W key)</strong></p>
+<span class="instructions-description">For testing during programming.</span>
+
+<ol>
+  <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
+  <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
+  <li>Behavior:
+    <ul>
+      <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
+      <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
+    </ul>
+  </li>
+
+</ol>
+
+
+<p><strong>12. Collapse/Expand Patches (E key)</strong></p>
+<span class="instructions-description">Hide patch contents for a compact layout; cables re-anchor to the header.</span>
+
+<ol>
+  <li><strong>Single patch:</strong> Hover a patch and press <kbd>E</kbd> to toggle its collapsed state.</li>
+  <li><strong>Selection:</strong> If one or more patches are selected:
+    <ul>
+      <li>If all are expanded → press <kbd>E</kbd> to collapse all.</li>
+      <li>If all are collapsed → press <kbd>E</kbd> to expand all.</li>
+      <li>If mixed → majority decides (more expanded → collapse all; more collapsed → expand all).</li>
+    </ul>
+  </li>
+  <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
 </ol>
 
 
@@ -325,28 +649,84 @@ color:#444;
 	to attach.
 </div>-->
   <div id="patchArea">
+  
+<div class="patch numeric" style="left:720px;top:320px;"
+     data-id="num1"
+     data-min="0" data-max="127"
+     data-step="1" data-small-step="0.1" data-big-step="10"
+     data-fallback="0" data-precision="0">
+  <header>Pitch (Number)</header>
+  <div class="num-body">
+    <span class="num-label">Value</span>
+    <span class="num-value" tabindex="-1">64</span>
+  </div>
+  <span class="port output" data-dir="out" data-name="cv"></span>
+</div>
 
-  <div class="patch" style="left:580px;top:100px;" data-id="osc">
+<div class="patch slider-numeric" style="left:720px;top:560px;"
+     data-id="param1"
+     data-min="0" data-max="100"
+     data-step="1" data-small-step="0.5" data-big-step="10"
+     data-fallback="50" data-precision="0">
+  <header>Level (Slider+Number)</header>
+  <div class="num-body">
+    <input class="num-slider" type="range" min="0" max="100" step="1" value="50">
+    <span class="num-value" tabindex="-1">50</span>
+  </div>
+  <span class="port output" data-dir="out" data-name="cv"></span>
+</div>
+
+
+<!-- Pitch CV Receiver -->
+<div class="patch cv-receiver" style="left:980px;top:400px;" data-id="pitchRecv">
+  <header>Pitch CV (Receiver)</header>
+  <div class="recv-body">
+   
+   <!--
+    <span class="recv-label">Value</span>
+    <span class="recv-value" tabindex="-1">--</span>
+-->
+  </div>
+  <span class="port input" data-dir="in" data-name="cv"></span>
+</div>
+
+<!-- Level CV Receiver -->
+<div class="patch cv-receiver" style="left:980px;top:620px;" data-id="levelRecv">
+  <header>Level CV (Receiver)</header>
+  <div class="recv-body">
+   <!-- <span class="recv-label">Value</span>
+    <span class="recv-value" tabindex="-1">--</span>
+-->
+  </div>
+  <span class="port input" data-dir="in" data-name="cv"></span>
+</div>
+
+
+<div class="patch" style="left:760px;top:120px;" data-id="osc">
   <header>Oscillator</header>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:620px;top:220px;" data-id="filter">
+<div class="patch" style="left:980px;top:220px;" data-id="filter">
   <header>Filter</header>
   <span class="port input" data-dir="in" data-name="audio"></span>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:680px;top:340px;" data-id="amp">
+<div class="patch" style="left:1200px;top:320px;" data-id="amp">
   <header>Amplifier</header>
   <span class="port input"  data-dir="in"  data-name="audio"></span>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:720px;top:460px;" data-id="out">
+<div class="patch" style="left:1420px;top:420px;" data-id="out">
   <header>Output</header>
   <span class="port input" data-dir="in" data-name="audio"></span>
 </div>
+
+
+
+
     <!-- Overlay for cables (now above .patch) -->
     <canvas id="cablesCanvas" resize></canvas>
   </div>
@@ -382,6 +762,12 @@ const cableCanvas = document.getElementById('cablesCanvas');
 const patches     = [...document.querySelectorAll('.patch')];
 let hoverCable = null;   // paper.Path currently under the cursor
 
+
+
+/* Visual: bracket from knob to cursor while dragging */
+let sliderBracketPath     = null;
+let sliderMoveListenerRef = null;   // window mousemove listener
+
 /*────────────────────────────  S-key “re-patch” support  ───────────────────────────
    ▸  Hover any cable, press **S** → one end is detached and follows the cursor.
    ▸  Press **F** while the cursor is over a *different* port to finish the move.
@@ -404,29 +790,51 @@ let liveSelStart       = null;    // first corner (mouse position)
 let liveSelLine        = null;    // preview diagonal
 let liveSelRectOutline = null;    // preview upright rectangle
 
+/* ——— Slider drag-lock (Space on slider knob) ——— */
+let sliderDragLock  = false;
+let sliderDragEl    = null;     // <input class="num-slider">
+let sliderDragStart = null;     // { x, value, min, max, step, width }
 
 /* Paper.js setup */
 const paperScope = new paper.PaperScope();
 paperScope.setup(cableCanvas);
 
-/* ─────────────  Auto-connect Oscillator → Filter  ───────────── */
+/* ─────────── Auto-connect on load: Osc→Filter + Pitch/Level receivers ─────────── */
 window.addEventListener('load', () => {
-  const oscOut   = document.querySelector('.patch[data-id="osc"]   .port.output');
-  const filterIn = document.querySelector('.patch[data-id="filter"] .port.input');
-  if (!(oscOut && filterIn)) return;          // ports not found
+  const pairs = [
+    // Existing audio path
+    ['.patch[data-id="osc"]   .port.output',
+     '.patch[data-id="filter"] .port.input'],
 
-  const p1   = centerOf(oscOut);
-  const p2   = centerOf(filterIn);
-  const path = new paperScope.Path({
-    strokeColor: '#333',
-    strokeWidth: 2
+    // New control-voltage paths
+    ['.patch[data-id="num1"]  .port.output',                               // Pitch (Number)
+     '.patch[data-id="pitchRecv"] .port.input'],                           // Pitch Receiver
+
+    ['.patch.slider-numeric[data-id="param1"] .port.output',               // Level (Slider+Number)
+     '.patch[data-id="levelRecv"] .port.input']                            // Level Receiver
+  ];
+
+  pairs.forEach(([fromSel, toSel]) => {
+    const from = document.querySelector(fromSel);
+    const to   = document.querySelector(toSel);
+    if (!(from && to)) return;
+
+    // Skip if already connected
+    if (connections.some(c => c.from === from && c.to === to)) return;
+
+    const p1 = centerOf(from);
+    const p2 = centerOf(to);
+
+    const path = new paperScope.Path({ strokeColor: '#333', strokeWidth: 2 });
+    const midX = (p1.x + p2.x) / 2;
+    path.moveTo(p1.x, p1.y);
+    path.cubicCurveTo(midX, p1.y, midX, p2.y, p2.x, p2.y);
+
+    connections.push({ from, to, path });
   });
-  const midX = (p1.x + p2.x) / 2;
-  path.moveTo(p1.x, p1.y);
-  path.cubicCurveTo(midX, p1.y, midX, p2.y, p2.x, p2.y);
 
-  connections.push({ from: oscOut, to: filterIn, path });
   paperScope.view.update();
+  window.updateCvReceivers?.();
 });
 
 
@@ -483,6 +891,31 @@ function clearSelection(){
   selectedPatch = null;
 }
 
+/* Return the anchor point for a port.
+   If the owning patch is collapsed, snap to the header's vertical midline on the
+   left (inputs) or right (outputs). Otherwise use the port's own center. */
+function portAnchorPoint(portEl) {
+  const patch = portEl.closest('.patch');
+  if (!patch) return centerOf(portEl);
+
+  if (!patch.classList.contains('collapsed')) {
+    return centerOf(portEl);
+  }
+
+  const hdr = patch.querySelector('header');
+  if (!hdr) return centerOf(patch);
+
+  const r = hdr.getBoundingClientRect();
+  const y = r.top + r.height / 2 + window.scrollY;
+  const dir = portEl.dataset?.dir || '';  // 'in' | 'out'
+  const x = (dir === 'in')
+    ? (r.left + window.scrollX)   // left edge mid
+    : (r.right + window.scrollX); // right edge mid
+
+  return { x, y };
+}
+
+
 /** Update an existing cubic path's 4 control points to new endpoints */
 function refreshPath(path, p1, p2){
   const midX=(p1.x+p2.x)/2;
@@ -493,23 +926,27 @@ function refreshPath(path, p1, p2){
   segs[2].point.set(midX,p2.y);
   segs[3].point.set(p2.x,p2.y);
 }
-function redrawCables(){
-  for(const c of connections){
-    const p1=centerOf(c.from);
-    const p2=centerOf(c.to);
-    if(c.path){
+
+function redrawCables() {
+  for (const c of connections) {
+    const p1 = portAnchorPoint(c.from);
+    const p2 = portAnchorPoint(c.to);
+
+    if (c.path) {
       refreshPath(c.path, p1, p2);
-    }else{
-      const path=new paperScope.Path();
-      path.strokeColor='#333'; path.strokeWidth=2;
-      path.moveTo(p1.x,p1.y);
-      const midX=(p1.x+p2.x)/2;
-      path.cubicCurveTo(midX,p1.y, midX,p2.y, p2.x,p2.y);
-      c.path=path;
+    } else {
+      const path = new paperScope.Path();
+      c.path = path;
+      path.strokeColor = '#333';
+      path.strokeWidth = 2;
+      path.moveTo(p1.x, p1.y);
+      const midX = (p1.x + p2.x) / 2;
+      path.cubicCurveTo(midX, p1.y, midX, p2.y, p2.x, p2.y);
     }
   }
   paperScope.view.update();
 }
+
 function disconnect(from,to){
   const idx = connections.findIndex(c=>c.from===from && c.to===to);
   if(idx>-1){
@@ -574,24 +1011,33 @@ if (dragLineActive && dragLinePath) {
 }
 
   
-  /* Cable hover detection */
-      if (!connecting){                          // skip while drawing a new cable
-        const hit = paperScope.project.hitTest(
-          new paperScope.Point(mouse.x + window.scrollX, mouse.y + window.scrollY),
-          { stroke: true, fill: false, segments: false, tolerance: 6 });
+ /* Cable hover detection */
+if (!connecting){
+  const hit = paperScope.project.hitTest(
+    new paperScope.Point(mouse.x + window.scrollX, mouse.y + window.scrollY),
+    { stroke: true, fill: false, segments: false, tolerance: 6 });
 
-        const target = (hit && hit.item &&
-                        connections.some(c => c.path === hit.item))
-                       ? hit.item : null;
+  const target = (hit && hit.item &&
+                  connections.some(c => c.path === hit.item))
+                 ? hit.item : null;
 
-        if (target !== hoverCable){
-          if (hoverCable){ hoverCable.strokeColor = '#333'; hoverCable.strokeWidth = '3'}
-          hoverCable = target;
-          if (hoverCable){ hoverCable.strokeColor = '#895010'; hoverCable.strokeWidth = '5' }
-          paperScope.view.update();
-        }
-      }
-  
+  if (target !== hoverCable){
+    // restore previous cable's normal style
+    if (hoverCable){
+      const prev = connections.find(c => c.path === hoverCable);
+      if (prev) styleCable(prev, false);
+    }
+    hoverCable = target;
+
+    // apply hover style to new target
+    if (hoverCable){
+      const next = connections.find(c => c.path === hoverCable);
+      if (next) styleCable(next, true);
+    }
+    paperScope.view.update();
+  }
+}
+
   
   
   
@@ -938,10 +1384,12 @@ if (affected.length > 1) {
 if (e.key === 'Tab') {
   e.preventDefault();
 
-  // Do nothing if drag-lock is active.
-  if (dragLock) {
-    return;
-  }
+  // Do nothing if drag-lock or sliderDragLock is active.
+
+	if (dragLock || sliderDragLock) {
+	  return;
+	}
+
 
   const patchAtCursor =
         document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
@@ -963,24 +1411,38 @@ if (e.key === 'Tab') {
   return;
 }
 
+
 /* ───────────────────────  Space : drag-lock toggle  ─────────────────────── */
-if (e.key === ' ') {          // inside your key-down handler
+if (e.code === 'Space' || e.key === ' ') {
   e.preventDefault();
 
-  /* current selection, if any */
-  let selected = [...document.querySelectorAll('.patch.selected')];
-
-  /* auto-select the patch under the cursor when none is selected */
-  if (!selected.length) {
-    const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
-    if (!tgt) return;                         // nothing under cursor
-    tgt.classList.add('selected');
-    selected = [tgt];
-    autoSelectedPatch = tgt;                  // remember for later un-select
+  // 0) If a slider drag-lock is active, Space releases it.
+  if (sliderDragLock) {
+    stopSliderDrag();
+    return;
   }
 
-  /* ── engage drag-lock ─────────────────────────────────────────────── */
+  // 1) If hovering a slider knob/track, Space starts slider drag-lock.
+  const sliderUnderCursor =
+    document.elementFromPoint(mouse.x, mouse.y)?.closest('.num-slider');
+  if (sliderUnderCursor && !dragLock) {
+    startSliderDrag(sliderUnderCursor, mouse.x);
+    return;
+  }
+
+  // 2) Otherwise: patch drag-lock (supports multi-select + auto-select on hover)
+  let selected = [...document.querySelectorAll('.patch.selected')];
+
   if (!dragLock) {
+    // Auto-select the patch under the cursor when none is selected
+    if (!selected.length) {
+      const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+      if (!tgt) return;
+      tgt.classList.add('selected');
+      selected = [tgt];
+      autoSelectedPatch = tgt;  // so we can deselect on release
+    }
+
     dragLock  = true;
     dragStart = { x: mouse.x, y: mouse.y };
 
@@ -990,27 +1452,20 @@ if (e.key === ' ') {          // inside your key-down handler
       initialPos.set(el, { left: r.left, top: r.top });
       el.classList.add('dragging');
     });
+  } else {
+    // Release patch drag-lock
+    dragLock = false;
+    document.querySelectorAll('.patch.dragging')
+            .forEach(el => el.classList.remove('dragging'));
+    initialPos.clear();
+    dragOffsets.clear?.();
+    redrawCables();
+
+    if (autoSelectedPatch) {
+      autoSelectedPatch.classList.remove('selected');
+      autoSelectedPatch = null;
+    }
   }
-  /* ── release drag-lock ────────────────────────────────────────────── */
-/* ── release drag-lock ────────────────────────────────────────────── */
-else {
-  dragLock = false;
-
-  /* remove .dragging from all affected patches */
-  document.querySelectorAll('.patch.dragging')
-          .forEach(el => el.classList.remove('dragging'));
-
-  initialPos.clear();
-  dragOffsets.clear();          // remains empty in current logic
-  redrawCables();
-
-  /* deselect the patch that was auto-selected at lock-start */
-  if (autoSelectedPatch) {
-    autoSelectedPatch.classList.remove('selected');
-    autoSelectedPatch = null;
-  }
-}
-
   return;
 }
 
@@ -1023,7 +1478,8 @@ else {
       abortPreview();
       connecting   = true; connectStart = hoverPort;
 
-      const startPt = centerOf(connectStart);
+	  const startPt = portAnchorPoint(connectStart);
+
       previewPath = new paperScope.Path.Line({
         from: startPt, to: startPt,
         strokeColor: '#f39c12', strokeWidth: 2, dashArray: [6, 4]
@@ -1064,6 +1520,97 @@ else {
     return;
   }
 
+/* ─────────────────────  W : toggle disabled (cable or patch)  ───────────────────── */
+if (lower === 'w') {
+  e.preventDefault();
+
+  // 1) If hovering a cable, toggle its disabled state (existing behavior)
+  if (hoverCable) {
+    const conn = connections.find(c => c.path === hoverCable);
+    if (conn) {
+      conn.disabled = !conn.disabled;
+      styleCable(conn, true);           // keep hover highlighting
+      paperScope.view.update();
+    }
+    return;
+  }
+
+  // 2) Otherwise, toggle the patch under the cursor
+  const patchAtCursor = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+  if (patchAtCursor) {
+    const nowDisabled = patchAtCursor.classList.toggle('disabled');
+
+    // If you prefer to clear selection when disabling:
+    if (nowDisabled) {
+      patchAtCursor.classList.remove('selected', 'dragging');
+    }
+
+    // Optional: if you want cables connected to this patch to visually reflect disabled state,
+    // you may restyle them here (purely visual). Uncomment to use:
+    /*
+    connections.forEach(c => {
+      if (c.from?.closest('.patch') === patchAtCursor || c.to?.closest('.patch') === patchAtCursor) {
+        // No logical disable for cables here; keep their current disabled flag.
+        // If you'd like to gray out connected cables when patch is disabled, do:
+        // c._viaDisabledPatch = nowDisabled;
+        styleCable(c, false);
+      }
+    });
+    paperScope.view.update();
+    */
+    return;
+  }
+
+  // Nothing under cursor to toggle
+  return;
+}
+
+/* ─────────────────────  E : collapse/expand patches  ─────────────────────
+   Behavior:
+   - If there is a selection: 
+       • all expanded  → collapse all
+       • all collapsed → expand all
+       • mixed         → decide by majority (more expanded → collapse all, more collapsed → expand all)
+   - If no selection: operate on the patch under the cursor (single-target toggle).
+---------------------------------------------------------------------------- */
+if (lower === 'e') {
+  e.preventDefault();
+
+  // Resolve targets: selection, else patch under cursor
+  let targets = [...document.querySelectorAll('.patch.selected')];
+  if (!targets.length) {
+    const p = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+    if (!p) return;
+    targets = [p];
+  }
+
+  const total = targets.length;
+  const collapsedCount = targets.reduce((n, el) => n + (el.classList.contains('collapsed') ? 1 : 0), 0);
+  const expandedCount  = total - collapsedCount;
+
+  // Decide action
+  let action; // 'collapse' | 'expand'
+  if (collapsedCount === total) {
+    action = 'expand';            // all collapsed → expand all
+  } else if (expandedCount === total) {
+    action = 'collapse';          // all expanded → collapse all
+  } else {
+    // mixed: majority decides
+    action = (expandedCount >= collapsedCount) ? 'collapse' : 'expand';
+  }
+
+  // Apply
+  if (action === 'collapse') {
+    targets.forEach(el => el.classList.add('collapsed'));
+  } else {
+    targets.forEach(el => el.classList.remove('collapsed'));
+  }
+
+  redrawCables();
+  // Ports remain visible; redraw in case geometry affects cable routing
+  redrawCables?.();
+  return;
+}
 
   /* ─────────────────────  Esc : cancel other operations  ──────────────────── */
   if (key === 'Escape') {
@@ -1089,6 +1636,9 @@ if (tidyRectActive) {
   tidyRectOutline = null;
 }
 
+if (sliderDragLock) {
+  stopSliderDrag();
+}
 
 
     if (dragLock && selectedPatch) {
@@ -1242,6 +1792,10 @@ function resizeCanvas(){
     }else{
       setCursor(null);
     }
+    
+  
+
+
   });
   
    /* —— C.  end of a drag / clear cursor —— */
@@ -1309,6 +1863,352 @@ window.addEventListener('resize',resizeCanvas); resizeCanvas();
     document.body.style.userSelect = '';
   });
 </script>
+<!-- 3) Logic: type-on-hover editing + [ / ] increments; slider binding -->
+<script>
+(() => {
+  if (window.__numericInit) return;
+  window.__numericInit = true;
 
+  let hoverNumEl = null;
+  let numEditActive = false;
+  let numEditBuffer = "";
+  let numPrevText = "";
+
+  function getNumConfig(valueEl) {
+    const patch = valueEl.closest('.patch');
+    const ds = patch?.dataset || {};
+    const step = isFinite(parseFloat(ds.step)) ? parseFloat(ds.step) : 1;
+    return {
+      min: (ds.min !== undefined && ds.min !== "") ? parseFloat(ds.min) : Number.NEGATIVE_INFINITY,
+      max: (ds.max !== undefined && ds.max !== "") ? parseFloat(ds.max) : Number.POSITIVE_INFINITY,
+      step,
+      smallStep: isFinite(parseFloat(ds.smallStep)) ? parseFloat(ds.smallStep) : step / 10,
+      bigStep:   isFinite(parseFloat(ds.bigStep))   ? parseFloat(ds.bigStep)   : step * 10,
+      fallback:  isFinite(parseFloat(ds.fallback))  ? parseFloat(ds.fallback)  : 0,
+      precision: Number.isInteger(parseInt(ds.precision, 10)) ? parseInt(ds.precision, 10) : 0
+    };
+  }
+
+  function clamp(v, lo, hi) {
+    if (Number.isFinite(lo)) v = Math.max(lo, v);
+    if (Number.isFinite(hi)) v = Math.min(hi, v);
+    return v;
+  }
+
+  function roundToPrecision(v, precision) {
+    if (!Number.isInteger(precision) || precision < 0) return v;
+    const f = Math.pow(10, precision);
+    return Math.round(v * f) / f;
+  }
+
+  /* Align to nearest step from min (or 0 if min is -Infinity) */
+  function quantizeToStep(v, step, min) {
+    if (!isFinite(step) || step <= 0) return v;
+    const origin = Number.isFinite(min) ? min : 0;
+    return origin + Math.round((v - origin) / step) * step;
+  }
+
+  function displayNumber(valueEl, v) {
+    const cfg = getNumConfig(valueEl);
+    const out = roundToPrecision(v, cfg.precision);
+    valueEl.textContent = cfg.precision > 0 ? out.toFixed(cfg.precision) : String(out);
+
+    // Sync slider if present
+    const slider = valueEl.closest('.num-body')?.querySelector('.num-slider');
+    if (slider) slider.value = out;
+  }
+
+  function currentNumber(valueEl) {
+    const t = valueEl.textContent.trim();
+    const n = parseFloat(t);
+    return isFinite(n) ? n : getNumConfig(valueEl).fallback;
+  }
+
+  function beginNumericEdit(targetEl) {
+    numEditActive = true;
+    numEditBuffer = "";
+    numPrevText   = targetEl.textContent;
+    targetEl.classList.add('editing');
+  }
+
+  function commitNumericEdit(targetEl) {
+    const cfg = getNumConfig(targetEl);
+    let n = parseFloat(numEditBuffer);
+    if (!isFinite(n)) {
+      const prev = parseFloat(numPrevText);
+      n = isFinite(prev) ? prev : cfg.fallback;
+    }
+    n = clamp(n, cfg.min, cfg.max);
+    n = quantizeToStep(n, cfg.step, cfg.min);
+    displayNumber(targetEl, n);
+
+    numEditActive = false;
+    numEditBuffer = "";
+    numPrevText   = "";
+    targetEl.classList.remove('editing');
+  }
+
+  function cancelNumericEdit(targetEl) {
+    targetEl.textContent = numPrevText;
+    numEditActive = false;
+    numEditBuffer = "";
+    numPrevText   = "";
+    targetEl.classList.remove('editing');
+  }
+
+/* Approximate the knob center in page coords based on current slider value */
+function sliderKnobCenter(sliderEl) {
+  const r   = sliderEl.getBoundingClientRect();
+  const min = isFinite(+sliderEl.min)  ? +sliderEl.min  : 0;
+  const max = isFinite(+sliderEl.max)  ? +sliderEl.max  : 100;
+  const val = isFinite(+sliderEl.value)? +sliderEl.value: min;
+  const t   = (max === min) ? 0 : (val - min) / (max - min);
+  const x   = r.left + window.scrollX + t * r.width;
+  const y   = r.top  + window.scrollY + r.height / 2;
+  return { x, y };
+}
+
+/* Draw/update a bracket “]” from knob to the cursor */
+function updateSliderBracket(sliderEl, mouseX, mouseY) {
+  const p0 = sliderKnobCenter(sliderEl);             // knob
+  const p1 = { x: mouseX + window.scrollX, y: mouseY + window.scrollY };
+
+  if (!sliderBracketPath) {
+    sliderBracketPath = new paperScope.Path({ strokeColor: '#ffc107', strokeWidth: 2 });
+  } else {
+    sliderBracketPath.removeSegments();
+  }
+
+  const h = 10; // half-height of the bracket “post”
+  sliderBracketPath.moveTo(new paperScope.Point(p0.x, p0.y - h));
+  sliderBracketPath.lineTo(new paperScope.Point(p0.x, p0.y + h));
+  sliderBracketPath.lineTo(new paperScope.Point(p1.x, p1.y));
+  paperScope.view.update();
+}
+
+window.startSliderDrag = function startSliderDrag(sliderEl, mouseX) {
+  const r    = sliderEl.getBoundingClientRect();
+  const min  = isFinite(parseFloat(sliderEl.min))  ? parseFloat(sliderEl.min)  : 0;
+  const max  = isFinite(parseFloat(sliderEl.max))  ? parseFloat(sliderEl.max)  : 100;
+  const step = isFinite(parseFloat(sliderEl.step)) ? parseFloat(sliderEl.step) : 1;
+
+  sliderDragLock  = true;
+  sliderDragEl    = sliderEl;
+  sliderDragStart = {
+    x: mouseX,
+    value: isFinite(parseFloat(sliderEl.value)) ? parseFloat(sliderEl.value) : min,
+    min, max, step,
+    width: r.width
+  };
+  sliderEl.classList.add('dragging');
+
+  // Install a window-level mousemove just for this drag session
+  sliderMoveListenerRef = (e) => {
+    const dx = e.clientX - sliderDragStart.x;
+    const range = sliderDragStart.max - sliderDragStart.min;
+    const unitsPerPx = (sliderDragStart.width > 0) ? (range / sliderDragStart.width) : 0;
+
+    let next = sliderDragStart.value + dx * unitsPerPx;
+    // reuse your existing helpers
+    next = clamp(next, sliderDragStart.min, sliderDragStart.max);
+    next = quantizeToStep(next, sliderDragStart.step, sliderDragStart.min);
+
+    // Update slider and synced numeric display
+    sliderDragEl.value = String(next);
+    sliderDragEl.dispatchEvent(new Event('input', { bubbles: true })); // ensure visuals & bindings
+
+    // Update bracket path
+    updateSliderBracket(sliderDragEl, e.clientX, e.clientY);
+  };
+
+  window.addEventListener('mousemove', sliderMoveListenerRef);
+  // Draw initial bracket
+  updateSliderBracket(sliderEl, sliderDragStart.x, sliderKnobCenter(sliderEl).y - window.scrollY);
+};
+
+window.stopSliderDrag = function stopSliderDrag() {
+  if (!sliderDragLock) return;
+  sliderDragLock  = false;
+
+  if (sliderMoveListenerRef) {
+    window.removeEventListener('mousemove', sliderMoveListenerRef);
+    sliderMoveListenerRef = null;
+  }
+  if (sliderBracketPath) {
+    sliderBracketPath.remove();
+    sliderBracketPath = null;
+    paperScope.view.update();
+  }
+  if (sliderDragEl) sliderDragEl.classList.remove('dragging');
+
+  sliderDragEl    = null;
+  sliderDragStart = null;
+};
+
+
+
+  // Hover tracking independent of other handlers
+  const patchArea = document.getElementById('patchArea');
+  patchArea.addEventListener('mousemove', (e) => {
+    const maybeVal = document.elementFromPoint(e.clientX, e.clientY)?.closest('.num-value');
+
+    if (hoverNumEl !== maybeVal) {
+      if (hoverNumEl) hoverNumEl.classList.remove('hover');
+
+      // Leaving an editing field commits/reverts based on validity
+      if (numEditActive && hoverNumEl && hoverNumEl !== maybeVal) {
+        commitNumericEdit(hoverNumEl);
+      }
+
+      hoverNumEl = maybeVal || null;
+      if (hoverNumEl) hoverNumEl.classList.add('hover');
+    }
+  });
+
+  // Key handling: brackets + type-on-hover
+  document.addEventListener('keydown', (e) => {
+    // Bracket increments
+    if (e.code === 'BracketLeft' || e.code === 'BracketRight') {
+      const target = hoverNumEl || document.querySelector('.num-value.editing');
+      if (target) {
+        const cfg  = getNumConfig(target);
+        const base = currentNumber(target);
+
+        let delta = cfg.step;
+        if (e.shiftKey) delta = cfg.bigStep;
+        else if (e.altKey || e.metaKey) delta = cfg.smallStep; // Option on macOS
+
+        if (e.code === 'BracketLeft') delta = -delta;
+
+        let next = base + delta;
+        next = clamp(next, cfg.min, cfg.max);
+        next = quantizeToStep(next, cfg.step, cfg.min);
+        displayNumber(target, next);
+
+        e.preventDefault();
+        return;
+      }
+    }
+
+    // Type-on-hover editing
+    const isEditingKey =
+      (e.key.length === 1 && /[0-9.\-]/.test(e.key)) ||
+      e.key === 'Backspace' || e.key === 'Delete' ||
+      e.key === 'Enter'     || e.key === 'Escape';
+
+    if ((hoverNumEl || numEditActive) && isEditingKey) {
+      const target = hoverNumEl || document.querySelector('.num-value.editing');
+      if (!target) return;
+
+      e.preventDefault();
+      if (!numEditActive) beginNumericEdit(target);
+
+      if (e.key === 'Enter')    { commitNumericEdit(target); return; }
+      if (e.key === 'Escape')   { cancelNumericEdit(target); return; }
+      if (e.key === 'Backspace'){ numEditBuffer = numEditBuffer.slice(0, -1); }
+      else if (e.key === 'Delete') { numEditBuffer = ""; }
+      else { numEditBuffer += e.key; }
+
+      // Show live buffer (validation occurs on commit)
+      target.textContent = numEditBuffer;
+      return;
+    }
+  });
+
+  // Bind slider to numeric text
+  function bindSliders() {
+    document.querySelectorAll('.patch.slider-numeric').forEach(patch => {
+      const slider  = patch.querySelector('.num-slider');
+      const valueEl = patch.querySelector('.num-value');
+      if (!slider || !valueEl) return;
+
+      const cfg = getNumConfig(valueEl);
+      if (Number.isFinite(cfg.min))  slider.min  = String(cfg.min);
+      if (Number.isFinite(cfg.max))  slider.max  = String(cfg.max);
+      if (Number.isFinite(cfg.step)) slider.step = String(cfg.step);
+
+      slider.addEventListener('input', () => {
+        let v = parseFloat(slider.value);
+        v = clamp(v, cfg.min, cfg.max);
+        displayNumber(valueEl, v);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindSliders);
+  } else {
+    bindSliders();
+  }
+})();
+
+/* ------- Min/Max labels inside numeric patches ------- */
+(function addMinMaxLabels() {
+  function fmt(n, precision) {
+    if (!Number.isFinite(n)) return null;
+    return (Number.isInteger(precision) && precision > 0)
+      ? n.toFixed(precision)
+      : String(n);
+  }
+
+  const patches = document.querySelectorAll('.patch.numeric, .patch.slider-numeric');
+  patches.forEach(patch => {
+    const ds = patch.dataset || {};
+    const min = parseFloat(ds.min);
+    const max = parseFloat(ds.max);
+    const precision = Number.isInteger(parseInt(ds.precision, 10))
+      ? parseInt(ds.precision, 10)
+      : 0;
+
+    const minText = `min: ${fmt(min, precision)}`;
+    const maxText = `max: ${fmt(max, precision)}`;
+
+    // If neither is finite, don’t show a labels row
+    if (minText === null && maxText === null) return;
+
+    const body = patch.querySelector('.num-body');
+    if (!body) return;
+
+    // Create the row once
+    let rangeRow = patch.querySelector('.num-range');
+    if (!rangeRow) {
+      rangeRow = document.createElement('div');
+      rangeRow.className = 'num-range';
+
+      const minSpan = document.createElement('span');
+      minSpan.className = 'num-min';
+
+      const maxSpan = document.createElement('span');
+      maxSpan.className = 'num-max';
+
+      rangeRow.appendChild(minSpan);
+      rangeRow.appendChild(maxSpan);
+      body.appendChild(rangeRow);
+    }
+
+    const minEl = rangeRow.querySelector('.num-min');
+    const maxEl = rangeRow.querySelector('.num-max');
+    if (minEl) minEl.textContent = minText ?? '';
+    if (maxEl) maxEl.textContent = maxText ?? '';
+  });
+})();
+
+/* Style a cable path according to its disabled/hover state */
+function styleCable(conn, hover = false) {
+  if (!conn || !conn.path) return;
+  const p = conn.path;
+
+  if (hover) {
+    p.strokeColor = '#895010';
+    p.strokeWidth = 5;
+    p.dashArray   = conn.disabled ? [6, 4] : null;   // keep dashed when hovered if disabled
+  } else {
+    p.strokeColor = conn.disabled ? '#bbb' : '#333'; // light gray when disabled
+    p.strokeWidth = 2;
+    p.dashArray   = conn.disabled ? [6, 4] : null;
+  }
+}
+
+</script>
 </body>
 </html>

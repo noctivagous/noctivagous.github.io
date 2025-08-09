@@ -581,6 +581,86 @@ color:#444;
 
 </style>
 
+<style>
+/* Base ordered list for the instructions panel */
+#instructions .instructions-list {
+  margin: 0;
+  padding: 0 12px 0 28px;          /* left indent for section numbers */
+  list-style: decimal;
+  color: #e0e0e0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Top-level sections */
+#instructions .instructions-list > li {
+  margin: 10px 0 16px 0;
+}
+
+/* Section title line (the <p> inside each <li>) */
+#instructions .instructions-list > li > p {
+  margin: 0 0 6px 0;
+  font-weight: 700;
+  color: #cfe5ff;                  /* light blue for headings */
+}
+
+/* Optional description span placed under the title */
+#instructions .instructions-description {
+  display: block;
+  margin: 0 0 6px 0;
+  color: #a8b3c2;
+  font-size: 1.2rem;
+}
+
+/* Nested ordered lists for steps */
+#instructions .instructions-list ol {
+  margin: 4px 0 6px 0;
+  padding-left: 22px;              /* indent step numbers */
+  list-style: decimal;
+}
+
+/* Nested unordered lists within steps (e.g., sub-bullets) */
+#instructions .instructions-list ul {
+  margin: 4px 0 6px 0;
+  padding-left: 20px;
+  list-style: disc;
+  color: #cbd3dc;
+}
+
+/* Step list items spacing */
+#instructions .instructions-list ol > li,
+#instructions .instructions-list ul > li {
+  margin: 2px 0;
+}
+
+#instructions .instructions-list li{
+	margin-top:40pt;
+}
+
+#instructions .instructions-list li:first-child{
+	margin-top:20pt;
+}
+/* Keyboard key appearance within instructions (keeps it readable on dark bg) */
+#instructions kbd {
+  background: #333;
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+  color: #f0f0f0;
+  box-shadow: inset 0 -1px 0 #000;
+}
+
+/* Responsive: slightly larger text on wider screens */
+@media (min-width: 900px) {
+  #instructions .instructions-list {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+}
+
+</style>
 </head>
 <body >
 
@@ -600,186 +680,197 @@ kind of GUI.</p>
 
   <div class="scroll-content" style="box-styling:border-box;padding:10pt;">
 
-  <p><strong>1. Drag-Line (G key)</strong></p>
-  <span class="instructions-description">For dragging patches (option 1)</span>
-  <ol>
-    <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.
+  <ol class="instructions-list">
+
+    <li>
+      <p><strong>Drag-Line (G key)</strong></p>
+      <span class="instructions-description">For dragging patches (option 1)</span>
+      <ol>
+        <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.</li>
+        <li>Move the mouse. A dashed line appears from the patch's center to your mouse.</li>
+        <li>Move the cursor to the desired location for the patch.</li>
+        <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
+      </ol>
     </li>
-    <li> Move the mouse. A dashed line appears from the patch's center to your mouse.</li>
-    <li>Move the cursor to the desired location for the patch.</li>
-    <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
-  </ol>
 
-  <p><strong>2. Drag Lock (Spacebar)</strong></p>
-    <span class="instructions-description">For dragging patches (option 2).</span>
-  <ol>
-    <li>Press and hold <kbd>Spacebar</kbd> to drag the patch under the mouse.</li>
-    <li>Move the mouse to reposition the patch.</li>
-    <li>Release <kbd>Spacebar</kbd> to drop the patch.</li>
-  </ol>
+    <li>
+      <p><strong>Drag Lock (Spacebar)</strong></p>
+      <span class="instructions-description">For dragging patches (option 2).</span>
+      <ol>
+        <li>Press and hold <kbd>Spacebar</kbd> to drag the patch under the mouse.</li>
+        <li>Move the mouse to reposition the patch.</li>
+        <li>Release <kbd>Spacebar</kbd> to drop the patch.</li>
+      </ol>
+    </li>
 
-  <p><strong>3. Selection (Tab key)</strong></p>
+    <li>
+      <p><strong>Selection (Tab key)</strong></p>
       <span class="instructions-description">For selecting patches (option 1).</span>
-  <ol>
-    <li>Hover over a patch and press <kbd>Tab</kbd> to select it.
-
-    	<ul>
-
-    	<li>The <kbd>Escape</kbd> key will clear the selection, as will
-    	pressing <kbd>Tab</kbd> when the cursor is located outside of a patch.</li></ul>
+      <ol>
+        <li>
+          Hover over a patch and press <kbd>Tab</kbd> to select it.
+          <ul>
+            <li>The <kbd>Escape</kbd> key will clear the selection, as will pressing <kbd>Tab</kbd> when the cursor is located outside of a patch.</li>
+          </ul>
+        </li>
+        <li>After selecting one or more patches, press the <kbd>Spacebar</kbd> to begin the drag lock.</li>
+      </ol>
     </li>
-    <li>After selecting one or more patches, press the <kbd>Spacebar</kbd>
-    to begin the drag lock.</li>
-  </ol>
 
-<p><strong>4. Tap Patch Controls (Tab key)</strong></p>
-  <span class="instructions-description">For pressing buttons inside patches.</span>
-<ol>
-  <li>Notice the the 4×4 Pad Grid. Some patches expose keyboard-activated controls, like these squares.</li>
-  <li>To toggle a pad, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
-  <li>This targets the control only and does not change patch selection.</li>
-  <li>Pad toggling works even while drag-lock is active.</li>
-</ol>
+    <li>
+      <p><strong>Tap Patch Controls (Tab key)</strong></p>
+      <span class="instructions-description">For pressing buttons inside patches.</span>
+      <ol>
+        <li>Notice the the 4×4 Pad Grid. Some patches expose keyboard-activated controls, like these squares.</li>
+        <li>To toggle a pad, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
+        <li>This targets the control only and does not change patch selection.</li>
+        <li>Pad toggling works even while drag-lock is active.</li>
+      </ol>
+    </li>
 
- <p><strong>4. Live Selection Rectangle (Y key)</strong></p>
-          <span class="instructions-description">For selecting patches (option 2).</span>
-<ol>
-  <li>Press <kbd>Y</kbd> anywhere on the workspace to begin drawing a live selection rectangle.</li>
-  <li>Move the mouse to grow or shrink the rectangle diagonally.</li>
-	<ul>
-
-  <li>As patches intersect or enter the rectangle, they are automatically selected.</li>
-  <li>If a patch is no longer inside the rectangle, it is removed from the selection.</li>
-  </ul>
-  <li>Press <kbd>Y</kbd> again to finalize the selection and remove the outline.</li>
-  <li>Press <kbd>Esc</kbd> at any time to cancel the selection rectangle.</li>
-  <li>Use in combination with the Drag Lock (<kbd>Spacebar</kbd>) for dragging.
-</ol>
-
-
-  <p><strong>5. Connect Cables (F key)</strong></p>
-    <span class="instructions-description">For wiring up patches.</span>
-  <ol>
-    <li>Hover over an outlet circle and press <kbd>F</kbd> to start a connection.</li>
-    <li>Move the mouse to the other outlet and press <kbd>F</kbd> again to complete.</li>
-    <li>Press <kbd>Esc</kbd> at any time to cancel.</li>
-  </ol>
-
-  <p><strong>6. Delete Cables (D key)</strong></p>
-      <span class="instructions-description">For removing cable connections.</span>
-  <ol>
-    <li>Hover over an existing cable and press <kbd>D</kbd> to delete it.</li>
-  </ol>
-
-  <p><strong>7. Swap Cable Outlet (S key)</strong></p>
-        <span class="instructions-description">For changing cable connections.</span>
-  <ol>
-    <li>Hover over an outlet with a connected cable and press <kbd>S</kbd> to detach it.</li>
-    <li>Move to a new outlet and press <kbd>S</kbd> again to attach.</li>
-  </ol>
-  
- 
-
-  <p><strong>8. Tidy Rectangle (T key)</strong></p>
-       <span class="instructions-description">For tidying up the workspace.</span>
-
-<ol>
-  <li>Press <kbd>T</kbd> anywhere on the canvas to start a tidy rectangle outline
-  for aligning patches.</li>
-  <li>Move the mouse to size the rectangle; all patches intersecting or inside the outline are candidates for alignment.</li>
-  <li>Press <kbd>T</kbd> again to tidy the patches:  
-
-<ul>
-<li>A <em>wide</em> rectangle aligns them horizontally (same&nbsp;<em>y</em>).  </li>
-<li>    A <em>tall</em> rectangle aligns them vertically (same&nbsp;<em>x</em>).</li>
+    <li>
+      <p><strong>Live Selection Rectangle (Y key)</strong></p>
+      <span class="instructions-description">For selecting patches (option 2).</span>
+      <ol>
+        <li>Press <kbd>Y</kbd> anywhere on the workspace to begin drawing a live selection rectangle.</li>
+        <li>Move the mouse to grow or shrink the rectangle diagonally.</li>
+        <ul>
+          <li>As patches intersect or enter the rectangle, they are automatically selected.</li>
+          <li>If a patch is no longer inside the rectangle, it is removed from the selection.</li>
         </ul>
+        <li>Press <kbd>Y</kbd> again to finalize the selection and remove the outline.</li>
+        <li>Press <kbd>Esc</kbd> at any time to cancel the selection rectangle.</li>
+        <li>Use in combination with the Drag Lock (<kbd>Spacebar</kbd>) for dragging.</li>
+      </ol>
     </li>
 
-  <li>Press <kbd>Esc</kbd> at any time before the second <kbd>T</kbd> to cancel.</li>
-</ol>
+    <li>
+      <p><strong>Connect Cables (F key)</strong></p>
+      <span class="instructions-description">For wiring up patches.</span>
+      <ol>
+        <li>Hover over an outlet circle and press <kbd>F</kbd> to start a connection.</li>
+        <li>Move the mouse to the other outlet and press <kbd>F</kbd> again to complete.</li>
+        <li>Press <kbd>Esc</kbd> at any time to cancel.</li>
+      </ol>
+    </li>
 
+    <li>
+      <p><strong>Delete Cables (D key)</strong></p>
+      <span class="instructions-description">For removing cable connections.</span>
+      <ol>
+        <li>Hover over an existing cable and press <kbd>D</kbd> to delete it.</li>
+      </ol>
+    </li>
 
-<!-- Insert inside #instructions -->
+    <li>
+      <p><strong>Swap Cable Outlet (S key)</strong></p>
+      <span class="instructions-description">For changing cable connections.</span>
+      <ol>
+        <li>Hover over an outlet with a connected cable and press <kbd>S</kbd> to detach it.</li>
+        <li>Move to a new outlet and press <kbd>S</kbd> again to attach.</li>
+      </ol>
+    </li>
 
-<p><strong>9. Numeric Field: Bracket Keys</strong></p>
-   <span class="instructions-description">For stepping up or down numeric values without mouse clicks.</span>
-<ol>
-  <li>Hover over a numeric value to target the field.</li>
-  <li>Press <kbd>[</kbd> to decrement or <kbd>]</kbd> to increment the value.</li>
-  <li>Use modifiers to change the step size:
-    <ul>
-      <li><kbd>Shift</kbd> + <kbd>[</kbd>/<kbd>]</kbd> → large step</li>
-      <li><kbd>Alt</kbd>/<kbd>Option</kbd> + <kbd>[</kbd>/<kbd>]</kbd> → small step</li>
-    </ul>
-  </li>
-  <li>Values are clamped to the patch’s <em>min</em>/<em>max</em> and quantized to its step.</li>
-  <li>To change the value directly, begin typing the new value after hover.</li>
-</ol>
+    <li>
+      <p><strong>Tidy Rectangle (T key)</strong></p>
+      <span class="instructions-description">For tidying up the workspace.</span>
+      <ol>
+        <li>Press <kbd>T</kbd> anywhere on the canvas to start a tidy rectangle outline for aligning patches.</li>
+        <li>Move the mouse to size the rectangle; all patches intersecting or inside the outline are candidates for alignment.</li>
+        <li>
+          Press <kbd>T</kbd> again to tidy the patches:
+          <ul>
+            <li>A <em>wide</em> rectangle aligns them horizontally (same&nbsp;<em>y</em>).</li>
+            <li>A <em>tall</em> rectangle aligns them vertically (same&nbsp;<em>x</em>).</li>
+          </ul>
+        </li>
+        <li>Press <kbd>Esc</kbd> at any time before the second <kbd>T</kbd> to cancel.</li>
+      </ol>
+    </li>
 
-<p><strong>10. Slider: Spacebar Drag</strong></p>
-   <span class="instructions-description">For manipulating a slider without mouse clicks.</span>
-<ol>
-  <li>Hover over a slider and press <kbd>Space</kbd> to begin drag-lock of the knob.</li>
-  <li>Move the mouse horizontally to change the slider value. The paired numeric field updates in real time. A bracket guide may be displayed from the knob to the cursor.</li>
-  <li>Press <kbd>Space</kbd> again or <kbd>Esc</kbd> to release the drag-lock.</li>
-  <li>While drag-lock is active, selection changes via <kbd>Tab</kbd> are disabled.</li>
-</ol>
+    <li>
+      <p><strong>Numeric Field: Bracket Keys</strong></p>
+      <span class="instructions-description">For stepping up or down numeric values without mouse clicks.</span>
+      <ol>
+        <li>Hover over a numeric value to target the field.</li>
+        <li>Press <kbd>[</kbd> to decrement or <kbd>]</kbd> to increment the value.</li>
+        <li>
+          Use modifiers to change the step size:
+          <ul>
+            <li><kbd>Shift</kbd> + <kbd>[</kbd>/<kbd>]</kbd> → large step</li>
+            <li><kbd>Alt</kbd>/<kbd>Option</kbd> + <kbd>[</kbd>/<kbd>]</kbd> → small step</li>
+          </ul>
+        </li>
+        <li>Values are clamped to the patch’s <em>min</em>/<em>max</em> and quantized to its step.</li>
+        <li>To change the value directly, begin typing the new value after hover.</li>
+      </ol>
+    </li>
 
-<!-- Insert inside #instructions (next item) -->
+    <li>
+      <p><strong>Slider: Spacebar Drag</strong></p>
+      <span class="instructions-description">For manipulating a slider without mouse clicks.</span>
+      <ol>
+        <li>Hover over a slider and press <kbd>Space</kbd> to begin drag-lock of the knob.</li>
+        <li>Move the mouse horizontally to change the slider value. The paired numeric field updates in real time. A bracket guide may be displayed from the knob to the cursor.</li>
+        <li>Press <kbd>Space</kbd> again or <kbd>Esc</kbd> to release the drag-lock.</li>
+        <li>While drag-lock is active, selection changes via <kbd>Tab</kbd> are disabled.</li>
+      </ol>
+    </li>
 
+    <li>
+      <p><strong>Collapse/Expand Patches (E key)</strong></p>
+      <span class="instructions-description">Hide patch contents for a compact layout; cables re-anchor to the header.</span>
+      <ol>
+        <li><strong>Single patch:</strong> Hover a patch and press <kbd>E</kbd> to toggle its collapsed state.</li>
+        <li>
+          <strong>Selection:</strong> If one or more patches are selected:
+          <ul>
+            <li>If all are expanded → press <kbd>E</kbd> to collapse all.</li>
+            <li>If all are collapsed → press <kbd>E</kbd> to expand all.</li>
+            <li>If mixed → majority decides (more expanded → collapse all; more collapsed → expand all).</li>
+          </ul>
+        </li>
+        <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
+      </ol>
+    </li>
 
+    <li>
+      <p><strong>Duplication Line / Stamp (M key)</strong></p>
+      <span class="instructions-description">Copy patches with a guide line, or stamp clones during drag-lock.</span>
+      <ol>
+        <li><strong>Duplication Line (normal mode):</strong> Hover a patch and press <kbd>M</kbd> to begin a magenta dashed guide from its center. Move the mouse, then press <kbd>M</kbd> again (or release the mouse) to place a copy at the cursor. The original remains.</li>
+        <li><strong>Stamp clones (while drag-lock is active):</strong> With drag-lock on and one or more patches selected, press <kbd>M</kbd> to immediately clone <em>each</em> selected patch at its current position (no guide line).</li>
+        <li><strong>Cancel:</strong> Press <kbd>Esc</kbd> to cancel an in-progress duplication line.</li>
+        <li><strong>Note:</strong> Cables are not duplicated with the patch copy.</li>
+      </ol>
+    </li>
 
+    <li>
+      <p><strong>Toggle Disabled State (W key)</strong></p>
+      <span class="instructions-description">For testing output during programming.</span>
+      <ol>
+        <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
+        <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
+        <li>
+          Behavior:
+          <ul>
+            <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
+            <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
+          </ul>
+        </li>
+      </ol>
+    </li>
 
-<p><strong>11. Collapse/Expand Patches (E key)</strong></p>
-<span class="instructions-description">Hide patch contents for a compact layout; cables re-anchor to the header.</span>
+  </ol>
 
-<ol>
-  <li><strong>Single patch:</strong> Hover a patch and press <kbd>E</kbd> to toggle its collapsed state.</li>
-  <li><strong>Selection:</strong> If one or more patches are selected:
-    <ul>
-      <li>If all are expanded → press <kbd>E</kbd> to collapse all.</li>
-      <li>If all are collapsed → press <kbd>E</kbd> to expand all.</li>
-      <li>If mixed → majority decides (more expanded → collapse all; more collapsed → expand all).</li>
-    </ul>
-  </li>
-  <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
-</ol>
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
 
-<p><strong>13. Duplication Line / Stamp (M key)</strong></p>
-<span class="instructions-description">Copy patches with a guide line, or stamp clones during drag-lock.</span>
+</div>
 
-<ol>
-  <li><strong>Duplication Line (normal mode):</strong> Hover a patch and press <kbd>M</kbd> to begin a magenta dashed guide from its center. Move the mouse, then press <kbd>M</kbd> again (or release the mouse) to place a copy at the cursor. The original remains.</li>
-  <li><strong>Stamp clones (while drag-lock is active):</strong> With drag-lock on and one or more patches selected, press <kbd>M</kbd> to immediately clone <em>each</em> selected patch at its current position (no guide line).</li>
-  <li><strong>Cancel:</strong> Press <kbd>Esc</kbd> to cancel an in-progress duplication line.</li>
-  <li><strong>Note:</strong> Cables are not duplicated with the patch copy.</li>
-</ol>
-
-
-<p><strong>13. Toggle Disabled State (W key)</strong></p>
-<span class="instructions-description">For testing output during programming.</span>
-
-<ol>
-  <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
-  <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
-  <li>Behavior:
-    <ul>
-      <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
-      <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
-    </ul>
-  </li>
-
-</ol>
-
-<br/><br/>
-<br/><br/>
-<br/><br/>
-<br/><br/>
-<br/><br/>
-
-  
-    </div>
-  
     <div class="scrollbar-track">
     <div class="scrollbar-thumb"></div>
   </div>

@@ -687,7 +687,9 @@ kind of GUI.</p>
       <span class="instructions-description">For dragging patches (option 1)</span>
       <ol>
         <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.</li>
-        <li>Move the mouse. A dashed line appears from the patch's center to your mouse.</li>
+        <li>Move the mouse. A dashed line is drawn from the patch's center to your cursor.
+        The patch frame appears centered too.
+        </li>
         <li>Move the cursor to the desired location for the patch.</li>
         <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
       </ol>
@@ -1054,6 +1056,12 @@ let dupLinePath         = null;   // paper.Path preview line
 let patchIdCounter      = 1;
 
 
+let dragLineOutline = null;  // rectangle preview that mirrors the patch size (G)
+let dupLineOutline  = null;  // rectangle preview that mirrors the patch size (M)
+let dragLineMoveRef = null;   // window mousemove handler for G
+let dupLineMoveRef  = null;   // window mousemove handler for M
+
+
 let dragLineCircle = null;   // filled circle marking the first point (patch center)
 
 
@@ -1384,13 +1392,14 @@ document.addEventListener('keydown', e => {
   const lower = key.toLowerCase();
 
  /* ─────────────────────  G : drag-line relocation  ───────────────────── */
-/* ─────────────────────  G : drag-line relocation  ───────────────────── */
-/* ─────────────────────  G : drag-line relocation (with start-circle)  ───────────────────── */
+// === Unified G : Drag-Line (start+finish with start-circle + traveling outline) ===
+/* 3) Drag-Line (G) — REPLACE the “first G press” branch with this version.
+      It installs a window-level mousemove that advances BOTH the line tip
+      and the outline center. */
 if (lower === 'g') {
   e.preventDefault();
 
   if (!dragLineActive) {
-    // Begin drag-line from the patch under the cursor
     const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
     if (!tgt) return;
 
@@ -1399,69 +1408,71 @@ if (lower === 'g') {
 
     const start = centerOf(tgt);
 
-    // 1) Dashed guide line (as before)
+    // dashed guide
     dragLinePath = new paperScope.Path.Line({
-      from: start,
-      to:   start,
-      strokeColor: '#0d6efd',
-      strokeWidth: 5,
-      dashArray: [4, 4]
+      from: start, to: start,
+      strokeColor: '#0d6efd', strokeWidth: 2, dashArray: [4, 4]
     });
 
-    // 2) NEW: filled circle (radius 10pt) at the start point
+    // start-circle (if you use it)
+    if (typeof dragLineCircle !== 'undefined' && dragLineCircle) {
+      dragLineCircle.remove(); dragLineCircle = null;
+    }
     dragLineCircle = new paperScope.Path.Circle({
-      center: start,
-      radius: 8,
-      fillColor: '#333333',
-      strokeColor: '#0d6efd',
-      strokeWidth: 5,
+      center: start, radius: 10, fillColor: '#0d6efd'
     });
+
+    // traveling outline
+    if (dragLineOutline) { dragLineOutline.remove(); dragLineOutline = null; }
+    dragLineOutline = createPatchOutline(tgt, start, '#0d6efd', [10, 6]);
+
+    // NEW: window-level mousemove to avoid early returns in #patchArea handlers
+    dragLineMoveRef = (ev) => {
+      const p = clientToViewPoint(ev);
+      if (dragLinePath)    dragLinePath.lastSegment.point = p;   // move guide tip
+      if (dragLineOutline) dragLineOutline.position       = p;   // center outline at cursor
+      paperScope.view.update();
+    };
+    window.addEventListener('mousemove', dragLineMoveRef);
 
     paperScope.view.update();
     return;
   }
 
-  // Finish: animate the patch to the cursor
+  /* second G — your existing animate-to-cursor logic, with cleanup below */
   const endX = mouse.x + window.scrollX;
   const endY = mouse.y + window.scrollY;
   const r = dragLinePatch.getBoundingClientRect();
   const startX = r.left + window.scrollX;
   const startY = r.top  + window.scrollY;
-
   const targetX = endX - r.width / 2;
   const targetY = endY - r.height / 2;
-
   const dx = targetX - startX;
   const dy = targetY - startY;
-
   const steps = 15;
   let frame = 0;
 
+  const cleanupG = () => {
+    if (dragLineMoveRef) { window.removeEventListener('mousemove', dragLineMoveRef); dragLineMoveRef = null; }
+    if (dragLinePath)    { dragLinePath.remove();    dragLinePath = null; }
+    if (dragLineCircle)  { dragLineCircle.remove();  dragLineCircle = null; }
+    if (dragLineOutline) { dragLineOutline.remove(); dragLineOutline = null; }
+  };
+
   function animate() {
     const t = ++frame / steps;
-
     if (t >= 1) {
       dragLinePatch.style.left = targetX + 'px';
       dragLinePatch.style.top  = targetY + 'px';
-
-      // Cleanup visuals
-      if (dragLinePath)   { dragLinePath.remove();   dragLinePath = null; }
-      if (dragLineCircle) { dragLineCircle.remove(); dragLineCircle = null; }
-
+      cleanupG();
       dragLineActive = false;
       dragLinePatch  = null;
-
       redrawCables();
       return;
     }
-
-    // ease-in-out (quadratic)
     const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    const x = startX + dx * ease;
-    const y = startY + dy * ease;
-    dragLinePatch.style.left = x + 'px';
-    dragLinePatch.style.top  = y + 'px';
-
+    dragLinePatch.style.left = (startX + dx * ease) + 'px';
+    dragLinePatch.style.top  = (startY + dy * ease) + 'px';
     redrawCables();
     requestAnimationFrame(animate);
   }
@@ -1948,63 +1959,70 @@ if (lower === 'w') {
   return;
 }
 
-/* ─────────────────────  M : duplication-line  ───────────────────── */
+
 /* ─────────────────────  M : duplication-line OR stamp (when drag-lock)  ─────────────────────
    Replace your current M-key block with this version.
    • If drag-lock is active → stamps (clones) all selected patches at their current positions.
    • Otherwise → behaves as the Duplication Line (two-press) feature.
 */
+
+/* Replace ONLY the “first M” branch in your M-key handler */
+// === Unified M : Duplication Line (two-press) ===
+/* 4) Duplication Line (M) — REPLACE the “first M press” branch similarly.
+      This ensures the magenta copy guide and its outline follow the cursor. */
 if (lower === 'm') {
   e.preventDefault();
 
-  /* NEW: stamp clones while drag-lock is active */
-  if (dragLock) {
-    const selected = [...document.querySelectorAll('.patch.selected')];
-    if (!selected.length) return;
+  // (retain your “stamp while drag-lock” branch above, then return)
 
-    selected.forEach(src => {
-      const c = centerOf(src);                 // page coordinates of the patch’s center
-      duplicatePatchAt(src, c.x, c.y);         // helper from the Duplication Line feature
-    });
-
-    paperScope.view.update();
-    window.updateCvReceivers?.();
-    return;
-  }
-
-  /* Existing Duplication Line behavior (two-press) */
   if (!dupLineActive) {
     const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
-    if (!tgt) return; // must start on a patch
+    if (!tgt) return;
 
     dupLineActive      = true;
     dupLineSourcePatch = tgt;
 
     const start = centerOf(tgt);
+
+    // magenta guide
     dupLinePath = new paperScope.Path.Line({
-      from: start,
-      to:   start,
-      strokeColor: '#d63384',   // distinct from Drag Line
-      strokeWidth: 2,
-      dashArray: [2, 8]
+      from: start, to: start,
+      strokeColor: '#d63384', strokeWidth: 2, dashArray: [2, 8]
     });
+
+    // traveling outline (distinct style)
+    if (dupLineOutline) { dupLineOutline.remove(); dupLineOutline = null; }
+    dupLineOutline = createPatchOutline(tgt, start, '#d63384', [2, 10]);
+
+    // NEW: window-level mousemove for duplication preview
+    dupLineMoveRef = (ev) => {
+      const p = clientToViewPoint(ev);
+      if (dupLinePath)   dupLinePath.lastSegment.point = p;
+      if (dupLineOutline) dupLineOutline.position      = p;
+      paperScope.view.update();
+    };
+    window.addEventListener('mousemove', dupLineMoveRef);
+
     paperScope.view.update();
     return;
   }
 
-  // Second M: place a copy at the cursor
+  // second M — place a copy at the cursor
   const endX = mouse.x + window.scrollX;
   const endY = mouse.y + window.scrollY;
+
+  if (dupLineMoveRef) { window.removeEventListener('mousemove', dupLineMoveRef); dupLineMoveRef = null; }
+  if (dupLinePath)    { dupLinePath.remove();    dupLinePath = null; }
+  if (dupLineOutline) { dupLineOutline.remove(); dupLineOutline = null; }
+
   duplicatePatchAt(dupLineSourcePatch, endX, endY);
 
-  if (dupLinePath) dupLinePath.remove();
   dupLineActive = false;
   dupLineSourcePatch = null;
-  dupLinePath = null;
-
   redrawCables();
   return;
 }
+
 
 /* ─────────────────────  E : collapse/expand patches  ─────────────────────
    Behavior:
@@ -2065,6 +2083,23 @@ if (liveSelActive) {
   liveSelLine        = null;
   liveSelRectOutline = null;
 }
+
+if (dragLineOutline) { dragLineOutline.remove(); dragLineOutline = null; }
+if (dupLineOutline)  { dupLineOutline.remove();  dupLineOutline  = null; }
+paperScope.view.update();
+
+/* 5) Cleanup — add to your Escape and mouseup handlers */
+ // Escape:
+if (dragLineMoveRef) { window.removeEventListener('mousemove', dragLineMoveRef); dragLineMoveRef = null; }
+if (dupLineMoveRef)  { window.removeEventListener('mousemove', dupLineMoveRef);  dupLineMoveRef  = null; }
+if (dragLineOutline) { dragLineOutline.remove(); dragLineOutline = null; }
+if (dupLineOutline)  { dupLineOutline.remove();  dupLineOutline  = null; }
+
+ // Mouseup completion (if you also finish on mouseup):
+if (dragLineMoveRef) { window.removeEventListener('mousemove', dragLineMoveRef); dragLineMoveRef = null; }
+if (dupLineMoveRef)  { window.removeEventListener('mousemove', dupLineMoveRef);  dupLineMoveRef  = null; }
+if (dragLineOutline) { dragLineOutline.remove(); dragLineOutline = null; }
+if (dupLineOutline)  { dupLineOutline.remove();  dupLineOutline  = null; }
 
 
 /* cancel tidy rectangle */
@@ -2206,6 +2241,23 @@ liveSelRectOutline.fillColor.alpha = 0.15; // light, transparent cyan
     el.classList.toggle('selected', hit);
   });
 
+/*  Mousemove — make the outlines travel with the cursor
+*/
+// === Mousemove: keep both lines and their outlines following the cursor (single copy only) ===
+if (dragLineActive && dragLinePath) {
+  dragLinePath.lastSegment.point.set(mouse.x + window.scrollX, mouse.y + window.scrollY);
+}
+if (dragLineActive && dragLineOutline) {
+  dragLineOutline.position.set(mouse.x + window.scrollX, mouse.y + window.scrollY);
+}
+
+if (dupLineActive && dupLinePath) {
+  dupLinePath.lastSegment.point.set(mouse.x + window.scrollX, mouse.y + window.scrollY);
+}
+if (dupLineActive && dupLineOutline) {
+  dupLineOutline.position.set(mouse.x + window.scrollX, mouse.y + window.scrollY);
+}
+paperScope.view.update();
 
 
   paperScope.view.update();
@@ -2297,6 +2349,8 @@ if (dupLineActive && dupLineSourcePatch && dupLinePath) {
   redrawCables();
 }
 
+if (dragLineActive && dragLineOutline) { dragLineOutline.remove(); dragLineOutline = null; }
+if (dupLineActive  && dupLineOutline)  { dupLineOutline.remove();  dupLineOutline  = null; }
 
     
   });
@@ -2774,6 +2828,22 @@ patchArea.addEventListener('click', (e) => {
   if (!btn) return;
   triggerPadAction(btn);
 });
+
+
+function createPatchOutline(patchEl, centerPt, stroke, dash) {
+  const r = patchEl.getBoundingClientRect();
+  return new paperScope.Path.Rectangle({
+    point: [centerPt.x - r.width / 2, centerPt.y - r.height / 2],
+    size:  [r.width, r.height],
+    strokeColor: stroke,
+    strokeWidth: 2,
+    dashArray: dash || [6, 4],
+    fillColor: null
+  });
+}
+function clientToViewPoint(e){
+  return new paperScope.Point(e.clientX + window.scrollX, e.clientY + window.scrollY);
+}
 
 
 </script>

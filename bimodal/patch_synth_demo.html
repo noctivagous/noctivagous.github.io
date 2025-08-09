@@ -123,6 +123,7 @@ Extensibility
     height: 100vh;  /* Sets height to 100% of viewport height */
 }
 
+
   </style>
   
   <style>
@@ -579,6 +580,13 @@ color:#444;
   filter: brightness(1.05);
 }
 
+/* Optional: smooth visual response for pad color/rotation changes.
+   Add to your stylesheet with the other pad styles. */
+.pad-cell {
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+
 </style>
 
 <style>
@@ -659,6 +667,39 @@ color:#444;
     line-height: 1.6;
   }
 }
+/* Striped table styles for the Pad Grid section in #instructions */
+#instructions .pad-grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+#instructions .pad-grid-table th,
+#instructions .pad-grid-table td {
+  text-align: left;
+  padding: 8px 10px;
+}
+
+#instructions .pad-grid-table thead th {
+  border-bottom: 1px solid #444;
+  color: #cfe5ff;
+}
+
+/* Zebra striping for dark UI */
+#instructions .pad-grid-table tbody tr:nth-child(odd)  { background: rgba(255,255,255,0.04); }
+#instructions .pad-grid-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.08); }
+
+/* Subtle row hover */
+#instructions .pad-grid-table tbody tr:hover {
+  background: rgba(102,176,255,0.18);
+}
+
+/* Optional: soften cell separators */
+#instructions .pad-grid-table tbody td {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
 
 </style>
 </head>
@@ -726,9 +767,68 @@ kind of GUI.</p>
         <li>Notice the the 4×4 Pad Grid. Some patches expose keyboard-activated controls, like these squares.</li>
         <li>To toggle a pad, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
         <li>This targets the control only and does not change patch selection.</li>
-        <li>Pad toggling works even while drag-lock is active.</li>
+
       </ol>
     </li>
+    
+    <li>
+  <p><strong>Pad Grid Controls</strong></p>
+  <span class="instructions-description">Keyboard operations for the 4×4 Pad Grid.</span>
+
+  <ol>
+    <li>
+      <strong>Toggle squares and run actions</strong>
+      <ol>
+        <li>Hover a square and press <kbd>Tab</kbd> to toggle it on/off. Color is shown only when the square is on.</li>
+        <li>Hover the <em>All On</em> or <em>All Off</em> button below the grid and press <kbd>Tab</kbd> to apply; the button briefly flashes to confirm.</li>
+        <li>Pressing <kbd>Tab</kbd> while the cursor is in the gaps inside the grid does nothing (does not change patch selection).</li>
+      </ol>
+    </li>
+
+    <li>
+      <strong>Color and transform of a hovered square</strong>
+      <table class="pad-grid-table" style="width:100%;border-collapse:collapse;margin:.25rem 0;" cellpadding="10">
+        <thead>
+          <tr>
+            <th style="text-align:left;border-bottom:1px solid #444;">Key</th>
+            <th style="text-align:left;border-bottom:1px solid #444;">When</th>
+            <th style="text-align:left;border-bottom:1px solid #444;">Effect</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+            <td>Hovering a square that is <em>on</em></td>
+            <td>Set hue around the color wheel: <kbd>1</kbd> → red (0°); <kbd>2</kbd>…<kbd>9</kbd> advance in 36° steps; <kbd>0</kbd> completes the top-row circle.</td>
+          </tr>
+          <tr>
+            <td><kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+            <td>Hovering a square that is <em>on</em></td>
+            <td>Set saturation: <kbd>0</kbd> → 100%, <kbd>1</kbd>…<kbd>9</kbd> → 10%…90%.</td>
+          </tr>
+          <tr>
+            <td><kbd>`</kbd> or <kbd>'</kbd></td>
+            <td>Hovering any square</td>
+            <td>Rotate the square by +45° per press.</td>
+          </tr>
+          <tr>
+            <td><kbd>Shift</kbd> + <kbd>`</kbd></td>
+            <td>Hovering any square</td>
+            <td>Toggle scale 1 ↔ 1.15 (keeps rotation).</td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+
+    <li>
+      <strong>Output port</strong>
+      <ol>
+        <li>The Pad Grid’s output port is positioned to the right of the grid and can be cabled like other ports.</li>
+      </ol>
+    </li>
+  </ol>
+</li>
+
 
     <li>
       <p><strong>Live Selection Rectangle (Y key)</strong></p>
@@ -1524,6 +1624,69 @@ if (lower === 'g') {
     }
   }
 
+/* =========================
+   KEY HANDLER additions
+   Insert this block INSIDE your existing `document.addEventListener('keydown', e => { … })`,
+   *above* your Tab/selection logic, and after you compute `const lower = e.key.toLowerCase();`.
+   ========================= */
+
+/* Digit keys:
+   - Digit (no Shift): set HUE to a position on the wheel (1→red, …, 9,0 complete the circle)
+   - Shift + Digit: set SATURATION (0→100%, 1..9→10..90%)
+   Only applies when hovering a .pad-cell; doing nothing in gaps or outside the grid.
+*/
+if (isDigitKey(e)) {
+  const el = document.elementFromPoint(mouse.x, mouse.y);
+  const cell = el?.closest('.pad-cell');
+  const insidePads = el?.closest('.pads');
+
+  // In-grid gaps: do nothing
+  if (insidePads && !cell) { e.preventDefault(); return; }
+
+  // Outside the grid: ignore
+  if (!cell) {
+    // no-op
+  } else {
+    e.preventDefault();
+    const d = digitValue(e);              // 0..9
+    if (d !== null) {
+      if (e.shiftKey) {
+        padCellSetSaturationByDigit(cell, d);
+      } else {
+        padCellSetHueByDigit(cell, d);
+      }
+    }
+    return;
+  }
+}
+
+/* Backquote / Tilde and Quote:
+   - Backquote (`): rotate +45°
+   - Shift + Backquote (~): toggle scale 1↔1.15
+   - Quote ('): rotate +45° (a.k.a. “prime”)
+*/
+if (e.code === 'Backquote' || e.code === 'Quote') {
+  const el = document.elementFromPoint(mouse.x, mouse.y);
+  const cell = el?.closest('.pad-cell');
+  const insidePads = el?.closest('.pads');
+
+  // In-grid gaps: do nothing
+  if (insidePads && !cell) { e.preventDefault(); return; }
+
+  if (!cell) {
+    // not over a pad square
+  } else {
+    e.preventDefault();
+    if (e.code === 'Backquote' && e.shiftKey) {
+      // Shift + ` → scale toggle
+      padCellToggleScale(cell, 1.15);
+    } else {
+      // ` or ' → rotate +45°
+      padCellAdjustRotation(cell, 45);
+    }
+    return;
+  }
+}
   /* ───────── Esc : cancel a pending re-patch (remove orphan if needed) ───────── */
   if (key === 'Escape' && reattachCable) {
     const conn = connections.find(c => c.path === reattachCable);
@@ -1774,12 +1937,16 @@ if (padBtn) {
 
 
   /* 2) Individual pad-cell toggle */
-  const padCell = elUnder?.closest('.pad-cell');
-  if (padCell) {
-    const isOn = padCell.classList.toggle('on');
-    padCell.setAttribute('aria-pressed', String(isOn));
-    return;
-  }
+ /* ===== Ensure Tab toggle applies color only when ON (leave your existing logic, but
+         keep this behavior inside the pad-cell Tab block) ===== */
+const padCell = elUnder?.closest('.pad-cell');
+if (padCell) {
+  const turnedOn = padCell.classList.toggle('on');
+  padCell.setAttribute('aria-pressed', String(turnedOn));
+  padCellApplyColorIfOn(padCell);     // show or clear color based on ON/OFF
+  return;
+}
+
 
   /* 2.5) Inside pad grid gaps: do nothing */
   const padsContainer = elUnder?.closest('.pads');
@@ -2791,14 +2958,17 @@ function duplicatePatchAt(srcPatch, pageX, pageY) {
   return clone;
 }
 
-/* Add this small helper near your other utilities */
+
+
 function setAllPadCells(padPatch, turnOn) {
   if (!padPatch) return;
   padPatch.querySelectorAll('.pad-cell').forEach(cell => {
     cell.classList.toggle('on', !!turnOn);
     cell.setAttribute('aria-pressed', String(!!turnOn));
+    padCellApplyColorIfOn(cell);   // shows color when turning on; clears when off
   });
 }
+
 
 /* Helper: flash a pad action button to show a momentary "on" state */
 function flashPadButton(btn) {
@@ -2845,6 +3015,83 @@ function clientToViewPoint(e){
   return new paperScope.Point(e.clientX + window.scrollX, e.clientY + window.scrollY);
 }
 
+/* =========================
+   Pad Grid: color & rotation controls
+   Place these HELPERS near your other utility functions.
+   ========================= */
+/* Replace your existing pad color helpers with these */
+
+/* Apply color only when ON; uses stored hue/saturation */
+function padCellApplyColorIfOn(cell) {
+  const hue = Number.isFinite(Number(cell.dataset.hue)) ? Number(cell.dataset.hue) : 0;   // default red
+  const sat = Number.isFinite(Number(cell.dataset.sat)) ? Number(cell.dataset.sat) : 60;  // default 60%
+  if (cell.classList.contains('on')) {
+    const s = Math.max(0, Math.min(100, sat));
+    cell.style.backgroundColor = `hsl(${((hue % 360) + 360) % 360}, ${s}%, 50%)`;
+    cell.style.borderColor     = `hsl(${((hue % 360) + 360) % 360}, ${Math.min(100, s + 10)}%, 45%)`;
+  } else {
+    cell.style.backgroundColor = '';
+    cell.style.borderColor     = '';
+  }
+}
+
+/* Map keyboard row digits to hue around the wheel: 
+   1→0°, 2→36°, …, 9→288°, 0→324° (completes the circle) */
+function hueFromDigit(d) {
+  const index = (d === 0) ? 9 : (d - 1);            // 0 is the 10th key
+  return (index * 36) % 360;
+}
+
+/* Set hue by digit key, but only if the pad is ON */
+function padCellSetHueByDigit(cell, d) {
+  if (!cell.classList.contains('on')) return;
+  const h = hueFromDigit(d);
+  cell.dataset.hue = String(h);
+  padCellApplyColorIfOn(cell);
+}
+
+/* Set saturation by digit key (Shift+digit), only if the pad is ON.
+   0 → 100%, 1..9 → 10%..90% */
+function padCellSetSaturationByDigit(cell, d) {
+  if (!cell.classList.contains('on')) return;
+  const sat = (d === 0) ? 100 : d * 10;
+  cell.dataset.sat = String(sat);
+  padCellApplyColorIfOn(cell);
+}
+
+/* Unified transform application so rotate/scale can coexist */
+function padCellApplyTransform(cell) {
+  const rot = Number.isFinite(Number(cell.dataset.rot)) ? Number(cell.dataset.rot) : 0;
+  const scl = Number.isFinite(Number(cell.dataset.scl)) ? Number(cell.dataset.scl) : 1;
+  cell.style.transform = `rotate(${rot}deg) scale(${scl})`;
+  cell.style.transformOrigin = '50% 50%';
+}
+
+/* +45° rotation step */
+function padCellAdjustRotation(cell, deltaDeg) {
+  const cur = Number.isFinite(Number(cell.dataset.rot)) ? Number(cell.dataset.rot) : 0;
+  const next = ((cur + deltaDeg) % 360 + 360) % 360;
+  cell.dataset.rot = String(next);
+  padCellApplyTransform(cell);
+}
+
+/* Toggle scale between 1 and 1.15 */
+function padCellToggleScale(cell, factor = 1.15) {
+  const cur = Number.isFinite(Number(cell.dataset.scl)) ? Number(cell.dataset.scl) : 1;
+  const next = Math.abs(cur - 1) < 1e-3 ? factor : 1;
+  cell.dataset.scl = String(next);
+  padCellApplyTransform(cell);
+}
+
+function isDigitKey(evt) {
+  return /^Digit[0-9]$/.test(evt.code) || /^Numpad[0-9]$/.test(evt.code);
+}
+
+function digitValue(evt) {
+  // evt.code is layout-independent; works with Shift too
+  const m = evt.code.match(/([0-9])/);
+  return m ? Number(m[1]) : null;
+}
 
 </script>
 </body>

@@ -291,6 +291,77 @@ color:#444;
   cursor: pointer;
 }
 
+/* 2) CSS — pad patch styling (add with your other patch styles) */
+.patch.pad-grid { width: 220px; }
+
+.pad-body { padding: 10px; background-color:#000;}
+
+.pads {
+  display: grid;
+  grid-template-columns: repeat(4, 42px);
+  grid-auto-rows: 42px;
+  gap: 8px;
+  user-select: none;
+}
+
+.pad-cell {
+  border: 2px solid #444;
+  border-radius: 6px;
+  background: #1f1f22;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.pad-cell:hover {
+  outline: 2px solid #66b0ff;
+  outline-offset: 2px;
+}
+
+.pad-cell.on {
+  background: #2a7fff;
+  border-color: #2a7fff;
+  box-shadow: 0 0 0 2px rgba(42,127,255,0.25), inset 0 -2px 0 rgba(0,0,0,0.25);
+}
+
+
+.pad-wrap {
+  display: flex;
+  align-items: center;                               /* vertically center the port to the grid */
+  gap: 12px;
+}
+
+/* Override default float used elsewhere so flex positioning applies */
+.pad-grid .port.output { float: none; margin-right:-5pt;}
+
+.pad-out { margin-left: 4px; }                       /* small separation from the grid */
+
+/* Place the pad’s output port near the RIGHT edge of the patch */
+.patch.pad-grid { width: 240px; }            /* ensure room inside the card */
+.pad-body { padding: 10px; }
+
+/* Override earlier flex layout: use absolute positioning for the port */
+.patch.pad-grid .pad-wrap {
+  position: relative;
+  display: block;                            /* overrides any previous flex */
+  padding-right: 28px;                       /* reserve space for the port */
+}
+
+.pad-grid .port.output { float: none; }      /* ensure float doesn’t interfere */
+
+.patch.pad-grid .pad-out {
+  position: absolute;
+  right: 6px;                                /* close to the right edge */
+  top: 50%;
+  transform: translateY(-50%);               /* vertically centered to the grid */
+}
+
+.pads {
+  display: grid;
+  grid-template-columns: repeat(4, 42px);
+  grid-auto-rows: 42px;
+  gap: 8px;
+  user-select: none;
+  margin: 0;                                 /* no extra margin on the grid */
+}
 
 </style>
 
@@ -450,6 +521,64 @@ color:#444;
   background-color:purple;
 }
 
+/* Actions row under the 4×4 grid */
+.pad-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  border-top:1pt solid gray;
+  padding-top:10pt;
+}
+
+/* Large, tab-activated buttons */
+.pad-btn {
+  flex: 1 1 0;
+  text-align: center;
+  padding: 10px 8px;
+  border: 2px solid #444;
+  border-radius: 6px;
+  background: #202225;
+  color: #e6e6e6;
+  user-select: none;
+  cursor: default;               /* activation is via Tab while hovering */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.pad-btn:hover {
+  outline: 2px solid #66b0ff;
+  outline-offset: 2px;
+}
+
+.pad-btn.all-on  { border-color: #2a7fff; border-radius:3pt; font-weight:normal; font-family:courier;color:gray;background-color:black; font-size:10pt;}
+.pad-btn.all-off { border-color: #6c757d; border-radius:3pt;font-weight:normal; font-family:courier;color:gray;background-color:black;font-size:10pt;}
+
+/* Momentary "pressed" feedback for pad action buttons */
+.pad-btn {
+  transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.pad-btn.pressed {
+  color: #fff;
+  box-shadow: inset 0 0 0 2px rgba(42,127,255,0.25);
+}
+
+.pad-btn.all-on.pressed {
+  background: #2a7fff;
+  border-color: #2a7fff;
+}
+
+.pad-btn.all-off.pressed {
+  background: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Optional: also show feedback on physical mouse click */
+.pad-btn:active {
+  filter: brightness(1.05);
+}
+
 </style>
 
 </head>
@@ -502,6 +631,15 @@ kind of GUI.</p>
     <li>After selecting one or more patches, press the <kbd>Spacebar</kbd>
     to begin the drag lock.</li>
   </ol>
+
+<p><strong>4. Tap Patch Controls (Tab key)</strong></p>
+  <span class="instructions-description">For pressing buttons inside patches.</span>
+<ol>
+  <li>Notice the the 4×4 Pad Grid. Some patches expose keyboard-activated controls, like these squares.</li>
+  <li>To toggle a pad, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
+  <li>This targets the control only and does not change patch selection.</li>
+  <li>Pad toggling works even while drag-lock is active.</li>
+</ol>
 
  <p><strong>4. Live Selection Rectangle (Y key)</strong></p>
           <span class="instructions-description">For selecting patches (option 2).</span>
@@ -607,16 +745,16 @@ kind of GUI.</p>
   <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
 </ol>
 
-<p><strong>12. Copy Line (M key)</strong></p>
-<span class="instructions-description">Create a copy of a patch at a new location.</span>
+<p><strong>13. Duplication Line / Stamp (M key)</strong></p>
+<span class="instructions-description">Copy patches with a guide line, or stamp clones during drag-lock.</span>
 
 <ol>
-  <li>Hover over a patch and press <kbd>M</kbd> to begin a copy line (a line with spaced red dots).</li>
-  <li>Move the mouse; the guide follows the cursor from the patch’s center.</li>
-  <li>Press <kbd>M</kbd> again (or release the mouse button) to place a copy centered at the cursor. The original remains in place.</li>
-  <li>Press <kbd>Esc</kbd> at any time before the second <kbd>M</kbd> to cancel.</li>
-<!--  <li>Note: Only the patch is duplicated; existing cables are not copied.</li>-->
+  <li><strong>Duplication Line (normal mode):</strong> Hover a patch and press <kbd>M</kbd> to begin a magenta dashed guide from its center. Move the mouse, then press <kbd>M</kbd> again (or release the mouse) to place a copy at the cursor. The original remains.</li>
+  <li><strong>Stamp clones (while drag-lock is active):</strong> With drag-lock on and one or more patches selected, press <kbd>M</kbd> to immediately clone <em>each</em> selected patch at its current position (no guide line).</li>
+  <li><strong>Cancel:</strong> Press <kbd>Esc</kbd> to cancel an in-progress duplication line.</li>
+  <li><strong>Note:</strong> Cables are not duplicated with the patch copy.</li>
 </ol>
+
 
 <p><strong>13. Toggle Disabled State (W key)</strong></p>
 <span class="instructions-description">For testing output during programming.</span>
@@ -668,7 +806,7 @@ kind of GUI.</p>
 </div>-->
 <div id="patchArea">
   
-<div class="patch numeric" style="left:620px;top:320px;"
+<div class="patch numeric" style="left:620px;top:380px;"
      data-id="num1"
      data-min="0" data-max="127"
      data-step="1" data-small-step="0.1" data-big-step="10"
@@ -720,12 +858,12 @@ kind of GUI.</p>
 </div>
 
 
-<div class="patch" style="left:660px;top:120px;" data-id="osc">
+<div class="patch" style="left:660px;top:820px;" data-id="osc">
   <header>Oscillator</header>
   <span class="port output" data-dir="out" data-name="audio"></span>
 </div>
 
-<div class="patch" style="left:880px;top:220px;" data-id="filter">
+<div class="patch" style="left:900px;top:220px;" data-id="filter">
   <header>Filter</header>
   <span class="port input" data-dir="in" data-name="audio"></span>
   <span class="port output" data-dir="out" data-name="audio"></span>
@@ -742,7 +880,45 @@ kind of GUI.</p>
   <span class="port input" data-dir="in" data-name="audio"></span>
 </div>
 
+<!-- 1) HTML — insert inside #patchArea (a 4×4 pad patch) -->
+<!-- Updated Pad Grid patch HTML: adds an output port to the RIGHT of the 4×4 grid -->
+<!-- HTML (unchanged) -->
+<div class="patch pad-grid" style="left:600px;top:40px;" data-id="pad1">
+  <header>Pad Grid (4×4)</header>
+  <div class="pad-body">
+    <div class="pad-wrap">
+      <div class="pads" role="grid" aria-label="4x4 pad grid">
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
 
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+        <div class="pad-cell" role="button" aria-pressed="false"></div>
+      </div>
+
+      <span class="port output pad-out" data-dir="out" data-name="trig"></span>
+    </div>
+
+<div class="pad-actions" aria-label="Pad actions">
+  <div class="pad-btn all-on"  role="button" data-action="all-on"  tabindex="-1">All On</div>
+  <div class="pad-btn all-off" role="button" data-action="all-off" tabindex="-1">All Off</div>
+</div>
+
+  </div>
+</div>
 
 
     <!-- Overlay for cables (now above .patch) -->
@@ -787,6 +963,9 @@ let dupLinePath         = null;   // paper.Path preview line
 let patchIdCounter      = 1;
 
 
+let dragLineCircle = null;   // filled circle marking the first point (patch center)
+
+
 /* Visual: bracket from knob to cursor while dragging */
 let sliderBracketPath     = null;
 let sliderMoveListenerRef = null;   // window mousemove listener
@@ -826,8 +1005,8 @@ paperScope.setup(cableCanvas);
 window.addEventListener('load', () => {
   const pairs = [
     // Existing audio path
-    ['.patch[data-id="osc"]   .port.output',
-     '.patch[data-id="filter"] .port.input'],
+  //  ['.patch[data-id="osc"]   .port.output',
+//     '.patch[data-id="filter"] .port.input'],
 
     // New control-voltage paths
     ['.patch[data-id="num1"]  .port.output',                               // Pitch (Number)
@@ -1115,78 +1294,88 @@ document.addEventListener('keydown', e => {
 
  /* ─────────────────────  G : drag-line relocation  ───────────────────── */
 /* ─────────────────────  G : drag-line relocation  ───────────────────── */
+/* ─────────────────────  G : drag-line relocation (with start-circle)  ───────────────────── */
 if (lower === 'g') {
   e.preventDefault();
+
   if (!dragLineActive) {
-    // Begin drag-line
+    // Begin drag-line from the patch under the cursor
     const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
-    if (!tgt) return; // no patch under cursor
+    if (!tgt) return;
+
     dragLineActive = true;
     dragLinePatch  = tgt;
+
     const start = centerOf(tgt);
+
+    // 1) Dashed guide line (as before)
     dragLinePath = new paperScope.Path.Line({
       from: start,
       to:   start,
       strokeColor: '#0d6efd',
-      strokeWidth: 2,
+      strokeWidth: 5,
       dashArray: [4, 4]
     });
+
+    // 2) NEW: filled circle (radius 10pt) at the start point
+    dragLineCircle = new paperScope.Path.Circle({
+      center: start,
+      radius: 8,
+      fillColor: '#333333',
+      strokeColor: '#0d6efd',
+      strokeWidth: 5,
+    });
+
+    paperScope.view.update();
     return;
-  } else {
-  
-  // Animate patch from original position to cursor location
-const endX = mouse.x + window.scrollX;
-const endY = mouse.y + window.scrollY;
-const r = dragLinePatch.getBoundingClientRect();
-const startX = r.left + window.scrollX;
-const startY = r.top  + window.scrollY;
+  }
 
-const targetX = endX - r.width / 2;
-const targetY = endY - r.height / 2;
+  // Finish: animate the patch to the cursor
+  const endX = mouse.x + window.scrollX;
+  const endY = mouse.y + window.scrollY;
+  const r = dragLinePatch.getBoundingClientRect();
+  const startX = r.left + window.scrollX;
+  const startY = r.top  + window.scrollY;
 
-const dx = targetX - startX;
-const dy = targetY - startY;
+  const targetX = endX - r.width / 2;
+  const targetY = endY - r.height / 2;
 
-const duration = 100; // ms
-const steps = 15;
-let frame = 0;
+  const dx = targetX - startX;
+  const dy = targetY - startY;
 
-function animate() {
-  const t = ++frame / steps;
-  if (t >= 1) {
-    dragLinePatch.style.left = targetX + 'px';
-    dragLinePatch.style.top  = targetY + 'px';
-    dragLinePath.remove();
-    dragLineActive = false;
-    dragLinePatch = null;
-    dragLinePath  = null;
+  const steps = 15;
+  let frame = 0;
+
+  function animate() {
+    const t = ++frame / steps;
+
+    if (t >= 1) {
+      dragLinePatch.style.left = targetX + 'px';
+      dragLinePatch.style.top  = targetY + 'px';
+
+      // Cleanup visuals
+      if (dragLinePath)   { dragLinePath.remove();   dragLinePath = null; }
+      if (dragLineCircle) { dragLineCircle.remove(); dragLineCircle = null; }
+
+      dragLineActive = false;
+      dragLinePatch  = null;
+
+      redrawCables();
+      return;
+    }
+
+    // ease-in-out (quadratic)
+    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    const x = startX + dx * ease;
+    const y = startY + dy * ease;
+    dragLinePatch.style.left = x + 'px';
+    dragLinePatch.style.top  = y + 'px';
+
     redrawCables();
-    return;
+    requestAnimationFrame(animate);
   }
-  const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // ease-in-out
-  const x = startX + dx * ease;
-  const y = startY + dy * ease;
-  dragLinePatch.style.left = x + 'px';
-  dragLinePatch.style.top  = y + 'px';
-  redrawCables();                          // refresh cables each frame
   requestAnimationFrame(animate);
-}
-requestAnimationFrame(animate);
-
-  /*
-    // Complete drag-line by moving patch
-    const endX = mouse.x + window.scrollX;
-    const endY = mouse.y + window.scrollY;
-    const r = dragLinePatch.getBoundingClientRect();
-    dragLinePatch.style.left = (endX - r.width  / 2) + 'px';
-    dragLinePatch.style.top  = (endY - r.height / 2) + 'px';
-    dragLinePath.remove();
-    dragLineActive = false;
-    dragLinePatch = null;
-    dragLinePath  = null;
-    redrawCables();*/
-    return;
-  }
+  return;
 }
 
             
@@ -1410,31 +1599,104 @@ if (affected.length > 1) {
 
 
 /* ───────── Tab : multi-select toggle, or clear selection in empty space ───────── */
-/* ───────── Tab : multi-select toggle, or clear selection in empty space ───────── */
+
+
+// ───────── Tab : pad actions, pad-cell toggle, then (maybe) selection ─────────
+/* ───────── Tab : slider seek-to-mouse, pad actions/cells, pads gap guard, selection ─────────
+   Drop-in replacement for your current Tab handler.
+*/
 if (e.key === 'Tab') {
   e.preventDefault();
 
-  // Do nothing if drag-lock or sliderDragLock is active.
+  const elUnder = document.elementFromPoint(mouse.x, mouse.y);
 
-	if (dragLock || sliderDragLock) {
-	  return;
-	}
+  /* 0) Slider seek: simulate a click at the cursor to move the knob */
+  const slider = elUnder?.closest('.num-slider');
+  if (slider) {
+    const r = slider.getBoundingClientRect();
+
+    // Prefer the numeric config next to the slider (keeps behavior consistent)
+    const valueEl = slider.closest('.num-body')?.querySelector('.num-value');
+    let min = 0, max = 100, step = 1;
+    if (valueEl && typeof getNumConfig === 'function') {
+      const cfg = getNumConfig(valueEl);
+      min = Number.isFinite(cfg.min) ? cfg.min : min;
+      max = Number.isFinite(cfg.max) ? cfg.max : max;
+      step = Number.isFinite(cfg.step) && cfg.step > 0 ? cfg.step : step;
+    } else {
+      // Fallback to slider attributes
+      if (Number.isFinite(parseFloat(slider.min)))  min  = parseFloat(slider.min);
+      if (Number.isFinite(parseFloat(slider.max)))  max  = parseFloat(slider.max);
+      if (slider.step && slider.step !== 'any' && Number.isFinite(parseFloat(slider.step)))
+        step = parseFloat(slider.step);
+    }
+
+    const tRaw = (mouse.x - r.left) / Math.max(1, r.width);
+    const t = Math.min(1, Math.max(0, tRaw));
+    let v = min + t * (max - min);
+
+    // Quantize/clamp
+    if (typeof quantizeToStep === 'function') {
+      v = quantizeToStep(v, step, min);
+    } else if (step > 0) {
+      v = min + Math.round((v - min) / step) * step;
+    }
+    if (typeof clamp === 'function') {
+      v = clamp(v, min, max);
+    } else {
+      v = Math.min(max, Math.max(min, v));
+    }
+
+    // Apply value + notify
+    slider.value = String(v);
+    slider.dispatchEvent(new Event('input',  { bubbles: true }));
+    slider.dispatchEvent(new Event('change', { bubbles: true }));
+
+    if (valueEl) {
+      if (typeof displayNumber === 'function') displayNumber(valueEl, v);
+      else valueEl.textContent = String(v);
+    }
+    window.updateCvReceivers?.();
+    return;
+  }
+
+  /* 1) Action buttons under the pad grid */
+  /* Replace ONLY the pad button block inside your existing Tab handler with this: */
+
+// 1) Action buttons under the pad grid
+const padBtn = elUnder?.closest('.pad-btn');
+if (padBtn) {
+  triggerPadAction(padBtn);   // performs action + momentary visual feedback
+  return;
+}
 
 
-  const patchAtCursor =
-        document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
+  /* 2) Individual pad-cell toggle */
+  const padCell = elUnder?.closest('.pad-cell');
+  if (padCell) {
+    const isOn = padCell.classList.toggle('on');
+    padCell.setAttribute('aria-pressed', String(isOn));
+    return;
+  }
 
+  /* 2.5) Inside pad grid gaps: do nothing */
+  const padsContainer = elUnder?.closest('.pads');
+  if (padsContainer) return;
+
+  /* 3) Block selection during any drag-lock */
+  if (dragLock || sliderDragLock) return;
+
+  /* 4) Default: patch selection toggle / clear */
+  const patchAtCursor = elUnder?.closest('.patch');
   if (patchAtCursor) {
-    // Toggle selection state of the patch under the cursor
     if (patchAtCursor.classList.contains('selected')) {
       patchAtCursor.classList.remove('selected');
       if (selectedPatch === patchAtCursor) selectedPatch = null;
     } else {
-      patchAtCursor.classList.add('selected'); // add to multi-selection
-      selectedPatch = patchAtCursor;           // remember last-active patch
+      patchAtCursor.classList.add('selected');
+      selectedPatch = patchAtCursor;
     }
   } else {
-    // Cursor in empty space: clear all selected patches
     clearSelection();
     selectedPatch = null;
   }
@@ -1596,25 +1858,44 @@ if (lower === 'w') {
 }
 
 /* ─────────────────────  M : duplication-line  ───────────────────── */
-/* ➌ REPLACE your current M-key block with this version to give Copy Line
-      a DISTINCT style (color + dash) compared to G Drag Line. */
+/* ─────────────────────  M : duplication-line OR stamp (when drag-lock)  ─────────────────────
+   Replace your current M-key block with this version.
+   • If drag-lock is active → stamps (clones) all selected patches at their current positions.
+   • Otherwise → behaves as the Duplication Line (two-press) feature.
+*/
 if (lower === 'm') {
   e.preventDefault();
 
-  // First M: begin from patch under cursor
+  /* NEW: stamp clones while drag-lock is active */
+  if (dragLock) {
+    const selected = [...document.querySelectorAll('.patch.selected')];
+    if (!selected.length) return;
+
+    selected.forEach(src => {
+      const c = centerOf(src);                 // page coordinates of the patch’s center
+      duplicatePatchAt(src, c.x, c.y);         // helper from the Duplication Line feature
+    });
+
+    paperScope.view.update();
+    window.updateCvReceivers?.();
+    return;
+  }
+
+  /* Existing Duplication Line behavior (two-press) */
   if (!dupLineActive) {
     const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
     if (!tgt) return; // must start on a patch
-    dupLineActive = true;
+
+    dupLineActive      = true;
     dupLineSourcePatch = tgt;
 
     const start = centerOf(tgt);
     dupLinePath = new paperScope.Path.Line({
       from: start,
       to:   start,
-      strokeColor: '#d63384',   // distinct magenta
+      strokeColor: '#d63384',   // distinct from Drag Line
       strokeWidth: 2,
-      dashArray: [2, 8]         // distinct dash pattern
+      dashArray: [2, 8]
     });
     paperScope.view.update();
     return;
@@ -1625,7 +1906,7 @@ if (lower === 'm') {
   const endY = mouse.y + window.scrollY;
   duplicatePatchAt(dupLineSourcePatch, endX, endY);
 
-  dupLinePath.remove();
+  if (dupLinePath) dupLinePath.remove();
   dupLineActive = false;
   dupLineSourcePatch = null;
   dupLinePath = null;
@@ -2364,6 +2645,46 @@ function duplicatePatchAt(srcPatch, pageX, pageY) {
   window.updateCvReceivers?.();
   return clone;
 }
+
+/* Add this small helper near your other utilities */
+function setAllPadCells(padPatch, turnOn) {
+  if (!padPatch) return;
+  padPatch.querySelectorAll('.pad-cell').forEach(cell => {
+    cell.classList.toggle('on', !!turnOn);
+    cell.setAttribute('aria-pressed', String(!!turnOn));
+  });
+}
+
+/* Helper: flash a pad action button to show a momentary "on" state */
+function flashPadButton(btn) {
+  if (!btn) return;
+  btn.classList.add('pressed');
+  btn.setAttribute('aria-pressed', 'true');
+  setTimeout(() => {
+    btn.classList.remove('pressed');
+    btn.setAttribute('aria-pressed', 'false');
+  }, 150);
+}
+
+/* Unified trigger for pad actions (All On / All Off) including visual flash */
+function triggerPadAction(padBtn) {
+  const padPatch = padBtn?.closest('.patch.pad-grid');
+  if (padPatch) {
+    const action = padBtn.dataset.action;
+    if (action === 'all-on')  setAllPadCells(padPatch, true);
+    if (action === 'all-off') setAllPadCells(padPatch, false);
+  }
+  flashPadButton(padBtn);
+}
+
+/* Hook physical mouse clicks as well (optional but recommended) */
+patchArea.addEventListener('click', (e) => {
+  const btn = e.target.closest('.pad-btn');
+  if (!btn) return;
+  triggerPadAction(btn);
+});
+
+
 </script>
 </body>
 </html>

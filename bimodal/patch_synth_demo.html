@@ -766,99 +766,12 @@ kind of GUI.</p>
       <ol>
         <li>Notice the the 4×4 Pad Grid. Some patches expose keyboard-activated controls, like these squares.</li>
         <li>To toggle a pad, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
-        <li>This targets the control only and does not change patch selection.</li>
+        <li>Use the number keys on the keyboard to change a square's color.
+         <li>Use the <kbd>`</kbd> key to rotate a square by 45 degrees.
 
       </ol>
     </li>
     
-    <li>
-  <p><strong>Pad Grid Controls</strong></p>
-  <span class="instructions-description">Keyboard operations for the 4×4 Pad Grid.</span>
-
-  <ol>
-    <li>
-      <strong>Toggle squares and run actions</strong>
-      <ol>
-        <li>Hover a square and press <kbd>Tab</kbd> to toggle it on/off. Color is shown only when the square is on.</li>
-        <li>Hover the <em>All On</em> or <em>All Off</em> button below the grid and press <kbd>Tab</kbd> to apply; the button briefly flashes to confirm.</li>
-        <li>Pressing <kbd>Tab</kbd> while the cursor is in the gaps inside the grid does nothing (does not change patch selection).</li>
-      </ol>
-    </li>
-
-    <li>
-      <strong>Color and transform of a hovered square</strong>
-      <table class="pad-grid-table" style="width:100%;border-collapse:collapse;margin:.25rem 0;" cellpadding="10">
-        <thead>
-          <tr>
-            <th style="text-align:left;border-bottom:1px solid #444;">Key</th>
-            <th style="text-align:left;border-bottom:1px solid #444;">When</th>
-            <th style="text-align:left;border-bottom:1px solid #444;">Effect</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-            <td>Hovering over a square.</td>
-            <td>Set hue around the color wheel: <kbd>1</kbd> → red (0°); <kbd>2</kbd>…<kbd>9</kbd> advance in 36° steps; <kbd>0</kbd> completes the top-row circle.</td>
-          </tr>
-          <tr>
-            <td><kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-            <td>Hovering over a square.</td>
-            <td>Set saturation: <kbd>0</kbd> → 100%, <kbd>1</kbd>…<kbd>9</kbd> → 10%…90%.</td>
-          </tr>
-          <tr>
-            <td><kbd>`</kbd> or <kbd>'</kbd></td>
-            <td>Hovering over a square</td>
-            <td>Rotate the square by +45° per press.</td>
-          </tr>
-          <tr>
-            <td><kbd>Shift</kbd> + <kbd>`</kbd></td>
-            <td>Hovering any square</td>
-            <td>Toggle scale 1 ↔ 1.15 (keeps rotation).</td>
-          </tr>
-<tr>
-  <td><kbd>Alt</kbd> + <kbd>`</kbd></td>
-  <td>Hovering any square</td>
-  <td>Cycle border radius: 5&nbsp;pt → 10&nbsp;pt → 30&nbsp;pt → 5&nbsp;pt.</td>
-</tr>
-<!-- Insert these <tr> rows inside the Pad Grid Controls “Color and transform” table <tbody> -->
-
-<tr>
-  <td><kbd>Alt</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-  <td>Hovering any square</td>
-  <td>Set <strong>hue</strong> for the entire <em>row</em> of the hovered square and turn all pads in that row <strong>on</strong>.</td>
-</tr>
-
-<tr>
-  <td><kbd>Control</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-  <td>Hovering any square</td>
-  <td>Set <strong>hue</strong> for the entire <em>column</em> of the hovered square and turn all pads in that column <strong>on</strong>.</td>
-</tr>
-
-<tr>
-  <td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-  <td>Hovering any square</td>
-  <td>Set <strong>brightness (saturation)</strong> for the entire <em>row</em> (e.g., <kbd>1</kbd>→10%, …, <kbd>9</kbd>→90%, <kbd>0</kbd>→100%) and turn all pads in that row <strong>on</strong>.</td>
-</tr>
-
-<tr>
-  <td><kbd>Control</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-  <td>Hovering any square</td>
-  <td>Set <strong>brightness (saturation)</strong> for the entire <em>column</em> with the same mapping and turn all pads in that column <strong>on</strong>.</td>
-</tr>
-
-        </tbody>
-      </table>
-    </li>
-
-    <li>
-      <strong>Output port</strong>
-      <ol>
-        <li>The Pad Grid’s output port is positioned to the right of the grid and can be cabled like other ports.</li>
-      </ol>
-    </li>
-  </ol>
-</li>
 
 
     <li>
@@ -966,6 +879,96 @@ kind of GUI.</p>
         <li><strong>Effect of collapse:</strong> Only the title bar remains visible; all other content (including ports) is hidden. Cables condense to the vertical midpoint of the header’s left/right edges.</li>
       </ol>
     </li>
+
+    <li>
+  <p><strong>Pad Grid Controls</strong></p>
+  <span class="instructions-description">Keyboard operations for the 4×4 Pad Grid.</span>
+
+  <ol>
+    <li>
+      <strong>Toggle squares and run actions</strong>
+      <ol>
+        <li>Hover a square and press <kbd>Tab</kbd> to toggle it on/off. Color is shown only when the square is on.</li>
+        <li>Hover the <em>All On</em> or <em>All Off</em> button below the grid and press <kbd>Tab</kbd> to apply; the button briefly flashes to confirm.</li>
+        <li>Pressing <kbd>Tab</kbd> while the cursor is in the gaps inside the grid does nothing (does not change patch selection).</li>
+      </ol>
+    </li>
+
+    <li>
+      <strong>Color and transform of a hovered square</strong>
+      <table class="pad-grid-table" style="width:100%;border-collapse:collapse;margin:.25rem 0;" cellpadding="10">
+        <thead>
+          <tr>
+            <th style="text-align:left;border-bottom:1px solid #444;">Key</th>
+            <th style="text-align:left;border-bottom:1px solid #444;">When</th>
+            <th style="text-align:left;border-bottom:1px solid #444;">Effect</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+            <td>Hovering over a square.</td>
+            <td>Set hue around the color wheel: <kbd>1</kbd> → red (0°); <kbd>2</kbd>…<kbd>9</kbd> advance in 36° steps; <kbd>0</kbd> completes the top-row circle.</td>
+          </tr>
+          <tr>
+            <td><kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+            <td>Hovering over a square.</td>
+            <td>Set saturation: <kbd>0</kbd> → 100%, <kbd>1</kbd>…<kbd>9</kbd> → 10%…90%.</td>
+          </tr>
+          <tr>
+            <td><kbd>`</kbd> or <kbd>'</kbd></td>
+            <td>Hovering over a square</td>
+            <td>Rotate the square by +45° per press.</td>
+          </tr>
+          <tr>
+            <td><kbd>Shift</kbd> + <kbd>`</kbd></td>
+            <td>Hovering any square</td>
+            <td>Toggle scale 1 ↔ 1.15 (keeps rotation).</td>
+          </tr>
+<tr>
+  <td><kbd>Alt</kbd> + <kbd>`</kbd></td>
+  <td>Hovering any square</td>
+  <td>Cycle border radius: 5&nbsp;pt → 10&nbsp;pt → 30&nbsp;pt → 5&nbsp;pt.</td>
+</tr>
+<!-- Insert these <tr> rows inside the Pad Grid Controls “Color and transform” table <tbody> -->
+
+<tr>
+  <td><kbd>Alt</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>hue</strong> for the entire <em>row</em> of the hovered square and turn all pads in that row <strong>on</strong>.</td>
+</tr>
+
+<tr>
+  <td><kbd>Control</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>hue</strong> for the entire <em>column</em> of the hovered square and turn all pads in that column <strong>on</strong>.</td>
+</tr>
+
+<tr>
+  <td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>brightness (saturation)</strong> for the entire <em>row</em> (e.g., <kbd>1</kbd>→10%, …, <kbd>9</kbd>→90%, <kbd>0</kbd>→100%) and turn all pads in that row <strong>on</strong>.</td>
+</tr>
+
+<tr>
+  <td><kbd>Control</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>brightness (saturation)</strong> for the entire <em>column</em> with the same mapping and turn all pads in that column <strong>on</strong>.</td>
+</tr>
+
+        </tbody>
+      </table>
+    </li>
+
+    <li>
+      <strong>Output port</strong>
+      <ol>
+        <li>The Pad Grid’s output port is positioned to the right of the grid and can be cabled like other ports.</li>
+      </ol>
+    </li>
+  </ol>
+</li>
+
 
     <li>
       <p><strong>Duplication Line / Stamp (M key)</strong></p>
@@ -3254,6 +3257,75 @@ function padCellCycleBorderRadius(cell) {
   cell.style.borderRadius = seq[nextIdx];
 }
 
+</script>
+<script>
+/* Focus keeper: ensure the page (specifically #patchArea) owns focus while hovered,
+   so Tab / Space / letter keys reach your handlers rather than the browser UI. */
+
+/* 1) Make the interactive surface focusable */
+const patchArea = document.getElementById('patchArea');
+if (patchArea && !patchArea.hasAttribute('tabindex')) {
+  patchArea.setAttribute('tabindex', '0');
+}
+
+/* 2) Lightweight focus function */
+function focusPatchArea() {
+  if (document.activeElement !== patchArea) {
+    patchArea.focus({ preventScroll: true });
+  }
+}
+
+/* 3) Give focus whenever the pointer enters or clicks the surface */
+patchArea.addEventListener('pointerenter', focusPatchArea, { passive: true });
+patchArea.addEventListener('pointerdown',  focusPatchArea);
+
+/* 4) Also refresh focus as the pointer moves across the surface (throttled) */
+let _focusRAF = 0;
+patchArea.addEventListener('mousemove', () => {
+  if (_focusRAF) return;
+  _focusRAF = requestAnimationFrame(() => {
+    _focusRAF = 0;
+    focusPatchArea();
+  });
+});
+
+/* 5) When the tab becomes visible again, restore focus */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) focusPatchArea();
+});
+
+/* 6) Capture Tab/Space early so they don’t advance focus or scroll the page.
+      Use a capturing listener to beat default browser handling. */
+document.addEventListener('keydown', (e) => {
+  const k = e.key;
+  const isTypingField =
+    e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable);
+
+  // If you never want native Tab focus movement inside the canvas:
+  if (k === 'Tab') {
+    e.preventDefault();         // stop focus traversal
+    focusPatchArea();           // make sure our surface owns focus
+  }
+
+  // Prevent Space from scrolling the page when not typing
+  if (k === ' ' && !isTypingField) {
+    e.preventDefault();
+    focusPatchArea();
+  }
+}, { capture: true });
+
+/* 7) Optional: make inner controls non-tabbable so Tab is purely a command key.
+      (We operate them by hover + Tab, not by native focus.) */
+(function makeInnerControlsUntabbable(){
+  const sel = [
+    '.num-slider', '.num-value',
+    '.pad-btn', '.pad-cell',
+    '.port', '.recv-value'
+  ].join(',');
+  document.querySelectorAll(sel).forEach(el => {
+    if (el.tabIndex !== -1) el.tabIndex = -1;
+  });
+})();
 </script>
 </body>
 </html>

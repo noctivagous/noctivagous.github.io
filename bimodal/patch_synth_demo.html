@@ -111,7 +111,7 @@ Extensibility
     .port.hover{outline:3px solid #f1c40f;}
 
     /* —— Selection & drag-lock state —— */
-    .selected{outline:4pt solid #dc3545 !important;}
+    .selected{outline:5pt solid #33cc33 !important;box-shadow:13pt 13pt 13pt gray}
     .dragging{opacity:0.7;}
 
     /* —— Cable canvas overlays patches —— */
@@ -307,7 +307,7 @@ color:#444;
 
 .pad-cell {
   border: 2px solid #444;
-  border-radius: 6px;
+  border-radius: 2pt;
   background: #1f1f22;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
@@ -719,7 +719,7 @@ kind of GUI.</p>
 
 <hr/>
 
-  <div class="scroll-content" style="box-styling:border-box;padding:10pt;">
+  <div class="scroll-content" style="box-styling:border-box;">
 
   <ol class="instructions-list">
 
@@ -729,7 +729,7 @@ kind of GUI.</p>
       <ol>
         <li>Press <kbd>G</kbd> while hovering over a patch to begin a drag-line.</li>
         <li>Move the mouse. A dashed line is drawn from the patch's center to your cursor.
-        The patch frame appears centered too.
+        The patch frame follows the cursor.
         </li>
         <li>Move the cursor to the desired location for the patch.</li>
         <li>Press <kbd>G</kbd> again to transport the patch to that location.</li>
@@ -798,17 +798,17 @@ kind of GUI.</p>
         <tbody>
           <tr>
             <td><kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-            <td>Hovering a square that is <em>on</em></td>
+            <td>Hovering over a square.</td>
             <td>Set hue around the color wheel: <kbd>1</kbd> → red (0°); <kbd>2</kbd>…<kbd>9</kbd> advance in 36° steps; <kbd>0</kbd> completes the top-row circle.</td>
           </tr>
           <tr>
             <td><kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
-            <td>Hovering a square that is <em>on</em></td>
+            <td>Hovering over a square.</td>
             <td>Set saturation: <kbd>0</kbd> → 100%, <kbd>1</kbd>…<kbd>9</kbd> → 10%…90%.</td>
           </tr>
           <tr>
             <td><kbd>`</kbd> or <kbd>'</kbd></td>
-            <td>Hovering any square</td>
+            <td>Hovering over a square</td>
             <td>Rotate the square by +45° per press.</td>
           </tr>
           <tr>
@@ -816,6 +816,37 @@ kind of GUI.</p>
             <td>Hovering any square</td>
             <td>Toggle scale 1 ↔ 1.15 (keeps rotation).</td>
           </tr>
+<tr>
+  <td><kbd>Alt</kbd> + <kbd>`</kbd></td>
+  <td>Hovering any square</td>
+  <td>Cycle border radius: 5&nbsp;pt → 10&nbsp;pt → 30&nbsp;pt → 5&nbsp;pt.</td>
+</tr>
+<!-- Insert these <tr> rows inside the Pad Grid Controls “Color and transform” table <tbody> -->
+
+<tr>
+  <td><kbd>Alt</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>hue</strong> for the entire <em>row</em> of the hovered square and turn all pads in that row <strong>on</strong>.</td>
+</tr>
+
+<tr>
+  <td><kbd>Control</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>hue</strong> for the entire <em>column</em> of the hovered square and turn all pads in that column <strong>on</strong>.</td>
+</tr>
+
+<tr>
+  <td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>brightness (saturation)</strong> for the entire <em>row</em> (e.g., <kbd>1</kbd>→10%, …, <kbd>9</kbd>→90%, <kbd>0</kbd>→100%) and turn all pads in that row <strong>on</strong>.</td>
+</tr>
+
+<tr>
+  <td><kbd>Control</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> … <kbd>9</kbd>, <kbd>0</kbd></td>
+  <td>Hovering any square</td>
+  <td>Set <strong>brightness (saturation)</strong> for the entire <em>column</em> with the same mapping and turn all pads in that column <strong>on</strong>.</td>
+</tr>
+
         </tbody>
       </table>
     </li>
@@ -1635,58 +1666,81 @@ if (lower === 'g') {
    - Shift + Digit: set SATURATION (0→100%, 1..9→10..90%)
    Only applies when hovering a .pad-cell; doing nothing in gaps or outside the grid.
 */
+/* ========= Key handling — extend your existing digit-key block =========
+   Replace your current `if (isDigitKey(e)) { … }` block with this version.
+*/
 if (isDigitKey(e)) {
-  const el = document.elementFromPoint(mouse.x, mouse.y);
+  const el   = document.elementFromPoint(mouse.x, mouse.y);
   const cell = el?.closest('.pad-cell');
-  const insidePads = el?.closest('.pads');
+  const pads = el?.closest('.pads');
 
-  // In-grid gaps: do nothing
-  if (insidePads && !cell) { e.preventDefault(); return; }
+  // Inside the grid but not on a square → do nothing
+  if (pads && !cell) { e.preventDefault(); return; }
 
-  // Outside the grid: ignore
-  if (!cell) {
+  // Outside the grid → ignore
+  if (!cell || !pads) {
     // no-op
   } else {
     e.preventDefault();
-    const d = digitValue(e);              // 0..9
-    if (d !== null) {
-      if (e.shiftKey) {
-        padCellSetSaturationByDigit(cell, d);
-      } else {
-        padCellSetHueByDigit(cell, d);
-      }
+    const d = digitValue(e);               // 0..9
+    if (d === null) return;
+
+    // --- Alt + number: set hue for the entire ROW of the hovered cell
+    if (e.altKey) {
+      const { row } = getPadGridIndex(cell);
+      setRowHueByDigit(pads, row, d);
+      return;
     }
+
+    // --- Control + number: set hue for the entire COLUMN of the hovered cell
+    if (e.ctrlKey) {
+      const { col } = getPadGridIndex(cell);
+      setColHueByDigit(pads, col, d);
+      return;
+    }
+
+    // --- Shift + number: set SATURATION of the hovered cell (only shows if ON)
+    if (e.shiftKey) {
+      padCellSetSaturationByDigit(cell, d);  // uses your existing saturation helper
+      return;
+    }
+
+    // --- Plain number: set HUE of the hovered cell (only shows if ON)
+    padCellSetHueByDigit(cell, d);
     return;
   }
 }
+
 
 /* Backquote / Tilde and Quote:
    - Backquote (`): rotate +45°
    - Shift + Backquote (~): toggle scale 1↔1.15
    - Quote ('): rotate +45° (a.k.a. “prime”)
 */
-if (e.code === 'Backquote' || e.code === 'Quote') {
-  const el = document.elementFromPoint(mouse.x, mouse.y);
+if (e.code === 'Backquote') {
+  const el   = document.elementFromPoint(mouse.x, mouse.y);
   const cell = el?.closest('.pad-cell');
-  const insidePads = el?.closest('.pads');
-
-  // In-grid gaps: do nothing
-  if (insidePads && !cell) { e.preventDefault(); return; }
-
-  if (!cell) {
-    // not over a pad square
+  const pads = el?.closest('.pads');
+  if (pads && !cell) { e.preventDefault(); return; }
+  if (!cell) { // outside grid
+    // no-op; allow other Backquote logic (if any) for non-grid elements
   } else {
     e.preventDefault();
-    if (e.code === 'Backquote' && e.shiftKey) {
-      // Shift + ` → scale toggle
+    if (e.altKey) {
+      // Option/Alt + ` : cycle border radius
+      padCellCycleBorderRadius(cell);
+    } else if (e.shiftKey) {
+      // Shift + ` : scale toggle 1 ↔ 1.15
       padCellToggleScale(cell, 1.15);
     } else {
-      // ` or ' → rotate +45°
+      // ` : rotate +45°
       padCellAdjustRotation(cell, 45);
     }
     return;
   }
 }
+
+
   /* ───────── Esc : cancel a pending re-patch (remove orphan if needed) ───────── */
   if (key === 'Escape' && reattachCable) {
     const conn = connections.find(c => c.path === reattachCable);
@@ -2132,16 +2186,34 @@ if (lower === 'w') {
    • If drag-lock is active → stamps (clones) all selected patches at their current positions.
    • Otherwise → behaves as the Duplication Line (two-press) feature.
 */
-
-/* Replace ONLY the “first M” branch in your M-key handler */
-// === Unified M : Duplication Line (two-press) ===
-/* 4) Duplication Line (M) — REPLACE the “first M press” branch similarly.
-      This ensures the magenta copy guide and its outline follow the cursor. */
+/* ───────── Unified M key: stamp during drag-lock, else duplication line ───────── */
 if (lower === 'm') {
   e.preventDefault();
 
-  // (retain your “stamp while drag-lock” branch above, then return)
+  /* 1) Drag-lock active → STAMP (clone) the current selection immediately */
+  if (dragLock) {
+    const selected = [...document.querySelectorAll('.patch.selected')];
+    if (selected.length) {
+      // Tear down any in-progress duplication preview so one press stamps.
+      if (dupLineMoveRef) { window.removeEventListener('mousemove', dupLineMoveRef); dupLineMoveRef = null; }
+      if (dupLinePath)    { dupLinePath.remove();    dupLinePath = null; }
+      if (dupLineOutline) { dupLineOutline.remove(); dupLineOutline = null; }
+      dupLineActive = false;
+      dupLineSourcePatch = null;
 
+      selected.forEach(src => {
+        const r = src.getBoundingClientRect();
+        const cx = r.left + window.scrollX + r.width  / 2;
+        const cy = r.top  + window.scrollY + r.height / 2;
+        duplicatePatchAt(src, cx, cy);
+      });
+
+      redrawCables?.();
+    }
+    return; // IMPORTANT: don’t fall through to the two-press flow
+  }
+
+  /* 2) Normal mode → two-press duplication line (guide + place copy) */
   if (!dupLineActive) {
     const tgt = document.elementFromPoint(mouse.x, mouse.y)?.closest('.patch');
     if (!tgt) return;
@@ -2150,22 +2222,18 @@ if (lower === 'm') {
     dupLineSourcePatch = tgt;
 
     const start = centerOf(tgt);
-
-    // magenta guide
     dupLinePath = new paperScope.Path.Line({
       from: start, to: start,
       strokeColor: '#d63384', strokeWidth: 2, dashArray: [2, 8]
     });
 
-    // traveling outline (distinct style)
     if (dupLineOutline) { dupLineOutline.remove(); dupLineOutline = null; }
     dupLineOutline = createPatchOutline(tgt, start, '#d63384', [2, 10]);
 
-    // NEW: window-level mousemove for duplication preview
     dupLineMoveRef = (ev) => {
       const p = clientToViewPoint(ev);
-      if (dupLinePath)   dupLinePath.lastSegment.point = p;
-      if (dupLineOutline) dupLineOutline.position      = p;
+      if (dupLinePath)    dupLinePath.lastSegment.point = p;
+      if (dupLineOutline) dupLineOutline.position       = p;
       paperScope.view.update();
     };
     window.addEventListener('mousemove', dupLineMoveRef);
@@ -2174,7 +2242,7 @@ if (lower === 'm') {
     return;
   }
 
-  // second M — place a copy at the cursor
+  // Second M — place a copy at the cursor position
   const endX = mouse.x + window.scrollX;
   const endY = mouse.y + window.scrollY;
 
@@ -2186,7 +2254,7 @@ if (lower === 'm') {
 
   dupLineActive = false;
   dupLineSourcePatch = null;
-  redrawCables();
+  redrawCables?.();
   return;
 }
 
@@ -3044,19 +3112,92 @@ function hueFromDigit(d) {
 
 /* Set hue by digit key, but only if the pad is ON */
 function padCellSetHueByDigit(cell, d) {
-  if (!cell.classList.contains('on')) return;
-  const h = hueFromDigit(d);
-  cell.dataset.hue = String(h);
+  // Turn on if currently off
+  if (!cell.classList.contains('on')) {
+    cell.classList.add('on');
+	  cell.setAttribute('aria-pressed', true);	
+	  padCellApplyColorIfOn(cell);     // show or clear color based on ON/OFF
+  
+  }
+//  ensurePadPolygon(cell);
+  //ensurePadSaturation(cell);                 // keep prior saturation if present, else default
+  cell.dataset.hue = String(hueFromDigit(d));
   padCellApplyColorIfOn(cell);
 }
 
+
+  
 /* Set saturation by digit key (Shift+digit), only if the pad is ON.
    0 → 100%, 1..9 → 10%..90% */
 function padCellSetSaturationByDigit(cell, d) {
-  if (!cell.classList.contains('on')) return;
-  const sat = (d === 0) ? 100 : d * 10;
+  // Turn on if currently off
+  if (!cell.classList.contains('on')) {
+    cell.classList.add('on');
+    cell.setAttribute('aria-pressed', 'true');
+  }
+ // ensurePadPolygon(cell);
+  const sat = (d === 0) ? 100 : d * 10;      // 0→100%, 1..9→10..90%
   cell.dataset.sat = String(sat);
   padCellApplyColorIfOn(cell);
+}
+
+/* Compute grid indices for a given cell (assumes 4×4) */
+function getPadGridIndex(cell) {
+  const pads  = cell.closest('.pads');
+  const list  = pads ? Array.from(pads.querySelectorAll('.pad-cell')) : [];
+  const idx   = list.indexOf(cell);
+  const cols  = 4;
+  const rows  = 4;
+  const row   = idx >= 0 ? Math.floor(idx / cols) : -1;
+  const col   = idx >= 0 ? (idx % cols) : -1;
+  return { pads, list, idx, row, col, rows, cols };
+}
+
+/* Replace your existing row/column hue functions with these.
+   They force all pads in the target row/column to ON, set hue, and show color. */
+
+function setRowHueByDigit(pads, row, d) {
+  if (!pads || row < 0) return;
+  const cells = pads.querySelectorAll('.pad-cell');
+  const cols  = 4;
+  const hue   = hueFromDigit(d);
+
+  for (let c = 0; c < cols; c++) {
+    const cell = cells[row * cols + c];
+    if (!cell) continue;
+
+    // Force ON
+    cell.classList.add('on');
+    cell.setAttribute('aria-pressed', 'true');
+
+    // Set hue (and keep existing saturation if any)
+    cell.dataset.hue = String(hue);
+
+    // Render color now that it's ON
+    padCellApplyColorIfOn(cell);
+  }
+}
+
+function setColHueByDigit(pads, col, d) {
+  if (!pads || col < 0) return;
+  const cells = pads.querySelectorAll('.pad-cell');
+  const cols  = 4, rows = 4;
+  const hue   = hueFromDigit(d);
+
+  for (let r = 0; r < rows; r++) {
+    const cell = cells[r * cols + col];
+    if (!cell) continue;
+
+    // Force ON
+    cell.classList.add('on');
+    cell.setAttribute('aria-pressed', 'true');
+
+    // Set hue (and keep existing saturation if any)
+    cell.dataset.hue = String(hue);
+
+    // Render color now that it's ON
+    padCellApplyColorIfOn(cell);
+  }
 }
 
 /* Unified transform application so rotate/scale can coexist */
@@ -3091,6 +3232,26 @@ function digitValue(evt) {
   // evt.code is layout-independent; works with Shift too
   const m = evt.code.match(/([0-9])/);
   return m ? Number(m[1]) : null;
+}
+
+/* Optional: if you also want Alt/Control operations to set a default saturation
+   when none exists yet, add this near pad helpers. Call it inside the loops above. */
+
+function ensurePadSaturation(cell, fallback = 60) {
+  if (!Number.isFinite(Number(cell.dataset.sat))) {
+    cell.dataset.sat = String(fallback);
+  }
+}
+
+
+/* ───────── Pad Grid: border-radius cycle helper (add near other pad helpers) ───────── */
+function padCellCycleBorderRadius(cell) {
+  // Cycle through 5pt → 10pt → 30pt → 5pt …
+  const seq = ['2pt', '10pt', '30pt'];
+  const idx = Number.isFinite(Number(cell.dataset.brIndex)) ? Number(cell.dataset.brIndex) : 0;
+  const nextIdx = (idx + 1) % seq.length;
+  cell.dataset.brIndex = String(nextIdx);
+  cell.style.borderRadius = seq[nextIdx];
 }
 
 </script>

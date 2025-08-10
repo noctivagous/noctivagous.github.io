@@ -149,7 +149,7 @@ Extensibility
     font-family:Tahoma;
     line-height:1.5rem;
     pointer-events:none;
-    box-shadow:0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 3pt 3pt 3pt gray;
   background:black;
   }
   
@@ -200,7 +200,7 @@ color:#444;
   font-family: sans-serif;
   font-size: 14pt;
   color: #e0e0e0;
-  box-shadow: 0 12px 8px rgba(0, 0, 0, 0.7);
+box-shadow: 3pt 3pt 3pt gray;
   z-index: 999;
 }
 
@@ -969,9 +969,76 @@ kind of GUI.</p>
   </ol>
 </li>
 
+<li>
+  <p><strong>Scaling and Rotating Patches</strong></p>
+  <div class="instructions-description">
+    Use <kbd>[</kbd> and <kbd>]</kbd> to scale selected patch(es); use <kbd>;</kbd> and <kbd>&#39;</kbd> to rotate. Hold <kbd>Shift</kbd> for 45&deg; steps or <kbd>Alt</kbd> for 5&deg; steps. Scaling is limited by configured percentages of the patch’s original size.
+  </div>
+
+  <div class="instructions-content">
+    <table class="table table-sm table-dark table-bordered align-middle">
+      <thead>
+        <tr>
+          <th style="width: 28%;">Key</th>
+          <th style="width: 32%;">Action</th>
+          <th style="width: 40%;">Amount / Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><kbd>]</kbd></td>
+          <td>Scale up</td>
+          <td>Multiply size by <strong>1.15&times;</strong> (clamped by min/max % of original)</td>
+        </tr>
+        <tr>
+          <td><kbd>[</kbd></td>
+          <td>Scale down</td>
+          <td>Multiply size by <strong>1/1.15</strong> (clamped by min/max % of original)</td>
+        </tr>
+        <tr>
+          <td><kbd>&#39;</kbd></td>
+          <td>Rotate clockwise</td>
+          <td>Default step <strong>15&deg;</strong>; <kbd>Shift</kbd>=45&deg;, <kbd>Alt</kbd>=5&deg;</td>
+        </tr>
+        <tr>
+          <td><kbd>;</kbd></td>
+          <td>Rotate counterclockwise</td>
+          <td>Default step <strong>15&deg;</strong>; <kbd>Shift</kbd>=45&deg;, <kbd>Alt</kbd>=5&deg;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-sm table-dark table-bordered align-middle">
+      <thead>
+        <tr>
+          <th style="width: 35%;">Setting</th>
+          <th style="width: 65%;">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Original size reference</td>
+          <td>The first time a patch is transformed, its original width/height are stored in <code>data-orig-width</code> and <code>data-orig-height</code>.</td>
+        </tr>
+        <tr>
+          <td>Scaling limits</td>
+          <td>Global limits use percentages of original size (e.g., <code>GLOBAL_MIN_PCT</code>, <code>GLOBAL_MAX_PCT</code>). Per-patch overrides: <code>data-scale-min-percent</code>, <code>data-scale-max-percent</code>.</td>
+        </tr>
+        <tr>
+          <td>Selection scope</td>
+          <td>Transforms apply to elements marked with <code>.patch.is-selected</code>, <code>.patch.selected</code>, <code>[aria-selected="true"]</code>, or <code>[data-selected="true"]</code>.</td>
+        </tr>
+        <tr>
+          <td>Cable redraw</td>
+          <td>After each scale or rotation, <code>redrawCables()</code> is invoked (if defined) to update patch connections.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</li>
 
     <li>
-      <p><strong>Duplication Line / Stamp (M key)</strong></p>
+      <p><strong>Duplication Line / Stamp (W key)</strong></p>
       <span class="instructions-description">Copy patches with a guide line, or stamp clones during drag-lock.</span>
       <ol>
         <li><strong>Duplication Line (normal mode):</strong> Hover a patch and press <kbd>M</kbd> to begin a magenta dashed guide from its center. Move the mouse, then press <kbd>M</kbd> again (or release the mouse) to place a copy at the cursor. The original remains.</li>
@@ -982,7 +1049,7 @@ kind of GUI.</p>
     </li>
 
     <li>
-      <p><strong>Toggle Disabled State (W key)</strong></p>
+      <p><strong>Toggle Disabled State (M key)</strong></p>
       <span class="instructions-description">For testing output during programming.</span>
       <ol>
         <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
@@ -1715,7 +1782,7 @@ if (isDigitKey(e)) {
 }
 
 
-/* Backquote / Tilde and Quote:
+/* Backquote / Tilde:
    - Backquote (`): rotate +45°
    - Shift + Backquote (~): toggle scale 1↔1.15
    - Quote ('): rotate +45° (a.k.a. “prime”)
@@ -2138,8 +2205,8 @@ if (e.code === 'Space' || e.key === ' ') {
     return;
   }
 
-/* ─────────────────────  W : toggle disabled (cable or patch)  ───────────────────── */
-if (lower === 'w') {
+/* ─────────────────────  M : toggle disabled (cable or patch)  ───────────────────── */
+if (lower === 'm') {
   e.preventDefault();
 
   // 1) If hovering a cable, toggle its disabled state (existing behavior)
@@ -2184,13 +2251,13 @@ if (lower === 'w') {
 }
 
 
-/* ─────────────────────  M : duplication-line OR stamp (when drag-lock)  ─────────────────────
+/* ─────────────────────  w : duplication-line OR stamp (when drag-lock)  ─────────────────────
    Replace your current M-key block with this version.
    • If drag-lock is active → stamps (clones) all selected patches at their current positions.
    • Otherwise → behaves as the Duplication Line (two-press) feature.
 */
 /* ───────── Unified M key: stamp during drag-lock, else duplication line ───────── */
-if (lower === 'm') {
+if (lower === 'w') {
   e.preventDefault();
 
   /* 1) Drag-lock active → STAMP (clone) the current selection immediately */
@@ -3263,7 +3330,7 @@ function padCellCycleBorderRadius(cell) {
    so Tab / Space / letter keys reach your handlers rather than the browser UI. */
 
 /* 1) Make the interactive surface focusable */
-const patchArea = document.getElementById('patchArea');
+//const patchArea = document.getElementById('patchArea');
 if (patchArea && !patchArea.hasAttribute('tabindex')) {
   patchArea.setAttribute('tabindex', '0');
 }
@@ -3327,5 +3394,386 @@ document.addEventListener('keydown', (e) => {
   });
 })();
 </script>
+<!-- Bootstrap CSS/JS (v5) -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+  crossorigin="anonymous"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+  crossorigin="anonymous"
+></script>
+
+<script>
+/**
+ * Unified transform controls for selected patches
+ * - Scale: '[' (down 1/1.15), ']' (up ×1.15), clamped by % of original size
+ * - Rotate: ';' (−step), "'" (+step) where step = 15° default, 45° with Shift, 5° with Alt
+ * - After each operation, redrawCables() is invoked if present.
+ *
+ * Per-patch overrides (optional):
+ *   data-scale-min-percent="<number>"   data-scale-max-percent="<number>"
+ * These limits are relative to the patch's original unscaled size.
+ */
+(function () {
+  // ---- Configuration ----
+  const SCALE_UP = 1.15;
+  const SCALE_DOWN = 1 / SCALE_UP;
+
+  const ROT_STEP_DEFAULT = 15;   // degrees
+  const ROT_STEP_SHIFT   = 45;   // degrees
+  const ROT_STEP_ALT     = 5;    // degrees
+
+  // Percent of original size for scaling limits
+  const GLOBAL_MIN_PCT = 30;     // e.g., 30% of original size
+  const GLOBAL_MAX_PCT = 250;    // e.g., 250% of original size
+
+  // Absolute safety rails on the scale factor
+  const SCALE_MIN = 0.05;
+  const SCALE_MAX = 100;
+
+  // ---- Utilities ----
+  function getSelectedPatches() {
+    return Array.from(document.querySelectorAll(
+      '.patch.is-selected, .patch.selected, [aria-selected="true"], [data-selected="true"]'
+    )).filter(el => {
+      if (el.hasAttribute('aria-selected')) return el.getAttribute('aria-selected') === 'true';
+      if (el.hasAttribute('data-selected')) return el.getAttribute('data-selected') === 'true';
+      return true;
+    });
+  }
+
+  function isTypingContext(target) {
+    if (!target) return false;
+    const tag = target.tagName ? target.tagName.toLowerCase() : '';
+    return target.isContentEditable || tag === 'input' || tag === 'textarea' || tag === 'select';
+  }
+
+  function isSVG(el) {
+    return typeof SVGElement !== 'undefined' && el instanceof SVGElement;
+  }
+
+  function ensureTransformState(el) {
+    if (!el.dataset.baseTransformInitialized) {
+      if (isSVG(el)) {
+        el.dataset.baseTransform = el.getAttribute('transform') || '';
+      } else {
+        el.dataset.baseTransform = (el.style && el.style.transform) ? el.style.transform : '';
+        if (el.style && !el.style.transformOrigin) {
+          el.style.transformOrigin = '50% 50%';
+        }
+      }
+
+      // Store original size for % limits
+      const r = el.getBoundingClientRect();
+      el.dataset.origWidth  = el.dataset.origWidth  || String(r.width  || 1);
+      el.dataset.origHeight = el.dataset.origHeight || String(r.height || 1);
+
+      el.dataset.scaleFactor = el.dataset.scaleFactor || '1';
+      el.dataset.rotateDeg   = el.dataset.rotateDeg   || '0';
+      el.dataset.baseTransformInitialized = 'true';
+    }
+    if (el.dataset.scaleFactor == null) el.dataset.scaleFactor = '1';
+    if (el.dataset.rotateDeg   == null) el.dataset.rotateDeg   = '0';
+    if (el.dataset.baseTransform == null) {
+      el.dataset.baseTransform = isSVG(el)
+        ? (el.getAttribute('transform') || '')
+        : ((el.style && el.style.transform) || '');
+    }
+  }
+
+  function composeTransform(el, rotateDeg, scaleFactor) {
+    const base = (el.dataset.baseTransform || '').trim();
+    const rotateStr = isSVG(el)
+      ? ` rotate(${rotateDeg})`
+      : ` rotate(${rotateDeg}deg)`;
+    const scaleStr  = ` scale(${scaleFactor})`;
+    return `${base}${rotateStr}${scaleStr}`.trim();
+  }
+
+  // Clamp scale by percentage of original size
+  function clampScaleByPercent(el, proposedScale) {
+    const origW = parseFloat(el.dataset.origWidth  || '1') || 1;
+    const origH = parseFloat(el.dataset.origHeight || '1') || 1;
+
+    const minPct = parseFloat(el.dataset.scaleMinPercent || '') || GLOBAL_MIN_PCT;
+    const maxPct = parseFloat(el.dataset.scaleMaxPercent || '') || GLOBAL_MAX_PCT;
+
+    const minScaleW = (minPct / 100) * (1); // relative to original width
+    const minScaleH = (minPct / 100) * (1); // relative to original height
+    const maxScaleW = (maxPct / 100) * (1);
+    const maxScaleH = (maxPct / 100) * (1);
+
+    // Intersect ranges and also clamp to absolute SCALE_MIN/MAX
+    const minScale = Math.max(minScaleW, minScaleH, SCALE_MIN);
+    const maxScale = Math.min(maxScaleW, maxScaleH, SCALE_MAX);
+
+    return Math.min(Math.max(proposedScale, minScale), maxScale);
+  }
+
+  function applyScale(el, multiplier) {
+    ensureTransformState(el);
+    const current = parseFloat(el.dataset.scaleFactor || '1') || 1;
+    const next = current * multiplier;
+    const clamped = clampScaleByPercent(el, next);
+
+    const rotate = parseFloat(el.dataset.rotateDeg || '0') || 0;
+    const composed = composeTransform(el, rotate, clamped);
+
+    if (isSVG(el)) {
+      el.setAttribute('transform', composed);
+    } else {
+      el.style.transform = composed;
+    }
+    el.dataset.scaleFactor = String(clamped);
+  }
+
+  function applyRotation(el, deltaDeg) {
+    ensureTransformState(el);
+    const currentR = parseFloat(el.dataset.rotateDeg || '0') || 0;
+    const nextR = currentR + deltaDeg;
+
+    const scale = parseFloat(el.dataset.scaleFactor || '1') || 1;
+    const composed = composeTransform(el, nextR, scale);
+
+    if (isSVG(el)) {
+      el.setAttribute('transform', composed);
+    } else {
+      el.style.transform = composed;
+    }
+    el.dataset.rotateDeg = String(nextR);
+  }
+
+  function rotationStepFromEvent(e) {
+    if (e.shiftKey) return ROT_STEP_SHIFT;
+    if (e.altKey)   return ROT_STEP_ALT;
+    return ROT_STEP_DEFAULT;
+  }
+
+  function safeRedrawCables() {
+    if (typeof window.redrawCables === 'function') {
+      try { window.redrawCables(); } catch (_) {}
+    }
+  }
+
+  // ---- Keyboard handling ----
+  document.addEventListener('keydown', function (e) {
+    if (isTypingContext(e.target)) return;
+
+    const key = e.key;
+    if (key !== ']' && key !== '[' && key !== ';' && key !== "'") return;
+
+    const patches = getSelectedPatches();
+    if (patches.length === 0) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (key === ']' || key === '[') {
+      const mult = (key === ']') ? SCALE_UP : SCALE_DOWN;
+      patches.forEach(el => applyScale(el, mult));
+      safeRedrawCables();
+      return;
+    }
+
+    if (key === ';' || key === "'") {
+      const step = rotationStepFromEvent(e);
+      const delta = (key === "'") ? +step : -step; // "'" clockwise, ";" counter-clockwise
+      patches.forEach(el => applyRotation(el, delta));
+      safeRedrawCables();
+      return;
+    }
+  }, true);
+})();
+</script>
+
+<style>
+  /* Make both title and description visible in the accordion header (collapsed/expanded) */
+  #instructions .accordion .accordion-button {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .125rem;
+    line-height: 1.2;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+  }
+  #instructions .accordion .acc-title {
+    font-weight: 700;
+    color: #cfe5ff;
+  }
+  #instructions .accordion .acc-desc {
+    font-size: .95rem;
+    opacity: .9;
+  }
+  /* Match dark panel aesthetics */
+  #instructions .accordion-item {
+    background: transparent;
+    border-color: #444;
+  }
+  #instructions .accordion-button,
+  #instructions .accordion-button.collapsed {
+    background: rgba(28,28,30,0.65);
+    color: #e0e0e0;
+  }
+  #instructions .accordion-button:not(.collapsed) {
+    background: rgba(28,28,30,0.85);
+    color: #fff;
+  }
+  #instructions .accordion-body {
+    background: rgba(0,0,0,0.25);
+  }
+  
+    /* Hover effect on whole button */
+  #instructions .accordion-button:hover {
+    background: rgba(40,40,45,0.9);
+  }
+
+</style>
+<style>
+  .tab-key-circle {
+    position: absolute;
+    pointer-events: none;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px; /* center horizontally on cursor */
+    margin-top: -7px;  /* center vertically on cursor */
+    border-radius: 50%;
+    background: rgba(102, 179, 255, 0.8);
+    transform: scale(1);
+    opacity: 1;
+    animation: tabCircleAnim 0.2s ease-out forwards;
+    z-index: 9999;
+  }
+
+  @keyframes tabCircleAnim {
+    0%   { transform: scale(1); opacity: 1; }
+    80%  { transform: scale(2.5); opacity: 0.4; }
+    100% { transform: scale(2.8); opacity: 0; }
+  }
+</style>
+
+<script>
+(function () {
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    // Get mouse position relative to page
+    const mouseX = e.clientX ?? window._lastMouseX;
+    const mouseY = e.clientY ?? window._lastMouseY;
+
+    if (mouseX == null || mouseY == null) return;
+
+    const circle = document.createElement('div');
+    circle.className = 'tab-key-circle';
+    circle.style.left = mouseX + 'px';
+    circle.style.top  = mouseY + 'px';
+    document.body.appendChild(circle);
+
+    // Remove after animation
+    setTimeout(() => circle.remove(), 450);
+  });
+
+  // Track last mouse position for key events that don't have clientX/Y
+  document.addEventListener('mousemove', function (e) {
+    window._lastMouseX = e.clientX;
+    window._lastMouseY = e.clientY;
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const container = document.querySelector('#instructions .scroll-content');
+  if (!container) return;
+
+  const srcList = container.querySelector('ol.instructions-list');
+  if (!srcList) return;
+
+  // Build accordion from the existing <li> items
+  const acc = document.createElement('div');
+  acc.className = 'accordion';
+  acc.id = 'instructionsAccordion';
+
+  const items = Array.from(srcList.children).filter(el => el.tagName === 'LI');
+
+  items.forEach((li, idx) => {
+    const id = `instr-${idx+1}`;
+    const headingId = `heading-${id}`;
+    const collapseId = `collapse-${id}`;
+
+    // Extract title and description from the original list item
+    const titleEl = li.querySelector(':scope > p > strong');
+    const descEl  = li.querySelector(':scope > .instructions-description');
+
+    const titleText = titleEl ? titleEl.textContent.trim() : `Section ${idx+1}`;
+    const descText  = descEl ? descEl.textContent.trim() : '';
+
+    // Clone the content for the accordion body (remove title/desc from the clone)
+    const bodyClone = li.cloneNode(true);
+    const removeTitle = bodyClone.querySelector(':scope > p');
+    if (removeTitle) removeTitle.remove();
+    const removeDesc = bodyClone.querySelector(':scope > .instructions-description');
+    if (removeDesc) removeDesc.remove();
+
+    // Accordion item DOM
+    const item = document.createElement('div');
+    item.className = 'accordion-item';
+    item.innerHTML = `
+      <h2 class="accordion-header" id="${headingId}">
+        <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse" data-bs-target="#${collapseId}"
+                aria-expanded="false" aria-controls="${collapseId}">
+          <span class="acc-title">${titleText}</span>
+          ${descText ? `<span class="acc-desc">${descText}</span>` : ''}
+        </button>
+      </h2>
+      <div id="${collapseId}" class="accordion-collapse collapse"
+           data-bs-parent="#${acc.id}">
+        <div class="accordion-body"></div>
+      </div>
+    `;
+
+    // Move the remaining content (steps, tables, etc.) into the body
+    const bodyHost = item.querySelector('.accordion-body');
+    // Append all remaining top-level children from bodyClone (now without title/desc)
+    Array.from(bodyClone.childNodes).forEach(n => bodyHost.appendChild(n));
+
+    acc.appendChild(item);
+  });
+
+  // Replace the list with the accordion
+  srcList.replaceWith(acc);
+
+  // Keyboard behavior: Tab toggles the hovered accordion item's collapse
+  let hoveredItem = null;
+  acc.addEventListener('mouseenter', e => {
+    const it = e.target.closest('.accordion-item');
+    if (it) hoveredItem = it;
+  }, true);
+  acc.addEventListener('mousemove', e => {
+    const it = e.target.closest('.accordion-item');
+    if (it) hoveredItem = it;
+  }, true);
+  acc.addEventListener('mouseleave', () => { hoveredItem = null; }, true);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    if (!hoveredItem) return;
+
+    // Prevent normal Tab focus navigation ONLY while hovering an accordion item
+    e.preventDefault();
+    e.stopPropagation();
+
+    const collapseEl = hoveredItem.querySelector('.accordion-collapse');
+    if (!collapseEl) return;
+
+    const inst = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+    inst.toggle();
+  }, true);
+})();
+</script>
+
 </body>
 </html>

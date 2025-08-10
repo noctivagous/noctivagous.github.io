@@ -1,13 +1,27 @@
 Detail Collection Menus / Preliminary Menus for AI Chatbots
 
+"Ask any questions before proceeding." I added this to a prompt while trying
+to port an especially detailed section of a software project to another platform and I then
+received a table of questions from the AI (I have the AI make tables instead of lists
+generally).  This allowed me to inform the AI about aspects where it needed
+clarification or didn't have enough information.  After I answered the table of 
+questions, I received a followup table with default proposals for the conversion 
+with some minor additional questions.  The righthand column was a list where 
+if I didn't say anything it would proceed what was stated there. 
+This allowed me to evaluate the plans of the AI after it received 
+information from me and I answered its remaining questions and made minor changes.  
+After the AI asked for more clarification during this exchange, it eventually 
+presented a summary of what it was about to do.  There is no doubt that for
+this conversion the interaction benefitted from.
 
-I submitted a prompt to the AI, "Make a playing card with the image of a joker on it."  
-What the AI carried in its assumptions was very different than what I expected.  
-It made an image of a joker using an actor from a recent comic book movie.  
-It rendered the image in a photorealistic style with the joker standing inside 
-a scaled up playing card frame.  Of course, I knew ahead of time that 
-the best way to get the desired result from an AI in this situation is 
-to provide it a list of specifying details:
+
+One time I submitted a prompt to a different AI, "Make a playing card with the 
+image of a joker on it."  What the AI carried in its assumptions was very 
+different than what I expected.  It made an image of a joker using an actor
+from a recent comic book movie.  It rendered the image in a photorealistic style with 
+the joker standing inside a life-sized, scaled up playing card frame.  Of course, 
+I knew ahead of time that the best way to get the desired result from an AI in this 
+situation is to provide it a list of specifics and details:
   
 - What illustration style (etched illustration, not photorealistic). 
 - What the joker should look like (comic book/real life). - What the joker should be doing. 
@@ -16,40 +30,55 @@ to provide it a list of specifying details:
 - etc.  
 
 For routine usage of AI, manually providing a wide-ranging list of details like that takes 
-too much effort.  Yet, because it is needed to align AI image generation with the user's 
-objectives, an addition can be inserted into the AI chatbot software.  The AI can 
-proactively suggest and collect relevant details in an intermediate sequence, 
-a menu or series of menus that is shown before the image is generated.
+too much effort.  And if you have the AI generate all of this information on its own, your 
+role in the output will be. Yet, because it is needed to align AI image generation with the user's 
+objectives, an additional step can be inserted into the AI chatbot software before
+the output is made.  The AI can proactively suggest relevant details in parametric form
+in an intermediate sequence, which is a menu or series of menus that is shown before the 
+image is generated.  The AI will collect information.
+
 
 "Detail Collection Menus And Their Different Types,"
 
-After the user submits a promp, the AI responds with a structured menu (e.g., dropdowns, 
-text fields) tailored to the content type (image, text, video, code). The menu 
-includes common parameters relevant to the situation and an open-ended field for 
-additional details.  The user can choose to extend the number of details provided
-or, before submitting the prompt, select a menu item list length on a scale from 1 to 5.
+After the user submits a prompt, the AI responds with a structured menu (e.g., dropdowns, 
+text fields) tailored to the requested output type (image, text, video, code). The menu 
+includes parameters expected and relevant to the situation and an open-ended text field for 
+additional details.  If the menu is too short or too long, the user can choose to 
+alter the number of details provided in place.  The length of such a menu can be
+set on a scale from 1 to 5.
 
-What is important is that this menu can be utilized in different ways to improve the
-AI's interaction with the user. One type of menu sequence is one in which all of
-the details are collected up front, on the list length scale from 1 to 5, and then
-the AI generates the result.  In another kind of mode, the menu that immediately follows 
-the prompt collects general information and then follows with subsequent menus that 
-get more specific details based on the information the user provided.  So whereas
-one type of menu asks for everything upfront, this one asks general information and
-then the AI interacts successively with the user in more specific menus 
-get a finished set of requirements.  Within the latter kind, the user can choose
-to fill out every menu or proceed with what was provided.
+This detail collection menu does not have to be limited to one form. It can be utilized 
+in different ways to improve the AI's interaction with the user.  
 
-There are different paths that this can take, but generally an issue with the AI
-is that it doesn't tell the user enough about what it is going to do, which is
-particularly an issue when the task given to the AI produces complex output.  
+ALL-AT-ONCE INFORMATION COLLECTION MENUS
+The type of menu  sequence just mentioned is one in which all of the details are collected 
+upfront on just one menu, with the list length ranging on scale from 1 to 5. After 
+submission, the AI generates the result.  
 
-Thus it is the case that the user can enable the mode where the AI describes
-what it is planning in reaction to the details collected, before it actually does it. 
-After the AI asks questions in response to the prompt (in either the single,
-upfront menu or the gradually specifying kind), it shows a menu of plans.
-This is the step where the user gets to add and make revisions to the plans
-if necessary.
+FOLLOWUP MENU SEQUENCES
+In another kind of mode, the detail collection menu that immediately follows the prompt 
+collects information but then follows with subsequent menus that get more details based 
+on the information the user provided.  This allows moving from general questions to
+more specific aspects.  If at any point the user wants to move on from the menus 
+and let the AI fill in the rest, he can opt to do that. 
+
+So, whereas one type of menu asks for everything upfront, another kind may ask for 
+information and then the AI interacts successively with the user in more specific menus 
+get a finished set of requirements.  The user can choose to fill out every menu 
+or proceed with what was collected so far.
+
+FOLLOWUP PROPOSALS FOR EVALUATION / PREVIEWS
+After not actually collecting any information, another issue with many uses of AI
+is that it isn't configured to tell the user about what it is going to do before it does
+it. This is particularly an issue when the task given to the AI produces complex output,
+such as code.  So, not only should the AI collect information but it should also
+be able to present to the user a stage where it says to the user what it is about to do
+so that the user can check off everything and make minor changes.
+
+The user can enable this last segment of the menu sequence where the AI describes
+what it is planning in response to the details it collected, indicating what it will do
+and sometimes showing sample output.  It will provide a menu of its plans and sometimes a 
+preview.  The user gets to add and make revisions before submission.
 
 
 Examples For First Menu: 

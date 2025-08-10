@@ -1,0 +1,131 @@
+Minimal Indie Developer IDE / Stage 1 Code Editor
+
+The AI code editor IDEs don't recognize the process of an individual or indie
+software developer building up from a small code base upwards and instead they
+generate lots of code to manage from the outset. An alternative to the current
+AI code editor IDEs would be one that is purposely limited to four files: an
+HTML file, a JavaScript file, a CSS file, and one Python backend file, though
+the HTML can reference external JS libraries and the Python can import external
+libraries.  This is to work on the project at the beginning stage and then
+later, if desired, put it into an AI code editor IDE.  It would have the four
+files at the top in tabs plus an additional preview pane and work within that
+the entire time.  The software developer would not mind if the files become long
+and when they become very long he can break them off into individual files with
+the other AI code editor IDEs.
+
+
+# PROJECT REQUIREMENTS DOCUMENT
+
+# Minimal Indie Developer IDE
+
+This project is a lightweight, web-based Integrated Development Environment (IDE) 
+designed for the first stage of software development for an individual or indie 
+software developer when previewing functionality is the goal, not the full code base. 
+It revolves around a minimal setup for this stage by editing within only four code files 
+(`index.html`, `script.js`, `style.css`, `app.py`) and one project description file.  
+It features a live preview pane, the CodeMirror project for syntax highlighting, 
+a console area, and an AI chat box that for assistance. For the software project, 
+although it is limited to four files, it does allow them to reference external 
+JavaScript and Python libraries. It is intended for the early stage of a project that can later be scaled into 
+full-fledged IDEs.  A software developer can make a very long files within these
+four files just before transitioning them to AI code editors that organize them.
+
+
+## Project Overview
+
+The IDE provides a simple environment for editing and previewing code, with a focus 
+on the stage when the codebase is small and manageable. It includes:
+
+- **Four File Tabs**: For editing `index.html`, `script.js`, `style.css`, and `app.py`.
+- **Split-Pane Interface**: Code editors on the left, live preview on the right.
+- **CodeMirror Integration**: Enhances editing with syntax highlighting and line numbers.
+- **AI Chat Prompt**: A bottom panel for interacting with an AI assistant (mock implementation).
+- **Live Preview**: Updates in real-time for HTML, JavaScript, and CSS changes.
+
+## File Structure
+
+The project is encapsulated in a single `index.html` file, which simulates the four files through text areas or CodeMirror editors.
+
+| File Name       | Purpose                                                                 |
+|-----------------|-------------------------------------------------------------------------|
+| `index.html`    | Defines the HTML structure, references `style.css` and `script.js`.      |
+| `script.js`     | Contains JavaScript logic, e.g., a `sayHello` function with jQuery.      |
+| `style.css`     | Styles the HTML content with CSS rules.                                 |
+| `app.py`        | Simulated Python backend (e.g., Flask), not executed in the browser.     |
+
+## Layout Description
+
+### 1. Tabs
+- Located at the top of the interface.
+- Four clickable tabs (`index.html`, `script.js`, `style.css`, `app.py`) for switching between editors.
+- Active tab is highlighted with a blue underline and white background.
+
+### 2. Split-Pane Interface
+- **Left Pane**: Code editor for the active file, powered by CodeMirror.
+  - Displays one file at a time based on the selected tab.
+  - Supports syntax highlighting for HTML, JavaScript, CSS, and Python.
+  - Includes line numbers for better code navigation.
+- **Right Pane**: Live preview iframe showing the rendered HTML.
+  - Updates automatically when HTML, JavaScript, or CSS changes.
+  - Does not render Python code, as it simulates a backend.
+
+### 3. AI Chat Prompt
+- Located at the bottom, below the split panes.
+- Consists of:
+  - **Message Area**: Scrollable div for displaying user and AI messages.
+  - **Input Field**: Text input for sending queries to the AI (mock responses for now).
+- Messages are appended on Enter keypress, with simulated AI replies after a short delay.
+
+## Functionality
+
+- **Tab Switching**: Clicking a tab shows its corresponding editor and refreshes the CodeMirror instance.
+- **Code Editing**: CodeMirror provides syntax highlighting and line numbers for all file types.
+- **Live Preview**: HTML, JavaScript, and CSS changes are reflected instantly in the preview iframe.
+- **External Libraries**:
+  - HTML references jQuery (`https://code.jquery.com/jquery-3.6.0.min.js`).
+  - Python can import libraries like Flask (simulated, requires a server for execution).
+- **AI Chat**: Users type queries, and the system appends mock AI responses.
+
+## Technical Details
+
+- **HTML Structure**:
+  - Uses `<div class="tabs">` for tab navigation.
+  - `<div class="editor-container">` splits into editor and preview panes.
+  - `<div class="chat-container">` holds the chat interface.
+- **CSS Styling**:
+  - Flexbox layout for responsive design.
+  - Tabs styled with hover and active states.
+  - CodeMirror editors fill the editor pane with a monospace font.
+- **JavaScript**:
+  - Initializes CodeMirror for each file type (HTML, JavaScript, CSS, Python).
+  - Handles tab switching, preview updates, and chat interactions.
+  - Uses jQuery for external API call simulation.
+- **CodeMirror**:
+  - Imported via CDN (`codemirror.min.js`, `codemirror.min.css`).
+  - Modes: `htmlmixed`, `javascript`, `css`, `python`.
+- **Chat Implementation**:
+  - Basic input field with `keypress` event listener.
+  - Simulated AI responses with a 500ms delay.
+
+## Usage
+
+1. Save the project as `index.html`.
+2. Open in a browser to access the IDE.
+3. Edit code in the left pane, observe live preview on the right.
+4. Use the chat input at the bottom to simulate AI queries.
+5. When files grow large, export them to a full IDE (e.g., VS Code) for further development.
+
+## Future Enhancements
+
+- Integrate a Python runtime (e.g., Pyodide) for executing `app.py`.
+- Connect the AI chat to a real API (e.g., xAI’s Grok API).
+- Add file export functionality to save individual files.
+- Enhance CodeMirror with themes or auto-completion.
+
+## Notes
+
+- The Python file (`app.py`) is for editing only; execution requires a separate server setup.
+- The AI chat is a mock implementation; replace with a real AI service for production use.
+- Ensure an internet connection for loading jQuery and CodeMirror CDNs.
+
+---

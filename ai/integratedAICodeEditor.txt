@@ -1,0 +1,60 @@
+Somehow the AI code editors would be better off if they had access to a live
+version of the program running, even if it is only partly being executed. 
+When the AI writes code, it could look at the stack of active memory and the internal
+graph being executed along with the lines of code in the text file to avoid making
+mistakes.  
+
+Integrating an AI code editor with a JavaScript runtime, like a web browser or
+web view component, would be a way to enable a middle state
+where the AI can interact with both the code text and the live
+runtime environment. JavaScript's dynamic nature and the browser's built-in
+tools (e.g., V8 engine, DevTools) make this a feasible integration for an AI code
+editor.  The AI could inspect the call stack, DOM, memory, and execution graph
+in real time, editing code based on what’s actually happening in the runtime.
+
+Often the AI isn't aware of whether the results that it has made will work,
+not only in terms of functionality but also appearance and interaction. 
+An AI code editor setup that integrates the web browser and its development 
+tools could empower agents to not only inspect and debug code in real-time
+but also test UIs via multimodal AI (e.g., analyzing screenshots).  It would
+be a complete system, fetching web data, and connect to external systems through 
+MCP servers.
+
+This AI code editor would ship with a Python web server so that backend and frontend
+web software development occur in tandem.
+
+
+### How It Could Work
+A JavaScript-focused AI code editor integrated with a browser or web view component could leverage the runtime as follows:
+- **Runtime Access**: The editor would connect to the browser’s JavaScript engine (e.g., V8 in Chrome) via APIs like the Chrome DevTools Protocol (CDP) or WebAssembly interfaces, allowing the AI to query the call stack, heap, and event loop.
+- **Live Feedback**: As you type or prompt the AI, it could execute partial code in a sandboxed iframe or Web Worker, observing results (e.g., DOM changes, console output) to refine suggestions.
+- **Execution Graph Awareness**: The AI could parse the abstract syntax tree (AST) alongside runtime data (e.g., variable states, function call traces) to avoid errors like undefined variables or incorrect DOM manipulations.
+- **Dynamic Editing**: For example, if the AI detects a null reference error in the DOM during a partial run, it could rewrite the code to include a null check, referencing the live state.
+
+### Benefits and Challenges
+Here’s a table summarizing the key benefits and challenges of this approach in a JavaScript context:
+
+| Aspect | Benefits | Challenges |
+|--------|----------|------------|
+| **Runtime Integration** | AI can inspect live DOM, event listeners, and memory (e.g., via `window` or `globalThis`) to ensure code aligns with actual behavior. | Requires secure sandboxing to prevent malicious code execution or unintended side effects (e.g., modifying the host page). |
+| **Error Prevention** | Real-time detection of issues like `undefined` errors or incorrect event bindings by observing the stack and DOM. | Overhead of maintaining a live runtime; may slow down editing for complex apps. |
+| **Context Awareness** | AI can prioritize suggestions based on active browser state (e.g., current URL, viewport, or network requests). | Parsing complex runtime states (e.g., async/await chains) is computationally intensive. |
+| **User Experience** | Immediate feedback on code changes, like seeing DOM updates in the web view as the AI edits. | Integrating with diverse browser environments (Chrome, Firefox, Safari) adds complexity. |
+| **Scalability** | Works well for client-side JS, SPAs, or Node.js environments with similar runtimes. | Less effective for server-side or non-browser JS contexts without custom runtimes. |
+
+
+A different type of AI code editor would come with an integrated setup, not just
+focus on the editing of the code. The app would integrate web browser developer
+tools, such as WebKit's or Chromium's with agents as well as a web server for
+writing Python code and having it work in tandem with the JavaScript.  In this
+way, the JIT features of Python and JavaScript, along with a live DOM and
+debugger to inspect would allow the agents to examine every aspect of the
+program, including testing the UI with AI examination of images to see if what
+was attempted was accomplished. The agents could retrieve information from the
+web and utilize MCP servers.
+
+This way it would act and edit based on what is going on.  This
+suggests that perhaps there could be a middle state of computer code (a
+different convention) in which the code, when loaded into the editor, is already
+loaded live in some respects, and then the AI code editor would work with both
+the file of text and the running program internals.

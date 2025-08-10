@@ -15,20 +15,44 @@ to provide it a list of specifying details:
 - The clothing. 
 - etc.  
 
-For routine usage of AI, providing a wide-ranging list of details like that takes too much
-effort.  Yet, because it is needed to align AI image generation with the user's 
-objectives, an addition should be made inside the AI chatbot software.  The AI can 
-proactively suggest and collect relevant details in a preliminary response, 
-a menu that is shown before the image is generated.
+For routine usage of AI, manually providing a wide-ranging list of details like that takes 
+too much effort.  Yet, because it is needed to align AI image generation with the user's 
+objectives, an addition can be inserted into the AI chatbot software.  The AI can 
+proactively suggest and collect relevant details in an intermediate sequence, 
+a menu or series of menus that is shown before the image is generated.
 
-"Mechanism,"
+"Detail Collection Menus And Their Different Types,"
 
-The AI responds to an initial user prompt with a structured menu (e.g., dropdowns, text fields) 
-tailored to the content type (image, text, video, code). The menu includes common parameters 
-and an open-ended field for additional details.
+After the user submits a promp, the AI responds with a structured menu (e.g., dropdowns, 
+text fields) tailored to the content type (image, text, video, code). The menu 
+includes common parameters relevant to the situation and an open-ended field for 
+additional details.  The user can choose to extend the number of details provided
+or, before submitting the prompt, select a menu item list length on a scale from 1 to 5.
+
+What is important is that this menu can be utilized in different ways to improve the
+AI's interaction with the user. One type of menu sequence is one in which all of
+the details are collected up front, on the list length scale from 1 to 5, and then
+the AI generates the result.  In another kind of mode, the menu that immediately follows 
+the prompt collects general information and then follows with subsequent menus that 
+get more specific details based on the information the user provided.  So whereas
+one type of menu asks for everything upfront, this one asks general information and
+then the AI interacts successively with the user in more specific menus 
+get a finished set of requirements.  Within the latter kind, the user can choose
+to fill out every menu or proceed with what was provided.
+
+There are different paths that this can take, but generally an issue with the AI
+is that it doesn't tell the user enough about what it is going to do, which is
+particularly an issue when the task given to the AI produces complex output.  
+
+Thus it is the case that the user can enable the mode where the AI describes
+what it is planning in reaction to the details collected, before it actually does it. 
+After the AI asks questions in response to the prompt (in either the single,
+upfront menu or the gradually specifying kind), it shows a menu of plans.
+This is the step where the user gets to add and make revisions to the plans
+if necessary.
 
 
-Examples: 
+Examples For First Menu: 
 ---------------------------------------- 
 
 "Example for Images,"
@@ -40,6 +64,7 @@ For “Make a playing card with a joker,” the AI could prompt:
 - Clothing: [Traditional Jester, Modern Suit, Custom]
 - Card context: [Tabletop, Life-Sized, Floating]
 - Additional details: [Text field for specifics, e.g., “red and black color scheme”]"
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
 
 "Example for Text,"
 For “Write a story about a hero,” the AI could prompt:
@@ -49,6 +74,7 @@ For “Write a story about a hero,” the AI could prompt:
 - Setting: [Medieval, Futuristic, Urban, Custom]
 - Length: [Short (100 words), Medium (500 words), Long (1000+ words)]
 - Additional details: [Text field, e.g., “include a dragon”]"
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
 
 "Example for Video,"
 For “Create a video of a car chase,” the AI could prompt:
@@ -58,6 +84,7 @@ For “Create a video of a car chase,” the AI could prompt:
 - Camera angle: [First-Person, Overhead, Side View]
 - Duration: [30s, 1min, 3min]
 - Additional details: [Text field, e.g., “rainy night”]"
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
 
 "Example for Code,"
 For “Write a program to sort numbers,” the AI could prompt:
@@ -66,6 +93,7 @@ For “Write a program to sort numbers,” the AI could prompt:
 - Input type: [Array, List, File Input]
 - Output format: [Sorted List, Visual Graph, File]
 - Additional details: [Text field, e.g., “handle duplicates”]
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
 
 ----------------------------------------  
 
@@ -76,22 +104,25 @@ For “Write a program to sort numbers,” the AI could prompt:
 - Saves time by minimizing iterative revisions."
 
 This detail collection menu will end up listing details that the user 
-didn't anticipate for the situation, which demonstrates its value.  A preliminary menu like this 
-doesn't have to be limited to the generation of images, of course, and can be 
-applied to any AI situation such as text, video, and code.
+didn't anticipate for the situation, which demonstrates its value.  
+A preliminary menu like this doesn't have to be limited to the generation 
+of images, of course, and can be applied to any AI situation such as 
+text, video, and code.
 
-"Purpose,"
+The gradual kind of menu sequence starts general and allows the AI to 
+progressively collect information to form an accurate description 
+of what the user is going for.  
+
+"Purpose Of The Detail Collection Menus,"
 "To guide users in clarifying their intent by prompting for specific details 
 before content generation, ensuring the AI’s output aligns with expectations.
-
-
 
 
 "Implementation Considerations,"
 - User Experience: Menus should be concise to avoid overwhelming users. 
 Default options or “skip” buttons can streamline the process and
 menu items can be mapped to keyboard keys on desktop.
-- Adaptability: The AI should dynamically adjust prompts 
+- Adaptability: The AI will dynamically adjust prompts to the user
 based on context (e.g., different options for “joker” vs. “landscape”).
 - Learning: Optionally, the AI could learn from user patterns to suggest personalized 
 defaults over time though the downsides of this have been demonstrated in that
@@ -100,7 +131,9 @@ AI takes all actions as information for user patterns.
 - Accessibility: Ensure menus are intuitive for non-technical users, 
 with clear labels and examples.
 - Flexibility: Include an open-ended text field for users to specify 
-details not covered by dropdowns.
+details not covered by dropdowns.  Allow deletion and addition of 
+menu items.
+
 
 "Challenges,"
 - Balancing detail granularity with simplicity to avoid user frustration.

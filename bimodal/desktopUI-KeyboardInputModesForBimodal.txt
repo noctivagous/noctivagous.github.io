@@ -1,0 +1,39 @@
+APPLYING THE KEY-CLICKS (FROM BIMODAL CONTROL) TO
+A DESKTOP SYSTEM UI
+
+The question becomes how to change a desktop operating
+system around completely to use key-clicks (the keys
+click instead of the mouse buttons while the mouse
+is used for cursor steering) instead of conventional
+mouse clicks.  
+
+Key-clicks are an example of Bimodal Control
+Theory, which states that it is usually better for UI 
+when there are two modes to user input that are 
+divided into separate device locations rather than
+the current situation where it is often condensed into
+a single location.  The mouse device controls 
+both the movement of the cursor and the activation of 
+onscreen elements through clicks, which is too much
+for one hand.  It is better if these tasks are devided.
+
+To use bimodal control theory, a desktop computing
+environment would center around keyboard input modes.
+Typing is one input mode for the keyboard and within
+this mode the layout is whichever is configured on 
+the system.  But a key-click mode is one where the
+keys serve as clicks for the cursor's location 
+or they activate functions without the need for
+a modifier key being pressed. Within the key-click input 
+mode for the keyboard, any kind of layout can be loaded,
+whether it is the system one or a specific one for
+a software application.  Additionally, a software
+application can swap out many layouts for the key-click
+input mode for the keyboard.
+
+In the case of the file navigator, a key-click-centric
+desktop operating system would have predetermined
+states and flows for switching the input mode.  For example,
+once the key-click mode activated the editing state of
+a file's name, the keyboard would move to the input mode
+of typing (with the name "filename editing" for this).

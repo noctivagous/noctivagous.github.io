@@ -1,0 +1,31 @@
+Guideline-Centric Box Sizing And Layout - Flexible Guideline Net
+
+-- Guidelines Act As Programmatic Elements That 
+Hold Boxes, Both on Their Edges and Centerlines.
+
+	- What is Programmed Are The Behavior of The Guidelines
+	in particular through parameters.
+	
+-- Boxes are assigned to guidelines.
+
+-- For a box to have size and position it has to be 
+assigned to 4 guidelines corresponding to its edges.
+	- The top and bottom edges of a box are therefore assigned to 
+	horizontal guidelines while the left and right
+	are assigned to vertical guidelines.
+
+-- Guidlines are defined relative to the parent box to which
+they belong, with the viewport being the root box.
+
+-- Because guidelines can move in either fixed or dynamic relationships
+to box edges, this allows for ordered, flexible layouts without the use
+of constraints components.
+	
+- Guidelines - vertical and horizontal (diagonal later) 
+are specified manually, but since they are programmatic
+elements, their position is configured through parameters.
+
+	- Guidelines are positioned inside or outside of the box.
+
+Presets for a box's guidelines are possible, such as 
+three column layouts with gutters.

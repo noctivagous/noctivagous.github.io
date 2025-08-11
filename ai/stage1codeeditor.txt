@@ -1,10 +1,78 @@
-Minimal Indie Developer IDE / Stage 1 Code Editor
+Minimal Indie Developer IDE / Stage 1 AI Code Editor
 
-The AI code editor IDEs don't recognize the process of an individual or indie
-software developer building up from a small code base upwards and instead they
-generate lots of code to manage from the outset. An alternative to the current
-AI code editor IDEs would be one that is purposely limited to four files: an
-HTML file, a JavaScript file, a CSS file, and one Python backend file, though
+# PROJECT REQUIREMENTS DOCUMENT
+
+# Minimal Indie Developer IDE
+
+This project is a lightweight, web-based Integrated Development Environment (IDE) 
+designed for the first stage of software development for an individual or indie 
+software developer when previewing functionality is the goal, not the full code base. 
+It revolves around a minimal setup for this stage by editing within only four code files 
+(`index.html`, `script.js`, `style.css`, `app.py`) and one project description file.  
+It features a live preview pane, the CodeMirror project for syntax highlighting, 
+a console area, and an AI chat box that for assistance. For the software project, 
+although it is limited to four files, it does allow them to reference external 
+JavaScript and Python libraries. It is intended for the early stage of a project that 
+can later be scaled into full-fledged IDEs.  A software developer can make a very long 
+files within these four files just before transitioning them to AI code editors that 
+organize them.
+
+# Background
+
+The agent-based AI code editors don't recognize the process of an independent 
+software developer who builds up a program from a small code base and observes 
+results along the way, revising the code in response to what is executed.  
+Instead, they generate broad plan details and code to manage from the outset.  
+They attempt to produce the entire code base all at once without ever executing
+the program and observing it. 
+
+In response to this, software developers are returning to the AI 
+chatbots where they can get more reliable results because they have much
+better control over the AI's generation of code.  They can interact with the AI on 
+specific sections of the code, unlike these AI code editors that.  This manual method
+allows the project to match how code has always been written and the program can be 
+efficiently made progressively.
+  
+It is unworkable to write software with an AI agent that goes off and does things 
+and keeps you out of the loop.  It shows that if the AI code editors keep the software 
+developers out of the loop, they are going to have to leave them for serious tasks because 
+
+Even if the goal of the software developer is to eventually produce large amounts of code for a 
+complete software project, this mass production of code by the AI without the software
+developer's participation is still a problem.  The most notable deficiency of these
+agent-based AI code editors is that they don't prompt the software developer with 
+any questions or comments before fulfilling a request, they don't ask for any 
+clarifications when something is vague, and they basically never explain what they are 
+about to do for approval before they do it.  This is a topic Noctivagous discusses 
+elsewhere, which is the benefit of inserting detail collection menus or intermediate menus
+into the chat which, before generating anything, ask the user questions, mention the 
+implications of a set of tasks, provide suggestions, or explain what is going to happen.
+
+AI can produce code quickly, but an AI agent can't just be embedded inside a code editor and
+produce a successful software development product-- never examining deeper aspects of how software development
+occurs and just focusing on what the AI agent does with the code.  
+When software developers write programs or software on their own they write them while 
+observing results at each step and by the time there is a milestone the program has been run.  
+Large bodies of code are inserted by these AI agents with the software developer
+out of the loop and the program never having been executed.
+
+Even on a team project where the code base is large and divided, if a person is working 
+on an isolated component he will be working on it while observing results as the
+code is edited.  By contrast, when the AI code editor agents undertake a project, 
+they first outline maximally complete roadmaps of what will have to be accomplished 
+and then start inserting code into files.  The seeming advantage of it taking
+over all of these tasks that would normally only be possible when there are
+a dozen or more people working in a team environment is ignoring the fact
+that when that happens in an office environment, the project is put together in
+a step-by-step process spread out over time, with the team being informed over 
+the weeks and months about what is happening, including on a whiteboard or bulletin board.
+For the AI code editor to attempt to do this all at once in a day of code insertion
+skips over the actual aspects that make any of the software development team environments
+work.
+
+An alternative to the current AI code editor IDEs would be one that is purposely 
+limited to four files: an HTML file, a JavaScript file, a CSS file, and one 
+Python backend file, though
 the HTML can reference external JS libraries and the Python can import external
 libraries.  This is to work on the project at the beginning stage and then
 later, if desired, put it into an AI code editor IDE.  It would have the four

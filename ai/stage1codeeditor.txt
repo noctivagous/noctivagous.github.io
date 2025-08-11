@@ -17,40 +17,61 @@ can later be scaled into full-fledged IDEs.  A software developer can make a ver
 files within these four files just before transitioning them to AI code editors that 
 organize them.
 
+Two parameters to provide to the user are modularity and optimization/performance.  
+When writing code sketches quickly, the software developer isn't focused on modularity and
+optimization and is just trying to get demos working to see how the concept works
+in practice, whether it is a viable path, how much work it will take to do the program
+to completion.
+
 # Background
 
-The agent-based AI code editors don't recognize the process of an independent 
-software developer who builds up a program from a small code base and observes 
-results along the way, revising the code in response to what is executed.  
-Instead, they generate broad plan details and code to manage from the outset.  
-They attempt to produce the entire code base all at once without ever executing
-the program and observing it. 
+There are times when the independent software developer is just trying to make
+demos and prototypes and then piece them together into a larger demo before building 
+the actual program.  The agent-based AI code editors aren't able to accomodate this
+because they don't ever generate stripped down or basic demos, as it isn't a recognized
+practice in software development. They instead do what you should when planning big
+projects, build out lots of scaffolding and plan for the full level of modularity 
+and optimization from the start.
+ 
+They don't recognize the process of an independent software developer who builds up 
+a program from a small code base and observes results along the way, revising the code in 
+response to what is executed.  It isn't always the time to modularize or optimize when you
+are making demos, as that is a step for later. These agent-based code editors 
+generate broad plan details and code to manage from the outset.  They attempt to 
+produce the entire code base all at once without ever executing the program and 
+observing it. 
 
-In response to this, software developers are returning to the AI 
-chatbots where they can get more reliable results because they have much
-better control over the AI's generation of code.  They can interact with the AI on 
-specific sections of the code, unlike these AI code editors that.  This manual method
-allows the project to match how code has always been written and the program can be 
-efficiently made progressively.
+In response to this, software developers are returning to the AI chatbots like ChatGPT
+to generate code, where they can get an interactive process with the AI, giving them
+much better control over the AI's generation of code. They get more reliable results 
+because they can interact with the AI on each point of the section of the code being
+worked on, unlike these agent-based AI code editors that behave like runaway servants
+who come back with finished results.  The manual method of making code via AI chatbots
+allows the software development to sync with how code was written before AI, and there
+will be no surprises in what the program is when it is made progressively in a cycle
+where the software developer examines the results after executing the program.
   
-It is unworkable to write software with an AI agent that goes off and does things 
-and keeps you out of the loop.  It shows that if the AI code editors keep the software 
-developers out of the loop, they are going to have to leave them for serious tasks because 
+Writing software with an AI agent that goes off and does things on its own,
+keeps you out of the loop, and then reports what it just did is unworkable for so many
+situations.   It shows that if the agent-based AI code editors keep the software 
+developers out of the loop, they are going to be relegated to the category of novelties
+for many situation.  They aren't respecting what the software developer has always done.
 
 Even if the goal of the software developer is to eventually produce large amounts of code for a 
-complete software project, this mass production of code by the AI without the software
-developer's participation is still a problem.  The most notable deficiency of these
+complete software project, this mass production of code by the AI agent without the software
+developer's participation is a problem.  The most notable deficiency of these
 agent-based AI code editors is that they don't prompt the software developer with 
 any questions or comments before fulfilling a request, they don't ask for any 
-clarifications when something is vague, and they basically never explain what they are 
-about to do for approval before they do it.  This is a topic Noctivagous discusses 
-elsewhere, which is the benefit of inserting detail collection menus or intermediate menus
-into the chat which, before generating anything, ask the user questions, mention the 
+clarifications when any task has multiple ways to approach it or is vague aspects, 
+and they never explain what they are about to do for the user's review and approval before 
+they do it.  This is a topic Noctivagous discusses elsewhere, which is the benefit 
+of designing an AI chatbot to insert detail collection menus or intermediate menus into 
+interactions before generating anything.  These will ask the user questions, mention the 
 implications of a set of tasks, provide suggestions, or explain what is going to happen.
 
 AI can produce code quickly, but an AI agent can't just be embedded inside a code editor and
-produce a successful software development product-- never examining deeper aspects of how software development
-occurs and just focusing on what the AI agent does with the code.  
+produce a successful software development product-- never examining deeper aspects 
+of how software development occurs and just focusing on what the AI agent does with the code.  
 When software developers write programs or software on their own they write them while 
 observing results at each step and by the time there is a milestone the program has been run.  
 Large bodies of code are inserted by these AI agents with the software developer

@@ -89,6 +89,34 @@ Extensibility
 - New patch types can be added by composing HTML within `.patch` and providing ports; all routing is port-based.  
 - To make “disabled” affect logic (not only visuals), gate your processing on `conn.disabled` and/or `.patch.disabled`.  
 - Keep this comment synchronized when features or key bindings change; update the #instructions HTML accordingly.
+
+ <table class="table table-sm table-dark table-bordered align-middle">
+      <thead>
+        <tr>
+          <th style="width: 35%;">Setting</th>
+          <th style="width: 65%;">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Original size reference</td>
+          <td>The first time a patch is transformed, its original width/height are stored in <code>data-orig-width</code> and <code>data-orig-height</code>.</td>
+        </tr>
+        <tr>
+          <td>Scaling limits</td>
+          <td>Global limits use percentages of original size (e.g., <code>GLOBAL_MIN_PCT</code>, <code>GLOBAL_MAX_PCT</code>). Per-patch overrides: <code>data-scale-min-percent</code>, <code>data-scale-max-percent</code>.</td>
+        </tr>
+        <tr>
+          <td>Selection scope</td>
+          <td>Transforms apply to elements marked with <code>.patch.is-selected</code>, <code>.patch.selected</code>, <code>[aria-selected="true"]</code>, or <code>[data-selected="true"]</code>.</td>
+        </tr>
+        <tr>
+          <td>Cable redraw</td>
+          <td>After each scale or rotation, <code>redrawCables()</code> is invoked (if defined) to update patch connections.</td>
+        </tr>
+      </tbody>
+    </table>
+    
 -->
 
 
@@ -743,7 +771,7 @@ kind of GUI.</p>
       <p><strong>Drag Lock (Spacebar)</strong></p>
       <span class="instructions-description">For dragging patches (option 2).</span>
       <ol>
-        <li>Press and hold <kbd>Spacebar</kbd> to drag the patch under the mouse.</li>
+        <li>Hover over a patch. Press <kbd>Spacebar</kbd> to begin dragging the patch.</li>
         <li>Move the mouse to reposition the patch.</li>
         <li>Release <kbd>Spacebar</kbd> to drop the patch.</li>
       </ol>
@@ -1011,32 +1039,7 @@ kind of GUI.</p>
       </tbody>
     </table>
 
-    <table class="table table-sm table-dark table-bordered align-middle">
-      <thead>
-        <tr>
-          <th style="width: 35%;">Setting</th>
-          <th style="width: 65%;">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Original size reference</td>
-          <td>The first time a patch is transformed, its original width/height are stored in <code>data-orig-width</code> and <code>data-orig-height</code>.</td>
-        </tr>
-        <tr>
-          <td>Scaling limits</td>
-          <td>Global limits use percentages of original size (e.g., <code>GLOBAL_MIN_PCT</code>, <code>GLOBAL_MAX_PCT</code>). Per-patch overrides: <code>data-scale-min-percent</code>, <code>data-scale-max-percent</code>.</td>
-        </tr>
-        <tr>
-          <td>Selection scope</td>
-          <td>Transforms apply to elements marked with <code>.patch.is-selected</code>, <code>.patch.selected</code>, <code>[aria-selected="true"]</code>, or <code>[data-selected="true"]</code>.</td>
-        </tr>
-        <tr>
-          <td>Cable redraw</td>
-          <td>After each scale or rotation, <code>redrawCables()</code> is invoked (if defined) to update patch connections.</td>
-        </tr>
-      </tbody>
-    </table>
+   
   </div>
 </li>
 
@@ -3641,20 +3644,20 @@ document.addEventListener('keydown', (e) => {
   }
   #instructions .accordion-button,
   #instructions .accordion-button.collapsed {
-    background: rgba(28,28,30,0.65);
+    background: rgb(0 0 0 / 65%);
     color: #e0e0e0;
   }
   #instructions .accordion-button:not(.collapsed) {
-    background: rgba(28,28,30,0.85);
+    background: black;
     color: #fff;
   }
   #instructions .accordion-body {
-    background: rgba(0,0,0,0.25);
+    background: rgba(20,20,20,1);
   }
   
     /* Hover effect on whole button */
   #instructions .accordion-button:hover {
-    background: rgba(40,40,45,0.9);
+    background: rgba(0,0,5,0.9);
   }
 
 </style>
@@ -3729,6 +3732,12 @@ document.addEventListener('keydown', (e) => {
     const headingId = `heading-${id}`;
     const collapseId = `collapse-${id}`;
 
+ // Conditional classes and attributes for the first item
+    const isFirstItem = idx === 0;
+    const buttonClass = isFirstItem ? "accordion-button" : "accordion-button collapsed";
+    const collapseClass = isFirstItem ? "accordion-collapse collapse show" : "accordion-collapse collapse";
+    const ariaExpanded = isFirstItem ? "true" : "false";
+
     // Extract title and description from the original list item
     const titleEl = li.querySelector(':scope > p > strong');
     const descEl  = li.querySelector(':scope > .instructions-description');
@@ -3748,14 +3757,14 @@ document.addEventListener('keydown', (e) => {
     item.className = 'accordion-item';
     item.innerHTML = `
       <h2 class="accordion-header" id="${headingId}">
-        <button class="accordion-button collapsed" type="button"
+        <button class="${buttonClass}" type="button"
                 data-bs-toggle="collapse" data-bs-target="#${collapseId}"
-                aria-expanded="false" aria-controls="${collapseId}">
+                aria-expanded="${ariaExpanded}" aria-controls="${collapseId}">
           <span class="acc-title">${titleText}</span>
           ${descText ? `<span class="acc-desc">${descText}</span>` : ''}
         </button>
       </h2>
-      <div id="${collapseId}" class="accordion-collapse collapse"
+      <div id="${collapseId}" class="${collapseClass}"
            data-bs-parent="#${acc.id}">
         <div class="accordion-body"></div>
       </div>

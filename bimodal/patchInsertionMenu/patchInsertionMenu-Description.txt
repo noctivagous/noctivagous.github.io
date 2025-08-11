@@ -1,0 +1,65 @@
+Patch Insertion Menu Description
+-----------
+
+This file accompanies 
+patchInsertionMenu-Step1.png and 
+patchInsertionMenu-Step2.png
+
+-----------
+
+For a node-based programming / patch-based programming system:
+
+
+A context-sensitive insertion menu appears at the mouse cursor position when
+triggered by the insertion key.  After the 'I' key is pressed, 
+a popover appears with categories of patches in
+tabs at the top.  The popover encloses a tab view. Press number keys 1-5 to
+switch between patch categories 
+(Audio - 1 , Graphics - 2, Logic - 3, Control - 4, Utility - 5).
+
+
+Inside each tab's container is a grid of the patches for the category 
+with squares that have visual patch icons with names and descriptions.
+
+This is a searchable, categorized browser for selecting and inserting patches 
+into the workspace.
+
+Receiving focus at the same time is a live search textfield where it is possible 
+to type instantly to filter patches by name or keywords within that open category 
+(the open tab).
+
+
+Interaction Flow
+
+Press 'I' → Menu opens at cursor position 
+Type → Search filters patches in real-time 
+1-5 keys → Switch between categories 
+Arrow keys → Navigate patch grid
+Enter → Insert selected patch at original cursor location 
+Escape → Cancel and close menu
+
+The system combines the speed of keyboard shortcuts with the discoverability of
+visual browsing, making it efficient for both power users and newcomers to
+quickly find and insert the patches they need.
+
+It makes use of key-clicks, which means that individual keyboard keys replace
+clicks while the mouse is used to move the cursor.
+
+This is for a system that is completely built around key-clicks.
+
+
+Features
+Point-of-insertion positioning - Opens exactly where the mouse 
+cursor is located
+
+Keyboard-driven workflow - Navigate with arrow keys, select with Enter, cancel
+with Escape Drag lock mode - Press Space to make the menu follow the mouse
+cursor
+
+
+Real-time search. For Type-on-Search: Fuzzy matching - Intelligent search 
+that finds partial matches and prioritizes exact matches.
+
+
+
+

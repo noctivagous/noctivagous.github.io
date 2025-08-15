@@ -1,5 +1,36 @@
 
-NODE-BASED PROGRAMMING.
+NODE-BASED PROGRAMMING
+
+Node-based programming is always presented as
+a node graph where the patches are connected
+via wires.  What is notable about this is that,
+by convention, the patches are never drawing from 
+global state, variables, or functions like a regular
+computer program. Instead, the system is all 
+about wiring up and configuring copies of
+predefined component modules with input and output
+ports.  This is a major difference
+between node-based programming and procedural
+software development and also a cause of its
+shortcoming for writing apps.  There are others 
+as well.  Advantages are recognized that
+a lot of programmatic capability can be
+embedded inside a single patch, the ability
+to write up and configure parameters provides
+great flexibility and a live preview of the
+results, unlike compiled programs that are
+typed out.
+
+The first issue that has to be addressed is
+the GUI, because it is too slow and tedious
+of a programming system to use compared to 
+the speed of typing code in a program.  Through
+key-clicks (noctivagous.github.io/bimodal/patch_synth_demo.html)
+which involves making the keyboard keys take 
+place of the mouse buttons while keeping the 
+mouse in the cursor steering role, the interface
+is much further along.
+
 
 IF-ELSE VS. WHEN
 

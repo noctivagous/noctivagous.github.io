@@ -1,0 +1,104 @@
+When you write a computer program by yourself without AI, you build it up from a
+small base and at each step you research and make the decisions about what needs
+to be done.  As your project evolves, you are in sitting in front of what is
+happening and in control.  You carry out research on any requirements and tailor 
+the code to your objectives.   But when the AI makes your project immediately in response to
+your prompts, you don't see that you are flying over a valley of many steps you had
+to take on your own before and having the AI do it.  You can't possible write out
+prompts that include that valley unless you spend a lot of time, but you aren't
+going to do that in the AI chatbot dynamic.  Your prompts simply aren't going to
+be detailed enough for AI to make your projects, so it needs to ask you questions
+in detail collection menus that make up for this.  Right now it can't ask you any 
+questions about specifics before it proceeds to generate code.  It has to make many 
+small and large decisions you didn't consider but would have been involved in.
+To put it simply, the AI chatbot dynamic with respect to generating a code project is
+an illusion without these intermediate menus.
+
+AI-GENERATED MENUS
+
+-------------------------------------------------------
+EXAMPLE 1: ADDING USER AUTHENTICATION
+
+
+Example 1A: Starting a New Feature
+Context: The user is working on a web application and wants to add user authentication.
+
+USER: Add user authentication to my web app.
+
+AI: To ensure the authentication feature aligns with your project’s needs, please specify the type of authentication you’d like to implement:
+
+[A] Email/password - Standard login with email and password, with optional password reset.
+
+[B] OAuth - Integrate third-party authentication (e.g., Google, GitHub, or Facebook).
+
+[C] JWT-based - Token-based authentication for APIs, suitable for stateless applications.
+
+[D] SSO - Single Sign-On for integrating with enterprise systems or multiple apps.
+
+[E] Multi-factor - Add an extra layer of security, like SMS or authenticator apps.
+
+[F] Minimal - A simple, lightweight authentication system for quick setup.
+
+[G] Specify details - Provide more details about your requirements (e.g., framework, database).
+
+[H] Other - Something else not listed here.
+
+[;] My default: I was going to suggest implementing a basic email/password system using Firebase Authentication.
+
+Press A, B, C, D, E, F, G, H, ; to select, or Enter to skip.
+
+
+
+
+Example 1B: After Choosing Authentication Type
+Context: The user selected [A] Email/password from the previous menu for adding user authentication to their web app.
+
+AI: You’ve selected [A] Email/password for adding authentication to your web app. I plan to implement a basic email/password system with user registration, login, and logout functionality, using a backend framework like Node.js with Express and a database like PostgreSQL for storing user credentials securely (hashed passwords). The frontend will include a simple login form using React.
+
+Before I proceed, please review and tweak the planned approach:
+
+[A] Confirm - Proceed with the described email/password system using Node.js, Express, PostgreSQL, and React.
+
+[B] Change framework - Use a different backend framework (e.g., Django, Flask, or Laravel).
+
+[C] Change database - Use a different database (e.g., MongoDB, SQLite, or Firebase).
+
+[D] Add features - Include additional features like password reset or email verification.
+
+[E] Simplify - Reduce the scope (e.g., backend-only or frontend-only implementation).
+
+[F] Edit details - Specify custom details, like specific libraries or styling preferences.
+
+[G] Other - Suggest a different approach or additional tweaks.
+
+[;] My default: Proceed with the described plan (Node.js, Express, PostgreSQL, React).
+
+Press A, B, C, D, E, F, G, ; to select, or Enter to skip.
+
+
+-------------------------------------------------------
+
+
+The AI code editors need to prompt you with detail collection menus that ask you
+questions about how you want your project made, even if your project is small
+and simple. With software development, nothing is actually small and simple but
+it often seems like will be. Before the AI proceeds to plan and generate your
+code, it actually needs more information from you, it should be able to inform
+you about implications of your prompt, make suggestions for you to consider, and
+then take your responses to align with your intentions.  There are implications
+to any project, more than you can see at first glance. Without this added step,
+as it executes your project from prompts, it just runs off its assumptions to
+fill many details, many of which are not what you want.
+
+Intermediate prompts need to come from the To match the level of control you had
+before, AI should inform you periodically as your project evolves.  When you
+prompt an AI to carry out a task, it already knows the dozens of technical
+implications, but doesn't have a chance to inform you about them and ask what
+you need.  This is a major cause of unsatisfactory experiences behind  "vibe
+coding".  You need to be involved many decisions just like before, and not just
+at the start, because there is no project course that can be fully predicted. You were
+doing everything before but now you are left disappointed with the results AI makes.
+There is a lot more that you need to steer in a project when you use AI than it
+first appears.   You were steering everything before.  AI can understand your
+initial intentions but any project has more implications than it appears at the
+start. Deep into the project as it evolves.

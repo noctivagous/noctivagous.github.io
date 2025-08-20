@@ -54,8 +54,8 @@ PASTE INTO WEB CONSOLE
     }
 	const overlay = `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.25))`;
     btn.style.backgroundImage = `${overlay}, url("${url}")`;
-    btn.style.backgroundSize = 'cover';
-    btn.style.backgroundPosition = 'center';
+//    btn.style.backgroundSize = 'cover';
+  //  btn.style.backgroundPosition = 'center';
     btn.style.color = '#fff';
     btn.style.borderColor = 'rgba(255,255,255,0.35)';
   }
@@ -72,17 +72,24 @@ PASTE INTO WEB CONSOLE
       border-radius: 12px; cursor: pointer;
       transition: background 120ms, color 120ms, border-color 120ms, box-shadow 120ms;
       position: relative; /* for thumbnail positioning */
-      overflow: hidden;
-    }
+       overflow: hidden;
+          background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+   }
+    .xv2-btn.has-thumb { padding-right: 110px; }
+
     .xv2-btn:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.12); }
     .xv2-arrow { flex: 0 0 auto; width: 16px; height: 16px; transition: transform 150ms; transform: rotate(-90deg); color: currentColor; }
     .xv2-open .xv2-arrow { transform: rotate(0deg); }
     .xv2-avatar { width: 80px; height: 80px; border-radius: 0%; overflow: hidden; flex: 0 0 auto; background: rgba(0,0,0,0.15); box-shadow: 0 0 0 1px rgba(0,0,0,0.08) inset; }
     .xv2-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  
     .xv2-meta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 13px; line-height: 1.3; }
+  
     .xv2-name { font-weight: 600;  font-family:tahoma;   color: gray;    text-shadow: 2px 2px 2px black; }
     .xv2-handle, .xv2-time { opacity: 0.8; }
-    .xv2-preview { font-size: 13pt; opacity: 0.9; margin-top: 2px; line-height:1.2em; }
+    .xv2-preview { font-size: 13pt; opacity: 0.9; margin-top: 2px; line-height:1.2em; text-shadow:1px 1px darkblue; }
     .xv2-content { overflow: hidden; transition: max-height 200ms ease-in-out; max-height: 0; margin-top: 8px; }
     .xv2-open .xv2-content { /* max-height set inline per instance */ }
     /* Right-side thumbnail inside header */
@@ -91,6 +98,9 @@ PASTE INTO WEB CONSOLE
       width: 70px; height: 70px; border-radius: 8px; border:1pt solid white; overflow: hidden;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.5) inset, 0 1px 3px rgba(0,0,0,0.25);
       background: rgba(0,0,0,0.15);
+         display: none;            /* hidden by default; shown only when media exists */
+     pointer-events: none;     /* purely decorative; don't steal clicks/hover */
+      z-index: 1;
     }
     .xv2-thumb img { width: 100%; height: 100%; object-fit: cover; display:block; }
     /* Hover-reveal tooltip */
@@ -173,7 +183,7 @@ const displayName = extractDisplayNameFromUserName(nameBlock);
     const tweetTextEl = qs('[data-testid="tweetText"]', article);
 
 	const combined = extractTextAndEmoji(tweetTextEl);
-	const previewLine = trunc2(combined, 190) || '(no text)';
+	const previewLine = trunc2(combined, 210) || '(no text)';
 
 
     // Wrapper
@@ -198,7 +208,9 @@ const displayName = extractDisplayNameFromUserName(nameBlock);
     av.appendChild(avImg);
 
     // Meta
-    const metaBox = document.createElement('div'); metaBox.style.flex = '1 1 auto';
+    //const metaBox = document.createElement('div'); metaBox.style.flex = '1 1 auto';
+    const metaBox = document.createElement('div'); metaBox.style.flex = '1 1 auto'; metaBox.style.minWidth = '0';
+
     const metaTop = document.createElement('div'); metaTop.className = 'xv2-meta';
     const nm = document.createElement('span'); nm.className = 'xv2-name'; nm.textContent = displayName;
     const hd = document.createElement('span'); hd.className = 'xv2-handle'; hd.textContent = handle ? `@${handle}` : '';
@@ -239,9 +251,25 @@ const displayName = extractDisplayNameFromUserName(nameBlock);
     // Media resolver for header background and thumbnail
     function resolveMedia() {
       const url = findPreviewUrl(article);
-      setHeaderPreview(btn, url, wrap.classList.contains('xv2-open'));
-      if (url && thumbImg.src !== url) thumbImg.src = url;
-      if (!url) thumb.style.background = 'rgba(0,0,0,0.15)';
+   //   setHeaderPreview(btn, url, wrap.classList.contains('xv2-open'));
+     // if (url && thumbImg.src !== url) thumbImg.src = url;
+     // if (!url) thumb.style.background = 'rgba(0,0,0,0.15)';
+   
+     // Background preview (driven by CSS for size/animation)
+  setHeaderPreview(btn, url, wrap.classList.contains('xv2-open'));
+
+  // Right-side thumbnail logic
+  if (url) {
+    if (thumbImg.src !== url) thumbImg.src = url;
+    thumb.style.display = 'block';
+    btn.classList.add('has-thumb');      // reserve space so text doesn't run under the image
+  } else {
+    thumbImg.removeAttribute('src');
+    thumb.style.display = 'none';
+    btn.classList.remove('has-thumb');   // no space reservation when there is no preview
+  }
+
+   
     }
     resolveMedia();
     const mediaMo = new MutationObserver(resolveMedia);
@@ -434,7 +462,8 @@ function insertWordCount(accordionItem, tweetText) {
   const WRAP_SEL    = '.xv2-wrap';
   const BTN_SEL     = '.xv2-btn';
   const ARTICLE_SEL = 'article[data-testid="tweet"]';
-
+	const CLICKABLE_SEL = 'a,button,[role="button"],[tabindex]:not([tabindex="-1"])';
+	
   // Track hover state
   let currentHoverWrap = null;
   let lastMouse = { x: 0, y: 0 };
@@ -445,6 +474,9 @@ function insertWordCount(accordionItem, tweetText) {
     if (node.matches?.(WRAP_SEL)) return node;
     return node.closest?.(WRAP_SEL) || null;
   }
+
+
+
 
   // ==============================
   // Styles (modal + click flash)
@@ -498,7 +530,23 @@ function insertWordCount(accordionItem, tweetText) {
     </div>
   `;
   document.body.appendChild(modal);
+  document.body.classList.add('x-g-crosshair');
   qs('#x-keys-close', modal).addEventListener('click', () => modal.remove());
+
+
+let currentClickable = null;
+ 
+function setClickableCandidate(el) {
+  // Find the nearest clickable ancestor
+  let cand = el?.closest?.(CLICKABLE_SEL) || null;
+  // Exclude the accordion header button itself
+  if (cand && cand.closest?.(BTN_SEL)) cand = null;
+  if (currentClickable === cand) return;
+  if (currentClickable) currentClickable.classList.remove('x-g-focus-ring');
+  currentClickable = cand;
+  if (currentClickable) currentClickable.classList.add('x-g-focus-ring');
+}
+
 
   // ==============================
   // Hover tracking
@@ -512,6 +560,7 @@ function insertWordCount(accordionItem, tweetText) {
     const w = wrapFor(currentHoverEl);
     if (w) currentHoverWrap = w;
     else if (!wrapFor(e.relatedTarget)) currentHoverWrap = null;
+     setClickableCandidate(currentHoverEl);
   }
   document.addEventListener('mousemove', onMouseMove, true);
 
@@ -519,14 +568,25 @@ function insertWordCount(accordionItem, tweetText) {
   function onPointerOver(e) {
     const w = wrapFor(e.target);
     if (w) currentHoverWrap = w;
+     setClickableCandidate(e.target);
   }
   function onPointerOut(e) {
     const w = wrapFor(e.target);
     if (w && w === currentHoverWrap && !wrapFor(e.relatedTarget)) currentHoverWrap = null;
+    if (!e.relatedTarget) setClickableCandidate(null);
   }
   document.addEventListener('mouseover', onPointerOver, true);
   document.addEventListener('mouseout', onPointerOut, true);
 
+
+function rippleAt(x, y) {
+  const r = document.createElement('div');
+  r.className = 'x-g-ripple';
+  r.style.left = x + 'px';
+  r.style.top  = y + 'px';
+  document.body.appendChild(r);
+  r.addEventListener('animationend', () => r.remove(), { once: true });
+}
   // ==============================
   // Click helper for G key
   // ==============================
@@ -578,7 +638,11 @@ function insertWordCount(accordionItem, tweetText) {
     // --- G: click element under cursor ---
     if (e.key === 'g' || e.key === 'G') {
       e.preventDefault();
-      syntheticClick(currentHoverEl || document.elementFromPoint(lastMouse.x, lastMouse.y));
+   //    syntheticClick(currentHoverEl || document.elementFromPoint(lastMouse.x, lastMouse.y));
+    rippleAt(lastMouse.x, lastMouse.y);
+    const el = currentClickable || currentHoverEl || document.elementFromPoint(lastMouse.x, lastMouse.y);
+    syntheticClick(el);
+
       return;
     }
 
@@ -617,6 +681,7 @@ function insertWordCount(accordionItem, tweetText) {
     document.removeEventListener('mouseover', onPointerOver, true);
     document.removeEventListener('mouseout', onPointerOut, true);
     document.removeEventListener('keydown', onKeyDown, true);
+    document.body.classList.remove('x-g-crosshair');
     const st = qs('#x-keys-style'); if (st) st.remove();
     const md = qs('#x-keys-modal'); if (md) md.remove();
     window.__xControls = { installed: false, disable(){} };
@@ -651,7 +716,16 @@ function insertWordCount(accordionItem, tweetText) {
   let currentHoverWrap = null;
   let lastMouse = {x:0,y:0};
   let currentHoverEl = null;
+  let currentClickable = null;
   let highlighted = null;
+
+ 
+ function wrapFor(node) {
+   if (!node) return null;
+   if (node.matches?.(WRAP_SEL)) return node;
+   return node.closest?.(WRAP_SEL) || null;
+ }
+
 
   // Styles
   const style = document.createElement('style');
@@ -732,4 +806,119 @@ function insertWordCount(accordionItem, tweetText) {
   window.__xControls = {installed:true, disable};
 
   console.log('Hover glow enabled: any clickable element (except accordion buttons) highlights with green outline. Press G to click it.');
+})();
+
+(() => {
+  // Inject styles once
+  if (!document.getElementById('xv2-bg-shrink-style')) {
+    const style = document.createElement('style');
+    style.id = 'xv2-bg-shrink-style';
+    style.textContent = `
+      /* Default state: fill (cover) */
+      .xv2-btn {
+        background-size: cover;
+        background-position: center;
+        transition: background-size 220ms ease, background-position 220ms ease, filter 220ms ease, color 120ms ease;
+      }
+      /* Hover state: image height = button height (auto width), keeps aspect */
+      .xv2-btn.xv2-bg-shrink {
+        background-size: auto 100%;
+        background-position: center;
+      }
+
+      /* If you use the filtered pseudo-element approach (tweet-btn-bg::before) */
+      .tweet-btn-bg::before {
+        background-size: cover;
+        transition: background-size 220ms ease, filter 220ms ease;
+      }
+      .tweet-btn-bg.xv2-bg-shrink::before {
+        background-size: auto 100%;
+      }
+      /* ==== Big crosshair cursor on the whole page ==== */
+body.x-g-crosshair, body.x-g-crosshair * {
+  cursor: url('data:image/svgxml;utf8, \
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"> \
+  <circle cx="32" cy="32" r="30" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="2"/> \
+  <line x1="32" y1="6"  x2="32" y2="22" stroke="rgba(0,128,0,0.90)" stroke-width="3"/> \
+  <line x1="32" y1="42" x2="32" y2="58" stroke="rgba(0,128,0,0.90)" stroke-width="3"/> \
+  <line x1="6"  y1="32" x2="22" y2="32" stroke="rgba(0,128,0,0.90)" stroke-width="3"/> \
+  <line x1="42" y1="32" x2="58" y2="32" stroke="rgba(0,128,0,0.90)" stroke-width="3"/> \
+</svg>') 32 32, crosshair !important;
+}
+
+/* ==== Artificial focus ring for G-click targets ==== */
+.x-g-focus-ring {
+  outline: 3px solid rgba(0, 200, 0, 0.85) !important;
+  box-shadow:
+    0 0 0 2px rgba(0, 200, 0, 0.35),
+    0 0 10px 2px rgba(0, 200, 0, 0.45) !important;
+  transition: outline 50ms, box-shadow 50ms;
+}
+
+/* ==== Ripple under the cursor when G is pressed ==== */
+@keyframes x-g-ripple {
+  0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0.45; }
+  60%  { transform: translate(-50%, -50%) scale(1.0); opacity: 0.25; }
+  100% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+}
+.x-g-ripple {
+  position: fixed; left: 0; top: 0; z-index: 2147483646; pointer-events: none;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,200,0,0.35) 0%, rgba(0,200,0,0.25) 60%, rgba(0,200,0,0) 70%);
+  animation: x-g-ripple 380ms ease-out forwards;
+}
+    `;
+    document.head.appendChild(style);
+  }
+
+  const WRAP_SEL = '.xv2-wrap';
+  const BTN_SEL  = '.xv2-btn';
+
+  function attachHoverAnimation(btn) {
+    if (!btn || btn.__xv2BgShrinkBound) return;
+    btn.__xv2BgShrinkBound = true;
+
+    const wrap = btn.closest(WRAP_SEL);
+
+    function enter() {
+      // Optional: skip effect while expanded
+      if (wrap && wrap.classList.contains('xv2-open')) return;
+      btn.classList.add('xv2-bg-shrink');
+    }
+    function leave() {
+      btn.classList.remove('xv2-bg-shrink');
+    }
+
+    btn.addEventListener('mouseenter', enter);
+    btn.addEventListener('mouseleave', leave);
+  }
+
+  // Apply to existing accordions
+  document.querySelectorAll(BTN_SEL).forEach(attachHoverAnimation);
+
+  // Observe for newly added accordions
+  const mo = new MutationObserver(muts => {
+    for (const m of muts) {
+      m.addedNodes && m.addedNodes.forEach(node => {
+        if (!(node instanceof HTMLElement)) return;
+        if (node.matches?.(BTN_SEL)) attachHoverAnimation(node);
+        node.querySelectorAll?.(BTN_SEL).forEach(attachHoverAnimation);
+      });
+    }
+  });
+  mo.observe(document.body, { childList: true, subtree: true });
+
+  // Expose a small API if you need to disable later
+  window.__xBgShrink = {
+    disable() {
+      mo.disconnect();
+      document.querySelectorAll(BTN_SEL).forEach(btn => {
+        btn.classList.remove('xv2-bg-shrink');
+      });
+      // Optional: remove the style tag
+      // document.getElementById('xv2-bg-shrink-style')?.remove();
+    }
+  };
+
+  console.log('Hover background shrink enabled: image animates to button height on .xv2-btn hover, restores on exit.');
 })();

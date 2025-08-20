@@ -52,7 +52,7 @@ PASTE INTO WEB CONSOLE
       btn.style.borderColor = 'rgba(0,0,0,0.1)';
       return;
     }
-    const overlay = `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35))`;
+	const overlay = `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.25))`;
     btn.style.backgroundImage = `${overlay}, url("${url}")`;
     btn.style.backgroundSize = 'cover';
     btn.style.backgroundPosition = 'center';
@@ -80,9 +80,9 @@ PASTE INTO WEB CONSOLE
     .xv2-avatar { width: 80px; height: 80px; border-radius: 0%; overflow: hidden; flex: 0 0 auto; background: rgba(0,0,0,0.15); box-shadow: 0 0 0 1px rgba(0,0,0,0.08) inset; }
     .xv2-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .xv2-meta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 13px; line-height: 1.3; }
-    .xv2-name { font-weight: 600; }
+    .xv2-name { font-weight: 600;  font-family:tahoma;   color: gray;    text-shadow: 2px 2px 2px black; }
     .xv2-handle, .xv2-time { opacity: 0.8; }
-    .xv2-preview { font-size: 13pt; opacity: 0.9; margin-top: 2px; }
+    .xv2-preview { font-size: 13pt; opacity: 0.9; margin-top: 2px; line-height:1.2em; }
     .xv2-content { overflow: hidden; transition: max-height 200ms ease-in-out; max-height: 0; margin-top: 8px; }
     .xv2-open .xv2-content { /* max-height set inline per instance */ }
     /* Right-side thumbnail inside header */
@@ -124,13 +124,48 @@ function trunc2(str, n) {
 }
 
 
+// Replace your current displayName extraction with this:
+
+function extractDisplayNameFromUserName(root) {
+  if (!root) return '';
+
+  // Helper: visible?
+  const isVisible = (el) => {
+    const cs = getComputedStyle(el);
+    return cs && cs.visibility !== 'hidden' && cs.display !== 'none';
+  };
+
+  // Normalize text (remove zero-width chars, condense spaces)
+  const clean = (s) => (s || '')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '') // zero-widths
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Per requirement: FIRST span with text
+  const spans = root.querySelectorAll('span');
+  for (const sp of spans) {
+    if (!isVisible(sp)) continue;
+    const txt = clean(sp.textContent);
+    if (!txt) continue;
+    // Skip obvious handle tokens like @name if they appear first
+    if (txt.startsWith('@')) continue;
+    return txt;
+  }
+
+  // Fallback: first non-empty line of innerText
+  const line = clean((root.innerText || '').split('\n').find(Boolean));
+  return line || '';
+}
+
+
   // ===== Core: build one accordion for a tweet =====
   function buildAccordion(article) {
     if (!article || article.closest('.xv2-wrap')) return;
 
     // Metadata
-    const nameBlock = qs('[data-testid="User-Name"]', article);
-    const displayName = nameBlock ? getText(nameBlock) : 'User';
+const nameBlock   = article.querySelector('[data-testid="User-Name"]');
+const displayName = extractDisplayNameFromUserName(nameBlock);
+
     const handleEl = nameBlock ? qs('a[href*="/"] div[dir="ltr"] span', nameBlock.parentElement) : null;
     const handle = handleEl ? getText(handleEl).replace(/^@/, '') : '';
     const timeEl = qs('a time', article);

@@ -1,0 +1,9 @@
+In an improved situation, shouldn't the AI be executing commands that construct
+a program instead of writing detailed lines of code that make up the program?  The latter
+is much more error prone and there is a lot of rewriting of the basics carried out 
+by the AI.  It's like the following. If the AI only generates commands that 
+insert objects into the DOM, sometimes this is better than it writing all of the HTML tags.  
+If it has higher level calls provided to it that make the program in terms of
+topics, this is surely better than having it write many lines of code.  To make
+a GUI grid for the program, it can execute a provided command MAKEGRID instead
+of generating 100 lines of code that make a grid.

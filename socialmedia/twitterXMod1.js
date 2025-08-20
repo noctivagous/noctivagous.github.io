@@ -88,7 +88,7 @@ PASTE INTO WEB CONSOLE
     /* Right-side thumbnail inside header */
     .xv2-thumb {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      width: 70px; height: 46px; border-radius: 8px; overflow: hidden;
+      width: 70px; height: 70px; border-radius: 8px; border:1pt solid white; overflow: hidden;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.5) inset, 0 1px 3px rgba(0,0,0,0.25);
       background: rgba(0,0,0,0.15);
     }
@@ -107,6 +107,23 @@ PASTE INTO WEB CONSOLE
   `;
   document.head.appendChild(style);
 
+// helper to extract text AND emojis
+function extractTextAndEmoji(node) {
+  if (!node) return "";
+  const raw = node.innerText || "";
+
+  // Match words, numbers, and emoji
+  const regex = /\p{L}+\p{M}*|\p{N}+|\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu;
+  const matches = raw.match(regex);
+  return matches ? matches.join(" ") : "";
+}
+
+// helper to truncate safely
+function trunc2(str, n) {
+  return (str.length > n) ? str.slice(0, n) + "…" : str;
+}
+
+
   // ===== Core: build one accordion for a tweet =====
   function buildAccordion(article) {
     if (!article || article.closest('.xv2-wrap')) return;
@@ -119,7 +136,10 @@ PASTE INTO WEB CONSOLE
     const timeEl = qs('a time', article);
     const timeText = timeEl ? (timeEl.getAttribute('aria-label') || timeEl.textContent || '').trim() : '';
     const tweetTextEl = qs('[data-testid="tweetText"]', article);
-    const previewLine = trunc(getText(tweetTextEl), 190) || '(no text)';
+
+	const combined = extractTextAndEmoji(tweetTextEl);
+	const previewLine = trunc2(combined, 190) || '(no text)';
+
 
     // Wrapper
     const wrap = document.createElement('div');
@@ -360,3 +380,321 @@ function insertWordCount(accordionItem, tweetText) {
 })();
 
 
+(() => {
+  // ==============================
+  // Guard: prevent multiple installs
+  // ==============================
+  if (window.__xControls?.installed) {
+    console.warn('Controls already active. Use __xControls.disable() to remove.');
+    return;
+  }
+
+  // ==============================
+  // Utilities
+  // ==============================
+  const qs  = (s, r=document) => r.querySelector(s);
+  const qsa = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+  // Match the wrappers produced by your accordion script
+  const WRAP_SEL    = '.xv2-wrap';
+  const BTN_SEL     = '.xv2-btn';
+  const ARTICLE_SEL = 'article[data-testid="tweet"]';
+
+  // Track hover state
+  let currentHoverWrap = null;
+  let lastMouse = { x: 0, y: 0 };
+  let currentHoverEl = null;
+
+  function wrapFor(node) {
+    if (!node) return null;
+    if (node.matches?.(WRAP_SEL)) return node;
+    return node.closest?.(WRAP_SEL) || null;
+  }
+
+  // ==============================
+  // Styles (modal + click flash)
+  // ==============================
+  const style = document.createElement('style');
+  style.id = 'x-keys-style';
+  style.textContent = `
+    #x-keys-modal {
+      position: fixed; right: 16px; bottom: 16px; z-index: 2147483647;
+      max-width: 360px; padding: 12px 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.95); border: 1px solid rgba(0,0,0,0.15);
+      backdrop-filter: saturate(140%) blur(6px);
+      font: 13px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: #111; box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    #x-keys-modal h4 { margin: 0 0 8px 0; font-size: 13px; font-weight: 700; }
+    #x-keys-modal table { width: 100%; border-collapse: collapse; margin: 6px 0 0 0; }
+    #x-keys-modal td { padding: 4px 2px; vertical-align: top; }
+    #x-keys-modal kbd {
+      background:#f2f2f3; border:1px solid #ccc; border-bottom-color:#bbb; border-radius:4px;
+      padding: 1px 5px; font: 12px/1 monospace; color:#000;
+    }
+    #x-keys-close {
+      position:absolute; top:6px; right:8px; border:0; background:transparent; cursor:pointer;
+      font-size:14px; line-height:1; color:#444;
+    }
+    .x-click-flash {
+      position: fixed; pointer-events: none; z-index: 2147483647;
+      border: 2px solid #4a8df6; border-radius: 8px; box-shadow: 0 0 0 2px rgba(74,141,246,0.35);
+      transition: opacity 200ms ease-out; opacity: 1;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // ==============================
+  // Modal (instructions only)
+  // ==============================
+  const modal = document.createElement('div');
+  modal.id = 'x-keys-modal';
+  modal.innerHTML = `
+    <button id="x-keys-close" aria-label="Close">✕</button>
+    <h4>Keyboard actions</h4>
+    <table>
+      <tr><td><kbd>F</kbd></td><td>Open/Close the hovered tweet from its accordion state.</td></tr>
+      <tr><td><kbd>D</kbd></td><td>Delete the hovered tweet from the page.</td></tr>
+      <tr><td><kbd>G</kbd></td><td>Click the element under the cursor (link, button, or any element).</td></tr>
+    </table>
+    <div style="margin-top:8px; opacity:.75;">
+      Notes: Works on accordions created by this script (<code>.xv2-wrap</code>).
+      Other layout features in this script are temporarily disabled.
+    </div>
+  `;
+  document.body.appendChild(modal);
+  qs('#x-keys-close', modal).addEventListener('click', () => modal.remove());
+
+  // ==============================
+  // Hover tracking
+  // ==============================
+  function onMouseMove(e) {
+    lastMouse.x = e.clientX;
+    lastMouse.y = e.clientY;
+    // The element under the cursor at this moment
+    currentHoverEl = document.elementFromPoint(lastMouse.x, lastMouse.y) || e.target;
+    // Closest tweet wrapper, if any
+    const w = wrapFor(currentHoverEl);
+    if (w) currentHoverWrap = w;
+    else if (!wrapFor(e.relatedTarget)) currentHoverWrap = null;
+  }
+  document.addEventListener('mousemove', onMouseMove, true);
+
+  // Fallback for mouseover/out to keep wrap in sync when moving within the tweet
+  function onPointerOver(e) {
+    const w = wrapFor(e.target);
+    if (w) currentHoverWrap = w;
+  }
+  function onPointerOut(e) {
+    const w = wrapFor(e.target);
+    if (w && w === currentHoverWrap && !wrapFor(e.relatedTarget)) currentHoverWrap = null;
+  }
+  document.addEventListener('mouseover', onPointerOver, true);
+  document.addEventListener('mouseout', onPointerOut, true);
+
+  // ==============================
+  // Click helper for G key
+  // ==============================
+  function syntheticClick(el) {
+    if (!el) return false;
+    // Prefer a clickable ancestor (link/button/role/button-like)
+    const target = el.closest?.('a, button, [role="button"], [tabindex]') || el;
+
+    // Visual feedback box
+    try {
+      const r = target.getBoundingClientRect();
+      const flash = document.createElement('div');
+      Object.assign(flash, { className: 'x-click-flash' });
+      Object.assign(flash.style, {
+        left: `${Math.max(0, r.left - 4)}px`,
+        top:  `${Math.max(0, r.top  - 4)}px`,
+        width: `${Math.max(0, r.width + 8)}px`,
+        height:`${Math.max(0, r.height + 8)}px`
+      });
+      document.body.appendChild(flash);
+      setTimeout(() => { flash.style.opacity = '0'; }, 150);
+      setTimeout(() => { flash.remove(); }, 380);
+    } catch {}
+
+    // Try native .click() first
+    try {
+      if (typeof target.click === 'function') {
+        target.click();
+        return true;
+      }
+    } catch {}
+
+    // Fallback: dispatch mouse events
+    const opts = { bubbles: true, cancelable: true, view: window, clientX: lastMouse.x, clientY: lastMouse.y };
+    try { target.dispatchEvent(new MouseEvent('mousedown', opts)); } catch {}
+    try { target.dispatchEvent(new MouseEvent('mouseup',   opts)); } catch {}
+    try { target.dispatchEvent(new MouseEvent('click',     opts)); } catch {}
+    return true;
+  }
+
+  // ==============================
+  // Key handling: D (delete), F (open), G (click)
+  // ==============================
+  function onKeyDown(e) {
+    const tag = (e.target && e.target.tagName || '').toLowerCase();
+    // Ignore when typing in inputs/textareas or contenteditable
+    if (tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable)) return;
+
+    // --- G: click element under cursor ---
+    if (e.key === 'g' || e.key === 'G') {
+      e.preventDefault();
+      syntheticClick(currentHoverEl || document.elementFromPoint(lastMouse.x, lastMouse.y));
+      return;
+    }
+
+    // The following require a hovered tweet accordion wrapper
+    if (!currentHoverWrap) return;
+
+    if (e.key === 'd' || e.key === 'D') {
+      // Remove tweet wrapper (article is inside the wrapper)
+      e.preventDefault();
+      (currentHoverWrap.__observers || []).forEach(obs => { try { obs.disconnect(); } catch {} });
+      const parent = currentHoverWrap.parentNode;
+      currentHoverWrap.remove();
+      if (parent && parent.focus) { try { parent.focus(); } catch {} }
+    } else if (e.key === 'f' || e.key === 'F') {
+      // Open/expand the accordion by clicking the header button
+      e.preventDefault();
+      const btn = qs(BTN_SEL, currentHoverWrap);
+      if (btn) btn.click();
+    }
+  }
+  document.addEventListener('keydown', onKeyDown, true);
+
+  // ==============================
+  // STUBS (disabled features retained as placeholders)
+  // ==============================
+  function toggleLeftSidebar()   { console.info('[stub] toggleLeftSidebar is disabled in this build.'); }
+  function toggleRightSidebar()  { console.info('[stub] toggleRightSidebar is disabled in this build.'); }
+  function toggleWideTimeline()  { console.info('[stub] toggleWideTimeline is disabled in this build.'); }
+  function setTweetColumns(n)    { console.info(`[stub] setTweetColumns(${n}) is disabled in this build.`); }
+
+  // ==============================
+  // Public API and cleanup
+  // ==============================
+  function disable() {
+    document.removeEventListener('mousemove', onMouseMove, true);
+    document.removeEventListener('mouseover', onPointerOver, true);
+    document.removeEventListener('mouseout', onPointerOut, true);
+    document.removeEventListener('keydown', onKeyDown, true);
+    const st = qs('#x-keys-style'); if (st) st.remove();
+    const md = qs('#x-keys-modal'); if (md) md.remove();
+    window.__xControls = { installed: false, disable(){} };
+    console.log('Key controls removed.');
+  }
+
+  window.__xControls = {
+    installed: true,
+    disable,
+    // stubs exposed for future wiring
+    toggleLeftSidebar,
+    toggleRightSidebar,
+    toggleWideTimeline,
+    setTweetColumns
+  };
+
+  console.log('Key controls active: F=open accordion, D=delete tweet, G=click element under cursor. Press the × on the modal to hide instructions.');
+})();
+
+
+// highlights for what can be clicked with G.
+(() => {
+  // Guard
+  if (window.__xControls?.installed) {
+    console.warn('Controls already active.');
+    return;
+  }
+
+  const WRAP_SEL = '.xv2-wrap';
+  const BTN_SEL  = '.xv2-btn';
+
+  let currentHoverWrap = null;
+  let lastMouse = {x:0,y:0};
+  let currentHoverEl = null;
+  let highlighted = null;
+
+  // Styles
+  const style = document.createElement('style');
+  style.id = 'x-hover-style';
+  style.textContent = `
+    .x-hover-outline {
+      outline: 2px solid rgba(0,200,0,.75) !important;
+      box-shadow: 0 0 6px 2px rgba(0,200,0,.45) !important;
+      transition: outline .05s, box-shadow .05s;
+    }
+  `;
+  document.head.appendChild(style);
+
+  function wrapFor(node) {
+    if (!node) return null;
+    if (node.matches?.(WRAP_SEL)) return node;
+    return node.closest?.(WRAP_SEL) || null;
+  }
+
+  function clearHighlight() {
+    if (highlighted) {
+      highlighted.classList.remove('x-hover-outline');
+      highlighted = null;
+    }
+  }
+
+  function updateHighlight(el) {
+    if (!el) { clearHighlight(); return; }
+
+    // Exclude accordion button
+    if (el.closest(BTN_SEL)) {
+      clearHighlight();
+      return;
+    }
+
+    if (highlighted === el) return;
+    clearHighlight();
+    highlighted = el;
+    highlighted.classList.add('x-hover-outline');
+  }
+
+  function onMouseMove(e) {
+    lastMouse.x = e.clientX;
+    lastMouse.y = e.clientY;
+    currentHoverEl = document.elementFromPoint(lastMouse.x, lastMouse.y) || e.target;
+    const w = wrapFor(currentHoverEl);
+    if (w) currentHoverWrap = w;
+    else if (!wrapFor(e.relatedTarget)) currentHoverWrap = null;
+    updateHighlight(currentHoverEl);
+  }
+
+  document.addEventListener('mousemove', onMouseMove, true);
+
+  function onKeyDown(e) {
+    const tag = (e.target && e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+
+    // G = click element under cursor
+    if (e.key === 'g' || e.key === 'G') {
+      e.preventDefault();
+      const el = highlighted || currentHoverEl || document.elementFromPoint(lastMouse.x,lastMouse.y);
+      if (el && !el.closest(BTN_SEL)) {
+        el.click?.();
+      }
+    }
+  }
+  document.addEventListener('keydown', onKeyDown, true);
+
+  function disable() {
+    document.removeEventListener('mousemove', onMouseMove, true);
+    document.removeEventListener('keydown', onKeyDown, true);
+    clearHighlight();
+    const st = document.querySelector('#x-hover-style');
+    if (st) st.remove();
+    window.__xControls = {installed:false,disable(){}};
+  }
+
+  window.__xControls = {installed:true, disable};
+
+  console.log('Hover glow enabled: any clickable element (except accordion buttons) highlights with green outline. Press G to click it.');
+})();

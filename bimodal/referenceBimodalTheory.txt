@@ -1,0 +1,439 @@
+
+BIMODAL CONTROL THEORY - REFERENCE DOCUMENT
+------------------------------------------
+
+Bimodal Control (also called Dual-Input UI Theory) describes a separation of
+input tasks into two distinct modalities or input sources. 
+
+With a guitar, the left hand is selecting the notes while the right hand 
+is dedicated to the task of activating them.
+
+In Bimodal Control, each of the two modes (selecting the note vs. activating the note) 
+is typically handled by a different hand or limb.  The two hands might be
+playing the keyboard while the foot controls some kind of modifying device with a pedal.
+
+In computers, the first example given is that traditional mouse usage collapses 
+both cursor steering and activation (clicking) into a single device location, 
+which increases cognitive load and reduces flexibility.  Today, the keyboard keys 
+are never used to click in desktop software and this is an alien concept. 
+But in Dual-Input UI Theory, they are the source of all clicking while the mouse is only used
+for steering the cursor.  Because there are so many keys on a keyboard, the left hand on
+the keyboard immediately has access to a wide assortment of click functions and a new
+dynamic emerges.  The left hand can make the cursor perform a wide range of actions
+on anything it hovers, whereas before the notion of a click was vague.  The program can 
+do more in real-time.
+
+
+When we talk about Bimodal Control Theory, it often results in
+a reassignment of what it regards as collapsed input.  It discusses most input hardware
+as having been configured this way. For example, in a Bimodal Control implementation of 
+VR, the right hand will only serve to position the 3D cursor while the left hand is 
+dedicated to clicks (button presses on the controller).  On a tablet UI, the left hand 
+controls the selection of individual functions on the left side of the screen (like the
+left hand setting up notes on a guitar) while the right hand undertakes them (like the 
+right hand plucking the strings).  For a keyboard synthesizer, a musician could control a 
+pitch bend or modulation shift with a foot pedal while the two hands continue to 
+play the keyboard.  On a tablet computer, you might have the left hand tweaking a 
+real-time slider while the right hand performs real-time activity that is dependent on 
+that the slider's value.
+
+
+Bimodal Control divides these tasks:
+
+1. **Steering / Navigation** - Representable By The Fret Hand on The Guitar 
+
+	Mouse movement, VR controller positioning
+
+   - Performed by a continuous controller such as a mouse, trackpad, or
+     joystick.
+   - Responsible for moving the cursor, guiding crosshairs, or positioning
+     elements in XY(Z) space.
+
+2. **Function Activation - Representable By The Plucking Hand on The Guitar 
+
+	e.g. Key-Clicks, VR controller button presses.
+
+   - Performed by a discrete input source such as keyboard keys or secondary
+     buttons.
+   - Responsible for triggering functions that were traditionally bound to
+     mouse clicks.
+
+This division mirrors how instruments like the guitar separate left-hand
+navigation from right-hand triggering. Each modality focuses on its task,
+producing a smoother workflow and reducing fatigue.
+
+---
+
+**Key-Clicks**
+
+For Bimodal Control Theory, in practice, mouse-button clicks are typically
+replaced by designated keyboard keys. For example, the **F** key deposits
+points when drawing vectors, while other keys complete shapes, drag selections,
+or adjust stroke width. This approach frees the steering device from having to
+carry both tasks, allowing the user to maintain cursor guidance continuously
+while activating functions with the other hand.  As a theoretical  note,
+
+---
+
+The central feature of Bimodal Control when applied to desktop software is that
+"clicks" and function triggers are reassigned to the keyboard. Below are three
+examples that illustrate how keys are used in different application contexts.
+
+
+Applications
+------------
+
+We have made demos that put key-clicks into practice.
+
+**Consistent Key Usage Across Applications**
+
+Across all of the demos and applications, certain keys are used consistently for 
+predictability and to reflect tested implementations.  These are guidelines that help
+the user transfer habits between different domains (vector graphics, patch
+synths, timeline editors, or tablet-gesture equivalents).  There are 
+reasons for the various selections of the keys based on the form of a keyboard. 
+
+We pay attention to the location of the keys, how big they are, and how they
+can be used in the middle of live interaction.  The key-clicks elevate computer
+user interaction to a real-time mode, so for something as frequent as dragging,
+we often use the Spacebar for a drag lock (described below) so that objects
+are picked up and dropped rapidly.
+  
+We use Escape, for example, to cancel any mode that was activated by a key and this 
+includes clearing a selection objects.  The Escape key is easy to hit on the keyboard 
+along with Tab and Spacebar.  The F key is easy to hit as well.
+
+We always take note of the application's needs and circumstances. 
+For non-linear editor (NLE) timelines in editor applications for example, 
+the Spacebar is commonly used activate the play/pause button, so for these programs 
+the drag lock can be substituted with the prime key (or tilde) or another 
+key on the keyboard.
+
+
+- **Tab (Selection Clicks And Activation Clicks)**  
+  The Tab key is a control that we often can use consistently across an
+  interface.  Tab is generally used to toggle selection. If nothing is selected, Tab acts as
+  a "selection click" or "activation click" on the object beneath the cursor. 
+  The Tab key is often used for selection because it is easy to hit.
+
+  - On objects: Tab selects or toggles inclusion in the current selection set.  
+  - On buttons: Tab activates the button at the cursor’s location, acting as a
+    direct substitute for a mouse click.  
+  - On sliders and controls: Tab moves the slider handle directly to the cursor
+    position, enabling precise placement without dragging.  
+
+  Because Tab is large and easy to reach, it becomes a reliable, global
+  mechanism for activation and selection throughout the interface, though it doesn't
+  always have to be used and can be substituted by F.  It embodies
+  the principle of separating steering (cursor placement) from activation
+  (keyboard trigger), ensuring the same action pattern applies everywhere in
+  the UI.  
+
+
+- **Spacebar (Drag Lock / Position Lock)**  
+  Spacebar activates a drag-lock state. If there is no active selection, this
+  applies to the object currently under the cursor. If there is a selection,
+  drag-lock constrains movement of the selected set. While in drag-lock mode,
+  the mouse or continuous controller steers the motion of the object(s) until
+  the lock is released. The Tab key is used for selection because it is easy to hit.
+
+  The Spacebar is used to enable a drag-lock mode, which fixes an object,
+  selection, or control to the cursor position until released. Its role is to
+  simplify continuous repositioning without requiring the user to hold down a
+  mouse button.  
+
+  - On objects: Spacebar locks the selected object(s) to the cursor, allowing
+    smooth repositioning across the canvas.  
+  - On empty space: Spacebar locks the object directly under the cursor into a
+    drag operation, even without a prior selection.  
+  - On sliders: Spacebar locks the slider knob (or a point on a 2D slider) to
+    the cursor, enabling controlled dragging of values along a single dimension
+    or across two dimensions.  
+
+  Because the Spacebar is large, central, and easy to strike, it functions as a
+  reliable universal control for engaging drag-lock operations. It pairs
+  naturally with Tab, reinforcing the consistent separation between cursor
+  steering and keyboard activation across the entire interface.  
+  
+  There is an exception which is that for video editors, the Spacebar is
+  commonly used to play/pause, so it can be substituted with the prime key
+  (or tilde).  
+
+
+- **Esc (Cancel / Clear Selection)**  
+  The Escape key universally cancels the current mode or operation. This
+  includes aborting drag-lock, breaking out of connection or duplication modes,
+  and clearing any active selection of objects. Its large key size and
+  placement at the top-left corner of the keyboard make it quick to locate and
+  reliable to strike in high-frequency workflows.
+  
+- **F (Point Function)**  
+  In vector-drawing contexts, the F key deposits a point along the current
+  path. Its position on the home row makes it an ergonomically efficient key,
+  easy to reach without shifting hand position. By extension, it is well-suited
+  for repetitive actions such as laying down points in drawing or initiating
+  connections in patch-based systems.
+
+- **G (Drag Line Relocation)**  
+  Pressing G initiates a drag-line operation. Instead of immediately locking an
+  object to the cursor like the drag lock, the system displays a dashed line that 
+  stretches from the object’s center point to the cursor location. This line
+  serves as a preview, allowing the user to see the prospective relocation path
+  before committing.  An outline or a dashed frame of the object being dragged
+  does follow the cursor, but the actual object stays in place.
+  - The user can confirm by clicking another key or releasing G, which then
+    moves the object to the indicated location.  
+  - This method is especially valuable when repositioning patches, nodes, or
+    visual elements in dense layouts, since the dashed line provides spatial
+    context without disturbing existing alignments.  
+  - In timeline editors, a similar principle applies when dragging clips to
+    new positions: the drag line shows the intended offset before confirming.  
+
+- **M (Copy Line Relocation)**  
+  This operation demonstrates how the same convention within key-clicks can
+  support multiple related functions. It mirrors the behavior of **G (Drag
+  Line Relocation)**, except instead of moving the object, it clones it along
+  the relocation path. The dashed guide line appears from the original object
+  to the cursor, and upon confirmation, a duplicate is placed at the new
+  location. This provides a consistent visual and operational language for both
+  moving and copying objects, differentiated only by the chosen key.
+
+- **Y (Live Selection Rectangle)**  
+  Activates a dynamic rectangular selection tool. The first press of **Y**
+  begins the rectangle, anchored at the cursor location. As the cursor is
+  moved, the rectangle continuously updates, and the selection changes
+  in real time based on intersections with objects (similar to the
+  desktop-icon selection method on a PC). A second press of **Y**
+  finalizes the selection. This two-step mechanism provides the benefits of
+  direct manipulation while remaining consistent with the key-click activation
+  model.
+
+- **T (Tidy Rectangle Alignment)**  
+  If the software application involves objects that should be ordered,
+  this key works as a structural counterpart to **Y (Live Selection
+  Rectangle)** just like a Copy Line relates to a Drag Line. 
+  While **Y** is used to create and adjust a dynamic selection
+  area, **T** acts on that selection by arranging the chosen objects into a
+  neat horizontal or vertical stack, though its specifics are up to the
+  software developer. This reduces clutter and establishes
+  orderly spacing without requiring manual repositioning. In this way, **Y**
+  and **T** form a natural pair: one defines the scope of selection, the
+  other organizes it.
+
+
+- **[ and ] (Scale Down / Scale Up)**  
+  The bracket keys provide unit-based scaling for the currently selected object
+  or group. By default, pressing `[` decreases the size by one unit, and `]`
+  increases it by one unit.   In interface contexts, they also operate directly on number fields:
+  when the cursor hovers over a numeric input, pressing `[` or `]` decrements or
+  increments the value instantly.  
+
+  This approach is faster than moving to the field, clicking, and typing a
+  number. It preserves the principle of bimodal interaction: the steering hand
+  positions the cursor over the field, while the trigger hand adjusts the value
+  discretely.  
+
+  - **Shift + [ / ]**: Applies a larger increment or decrement (coarse scaling),
+    allowing rapid resizing.  
+  - **Alt + [ / ]**: Applies a smaller increment or decrement (fine scaling),
+    useful for precise adjustments.  
+
+- **; and ' (Rotate Counterclockwise / Clockwise)**  
+  The semicolon and quote keys rotate the current selection in fixed increments.
+  By default, `;` rotates counterclockwise, and `'` rotates clockwise, each in
+  a standard step (e.g., 15°).  
+
+  - **Shift + ; / '**: Increases the rotation increment (e.g., 45° or larger),
+    enabling fast orientation changes.  
+  - **Alt + ; / '**: Decreases the rotation increment (e.g., 5° or smaller),
+    allowing subtle fine-tuning of alignment.  
+
+- **- and = (Decrement / Increment Properties)**  
+  The minus and equals keys are used for adjusting continuous properties in
+  unit steps. A common example is stroke width in a vector-drawing demo:
+  pressing `-` thins the stroke by one unit, while pressing `=` thickens it by
+  one unit.  
+
+  - **Shift + - / =**: Applies larger step adjustments (coarse changes), useful
+    for quickly setting broad visual weights.  
+  - **Alt + - / =**: Applies smaller step adjustments (fine changes), allowing
+    precise refinement of stroke or property values.  
+
+- **Number Pad (Grid and Extended Functions)**  
+  When present, the number pad becomes a powerful extension of the bimodal
+  interface. Its physical layout lends itself to spatial mappings and quick
+  function access.  This isn't something to include unless specified for
+  actual desktop computers because of the rarity of full number pads on laptops.
+
+  - **3×3 Grid Selection**: The nine keys (1–9) naturally map to a 3×3 grid of
+    cells. Pressing a key selects the corresponding cell, enabling fast
+    exclusive selection across a visual matrix. This is useful for patch grids,
+    tool palettes, or camera views.  
+  - **Extended Functions**: The number pad can serve as a secondary bank of
+    discrete function triggers, separate from the main alphanumeric keys.  
+    Common uses include:  
+      • Assigning numeric increments to values.  
+      • Switching between modes or tools.  
+      • Providing shortcuts to frequently used operations.  
+  - **Ergonomic Advantage**: Because the number pad is spatially distinct, it
+    avoids interference with the primary steering/activation hand motions and
+    can host specialized, high-frequency actions without crowding the main
+    keyboard.  
+
+  In this way, the number pad operates both as a selection grid and a flexible
+  command surface, expanding the reach of key-click based control while
+  preserving the separation of steering and activation.  
+
+
+**Assignments in Various Demos**
+
+1. **Vector Drawing Demo (Key-Clicks for Shape Creation)**
+
+   In this demo, the mouse steers the cursor while the keys take over all
+   activation functions that would traditionally require mouse button clicks.
+
+   - Mouse handles cursor movement.
+   - Keys handle creation, completion, selection, and editing of shapes.
+   - F → Deposit a point along a path.
+   - A → End the path with a stroke (open polyline).
+   - E → End the path and fill the shape (closed, filled polygon).
+   - R → End the path with a stroked outline.
+   - S → End the path with both fill and stroke applied.
+   - Tab → Select existing objects.  This key replaces mouse-click or Shift + mouse-click.
+   - Spacebar → Toggle drag-lock for moving selections.  
+   		(The object "sticks" to the cursor until the drag lock is ended by a second
+   		tap of the spacebar.  If there is a selection, it turns on the drag lock
+   		for the whole group.)
+   - W → Stamp a duplicate of the current selection while dragging.
+   - [ and ] → Scale selected object(s) down and up.
+   - ; and ' → Rotate selection by increments (default 15°, with modifiers).
+   - C and V → Adjust stroke thickness thinner or thicker.
+   - Esc → Cancel selection or current dragging operation.
+
+2. **Patch/Node Synth Demo (Key-Clicks for Node Manipulation)**
+
+   Nodes ("patches") are selected, dragged, connected, and manipulated using
+   key commands instead of mouse clicks.
+
+   - Tab → Select patches, or toggle pad squares within a patch.
+   - Spacebar → Drag-lock mode to reposition one or more selected patches.
+   - G → Drag-line relocate; moves a patch to cursor location using a guide.
+   - F → Connect or disconnect ports between patches (cable start/finish). Hangs the
+   	cable on the cursor until F is pressed again when the cursor is over another port.
+   - S → Swap cable connections by detaching and reattaching to a port.
+   - D → Delete a cable connection.
+   - T → Tidy rectangle; align patches horizontally or vertically.
+   - Y → Live selection rectangle; updates selection as cursor moves.  This is the
+   same as the selection rectangle used during selection of desktop icons on a PC,
+   just converted into two steps: the first press of Y begins the rectangle, when the 
+   mouse is moved the rectangle is adjusted and the selection changes based on intersection
+   with desktop icons, and when the Y key is pressed again
+   the rectangle is finalized and the selection made.  In this case it applies to patches
+   instead of icons.
+   
+   - W → Toggle disabled state for a patch or cable.
+   - E → Collapse/expand patch contents (header only vs. full view).
+   - [ and ] → Scale selected patches smaller or larger.
+   - ; and ' → Rotate selected patches clockwise/counterclockwise.
+   - M → Clone patches (guide line or stamping).
+   - Esc → Cancel active operations.
+
+   This demo demonstrates how patch-based workflows can be fully navigated
+   and manipulated using key commands instead of mouse clicks.
+
+3. **NLE Timeline Editor (Key-Clicks for Editing Operations)**
+
+   - K → Split a clip at the current playhead location (razor/slice).
+   - J → Join two adjacent clips into a single continuous clip.
+   - L → Ripple delete (remove a clip and close the gap).
+   - I → Mark in point at playhead.
+   - O → Mark out point at playhead.
+   - Tab → Select the clip on the timeline.
+   - Spacebar → Toggle drag-lock for repositioning selected clip(s).
+   - [ and ] → Nudge selected clip earlier or later on the timeline.
+   - ; and ' → Rotate trim handles (for rolling edits, adjusting cut points).
+   - W → Duplicate/clone the selected clip at playhead position.
+   - Esc → Cancel any active trim, selection, or dragging operation.
+
+   Here, the mouse continues to handle steering (e.g., scrubbing or navigating
+   the timeline view), while the keyboard performs precise editing actions.
+   This allows the editor to maintain continuous navigation with one hand and
+   rapid editing triggers with the other.
+
+## Variable State Modes
+
+In some applications, particularly vector-drawing programs, certain modes
+require multiple sequential states rather than a single on/off toggle. The
+number of states depends on the operation being performed. For example,
+activating a drag lock typically involves two steps: the first press of the
+Spacebar establishes the lock, and a second press releases it.
+
+By contrast, more complex operations can require a larger state cycle. Suppose
+a user has selected a vector graphics object and wishes to map it into a
+quadrilateral region. This operation requires four corner points to be defined
+in sequence. Each key-press (e.g., **F**) establishes one corner of the
+quadrilateral. The mode only completes after all four states have been reached
+and the object is transformed accordingly. Pressing **Escape** at any time
+cancels the unfinished sequence.
+
+This design allows consistency with bimodal principles—steering is continuous,
+while key-clicks incrementally advance through a structured multi-state
+process. Users quickly learn the rhythm of two-step, four-step, or
+variable-length operations, and the interface maintains predictability by
+always signaling which stage of the sequence is active.
+
+
+Keys in Bimodal Control Applications
+------------------------------------
+
+Across these applications, the same guiding principle applies: **one hand
+steers, the other hand triggers.** The specific key map adapts to the software
+domain, but the division of labor is constant, yielding smoother workflows,
+faster command execution, and reduced repetitive strain.
+
+---
+
+Application to Tablet Interfaces
+--------------------------------
+
+The principles of Key-clicks and Bimodal interfaces extend naturally into
+tablet-based touch systems, where physical keys are absent but gesture and
+touch-event pairs can fulfill a similar role. Instead of discrete keystrokes,
+the fundamental unit of interaction is a tap, drag, or compound gesture applied
+at a location in the workspace. These interactions, like keystrokes, can be
+mapped into symmetric pairs (e.g., Insert/Delete, Select/Deselect, Scale
+Up/Scale Down, Rotate CW/Rotate CCW, Copy/Paste) to maintain the bimodal
+balance that ensures expressiveness while limiting interface complexity.
+
+In practice, the user may touch an object to select it, then use a follow-up
+gesture to scale, rotate, or transform it, with undoable actions preserving
+state continuity. These are operationally parallel to keyboard-driven commands
+in desktop applications: the touch replaces the physical key, but the functional
+design pattern remains identical.
+
+This framework supports more advanced roles on tablets as well. For example:
+
+- **Drawing and Design**: Tapping to select or deselect objects, dragging to
+  move, and pinching to scale provides the same reversible structure as
+  keyboard shortcuts.
+- **Document Editing**: Copy/Paste, Insert/Delete, and Cut/Join are expressible
+  through touches with visual feedback animations.
+- **Timeline and Media Control**: A tap-split gesture at a playhead, or
+  swipe-join between clips, directly mirrors the “K to split, J to join”
+  keyboard operations in non-linear editors.
+
+By unifying these approaches, Key-clicks and Bimodal become not just a desktop
+metaphor but a generalizable interaction pattern for both keyboard-based and
+touch-based environments. Tablets thus benefit from the same balanced operator
+set, enhancing predictability, symmetry, and ease of learning across platforms.
+
+Conclusion
+----------
+
+- Reassigning "clicks" to the keyboard demonstrates how dual-input UI theory
+  can upgrade conventional interfaces.
+- It reduces the tedium of mouse-only workflows in vector drawing, node-based
+  programming, and similar GUI contexts.
+- Bimodal Control highlights a generalizable design principle: **the
+  alternation of input activity between two separate physical locations**,
+  leading to a new vista for user interfaces.

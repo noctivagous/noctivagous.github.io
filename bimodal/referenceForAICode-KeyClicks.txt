@@ -50,10 +50,149 @@ The central feature of Bimodal Control when applied to desktop software is that
 "clicks" and function triggers are reassigned to the keyboard. Below are three
 examples that illustrate how keys are used in different application contexts.
 
+
 Applications
 ------------
 
 We have made demos that put key-clicks into practice.
+
+**Consistent Key Usage Across Applications**
+
+Across all of the demos and applications, certain keys are used consistently for 
+predictability and to reflect tested methods. This consistency helps
+the user transfer habits between different domains (vector graphics, patch
+synths, timeline editors, or tablet-gesture equivalents).   
+
+We pay attention to the location of the keys.  We use Escape, for example, 
+to cancel any mode that was activated by a key and this includes clearing a 
+selection objects.  The Escape key is easy to hit on the keyboard along with
+Tab and Spacebar.  The F key is easy to hit as well. 
+
+We always take note of the circumstances. For non-linear editor (NLE) timelines in
+editor applications for example, the Spacebar is commonly used activate the 
+play/pause button, so for these programs it can be substituted with the prime key 
+(or tilde) or another key on the keyboard.  
+
+
+- **Tab (Selection Clicks)**  
+  Tab is generally used to toggle selection. If nothing is selected, Tab acts as
+  a "selection click" on the object beneath the cursor. If one or more objects
+  are already selected, Tab cycles or expands the selection set, depending on
+  the application.   The Tab key is used for selection because it is easy to hit.
+
+  The Tab key is a control that we often can use consistently across an
+  interface.
+
+  - On objects: Tab selects or toggles inclusion in the current selection set.  
+  - On buttons: Tab activates the button at the cursor’s location, acting as a
+    direct substitute for a mouse click.  
+  - On sliders and controls: Tab moves the slider handle directly to the cursor
+    position, enabling precise placement without dragging.  
+
+  Because Tab is large and easy to reach, it becomes a reliable, global
+  mechanism for activation and selection throughout the interface, though it doesn't
+  always have to be used and can be substituted by F.  It embodies
+  the principle of separating steering (cursor placement) from activation
+  (keyboard trigger), ensuring the same action pattern applies everywhere in
+  the UI.  
+
+
+- **Spacebar (Drag Lock / Position Lock)**  
+  Spacebar activates a drag-lock state. If there is no active selection, this
+  applies to the object currently under the cursor. If there is a selection,
+  drag-lock constrains movement of the selected set. While in drag-lock mode,
+  the mouse or continuous controller steers the motion of the object(s) until
+  the lock is released. The Tab key is used for selection because it is easy to hit.
+
+  The Spacebar is used to enable a drag-lock mode, which fixes an object,
+  selection, or control to the cursor position until released. Its role is to
+  simplify continuous repositioning without requiring the user to hold down a
+  mouse button.  
+
+  - On objects: Spacebar locks the selected object(s) to the cursor, allowing
+    smooth repositioning across the canvas.  
+  - On empty space: Spacebar locks the object directly under the cursor into a
+    drag operation, even without a prior selection.  
+  - On sliders: Spacebar locks the slider knob (or a point on a 2D slider) to
+    the cursor, enabling controlled dragging of values along a single dimension
+    or across two dimensions.  
+
+  Because the Spacebar is large, central, and easy to strike, it functions as a
+  reliable universal control for engaging drag-lock operations. It pairs
+  naturally with Tab, reinforcing the consistent separation between cursor
+  steering and keyboard activation across the entire interface.  
+  
+  There is an exception which is that for video editors, the Spacebar is
+  commonly used to play/pause, so it can be substituted with the prime key
+  (or tilde).  
+
+
+- **Esc (Cancel / Clear Selection)**  
+  The Escape key universally cancels the current mode or operation. This
+  includes aborting drag-lock, breaking out of connection or duplication modes,
+  and clearing any active selection of objects. Its large key size and
+  placement at the top-left corner of the keyboard make it quick to locate and
+  reliable to strike in high-frequency workflows.
+  
+- **F (Point Function)**  
+  In vector-drawing contexts, the F key deposits a point along the current
+  path. Its position on the home row makes it an ergonomically efficient key,
+  easy to reach without shifting hand position. By extension, it is well-suited
+  for repetitive actions such as laying down points in drawing or initiating
+  connections in patch-based systems.
+
+- **G (Drag Line Relocation)**  
+  Pressing G initiates a drag-line operation. Instead of immediately moving an
+  object to follow the cursor, the system displays a dashed line stretching
+  from the object’s current anchor point to the cursor location. This line
+  serves as a preview, allowing the user to see the prospective relocation path
+  before committing.  
+  - The user can confirm by clicking another key or releasing G, which then
+    moves the object to the indicated location.  
+  - This method is especially valuable when repositioning patches, nodes, or
+    visual elements in dense layouts, since the dashed line provides spatial
+    context without disturbing existing alignments.  
+  - In timeline editors, a similar principle applies when dragging clips to
+    new positions: the drag line shows the intended offset before confirming.  
+
+- **[ and ] (Scale Down / Scale Up)**  
+  The bracket keys provide unit-based scaling for the currently selected object
+  or group. By default, pressing `[` decreases the size by one unit, and `]`
+  increases it by one unit.   In interface contexts, they also operate directly on number fields:
+  when the cursor hovers over a numeric input, pressing `[` or `]` decrements or
+  increments the value instantly.  
+
+  This approach is faster than moving to the field, clicking, and typing a
+  number. It preserves the principle of bimodal interaction: the steering hand
+  positions the cursor over the field, while the trigger hand adjusts the value
+  discretely.  
+
+  - **Shift + [ / ]**: Applies a larger increment or decrement (coarse scaling),
+    allowing rapid resizing.  
+  - **Alt + [ / ]**: Applies a smaller increment or decrement (fine scaling),
+    useful for precise adjustments.  
+
+- **; and ' (Rotate Counterclockwise / Clockwise)**  
+  The semicolon and quote keys rotate the current selection in fixed increments.
+  By default, `;` rotates counterclockwise, and `'` rotates clockwise, each in
+  a standard step (e.g., 15°).  
+
+  - **Shift + ; / '**: Increases the rotation increment (e.g., 45° or larger),
+    enabling fast orientation changes.  
+  - **Alt + ; / '**: Decreases the rotation increment (e.g., 5° or smaller),
+    allowing subtle fine-tuning of alignment.  
+
+- **- and = (Decrement / Increment Properties)**  
+  The minus and equals keys are used for adjusting continuous properties in
+  unit steps. A common example is stroke width in a vector-drawing demo:
+  pressing `-` thins the stroke by one unit, while pressing `=` thickens it by
+  one unit.  
+
+  - **Shift + - / =**: Applies larger step adjustments (coarse changes), useful
+    for quickly setting broad visual weights.  
+  - **Alt + - / =**: Applies smaller step adjustments (fine changes), allowing
+    precise refinement of stroke or property values.  
+
 
 1. **Vector Drawing Demo (Key-Clicks for Shape Creation)**
 
@@ -116,7 +255,7 @@ We have made demos that put key-clicks into practice.
    - L → Ripple delete (remove a clip and close the gap).
    - I → Mark in point at playhead.
    - O → Mark out point at playhead.
-   - Tab → Select the next clip on the timeline.
+   - Tab → Select the clip on the timeline.
    - Spacebar → Toggle drag-lock for repositioning selected clip(s).
    - [ and ] → Nudge selected clip earlier or later on the timeline.
    - ; and ' → Rotate trim handles (for rolling edits, adjusting cut points).

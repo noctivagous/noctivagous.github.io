@@ -59,14 +59,18 @@ We have made demos that put key-clicks into practice.
 **Consistent Key Usage Across Applications**
 
 Across all of the demos and applications, certain keys are used consistently for 
-predictability and to reflect tested methods. This consistency helps
+predictability and to reflect tested implementations.  This consistency helps
 the user transfer habits between different domains (vector graphics, patch
-synths, timeline editors, or tablet-gesture equivalents).   
+synths, timeline editors, or tablet-gesture equivalents) but there are also
+reasons for the various selections of the keys based on the form of a keyboard.   
 
-We pay attention to the location of the keys.  We use Escape, for example, 
-to cancel any mode that was activated by a key and this includes clearing a 
-selection objects.  The Escape key is easy to hit on the keyboard along with
-Tab and Spacebar.  The F key is easy to hit as well. 
+We pay attention to the location of the keys, how big they are, and how they
+can be used in the middle of live interaction.  The key-clicks elevate computer
+user interaction to a real-time mode.
+  
+We use Escape, for example, to cancel any mode that was activated by a key and this 
+includes clearing a selection objects.  The Escape key is easy to hit on the keyboard 
+along with Tab and Spacebar.  The F key is easy to hit as well. 
 
 We always take note of the circumstances. For non-linear editor (NLE) timelines in
 editor applications for example, the Spacebar is commonly used activate the 
@@ -155,6 +159,7 @@ play/pause button, so for these programs it can be substituted with the prime ke
   - In timeline editors, a similar principle applies when dragging clips to
     new positions: the drag line shows the intended offset before confirming.  
 
+
 - **[ and ] (Scale Down / Scale Up)**  
   The bracket keys provide unit-based scaling for the currently selected object
   or group. By default, pressing `[` decreases the size by one unit, and `]`
@@ -193,6 +198,33 @@ play/pause button, so for these programs it can be substituted with the prime ke
   - **Alt + - / =**: Applies smaller step adjustments (fine changes), allowing
     precise refinement of stroke or property values.  
 
+- **Number Pad (Grid and Extended Functions)**  
+  When present, the number pad becomes a powerful extension of the bimodal
+  interface. Its physical layout lends itself to spatial mappings and quick
+  function access.  This isn't something to include unless specified for
+  actual desktop computers because of the rarity of full number pads on laptops.
+
+  - **3×3 Grid Selection**: The nine keys (1–9) naturally map to a 3×3 grid of
+    cells. Pressing a key selects the corresponding cell, enabling fast
+    exclusive selection across a visual matrix. This is useful for patch grids,
+    tool palettes, or camera views.  
+  - **Extended Functions**: The number pad can serve as a secondary bank of
+    discrete function triggers, separate from the main alphanumeric keys.  
+    Common uses include:  
+      • Assigning numeric increments to values.  
+      • Switching between modes or tools.  
+      • Providing shortcuts to frequently used operations.  
+  - **Ergonomic Advantage**: Because the number pad is spatially distinct, it
+    avoids interference with the primary steering/activation hand motions and
+    can host specialized, high-frequency actions without crowding the main
+    keyboard.  
+
+  In this way, the number pad operates both as a selection grid and a flexible
+  command surface, expanding the reach of key-click based control while
+  preserving the separation of steering and activation.  
+
+
+**Assignments in Various Demos**
 
 1. **Vector Drawing Demo (Key-Clicks for Shape Creation)**
 

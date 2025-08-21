@@ -59,33 +59,33 @@ We have made demos that put key-clicks into practice.
 **Consistent Key Usage Across Applications**
 
 Across all of the demos and applications, certain keys are used consistently for 
-predictability and to reflect tested implementations.  This consistency helps
+predictability and to reflect tested implementations.  These are guidelines that help
 the user transfer habits between different domains (vector graphics, patch
-synths, timeline editors, or tablet-gesture equivalents) but there are also
-reasons for the various selections of the keys based on the form of a keyboard.   
+synths, timeline editors, or tablet-gesture equivalents).  There are 
+reasons for the various selections of the keys based on the form of a keyboard. 
 
 We pay attention to the location of the keys, how big they are, and how they
 can be used in the middle of live interaction.  The key-clicks elevate computer
-user interaction to a real-time mode.
+user interaction to a real-time mode, so for something as frequent as dragging,
+we often use the Spacebar for a drag lock (described below) so that objects
+are picked up and dropped rapidly.
   
 We use Escape, for example, to cancel any mode that was activated by a key and this 
 includes clearing a selection objects.  The Escape key is easy to hit on the keyboard 
-along with Tab and Spacebar.  The F key is easy to hit as well. 
+along with Tab and Spacebar.  The F key is easy to hit as well.
 
-We always take note of the circumstances. For non-linear editor (NLE) timelines in
-editor applications for example, the Spacebar is commonly used activate the 
-play/pause button, so for these programs it can be substituted with the prime key 
-(or tilde) or another key on the keyboard.  
+We always take note of the application's needs and circumstances. 
+For non-linear editor (NLE) timelines in editor applications for example, 
+the Spacebar is commonly used activate the play/pause button, so for these programs 
+the drag lock can be substituted with the prime key (or tilde) or another 
+key on the keyboard.
 
 
-- **Tab (Selection Clicks)**  
-  Tab is generally used to toggle selection. If nothing is selected, Tab acts as
-  a "selection click" on the object beneath the cursor. If one or more objects
-  are already selected, Tab cycles or expands the selection set, depending on
-  the application.   The Tab key is used for selection because it is easy to hit.
-
+- **Tab (Selection Clicks And Activation Clicks)**  
   The Tab key is a control that we often can use consistently across an
-  interface.
+  interface.  Tab is generally used to toggle selection. If nothing is selected, Tab acts as
+  a "selection click" or "activation click" on the object beneath the cursor. 
+  The Tab key is often used for selection because it is easy to hit.
 
   - On objects: Tab selects or toggles inclusion in the current selection set.  
   - On buttons: Tab activates the button at the cursor’s location, acting as a
@@ -146,11 +146,12 @@ play/pause button, so for these programs it can be substituted with the prime ke
   connections in patch-based systems.
 
 - **G (Drag Line Relocation)**  
-  Pressing G initiates a drag-line operation. Instead of immediately moving an
-  object to follow the cursor, the system displays a dashed line stretching
-  from the object’s current anchor point to the cursor location. This line
+  Pressing G initiates a drag-line operation. Instead of immediately locking an
+  object to the cursor like the drag lock, the system displays a dashed line that 
+  stretches from the object’s center point to the cursor location. This line
   serves as a preview, allowing the user to see the prospective relocation path
-  before committing.  
+  before committing.  An outline or a dashed frame of the object being dragged
+  does follow the cursor, but the actual object stays in place.
   - The user can confirm by clicking another key or releasing G, which then
     moves the object to the indicated location.  
   - This method is especially valuable when repositioning patches, nodes, or
@@ -158,6 +159,37 @@ play/pause button, so for these programs it can be substituted with the prime ke
     context without disturbing existing alignments.  
   - In timeline editors, a similar principle applies when dragging clips to
     new positions: the drag line shows the intended offset before confirming.  
+
+- **M (Copy Line Relocation)**  
+  This operation demonstrates how the same convention within key-clicks can
+  support multiple related functions. It mirrors the behavior of **G (Drag
+  Line Relocation)**, except instead of moving the object, it clones it along
+  the relocation path. The dashed guide line appears from the original object
+  to the cursor, and upon confirmation, a duplicate is placed at the new
+  location. This provides a consistent visual and operational language for both
+  moving and copying objects, differentiated only by the chosen key.
+
+- **Y (Live Selection Rectangle)**  
+  Activates a dynamic rectangular selection tool. The first press of **Y**
+  begins the rectangle, anchored at the cursor location. As the cursor is
+  moved, the rectangle continuously updates, and the selection changes
+  in real time based on intersections with objects (similar to the
+  desktop-icon selection method on a PC). A second press of **Y**
+  finalizes the selection. This two-step mechanism provides the benefits of
+  direct manipulation while remaining consistent with the key-click activation
+  model.
+
+- **T (Tidy Rectangle Alignment)**  
+  If the software application involves objects that should be ordered,
+  this key works as a structural counterpart to **Y (Live Selection
+  Rectangle)** just like a Copy Line relates to a Drag Line. 
+  While **Y** is used to create and adjust a dynamic selection
+  area, **T** acts on that selection by arranging the chosen objects into a
+  neat horizontal or vertical stack, though its specifics are up to the
+  software developer. This reduces clutter and establishes
+  orderly spacing without requiring manual repositioning. In this way, **Y**
+  and **T** form a natural pair: one defines the scope of selection, the
+  other organizes it.
 
 
 - **[ and ] (Scale Down / Scale Up)**  

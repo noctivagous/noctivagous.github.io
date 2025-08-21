@@ -1,0 +1,184 @@
+Making a Key-Click Based Project / Bimodal Control Theory
+=========================================================
+
+For this project we would like you to make the GUI and input centered around
+key-clicks which is part of Bimodal Control Theory.
+
+Key-clicks and Bimodal Control Description
+------------------------------------------
+
+Bimodal Control (also called Dual-Input UI Theory) describes a separation of
+input tasks into two distinct modalities, each handled by a different device
+or hand. The first example given is that traditional mouse usage combines
+both cursor steering and activation (clicking) into a single device, which
+increases cognitive load and reduces flexibility.
+
+Bimodal Control divides these tasks:
+
+1. **Steering / Navigation**
+
+   - Performed by a continuous controller such as a mouse, trackpad, or
+     joystick.
+   - Responsible for moving the cursor, guiding crosshairs, or positioning
+     elements in XY(Z) space.
+
+2. **Function Activation (Key-Clicks)**
+
+   - Performed by a discrete input source such as keyboard keys or secondary
+     buttons.
+   - Responsible for triggering functions that were traditionally bound to
+     mouse clicks.
+
+This division mirrors how instruments like the guitar separate left-hand
+navigation from right-hand triggering. Each modality focuses on its task,
+producing a smoother workflow and reducing fatigue.
+
+---
+
+**Key-Clicks**
+
+For Bimodal Control Theory, in practice, mouse-button clicks are typically
+replaced by designated keyboard keys. For example, the **F** key deposits
+points when drawing vectors, while other keys complete shapes, drag selections,
+or adjust stroke width. This approach frees the steering device from having to
+carry both tasks, allowing the user to maintain cursor guidance continuously
+while activating functions with the other hand.
+
+---
+
+The central feature of Bimodal Control when applied to desktop software is that
+"clicks" and function triggers are reassigned to the keyboard. Below are three
+examples that illustrate how keys are used in different application contexts.
+
+Applications
+------------
+
+We have made demos that put key-clicks into practice.
+
+1. **Vector Drawing Demo (Key-Clicks for Shape Creation)**
+
+   In this demo, the mouse steers the cursor while the keys take over all
+   activation functions that would traditionally require mouse button clicks.
+
+   - Mouse handles cursor movement.
+   - Keys handle creation, completion, selection, and editing of shapes.
+   - F → Deposit a point along a path.
+   - A → End the path with a stroke (open polyline).
+   - E → End the path and fill the shape (closed, filled polygon).
+   - R → End the path with a stroked outline.
+   - S → End the path with both fill and stroke applied.
+   - Tab → Select existing objects.  This key replaces mouse-click or Shift + mouse-click.
+   - Spacebar → Toggle drag-lock for moving selections.  
+   		(The object "sticks" to the cursor until the drag lock is ended by a second
+   		tap of the spacebar.  If there is a selection, it turns on the drag lock
+   		for the whole group.)
+   - W → Stamp a duplicate of the current selection while dragging.
+   - [ and ] → Scale selected object(s) down and up.
+   - ; and ' → Rotate selection by increments (default 15°, with modifiers).
+   - C and V → Adjust stroke thickness thinner or thicker.
+   - Esc → Cancel selection or current dragging operation.
+
+2. **Patch/Node Synth Demo (Key-Clicks for Node Manipulation)**
+
+   Nodes ("patches") are selected, dragged, connected, and manipulated using
+   key commands instead of mouse clicks.
+
+   - Tab → Select patches, or toggle pad squares within a patch.
+   - Spacebar → Drag-lock mode to reposition one or more selected patches.
+   - G → Drag-line relocate; moves a patch to cursor location using a guide.
+   - F → Connect or disconnect ports between patches (cable start/finish). Hangs the
+   	cable on the cursor until F is pressed again when the cursor is over another port.
+   - S → Swap cable connections by detaching and reattaching to a port.
+   - D → Delete a cable connection.
+   - T → Tidy rectangle; align patches horizontally or vertically.
+   - Y → Live selection rectangle; updates selection as cursor moves.  This is the
+   same as the selection rectangle used during selection of desktop icons on a PC,
+   just converted into two steps: the first press of Y begins the rectangle, when the 
+   mouse is moved the rectangle is adjusted and the selection changes based on intersection
+   with desktop icons, and when the Y key is pressed again
+   the rectangle is finalized and the selection made.  In this case it applies to patches
+   instead of icons.
+   
+   - W → Toggle disabled state for a patch or cable.
+   - E → Collapse/expand patch contents (header only vs. full view).
+   - [ and ] → Scale selected patches smaller or larger.
+   - ; and ' → Rotate selected patches clockwise/counterclockwise.
+   - M → Clone patches (guide line or stamping).
+   - Esc → Cancel active operations.
+
+   This demo demonstrates how patch-based workflows can be fully navigated
+   and manipulated using key commands instead of mouse clicks.
+
+3. **NLE Timeline Editor (Key-Clicks for Editing Operations)**
+
+   - K → Split a clip at the current playhead location (razor/slice).
+   - J → Join two adjacent clips into a single continuous clip.
+   - L → Ripple delete (remove a clip and close the gap).
+   - I → Mark in point at playhead.
+   - O → Mark out point at playhead.
+   - Tab → Select the next clip on the timeline.
+   - Spacebar → Toggle drag-lock for repositioning selected clip(s).
+   - [ and ] → Nudge selected clip earlier or later on the timeline.
+   - ; and ' → Rotate trim handles (for rolling edits, adjusting cut points).
+   - W → Duplicate/clone the selected clip at playhead position.
+   - Esc → Cancel any active trim, selection, or dragging operation.
+
+   Here, the mouse continues to handle steering (e.g., scrubbing or navigating
+   the timeline view), while the keyboard performs precise editing actions.
+   This allows the editor to maintain continuous navigation with one hand and
+   rapid editing triggers with the other.
+
+Keys in Bimodal Control Applications
+------------------------------------
+
+Across these applications, the same guiding principle applies: **one hand
+steers, the other hand triggers.** The specific key map adapts to the software
+domain, but the division of labor is constant, yielding smoother workflows,
+faster command execution, and reduced repetitive strain.
+
+---
+
+Application to Tablet Interfaces
+--------------------------------
+
+The principles of Key-clicks and Bimodal interfaces extend naturally into
+tablet-based touch systems, where physical keys are absent but gesture and
+touch-event pairs can fulfill a similar role. Instead of discrete keystrokes,
+the fundamental unit of interaction is a tap, drag, or compound gesture applied
+at a location in the workspace. These interactions, like keystrokes, can be
+mapped into symmetric pairs (e.g., Insert/Delete, Select/Deselect, Scale
+Up/Scale Down, Rotate CW/Rotate CCW, Copy/Paste) to maintain the bimodal
+balance that ensures expressiveness while limiting interface complexity.
+
+In practice, the user may touch an object to select it, then use a follow-up
+gesture to scale, rotate, or transform it, with undoable actions preserving
+state continuity. These are operationally parallel to keyboard-driven commands
+in desktop applications: the touch replaces the physical key, but the functional
+design pattern remains identical.
+
+This framework supports more advanced roles on tablets as well. For example:
+
+- **Drawing and Design**: Tapping to select or deselect objects, dragging to
+  move, and pinching to scale provides the same reversible structure as
+  keyboard shortcuts.
+- **Document Editing**: Copy/Paste, Insert/Delete, and Cut/Join are expressible
+  through touches with visual feedback animations.
+- **Timeline and Media Control**: A tap-split gesture at a playhead, or
+  swipe-join between clips, directly mirrors the “K to split, J to join”
+  keyboard operations in non-linear editors.
+
+By unifying these approaches, Key-clicks and Bimodal become not just a desktop
+metaphor but a generalizable interaction pattern for both keyboard-based and
+touch-based environments. Tablets thus benefit from the same balanced operator
+set, enhancing predictability, symmetry, and ease of learning across platforms.
+
+Conclusion
+----------
+
+- Reassigning "clicks" to the keyboard demonstrates how dual-input UI theory
+  can upgrade conventional interfaces.
+- It reduces the tedium of mouse-only workflows in vector drawing, node-based
+  programming, and similar GUI contexts.
+- Bimodal Control highlights a generalizable design principle: **the
+  alternation of input activity between two separate physical locations**,
+  leading to a new vista for user interfaces.

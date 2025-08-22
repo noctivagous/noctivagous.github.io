@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <title>KeyPilot Extension Context Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            border: 2px solid #007cba;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .results {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+        }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .warning { color: #ffc107; font-weight: bold; }
+        .info { color: #17a2b8; }
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #005a8b;
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            color: #856404;
+        }
+        .test-element {
+            margin: 5px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .test-element:focus {
+            outline: 2px solid #007cba;
+            outline-offset: 2px;
+        }
+        #testInput {
+            width: 200px;
+        }
+        #testSelect {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 KeyPilot Extension Context Test</h1>
+    
+    <div class="note">
+        <strong>Note:</strong> This page tests the extension from within the extension context.
+        Since content scripts don't normally run on chrome-extension:// URLs, we manually load
+        the KeyPilot core and content scripts to test their functionality.
+    </div>
+    
+    <div class="test-section">
+        <h2>🔍 Extension Context Tests</h2>
+        <button id="testExtensionContextBtn">Test Extension Context</button>
+        <button id="testContentScriptsBtn">Test Content Scripts</button>
+        <button id="testKeyPilotCoreBtn">Test KeyPilot Core</button>
+        <button id="clearResultsBtn">Clear Results</button>
+    </div>
+
+    <div class="test-section">
+        <h2>⚙️ KeyPilot Controls</h2>
+        <button id="enableKeyPilotBtn">Enable KeyPilot</button>
+        <button id="disableKeyPilotBtn">Disable KeyPilot</button>
+        <button id="toggleDebugBtn">Toggle Debug Mode</button>
+        <button id="getStatusBtn">Get Status</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🎮 Keyboard Testing</h2>
+        <p>Test KeyPilot keyboard shortcuts:</p>
+        <button id="simulateFKeyBtn">Simulate F Key (Click Mode)</button>
+        <button id="simulateHKeyBtn">Simulate H Key (Highlight Mode)</button>
+        <button id="simulateEscKeyBtn">Simulate ESC Key (Exit Mode)</button>
+        <button id="simulateAltShiftBBtn">Simulate Alt+Shift+B (Toggle)</button>
+        <button id="testTogglePersistenceBtn">Test Toggle Persistence</button>
+    </div>
+
+    <div class="test-section">
+        <h2>💾 Storage Testing</h2>
+        <button id="testStorageBtn">Test Storage Operations</button>
+        <button id="clearStorageBtn">Clear Extension Storage</button>
+        <button id="viewStorageBtn">View Storage Contents</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📡 Messaging Testing</h2>
+        <button id="testMessagingBtn">Test Extension Messaging</button>
+        <button id="testBackgroundBtn">Test Background Communication</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 Interactive Elements</h2>
+        <p>Test KeyPilot functionality on these elements:</p>
+        <button class="test-element" id="testBtn1">Test Button 1</button>
+        <button class="test-element" id="testBtn2">Test Button 2</button>
+        <input type="text" class="test-element" placeholder="Test Input Field" id="testInput">
+        <a href="#" class="test-element" id="testLink">Test Link</a>
+        
+        <div style="margin: 10px 0;">
+            <label>Dropdown Menu:</label>
+            <select class="test-element" id="testSelect">
+                <option value="">Choose option...</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+        </div>
+        
+        <div style="margin: 10px 0;">
+            <label>Checkboxes:</label><br>
+            <input type="checkbox" class="test-element" id="checkbox1" value="cb1">
+            <label for="checkbox1">Checkbox 1</label><br>
+            <input type="checkbox" class="test-element" id="checkbox2" value="cb2">
+            <label for="checkbox2">Checkbox 2</label><br>
+            <input type="checkbox" class="test-element" id="checkbox3" value="cb3" checked>
+            <label for="checkbox3">Checkbox 3 (pre-checked)</label>
+        </div>
+        
+        <div style="margin: 10px 0;">
+            <label>Radio Buttons:</label><br>
+            <input type="radio" class="test-element" name="testRadio" id="radio1" value="r1">
+            <label for="radio1">Radio Option 1</label><br>
+            <input type="radio" class="test-element" name="testRadio" id="radio2" value="r2" checked>
+            <label for="radio2">Radio Option 2 (pre-selected)</label><br>
+            <input type="radio" class="test-element" name="testRadio" id="radio3" value="r3">
+            <label for="radio3">Radio Option 3</label>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Test Results</h2>
+        <div class="results" id="testResults">Click a test button to see results...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>🐛 Debugging Info</h2>
+        <p><strong>Current URL:</strong> <span id="currentUrl"></span></p>
+        <p><strong>Protocol:</strong> <span id="protocol"></span></p>
+        <p><strong>Document Ready State:</strong> <span id="readyState"></span></p>
+        <p><strong>Extension Context:</strong> <span id="extensionContext"></span></p>
+        <p><strong>KeyPilot Core Status:</strong> <span id="keyPilotStatus"></span></p>
+        <p><strong>Chrome APIs Available:</strong> <span id="chromeApis"></span></p>
+        <button id="refreshDebugInfoBtn">Refresh Debug Info</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Quick Actions</h2>
+        <button id="runAllTestsBtn">Run All Tests</button>
+        <button id="enableAndTestBtn">Enable KeyPilot & Test</button>
+        <button id="exportResultsBtn">Export Test Results</button>
+        <button id="openConsoleBtn">Open Browser Console</button>
+    </div>
+
+    <script src="test-utils.js"></script>
+    <script src="content/keypilot-core.js"></script>
+    <script src="content/content.js"></script>
+    <script src="test-extension-context.js"></script>
+    
+    <script>
+        // Add event listeners to test form elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Checkbox event listeners
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    console.log(`Checkbox ${this.id} changed to: ${this.checked}`);
+                    logToResults(`✓ Checkbox ${this.id} ${this.checked ? 'checked' : 'unchecked'}`);
+                });
+            });
+            
+            // Radio button event listeners
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    console.log(`Radio ${this.id} selected: ${this.value}`);
+                    logToResults(`✓ Radio button ${this.id} selected (${this.value})`);
+                });
+            });
+            
+            // Select dropdown event listener
+            document.getElementById('testSelect').addEventListener('change', function() {
+                console.log(`Select changed to: ${this.value}`);
+                logToResults(`✓ Dropdown changed to: ${this.value || '(empty)'}`);
+            });
+            
+            // Button event listeners
+            document.getElementById('testBtn1').addEventListener('click', function() {
+                console.log('Test Button 1 clicked');
+                logToResults('✓ Test Button 1 clicked successfully');
+            });
+            
+            document.getElementById('testBtn2').addEventListener('click', function() {
+                console.log('Test Button 2 clicked');
+                logToResults('✓ Test Button 2 clicked successfully');
+            });
+            
+            // Link event listener
+            document.getElementById('testLink').addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent navigation
+                console.log('Test Link clicked');
+                logToResults('✓ Test Link clicked successfully');
+            });
+        });
+        
+        function logToResults(message) {
+            const results = document.getElementById('testResults');
+            if (results) {
+                const timestamp = new Date().toLocaleTimeString();
+                results.textContent += `[${timestamp}] ${message}\n`;
+                results.scrollTop = results.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>

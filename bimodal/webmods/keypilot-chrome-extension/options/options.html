@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  <title>KeyPilot Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>KeyPilot Settings</h1>
+      <p>Configure your keyboard navigation preferences</p>
+    </header>
+    
+    <main>
+      <section class="settings-section">
+        <h2>General Settings</h2>
+        
+        <div class="setting-item">
+          <label class="setting-label">
+            <input type="checkbox" id="defaultEnabled" class="setting-checkbox">
+            <span class="checkmark"></span>
+            Enable KeyPilot by default across all websites
+          </label>
+          <p class="setting-description">
+            When enabled, KeyPilot will automatically start on all websites you visit. 
+            You can still toggle it on/off for individual tabs using Alt+Shift+B.
+          </p>
+        </div>
+        
+        <div class="setting-item">
+          <label class="setting-label">
+            <input type="checkbox" id="debugMode" class="setting-checkbox">
+            <span class="checkmark"></span>
+            Enable debug mode by default
+          </label>
+          <p class="setting-description">
+            Shows additional information and logging for troubleshooting.
+          </p>
+        </div>
+      </section>
+      
+      <section class="settings-section">
+        <h2>Keyboard Shortcuts</h2>
+        <div class="shortcuts-info">
+          <div class="shortcut-item">
+            <span class="shortcut-key">Alt + Shift + B</span>
+            <span class="shortcut-desc">Toggle KeyPilot on/off</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">Alt + Shift + P</span>
+            <span class="shortcut-desc">Toggle debug mode</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">F</span>
+            <span class="shortcut-desc">Click elements (when KeyPilot is active)</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">H</span>
+            <span class="shortcut-desc">Highlight text (when KeyPilot is active)</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">D</span>
+            <span class="shortcut-desc">Delete elements (when KeyPilot is active)</span>
+          </div>
+          <div class="shortcut-item">
+            <span class="shortcut-key">ESC</span>
+            <span class="shortcut-desc">Exit current mode</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <div class="button-group">
+        <button id="saveButton" class="btn btn-primary">Save Settings</button>
+        <button id="resetButton" class="btn btn-secondary">Reset to Defaults</button>
+      </div>
+      <div id="statusMessage" class="status-message"></div>
+    </footer>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JS Function Explorer – Plain HTML</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --fg: #0f172a;
+      --muted: #667085;
+      --card: #ffffff;
+      --ring: rgba(0,0,0,0.06);
+      --border: #e5e7eb;
+      --accent: #4f46e5;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      background: #fff; border-bottom: 1px solid var(--border);
+    }
+    .wrap {  margin: 0 auto; padding: 16px 20px; }
+    h1 { font-size: 20px; margin: 0 0 2px; }
+    .sub { color: var(--muted); font-size: 13px; }
+
+    /* Controls */
+    .controls { position: sticky; top: 57px; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(6px); border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .sep { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+    .input, .select, .btn {
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 8px 10px; font-size: 14px; background: #fff;
+    }
+    .input { width: min(520px, 100%); padding-left: 30px; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; background: #fff; cursor: pointer; }
+    .btn:hover { background: #fafafa; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border:1px solid var(--border); background:#fafafa; border-radius:999px; font-size:12px; color:#334155; }
+
+    /* Drop zone */
+    .card { background: var(--card); border: 1px solid var(--ring); border-radius: 20px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .drop { border: 2px dashed var(--border); transition: border-color .15s, box-shadow .15s; }
+    .drop.drag { border-color: #c7d2fe; box-shadow: 0 0 0 3px rgba(79,70,229,0.25) inset; }
+
+    /* Grid */
+    .grid { display: grid; gap: 12px; margin-top: 12px; }
+    .card.fn { display:flex; flex-direction: column; gap: 10px; }
+    .top { display:flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .meta { color: var(--muted); font-size: 12px; }
+    pre { margin: 0; max-width: 100%; overflow: auto; background: #f8fafc; border: 1px solid var(--border); border-radius: 14px; padding: 10px; font-size: 12.5px; line-height: 1.55; }
+
+    footer { color: var(--muted); text-align: center; padding: 28px 12px 48px; }
+
+    /* Icon (search) */
+    .searchwrap { position: relative; }
+    .searchwrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: .6; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .controls { top: 96px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div>
+        <h1>JS Function Explorer</h1>
+        <div class="sub">Drop a .js file and view its functions in up to four columns. All parsing is local.</div>
+      </div>
+      <div>
+        <button id="clearBtn" class="btn" title="Clear current file">Clear</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="uploadSection" class="card drop" aria-label="Drop zone">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#f1f5f9;">📄</div>
+          <div>
+            <div style="font-weight:600">Drop a .js file</div>
+            <div class="sub">or paste code / browse to upload</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button id="browseBtn" class="btn">Browse…</button>
+          <button id="sampleBtn" class="btn" title="Download a sample .js">Download sample</button>
+        </div>
+      </div>
+      <input id="fileInput" type="file" accept=".js,.mjs,.cjs,application/javascript,text/javascript" hidden />
+    </section>
+
+    <section id="infoRow" style="display:none; margin-top:12px; align-items:center; justify-content:space-between; gap:12px;">
+      <div class="badge" id="fileBadge">file: (pasted)</div>
+      <div class="badge" id="countBadge">functions: 0</div>
+    </section>
+
+    <section id="controls" class="controls" style="display:none;">
+      <label for="colRange">Columns</label>
+      <input id="colRange" type="range" min="1" max="4" value="3" />
+      <div id="colNum" style="width:24px;text-align:center;">3</div>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <div class="searchwrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/></svg>
+        <input id="search" class="input" placeholder="Search by name or within code…" />
+      </div>
+
+      <div class="sep" aria-hidden="true"></div>
+
+      <label for="sort">Sort</label>
+      <select id="sort" class="select">
+        <option value="source">By source order</option>
+        <option value="name">By name (A→Z)</option>
+        <option value="arity">By arity (params count)</option>
+        <option value="length">By length (lines)</option>
+      </select>
+    </section>
+
+    <section id="emptyState" class="card" style="margin-top:12px; text-align:center; display:none;">
+      <div style="width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#f1f5f9;margin:6px auto 8px;">➡️</div>
+      <div style="font-weight:600">No functions found</div>
+      <div class="sub">Ensure the file contains valid JavaScript, then try again or adjust your search.</div>
+    </section>
+
+    <section id="grid" class="grid" style="--cols:3; grid-template-columns: repeat(var(--cols), minmax(0, 1fr));"></section>
+
+    <footer>Built with Acorn. No code leaves your browser.</footer>
+  </main>
+
+  <!-- Dependencies (UMD) -->
+  <script src="https://cdn.jsdelivr.net/npm/acorn@8.12.1/dist/acorn.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/acorn-walk@8.3.2/dist/walk.min.js"></script>
+
+  <script>
+    (function() {
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+      const els = {
+        drop:        $('#uploadSection'),
+        fileInput:   $('#fileInput'),
+        browseBtn:   $('#browseBtn'),
+        sampleBtn:   $('#sampleBtn'),
+        clearBtn:    $('#clearBtn'),
+        infoRow:     $('#infoRow'),
+        fileBadge:   $('#fileBadge'),
+        countBadge:  $('#countBadge'),
+        controls:    $('#controls'),
+        colRange:    $('#colRange'),
+        colNum:      $('#colNum'),
+        search:      $('#search'),
+        sort:        $('#sort'),
+        grid:        $('#grid'),
+        empty:       $('#emptyState'),
+      };
+
+      const state = {
+        source: '', filename: '',
+        columns: 3, query: '', sort: 'source',
+        functions: [], errors: [],
+      };
+
+      function humanKind(k) {
+        switch (k) {
+          case 'function-declaration': return 'Function';
+          case 'variable-function':    return 'Variable Function';
+          case 'class-method':         return 'Class Method';
+          case 'object-method':        return 'Object Method';
+          default: return k;
+        }
+      }
+
+      function formatParams(params) {
+        try { return params.map(p => p.type === 'Identifier' ? p.name : '…').join(', '); } catch(e) { return ''; }
+      }
+
+      function parseSource(source) {
+        if (!source) return { functions: [], errors: [] };
+        let ast; const errors = [];
+        try {
+          ast = acorn.parse(source, { ecmaVersion: 'latest', sourceType: 'module', allowHashBang: true, locations: false, ranges: false });
+        } catch (e) {
+          errors.push(e.message || String(e));
+          return { functions: [], errors };
+        }
+
+        const walk = window.acornWalk || acorn.walk; // acorn-walk UMD attaches here
+        const out = [];
+        const pushFn = (info) => {
+          const exists = out.some(x => x.start === info.start && x.end === info.end);
+          if (!exists) out.push(info);
+        };
+        const getCode = (node) => source.slice(node.start, node.end);
+        const handleFunction = (node, meta = {}) => {
+          const name = meta.name || (node.id && node.id.name) || '(anonymous)';
+          pushFn({
+            id: node.type + ':' + node.start + ':' + node.end,
+            name,
+            async: !!node.async,
+            generator: !!node.generator,
+            paramsText: formatParams(node.params || []),
+            start: node.start,
+            end: node.end,
+            code: getCode(node),
+            kind: meta.kind || 'function-declaration',
+            path: meta.path || [],
+          });
+        };
+
+        // Function declarations
+        walk.simple(ast, {
+          FunctionDeclaration(node) { handleFunction(node, { kind: 'function-declaration' }); },
+        });
+
+        // Variable-assigned function/arrow expressions
+        walk.simple(ast, {
+          VariableDeclarator(node) {
+            if (!node.init) return;
+            if (node.init.type === 'FunctionExpression' || node.init.type === 'ArrowFunctionExpression') {
+              handleFunction(node.init, { kind: 'variable-function', name: node.id && node.id.name ? node.id.name : '(anonymous)' });
+            }
+          }
+        });
+
+        // Class methods
+        walk.simple(ast, {
+          MethodDefinition(node) {
+            if (node.value && (node.value.type === 'FunctionExpression' || node.value.type === 'Function')) {
+              const name = node.key && (node.key.name || (node.key.value ?? '(computed)'));
+              handleFunction(node.value, { kind: 'class-method', name: String(name ?? '(anonymous)') });
+            }
+          }
+        });
+
+        // Object methods (including shorthand & arrow)
+        walk.simple(ast, {
+          Property(node) {
+            if (!node.value) return;
+            if (node.method || node.value.type === 'FunctionExpression' || node.value.type === 'ArrowFunctionExpression') {
+              const name = node.key && (node.key.name || node.key.value);
+              handleFunction(node.value, { kind: 'object-method', name: String(name ?? '(anonymous)') });
+            }
+          }
+        });
+
+        // Exported functions
+        walk.simple(ast, {
+          ExportDefaultDeclaration(node) {
+            const d = node.declaration;
+            if (d && (d.type === 'FunctionDeclaration' || d.type === 'FunctionExpression' || d.type === 'ArrowFunctionExpression')) {
+              handleFunction(d, { kind: d.type === 'FunctionDeclaration' ? 'function-declaration' : 'variable-function', name: (d.id && d.id.name) ? ('default: ' + d.id.name) : 'default export' });
+            }
+          },
+          ExportNamedDeclaration(node) {
+            if (node.declaration && node.declaration.type === 'FunctionDeclaration') {
+              handleFunction(node.declaration, { kind: 'function-declaration' });
+            }
+          }
+        });
+
+        out.sort((a,b) => a.start - b.start);
+        return { functions: out, errors };
+      }
+
+      function applyFiltersAndSort() {
+        const q = state.query.trim().toLowerCase();
+        let arr = state.functions;
+        if (q) arr = arr.filter(f => f.name.toLowerCase().includes(q) || f.code.toLowerCase().includes(q));
+        const withMeta = arr.map(f => ({ ...f, arity: (f.paramsText || '').split(',').filter(s => s.trim()).length, length: f.code.split(/\r?\n/).length }));
+        if (state.sort === 'name') withMeta.sort((a,b) => a.name.localeCompare(b.name));
+        else if (state.sort === 'arity') withMeta.sort((a,b) => (a.arity - b.arity) || (a.start - b.start));
+        else if (state.sort === 'length') withMeta.sort((a,b) => (a.length - b.length) || (a.start - b.start));
+        else withMeta.sort((a,b) => a.start - b.start);
+        return withMeta;
+      }
+
+      function render() {
+        // Controls visibility
+        const hasSource = !!state.source;
+        els.controls.style.display = hasSource ? '' : 'none';
+        els.infoRow.style.display = hasSource ? 'flex' : 'none';
+        if (!hasSource) {
+          els.grid.innerHTML = '';
+          els.empty.style.display = 'none';
+          return;
+        }
+
+        // Header info
+        els.fileBadge.textContent = 'file: ' + (state.filename || '(pasted code)');
+        els.countBadge.textContent = 'functions: ' + state.functions.length;
+
+        // Columns
+        els.colNum.textContent = String(state.columns);
+        els.grid.style.setProperty('--cols', state.columns);
+
+        const items = applyFiltersAndSort();
+        els.grid.innerHTML = '';
+
+        if (items.length === 0) {
+          els.empty.style.display = '';
+          return;
+        } else {
+          els.empty.style.display = 'none';
+        }
+
+        const frag = document.createDocumentFragment();
+        for (const f of items) {
+          const lines = f.code.split(/\r?\n/).length;
+          const card = document.createElement('article');
+          card.className = 'card fn';
+
+          const top = document.createElement('div');
+          top.className = 'top';
+
+          const left = document.createElement('div');
+          const name = document.createElement('div'); name.className = 'name'; name.title = f.name; name.textContent = f.name;
+          const tags = document.createElement('div'); tags.className = 'meta';
+          const bits = [ humanKind(f.kind) ];
+          if (f.async) bits.push('async');
+          if (f.generator) bits.push('generator');
+          bits.push('params: ' + (f.paramsText || '—'));
+          bits.push('lines: ' + lines);
+          tags.textContent = bits.join(' • ');
+          left.appendChild(name); left.appendChild(tags);
+
+          const right = document.createElement('div');
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'btn'; copyBtn.textContent = 'Copy'; copyBtn.dataset.copy = '1';
+          copyBtn.addEventListener('click', async () => {
+            try { await navigator.clipboard.writeText(f.code); copyBtn.textContent = 'Copied'; setTimeout(() => copyBtn.textContent = 'Copy', 1100); } catch {}
+          });
+          right.appendChild(copyBtn);
+
+          top.appendChild(left); top.appendChild(right);
+
+          const pre = document.createElement('pre');
+          const code = document.createElement('code'); code.textContent = f.code; pre.appendChild(code);
+
+          card.appendChild(top);
+          card.appendChild(pre);
+          frag.appendChild(card);
+        }
+        els.grid.appendChild(frag);
+      }
+
+      function onText(text, name) {
+        state.source = text || '';
+        state.filename = name || '';
+        const { functions, errors } = parseSource(state.source);
+        state.functions = functions; state.errors = errors;
+        render();
+      }
+
+      // File interactions
+      els.browseBtn.addEventListener('click', () => els.fileInput.click());
+      els.fileInput.addEventListener('change', async (e) => {
+        const f = e.target.files && e.target.files[0]; if (!f) return;
+        const text = await f.text(); onText(text, f.name);
+      });
+
+      // Drag & drop
+      ['dragenter','dragover'].forEach(evt => els.drop.addEventListener(evt, (e) => { e.preventDefault(); els.drop.classList.add('drag'); }));
+      ['dragleave','drop'].forEach(evt => els.drop.addEventListener(evt, (e) => { e.preventDefault(); els.drop.classList.remove('drag'); }));
+      els.drop.addEventListener('drop', async (e) => {
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (!f) return;
+        const text = await f.text(); onText(text, f.name);
+      });
+
+      // Paste support (anywhere on page)
+      document.addEventListener('paste', (e) => {
+        const text = e.clipboardData && e.clipboardData.getData('text/plain');
+        if (text) onText(text, 'clipboard.js');
+      });
+
+      // Sample file
+      els.sampleBtn.addEventListener('click', () => {
+        const example = `// Example JS for testing\n\nexport function add(a, b) {\n  return a + b;\n}\n\nexport const mul = (a, b) => a * b;\n\nclass Calc {\n  constructor() {}\n  square(n) {\n    return n * n;\n  }\n  async *iterate(arr) {\n    for (const x of arr) yield await Promise.resolve(x);\n  }\n}\n\nconst lib = {\n  sub(a, b) { return a - b; },\n  pow: (a, b) => a ** b,\n};\n\nexport default function main() {\n  console.log('ready');\n}\n`;
+        const blob = new Blob([example], { type: 'text/javascript' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'example.js'; a.click(); URL.revokeObjectURL(url);
+      });
+
+      // Clear
+      els.clearBtn.addEventListener('click', () => {
+        state.source = ''; state.filename = ''; state.functions = []; state.query = ''; state.sort = 'source';
+        els.search.value = ''; els.sort.value = 'source'; els.grid.innerHTML = ''; els.infoRow.style.display = 'none'; els.controls.style.display = 'none';
+      });
+
+      // Controls
+      els.colRange.addEventListener('input', (e) => { state.columns = Number(e.target.value); els.colNum.textContent = String(state.columns); els.grid.style.setProperty('--cols', state.columns); });
+      els.search.addEventListener('input', (e) => { state.query = e.target.value; render(); });
+      els.sort.addEventListener('change', (e) => { state.sort = e.target.value; render(); });
+
+      // Reveal controls after first parse
+      const revealControls = new MutationObserver(() => {
+        if (state.source) { els.controls.style.display = ''; }
+      });
+      revealControls.observe(els.grid, { childList: true });
+    })();
+  </script>
+</body>
+</html>

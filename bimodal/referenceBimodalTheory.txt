@@ -58,6 +58,11 @@ Bimodal Control divides these tasks:
    - Responsible for triggering functions that were traditionally bound to
      mouse clicks.
 
+In accordance with Bimodal Control Theory, mouse clicks are for our software
+replaced by keys, but they could be replaced by one or more foot pedals while
+the mouse still steers. Or the foot could control the cursor by way of a 
+large trackpad under the feet while the fingers click with keys.
+
 This division mirrors how instruments like the guitar separate left-hand
 navigation from right-hand triggering. Each modality focuses on its task,
 producing a smoother workflow and reducing fatigue.
@@ -71,7 +76,7 @@ replaced by designated keyboard keys. For example, the **F** key deposits
 points when drawing vectors, while other keys complete shapes, drag selections,
 or adjust stroke width. This approach frees the steering device from having to
 carry both tasks, allowing the user to maintain cursor guidance continuously
-while activating functions with the other hand.  As a theoretical  note,
+while activating functions with the other hand.  
 
 ---
 
@@ -87,34 +92,46 @@ We have made demos that put key-clicks into practice.
 
 **Consistent Key Usage Across Applications**
 
-Across all of the demos and applications, certain keys are used consistently for 
-predictability and to reflect tested implementations.  These are guidelines that help
-the user transfer habits between different domains (vector graphics, patch
-synths, timeline editors, or tablet-gesture equivalents).  There are 
-reasons for the various selections of the keys based on the form of a keyboard. 
+Across all of the demos and applications, certain keys are used in consistent
+ways for predictability and to reflect tested implementations.  Preparing where
+to assign the key clicks in an ergonomic way helps the user transfer habits between 
+different domains (vector graphics, patch synths, timeline editors, or 
+tablet-gesture equivalents).  A software developer should make deliberate choices
+for various selections of the keys based on the form of a keyboard and the
+type and needs of the project. 
 
 We pay attention to the location of the keys, how big they are, and how they
 can be used in the middle of live interaction.  The key-clicks elevate computer
 user interaction to a real-time mode, so for something as frequent as dragging,
 we often use the Spacebar for a drag lock (described below) so that objects
-are picked up and dropped rapidly.
+are picked up and dropped rapidly with the thumb.  Similarly large and easy
+to hit repetitively is the Tab key, so we use that for selection clicks and
+activation clicks (e.g. conventional clicks like pressing a button).
   
 We use Escape, for example, to cancel any mode that was activated by a key and this 
 includes clearing a selection objects.  The Escape key is easy to hit on the keyboard 
-along with Tab and Spacebar.  The F key is easy to hit as well.
+along with Tab and Spacebar.  The F key is easy to hit as well, so we sometimes
+use it for conventional clicking (activation click).
 
 We always take note of the application's needs and circumstances. 
 For non-linear editor (NLE) timelines in editor applications for example, 
 the Spacebar is commonly used activate the play/pause button, so for these programs 
-the drag lock can be substituted with the prime key (or tilde) or another 
-key on the keyboard.
+the use of Spacebar for drag lock can be substituted with the prime key (or tilde) 
+or another key on the keyboard.  
+
+In apps that benefit from a lot of functionality, they can store the key-clicks
+for the keyboard as key-click layouts and swap them out.  Modifier keys can enhance
+existing key-clicks, such as scale and rotate increment/decrement buttons, that
+can have their amounts increased or decreased with Shift and Alt respectively.
 
 
-- **Tab (Selection Clicks And Activation Clicks)**  
+- **Tab or or F (Selection Clicks And Activation Clicks) **  
   The Tab key is a control that we often can use consistently across an
-  interface.  Tab is generally used to toggle selection. If nothing is selected, Tab acts as
-  a "selection click" or "activation click" on the object beneath the cursor. 
-  The Tab key is often used for selection because it is easy to hit.
+  interface.  Tab is generally used to toggle selection of objects on a workspace,
+  like nodes or vector-objects and is assigned the equivalent of Shift-Click. 
+  If nothing is selected, Tab acts as a "selection click" or "activation click" 
+  on the object beneath the cursor.  The Tab key is often used for selection 
+  because it is easy to hit.
 
   - On objects: Tab selects or toggles inclusion in the current selection set.  
   - On buttons: Tab activates the button at the cursor’s location, acting as a
@@ -124,14 +141,18 @@ key on the keyboard.
 
   Because Tab is large and easy to reach, it becomes a reliable, global
   mechanism for activation and selection throughout the interface, though it doesn't
-  always have to be used and can be substituted by F.  It embodies
-  the principle of separating steering (cursor placement) from activation
+  always have to be used and can be substituted by F.  F is where the index finger
+  is located and it is OK to use D as well because it is easier for the middle finger
+  to do repetitive clicks.
+  
+  It embodies the principle of separating steering (cursor placement) from activation
   (keyboard trigger), ensuring the same action pattern applies everywhere in
   the UI.  
 
+  
 
 - **Spacebar (Drag Lock / Position Lock)**  
-  Spacebar activates a drag-lock state. If there is no active selection, this
+  Spacebar is often used to activate a drag-lock state. If there is no active selection, this
   applies to the object currently under the cursor. If there is a selection,
   drag-lock constrains movement of the selected set. While in drag-lock mode,
   the mouse or continuous controller steers the motion of the object(s) until
@@ -144,8 +165,14 @@ key on the keyboard.
 
   - On objects: Spacebar locks the selected object(s) to the cursor, allowing
     smooth repositioning across the canvas.  
-  - On empty space: Spacebar locks the object directly under the cursor into a
-    drag operation, even without a prior selection.  
+  - On single objects when there is no selection: The Spacebar will select the
+  object underneath the cursor and activate the drag lock.  
+  Spacebar locks the object directly under the cursor into a
+    drag operation, even without a prior selection.  When the object is
+  repositioned after the drag lock is turned off, the selection of the object
+  is turned off because turning it off fits into the interaction scheme 
+  for this operation and situation.
+  
   - On sliders: Spacebar locks the slider knob (or a point on a 2D slider) to
     the cursor, enabling controlled dragging of values along a single dimension
     or across two dimensions.  

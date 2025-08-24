@@ -1,158 +1,142 @@
 
 NODE-BASED PROGRAMMING
 
-Node-based programming is always presented as
-a node graph where the patches are connected
-via wires.  What is notable about this is that,
-by convention, the patches are never drawing from 
-global state, variables, or functions like a regular
-computer program. Instead, the system is all 
-about wiring up and configuring copies of
-predefined component modules with input and output
-ports.  This is a major difference
-between node-based programming and procedural
-software development and also a cause of its
-shortcoming for writing apps.  There are others 
-as well.  Advantages are recognized that
-a lot of programmatic capability can be
-embedded inside a single patch, the ability
-to write up and configure parameters provides
-great flexibility and a live preview of the
-results, unlike compiled programs that are
-typed out.
+Node-based programming is always presented as a node graph where the patches are
+connected via wires.  What is notable about this is that, by convention, the
+patches are never drawing from global state, variables, or functions like a
+regular computer program. Instead, the system is all about wiring up and
+configuring copies of predefined component modules with input and output ports. 
+This is a major difference between node-based programming and procedural
+software development and also a cause of its shortcoming for writing apps. 
+There are others as well.  Advantages are recognized that a lot of programmatic
+capability can be embedded inside a single patch, the ability to write up and
+configure parameters provides great flexibility and a live preview of the
+results, unlike compiled programs that are typed out.
 
-The first issue that has to be addressed is
-the GUI, because it is too slow and tedious
-of a programming system to use compared to 
-the speed of typing code in a program.  Through
-key-clicks (noctivagous.github.io/bimodal/patch_synth_demo.html)
-which involves making the keyboard keys take 
-place of the mouse buttons while keeping the 
-mouse in the cursor steering role, the interface
-is much further along.
+Recall that during software development there is importation of frameworks for
+specific purposes.  When using node graphs, the software developer is never
+utilizing external resources quite like that but instead uses whatever is inside
+the individual patch module.  This is a key difference and potentially a problem
+because if there is no actual weaving of code like conventional programming, it
+will be more difficult to achieve complex structures that make app software
+development feasible.  In regular programming, the programmer often is working
+inside a class or a function and adjusting lines of code inside it, but in node
+graphs he isn't ever working inside the interior of the patch.   If a given set
+of logic isn't already provided inside the patch or it isn't linked into the
+parameter, the node graph doesn't have it.
+
+The first issue that has to be addressed is the GUI, because it is too slow and
+tedious of a programming system to use compared to the speed of typing code in a
+program.  Through key-clicks
+(noctivagous.github.io/bimodal/patch_synth_demo.html) which involves making the
+keyboard keys take place of the mouse buttons while keeping the mouse in the
+cursor steering role, the interface is much further along.
 
 
 IF-ELSE VS. WHEN
 
-In the context of a node-based programming
-environment, an "IF-ELSE" node is for procedures
-of the program whereas a "WHEN" node 
-(not available yet) would be used to 
-observed the states and conditions of
-the running program.  This assists in explaining
-that node-based programming environments should
-be recognized as starting out as live flow 
-diagrams whereas a program made with conventional 
-computer code is based on descriptions
-that are followed step-by-step.
+In the context of a node-based programming environment, an "IF-ELSE" node is for
+procedures of the program whereas a "WHEN" node (not available yet) would be
+used to observed the states and conditions of the running program.  This assists
+in explaining that node-based programming environments should be recognized as
+starting out as live flow diagrams whereas a program made with conventional
+computer code is based on descriptions that are followed step-by-step.
 
-The "WHEN" node would be used to observe
-provided conditions within a global or 
-specified scope of the running program
-and take action when conditions are met. 
+The "WHEN" node would be used to observe provided conditions within a global or
+specified scope of the running program and take action when conditions are met.
 
 
 ------------
 
-WHEN 
--> THE USER CLICKS [ELEMENT] AND [STATE1-IS_ACTIVE]
-			 -OR-
--> [STATE2-JUST_ACTIVATED]
-DO:[FUNCTION1][FUNCTION2] [ETC.]
-EMIT-EVENT:[EVENT1]
+WHEN -> THE USER CLICKS [ELEMENT] AND [STATE1-IS_ACTIVE] -OR- ->
+[STATE2-JUST_ACTIVATED] DO:[FUNCTION1][FUNCTION2] [ETC.] EMIT-EVENT:[EVENT1]
 
 
 vs.
 
 
-function mouseDown()
-{
-	if(states["state1"].isActive == true)
-	{
-  	function1();
-  	function2();
- 	 dispatchEvent(event1);
-	}
-}
+function mouseDown() { if(states["state1"].isActive == true) { function1();
+function2(); dispatchEvent(event1); } }
 
 ------------
 
-For this reason, in a node-based programming environment
-the use of state machines and observation of
-event notifications can make the convention 
-more viable.
+For this reason, in a node-based programming environment the use of state
+machines and observation of event notifications can make the convention more
+viable.
 
 
 USING NODE-BASED PROGRAMMING FOR APPS
 
-If nodes are supposed to be use for writing apps,
-and they really could in the future, then this
-convention has to be expanded in significant ways.
+If nodes are supposed to be use for writing apps, and they really could in the
+future, then this convention has to be expanded in significant ways.
 
-A node-based programming flow diagram
-project is mostly a live representation of premade
-code modules compared to the code found in text files, 
-which is mostly a step-by-step execution.  They are different
-angles for approaching the same task and the issue
-is that node-based programming isn't currently able to 
-match the finer procedures the code has in text files in important
-areas while the code in text files takes too much
-work to do the repetitive and the real-time, 
-what is built into in node-based programming environments.
+A node-based programming flow diagram project is mostly a live representation of
+premade code modules compared to the code found in text files, which is mostly a
+step-by-step execution.  They are different angles for approaching the same task
+and the issue is that node-based programming isn't currently able to match the
+finer procedures the code has in text files in important areas while the code in
+text files takes too much work to do the repetitive and the real-time, what is
+built into in node-based programming environments.
 
-There is also the issue that individual nodes, the
-components hooked together on the node programming workspace, 
-are describable in terms of instantiations of a specific 
-object class, the patch or node for that programming
-environment.  In a conventional computer program there
-aren't drag-and-drop modules that are readymade like the nodes.
-It is overall a granular process of making classes and 
-subclasses provided by the system (and this includes functions,
-which are similarly reusable and are describable as templates).  
-Then in the node-based programming environment there isn't 
-a provided capability to make clases and subclasses inside the program
-for its own needs.  There are then two acts of narrowing,
-the first is that the components (the nodes) are
-instantiations of object classes specific to
-working in a node-based workspace, which is input/output boxes.  
-The second act of narrowing is that node-based programming 
-doesn't allow making object classes specific to the 
-program inside the workspace.  The node-based environment
-has to allow making object classes specific to a program 
-that aren't input/output boxes.  It can't just depend on
-a provided inventory of components, because that is setup too 
-limited for complex programs.
+There is also the issue that individual nodes, the components hooked together on
+the node programming workspace, are describable in terms of instantiations of a
+specific object class, the patch or node for that programming environment.  In a
+conventional computer program there aren't drag-and-drop modules that are
+readymade like the nodes. It is overall a granular process of making classes and
+subclasses provided by the system (and this includes functions, which are
+similarly reusable and are describable as templates). Then in the node-based
+programming environment there isn't a provided capability to make clases and
+subclasses inside the program for its own needs.  There are then two acts of
+narrowing, the first is that the components (the nodes) are instantiations of
+object classes specific to working in a node-based workspace, which is
+input/output boxes. The second act of narrowing is that node-based programming
+doesn't allow making object classes specific to the program inside the
+workspace.  The node-based environment has to allow making object classes
+specific to a program that aren't input/output boxes.  It can't just depend on a
+provided inventory of components, because that is setup too limited for complex
+programs.
 
-These are some causes for why node-based programming lacks the
-micro-level lacing that code files provide and they
-are too macro in form.  This can be addressed first
-by a GUI interaction upgrade, adding GUI features
-to the nodes to expand their abilities.
+These are some causes for why node-based programming lacks the micro-level
+lacing that code files provide and they are too macro in form.  This can be
+addressed first by a GUI interaction upgrade, adding GUI features to the nodes
+to expand their abilities.
 
-The adjustments and additions don't have to be sequential code
-like in a text file and they don't have to be
-all live like the current setup.  They would have
-new types of abstract nodes, such as generic nodes that
-are adjusted by the programmer to accommodate 
-requests and response.  Request and response handling
-(and the errors and exceptions that occur) is a
-common pattern and this can be generalized into a node
-that is configured by the programmer. Many categories 
-of nodes like this can be placed on the workspace
-(the project workspace) to make a program because they
-summarize common tasks but not at a specific level.
-It is rather that there are patterns that haven't
-ever been categorized, generalized or abstracted like
-this but as we can see in the request and response
-handling example they are to be found throughout
-software development.
+The adjustments and additions don't have to be sequential code like in a text
+file and they don't have to be all live like the current setup.  They would have
+new types of abstract nodes, such as generic nodes that are adjusted by the
+programmer to accommodate requests and response.  Request and response handling
+(and the errors and exceptions that occur) is a common pattern and this can be
+generalized into a node that is configured by the programmer. Many categories of
+nodes like this can be placed on the workspace (the project workspace) to make a
+program because they summarize common tasks but not at a specific level. It is
+rather that there are patterns that haven't ever been categorized, generalized
+or abstracted like this but as we can see in the request and response handling
+example they are to be found throughout software development.
 
 
-A distinction should be made for establishing
-static data resources, such as Settings, and
-predefined methods should be provided for accessing
-them since they are common tasks.
-The application structure.
+A distinction should be made for establishing static data resources, such as
+Settings, and predefined methods should be provided for accessing them since
+they are common tasks. The application structure.
+
+------------
+
+PATCH-CORD INTERCEPTOR PATCHES
+
+This type of patch hooks into a patch cord 
+and alters the value (or the object of a 
+certain object class) being transmitted.
+So the line being dragged to the patch cord
+from this type of patch is automatically
+two-way.  A patch like this can have input ports 
+on it to configure what it does.
+
+In this scheme, a patch cord can be
+intercepted at multiple points along the
+patch cord.
+
+
+
+
 
 
 
@@ -163,60 +147,48 @@ NOTES FOR EXPANDING NODE-BASED PROGRAMMING
 
 1. TEMPLATE NODES
 
-Node areas that define reusable elements 
-like classes, functions, structs for more
-granular control of code.  Classes, functions, 
-structs are effectively templates.
+Node areas that define reusable elements like classes, functions, structs for
+more granular control of code.  Classes, functions, structs are effectively
+templates.
 
 2. MEANS FOR THE NODES TO INSTANTIATE OBJECTS
 
 
-3. STATE TABLES
-	- Drag line from a node to a state to turn it on or off.
-	- Drag line from state to a node's "enable" property
-	to sync.
+3. STATE TABLES - Drag line from a node to a state to turn it on or off. - Drag
+line from state to a node's "enable" property to sync.
 
-4. LAYERED PROPERTY TABLES
-	- Allows for organizing multiple programmatic
-	properties (customizable) in layers for a cell.  
-	For example, for a soundboard that plays sound effects when
-	a button is clicked, the top table layer will contain
-	the button and the layer underneath will contain the
-	sound file to play, organized in one place, with the two
-	wired up so that the soundboard is constructed inside
-	the table without code in this case.  For cases that need
-	intermediate layers with code, middle layers can contain 
-	controller type classes so that logic and GUI can be viewed in layers.
-	It doesn't matter which order a layer of the table is inserted
-	or how the whole layer property table is assembled, but the layer's
-	index has to be referenced when accessing that layer of the table.
-	
+4. LAYERED PROPERTY TABLES - Allows for organizing multiple programmatic
+properties (customizable) in layers for a cell. For example, for a soundboard
+that plays sound effects when a button is clicked, the top table layer will
+contain the button and the layer underneath will contain the sound file to play,
+organized in one place, with the two wired up so that the soundboard is
+constructed inside the table without code in this case.  For cases that need
+intermediate layers with code, middle layers can contain controller type classes
+so that logic and GUI can be viewed in layers. It doesn't matter which order a
+layer of the table is inserted or how the whole layer property table is
+assembled, but the layer's index has to be referenced when accessing that layer
+of the table.
 
-5. PROCEDURAL EXECUTION VERTICAL STACK
-	- A vertical stack view with contents
-	enclosed in a frame.  Adding components expands
-	the stackview vertically.
-	- Similar to a vertical stack of
-	conventional code inside the node workspace.
-	
-	- Executes from top to bottom
-		- Allows delay timers to be inserted for live operations
-		- Allows for conditional branching to be inserted.
-		
+
+5. PROCEDURAL EXECUTION VERTICAL STACK - A vertical stack view with contents
+enclosed in a frame.  Adding components expands the stackview vertically. -
+Similar to a vertical stack of conventional code inside the node workspace.
+
+	- Executes from top to bottom - Allows delay timers to be inserted for live
+	operations - Allows for conditional branching to be inserted.
+
 4. NODES MAKING ELEMENTS FOR THE ENVIRONMENT
 
-Allows creation of node programming elements, such as GUI, with the
-nodes inside the actual environment.
-	--> Arrange a set of nodes that generate a GUI design,
-	finalize it, and the nodes arrangement disappears and the
-	GUI design shows up (but stores the original node schematics
-	that produced it).  
-		--> Allows programming the elements for the program nodes within the nodes.
+Allows creation of node programming elements, such as GUI, with the nodes inside
+the actual environment. --> Arrange a set of nodes that generate a GUI design,
+finalize it, and the nodes arrangement disappears and the GUI design shows up
+(but stores the original node schematics that produced it). --> Allows
+programming the elements for the program nodes within the nodes.
 
 5. More rigid grid guidance for arranging nodes.
 
-6. Nodes that generalize common software development
-patterns and aren't specific to tasks.
+6. Nodes that generalize common software development patterns and aren't
+specific to tasks.
 
 
 

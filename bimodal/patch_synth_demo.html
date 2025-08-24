@@ -771,9 +771,9 @@ kind of GUI.</p>
       <p><strong>Drag Lock (Spacebar)</strong></p>
       <span class="instructions-description">For dragging patches (option 2).</span>
       <ol>
-        <li>Hover over a patch. Press <kbd>Spacebar</kbd> to begin dragging the patch.</li>
+        <li>Hover over a patch. Press <kbd>Spacebar</kbd> once to begin dragging the patch.</li>
         <li>Move the mouse to reposition the patch.</li>
-        <li>Release <kbd>Spacebar</kbd> to drop the patch.</li>
+        <li>Press <kbd>Spacebar</kbd> a second time to drop the patch.</li>
       </ol>
     </li>
 
@@ -795,8 +795,8 @@ kind of GUI.</p>
       <p><strong>Tap Patch Controls (Tab key)</strong></p>
       <span class="instructions-description">For pressing buttons inside patches.</span>
       <ol>
-        <li>Notice the the 4×4 Pad Grid. Some patches contain keyboard-activated controls, like these squares.</li>
-        <li>To toggle a pad, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
+        <li>Notice the 4×4 Pad Grid. Some patches contain keyboard-activated controls like these squares.</li>
+        <li>To turn a pad on, hover over a square and press <kbd>Tab</kbd>. Press <kbd>Tab</kbd> again to toggle it off.</li>
         <li>Use the number keys on the keyboard to change a square's color.
          <li>Use the <kbd>`</kbd> key to rotate a square by 45 degrees.
 
@@ -809,7 +809,8 @@ kind of GUI.</p>
       <p><strong>Live Selection Rectangle (Y key)</strong></p>
       <span class="instructions-description">For selecting patches.</span>
       <ol>
-        <li>Press <kbd>Y</kbd> anywhere on the workspace to begin drawing a live selection rectangle.</li>
+        <li>Press <kbd>Y</kbd> anywhere on the workspace to begin drawing a live selection rectangle
+        (It works just like the rectangle for selecting desktop icons.)</li>
         <li>Move the mouse to grow or shrink the rectangle diagonally.</li>
         <ul>
           <li>As patches intersect or enter the rectangle, they are automatically selected.</li>
@@ -817,7 +818,7 @@ kind of GUI.</p>
         </ul>
         <li>Press <kbd>Y</kbd> again to finalize the selection and remove the outline.</li>
         <li>Press <kbd>Esc</kbd> at any time to cancel the selection rectangle.</li>
-        <li>Use in combination with the Drag Lock (<kbd>Spacebar</kbd>) for dragging.</li>
+        <li>After making a selection, use the Drag Lock (<kbd>Spacebar</kbd>) for dragging.</li>
       </ol>
     </li>
 
@@ -911,8 +912,79 @@ kind of GUI.</p>
       </ol>
     </li>
 
+
+<li>
+  <p><strong>Scaling and Rotating Patches</strong></p>
+  <div class="instructions-description">
+    Use <kbd>[</kbd> and <kbd>]</kbd> to scale selected patch(es); use <kbd>;</kbd> and <kbd>&#39;</kbd> to rotate. Hold <kbd>Shift</kbd> for 45&deg; steps or <kbd>Alt</kbd> for 5&deg; steps. Scaling is limited by configured percentages of the patch’s original size.
+  </div>
+
+  <div class="instructions-content">
+    <table class="table table-sm table-dark table-bordered align-middle">
+      <thead>
+        <tr>
+          <th style="width: 28%;">Key</th>
+          <th style="width: 32%;">Action</th>
+          <th style="width: 40%;">Amount / Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><kbd>]</kbd></td>
+          <td>Scale up</td>
+          <td>Multiply size by <strong>1.15&times;</strong> (clamped by min/max % of original)</td>
+        </tr>
+        <tr>
+          <td><kbd>[</kbd></td>
+          <td>Scale down</td>
+          <td>Multiply size by <strong>1/1.15</strong> (clamped by min/max % of original)</td>
+        </tr>
+        <tr>
+          <td><kbd>&#39;</kbd></td>
+          <td>Rotate clockwise</td>
+          <td>Default step <strong>15&deg;</strong>; <kbd>Shift</kbd>=45&deg;, <kbd>Alt</kbd>=5&deg;</td>
+        </tr>
+        <tr>
+          <td><kbd>;</kbd></td>
+          <td>Rotate counterclockwise</td>
+          <td>Default step <strong>15&deg;</strong>; <kbd>Shift</kbd>=45&deg;, <kbd>Alt</kbd>=5&deg;</td>
+        </tr>
+      </tbody>
+    </table>
+
+   
+  </div>
+</li>
+
     <li>
-  <p><strong>Pad Grid Controls</strong></p>
+      <p><strong>Duplication Line / Stamp (W key)</strong></p>
+      <span class="instructions-description">Copy patches with a guide line, or stamp clones during drag-lock.</span>
+      <ol>
+        <li><strong>Duplication Line (normal mode):</strong> Hover a patch and press <kbd>M</kbd> to begin a magenta dashed guide from its center. Move the mouse, then press <kbd>M</kbd> again (or release the mouse) to place a copy at the cursor. The original remains.</li>
+        <li><strong>Stamp clones (while drag-lock is active):</strong> With drag-lock on and one or more patches selected, press <kbd>M</kbd> to immediately clone <em>each</em> selected patch at its current position (no guide line).</li>
+        <li><strong>Cancel:</strong> Press <kbd>Esc</kbd> to cancel an in-progress duplication line.</li>
+        <li><strong>Note:</strong> Cables are not duplicated with the patch copy.</li>
+      </ol>
+    </li>
+
+    <li>
+      <p><strong>Toggle Disabled State (M key)</strong></p>
+      <span class="instructions-description">For testing output during programming.</span>
+      <ol>
+        <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
+        <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
+        <li>
+          Behavior:
+          <ul>
+            <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
+            <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
+          </ul>
+        </li>
+      </ol>
+    </li>
+
+    <li>
+  <p><strong>Pad Grid Controls (Extended Information)</strong></p>
   <span class="instructions-description">Keyboard operations for the 4×4 Pad Grid.</span>
 
   <ol>
@@ -1000,75 +1072,6 @@ kind of GUI.</p>
   </ol>
 </li>
 
-<li>
-  <p><strong>Scaling and Rotating Patches</strong></p>
-  <div class="instructions-description">
-    Use <kbd>[</kbd> and <kbd>]</kbd> to scale selected patch(es); use <kbd>;</kbd> and <kbd>&#39;</kbd> to rotate. Hold <kbd>Shift</kbd> for 45&deg; steps or <kbd>Alt</kbd> for 5&deg; steps. Scaling is limited by configured percentages of the patch’s original size.
-  </div>
-
-  <div class="instructions-content">
-    <table class="table table-sm table-dark table-bordered align-middle">
-      <thead>
-        <tr>
-          <th style="width: 28%;">Key</th>
-          <th style="width: 32%;">Action</th>
-          <th style="width: 40%;">Amount / Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><kbd>]</kbd></td>
-          <td>Scale up</td>
-          <td>Multiply size by <strong>1.15&times;</strong> (clamped by min/max % of original)</td>
-        </tr>
-        <tr>
-          <td><kbd>[</kbd></td>
-          <td>Scale down</td>
-          <td>Multiply size by <strong>1/1.15</strong> (clamped by min/max % of original)</td>
-        </tr>
-        <tr>
-          <td><kbd>&#39;</kbd></td>
-          <td>Rotate clockwise</td>
-          <td>Default step <strong>15&deg;</strong>; <kbd>Shift</kbd>=45&deg;, <kbd>Alt</kbd>=5&deg;</td>
-        </tr>
-        <tr>
-          <td><kbd>;</kbd></td>
-          <td>Rotate counterclockwise</td>
-          <td>Default step <strong>15&deg;</strong>; <kbd>Shift</kbd>=45&deg;, <kbd>Alt</kbd>=5&deg;</td>
-        </tr>
-      </tbody>
-    </table>
-
-   
-  </div>
-</li>
-
-    <li>
-      <p><strong>Duplication Line / Stamp (W key)</strong></p>
-      <span class="instructions-description">Copy patches with a guide line, or stamp clones during drag-lock.</span>
-      <ol>
-        <li><strong>Duplication Line (normal mode):</strong> Hover a patch and press <kbd>M</kbd> to begin a magenta dashed guide from its center. Move the mouse, then press <kbd>M</kbd> again (or release the mouse) to place a copy at the cursor. The original remains.</li>
-        <li><strong>Stamp clones (while drag-lock is active):</strong> With drag-lock on and one or more patches selected, press <kbd>M</kbd> to immediately clone <em>each</em> selected patch at its current position (no guide line).</li>
-        <li><strong>Cancel:</strong> Press <kbd>Esc</kbd> to cancel an in-progress duplication line.</li>
-        <li><strong>Note:</strong> Cables are not duplicated with the patch copy.</li>
-      </ol>
-    </li>
-
-    <li>
-      <p><strong>Toggle Disabled State (M key)</strong></p>
-      <span class="instructions-description">For testing output during programming.</span>
-      <ol>
-        <li>Hover over a <em>cable</em> or a <em>patch</em> to target it.</li>
-        <li>Press <kbd>W</kbd> to toggle the disabled state of the targeted item.</li>
-        <li>
-          Behavior:
-          <ul>
-            <li><strong>Cable:</strong> appears <em>dashed</em> and <em>light gray</em>. Press <kbd>W</kbd> again to re-enable.</li>
-            <li><strong>Patch:</strong> dims, shows a <em>dashed border</em>, and ports are grayed; selection outline is suppressed while disabled. Press <kbd>W</kbd> again to re-enable.</li>
-          </ul>
-        </li>
-      </ol>
-    </li>
 
   </ol>
 

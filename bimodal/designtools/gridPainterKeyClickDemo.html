@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grid Painter – Single‑Page Demo</title>
+  <style>
+    :root{
+      --panel-bg: #0f172a; /* slate-900 */
+      --panel-fg: #e2e8f0; /* slate-200 */
+      --panel-accent: #94a3b8; /* slate-400 */
+      --accent: #38bdf8; /* sky-400 */
+      --grid-color: #9ca3af; /* gray-400 */
+      --dot-color: #111827;  /* gray-900 */
+      --cursor-color: #0ea5e9; /* sky-500 */
+      --stage-bg: #f3f4f6; /* gray-100 */
+    }
+    html, body { height: 100%; margin: 0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+    .app { position: fixed; inset: 0; display: grid; grid-template-columns: 340px 1fr; }
+    @media (max-width: 900px){ .app{ grid-template-columns: 1fr; grid-template-rows: auto 1fr; } }
+
+    /* Canvas workspace */
+    #stage { width: 100%; height: 100%; display: block; background: var(--stage-bg); cursor: none; }
+
+    /* Control panel */
+    .panel { background: var(--panel-bg); color: var(--panel-fg); padding: 16px; overflow: auto; }
+    .panel h1 { font-size: 20px; margin: 0 0 8px; font-weight: 700; }
+    .panel h2 { font-size: 14px; margin: 16px 0 8px; color: var(--panel-accent); text-transform: uppercase; letter-spacing: .06em; }
+
+    .kv { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .kv th, .kv td { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 6px 4px; vertical-align: top; }
+    .kv th { text-align: left; color: var(--panel-accent); font-weight: 600; width: 45%; }
+
+    fieldset { border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 10px; margin: 8px 0; }
+    legend { padding: 0 6px; color: var(--panel-accent); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+    .panel input[type="number"]{ width: 96px; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--panel-fg); }
+    .panel input[type="checkbox"]{ transform: translateY(1px); }
+    .panel button{ padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(2,132,199,0.14); color: #dbeafe; font-weight: 600; }
+    .panel .muted{ color: var(--panel-accent); font-size: 12px; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); padding:2px 6px; border-radius:6px; }
+    .small { font-size: 12px; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:9999px; background: rgba(14,165,233,0.12); color:#7dd3fc; font-weight:700; letter-spacing:.02em; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <h1>Grid Painter</h1>
+      <div class="muted">Paint by growing/shrinking circular dots on a grid. Mouse steers; keys act.</div>
+
+  <fieldset style="background-color: #333;
+    border-width: 5pt;">
+        <legend>Keys</legend>
+      <table class="kv" style="font-size:15pt">
+        <tbody>
+
+          <tr><th><span class="kbd">F</span></th><td>
+          Paint dots. (Hold down or dab.)
+          <!--For all cells whose centers are inside the circle: create <em>F initial</em> if empty; otherwise grow by <em>F growth</em>, scaled by radial falloff and activation delay.--></td></tr>
+          <tr><th><span class="kbd">D</span></th><td>Inverse of dot painting with F.<!-- Inverse of F: shrink by <em>D decrement</em> with the same falloff and delay; remove when &lt; <em>Visibility</em>.--></td></tr>
+          <tr><th><span class="kbd">[</span> / <span class="kbd">]</span></th><td>Decrease / increase cursor diameter </td></tr>
+<!--          <tr><th><span class="kbd">Esc</span></th><td>Hide the circle cursor</td></tr>-->
+        </tbody>
+      </table>
+   
+      </fieldset>
+
+   <p class="muted">All sizes and steps are in typographic points (pt). Rendering uses device‑correct scaling.</p>
+      <p><span class="pill">Grid can be hidden; optional jitter adds organic shading</span></p>
+   
+   
+      <h2>Current</h2>
+      <table class="kv" id="statusTable" aria-live="polite">
+        <tbody>
+          <tr><th>Cursor diameter</th><td><span id="statBrush"></span> pt</td></tr>
+<!--          <tr><th>Circle center</th><td><span id="statXY">—</span> px</td></tr>
+          <tr><th>Grid cell</th><td><span id="statCell">—</span></td></tr>-->
+          <tr><th>Grid visible</th><td><span id="statGridVis">Yes</span></td></tr>
+        </tbody>
+      </table>
+      
+    
+      <h2>Parameters</h2>
+      <!-- Grouped controls -->
+      <fieldset>
+        <legend>Grid</legend>
+        <table class="kv"><tbody>
+          <tr><th>Grid square</th><td class="row"><input id="p_cell" type="number" step="1" min="2" value="5"> <span class="small">pt</span></td></tr>
+          <tr><th>Show grid</th><td class="row"><input id="p_showGrid" type="checkbox" checked> <span class="small">toggle visibility</span></td></tr>
+          <tr><th>Randomize when hidden</th><td class="row"><input id="p_randWhenHidden" type="checkbox" checked> <span class="small">adds organic shading</span></td></tr>
+          <tr><th>Jitter max</th><td class="row"><input id="p_jitterPt" type="number" step="0.5" min="0" value="1.5"> <span class="small">pt (dot position)</span></td></tr>
+        </tbody></table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Brush</legend>
+        <table class="kv"><tbody>
+          <tr><th>Cursor start</th><td class="row"><input id="p_brushStart" type="number" step="1" min="2" value="30"> <span class="small">pt</span></td></tr>
+          <tr><th>[ / ] step</th><td class="row"><input id="p_brushStep" type="number" step="1" min="1" value="2"> <span class="small">pt per key</span></td></tr>
+        </tbody></table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Falloff</legend>
+        <table class="kv"><tbody>
+          <tr><th>Radial falloff</th><td class="row"><input id="p_falloffEnabled" type="checkbox" checked> <span class="small">stronger growth at center</span></td></tr>
+          <tr><th>Falloff power</th><td class="row"><input id="p_falloffPow" type="number" step="0.25" min="0.25" value="1"> <span class="small">1 = linear</span></td></tr>
+          <tr><th>Activation delay</th><td class="row"><input id="p_delayEnabled" type="checkbox" checked> <span class="small">outer dots require extra taps</span></td></tr>
+          <tr><th>Delay strength</th><td class="row"><input id="p_delayK" type="number" step="1" min="0" value="3"> <span class="small">extra taps at edge</span></td></tr>
+          <tr><th>Delay power</th><td class="row"><input id="p_delayPow" type="number" step="0.25" min="0.25" value="1"> <span class="small">curve shaping</span></td></tr>
+        </tbody></table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dot Dynamics</legend>
+        <table class="kv"><tbody>
+          <tr><th>F initial</th><td class="row"><input id="p_fInit" type="number" step="1" min="1" value="3"> <span class="small">pt</span></td></tr>
+          <tr><th>F growth</th><td class="row"><input id="p_fGrow" type="number" step="0.5" min="0.5" value="1"> <span class="small">pt per F</span></td></tr>
+          <tr><th>D decrement</th><td class="row"><input id="p_dStep" type="number" step="0.5" min="0.5" value="1"> <span class="small">pt per D</span></td></tr>
+          <tr><th>Visibility &lt;</th><td class="row"><input id="p_visThresh" type="number" step="0.5" min="0.5" value="2"> <span class="small">pt → remove</span></td></tr>
+          <tr><th>Dot max</th><td class="row"><input id="p_dotMax" type="number" step="1" min="10" value="200"> <span class="small">pt</span></td></tr>
+        </tbody></table>
+      </fieldset>
+
+      <table class="kv" id="actions">
+        <tbody>
+          <tr><th>Apply changes</th><td class="row">
+            <button id="applyBtn" title="Apply parameter changes">Apply</button>
+            <button id="resetBtn" title="Clear all dots and reset">Reset</button>
+            <button id="toggleGridBtn" title="Show/Hide the grid">Toggle Grid</button>
+          </td></tr>
+        </tbody>
+      </table>
+
+   
+    </aside>
+
+    <main>
+      <canvas id="stage" aria-label="Grid Painter workspace" tabindex="0"></canvas>
+    </main>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+
+    // --- Units ---
+    const PT_TO_PX = 96 / 72; // CSS px per pt at standard CSS pixel density
+
+    // --- DOM ---
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d', { alpha: false });
+
+    const statBrush = document.getElementById('statBrush');
+    const statXY = document.getElementById('statXY');
+    const statCell = document.getElementById('statCell');
+    const statGridVis = document.getElementById('statGridVis');
+
+    // Params (bound to controls)
+    const p_cell = document.getElementById('p_cell');
+    const p_showGrid = document.getElementById('p_showGrid');
+    const p_randWhenHidden = document.getElementById('p_randWhenHidden');
+    const p_jitterPt = document.getElementById('p_jitterPt');
+
+    const p_brushStart = document.getElementById('p_brushStart');
+    const p_brushStep = document.getElementById('p_brushStep');
+
+    const p_falloffEnabled = document.getElementById('p_falloffEnabled');
+    const p_falloffPow = document.getElementById('p_falloffPow');
+    const p_delayEnabled = document.getElementById('p_delayEnabled');
+    const p_delayK = document.getElementById('p_delayK');
+    const p_delayPow = document.getElementById('p_delayPow');
+
+    const p_fInit = document.getElementById('p_fInit');
+    const p_fGrow = document.getElementById('p_fGrow');
+    const p_dStep = document.getElementById('p_dStep');
+    const p_visThresh = document.getElementById('p_visThresh');
+    const p_dotMax = document.getElementById('p_dotMax');
+
+    const applyBtn = document.getElementById('applyBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const toggleGridBtn = document.getElementById('toggleGridBtn');
+
+    // --- State ---
+    let params = {
+      cellPt: 5,
+      showGrid: true,
+      randWhenHidden: true,
+      jitterPt: 1.5,
+
+      brushPt: 110,
+      brushStepPt: 2,
+
+      falloffEnabled: true,
+      falloffPow: 1,
+      delayEnabled: true,
+      delayK: 3,
+      delayPow: 1,
+
+      fInitPt: 1,
+      fGrowPt: 1,
+      dStepPt: 1,
+      visThresholdPt: 2,
+      dotMaxPt: 200,
+    };
+
+    // Map of "i,j" -> diameterPt (0 == none)
+    let dots = new Map();
+    // Accumulators for delayed activation (per cell)
+    let growAccum = new Map();
+    let shrinkAccum = new Map();
+
+    // Cursor state
+    const cursor = { x: 0, y: 0, visible: false };
+
+    // --- Helpers ---
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    function key(i,j){ return i+","+j; }
+
+    function px(valPt){ return valPt * PT_TO_PX; }
+
+    function pt(valPx){ return valPx / PT_TO_PX; }
+
+    function getCellPx(){ return px(params.cellPt); }
+
+    function getBrushRadiusPx(){ return px(params.brushPt) / 2; }
+
+    function cellIndexAt(x, y){
+      const s = getCellPx();
+      return [Math.floor(x / s), Math.floor(y / s)];
+    }
+
+    function cellCenter(i, j){
+      const s = getCellPx();
+      return [(i + 0.5) * s, (j + 0.5) * s];
+    }
+
+    function setDot(i, j, diameterPt){
+      const k = key(i,j);
+      if (diameterPt <= 0){ dots.delete(k); growAccum.delete(k); shrinkAccum.delete(k); }
+      else { dots.set(k, clamp(diameterPt, 0, params.dotMaxPt)); }
+    }
+
+    function getDot(i, j){ return dots.get(key(i,j)) || 0; }
+
+    // Pseudo-random, deterministic jitter per cell (hash of i,j)
+    function prng(i,j){
+      let x = (i*374761393 + j*668265263) ^ 0x5bf03635; // integer mixing
+      x = (x ^ (x >>> 13)) * 1274126177;
+      x = (x ^ (x >>> 16)) >>> 0; // unsigned
+      return x / 0xffffffff; // [0,1)
+    }
+
+    function jitterForCell(i,j){
+      const mag = params.randWhenHidden && !params.showGrid ? px(params.jitterPt) : 0;
+      if (mag === 0) return [0,0];
+      const r1 = prng(i,j), r2 = prng(j,i*17+13);
+      return [(r1 - 0.5) * 2 * mag, (r2 - 0.5) * 2 * mag];
+    }
+
+    // Falloff factor (size scaling)
+    function falloffFactor(dist, r){
+      if (!params.falloffEnabled) return 1;
+      const t = 1 - clamp(dist / r, 0, 1); // 1 center -> 0 edge
+      return Math.pow(t, params.falloffPow);
+    }
+
+    // Required taps before applying effect at distance (activation delay)
+    function requiredHits(dist, r){
+      if (!params.delayEnabled) return 1;
+      const t = 1 - clamp(dist / r, 0, 1); // 1 center, 0 edge
+      const edge = 1 - t;                  // 0 center, 1 edge
+      const hits = 1 + Math.round(params.delayK * Math.pow(edge, params.delayPow));
+      return Math.max(1, hits);
+    }
+
+    // Iterate cells inside brush
+    function forEachCellUnderBrush(fn){
+      const r = getBrushRadiusPx();
+      const s = getCellPx();
+      const r2 = r*r;
+      const minI = Math.floor((cursor.x - r) / s);
+      const maxI = Math.floor((cursor.x + r) / s);
+      const minJ = Math.floor((cursor.y - r) / s);
+      const maxJ = Math.floor((cursor.y + r) / s);
+      for (let i = minI; i <= maxI; i++){
+        for (let j = minJ; j <= maxJ; j++){
+          const [cx, cy] = cellCenter(i,j);
+          const dx = cx - cursor.x, dy = cy - cursor.y;
+          const d2 = dx*dx + dy*dy;
+          if (d2 <= r2){ fn(i,j, Math.sqrt(d2), r); }
+        }
+      }
+    }
+
+    function applyGrowUnderBrush(){
+      forEachCellUnderBrush((i,j,dist, r)=>{
+        const k = key(i,j);
+        const needed = requiredHits(dist, r);
+        const acc = (growAccum.get(k) || 0) + 1;
+        if (acc >= needed){
+          growAccum.set(k, acc - needed); // keep remainder
+          const current = getDot(i,j);
+          if (current <= 0){
+            setDot(i,j, params.fInitPt);
+          } else {
+            setDot(i,j, current + params.fGrowPt * falloffFactor(dist, r));
+          }
+        } else {
+          growAccum.set(k, acc);
+        }
+      });
+    }
+
+    function applyShrinkUnderBrush(){
+      forEachCellUnderBrush((i,j,dist, r)=>{
+        const k = key(i,j);
+        const d = getDot(i,j);
+        if (d <= 0) return;
+        const needed = requiredHits(dist, r);
+        const acc = (shrinkAccum.get(k) || 0) + 1;
+        if (acc >= needed){
+          shrinkAccum.set(k, acc - needed);
+          const nd = d - params.dStepPt * falloffFactor(dist, r);
+          if (nd < params.visThresholdPt) setDot(i,j, 0);
+          else setDot(i,j, nd);
+        } else {
+          shrinkAccum.set(k, acc);
+        }
+      });
+    }
+
+    // --- Canvas sizing (HiDPI-aware) ---
+    function resize(){
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // scale drawing to CSS pixels
+      render();
+    }
+
+    window.addEventListener('resize', resize);
+
+    // --- Rendering ---
+    function render(){
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      ctx.save();
+      ctx.clearRect(0,0,w,h);
+
+      // Stage background
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--stage-bg');
+      ctx.fillRect(0,0,w,h);
+
+      // Grid (optional)
+      if (params.showGrid){
+        const s = getCellPx();
+        ctx.beginPath();
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--grid-color');
+        ctx.lineWidth = 1;
+        for (let x = 0.5; x <= w; x += s){ ctx.moveTo(x, 0); ctx.lineTo(x, h); }
+        for (let y = 0.5; y <= h; y += s){ ctx.moveTo(0, y); ctx.lineTo(w, y); }
+        ctx.stroke();
+      }
+
+      // Dots (black)
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--dot-color');
+      dots.forEach((diameterPt, k) => {
+        const [iStr, jStr] = k.split(',');
+        const i = +iStr, j = +jStr;
+        const [cx0, cy0] = cellCenter(i,j);
+        const [jx, jy] = jitterForCell(i,j);
+        const cx = cx0 + jx, cy = cy0 + jy;
+        const r = px(diameterPt) / 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI*2);
+        ctx.fill();
+      });
+
+      // Cursor circle
+      if (cursor.visible){
+        const r = getBrushRadiusPx();
+        ctx.beginPath();
+        ctx.setLineDash([6, 6]);
+        ctx.lineDashOffset = 0;
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--cursor-color');
+        ctx.arc(cursor.x, cursor.y, r, 0, Math.PI*2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      ctx.restore();
+
+      // Status panel values
+      statBrush.textContent = params.brushPt.toFixed(0);
+      //statXY.textContent = `${Math.round(cursor.x)}, ${Math.round(cursor.y)}`;
+      const [ci,cj] = cellIndexAt(cursor.x, cursor.y);
+     // statCell.textContent = `${ci}, ${cj}`;
+      statGridVis.textContent = params.showGrid ? 'Yes' : 'No';
+    }
+
+    // --- Interaction ---
+    function updateFromControls({clearOnCellChange=true}={}){
+      const prevCell = params.cellPt;
+      params.cellPt = Math.max(2, +p_cell.value || 5);
+      params.showGrid = !!p_showGrid.checked;
+      params.randWhenHidden = !!p_randWhenHidden.checked;
+      params.jitterPt = Math.max(0, +p_jitterPt.value || 0);
+
+      params.brushPt = Math.max(2, +p_brushStart.value || 110);
+      params.brushStepPt = Math.max(1, +p_brushStep.value || 2);
+
+      params.falloffEnabled = !!p_falloffEnabled.checked;
+      params.falloffPow = Math.max(0.25, +p_falloffPow.value || 1);
+      params.delayEnabled = !!p_delayEnabled.checked;
+      params.delayK = Math.max(0, +p_delayK.value || 0);
+      params.delayPow = Math.max(0.25, +p_delayPow.value || 1);
+
+      params.fInitPt = Math.max(0.5, +p_fInit.value || 3);
+      params.fGrowPt = Math.max(0.25, +p_fGrow.value || 1);
+      params.dStepPt = Math.max(0.25, +p_dStep.value || 1);
+      params.visThresholdPt = Math.max(0.25, +p_visThresh.value || 2);
+      params.dotMaxPt = Math.max(params.visThresholdPt+1, +p_dotMax.value || 200);
+
+      if (clearOnCellChange && params.cellPt !== prevCell){
+        dots.clear();
+        growAccum.clear();
+        shrinkAccum.clear();
+      }
+      render();
+    }
+
+    applyBtn.addEventListener('click', () => updateFromControls());
+    resetBtn.addEventListener('click', () => { dots.clear(); growAccum.clear(); shrinkAccum.clear(); render(); });
+    toggleGridBtn.addEventListener('click', () => { params.showGrid = !params.showGrid; p_showGrid.checked = params.showGrid; render(); });
+
+    p_showGrid.addEventListener('change', () => { params.showGrid = !!p_showGrid.checked; render(); });
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      cursor.x = e.clientX - rect.left;
+      cursor.y = e.clientY - rect.top;
+      cursor.visible = true;
+      render();
+    });
+    canvas.addEventListener('mouseleave', () => { cursor.visible = false; render(); });
+    canvas.addEventListener('mouseenter', () => { cursor.visible = true; render(); });
+
+    // Enable keyboard focus so keys work immediately after clicking the canvas
+    canvas.addEventListener('click', () => canvas.focus());
+
+    window.addEventListener('keydown', (e) => {
+      const k = e.key;
+      if (k === '['){
+        params.brushPt = Math.max(2, params.brushPt - params.brushStepPt);
+        render();
+        e.preventDefault();
+      } else if (k === ']'){
+        params.brushPt = clamp(params.brushPt + params.brushStepPt, 2, 1000);
+        render();
+        e.preventDefault();
+      } else if (k === 'f' || k === 'F'){
+        applyGrowUnderBrush();
+        render();
+        e.preventDefault();
+      } else if (k === 'd' || k === 'D'){
+        applyShrinkUnderBrush();
+        render();
+        e.preventDefault();
+      } else if (k === 'Escape'){
+        cursor.visible = false;
+        render();
+      }
+    }, { capture: true });
+
+    // --- Initialize ---
+    function init(){
+      // Seed UI from defaults
+      p_cell.value = params.cellPt;
+      p_showGrid.checked = params.showGrid;
+      p_randWhenHidden.checked = params.randWhenHidden;
+      p_jitterPt.value = params.jitterPt;
+
+      p_brushStart.value = params.brushPt;
+      p_brushStep.value = params.brushStepPt;
+
+      p_falloffEnabled.checked = params.falloffEnabled;
+      p_falloffPow.value = params.falloffPow;
+      p_delayEnabled.checked = params.delayEnabled;
+      p_delayK.value = params.delayK;
+      p_delayPow.value = params.delayPow;
+
+      p_fInit.value = params.fInitPt;
+      p_fGrow.value = params.fGrowPt;
+      p_dStep.value = params.dStepPt;
+      p_visThresh.value = params.visThresholdPt;
+      p_dotMax.value = params.dotMaxPt;
+
+      // Layout & first paint
+      resize();
+      // Focus canvas so keys work immediately
+      setTimeout(() => canvas.focus(), 0);
+    }
+
+    // Keep canvas sized to layout
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(document.querySelector('main'));
+
+    init();
+  })();
+  </script>
+</body>
+</html>

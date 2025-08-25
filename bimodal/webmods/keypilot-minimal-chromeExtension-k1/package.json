@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "name": "keypilot-extension",
+  "version": "1.0.0",
+  "description": "KeyPilot Chrome Extension"
+}

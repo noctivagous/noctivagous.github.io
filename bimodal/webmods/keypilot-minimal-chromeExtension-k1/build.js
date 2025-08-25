@@ -16,6 +16,8 @@ const modules = [
   'src/modules/overlay-manager.js',
   'src/modules/style-manager.js',
   'src/modules/shadow-dom-manager.js',
+  'src/modules/intersection-observer-manager.js',
+  'src/modules/optimized-scroll-manager.js',
   'src/keypilot.js',
   'src/content-script.js'
 ];

@@ -7,6 +7,42 @@ export class OverlayManager {
   constructor() {
     this.focusOverlay = null;
     this.deleteOverlay = null;
+    
+    // Intersection observer for overlay visibility optimization
+    this.overlayObserver = null;
+    
+    // Track overlay visibility state
+    this.overlayVisibility = {
+      focus: true,
+      delete: true
+    };
+    
+    this.setupOverlayObserver();
+  }
+
+  setupOverlayObserver() {
+    // Observer to optimize overlay rendering when out of view
+    this.overlayObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const overlay = entry.target;
+          const isVisible = entry.intersectionRatio > 0;
+          
+          // Optimize rendering by hiding completely out-of-view overlays
+          if (overlay === this.focusOverlay) {
+            this.overlayVisibility.focus = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.deleteOverlay) {
+            this.overlayVisibility.delete = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          }
+        });
+      },
+      {
+        rootMargin: '10px',
+        threshold: [0, 1.0]
+      }
+    );
   }
 
   updateOverlays(focusEl, deleteEl, mode) {
@@ -41,18 +77,29 @@ export class OverlayManager {
           border: 3px solid rgba(0,180,0,0.95);
           box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5);
           background: transparent;
+          will-change: transform;
         `
       });
       document.body.appendChild(this.focusOverlay);
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.focusOverlay);
+      }
     }
 
     const rect = this.getBestRect(element);
     if (rect.width > 0 && rect.height > 0) {
-      this.focusOverlay.style.left = `${rect.left}px`;
-      this.focusOverlay.style.top = `${rect.top}px`;
+      // Use transform for better performance during scroll
+      this.focusOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
       this.focusOverlay.style.width = `${rect.width}px`;
       this.focusOverlay.style.height = `${rect.height}px`;
       this.focusOverlay.style.display = 'block';
+      
+      // Only make visible if it should be visible
+      if (this.overlayVisibility.focus) {
+        this.focusOverlay.style.visibility = 'visible';
+      }
     } else {
       this.hideFocusOverlay();
     }
@@ -80,18 +127,29 @@ export class OverlayManager {
           border: 3px solid rgba(220,0,0,0.95);
           box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45);
           background: transparent;
+          will-change: transform;
         `
       });
       document.body.appendChild(this.deleteOverlay);
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.deleteOverlay);
+      }
     }
 
     const rect = this.getBestRect(element);
     if (rect.width > 0 && rect.height > 0) {
-      this.deleteOverlay.style.left = `${rect.left}px`;
-      this.deleteOverlay.style.top = `${rect.top}px`;
+      // Use transform for better performance during scroll
+      this.deleteOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
       this.deleteOverlay.style.width = `${rect.width}px`;
       this.deleteOverlay.style.height = `${rect.height}px`;
       this.deleteOverlay.style.display = 'block';
+      
+      // Only make visible if it should be visible
+      if (this.overlayVisibility.delete) {
+        this.deleteOverlay.style.visibility = 'visible';
+      }
     } else {
       this.hideDeleteOverlay();
     }
@@ -161,6 +219,11 @@ export class OverlayManager {
   }
 
   cleanup() {
+    if (this.overlayObserver) {
+      this.overlayObserver.disconnect();
+      this.overlayObserver = null;
+    }
+    
     if (this.focusOverlay) {
       this.focusOverlay.remove();
       this.focusOverlay = null;

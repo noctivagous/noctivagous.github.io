@@ -10,6 +10,8 @@ import { FocusDetector } from './modules/focus-detector.js';
 import { OverlayManager } from './modules/overlay-manager.js';
 import { StyleManager } from './modules/style-manager.js';
 import { ShadowDOMManager } from './modules/shadow-dom-manager.js';
+import { IntersectionObserverManager } from './modules/intersection-observer-manager.js';
+import { OptimizedScrollManager } from './modules/optimized-scroll-manager.js';
 import { KEYBINDINGS, MODES, CSS_CLASSES } from './config/constants.js';
 
 export class KeyPilot extends EventManager {
@@ -31,15 +33,21 @@ export class KeyPilot extends EventManager {
     this.overlayManager = new OverlayManager();
     this.styleManager = new StyleManager();
     this.shadowDOMManager = new ShadowDOMManager(this.styleManager);
+    
+    // Intersection Observer optimizations
+    this.intersectionManager = new IntersectionObserverManager(this.detector);
+    this.scrollManager = new OptimizedScrollManager(this.overlayManager, this.state);
 
-    // Scroll optimization: track current element to reduce queries
-    this.currentTrackedElement = null;
-    this.isScrolling = false;
-    this.scrollTimeout = null;
-
-    // Mouse movement optimization: only query every 2+ pixels
+    // Mouse movement optimization: only query every 3+ pixels (increased threshold)
     this.lastQueryPosition = { x: -1, y: -1 };
-    this.MOUSE_QUERY_THRESHOLD = 2;
+    this.MOUSE_QUERY_THRESHOLD = 3;
+    
+    // Performance monitoring
+    this.performanceMetrics = {
+      mouseQueries: 0,
+      cacheHits: 0,
+      lastMetricsLog: Date.now()
+    };
 
     this.init();
   }
@@ -49,6 +57,11 @@ export class KeyPilot extends EventManager {
     this.setupShadowDOMSupport();
     this.cursor.ensure();
     this.focusDetector.start();
+    
+    // Initialize Intersection Observer optimizations
+    this.intersectionManager.init();
+    this.scrollManager.init();
+    
     this.start();
 
     // Subscribe to state changes
@@ -58,8 +71,27 @@ export class KeyPilot extends EventManager {
 
     // Set up communication with popup
     this.setupPopupCommunication();
+    
+    // Set up custom event listeners for optimized scroll handling
+    this.setupOptimizedEventListeners();
 
     this.state.setState({ isInitialized: true });
+  }
+
+  setupOptimizedEventListeners() {
+    // Listen for scroll end events from optimized scroll manager
+    document.addEventListener('keypilot:scroll-end', (event) => {
+      const { mouseX, mouseY } = event.detail;
+      this.updateElementsUnderCursor(mouseX, mouseY);
+    });
+    
+    // Periodic performance metrics logging
+    // Enable by setting window.KEYPILOT_DEBUG = true in console
+    setInterval(() => {
+      if (window.KEYPILOT_DEBUG) {
+        this.logPerformanceMetrics();
+      }
+    }, 10000); // Log every 10 seconds when debug enabled
   }
 
   setupStyles() {
@@ -158,38 +190,14 @@ export class KeyPilot extends EventManager {
     this.state.setMousePosition(e.clientX, e.clientY);
     this.cursor.updatePosition(e.clientX, e.clientY);
 
-    // Only update elements if we're not currently scrolling
-    if (!this.isScrolling) {
-      this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
-    } else {
-      // During scroll, check if cursor is still over the tracked element
-      this.checkTrackedElementDuringScroll(e.clientX, e.clientY);
-    }
+    // Use optimized element detection with threshold
+    this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
   }
 
-  handleScroll(_e) {
-    const currentState = this.state.getState();
-
-    // Mark that we're scrolling to optimize mouse move handling
-    this.isScrolling = true;
-
-    // Clear any existing scroll timeout
-    if (this.scrollTimeout) {
-      clearTimeout(this.scrollTimeout);
-    }
-
-    // Only update overlays to reposition them, don't re-query elements yet
-    this.updateOverlays(currentState.focusEl, currentState.deleteEl);
-
-    // Set timeout to end scrolling state and re-query elements
-    this.scrollTimeout = setTimeout(() => {
-      this.isScrolling = false;
-      this.currentTrackedElement = null; // Clear tracked element
-      // Reset query position to force a fresh query after scroll
-      this.lastQueryPosition = { x: -1, y: -1 };
-      // Re-query elements after scroll ends
-      this.updateElementsUnderCursor(currentState.lastMouse.x, currentState.lastMouse.y);
-    }, 150); // 150ms delay after scroll stops
+  handleScroll(e) {
+    // Delegate scroll handling to optimized scroll manager
+    // The scroll manager handles all the optimization logic
+    return; // OptimizedScrollManager handles scroll events directly
   }
 
   updateElementsUnderCursorWithThreshold(x, y) {
@@ -218,38 +226,27 @@ export class KeyPilot extends EventManager {
       return;
     }
 
-    const under = this.detector.deepElementFromPoint(x, y);
-    const clickable = this.detector.findClickable(under);
+    this.performanceMetrics.mouseQueries++;
 
-    // Update tracked element for scroll optimization
-    this.currentTrackedElement = clickable;
+    // Use optimized intersection observer-based element detection
+    const clickable = this.intersectionManager.findInteractiveElementAtPoint(x, y);
+    
+    // Fallback to traditional method if intersection manager doesn't find anything
+    let under = null;
+    if (!clickable) {
+      under = this.detector.deepElementFromPoint(x, y);
+    }
 
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
-      this.state.setDeleteElement(under);
+      // For delete mode, we need the exact element under cursor, not just clickable
+      const deleteTarget = under || this.detector.deepElementFromPoint(x, y);
+      this.state.setDeleteElement(deleteTarget);
     } else {
       // Clear delete element when not in delete mode
       this.state.setDeleteElement(null);
     }
-  }
-
-  checkTrackedElementDuringScroll(x, y) {
-    // If we don't have a tracked element, do a full query
-    if (!this.currentTrackedElement) {
-      this.updateElementsUnderCursor(x, y);
-      return;
-    }
-
-    // Quick check: is the cursor still over the tracked element?
-    const elementAtPoint = this.detector.deepElementFromPoint(x, y);
-    const clickableAtPoint = this.detector.findClickable(elementAtPoint);
-
-    // If cursor moved away from tracked element, do a full update
-    if (clickableAtPoint !== this.currentTrackedElement) {
-      this.updateElementsUnderCursor(x, y);
-    }
-    // Otherwise, keep the current tracked element (no DOM queries needed)
   }
 
   handleDeleteKey() {
@@ -355,13 +352,36 @@ export class KeyPilot extends EventManager {
     this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode);
   }
 
+  logPerformanceMetrics() {
+    const now = Date.now();
+    const timeSinceLastLog = now - this.performanceMetrics.lastMetricsLog;
+    
+    if (timeSinceLastLog < 10000) return; // Only log every 10 seconds
+    
+    const intersectionMetrics = this.intersectionManager.getMetrics();
+    const scrollMetrics = this.scrollManager.getScrollMetrics();
+    
+    console.group('[KeyPilot] Performance Metrics');
+    console.log('Mouse Queries:', this.performanceMetrics.mouseQueries);
+    console.log('Intersection Observer Cache Hit Rate:', intersectionMetrics.cacheHitRate);
+    console.log('Visible Interactive Elements:', intersectionMetrics.visibleElements);
+    console.log('Scroll Throttle Ratio:', scrollMetrics.throttleRatio);
+    console.log('Average Scroll Duration:', `${scrollMetrics.averageScrollDuration.toFixed(1)}ms`);
+    console.groupEnd();
+    
+    this.performanceMetrics.lastMetricsLog = now;
+  }
+
   cleanup() {
     this.stop();
 
-    // Clean up scroll optimization
-    if (this.scrollTimeout) {
-      clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = null;
+    // Clean up intersection observer optimizations
+    if (this.intersectionManager) {
+      this.intersectionManager.cleanup();
+    }
+    
+    if (this.scrollManager) {
+      this.scrollManager.cleanup();
     }
 
     if (this.focusDetector) {
@@ -383,5 +403,8 @@ export class KeyPilot extends EventManager {
     if (this.shadowDOMManager) {
       this.shadowDOMManager.cleanup();
     }
+    
+    // Remove custom event listeners
+    document.removeEventListener('keypilot:scroll-end', this.handleScrollEnd);
   }
 }

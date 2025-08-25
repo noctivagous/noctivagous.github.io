@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T06:40:09.203Z
+ * Generated on 2025-08-25T07:24:07.610Z
  */
 
 (() => {
@@ -816,6 +816,42 @@ class OverlayManager {
   constructor() {
     this.focusOverlay = null;
     this.deleteOverlay = null;
+    
+    // Intersection observer for overlay visibility optimization
+    this.overlayObserver = null;
+    
+    // Track overlay visibility state
+    this.overlayVisibility = {
+      focus: true,
+      delete: true
+    };
+    
+    this.setupOverlayObserver();
+  }
+
+  setupOverlayObserver() {
+    // Observer to optimize overlay rendering when out of view
+    this.overlayObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const overlay = entry.target;
+          const isVisible = entry.intersectionRatio > 0;
+          
+          // Optimize rendering by hiding completely out-of-view overlays
+          if (overlay === this.focusOverlay) {
+            this.overlayVisibility.focus = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.deleteOverlay) {
+            this.overlayVisibility.delete = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          }
+        });
+      },
+      {
+        rootMargin: '10px',
+        threshold: [0, 1.0]
+      }
+    );
   }
 
   updateOverlays(focusEl, deleteEl, mode) {
@@ -850,18 +886,29 @@ class OverlayManager {
           border: 3px solid rgba(0,180,0,0.95);
           box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5);
           background: transparent;
+          will-change: transform;
         `
       });
       document.body.appendChild(this.focusOverlay);
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.focusOverlay);
+      }
     }
 
     const rect = this.getBestRect(element);
     if (rect.width > 0 && rect.height > 0) {
-      this.focusOverlay.style.left = `${rect.left}px`;
-      this.focusOverlay.style.top = `${rect.top}px`;
+      // Use transform for better performance during scroll
+      this.focusOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
       this.focusOverlay.style.width = `${rect.width}px`;
       this.focusOverlay.style.height = `${rect.height}px`;
       this.focusOverlay.style.display = 'block';
+      
+      // Only make visible if it should be visible
+      if (this.overlayVisibility.focus) {
+        this.focusOverlay.style.visibility = 'visible';
+      }
     } else {
       this.hideFocusOverlay();
     }
@@ -889,18 +936,29 @@ class OverlayManager {
           border: 3px solid rgba(220,0,0,0.95);
           box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45);
           background: transparent;
+          will-change: transform;
         `
       });
       document.body.appendChild(this.deleteOverlay);
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.deleteOverlay);
+      }
     }
 
     const rect = this.getBestRect(element);
     if (rect.width > 0 && rect.height > 0) {
-      this.deleteOverlay.style.left = `${rect.left}px`;
-      this.deleteOverlay.style.top = `${rect.top}px`;
+      // Use transform for better performance during scroll
+      this.deleteOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
       this.deleteOverlay.style.width = `${rect.width}px`;
       this.deleteOverlay.style.height = `${rect.height}px`;
       this.deleteOverlay.style.display = 'block';
+      
+      // Only make visible if it should be visible
+      if (this.overlayVisibility.delete) {
+        this.deleteOverlay.style.visibility = 'visible';
+      }
     } else {
       this.hideDeleteOverlay();
     }
@@ -970,6 +1028,11 @@ class OverlayManager {
   }
 
   cleanup() {
+    if (this.overlayObserver) {
+      this.overlayObserver.disconnect();
+      this.overlayObserver = null;
+    }
+    
     if (this.focusOverlay) {
       this.focusOverlay.remove();
       this.focusOverlay = null;
@@ -1199,6 +1262,522 @@ class ShadowDOMManager {
 }
 
 
+  // Module: src/modules/intersection-observer-manager.js
+/**
+ * Intersection Observer-based performance optimization manager
+ * Tracks element visibility and reduces expensive DOM queries
+ */
+class IntersectionObserverManager {
+  constructor(elementDetector) {
+    this.elementDetector = elementDetector;
+    
+    // Observer for tracking interactive elements in viewport
+    this.interactiveObserver = null;
+    
+    // Observer for tracking overlay visibility
+    this.overlayObserver = null;
+    
+    // Cache of interactive elements currently in viewport
+    this.visibleInteractiveElements = new Set();
+    
+    // Cache of element positions for quick lookups
+    this.elementPositionCache = new Map();
+    
+    // Debounced cache update
+    this.cacheUpdateTimeout = null;
+    
+    // Performance metrics
+    this.metrics = {
+      cacheHits: 0,
+      cacheMisses: 0,
+      observerUpdates: 0
+    };
+  }
+
+  init() {
+    this.setupInteractiveElementObserver();
+    this.setupOverlayObserver();
+    this.startPeriodicCacheUpdate();
+  }
+
+  setupInteractiveElementObserver() {
+    // Observer for interactive elements with expanded root margin for preloading
+    this.interactiveObserver = new IntersectionObserver(
+      (entries) => {
+        this.metrics.observerUpdates++;
+        
+        entries.forEach(entry => {
+          const element = entry.target;
+          
+          if (entry.isIntersecting) {
+            this.visibleInteractiveElements.add(element);
+            this.updateElementPositionCache(element, entry.boundingClientRect);
+          } else {
+            this.visibleInteractiveElements.delete(element);
+            this.elementPositionCache.delete(element);
+          }
+        });
+      },
+      {
+        // Expanded margins to preload elements before they're visible
+        rootMargin: '100px',
+        // Multiple thresholds for better granularity
+        threshold: [0, 0.1, 0.5, 1.0]
+      }
+    );
+  }
+
+  setupOverlayObserver() {
+    // Observer specifically for overlay elements to optimize repositioning
+    this.overlayObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const overlay = entry.target;
+          
+          // Hide overlays that are completely out of view to save rendering
+          if (entry.intersectionRatio === 0) {
+            overlay.style.visibility = 'hidden';
+          } else {
+            overlay.style.visibility = 'visible';
+          }
+        });
+      },
+      {
+        rootMargin: '50px',
+        threshold: [0, 1.0]
+      }
+    );
+  }
+
+  startPeriodicCacheUpdate() {
+    // Periodically refresh the cache of interactive elements
+    this.discoverInteractiveElements();
+    
+    // Set up periodic updates every 2 seconds
+    setInterval(() => {
+      this.discoverInteractiveElements();
+    }, 2000);
+  }
+
+  discoverInteractiveElements() {
+    // Find all interactive elements in the document
+    const interactiveElements = document.querySelectorAll(
+      'a[href], button, input, select, textarea, [role="button"], [role="link"], [contenteditable="true"], [onclick], [tabindex]:not([tabindex="-1"])'
+    );
+
+    // Observe new elements
+    interactiveElements.forEach(element => {
+      if (!this.isElementObserved(element)) {
+        this.interactiveObserver.observe(element);
+      }
+    });
+
+    // Clean up observers for removed elements
+    this.cleanupRemovedElements();
+  }
+
+  isElementObserved(element) {
+    // Check if element is already being observed
+    return this.visibleInteractiveElements.has(element) || 
+           this.elementPositionCache.has(element);
+  }
+
+  cleanupRemovedElements() {
+    // Remove elements that are no longer in the DOM
+    for (const element of this.visibleInteractiveElements) {
+      if (!document.contains(element)) {
+        this.visibleInteractiveElements.delete(element);
+        this.elementPositionCache.delete(element);
+        this.interactiveObserver.unobserve(element);
+      }
+    }
+  }
+
+  updateElementPositionCache(element, rect) {
+    this.elementPositionCache.set(element, {
+      left: rect.left,
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      width: rect.width,
+      height: rect.height,
+      timestamp: Date.now()
+    });
+  }
+
+  // Optimized element detection using cached visible elements
+  findInteractiveElementAtPoint(x, y) {
+    // First, try to find element in our visible cache
+    for (const element of this.visibleInteractiveElements) {
+      const cachedRect = this.elementPositionCache.get(element);
+      
+      if (cachedRect && this.isPointInRect(x, y, cachedRect)) {
+        // Verify the element is still at this position (cache validation)
+        const currentRect = element.getBoundingClientRect();
+        
+        if (this.rectsAreClose(cachedRect, currentRect)) {
+          this.metrics.cacheHits++;
+          return element;
+        } else {
+          // Update cache with new position
+          this.updateElementPositionCache(element, currentRect);
+          
+          if (this.isPointInRect(x, y, currentRect)) {
+            this.metrics.cacheHits++;
+            return element;
+          }
+        }
+      }
+    }
+
+    // Cache miss - fall back to DOM query
+    this.metrics.cacheMisses++;
+    const element = this.elementDetector.deepElementFromPoint(x, y);
+    const clickable = this.elementDetector.findClickable(element);
+    
+    // Add to cache if it's interactive and visible
+    if (clickable && this.isElementVisible(clickable)) {
+      this.visibleInteractiveElements.add(clickable);
+      this.interactiveObserver.observe(clickable);
+      this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());
+    }
+    
+    return clickable;
+  }
+
+  isPointInRect(x, y, rect) {
+    return x >= rect.left && 
+           x <= rect.right && 
+           y >= rect.top && 
+           y <= rect.bottom;
+  }
+
+  rectsAreClose(rect1, rect2, tolerance = 5) {
+    return Math.abs(rect1.left - rect2.left) <= tolerance &&
+           Math.abs(rect1.top - rect2.top) <= tolerance &&
+           Math.abs(rect1.width - rect2.width) <= tolerance &&
+           Math.abs(rect1.height - rect2.height) <= tolerance;
+  }
+
+  isElementVisible(element) {
+    const rect = element.getBoundingClientRect();
+    return rect.width > 0 && 
+           rect.height > 0 && 
+           rect.bottom > 0 && 
+           rect.right > 0 && 
+           rect.top < window.innerHeight && 
+           rect.left < window.innerWidth;
+  }
+
+  // Observe overlay elements for visibility optimization
+  observeOverlay(overlayElement) {
+    if (this.overlayObserver && overlayElement) {
+      this.overlayObserver.observe(overlayElement);
+    }
+  }
+
+  unobserveOverlay(overlayElement) {
+    if (this.overlayObserver && overlayElement) {
+      this.overlayObserver.unobserve(overlayElement);
+    }
+  }
+
+  // Get performance metrics
+  getMetrics() {
+    const totalQueries = this.metrics.cacheHits + this.metrics.cacheMisses;
+    const cacheHitRate = totalQueries > 0 ? (this.metrics.cacheHits / totalQueries * 100).toFixed(1) : 0;
+    
+    return {
+      ...this.metrics,
+      cacheHitRate: `${cacheHitRate}%`,
+      visibleElements: this.visibleInteractiveElements.size,
+      cachedPositions: this.elementPositionCache.size
+    };
+  }
+
+  // Cleanup method
+  cleanup() {
+    if (this.interactiveObserver) {
+      this.interactiveObserver.disconnect();
+      this.interactiveObserver = null;
+    }
+    
+    if (this.overlayObserver) {
+      this.overlayObserver.disconnect();
+      this.overlayObserver = null;
+    }
+    
+    if (this.cacheUpdateTimeout) {
+      clearTimeout(this.cacheUpdateTimeout);
+      this.cacheUpdateTimeout = null;
+    }
+    
+    this.visibleInteractiveElements.clear();
+    this.elementPositionCache.clear();
+  }
+}
+
+
+  // Module: src/modules/optimized-scroll-manager.js
+/**
+ * Optimized scroll management using Intersection Observer
+ * Reduces expensive operations during scroll events
+ */
+class OptimizedScrollManager {
+  constructor(overlayManager, stateManager) {
+    this.overlayManager = overlayManager;
+    this.stateManager = stateManager;
+    
+    // Scroll state tracking
+    this.isScrolling = false;
+    this.scrollTimeout = null;
+    this.scrollStartTime = 0;
+    
+    // Intersection observer for scroll-sensitive elements
+    this.scrollObserver = null;
+    
+    // Elements that need position updates during scroll
+    this.scrollSensitiveElements = new Set();
+    
+    // Throttled scroll handler
+    this.throttledScrollHandler = this.throttle(this.handleScrollThrottled.bind(this), 16); // ~60fps
+    
+    // Performance tracking
+    this.scrollMetrics = {
+      scrollEvents: 0,
+      overlayUpdates: 0,
+      throttledCalls: 0,
+      averageScrollDuration: 0
+    };
+  }
+
+  init() {
+    this.setupScrollObserver();
+    this.setupScrollListeners();
+  }
+
+  setupScrollObserver() {
+    // Observer to track when elements move in/out of view during scroll
+    this.scrollObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const element = entry.target;
+          
+          if (entry.isIntersecting) {
+            // Element is visible, may need overlay updates
+            this.scrollSensitiveElements.add(element);
+          } else {
+            // Element is out of view, can skip overlay updates
+            this.scrollSensitiveElements.delete(element);
+            
+            // Hide any overlays for out-of-view elements
+            this.hideOverlaysForElement(element);
+          }
+        });
+      },
+      {
+        rootMargin: '20px', // Small margin to catch elements just entering/leaving
+        threshold: [0, 1.0]
+      }
+    );
+  }
+
+  setupScrollListeners() {
+    // Use passive listener for better performance
+    document.addEventListener('scroll', this.handleScroll.bind(this), { 
+      passive: true,
+      capture: true 
+    });
+    
+    // Also listen for wheel events to predict scroll direction
+    document.addEventListener('wheel', this.handleWheel.bind(this), { 
+      passive: true 
+    });
+  }
+
+  handleScroll(event) {
+    this.scrollMetrics.scrollEvents++;
+    
+    // Mark scroll start
+    if (!this.isScrolling) {
+      this.isScrolling = true;
+      this.scrollStartTime = performance.now();
+    }
+
+    // Use throttled handler for performance
+    this.throttledScrollHandler(event);
+
+    // Clear existing timeout and set new one
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+    }
+
+    // Detect scroll end
+    this.scrollTimeout = setTimeout(() => {
+      this.handleScrollEnd();
+    }, 100);
+  }
+
+  handleScrollThrottled(event) {
+    this.scrollMetrics.throttledCalls++;
+    
+    const currentState = this.stateManager.getState();
+    
+    // Only update overlays for elements that are still visible
+    if (currentState.focusEl && this.scrollSensitiveElements.has(currentState.focusEl)) {
+      this.updateOverlayPosition(currentState.focusEl, 'focus');
+    }
+    
+    if (currentState.deleteEl && this.scrollSensitiveElements.has(currentState.deleteEl)) {
+      this.updateOverlayPosition(currentState.deleteEl, 'delete');
+    }
+    
+    this.scrollMetrics.overlayUpdates++;
+  }
+
+  handleWheel(event) {
+    // Predict scroll direction and prepare for smooth updates
+    const direction = event.deltaY > 0 ? 'down' : 'up';
+    
+    // Pre-emptively update overlay positions based on predicted scroll
+    this.prepareForScroll(direction);
+  }
+
+  prepareForScroll(direction) {
+    // Pre-calculate positions for smooth scrolling
+    const currentState = this.stateManager.getState();
+    
+    if (currentState.focusEl) {
+      this.observeElementForScroll(currentState.focusEl);
+    }
+    
+    if (currentState.deleteEl) {
+      this.observeElementForScroll(currentState.deleteEl);
+    }
+  }
+
+  observeElementForScroll(element) {
+    if (element && this.scrollObserver) {
+      this.scrollObserver.observe(element);
+      this.scrollSensitiveElements.add(element);
+    }
+  }
+
+  unobserveElementForScroll(element) {
+    if (element && this.scrollObserver) {
+      this.scrollObserver.unobserve(element);
+      this.scrollSensitiveElements.delete(element);
+    }
+  }
+
+  updateOverlayPosition(element, type) {
+    if (!element) return;
+    
+    // Use requestAnimationFrame for smooth overlay updates
+    requestAnimationFrame(() => {
+      if (type === 'focus') {
+        this.overlayManager.updateFocusOverlay(element);
+      } else if (type === 'delete') {
+        this.overlayManager.updateDeleteOverlay(element);
+      }
+    });
+  }
+
+  hideOverlaysForElement(element) {
+    const currentState = this.stateManager.getState();
+    
+    // Hide overlays if they're for elements that are out of view
+    if (currentState.focusEl === element) {
+      this.overlayManager.hideFocusOverlay();
+    }
+    
+    if (currentState.deleteEl === element) {
+      this.overlayManager.hideDeleteOverlay();
+    }
+  }
+
+  handleScrollEnd() {
+    const scrollDuration = performance.now() - this.scrollStartTime;
+    
+    // Update average scroll duration
+    this.scrollMetrics.averageScrollDuration = 
+      (this.scrollMetrics.averageScrollDuration + scrollDuration) / 2;
+    
+    this.isScrolling = false;
+    
+    // Force a complete overlay update after scroll ends
+    const currentState = this.stateManager.getState();
+    
+    // Re-query elements at current mouse position for accuracy
+    if (currentState.lastMouse.x >= 0 && currentState.lastMouse.y >= 0) {
+      // Dispatch a custom event to trigger element re-query
+      document.dispatchEvent(new CustomEvent('keypilot:scroll-end', {
+        detail: {
+          mouseX: currentState.lastMouse.x,
+          mouseY: currentState.lastMouse.y
+        }
+      }));
+    }
+    
+    // Clean up observers for elements that are no longer relevant
+    this.cleanupScrollObservers();
+  }
+
+  cleanupScrollObservers() {
+    // Remove observers for elements that are no longer in the DOM
+    for (const element of this.scrollSensitiveElements) {
+      if (!document.contains(element)) {
+        this.unobserveElementForScroll(element);
+      }
+    }
+  }
+
+  // Throttle utility function
+  throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  }
+
+  // Get scroll performance metrics
+  getScrollMetrics() {
+    const throttleRatio = this.scrollMetrics.scrollEvents > 0 ? 
+      (this.scrollMetrics.throttledCalls / this.scrollMetrics.scrollEvents * 100).toFixed(1) : 0;
+    
+    return {
+      ...this.scrollMetrics,
+      throttleRatio: `${throttleRatio}%`,
+      activeSensitiveElements: this.scrollSensitiveElements.size,
+      isCurrentlyScrolling: this.isScrolling
+    };
+  }
+
+  // Cleanup method
+  cleanup() {
+    if (this.scrollObserver) {
+      this.scrollObserver.disconnect();
+      this.scrollObserver = null;
+    }
+    
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = null;
+    }
+    
+    this.scrollSensitiveElements.clear();
+    
+    // Remove event listeners
+    document.removeEventListener('scroll', this.handleScroll.bind(this));
+    document.removeEventListener('wheel', this.handleWheel.bind(this));
+  }
+}
+
+
   // Module: src/keypilot.js
 /**
  * KeyPilot main application class
@@ -1222,15 +1801,21 @@ class KeyPilot extends EventManager {
     this.overlayManager = new OverlayManager();
     this.styleManager = new StyleManager();
     this.shadowDOMManager = new ShadowDOMManager(this.styleManager);
+    
+    // Intersection Observer optimizations
+    this.intersectionManager = new IntersectionObserverManager(this.detector);
+    this.scrollManager = new OptimizedScrollManager(this.overlayManager, this.state);
 
-    // Scroll optimization: track current element to reduce queries
-    this.currentTrackedElement = null;
-    this.isScrolling = false;
-    this.scrollTimeout = null;
-
-    // Mouse movement optimization: only query every 2+ pixels
+    // Mouse movement optimization: only query every 3+ pixels (increased threshold)
     this.lastQueryPosition = { x: -1, y: -1 };
     this.MOUSE_QUERY_THRESHOLD = 3;
+    
+    // Performance monitoring
+    this.performanceMetrics = {
+      mouseQueries: 0,
+      cacheHits: 0,
+      lastMetricsLog: Date.now()
+    };
 
     this.init();
   }
@@ -1240,6 +1825,11 @@ class KeyPilot extends EventManager {
     this.setupShadowDOMSupport();
     this.cursor.ensure();
     this.focusDetector.start();
+    
+    // Initialize Intersection Observer optimizations
+    this.intersectionManager.init();
+    this.scrollManager.init();
+    
     this.start();
 
     // Subscribe to state changes
@@ -1249,8 +1839,27 @@ class KeyPilot extends EventManager {
 
     // Set up communication with popup
     this.setupPopupCommunication();
+    
+    // Set up custom event listeners for optimized scroll handling
+    this.setupOptimizedEventListeners();
 
     this.state.setState({ isInitialized: true });
+  }
+
+  setupOptimizedEventListeners() {
+    // Listen for scroll end events from optimized scroll manager
+    document.addEventListener('keypilot:scroll-end', (event) => {
+      const { mouseX, mouseY } = event.detail;
+      this.updateElementsUnderCursor(mouseX, mouseY);
+    });
+    
+    // Periodic performance metrics logging
+    // Enable by setting window.KEYPILOT_DEBUG = true in console
+    setInterval(() => {
+      if (window.KEYPILOT_DEBUG) {
+        this.logPerformanceMetrics();
+      }
+    }, 10000); // Log every 10 seconds when debug enabled
   }
 
   setupStyles() {
@@ -1349,45 +1958,21 @@ class KeyPilot extends EventManager {
     this.state.setMousePosition(e.clientX, e.clientY);
     this.cursor.updatePosition(e.clientX, e.clientY);
 
-    // Only update elements if we're not currently scrolling
-    if (!this.isScrolling) {
-      this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
-    } else {
-      // During scroll, check if cursor is still over the tracked element
-      this.checkTrackedElementDuringScroll(e.clientX, e.clientY);
-    }
+    // Use optimized element detection with threshold
+    this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
   }
 
-  handleScroll(_e) {
-    const currentState = this.state.getState();
-
-    // Mark that we're scrolling to optimize mouse move handling
-    this.isScrolling = true;
-
-    // Clear any existing scroll timeout
-    if (this.scrollTimeout) {
-      clearTimeout(this.scrollTimeout);
-    }
-
-    // Only update overlays to reposition them, don't re-query elements yet
-    this.updateOverlays(currentState.focusEl, currentState.deleteEl);
-
-    // Set timeout to end scrolling state and re-query elements
-    this.scrollTimeout = setTimeout(() => {
-      this.isScrolling = false;
-      this.currentTrackedElement = null; // Clear tracked element
-      // Reset query position to force a fresh query after scroll
-      this.lastQueryPosition = { x: -1, y: -1 };
-      // Re-query elements after scroll ends
-      this.updateElementsUnderCursor(currentState.lastMouse.x, currentState.lastMouse.y);
-    }, 150); // 150ms delay after scroll stops
+  handleScroll(e) {
+    // Delegate scroll handling to optimized scroll manager
+    // The scroll manager handles all the optimization logic
+    return; // OptimizedScrollManager handles scroll events directly
   }
 
   updateElementsUnderCursorWithThreshold(x, y) {
     // Check if mouse has moved enough to warrant a new query
     const deltaX = Math.abs(x - this.lastQueryPosition.x);
     const deltaY = Math.abs(y - this.lastQueryPosition.y);
-    
+
     if (deltaX < this.MOUSE_QUERY_THRESHOLD && deltaY < this.MOUSE_QUERY_THRESHOLD) {
       // Mouse hasn't moved enough, skip the query
       return;
@@ -1409,38 +1994,27 @@ class KeyPilot extends EventManager {
       return;
     }
 
-    const under = this.detector.deepElementFromPoint(x, y);
-    const clickable = this.detector.findClickable(under);
+    this.performanceMetrics.mouseQueries++;
 
-    // Update tracked element for scroll optimization
-    this.currentTrackedElement = clickable;
+    // Use optimized intersection observer-based element detection
+    const clickable = this.intersectionManager.findInteractiveElementAtPoint(x, y);
+    
+    // Fallback to traditional method if intersection manager doesn't find anything
+    let under = null;
+    if (!clickable) {
+      under = this.detector.deepElementFromPoint(x, y);
+    }
 
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
-      this.state.setDeleteElement(under);
+      // For delete mode, we need the exact element under cursor, not just clickable
+      const deleteTarget = under || this.detector.deepElementFromPoint(x, y);
+      this.state.setDeleteElement(deleteTarget);
     } else {
       // Clear delete element when not in delete mode
       this.state.setDeleteElement(null);
     }
-  }
-
-  checkTrackedElementDuringScroll(x, y) {
-    // If we don't have a tracked element, do a full query
-    if (!this.currentTrackedElement) {
-      this.updateElementsUnderCursor(x, y);
-      return;
-    }
-
-    // Quick check: is the cursor still over the tracked element?
-    const elementAtPoint = this.detector.deepElementFromPoint(x, y);
-    const clickableAtPoint = this.detector.findClickable(elementAtPoint);
-
-    // If cursor moved away from tracked element, do a full update
-    if (clickableAtPoint !== this.currentTrackedElement) {
-      this.updateElementsUnderCursor(x, y);
-    }
-    // Otherwise, keep the current tracked element (no DOM queries needed)
   }
 
   handleDeleteKey() {
@@ -1546,13 +2120,36 @@ class KeyPilot extends EventManager {
     this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode);
   }
 
+  logPerformanceMetrics() {
+    const now = Date.now();
+    const timeSinceLastLog = now - this.performanceMetrics.lastMetricsLog;
+    
+    if (timeSinceLastLog < 10000) return; // Only log every 10 seconds
+    
+    const intersectionMetrics = this.intersectionManager.getMetrics();
+    const scrollMetrics = this.scrollManager.getScrollMetrics();
+    
+    console.group('[KeyPilot] Performance Metrics');
+    console.log('Mouse Queries:', this.performanceMetrics.mouseQueries);
+    console.log('Intersection Observer Cache Hit Rate:', intersectionMetrics.cacheHitRate);
+    console.log('Visible Interactive Elements:', intersectionMetrics.visibleElements);
+    console.log('Scroll Throttle Ratio:', scrollMetrics.throttleRatio);
+    console.log('Average Scroll Duration:', `${scrollMetrics.averageScrollDuration.toFixed(1)}ms`);
+    console.groupEnd();
+    
+    this.performanceMetrics.lastMetricsLog = now;
+  }
+
   cleanup() {
     this.stop();
 
-    // Clean up scroll optimization
-    if (this.scrollTimeout) {
-      clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = null;
+    // Clean up intersection observer optimizations
+    if (this.intersectionManager) {
+      this.intersectionManager.cleanup();
+    }
+    
+    if (this.scrollManager) {
+      this.scrollManager.cleanup();
     }
 
     if (this.focusDetector) {
@@ -1574,6 +2171,9 @@ class KeyPilot extends EventManager {
     if (this.shadowDOMManager) {
       this.shadowDOMManager.cleanup();
     }
+    
+    // Remove custom event listeners
+    document.removeEventListener('keypilot:scroll-end', this.handleScrollEnd);
   }
 }
 

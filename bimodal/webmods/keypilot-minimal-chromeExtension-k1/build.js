@@ -1,11 +1,10 @@
 /**
- * New build script for KeyPilot extension
+ * Build script for KeyPilot extension
  */
 import fs from 'fs';
 
 console.log('Starting build...');
 
-// Read all module files
 const modules = [
   'src/config/constants.js',
   'src/modules/state-manager.js',
@@ -21,37 +20,37 @@ const modules = [
   'src/content-script.js'
 ];
 
-let output = `/**
+let bundledContent = `/**
  * KeyPilot Chrome Extension - Bundled Version
  * Generated on ${new Date().toISOString()}
  */
 
 (() => {
-  // Bundled modules
+  // Global scope for bundled modules
 
 `;
 
-// Process each module
 for (const modulePath of modules) {
   if (fs.existsSync(modulePath)) {
     console.log(`Processing ${modulePath}...`);
-    let content = fs.readFileSync(modulePath, 'utf8');
+    let moduleContent = fs.readFileSync(modulePath, 'utf8');
     
-    // Clean up imports and exports
-    content = content
-      .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*/g, '')
-      .replace(/export\s+(const|let|var|class|function)\s+/g, '$1 ')
-      .replace(/export\s*\{[^}]*\}\s*;?\s*/g, '');
+    // Remove imports and exports
+    moduleContent = moduleContent
+      .replace(/import\s+.*?from\s+['"][^'"]*['"];?\s*\n?/g, '')
+      .replace(/^export\s+(class|function|const|let|var)\s+/gm, '$1 ')
+      .replace(/export\s*\{[^}]*\}\s*;?\s*\n?/g, '')
+      .replace(/^export\s+/gm, '');
     
-    output += `
-  // === ${modulePath} ===
-  ${content}
-  
+    bundledContent += `
+  // Module: ${modulePath}
+${moduleContent}
+
 `;
   }
 }
 
-output += `
+bundledContent += `
   // Initialize KeyPilot
   if (typeof KeyPilot !== 'undefined') {
     new KeyPilot();
@@ -59,6 +58,5 @@ output += `
 })();
 `;
 
-// Write the bundled file
-fs.writeFileSync('content-bundled.js', output);
+fs.writeFileSync('content-bundled.js', bundledContent);
 console.log('Build complete! Generated content-bundled.js');

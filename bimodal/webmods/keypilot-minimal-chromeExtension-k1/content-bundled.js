@@ -1,14 +1,14 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T05:14:54.614Z
+ * Generated on 2025-08-25T05:43:51.688Z
  */
 
 (() => {
-  // Bundled modules
+  // Global scope for bundled modules
 
 
-  // === src/config/constants.js ===
-  /**
+  // Module: src/config/constants.js
+/**
  * Application constants and configuration
  */
 const KEYBINDINGS = {
@@ -61,10 +61,10 @@ const COLORS = {
   DELETE: 'rgba(220,0,0,0.95)',
   RIPPLE: 'rgba(0,200,0,0.35)'
 };
-  
 
-  // === src/modules/state-manager.js ===
-  /**
+
+  // Module: src/modules/state-manager.js
+/**
  * Application state management
  */
 class StateManager {
@@ -151,10 +151,10 @@ class StateManager {
     });
   }
 }
-  
 
-  // === src/modules/event-manager.js ===
-  /**
+
+  // Module: src/modules/event-manager.js
+/**
  * Centralized event management
  */
 class EventManager {
@@ -240,10 +240,10 @@ class EventManager {
     return e.ctrlKey || e.metaKey || e.altKey || e.shiftKey;
   }
 }
-  
 
-  // === src/modules/cursor.js ===
-  /**
+
+  // Module: src/modules/cursor.js
+/**
  * Cursor overlay management
  */
 class CursorManager {
@@ -386,10 +386,10 @@ class CursorManager {
     return node;
   }
 }
-  
 
-  // === src/modules/element-detector.js ===
-  /**
+
+  // Module: src/modules/element-detector.js
+/**
  * Element detection and interaction utilities
  */
 class ElementDetector {
@@ -445,10 +445,10 @@ class ElementDetector {
     return el.isContentEditable || el.getAttribute('contenteditable') === 'true';
   }
 }
-  
 
-  // === src/modules/activation-handler.js ===
-  /**
+
+  // Module: src/modules/activation-handler.js
+/**
  * Smart element activation with semantic handling
  */
 class ActivationHandler {
@@ -677,10 +677,10 @@ class ActivationHandler {
     return Number.isFinite(n) ? n : d; 
   }
 }
-  
 
-  // === src/modules/focus-detector.js ===
-  /**
+
+  // Module: src/modules/focus-detector.js
+/**
  * Text field focus detection and management
  */
 class FocusDetector {
@@ -805,10 +805,10 @@ class FocusDetector {
     return this.currentFocusedElement;
   }
 }
-  
 
-  // === src/modules/overlay-manager.js ===
-  /**
+
+  // Module: src/modules/overlay-manager.js
+/**
  * Visual overlay management for focus and delete indicators
  */
 class OverlayManager {
@@ -993,10 +993,10 @@ class OverlayManager {
     return element;
   }
 }
-  
 
-  // === src/modules/style-manager.js ===
-  /**
+
+  // Module: src/modules/style-manager.js
+/**
  * CSS injection and style management
  */
 class StyleManager {
@@ -1124,10 +1124,10 @@ class StyleManager {
     this.injectedStyles.clear();
   }
 }
-  
 
-  // === src/modules/shadow-dom-manager.js ===
-  /**
+
+  // Module: src/modules/shadow-dom-manager.js
+/**
  * Shadow DOM support and patching
  */
 class ShadowDOMManager {
@@ -1196,10 +1196,10 @@ class ShadowDOMManager {
     this.shadowRoots.clear();
   }
 }
-  
 
-  // === src/keypilot.js ===
-  /**
+
+  // Module: src/keypilot.js
+/**
  * KeyPilot main application class
  */
 class KeyPilot extends EventManager {
@@ -1346,6 +1346,9 @@ class KeyPilot extends EventManager {
     // Update overlays when scrolling to keep them positioned correctly
     const currentState = this.state.getState();
     this.updateElementsUnderCursor(currentState.lastMouse.x, currentState.lastMouse.y);
+    
+    // Force overlay update even if elements haven't changed, because their positions have
+    this.updateOverlays(currentState.focusEl, currentState.deleteEl);
   }
 
   updateElementsUnderCursor(x, y) {
@@ -1496,15 +1499,15 @@ class KeyPilot extends EventManager {
     }
   }
 }
-  
 
-  // === src/content-script.js ===
-  /**
+
+  // Module: src/content-script.js
+/**
  * Content script entry point
  */
 // Initialize KeyPilot
 new KeyPilot();
-  
+
 
   // Initialize KeyPilot
   if (typeof KeyPilot !== 'undefined') {

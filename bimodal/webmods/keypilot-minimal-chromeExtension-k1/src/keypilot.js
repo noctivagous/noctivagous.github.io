@@ -156,6 +156,9 @@ export class KeyPilot extends EventManager {
     // Update overlays when scrolling to keep them positioned correctly
     const currentState = this.state.getState();
     this.updateElementsUnderCursor(currentState.lastMouse.x, currentState.lastMouse.y);
+    
+    // Force overlay update even if elements haven't changed, because their positions have
+    this.updateOverlays(currentState.focusEl, currentState.deleteEl);
   }
 
   updateElementsUnderCursor(x, y) {

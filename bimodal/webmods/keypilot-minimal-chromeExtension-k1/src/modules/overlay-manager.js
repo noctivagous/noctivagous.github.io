@@ -46,6 +46,15 @@ export class OverlayManager {
   }
 
   updateOverlays(focusEl, deleteEl, mode) {
+    // Debug logging when debug mode is enabled
+    if (window.KEYPILOT_DEBUG && focusEl) {
+      console.log('[KeyPilot Debug] Updating overlays:', {
+        focusElement: focusEl.tagName,
+        mode: mode,
+        willShowFocus: mode === 'none'
+      });
+    }
+    
     // Only show focus overlay in normal mode (not delete or text focus)
     if (mode === 'none') {
       this.updateFocusOverlay(focusEl);
@@ -67,6 +76,15 @@ export class OverlayManager {
       return;
     }
 
+    // Debug logging
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateFocusOverlay called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        text: element.textContent?.substring(0, 30)
+      });
+    }
+
     if (!this.focusOverlay) {
       this.focusOverlay = this.createElement('div', {
         className: CSS_CLASSES.FOCUS_OVERLAY,
@@ -82,6 +100,16 @@ export class OverlayManager {
       });
       document.body.appendChild(this.focusOverlay);
       
+      // Debug logging for overlay creation
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focus overlay created and added to DOM:', {
+          element: this.focusOverlay,
+          className: this.focusOverlay.className,
+          style: this.focusOverlay.style.cssText,
+          parent: this.focusOverlay.parentElement?.tagName
+        });
+      }
+      
       // Start observing the overlay for visibility optimization
       if (this.overlayObserver) {
         this.overlayObserver.observe(this.focusOverlay);
@@ -89,18 +117,37 @@ export class OverlayManager {
     }
 
     const rect = this.getBestRect(element);
+    
+    // Debug logging for positioning
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Focus overlay positioning:', {
+        rect: rect,
+        overlayExists: !!this.focusOverlay,
+        overlayVisibility: this.overlayVisibility.focus
+      });
+    }
+    
     if (rect.width > 0 && rect.height > 0) {
-      // Use transform for better performance during scroll
-      this.focusOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+      // Set position using left/top for now (simpler than transform)
+      this.focusOverlay.style.left = `${rect.left}px`;
+      this.focusOverlay.style.top = `${rect.top}px`;
       this.focusOverlay.style.width = `${rect.width}px`;
       this.focusOverlay.style.height = `${rect.height}px`;
       this.focusOverlay.style.display = 'block';
+      this.focusOverlay.style.visibility = 'visible';
       
-      // Only make visible if it should be visible
-      if (this.overlayVisibility.focus) {
-        this.focusOverlay.style.visibility = 'visible';
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focus overlay positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
       }
     } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focus overlay hidden - invalid rect:', rect);
+      }
       this.hideFocusOverlay();
     }
   }
@@ -184,6 +231,19 @@ export class OverlayManager {
     
     let rect = element.getBoundingClientRect();
     
+    // Debug logging
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] getBestRect for element:', {
+        tagName: element.tagName,
+        originalRect: {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        }
+      });
+    }
+    
     // If the element has no height (common with links containing other elements),
     // try to find a child element with height
     if (rect.height === 0 && element.children.length > 0) {
@@ -192,12 +252,19 @@ export class OverlayManager {
         if (childRect.height > 0) {
           // Use the child's rect but keep the parent's left position if it's a link
           if (element.tagName.toLowerCase() === 'a') {
-            return {
+            const finalRect = {
               left: Math.min(rect.left, childRect.left),
               top: childRect.top,
               width: Math.max(rect.width, childRect.width),
               height: childRect.height
             };
+            if (window.KEYPILOT_DEBUG) {
+              console.log('[KeyPilot Debug] Using child rect for link:', finalRect);
+            }
+            return finalRect;
+          }
+          if (window.KEYPILOT_DEBUG) {
+            console.log('[KeyPilot Debug] Using child rect:', childRect);
           }
           return childRect;
         }
@@ -207,14 +274,21 @@ export class OverlayManager {
     // If still no height, try to get text content dimensions
     if (rect.height === 0 && element.textContent && element.textContent.trim()) {
       // For text-only elements, use a minimum height
-      return {
+      const finalRect = {
         left: rect.left,
         top: rect.top,
         width: Math.max(rect.width, 20), // Minimum width
         height: Math.max(rect.height, 20) // Minimum height
       };
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Using minimum dimensions:', finalRect);
+      }
+      return finalRect;
     }
     
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Using original rect:', rect);
+    }
     return rect;
   }
 

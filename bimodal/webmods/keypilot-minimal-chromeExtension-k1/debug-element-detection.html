@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Element Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        
+        .debug-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        a {
+            color: #0066cc;
+            text-decoration: underline;
+            margin: 5px;
+            display: inline-block;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .test-link {
+            background: #e7f3ff;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Element Detection</h1>
+    
+    <div id="debugOutput" class="debug-info">
+        Move mouse over elements to see debug info...
+    </div>
+
+    <div class="test-section">
+        <h2>Plain Links</h2>
+        <a href="https://example.com">Plain link 1</a>
+        <a href="https://google.com">Plain link 2</a>
+        <a href="#section1">Internal link</a>
+        <a href="mailto:test@example.com">Email link</a>
+    </div>
+
+    <div class="test-section">
+        <h2>Styled Links</h2>
+        <a href="https://example.com" class="test-link">Styled link 1</a>
+        <a href="https://google.com" class="test-link">Styled link 2</a>
+    </div>
+
+    <div class="test-section">
+        <h2>Buttons</h2>
+        <button>Button 1</button>
+        <button>Button 2</button>
+        <button onclick="alert('clicked')">Button with onclick</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Form Elements</h2>
+        <input type="text" placeholder="Text input">
+        <select>
+            <option>Option 1</option>
+            <option>Option 2</option>
+        </select>
+        <textarea placeholder="Textarea"></textarea>
+    </div>
+
+    <div class="test-section">
+        <h2>Complex Elements</h2>
+        <div onclick="alert('div click')" style="cursor: pointer; background: #ffe6e6; padding: 10px; margin: 5px; border-radius: 4px;">
+            Clickable div with onclick
+        </div>
+        <span role="button" tabindex="0" style="cursor: pointer; background: #e6ffe6; padding: 10px; margin: 5px; border-radius: 4px; display: inline-block;">
+            Span with role="button"
+        </span>
+    </div>
+
+    <script>
+        let debugOutput = document.getElementById('debugOutput');
+        
+        // Debug mouse movement
+        document.addEventListener('mousemove', function(e) {
+            const element = document.elementFromPoint(e.clientX, e.clientY);
+            
+            if (element) {
+                const tagName = element.tagName.toLowerCase();
+                const href = element.href || 'none';
+                const role = element.getAttribute('role') || 'none';
+                const onclick = element.onclick ? 'yes' : 'no';
+                const tabindex = element.getAttribute('tabindex') || 'none';
+                const className = element.className || 'none';
+                
+                // Check if it matches common selectors
+                const isClickable = element.matches('a[href], button, input, select, textarea');
+                const hasRole = element.getAttribute('role') && ['link', 'button'].includes(element.getAttribute('role'));
+                const isInteractive = isClickable || hasRole || element.onclick;
+                
+                debugOutput.innerHTML = `
+                    <strong>Element:</strong> ${tagName}<br>
+                    <strong>Class:</strong> ${className}<br>
+                    <strong>Href:</strong> ${href}<br>
+                    <strong>Role:</strong> ${role}<br>
+                    <strong>Onclick:</strong> ${onclick}<br>
+                    <strong>Tabindex:</strong> ${tabindex}<br>
+                    <strong>Matches clickable selector:</strong> ${isClickable}<br>
+                    <strong>Has interactive role:</strong> ${hasRole}<br>
+                    <strong>Should be interactive:</strong> ${isInteractive}<br>
+                    <strong>Mouse position:</strong> ${e.clientX}, ${e.clientY}
+                `;
+            }
+        });
+        
+        console.log('🔍 Debug page loaded. Move mouse over elements to see detection info.');
+        console.log('🎯 Enable KeyPilot debug mode: window.KEYPILOT_DEBUG = true');
+        
+        // Auto-enable debug mode
+        window.KEYPILOT_DEBUG = true;
+    </script>
+</body>
+</html>

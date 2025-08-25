@@ -140,44 +140,34 @@ export class IntersectionObserverManager {
     });
   }
 
-  // Optimized element detection using cached visible elements
-  findInteractiveElementAtPoint(x, y) {
-    // First, try to find element in our visible cache
-    for (const element of this.visibleInteractiveElements) {
-      const cachedRect = this.elementPositionCache.get(element);
-      
-      if (cachedRect && this.isPointInRect(x, y, cachedRect)) {
-        // Verify the element is still at this position (cache validation)
-        const currentRect = element.getBoundingClientRect();
-        
-        if (this.rectsAreClose(cachedRect, currentRect)) {
-          this.metrics.cacheHits++;
-          return element;
-        } else {
-          // Update cache with new position
-          this.updateElementPositionCache(element, currentRect);
-          
-          if (this.isPointInRect(x, y, currentRect)) {
-            this.metrics.cacheHits++;
-            return element;
-          }
-        }
-      }
-    }
-
-    // Cache miss - fall back to DOM query
-    this.metrics.cacheMisses++;
+  // Track element for performance metrics and caching
+  trackElementAtPoint(x, y) {
+    // This method is called to track elements for performance optimization
+    // It doesn't replace the main element detection, just optimizes it
+    
     const element = this.elementDetector.deepElementFromPoint(x, y);
     const clickable = this.elementDetector.findClickable(element);
     
-    // Add to cache if it's interactive and visible
-    if (clickable && this.isElementVisible(clickable)) {
+    // Check if we found this element in our cache (for metrics)
+    if (clickable && this.visibleInteractiveElements.has(clickable)) {
+      this.metrics.cacheHits++;
+    } else {
+      this.metrics.cacheMisses++;
+    }
+    
+    // Add to cache if it's interactive and visible but not already cached
+    if (clickable && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
       this.visibleInteractiveElements.add(clickable);
       this.interactiveObserver.observe(clickable);
       this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());
     }
     
     return clickable;
+  }
+
+  // Legacy method name for compatibility
+  findInteractiveElementAtPoint(x, y) {
+    return this.trackElementAtPoint(x, y);
   }
 
   isPointInRect(x, y, rect) {

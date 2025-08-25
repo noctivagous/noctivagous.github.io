@@ -228,21 +228,29 @@ export class KeyPilot extends EventManager {
 
     this.performanceMetrics.mouseQueries++;
 
-    // Use optimized intersection observer-based element detection
-    const clickable = this.intersectionManager.findInteractiveElementAtPoint(x, y);
+    // Use traditional element detection for accuracy
+    const under = this.detector.deepElementFromPoint(x, y);
+    const clickable = this.detector.findClickable(under);
     
-    // Fallback to traditional method if intersection manager doesn't find anything
-    let under = null;
-    if (!clickable) {
-      under = this.detector.deepElementFromPoint(x, y);
+    // Track with intersection manager for performance metrics and caching
+    this.intersectionManager.trackElementAtPoint(x, y);
+
+    // Debug logging when debug mode is enabled
+    if (window.KEYPILOT_DEBUG && clickable) {
+      console.log('[KeyPilot Debug] Found clickable element:', {
+        tagName: clickable.tagName,
+        href: clickable.href,
+        className: clickable.className,
+        text: clickable.textContent?.substring(0, 50),
+        mode: currentState.mode
+      });
     }
 
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
       // For delete mode, we need the exact element under cursor, not just clickable
-      const deleteTarget = under || this.detector.deepElementFromPoint(x, y);
-      this.state.setDeleteElement(deleteTarget);
+      this.state.setDeleteElement(under);
     } else {
       // Clear delete element when not in delete mode
       this.state.setDeleteElement(null);

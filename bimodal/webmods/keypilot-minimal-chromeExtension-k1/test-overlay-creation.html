@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Overlay Creation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        
+        .test-link {
+            color: #0066cc;
+            text-decoration: underline;
+            margin: 10px;
+            display: inline-block;
+            padding: 10px;
+            background: #f0f8ff;
+            border-radius: 4px;
+        }
+        
+        .debug-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .manual-overlay {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2147483646;
+            border: 3px solid rgba(0,180,0,0.95);
+            box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5);
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Overlay Creation</h1>
+    
+    <div class="debug-info" id="debugOutput">
+        Debug info will appear here...
+    </div>
+
+    <div class="test-section">
+        <h2>Manual Overlay Test</h2>
+        <p>These buttons will manually create overlays to test if the CSS and positioning work:</p>
+        
+        <button onclick="createManualOverlay()">Create Manual Overlay</button>
+        <button onclick="removeManualOverlay()">Remove Manual Overlay</button>
+        <button onclick="testOverlayOnLink()">Test Overlay on Link Below</button>
+        <button onclick="inspectKeyPilotOverlays()">Inspect KeyPilot Overlays</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Links</h2>
+        <a href="https://example.com" class="test-link" id="testLink1">Test Link 1</a>
+        <a href="https://google.com" class="test-link" id="testLink2">Test Link 2</a>
+        <a href="#section" class="test-link" id="testLink3">Test Link 3</a>
+    </div>
+
+    <div class="test-section">
+        <h2>KeyPilot Status</h2>
+        <p>Move mouse over links above and check console for KeyPilot debug output.</p>
+        <p id="keypilotStatus">Checking KeyPilot status...</p>
+    </div>
+
+    <script>
+        let manualOverlay = null;
+        
+        // Enable KeyPilot debug mode
+        window.KEYPILOT_DEBUG = true;
+        
+        function createManualOverlay() {
+            removeManualOverlay(); // Remove existing
+            
+            manualOverlay = document.createElement('div');
+            manualOverlay.className = 'manual-overlay';
+            manualOverlay.style.left = '100px';
+            manualOverlay.style.top = '200px';
+            manualOverlay.style.width = '200px';
+            manualOverlay.style.height = '30px';
+            manualOverlay.style.display = 'block';
+            
+            document.body.appendChild(manualOverlay);
+            
+            updateDebug('Manual overlay created at 100,200 with size 200x30');
+            console.log('Manual overlay created:', manualOverlay);
+        }
+        
+        function removeManualOverlay() {
+            if (manualOverlay) {
+                manualOverlay.remove();
+                manualOverlay = null;
+                updateDebug('Manual overlay removed');
+            }
+        }
+        
+        function testOverlayOnLink() {
+            const link = document.getElementById('testLink1');
+            const rect = link.getBoundingClientRect();
+            
+            removeManualOverlay();
+            
+            manualOverlay = document.createElement('div');
+            manualOverlay.className = 'manual-overlay';
+            manualOverlay.style.left = rect.left + 'px';
+            manualOverlay.style.top = rect.top + 'px';
+            manualOverlay.style.width = rect.width + 'px';
+            manualOverlay.style.height = rect.height + 'px';
+            manualOverlay.style.display = 'block';
+            
+            document.body.appendChild(manualOverlay);
+            
+            updateDebug(`Manual overlay positioned on link: ${rect.left},${rect.top} ${rect.width}x${rect.height}`);
+            console.log('Manual overlay on link:', { rect, overlay: manualOverlay });
+        }
+        
+        function inspectKeyPilotOverlays() {
+            const focusOverlays = document.querySelectorAll('.kpv2-focus-overlay');
+            const deleteOverlays = document.querySelectorAll('.kpv2-delete-overlay');
+            
+            updateDebug(`Found ${focusOverlays.length} focus overlays, ${deleteOverlays.length} delete overlays`);
+            
+            focusOverlays.forEach((overlay, i) => {
+                console.log(`Focus overlay ${i}:`, {
+                    element: overlay,
+                    style: overlay.style.cssText,
+                    display: overlay.style.display,
+                    visibility: overlay.style.visibility,
+                    position: {
+                        left: overlay.style.left,
+                        top: overlay.style.top,
+                        width: overlay.style.width,
+                        height: overlay.style.height
+                    }
+                });
+            });
+        }
+        
+        function updateDebug(message) {
+            const debugOutput = document.getElementById('debugOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            debugOutput.innerHTML = `[${timestamp}] ${message}`;
+        }
+        
+        function checkKeyPilotStatus() {
+            const statusEl = document.getElementById('keypilotStatus');
+            
+            if (window.__KeyPilotV22) {
+                statusEl.innerHTML = '✅ KeyPilot is loaded and active';
+                statusEl.style.color = 'green';
+            } else {
+                statusEl.innerHTML = '❌ KeyPilot is not loaded';
+                statusEl.style.color = 'red';
+            }
+        }
+        
+        // Check status periodically
+        setInterval(checkKeyPilotStatus, 1000);
+        checkKeyPilotStatus();
+        
+        // Log mouse movements for debugging
+        document.addEventListener('mousemove', function(e) {
+            const element = document.elementFromPoint(e.clientX, e.clientY);
+            if (element && element.tagName === 'A') {
+                console.log('Mouse over link:', {
+                    element: element,
+                    rect: element.getBoundingClientRect(),
+                    mousePos: { x: e.clientX, y: e.clientY }
+                });
+            }
+        });
+        
+        console.log('🧪 Overlay test page loaded');
+        console.log('🔍 KeyPilot debug mode enabled');
+        console.log('📊 Use buttons above to test overlay creation');
+    </script>
+</body>
+</html>

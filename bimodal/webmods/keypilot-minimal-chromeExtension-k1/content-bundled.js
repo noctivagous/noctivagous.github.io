@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T07:24:07.610Z
+ * Generated on 2025-08-25T07:42:25.429Z
  */
 
 (() => {
@@ -413,18 +413,55 @@ class ElementDetector {
 
   isLikelyInteractive(el) {
     if (!el || el.nodeType !== 1) return false;
-    if (el.matches(this.FOCUSABLE_SEL)) return true;
+    
+    const matchesSelector = el.matches(this.FOCUSABLE_SEL);
     const role = (el.getAttribute && (el.getAttribute('role') || '').trim().toLowerCase()) || '';
-    return role && this.CLICKABLE_ROLES.includes(role);
+    const hasRole = role && this.CLICKABLE_ROLES.includes(role);
+    
+    // Debug logging
+    if (window.KEYPILOT_DEBUG && (matchesSelector || hasRole)) {
+      console.log('[KeyPilot Debug] isLikelyInteractive:', {
+        tagName: el.tagName,
+        href: el.href,
+        matchesSelector: matchesSelector,
+        role: role,
+        hasRole: hasRole,
+        selector: this.FOCUSABLE_SEL
+      });
+    }
+    
+    return matchesSelector || hasRole;
   }
 
   findClickable(el) {
     let n = el;
-    while (n && n !== document.body && n.nodeType === 1) {
-      if (this.isLikelyInteractive(n)) return n;
+    let depth = 0;
+    while (n && n !== document.body && n.nodeType === 1 && depth < 10) {
+      if (this.isLikelyInteractive(n)) {
+        if (window.KEYPILOT_DEBUG) {
+          console.log('[KeyPilot Debug] findClickable found:', {
+            tagName: n.tagName,
+            href: n.href,
+            className: n.className,
+            depth: depth
+          });
+        }
+        return n;
+      }
       n = n.parentElement || (n.getRootNode() instanceof ShadowRoot ? n.getRootNode().host : null);
+      depth++;
     }
-    return el && this.isLikelyInteractive(el) ? el : null;
+    
+    const finalResult = el && this.isLikelyInteractive(el) ? el : null;
+    if (window.KEYPILOT_DEBUG && !finalResult && el) {
+      console.log('[KeyPilot Debug] findClickable found nothing for:', {
+        tagName: el.tagName,
+        href: el.href,
+        className: el.className
+      });
+    }
+    
+    return finalResult;
   }
 
   isTextLike(el) {
@@ -855,6 +892,15 @@ class OverlayManager {
   }
 
   updateOverlays(focusEl, deleteEl, mode) {
+    // Debug logging when debug mode is enabled
+    if (window.KEYPILOT_DEBUG && focusEl) {
+      console.log('[KeyPilot Debug] Updating overlays:', {
+        focusElement: focusEl.tagName,
+        mode: mode,
+        willShowFocus: mode === 'none'
+      });
+    }
+    
     // Only show focus overlay in normal mode (not delete or text focus)
     if (mode === 'none') {
       this.updateFocusOverlay(focusEl);
@@ -876,6 +922,15 @@ class OverlayManager {
       return;
     }
 
+    // Debug logging
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateFocusOverlay called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        text: element.textContent?.substring(0, 30)
+      });
+    }
+
     if (!this.focusOverlay) {
       this.focusOverlay = this.createElement('div', {
         className: CSS_CLASSES.FOCUS_OVERLAY,
@@ -891,6 +946,16 @@ class OverlayManager {
       });
       document.body.appendChild(this.focusOverlay);
       
+      // Debug logging for overlay creation
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focus overlay created and added to DOM:', {
+          element: this.focusOverlay,
+          className: this.focusOverlay.className,
+          style: this.focusOverlay.style.cssText,
+          parent: this.focusOverlay.parentElement?.tagName
+        });
+      }
+      
       // Start observing the overlay for visibility optimization
       if (this.overlayObserver) {
         this.overlayObserver.observe(this.focusOverlay);
@@ -898,18 +963,37 @@ class OverlayManager {
     }
 
     const rect = this.getBestRect(element);
+    
+    // Debug logging for positioning
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Focus overlay positioning:', {
+        rect: rect,
+        overlayExists: !!this.focusOverlay,
+        overlayVisibility: this.overlayVisibility.focus
+      });
+    }
+    
     if (rect.width > 0 && rect.height > 0) {
-      // Use transform for better performance during scroll
-      this.focusOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+      // Set position using left/top for now (simpler than transform)
+      this.focusOverlay.style.left = `${rect.left}px`;
+      this.focusOverlay.style.top = `${rect.top}px`;
       this.focusOverlay.style.width = `${rect.width}px`;
       this.focusOverlay.style.height = `${rect.height}px`;
       this.focusOverlay.style.display = 'block';
+      this.focusOverlay.style.visibility = 'visible';
       
-      // Only make visible if it should be visible
-      if (this.overlayVisibility.focus) {
-        this.focusOverlay.style.visibility = 'visible';
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focus overlay positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
       }
     } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focus overlay hidden - invalid rect:', rect);
+      }
       this.hideFocusOverlay();
     }
   }
@@ -993,6 +1077,19 @@ class OverlayManager {
     
     let rect = element.getBoundingClientRect();
     
+    // Debug logging
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] getBestRect for element:', {
+        tagName: element.tagName,
+        originalRect: {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        }
+      });
+    }
+    
     // If the element has no height (common with links containing other elements),
     // try to find a child element with height
     if (rect.height === 0 && element.children.length > 0) {
@@ -1001,12 +1098,19 @@ class OverlayManager {
         if (childRect.height > 0) {
           // Use the child's rect but keep the parent's left position if it's a link
           if (element.tagName.toLowerCase() === 'a') {
-            return {
+            const finalRect = {
               left: Math.min(rect.left, childRect.left),
               top: childRect.top,
               width: Math.max(rect.width, childRect.width),
               height: childRect.height
             };
+            if (window.KEYPILOT_DEBUG) {
+              console.log('[KeyPilot Debug] Using child rect for link:', finalRect);
+            }
+            return finalRect;
+          }
+          if (window.KEYPILOT_DEBUG) {
+            console.log('[KeyPilot Debug] Using child rect:', childRect);
           }
           return childRect;
         }
@@ -1016,14 +1120,21 @@ class OverlayManager {
     // If still no height, try to get text content dimensions
     if (rect.height === 0 && element.textContent && element.textContent.trim()) {
       // For text-only elements, use a minimum height
-      return {
+      const finalRect = {
         left: rect.left,
         top: rect.top,
         width: Math.max(rect.width, 20), // Minimum width
         height: Math.max(rect.height, 20) // Minimum height
       };
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Using minimum dimensions:', finalRect);
+      }
+      return finalRect;
     }
     
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Using original rect:', rect);
+    }
     return rect;
   }
 
@@ -1405,44 +1516,34 @@ class IntersectionObserverManager {
     });
   }
 
-  // Optimized element detection using cached visible elements
-  findInteractiveElementAtPoint(x, y) {
-    // First, try to find element in our visible cache
-    for (const element of this.visibleInteractiveElements) {
-      const cachedRect = this.elementPositionCache.get(element);
-      
-      if (cachedRect && this.isPointInRect(x, y, cachedRect)) {
-        // Verify the element is still at this position (cache validation)
-        const currentRect = element.getBoundingClientRect();
-        
-        if (this.rectsAreClose(cachedRect, currentRect)) {
-          this.metrics.cacheHits++;
-          return element;
-        } else {
-          // Update cache with new position
-          this.updateElementPositionCache(element, currentRect);
-          
-          if (this.isPointInRect(x, y, currentRect)) {
-            this.metrics.cacheHits++;
-            return element;
-          }
-        }
-      }
-    }
-
-    // Cache miss - fall back to DOM query
-    this.metrics.cacheMisses++;
+  // Track element for performance metrics and caching
+  trackElementAtPoint(x, y) {
+    // This method is called to track elements for performance optimization
+    // It doesn't replace the main element detection, just optimizes it
+    
     const element = this.elementDetector.deepElementFromPoint(x, y);
     const clickable = this.elementDetector.findClickable(element);
     
-    // Add to cache if it's interactive and visible
-    if (clickable && this.isElementVisible(clickable)) {
+    // Check if we found this element in our cache (for metrics)
+    if (clickable && this.visibleInteractiveElements.has(clickable)) {
+      this.metrics.cacheHits++;
+    } else {
+      this.metrics.cacheMisses++;
+    }
+    
+    // Add to cache if it's interactive and visible but not already cached
+    if (clickable && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
       this.visibleInteractiveElements.add(clickable);
       this.interactiveObserver.observe(clickable);
       this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());
     }
     
     return clickable;
+  }
+
+  // Legacy method name for compatibility
+  findInteractiveElementAtPoint(x, y) {
+    return this.trackElementAtPoint(x, y);
   }
 
   isPointInRect(x, y, rect) {
@@ -1996,21 +2097,29 @@ class KeyPilot extends EventManager {
 
     this.performanceMetrics.mouseQueries++;
 
-    // Use optimized intersection observer-based element detection
-    const clickable = this.intersectionManager.findInteractiveElementAtPoint(x, y);
+    // Use traditional element detection for accuracy
+    const under = this.detector.deepElementFromPoint(x, y);
+    const clickable = this.detector.findClickable(under);
     
-    // Fallback to traditional method if intersection manager doesn't find anything
-    let under = null;
-    if (!clickable) {
-      under = this.detector.deepElementFromPoint(x, y);
+    // Track with intersection manager for performance metrics and caching
+    this.intersectionManager.trackElementAtPoint(x, y);
+
+    // Debug logging when debug mode is enabled
+    if (window.KEYPILOT_DEBUG && clickable) {
+      console.log('[KeyPilot Debug] Found clickable element:', {
+        tagName: clickable.tagName,
+        href: clickable.href,
+        className: clickable.className,
+        text: clickable.textContent?.substring(0, 50),
+        mode: currentState.mode
+      });
     }
 
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
       // For delete mode, we need the exact element under cursor, not just clickable
-      const deleteTarget = under || this.detector.deepElementFromPoint(x, y);
-      this.state.setDeleteElement(deleteTarget);
+      this.state.setDeleteElement(under);
     } else {
       // Clear delete element when not in delete mode
       this.state.setDeleteElement(null);

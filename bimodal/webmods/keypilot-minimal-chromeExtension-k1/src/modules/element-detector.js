@@ -21,18 +21,55 @@ export class ElementDetector {
 
   isLikelyInteractive(el) {
     if (!el || el.nodeType !== 1) return false;
-    if (el.matches(this.FOCUSABLE_SEL)) return true;
+    
+    const matchesSelector = el.matches(this.FOCUSABLE_SEL);
     const role = (el.getAttribute && (el.getAttribute('role') || '').trim().toLowerCase()) || '';
-    return role && this.CLICKABLE_ROLES.includes(role);
+    const hasRole = role && this.CLICKABLE_ROLES.includes(role);
+    
+    // Debug logging
+    if (window.KEYPILOT_DEBUG && (matchesSelector || hasRole)) {
+      console.log('[KeyPilot Debug] isLikelyInteractive:', {
+        tagName: el.tagName,
+        href: el.href,
+        matchesSelector: matchesSelector,
+        role: role,
+        hasRole: hasRole,
+        selector: this.FOCUSABLE_SEL
+      });
+    }
+    
+    return matchesSelector || hasRole;
   }
 
   findClickable(el) {
     let n = el;
-    while (n && n !== document.body && n.nodeType === 1) {
-      if (this.isLikelyInteractive(n)) return n;
+    let depth = 0;
+    while (n && n !== document.body && n.nodeType === 1 && depth < 10) {
+      if (this.isLikelyInteractive(n)) {
+        if (window.KEYPILOT_DEBUG) {
+          console.log('[KeyPilot Debug] findClickable found:', {
+            tagName: n.tagName,
+            href: n.href,
+            className: n.className,
+            depth: depth
+          });
+        }
+        return n;
+      }
       n = n.parentElement || (n.getRootNode() instanceof ShadowRoot ? n.getRootNode().host : null);
+      depth++;
     }
-    return el && this.isLikelyInteractive(el) ? el : null;
+    
+    const finalResult = el && this.isLikelyInteractive(el) ? el : null;
+    if (window.KEYPILOT_DEBUG && !finalResult && el) {
+      console.log('[KeyPilot Debug] findClickable found nothing for:', {
+        tagName: el.tagName,
+        href: el.href,
+        className: el.className
+      });
+    }
+    
+    return finalResult;
   }
 
   isTextLike(el) {

@@ -66,13 +66,21 @@ export class StyleManager {
         background: transparent; 
       }
       
+      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
+        outline: 2px solid rgba(255,165,0,0.8) !important;
+        outline-offset: 2px !important;
+      }
+      
       #${ELEMENT_IDS.CURSOR} { 
-        position: fixed; 
-        left: 0; 
-        top: 0; 
-        transform: translate(-50%, -50%); 
-        z-index: 2147483647; 
-        pointer-events: none; 
+        position: fixed !important; 
+        left: var(--cursor-x, 0) !important; 
+        top: var(--cursor-y, 0) !important; 
+        transform: translate(-50%, -50%) !important; 
+        z-index: 2147483647 !important; 
+        pointer-events: none !important;
+        display: block !important;
+        visibility: visible !important;
+        will-change: transform, left, top !important;
       }
     `;
 
@@ -107,6 +115,11 @@ export class StyleManager {
       
       .${CSS_CLASSES.HIDDEN} { 
         display: none !important; 
+      }
+      
+      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
+        outline: 2px solid rgba(255,165,0,0.8) !important;
+        outline-offset: 2px !important;
       }
     `;
 

@@ -11,7 +11,16 @@ export class EventManager {
     if (this.isActive) return;
     
     this.addListener(document, 'keydown', this.handleKeyDown.bind(this), { capture: true });
+    
+    // Multiple mouse move listeners to catch events that might be captured
     this.addListener(document, 'mousemove', this.handleMouseMove.bind(this));
+    this.addListener(document, 'mousemove', this.handleMouseMove.bind(this), { capture: true });
+    this.addListener(window, 'mousemove', this.handleMouseMove.bind(this));
+    
+    // Additional mouse events for better tracking
+    this.addListener(document, 'mouseenter', this.handleMouseMove.bind(this));
+    this.addListener(document, 'mouseover', this.handleMouseMove.bind(this));
+    
     this.addListener(document, 'scroll', this.handleScroll.bind(this), { passive: true });
     
     this.isActive = true;

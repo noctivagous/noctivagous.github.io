@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T07:42:25.429Z
+ * Generated on 2025-08-25T15:57:53.839Z
  */
 
 (() => {
@@ -38,7 +38,8 @@ const CSS_CLASSES = {
   HIDDEN: 'kpv2-hidden',
   RIPPLE: 'kpv2-ripple',
   FOCUS_OVERLAY: 'kpv2-focus-overlay',
-  DELETE_OVERLAY: 'kpv2-delete-overlay'
+  DELETE_OVERLAY: 'kpv2-delete-overlay',
+  TEXT_FIELD_GLOW: 'kpv2-text-field-glow'
 };
 
 const ELEMENT_IDS = {
@@ -168,7 +169,16 @@ class EventManager {
     if (this.isActive) return;
     
     this.addListener(document, 'keydown', this.handleKeyDown.bind(this), { capture: true });
+    
+    // Multiple mouse move listeners to catch events that might be captured
     this.addListener(document, 'mousemove', this.handleMouseMove.bind(this));
+    this.addListener(document, 'mousemove', this.handleMouseMove.bind(this), { capture: true });
+    this.addListener(window, 'mousemove', this.handleMouseMove.bind(this));
+    
+    // Additional mouse events for better tracking
+    this.addListener(document, 'mouseenter', this.handleMouseMove.bind(this));
+    this.addListener(document, 'mouseover', this.handleMouseMove.bind(this));
+    
     this.addListener(document, 'scroll', this.handleScroll.bind(this), { passive: true });
     
     this.isActive = true;
@@ -250,6 +260,10 @@ class EventManager {
 class CursorManager {
   constructor() {
     this.cursorEl = null;
+    this.lastPosition = { x: 0, y: 0 };
+    this.isStuck = false;
+    this.stuckCheckInterval = null;
+    this.forceUpdateCount = 0;
   }
 
   ensure() {
@@ -262,6 +276,9 @@ class CursorManager {
     wrap.appendChild(this.buildSvg('none'));
     document.body.appendChild(wrap);
     this.cursorEl = wrap;
+    
+    // Start monitoring for stuck cursor
+    this.startStuckDetection();
   }
 
   setMode(mode) {
@@ -270,10 +287,139 @@ class CursorManager {
   }
 
   updatePosition(x, y) {
-    if (this.cursorEl) {
-      this.cursorEl.style.left = `${x}px`;
-      this.cursorEl.style.top = `${y}px`;
+    if (!this.cursorEl) return;
+    
+    // Store the intended position
+    this.lastPosition = { x, y };
+    
+    // Use multiple positioning strategies for maximum compatibility
+    this.forceUpdatePosition(x, y);
+    
+    // Reset stuck detection
+    this.isStuck = false;
+    this.forceUpdateCount = 0;
+  }
+
+  forceUpdatePosition(x, y) {
+    if (!this.cursorEl) return;
+    
+    // Strategy 1: Standard positioning with transform (most performant)
+    this.cursorEl.style.left = `${x}px`;
+    this.cursorEl.style.top = `${y}px`;
+    this.cursorEl.style.transform = 'translate(-50%, -50%)';
+    
+    // Strategy 2: Force reflow to ensure position update
+    this.cursorEl.offsetHeight; // Force reflow
+    
+    // Strategy 3: Backup positioning using CSS custom properties
+    this.cursorEl.style.setProperty('--cursor-x', `${x}px`);
+    this.cursorEl.style.setProperty('--cursor-y', `${y}px`);
+    
+    // Strategy 4: Ensure z-index is maintained
+    this.cursorEl.style.zIndex = '2147483647';
+    
+    // Strategy 5: Ensure element is visible and positioned
+    this.cursorEl.style.position = 'fixed';
+    this.cursorEl.style.pointerEvents = 'none';
+    this.cursorEl.style.display = 'block';
+    this.cursorEl.style.visibility = 'visible';
+  }
+
+  startStuckDetection() {
+    // Check every 100ms if cursor might be stuck
+    this.stuckCheckInterval = setInterval(() => {
+      this.checkIfStuck();
+    }, 100);
+  }
+
+  checkIfStuck() {
+    if (!this.cursorEl) return;
+    
+    const rect = this.cursorEl.getBoundingClientRect();
+    const expectedX = this.lastPosition.x;
+    const expectedY = this.lastPosition.y;
+    
+    // Check if cursor is significantly off from expected position
+    const deltaX = Math.abs(rect.left + rect.width/2 - expectedX);
+    const deltaY = Math.abs(rect.top + rect.height/2 - expectedY);
+    
+    if (deltaX > 5 || deltaY > 5) {
+      this.isStuck = true;
+      this.forceUpdateCount++;
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.warn('[KeyPilot] Cursor appears stuck, forcing update', {
+          expected: this.lastPosition,
+          actual: { x: rect.left + rect.width/2, y: rect.top + rect.height/2 },
+          delta: { x: deltaX, y: deltaY },
+          forceCount: this.forceUpdateCount
+        });
+      }
+      
+      // Try multiple recovery strategies
+      this.recoverFromStuck();
     }
+  }
+
+  recoverFromStuck() {
+    if (!this.cursorEl) return;
+    
+    const { x, y } = this.lastPosition;
+    
+    // Recovery strategy 1: Force position update
+    this.forceUpdatePosition(x, y);
+    
+    // Recovery strategy 2: Recreate element if severely stuck
+    if (this.forceUpdateCount > 5) {
+      if (window.KEYPILOT_DEBUG) {
+        console.warn('[KeyPilot] Cursor severely stuck, recreating element');
+      }
+      this.recreateCursor();
+    }
+    
+    // Recovery strategy 3: Use requestAnimationFrame for next update
+    requestAnimationFrame(() => {
+      this.forceUpdatePosition(x, y);
+    });
+  }
+
+  recreateCursor() {
+    if (!this.cursorEl) return;
+    
+    const currentMode = this.getCurrentMode();
+    const { x, y } = this.lastPosition;
+    
+    // Remove old cursor
+    this.cursorEl.remove();
+    this.cursorEl = null;
+    
+    // Recreate cursor
+    this.ensure();
+    this.setMode(currentMode);
+    this.forceUpdatePosition(x, y);
+    
+    // Reset counters
+    this.forceUpdateCount = 0;
+    this.isStuck = false;
+  }
+
+  getCurrentMode() {
+    if (!this.cursorEl) return 'none';
+    
+    // Try to determine current mode from SVG content
+    const svg = this.cursorEl.querySelector('svg');
+    if (!svg) return 'none';
+    
+    const lines = svg.querySelectorAll('line');
+    if (lines.length === 2) return 'delete'; // X pattern
+    if (lines.length === 4) {
+      const firstLine = lines[0];
+      const stroke = firstLine.getAttribute('stroke');
+      if (stroke && stroke.includes('255,140,0')) return 'text_focus'; // Orange
+      return 'none'; // Green crosshair
+    }
+    
+    return 'none';
   }
 
   buildSvg(mode) {
@@ -281,12 +427,11 @@ class CursorManager {
     const svg = document.createElementNS(NS, 'svg');
     
     if (mode === 'text_focus') {
-      // Larger SVG for text mode with message in bottom half
+      // Larger SVG for text mode with message in lower right quadrant
       svg.setAttribute('viewBox', '0 0 200 140');
       svg.setAttribute('width', '200');
       svg.setAttribute('height', '140');
       
-      // Orange crosshair (same as normal mode but orange)
       const addLine = (x1, y1, x2, y2, color, w = '4') => {
         const ln = document.createElementNS(NS, 'line');
         ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
@@ -296,49 +441,50 @@ class CursorManager {
         svg.appendChild(ln);
       };
 
-      // Orange crosshair in lower left corner - same size as normal mode
-      const centerX = 47; // Position in lower left area
-      const centerY = 113; // Position in lower left area of message box
+      // Orange crosshair at center - same size as normal mode
+      const centerX = 100; // Center of the SVG
+      const centerY = 70;  // Center of the SVG
       const col = '#ff8c00'; // Orange color
       // Same dimensions as normal mode: arms extend ±24 pixels from center
       addLine(centerX, centerY - 24, centerX, centerY - 10, col);
       addLine(centerX, centerY + 10, centerX, centerY + 24, col);
       addLine(centerX - 24, centerY, centerX - 10, centerY, col);
       addLine(centerX + 10, centerY, centerX + 24, centerY, col);
-      
-      // Background for message in bottom half
+
+      // Background for message in lower right quadrant
       const bg = document.createElementNS(NS, 'rect');
-      bg.setAttribute('x', '10');
-      bg.setAttribute('y', '90');
-      bg.setAttribute('width', '180');
-      bg.setAttribute('height', '45');
+      bg.setAttribute('x', '105');  // Right side of crosshair
+      bg.setAttribute('y', '75');   // Lower quadrant
+      bg.setAttribute('width', '115');
+      bg.setAttribute('height', '60');
       bg.setAttribute('rx', '6');
       bg.setAttribute('fill', 'rgba(0,0,0,0.85)');
       bg.setAttribute('stroke', 'rgba(255,140,0,0.4)');
       bg.setAttribute('stroke-width', '1');
       svg.appendChild(bg);
       
-      // Text message in bottom half
+      // First line of text message
       const text1 = document.createElementNS(NS, 'text');
-      text1.setAttribute('x', '100');
-      text1.setAttribute('y', '108');
+      text1.setAttribute('x', '152.5'); // Center of message box
+      text1.setAttribute('y', '108');   // First line position
       text1.setAttribute('fill', 'rgba(255,255,255,0.95)');
       text1.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text1.setAttribute('font-size', '12');
+      text1.setAttribute('font-size', '10');
       text1.setAttribute('font-weight', '500');
       text1.setAttribute('text-anchor', 'middle');
-      text1.textContent = 'Press ESC to leave';
+      text1.textContent = 'Cursor is in a text field.';
       svg.appendChild(text1);
       
+      // Second line of text message
       const text2 = document.createElementNS(NS, 'text');
-      text2.setAttribute('x', '100');
-      text2.setAttribute('y', '125');
+      text2.setAttribute('x', '152.5'); // Center of message box
+      text2.setAttribute('y', '122');   // Second line position
       text2.setAttribute('fill', 'rgba(255,255,255,0.95)');
       text2.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text2.setAttribute('font-size', '12');
+      text2.setAttribute('font-size', '10');
       text2.setAttribute('font-weight', '500');
       text2.setAttribute('text-anchor', 'middle');
-      text2.textContent = 'text field focus';
+      text2.textContent = 'Press ESC to exit.';
       svg.appendChild(text2);
       
     } else {
@@ -370,6 +516,18 @@ class CursorManager {
     
     svg.setAttribute('xmlns', NS);
     return svg;
+  }
+
+  cleanup() {
+    if (this.stuckCheckInterval) {
+      clearInterval(this.stuckCheckInterval);
+      this.stuckCheckInterval = null;
+    }
+    
+    if (this.cursorEl) {
+      this.cursorEl.remove();
+      this.cursorEl = null;
+    }
   }
 
   createElement(tag, props = {}, ...children) {
@@ -765,6 +923,12 @@ class FocusDetector {
       clearInterval(this.focusCheckInterval);
       this.focusCheckInterval = null;
     }
+    
+    // Clean up any remaining glow
+    if (this.currentFocusedElement) {
+      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
+      this.currentFocusedElement = null;
+    }
   }
 
   handleFocusIn(e) {
@@ -824,12 +988,26 @@ class FocusDetector {
   }
 
   setTextFocus(element) {
+    // Remove glow from previous element if any
+    if (this.currentFocusedElement && this.currentFocusedElement !== element) {
+      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
+    }
+    
     this.currentFocusedElement = element;
+    
+    // Add glow to the focused text field
+    element.classList.add(CSS_CLASSES.TEXT_FIELD_GLOW);
+    
     this.state.setMode('text_focus');
     this.state.setState({ focusedTextElement: element });
   }
 
   clearTextFocus() {
+    // Remove glow from the previously focused element
+    if (this.currentFocusedElement) {
+      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
+    }
+    
     this.currentFocusedElement = null;
     this.state.setMode('none');
     this.state.setState({ focusedTextElement: null });
@@ -897,12 +1075,12 @@ class OverlayManager {
       console.log('[KeyPilot Debug] Updating overlays:', {
         focusElement: focusEl.tagName,
         mode: mode,
-        willShowFocus: mode === 'none'
+        willShowFocus: mode === 'none' || mode === 'text_focus'
       });
     }
     
-    // Only show focus overlay in normal mode (not delete or text focus)
-    if (mode === 'none') {
+    // Show focus overlay in normal mode AND text focus mode
+    if (mode === 'none' || mode === 'text_focus') {
       this.updateFocusOverlay(focusEl);
     } else {
       this.hideFocusOverlay();
@@ -1237,13 +1415,21 @@ class StyleManager {
         background: transparent; 
       }
       
+      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
+        outline: 2px solid rgba(255,165,0,0.8) !important;
+        outline-offset: 2px !important;
+      }
+      
       #${ELEMENT_IDS.CURSOR} { 
-        position: fixed; 
-        left: 0; 
-        top: 0; 
-        transform: translate(-50%, -50%); 
-        z-index: 2147483647; 
-        pointer-events: none; 
+        position: fixed !important; 
+        left: var(--cursor-x, 0) !important; 
+        top: var(--cursor-y, 0) !important; 
+        transform: translate(-50%, -50%) !important; 
+        z-index: 2147483647 !important; 
+        pointer-events: none !important;
+        display: block !important;
+        visibility: visible !important;
+        will-change: transform, left, top !important;
       }
     `;
 
@@ -1278,6 +1464,11 @@ class StyleManager {
       
       .${CSS_CLASSES.HIDDEN} { 
         display: none !important; 
+      }
+      
+      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
+        outline: 2px solid rgba(255,165,0,0.8) !important;
+        outline-offset: 2px !important;
       }
     `;
 
@@ -1943,6 +2134,9 @@ class KeyPilot extends EventManager {
     
     // Set up custom event listeners for optimized scroll handling
     this.setupOptimizedEventListeners();
+    
+    // Set up continuous cursor sync for problematic sites
+    this.setupContinuousCursorSync();
 
     this.state.setState({ isInitialized: true });
   }
@@ -1961,6 +2155,30 @@ class KeyPilot extends EventManager {
         this.logPerformanceMetrics();
       }
     }, 10000); // Log every 10 seconds when debug enabled
+  }
+
+  setupContinuousCursorSync() {
+    // Fallback cursor sync for problematic sites
+    let lastSyncTime = 0;
+    const syncCursor = () => {
+      const now = Date.now();
+      
+      // Only sync every 16ms (60fps) to avoid performance issues
+      if (now - lastSyncTime > 16) {
+        const currentState = this.state.getState();
+        if (currentState.lastMouse.x !== -1 && currentState.lastMouse.y !== -1) {
+          // Force cursor position update
+          this.cursor.updatePosition(currentState.lastMouse.x, currentState.lastMouse.y);
+        }
+        lastSyncTime = now;
+      }
+      
+      // Continue syncing
+      requestAnimationFrame(syncCursor);
+    };
+    
+    // Start the sync loop
+    requestAnimationFrame(syncCursor);
   }
 
   setupStyles() {
@@ -2056,11 +2274,15 @@ class KeyPilot extends EventManager {
   }
 
   handleMouseMove(e) {
-    this.state.setMousePosition(e.clientX, e.clientY);
-    this.cursor.updatePosition(e.clientX, e.clientY);
+    // Store mouse position immediately to prevent sync issues
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    this.state.setMousePosition(x, y);
+    this.cursor.updatePosition(x, y);
 
     // Use optimized element detection with threshold
-    this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
+    this.updateElementsUnderCursorWithThreshold(x, y);
   }
 
   handleScroll(e) {
@@ -2090,11 +2312,6 @@ class KeyPilot extends EventManager {
   updateElementsUnderCursor(x, y) {
     const currentState = this.state.getState();
 
-    // Don't update focus/delete elements when in text focus mode
-    if (currentState.mode === MODES.TEXT_FOCUS) {
-      return;
-    }
-
     this.performanceMetrics.mouseQueries++;
 
     // Use traditional element detection for accuracy
@@ -2115,6 +2332,7 @@ class KeyPilot extends EventManager {
       });
     }
 
+    // Always update focus element (for overlays in text focus mode too)
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
@@ -2265,8 +2483,8 @@ class KeyPilot extends EventManager {
       this.focusDetector.stop();
     }
 
-    if (this.cursor && this.cursor.cursorEl) {
-      this.cursor.cursorEl.remove();
+    if (this.cursor) {
+      this.cursor.cleanup();
     }
 
     if (this.overlayManager) {

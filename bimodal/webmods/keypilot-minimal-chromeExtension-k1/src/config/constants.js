@@ -28,7 +28,8 @@ export const CSS_CLASSES = {
   HIDDEN: 'kpv2-hidden',
   RIPPLE: 'kpv2-ripple',
   FOCUS_OVERLAY: 'kpv2-focus-overlay',
-  DELETE_OVERLAY: 'kpv2-delete-overlay'
+  DELETE_OVERLAY: 'kpv2-delete-overlay',
+  TEXT_FIELD_GLOW: 'kpv2-text-field-glow'
 };
 
 export const ELEMENT_IDS = {

@@ -74,6 +74,9 @@ export class KeyPilot extends EventManager {
     
     // Set up custom event listeners for optimized scroll handling
     this.setupOptimizedEventListeners();
+    
+    // Set up continuous cursor sync for problematic sites
+    this.setupContinuousCursorSync();
 
     this.state.setState({ isInitialized: true });
   }
@@ -92,6 +95,30 @@ export class KeyPilot extends EventManager {
         this.logPerformanceMetrics();
       }
     }, 10000); // Log every 10 seconds when debug enabled
+  }
+
+  setupContinuousCursorSync() {
+    // Fallback cursor sync for problematic sites
+    let lastSyncTime = 0;
+    const syncCursor = () => {
+      const now = Date.now();
+      
+      // Only sync every 16ms (60fps) to avoid performance issues
+      if (now - lastSyncTime > 16) {
+        const currentState = this.state.getState();
+        if (currentState.lastMouse.x !== -1 && currentState.lastMouse.y !== -1) {
+          // Force cursor position update
+          this.cursor.updatePosition(currentState.lastMouse.x, currentState.lastMouse.y);
+        }
+        lastSyncTime = now;
+      }
+      
+      // Continue syncing
+      requestAnimationFrame(syncCursor);
+    };
+    
+    // Start the sync loop
+    requestAnimationFrame(syncCursor);
   }
 
   setupStyles() {
@@ -187,11 +214,15 @@ export class KeyPilot extends EventManager {
   }
 
   handleMouseMove(e) {
-    this.state.setMousePosition(e.clientX, e.clientY);
-    this.cursor.updatePosition(e.clientX, e.clientY);
+    // Store mouse position immediately to prevent sync issues
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    this.state.setMousePosition(x, y);
+    this.cursor.updatePosition(x, y);
 
     // Use optimized element detection with threshold
-    this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
+    this.updateElementsUnderCursorWithThreshold(x, y);
   }
 
   handleScroll(e) {
@@ -221,11 +252,6 @@ export class KeyPilot extends EventManager {
   updateElementsUnderCursor(x, y) {
     const currentState = this.state.getState();
 
-    // Don't update focus/delete elements when in text focus mode
-    if (currentState.mode === MODES.TEXT_FOCUS) {
-      return;
-    }
-
     this.performanceMetrics.mouseQueries++;
 
     // Use traditional element detection for accuracy
@@ -246,6 +272,7 @@ export class KeyPilot extends EventManager {
       });
     }
 
+    // Always update focus element (for overlays in text focus mode too)
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
@@ -396,8 +423,8 @@ export class KeyPilot extends EventManager {
       this.focusDetector.stop();
     }
 
-    if (this.cursor && this.cursor.cursorEl) {
-      this.cursor.cursorEl.remove();
+    if (this.cursor) {
+      this.cursor.cleanup();
     }
 
     if (this.overlayManager) {

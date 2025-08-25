@@ -51,12 +51,12 @@ export class OverlayManager {
       console.log('[KeyPilot Debug] Updating overlays:', {
         focusElement: focusEl.tagName,
         mode: mode,
-        willShowFocus: mode === 'none'
+        willShowFocus: mode === 'none' || mode === 'text_focus'
       });
     }
     
-    // Only show focus overlay in normal mode (not delete or text focus)
-    if (mode === 'none') {
+    // Show focus overlay in normal mode AND text focus mode
+    if (mode === 'none' || mode === 'text_focus') {
       this.updateFocusOverlay(focusEl);
     } else {
       this.hideFocusOverlay();

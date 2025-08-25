@@ -1,7 +1,7 @@
 /**
  * Text field focus detection and management
  */
-import { SELECTORS } from '../config/constants.js';
+import { SELECTORS, CSS_CLASSES } from '../config/constants.js';
 
 export class FocusDetector {
   constructor(stateManager) {
@@ -46,6 +46,12 @@ export class FocusDetector {
     if (this.focusCheckInterval) {
       clearInterval(this.focusCheckInterval);
       this.focusCheckInterval = null;
+    }
+    
+    // Clean up any remaining glow
+    if (this.currentFocusedElement) {
+      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
+      this.currentFocusedElement = null;
     }
   }
 
@@ -106,12 +112,26 @@ export class FocusDetector {
   }
 
   setTextFocus(element) {
+    // Remove glow from previous element if any
+    if (this.currentFocusedElement && this.currentFocusedElement !== element) {
+      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
+    }
+    
     this.currentFocusedElement = element;
+    
+    // Add glow to the focused text field
+    element.classList.add(CSS_CLASSES.TEXT_FIELD_GLOW);
+    
     this.state.setMode('text_focus');
     this.state.setState({ focusedTextElement: element });
   }
 
   clearTextFocus() {
+    // Remove glow from the previously focused element
+    if (this.currentFocusedElement) {
+      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
+    }
+    
     this.currentFocusedElement = null;
     this.state.setMode('none');
     this.state.setState({ focusedTextElement: null });

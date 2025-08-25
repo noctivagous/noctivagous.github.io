@@ -25,6 +25,10 @@ export class KeyPilot extends EventManager {
     }
     window.__KeyPilotV22 = true;
 
+    // Extension enabled state - default to true, will be updated from service worker
+    this.enabled = true;
+    this.initializationComplete = false;
+
     this.state = new StateManager();
     this.cursor = new CursorManager();
     this.detector = new ElementDetector();
@@ -52,33 +56,80 @@ export class KeyPilot extends EventManager {
     this.init();
   }
 
-  init() {
+  async init() {
+    // Always set up styles and shadow DOM support
     this.setupStyles();
     this.setupShadowDOMSupport();
+    
+    // Always ensure cursor exists (but may be hidden)
     this.cursor.ensure();
-    this.focusDetector.start();
     
-    // Initialize Intersection Observer optimizations
-    this.intersectionManager.init();
-    this.scrollManager.init();
+    // Query service worker for current enabled state
+    await this.queryInitialState();
     
-    this.start();
+    // Only initialize functionality if enabled
+    if (this.enabled) {
+      this.initializeEnabledState();
+    } else {
+      this.initializeDisabledState();
+    }
 
-    // Subscribe to state changes
+    // Always set up communication and state management
     this.state.subscribe((newState, prevState) => {
       this.handleStateChange(newState, prevState);
     });
 
-    // Set up communication with popup
     this.setupPopupCommunication();
-    
-    // Set up custom event listeners for optimized scroll handling
     this.setupOptimizedEventListeners();
-    
-    // Set up continuous cursor sync for problematic sites
     this.setupContinuousCursorSync();
 
+    this.initializationComplete = true;
     this.state.setState({ isInitialized: true });
+  }
+
+  /**
+   * Query service worker for initial enabled state
+   */
+  async queryInitialState() {
+    try {
+      const response = await chrome.runtime.sendMessage({ type: 'KP_GET_STATE' });
+      if (response && typeof response.enabled === 'boolean') {
+        this.enabled = response.enabled;
+        console.log('[KeyPilot] Initial state from service worker:', this.enabled ? 'enabled' : 'disabled');
+      } else {
+        // Default to enabled if no response or invalid response
+        this.enabled = true;
+        console.log('[KeyPilot] No valid state from service worker, defaulting to enabled');
+      }
+    } catch (error) {
+      // Service worker might not be available, default to enabled
+      this.enabled = true;
+      console.log('[KeyPilot] Service worker not available, defaulting to enabled:', error.message);
+    }
+  }
+
+  /**
+   * Initialize KeyPilot in enabled state
+   */
+  initializeEnabledState() {
+    this.focusDetector.start();
+    this.intersectionManager.init();
+    this.scrollManager.init();
+    this.start();
+    this.cursor.show();
+  }
+
+  /**
+   * Initialize KeyPilot in disabled state
+   */
+  initializeDisabledState() {
+    // Don't start event listeners or focus detector
+    // Hide cursor
+    this.cursor.hide();
+    
+    // Ensure overlays are hidden
+    this.overlayManager.hideFocusOverlay();
+    this.overlayManager.hideDeleteOverlay();
   }
 
   setupOptimizedEventListeners() {
@@ -133,6 +184,15 @@ export class KeyPilot extends EventManager {
     chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       if (msg.type === 'KP_GET_STATUS') {
         sendResponse({ mode: this.state.getState().mode });
+      } else if (msg.type === 'KP_TOGGLE_STATE') {
+        // Handle toggle state message from service worker
+        if (typeof msg.enabled === 'boolean') {
+          if (msg.enabled) {
+            this.enable();
+          } else {
+            this.disable();
+          }
+        }
       }
     });
   }
@@ -160,6 +220,11 @@ export class KeyPilot extends EventManager {
   }
 
   handleKeyDown(e) {
+    // Don't handle keys if extension is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Debug key presses
     console.log('[KeyPilot] Key pressed:', e.key, 'Code:', e.code);
 
@@ -214,6 +279,11 @@ export class KeyPilot extends EventManager {
   }
 
   handleMouseMove(e) {
+    // Don't handle mouse events if extension is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Store mouse position immediately to prevent sync issues
     const x = e.clientX;
     const y = e.clientY;
@@ -226,6 +296,11 @@ export class KeyPilot extends EventManager {
   }
 
   handleScroll(e) {
+    // Don't handle scroll events if extension is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Delegate scroll handling to optimized scroll manager
     // The scroll manager handles all the optimization logic
     return; // OptimizedScrollManager handles scroll events directly
@@ -405,6 +480,99 @@ export class KeyPilot extends EventManager {
     console.groupEnd();
     
     this.performanceMetrics.lastMetricsLog = now;
+  }
+
+  /**
+   * Enable KeyPilot functionality
+   */
+  enable() {
+    if (this.enabled) return;
+    
+    this.enabled = true;
+    
+    // Only initialize if initialization is complete
+    if (this.initializationComplete) {
+      // Restart event listeners
+      this.start();
+      
+      // Show cursor
+      if (this.cursor) {
+        this.cursor.show();
+      }
+      
+      // Restart focus detector
+      if (this.focusDetector) {
+        this.focusDetector.start();
+      }
+      
+      // Restart intersection manager
+      if (this.intersectionManager) {
+        this.intersectionManager.init();
+      }
+      
+      // Restart scroll manager
+      if (this.scrollManager) {
+        this.scrollManager.init();
+      }
+      
+      // Reset state to normal mode
+      this.state.reset();
+    }
+    
+    console.log('[KeyPilot] Extension enabled');
+  }
+
+  /**
+   * Disable KeyPilot functionality
+   */
+  disable() {
+    if (!this.enabled) return;
+    
+    this.enabled = false;
+    
+    // Only cleanup if initialization is complete
+    if (this.initializationComplete) {
+      // Stop event listeners
+      this.stop();
+      
+      // Hide cursor
+      if (this.cursor) {
+        this.cursor.hide();
+      }
+      
+      // Hide all overlays
+      if (this.overlayManager) {
+        this.overlayManager.hideFocusOverlay();
+        this.overlayManager.hideDeleteOverlay();
+      }
+      
+      // Stop focus detector
+      if (this.focusDetector) {
+        this.focusDetector.stop();
+      }
+      
+      // Clean up intersection manager
+      if (this.intersectionManager) {
+        this.intersectionManager.cleanup();
+      }
+      
+      // Clean up scroll manager
+      if (this.scrollManager) {
+        this.scrollManager.cleanup();
+      }
+      
+      // Clear any active state
+      this.state.reset();
+    }
+    
+    console.log('[KeyPilot] Extension disabled');
+  }
+
+  /**
+   * Check if KeyPilot is currently enabled
+   */
+  isEnabled() {
+    return this.enabled;
   }
 
   cleanup() {

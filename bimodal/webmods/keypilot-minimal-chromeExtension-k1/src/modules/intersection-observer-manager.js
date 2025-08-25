@@ -32,56 +32,70 @@ export class IntersectionObserverManager {
   init() {
     this.setupInteractiveElementObserver();
     this.setupOverlayObserver();
-    this.startPeriodicCacheUpdate();
+    
+    // Only start periodic updates after observers are set up
+    if (this.interactiveObserver && this.overlayObserver) {
+      this.startPeriodicCacheUpdate();
+    }
   }
 
   setupInteractiveElementObserver() {
-    // Observer for interactive elements with expanded root margin for preloading
-    this.interactiveObserver = new IntersectionObserver(
-      (entries) => {
-        this.metrics.observerUpdates++;
-        
-        entries.forEach(entry => {
-          const element = entry.target;
+    try {
+      // Observer for interactive elements with expanded root margin for preloading
+      this.interactiveObserver = new IntersectionObserver(
+        (entries) => {
+          this.metrics.observerUpdates++;
           
-          if (entry.isIntersecting) {
-            this.visibleInteractiveElements.add(element);
-            this.updateElementPositionCache(element, entry.boundingClientRect);
-          } else {
-            this.visibleInteractiveElements.delete(element);
-            this.elementPositionCache.delete(element);
-          }
-        });
-      },
-      {
-        // Expanded margins to preload elements before they're visible
-        rootMargin: '100px',
-        // Multiple thresholds for better granularity
-        threshold: [0, 0.1, 0.5, 1.0]
-      }
-    );
+          entries.forEach(entry => {
+            const element = entry.target;
+            
+            if (entry.isIntersecting) {
+              this.visibleInteractiveElements.add(element);
+              this.updateElementPositionCache(element, element.getBoundingClientRect());
+            } else {
+              this.visibleInteractiveElements.delete(element);
+              this.elementPositionCache.delete(element);
+            }
+          });
+        },
+        {
+          // Expanded margins to preload elements before they're visible
+          rootMargin: '100px',
+          // Multiple thresholds for better granularity
+          threshold: [0, 0.1, 0.5, 1.0]
+        }
+      );
+    } catch (error) {
+      console.warn('[KeyPilot] Failed to create IntersectionObserver for interactive elements:', error);
+      this.interactiveObserver = null;
+    }
   }
 
   setupOverlayObserver() {
-    // Observer specifically for overlay elements to optimize repositioning
-    this.overlayObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          const overlay = entry.target;
-          
-          // Hide overlays that are completely out of view to save rendering
-          if (entry.intersectionRatio === 0) {
-            overlay.style.visibility = 'hidden';
-          } else {
-            overlay.style.visibility = 'visible';
-          }
-        });
-      },
-      {
-        rootMargin: '50px',
-        threshold: [0, 1.0]
-      }
-    );
+    try {
+      // Observer specifically for overlay elements to optimize repositioning
+      this.overlayObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            const overlay = entry.target;
+            
+            // Hide overlays that are completely out of view to save rendering
+            if (entry.intersectionRatio === 0) {
+              overlay.style.visibility = 'hidden';
+            } else {
+              overlay.style.visibility = 'visible';
+            }
+          });
+        },
+        {
+          rootMargin: '50px',
+          threshold: [0, 1.0]
+        }
+      );
+    } catch (error) {
+      console.warn('[KeyPilot] Failed to create IntersectionObserver for overlays:', error);
+      this.overlayObserver = null;
+    }
   }
 
   startPeriodicCacheUpdate() {
@@ -95,6 +109,11 @@ export class IntersectionObserverManager {
   }
 
   discoverInteractiveElements() {
+    // Skip if observer is not initialized
+    if (!this.interactiveObserver) {
+      return;
+    }
+
     // Find all interactive elements in the document
     const interactiveElements = document.querySelectorAll(
       'a[href], button, input, select, textarea, [role="button"], [role="link"], [contenteditable="true"], [onclick], [tabindex]:not([tabindex="-1"])'
@@ -118,6 +137,11 @@ export class IntersectionObserverManager {
   }
 
   cleanupRemovedElements() {
+    // Skip if observer is not initialized
+    if (!this.interactiveObserver) {
+      return;
+    }
+
     // Remove elements that are no longer in the DOM
     for (const element of this.visibleInteractiveElements) {
       if (!document.contains(element)) {
@@ -156,7 +180,7 @@ export class IntersectionObserverManager {
     }
     
     // Add to cache if it's interactive and visible but not already cached
-    if (clickable && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
+    if (clickable && this.interactiveObserver && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
       this.visibleInteractiveElements.add(clickable);
       this.interactiveObserver.observe(clickable);
       this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());

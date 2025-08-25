@@ -262,6 +262,18 @@ export class CursorManager {
     return svg;
   }
 
+  hide() {
+    if (this.cursorEl) {
+      this.cursorEl.style.display = 'none';
+    }
+  }
+
+  show() {
+    if (this.cursorEl) {
+      this.cursorEl.style.display = 'block';
+    }
+  }
+
   cleanup() {
     if (this.stuckCheckInterval) {
       clearInterval(this.stuckCheckInterval);

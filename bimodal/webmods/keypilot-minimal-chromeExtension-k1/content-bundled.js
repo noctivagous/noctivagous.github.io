@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T15:57:53.839Z
+ * Generated on 2025-08-25T17:34:30.328Z
  */
 
 (() => {
@@ -453,10 +453,10 @@ class CursorManager {
 
       // Background for message in lower right quadrant
       const bg = document.createElementNS(NS, 'rect');
-      bg.setAttribute('x', '105');  // Right side of crosshair
-      bg.setAttribute('y', '75');   // Lower quadrant
-      bg.setAttribute('width', '115');
-      bg.setAttribute('height', '60');
+      bg.setAttribute('x', '110');  // Right side of crosshair
+      bg.setAttribute('y', '95');   // Lower quadrant
+      bg.setAttribute('width', '85');
+      bg.setAttribute('height', '40');
       bg.setAttribute('rx', '6');
       bg.setAttribute('fill', 'rgba(0,0,0,0.85)');
       bg.setAttribute('stroke', 'rgba(255,140,0,0.4)');
@@ -516,6 +516,18 @@ class CursorManager {
     
     svg.setAttribute('xmlns', NS);
     return svg;
+  }
+
+  hide() {
+    if (this.cursorEl) {
+      this.cursorEl.style.display = 'none';
+    }
+  }
+
+  show() {
+    if (this.cursorEl) {
+      this.cursorEl.style.display = 'block';
+    }
   }
 
   cleanup() {
@@ -1355,10 +1367,12 @@ class OverlayManager {
 class StyleManager {
   constructor() {
     this.injectedStyles = new Set();
+    this.shadowRootStyles = new Map(); // Track shadow root styles for cleanup
+    this.isEnabled = true; // Track if styles should be active
   }
 
   injectSharedStyles() {
-    if (this.injectedStyles.has('main')) return;
+    if (this.injectedStyles.has('main') || !this.isEnabled) return;
 
     const css = `
       html.${CSS_CLASSES.CURSOR_HIDDEN}, 
@@ -1451,7 +1465,7 @@ class StyleManager {
   }
 
   injectIntoShadowRoot(shadowRoot) {
-    if (this.injectedStyles.has(shadowRoot)) return;
+    if (this.injectedStyles.has(shadowRoot) || !this.isEnabled) return;
 
     const css = `
       .${CSS_CLASSES.FOCUS} { 
@@ -1473,21 +1487,95 @@ class StyleManager {
     `;
 
     const style = document.createElement('style');
+    style.id = 'keypilot-shadow-styles';
     style.textContent = css;
     shadowRoot.appendChild(style);
     
     this.injectedStyles.add(shadowRoot);
+    this.shadowRootStyles.set(shadowRoot, style);
   }
 
-  cleanup() {
+  /**
+   * Completely remove all KeyPilot CSS styles from the page
+   * Used when extension is toggled off
+   */
+  removeAllStyles() {
+    // Remove cursor hidden class
     document.documentElement.classList.remove(CSS_CLASSES.CURSOR_HIDDEN);
     
+    // Remove main stylesheet
     const mainStyle = document.getElementById(ELEMENT_IDS.STYLE);
     if (mainStyle) {
       mainStyle.remove();
     }
     
+    // Remove all shadow root styles
+    for (const [shadowRoot, styleElement] of this.shadowRootStyles) {
+      if (styleElement && styleElement.parentNode) {
+        styleElement.remove();
+      }
+    }
+    
+    // Remove all KeyPilot classes from elements
+    this.removeAllKeyPilotClasses();
+    
+    // Clear tracking
     this.injectedStyles.clear();
+    this.shadowRootStyles.clear();
+    this.isEnabled = false;
+  }
+
+  /**
+   * Restore all KeyPilot CSS styles to the page
+   * Used when extension is toggled back on
+   */
+  restoreAllStyles() {
+    this.isEnabled = true;
+    
+    // Re-inject main styles
+    this.injectSharedStyles();
+    
+    // Re-inject shadow root styles for any shadow roots we previously tracked
+    // Note: We'll need to re-discover shadow roots since they may have changed
+    // This will be handled by the shadow DOM manager during normal operation
+  }
+
+  /**
+   * Remove all KeyPilot CSS classes from DOM elements
+   */
+  removeAllKeyPilotClasses() {
+    const classesToRemove = [
+      CSS_CLASSES.FOCUS,
+      CSS_CLASSES.DELETE,
+      CSS_CLASSES.HIDDEN,
+      CSS_CLASSES.TEXT_FIELD_GLOW,
+      CSS_CLASSES.RIPPLE
+    ];
+    
+    // Remove classes from main document
+    classesToRemove.forEach(className => {
+      const elements = document.querySelectorAll(`.${className}`);
+      elements.forEach(el => el.classList.remove(className));
+    });
+    
+    // Remove classes from shadow roots
+    for (const shadowRoot of this.shadowRootStyles.keys()) {
+      classesToRemove.forEach(className => {
+        const elements = shadowRoot.querySelectorAll(`.${className}`);
+        elements.forEach(el => el.classList.remove(className));
+      });
+    }
+  }
+
+  /**
+   * Check if styles are currently enabled
+   */
+  isStylesEnabled() {
+    return this.isEnabled;
+  }
+
+  cleanup() {
+    this.removeAllStyles();
   }
 }
 
@@ -1599,56 +1687,70 @@ class IntersectionObserverManager {
   init() {
     this.setupInteractiveElementObserver();
     this.setupOverlayObserver();
-    this.startPeriodicCacheUpdate();
+    
+    // Only start periodic updates after observers are set up
+    if (this.interactiveObserver && this.overlayObserver) {
+      this.startPeriodicCacheUpdate();
+    }
   }
 
   setupInteractiveElementObserver() {
-    // Observer for interactive elements with expanded root margin for preloading
-    this.interactiveObserver = new IntersectionObserver(
-      (entries) => {
-        this.metrics.observerUpdates++;
-        
-        entries.forEach(entry => {
-          const element = entry.target;
+    try {
+      // Observer for interactive elements with expanded root margin for preloading
+      this.interactiveObserver = new IntersectionObserver(
+        (entries) => {
+          this.metrics.observerUpdates++;
           
-          if (entry.isIntersecting) {
-            this.visibleInteractiveElements.add(element);
-            this.updateElementPositionCache(element, entry.boundingClientRect);
-          } else {
-            this.visibleInteractiveElements.delete(element);
-            this.elementPositionCache.delete(element);
-          }
-        });
-      },
-      {
-        // Expanded margins to preload elements before they're visible
-        rootMargin: '100px',
-        // Multiple thresholds for better granularity
-        threshold: [0, 0.1, 0.5, 1.0]
-      }
-    );
+          entries.forEach(entry => {
+            const element = entry.target;
+            
+            if (entry.isIntersecting) {
+              this.visibleInteractiveElements.add(element);
+              this.updateElementPositionCache(element, element.getBoundingClientRect());
+            } else {
+              this.visibleInteractiveElements.delete(element);
+              this.elementPositionCache.delete(element);
+            }
+          });
+        },
+        {
+          // Expanded margins to preload elements before they're visible
+          rootMargin: '100px',
+          // Multiple thresholds for better granularity
+          threshold: [0, 0.1, 0.5, 1.0]
+        }
+      );
+    } catch (error) {
+      console.warn('[KeyPilot] Failed to create IntersectionObserver for interactive elements:', error);
+      this.interactiveObserver = null;
+    }
   }
 
   setupOverlayObserver() {
-    // Observer specifically for overlay elements to optimize repositioning
-    this.overlayObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          const overlay = entry.target;
-          
-          // Hide overlays that are completely out of view to save rendering
-          if (entry.intersectionRatio === 0) {
-            overlay.style.visibility = 'hidden';
-          } else {
-            overlay.style.visibility = 'visible';
-          }
-        });
-      },
-      {
-        rootMargin: '50px',
-        threshold: [0, 1.0]
-      }
-    );
+    try {
+      // Observer specifically for overlay elements to optimize repositioning
+      this.overlayObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            const overlay = entry.target;
+            
+            // Hide overlays that are completely out of view to save rendering
+            if (entry.intersectionRatio === 0) {
+              overlay.style.visibility = 'hidden';
+            } else {
+              overlay.style.visibility = 'visible';
+            }
+          });
+        },
+        {
+          rootMargin: '50px',
+          threshold: [0, 1.0]
+        }
+      );
+    } catch (error) {
+      console.warn('[KeyPilot] Failed to create IntersectionObserver for overlays:', error);
+      this.overlayObserver = null;
+    }
   }
 
   startPeriodicCacheUpdate() {
@@ -1662,6 +1764,11 @@ class IntersectionObserverManager {
   }
 
   discoverInteractiveElements() {
+    // Skip if observer is not initialized
+    if (!this.interactiveObserver) {
+      return;
+    }
+
     // Find all interactive elements in the document
     const interactiveElements = document.querySelectorAll(
       'a[href], button, input, select, textarea, [role="button"], [role="link"], [contenteditable="true"], [onclick], [tabindex]:not([tabindex="-1"])'
@@ -1685,6 +1792,11 @@ class IntersectionObserverManager {
   }
 
   cleanupRemovedElements() {
+    // Skip if observer is not initialized
+    if (!this.interactiveObserver) {
+      return;
+    }
+
     // Remove elements that are no longer in the DOM
     for (const element of this.visibleInteractiveElements) {
       if (!document.contains(element)) {
@@ -1723,7 +1835,7 @@ class IntersectionObserverManager {
     }
     
     // Add to cache if it's interactive and visible but not already cached
-    if (clickable && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
+    if (clickable && this.interactiveObserver && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
       this.visibleInteractiveElements.add(clickable);
       this.interactiveObserver.observe(clickable);
       this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());
@@ -2070,6 +2182,253 @@ class OptimizedScrollManager {
 }
 
 
+  // Module: src/modules/keypilot-toggle-handler.js
+/**
+ * KeyPilotToggleHandler - Manages global toggle functionality for KeyPilot
+ * Wraps the KeyPilot instance and provides enable/disable control
+ */
+class KeyPilotToggleHandler extends EventManager {
+  constructor(keyPilotInstance) {
+    super();
+    
+    this.keyPilot = keyPilotInstance;
+    this.enabled = true;
+    this.initialized = false;
+    
+    // Store original methods for restoration
+    this.originalMethods = {
+      handleKeyDown: null,
+      handleMouseMove: null,
+      handleScroll: null
+    };
+  }
+
+  /**
+   * Initialize the toggle handler
+   * Queries service worker for current state and sets up message listener
+   */
+  async initialize() {
+    try {
+      // Query service worker for current extension state
+      const response = await chrome.runtime.sendMessage({ type: 'KP_GET_STATE' });
+      
+      if (response && typeof response.enabled === 'boolean') {
+        this.setEnabled(response.enabled, false); // Don't show notification during initialization
+      } else {
+        // Default to enabled if no response or invalid response
+        this.setEnabled(true, false); // Don't show notification during initialization
+      }
+    } catch (error) {
+      console.warn('[KeyPilotToggleHandler] Failed to query service worker state:', error);
+      // Default to enabled on communication failure
+      this.setEnabled(true, false); // Don't show notification during initialization
+    }
+
+    // Set up message listener for toggle state changes from service worker
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+      if (message.type === 'KP_TOGGLE_STATE') {
+        this.setEnabled(message.enabled); // Show notification for user-initiated toggles
+        sendResponse({ success: true });
+      }
+    });
+
+    this.initialized = true;
+  }
+
+  /**
+   * Enable or disable KeyPilot functionality
+   * @param {boolean} enabled - Whether KeyPilot should be enabled
+   * @param {boolean} showNotification - Whether to show toggle notification (default: true)
+   */
+  setEnabled(enabled, showNotification = true) {
+    if (this.enabled === enabled) {
+      return; // No change needed
+    }
+
+    this.enabled = enabled;
+
+    if (enabled) {
+      this.enableKeyPilot();
+    } else {
+      this.disableKeyPilot();
+    }
+
+    // Show notification to user only if requested
+    if (showNotification) {
+      this.showToggleNotification(enabled);
+    }
+  }
+
+  /**
+   * Enable KeyPilot functionality
+   * Restores event listeners, CSS styles, and visual elements
+   */
+  enableKeyPilot() {
+    if (!this.keyPilot) return;
+
+    try {
+      // Restore all CSS styles first
+      if (this.keyPilot.styleManager) {
+        this.keyPilot.styleManager.restoreAllStyles();
+      }
+
+      // Restore event listeners
+      this.keyPilot.start();
+
+      // Ensure cursor is visible
+      if (this.keyPilot.cursor) {
+        this.keyPilot.cursor.ensure();
+      }
+
+      // Restore focus detector
+      if (this.keyPilot.focusDetector) {
+        this.keyPilot.focusDetector.start();
+      }
+
+      // Restore intersection manager
+      if (this.keyPilot.intersectionManager) {
+        this.keyPilot.intersectionManager.init();
+      }
+
+      // Restore scroll manager
+      if (this.keyPilot.scrollManager) {
+        this.keyPilot.scrollManager.init();
+      }
+
+      console.log('[KeyPilotToggleHandler] KeyPilot enabled');
+    } catch (error) {
+      console.error('[KeyPilotToggleHandler] Error enabling KeyPilot:', error);
+      // Continue with partial functionality even if some components fail
+    }
+  }
+
+  /**
+   * Disable KeyPilot functionality
+   * Removes event listeners, CSS styles, and all visual elements
+   */
+  disableKeyPilot() {
+    if (!this.keyPilot) return;
+
+    try {
+      // Stop event listeners first
+      this.keyPilot.stop();
+
+      // Clean up cursor completely (remove from DOM)
+      if (this.keyPilot.cursor) {
+        this.keyPilot.cursor.cleanup();
+      }
+
+      // Stop focus detector
+      if (this.keyPilot.focusDetector) {
+        this.keyPilot.focusDetector.stop();
+      }
+
+      // Clean up overlays completely
+      if (this.keyPilot.overlayManager) {
+        this.keyPilot.overlayManager.cleanup();
+      }
+
+      // Clean up intersection manager
+      if (this.keyPilot.intersectionManager) {
+        this.keyPilot.intersectionManager.cleanup();
+      }
+
+      // Clean up scroll manager
+      if (this.keyPilot.scrollManager) {
+        this.keyPilot.scrollManager.cleanup();
+      }
+
+      // Reset state to normal mode
+      if (this.keyPilot.state) {
+        this.keyPilot.state.reset();
+      }
+
+      // Remove ALL CSS styles and classes - this is the critical fix
+      if (this.keyPilot.styleManager) {
+        this.keyPilot.styleManager.removeAllStyles();
+      }
+
+      console.log('[KeyPilotToggleHandler] KeyPilot disabled - all styles and elements removed');
+    } catch (error) {
+      console.error('[KeyPilotToggleHandler] Error disabling KeyPilot:', error);
+      // Continue with cleanup even if some components fail
+    }
+  }
+
+  /**
+   * Show toggle notification to user
+   * @param {boolean} enabled - Whether KeyPilot was enabled or disabled
+   */
+  showToggleNotification(enabled) {
+    // Create notification overlay
+    const notification = document.createElement('div');
+    notification.className = 'kpv2-toggle-notification';
+    notification.textContent = enabled ? 'KeyPilot Enabled' : 'KeyPilot Disabled';
+    
+    // Style the notification
+    Object.assign(notification.style, {
+      position: 'fixed',
+      top: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: enabled ? '#4CAF50' : '#f44336',
+      color: 'white',
+      padding: '12px 24px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      fontWeight: '500',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      zIndex: '2147483647',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+      opacity: '0',
+      transition: 'opacity 0.3s ease-in-out',
+      pointerEvents: 'none'
+    });
+
+    // Add to document
+    document.body.appendChild(notification);
+
+    // Fade in
+    requestAnimationFrame(() => {
+      notification.style.opacity = '1';
+    });
+
+    // Fade out and remove after 2 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }, 2000);
+  }
+
+  /**
+   * Get current enabled state
+   * @returns {boolean} Whether KeyPilot is currently enabled
+   */
+  isEnabled() {
+    return this.enabled;
+  }
+
+  /**
+   * Clean up the toggle handler
+   */
+  cleanup() {
+    // Remove message listeners
+    if (chrome.runtime && chrome.runtime.onMessage) {
+      chrome.runtime.onMessage.removeListener(this.handleMessage);
+    }
+
+    // Clean up KeyPilot if disabled
+    if (!this.enabled && this.keyPilot) {
+      this.keyPilot.cleanup();
+    }
+  }
+}
+
+
   // Module: src/keypilot.js
 /**
  * KeyPilot main application class
@@ -2084,6 +2443,10 @@ class KeyPilot extends EventManager {
       return;
     }
     window.__KeyPilotV22 = true;
+
+    // Extension enabled state - default to true, will be updated from service worker
+    this.enabled = true;
+    this.initializationComplete = false;
 
     this.state = new StateManager();
     this.cursor = new CursorManager();
@@ -2112,33 +2475,80 @@ class KeyPilot extends EventManager {
     this.init();
   }
 
-  init() {
+  async init() {
+    // Always set up styles and shadow DOM support
     this.setupStyles();
     this.setupShadowDOMSupport();
+    
+    // Always ensure cursor exists (but may be hidden)
     this.cursor.ensure();
-    this.focusDetector.start();
     
-    // Initialize Intersection Observer optimizations
-    this.intersectionManager.init();
-    this.scrollManager.init();
+    // Query service worker for current enabled state
+    await this.queryInitialState();
     
-    this.start();
+    // Only initialize functionality if enabled
+    if (this.enabled) {
+      this.initializeEnabledState();
+    } else {
+      this.initializeDisabledState();
+    }
 
-    // Subscribe to state changes
+    // Always set up communication and state management
     this.state.subscribe((newState, prevState) => {
       this.handleStateChange(newState, prevState);
     });
 
-    // Set up communication with popup
     this.setupPopupCommunication();
-    
-    // Set up custom event listeners for optimized scroll handling
     this.setupOptimizedEventListeners();
-    
-    // Set up continuous cursor sync for problematic sites
     this.setupContinuousCursorSync();
 
+    this.initializationComplete = true;
     this.state.setState({ isInitialized: true });
+  }
+
+  /**
+   * Query service worker for initial enabled state
+   */
+  async queryInitialState() {
+    try {
+      const response = await chrome.runtime.sendMessage({ type: 'KP_GET_STATE' });
+      if (response && typeof response.enabled === 'boolean') {
+        this.enabled = response.enabled;
+        console.log('[KeyPilot] Initial state from service worker:', this.enabled ? 'enabled' : 'disabled');
+      } else {
+        // Default to enabled if no response or invalid response
+        this.enabled = true;
+        console.log('[KeyPilot] No valid state from service worker, defaulting to enabled');
+      }
+    } catch (error) {
+      // Service worker might not be available, default to enabled
+      this.enabled = true;
+      console.log('[KeyPilot] Service worker not available, defaulting to enabled:', error.message);
+    }
+  }
+
+  /**
+   * Initialize KeyPilot in enabled state
+   */
+  initializeEnabledState() {
+    this.focusDetector.start();
+    this.intersectionManager.init();
+    this.scrollManager.init();
+    this.start();
+    this.cursor.show();
+  }
+
+  /**
+   * Initialize KeyPilot in disabled state
+   */
+  initializeDisabledState() {
+    // Don't start event listeners or focus detector
+    // Hide cursor
+    this.cursor.hide();
+    
+    // Ensure overlays are hidden
+    this.overlayManager.hideFocusOverlay();
+    this.overlayManager.hideDeleteOverlay();
   }
 
   setupOptimizedEventListeners() {
@@ -2193,6 +2603,15 @@ class KeyPilot extends EventManager {
     chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       if (msg.type === 'KP_GET_STATUS') {
         sendResponse({ mode: this.state.getState().mode });
+      } else if (msg.type === 'KP_TOGGLE_STATE') {
+        // Handle toggle state message from service worker
+        if (typeof msg.enabled === 'boolean') {
+          if (msg.enabled) {
+            this.enable();
+          } else {
+            this.disable();
+          }
+        }
       }
     });
   }
@@ -2220,6 +2639,11 @@ class KeyPilot extends EventManager {
   }
 
   handleKeyDown(e) {
+    // Don't handle keys if extension is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Debug key presses
     console.log('[KeyPilot] Key pressed:', e.key, 'Code:', e.code);
 
@@ -2274,6 +2698,11 @@ class KeyPilot extends EventManager {
   }
 
   handleMouseMove(e) {
+    // Don't handle mouse events if extension is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Store mouse position immediately to prevent sync issues
     const x = e.clientX;
     const y = e.clientY;
@@ -2286,6 +2715,11 @@ class KeyPilot extends EventManager {
   }
 
   handleScroll(e) {
+    // Don't handle scroll events if extension is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Delegate scroll handling to optimized scroll manager
     // The scroll manager handles all the optimization logic
     return; // OptimizedScrollManager handles scroll events directly
@@ -2467,6 +2901,99 @@ class KeyPilot extends EventManager {
     this.performanceMetrics.lastMetricsLog = now;
   }
 
+  /**
+   * Enable KeyPilot functionality
+   */
+  enable() {
+    if (this.enabled) return;
+    
+    this.enabled = true;
+    
+    // Only initialize if initialization is complete
+    if (this.initializationComplete) {
+      // Restart event listeners
+      this.start();
+      
+      // Show cursor
+      if (this.cursor) {
+        this.cursor.show();
+      }
+      
+      // Restart focus detector
+      if (this.focusDetector) {
+        this.focusDetector.start();
+      }
+      
+      // Restart intersection manager
+      if (this.intersectionManager) {
+        this.intersectionManager.init();
+      }
+      
+      // Restart scroll manager
+      if (this.scrollManager) {
+        this.scrollManager.init();
+      }
+      
+      // Reset state to normal mode
+      this.state.reset();
+    }
+    
+    console.log('[KeyPilot] Extension enabled');
+  }
+
+  /**
+   * Disable KeyPilot functionality
+   */
+  disable() {
+    if (!this.enabled) return;
+    
+    this.enabled = false;
+    
+    // Only cleanup if initialization is complete
+    if (this.initializationComplete) {
+      // Stop event listeners
+      this.stop();
+      
+      // Hide cursor
+      if (this.cursor) {
+        this.cursor.hide();
+      }
+      
+      // Hide all overlays
+      if (this.overlayManager) {
+        this.overlayManager.hideFocusOverlay();
+        this.overlayManager.hideDeleteOverlay();
+      }
+      
+      // Stop focus detector
+      if (this.focusDetector) {
+        this.focusDetector.stop();
+      }
+      
+      // Clean up intersection manager
+      if (this.intersectionManager) {
+        this.intersectionManager.cleanup();
+      }
+      
+      // Clean up scroll manager
+      if (this.scrollManager) {
+        this.scrollManager.cleanup();
+      }
+      
+      // Clear any active state
+      this.state.reset();
+    }
+    
+    console.log('[KeyPilot] Extension disabled');
+  }
+
+  /**
+   * Check if KeyPilot is currently enabled
+   */
+  isEnabled() {
+    return this.enabled;
+  }
+
   cleanup() {
     this.stop();
 
@@ -2509,8 +3036,36 @@ class KeyPilot extends EventManager {
 /**
  * Content script entry point
  */
+// Initialize KeyPilot with toggle functionality
+async function initializeKeyPilot() {
+  try {
+    // Create KeyPilot instance
+    const keyPilot = new KeyPilot();
+    
+    // Create toggle handler and wrap KeyPilot instance
+    const toggleHandler = new KeyPilotToggleHandler(keyPilot);
+    
+    // Initialize toggle handler (queries service worker for state)
+    await toggleHandler.initialize();
+    
+    // Store reference globally for debugging
+    window.__KeyPilotToggleHandler = toggleHandler;
+    
+  } catch (error) {
+    console.error('[KeyPilot] Failed to initialize with toggle functionality:', error);
+    
+    // Fallback: initialize KeyPilot without toggle functionality
+    try {
+      new KeyPilot();
+      console.warn('[KeyPilot] Initialized without toggle functionality as fallback');
+    } catch (fallbackError) {
+      console.error('[KeyPilot] Complete initialization failure:', fallbackError);
+    }
+  }
+}
+
 // Initialize KeyPilot
-new KeyPilot();
+initializeKeyPilot();
 
 
 })();

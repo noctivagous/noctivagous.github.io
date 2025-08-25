@@ -18,6 +18,7 @@ const modules = [
   'src/modules/shadow-dom-manager.js',
   'src/modules/intersection-observer-manager.js',
   'src/modules/optimized-scroll-manager.js',
+  'src/modules/keypilot-toggle-handler.js',
   'src/keypilot.js',
   'src/content-script.js'
 ];
@@ -57,4 +58,18 @@ bundledContent += `
 `;
 
 fs.writeFileSync('content-bundled.js', bundledContent);
-console.log('Build complete! Generated content-bundled.js');
+console.log('Generated content-bundled.js');
+
+// Copy background.js to ensure it's available for the extension
+if (fs.existsSync('background.js')) {
+  // For development, background.js is already in the root directory
+  // Just verify it exists and log
+  console.log('background.js found and ready for extension');
+} else {
+  console.error('ERROR: background.js not found! Extension will not work properly.');
+  process.exit(1);
+}
+
+console.log('Build complete! Extension files ready:');
+console.log('  - content-bundled.js (content script)');
+console.log('  - background.js (service worker)');

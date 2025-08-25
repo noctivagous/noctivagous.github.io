@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyPilot Extension Toggle Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .test-pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .test-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .test-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-enabled {
+            background-color: #28a745;
+        }
+        
+        .status-disabled {
+            background-color: #dc3545;
+        }
+        
+        .status-unknown {
+            background-color: #6c757d;
+        }
+        
+        .log-output {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .test-controls {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 15px;
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 20px;
+            z-index: 100;
+        }
+        
+        .current-state {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 KeyPilot Extension Toggle Validation</h1>
+    <p>This page helps validate the extension toggle functionality in a real browser environment.</p>
+    
+    <div class="test-controls">
+        <div class="current-state">
+            Current Extension State: 
+            <span class="status-indicator status-unknown" id="stateIndicator"></span>
+            <span id="currentState">Unknown</span>
+        </div>
+        <button onclick="queryExtensionState()">Query State</button>
+        <button onclick="toggleViaMessage()">Toggle via Message</button>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📡 Communication Tests</h2>
+        <div id="communicationResults"></div>
+        <button onclick="testCommunication()">Test Service Worker Communication</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔄 State Synchronization Tests</h2>
+        <div id="syncResults"></div>
+        <button onclick="testStateSynchronization()">Test State Sync</button>
+    </div>
+
+    <div class="test-section">
+        <h2>💾 Storage Persistence Tests</h2>
+        <div id="storageResults"></div>
+        <button onclick="testStoragePersistence()">Test Storage</button>
+    </div>
+
+    <div class="test-section">
+        <h2>⚠️ Edge Case Tests</h2>
+        <div id="edgeCaseResults"></div>
+        <button onclick="testEdgeCases()">Test Edge Cases</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Test Log</h2>
+        <div class="log-output" id="testLog"></div>
+    </div>
+
+    <script>
+        // Test utilities
+        let testLog = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            testLog.push(logEntry);
+            
+            const logElement = document.getElementById('testLog');
+            logElement.textContent = testLog.join('\n');
+            logElement.scrollTop = logElement.scrollHeight;
+            
+            console.log(logEntry);
+        }
+        
+        function clearLog() {
+            testLog = [];
+            document.getElementById('testLog').textContent = '';
+        }
+        
+        function updateTestResult(containerId, testName, passed, message = '') {
+            const container = document.getElementById(containerId);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+            resultDiv.innerHTML = `
+                <strong>${testName}:</strong> ${passed ? 'PASS' : 'FAIL'}
+                ${message ? `<br><small>${message}</small>` : ''}
+            `;
+            container.appendChild(resultDiv);
+        }
+        
+        function updateCurrentState(enabled) {
+            const indicator = document.getElementById('stateIndicator');
+            const stateText = document.getElementById('currentState');
+            
+            if (enabled === true) {
+                indicator.className = 'status-indicator status-enabled';
+                stateText.textContent = 'Enabled';
+            } else if (enabled === false) {
+                indicator.className = 'status-indicator status-disabled';
+                stateText.textContent = 'Disabled';
+            } else {
+                indicator.className = 'status-indicator status-unknown';
+                stateText.textContent = 'Unknown';
+            }
+        }
+        
+        // Extension communication functions
+        async function queryExtensionState() {
+            log('Querying extension state...');
+            
+            try {
+                if (!chrome || !chrome.runtime) {
+                    throw new Error('Chrome extension APIs not available');
+                }
+                
+                const response = await chrome.runtime.sendMessage({
+                    type: 'KP_GET_STATE'
+                });
+                
+                log(`State query response: ${JSON.stringify(response)}`);
+                
+                if (response && response.type === 'KP_STATE_RESPONSE') {
+                    updateCurrentState(response.enabled);
+                    return response.enabled;
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            } catch (error) {
+                log(`Failed to query state: ${error.message}`, 'error');
+                updateCurrentState(null);
+                return null;
+            }
+        }
+        
+        async function toggleViaMessage() {
+            log('Toggling extension via message...');
+            
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    type: 'KP_TOGGLE_STATE'
+                });
+                
+                log(`Toggle response: ${JSON.stringify(response)}`);
+                
+                if (response && response.type === 'KP_STATE_CHANGED') {
+                    updateCurrentState(response.enabled);
+                    return response.enabled;
+                } else {
+                    throw new Error('Invalid toggle response');
+                }
+            } catch (error) {
+                log(`Failed to toggle: ${error.message}`, 'error');
+                return null;
+            }
+        }
+        
+        // Test functions
+        async function testCommunication() {
+            log('Starting communication tests...');
+            const container = document.getElementById('communicationResults');
+            container.innerHTML = '';
+            
+            // Test 1: Basic state query
+            try {
+                const state = await queryExtensionState();
+                updateTestResult('communicationResults', 'State Query', 
+                    state !== null, `Received state: ${state}`);
+            } catch (error) {
+                updateTestResult('communicationResults', 'State Query', 
+                    false, error.message);
+            }
+            
+            // Test 2: Toggle functionality
+            try {
+                const initialState = await queryExtensionState();
+                const newState = await toggleViaMessage();
+                const finalState = await queryExtensionState();
+                
+                const toggleWorked = initialState !== null && 
+                                   newState !== null && 
+                                   finalState === newState &&
+                                   initialState !== newState;
+                
+                updateTestResult('communicationResults', 'Toggle Functionality', 
+                    toggleWorked, `${initialState} → ${newState} → ${finalState}`);
+            } catch (error) {
+                updateTestResult('communicationResults', 'Toggle Functionality', 
+                    false, error.message);
+            }
+            
+            // Test 3: Message format validation
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    type: 'KP_GET_STATE'
+                });
+                
+                const validFormat = response && 
+                                  response.type === 'KP_STATE_RESPONSE' &&
+                                  typeof response.enabled === 'boolean' &&
+                                  typeof response.timestamp === 'number';
+                
+                updateTestResult('communicationResults', 'Message Format', 
+                    validFormat, `Response: ${JSON.stringify(response)}`);
+            } catch (error) {
+                updateTestResult('communicationResults', 'Message Format', 
+                    false, error.message);
+            }
+        }
+        
+        async function testStateSynchronization() {
+            log('Starting state synchronization tests...');
+            const container = document.getElementById('syncResults');
+            container.innerHTML = '';
+            
+            // Test 1: State persistence across queries
+            try {
+                const state1 = await queryExtensionState();
+                await new Promise(resolve => setTimeout(resolve, 100));
+                const state2 = await queryExtensionState();
+                
+                const consistent = state1 === state2;
+                updateTestResult('syncResults', 'State Consistency', 
+                    consistent, `Query 1: ${state1}, Query 2: ${state2}`);
+            } catch (error) {
+                updateTestResult('syncResults', 'State Consistency', 
+                    false, error.message);
+            }
+            
+            // Test 2: Toggle response time
+            try {
+                const startTime = performance.now();
+                await toggleViaMessage();
+                const endTime = performance.now();
+                
+                const responseTime = endTime - startTime;
+                const fastEnough = responseTime < 1000; // Should be under 1 second
+                
+                updateTestResult('syncResults', 'Toggle Response Time', 
+                    fastEnough, `${responseTime.toFixed(2)}ms`);
+            } catch (error) {
+                updateTestResult('syncResults', 'Toggle Response Time', 
+                    false, error.message);
+            }
+        }
+        
+        async function testStoragePersistence() {
+            log('Starting storage persistence tests...');
+            const container = document.getElementById('storageResults');
+            container.innerHTML = '';
+            
+            // Test 1: State change persistence
+            try {
+                const initialState = await queryExtensionState();
+                await toggleViaMessage();
+                
+                // Wait a bit and check if state persisted
+                await new Promise(resolve => setTimeout(resolve, 500));
+                const persistedState = await queryExtensionState();
+                
+                const persisted = persistedState !== initialState;
+                updateTestResult('storageResults', 'State Persistence', 
+                    persisted, `Initial: ${initialState}, Persisted: ${persistedState}`);
+                
+                // Restore original state
+                if (persisted) {
+                    await toggleViaMessage();
+                }
+            } catch (error) {
+                updateTestResult('storageResults', 'State Persistence', 
+                    false, error.message);
+            }
+        }
+        
+        async function testEdgeCases() {
+            log('Starting edge case tests...');
+            const container = document.getElementById('edgeCaseResults');
+            container.innerHTML = '';
+            
+            // Test 1: Invalid message handling
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    type: 'INVALID_MESSAGE_TYPE'
+                });
+                
+                const handledGracefully = response && response.type === 'KP_ERROR';
+                updateTestResult('edgeCaseResults', 'Invalid Message Handling', 
+                    handledGracefully, `Response: ${JSON.stringify(response)}`);
+            } catch (error) {
+                // Error is also acceptable for invalid messages
+                updateTestResult('edgeCaseResults', 'Invalid Message Handling', 
+                    true, `Threw error as expected: ${error.message}`);
+            }
+            
+            // Test 2: Rapid toggle requests
+            try {
+                const initialState = await queryExtensionState();
+                
+                // Send multiple toggle requests rapidly
+                const togglePromises = [];
+                for (let i = 0; i < 5; i++) {
+                    togglePromises.push(toggleViaMessage());
+                }
+                
+                const results = await Promise.allSettled(togglePromises);
+                const successCount = results.filter(r => r.status === 'fulfilled').length;
+                
+                const handledWell = successCount >= 3; // At least 3 should succeed
+                updateTestResult('edgeCaseResults', 'Rapid Toggle Handling', 
+                    handledWell, `${successCount}/5 requests succeeded`);
+                
+                // Restore to initial state if needed
+                const finalState = await queryExtensionState();
+                if (finalState !== initialState) {
+                    await toggleViaMessage();
+                }
+            } catch (error) {
+                updateTestResult('edgeCaseResults', 'Rapid Toggle Handling', 
+                    false, error.message);
+            }
+        }
+        
+        async function runAllTests() {
+            log('Running all validation tests...');
+            
+            // Clear previous results
+            ['communicationResults', 'syncResults', 'storageResults', 'edgeCaseResults']
+                .forEach(id => document.getElementById(id).innerHTML = '');
+            
+            try {
+                await testCommunication();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                await testStateSynchronization();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                await testStoragePersistence();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                await testEdgeCases();
+                
+                log('All tests completed!');
+            } catch (error) {
+                log(`Test suite failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Extension validation page loaded');
+            
+            // Check if extension APIs are available
+            if (typeof chrome === 'undefined' || !chrome.runtime) {
+                log('Chrome extension APIs not available - make sure this page is loaded in a browser with the extension installed', 'error');
+                
+                // Show warning
+                const warning = document.createElement('div');
+                warning.className = 'test-result test-fail';
+                warning.innerHTML = `
+                    <strong>⚠️ Extension APIs Not Available</strong><br>
+                    <small>Make sure:</small><br>
+                    <small>1. The KeyPilot extension is installed and enabled</small><br>
+                    <small>2. This page is loaded in Chrome/Chromium</small><br>
+                    <small>3. The extension has permission to access this page</small>
+                `;
+                document.body.insertBefore(warning, document.body.firstChild);
+            } else {
+                log('Chrome extension APIs detected');
+                queryExtensionState();
+            }
+        });
+        
+        // Listen for keyboard shortcuts (Alt+K) to test
+        document.addEventListener('keydown', (event) => {
+            if (event.altKey && event.key === 'k') {
+                event.preventDefault();
+                log('Alt+K detected - checking if extension state changed...');
+                
+                setTimeout(() => {
+                    queryExtensionState();
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

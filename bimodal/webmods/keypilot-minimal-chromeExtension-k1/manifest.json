@@ -7,7 +7,21 @@
         "default_title": "KeyPilot Minimal",
         "default_popup": "popup.html"
     },
-    "permissions": [],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "storage",
+        "commands"
+    ],
+    "commands": {
+        "toggle-extension": {
+            "suggested_key": {
+                "default": "Alt+K"
+            },
+            "description": "Toggle KeyPilot extension on/off"
+        }
+    },
     "host_permissions": [
         "<all_urls>"
     ],

@@ -6,10 +6,12 @@ import { CSS_CLASSES, ELEMENT_IDS } from '../config/constants.js';
 export class StyleManager {
   constructor() {
     this.injectedStyles = new Set();
+    this.shadowRootStyles = new Map(); // Track shadow root styles for cleanup
+    this.isEnabled = true; // Track if styles should be active
   }
 
   injectSharedStyles() {
-    if (this.injectedStyles.has('main')) return;
+    if (this.injectedStyles.has('main') || !this.isEnabled) return;
 
     const css = `
       html.${CSS_CLASSES.CURSOR_HIDDEN}, 
@@ -102,7 +104,7 @@ export class StyleManager {
   }
 
   injectIntoShadowRoot(shadowRoot) {
-    if (this.injectedStyles.has(shadowRoot)) return;
+    if (this.injectedStyles.has(shadowRoot) || !this.isEnabled) return;
 
     const css = `
       .${CSS_CLASSES.FOCUS} { 
@@ -124,20 +126,94 @@ export class StyleManager {
     `;
 
     const style = document.createElement('style');
+    style.id = 'keypilot-shadow-styles';
     style.textContent = css;
     shadowRoot.appendChild(style);
     
     this.injectedStyles.add(shadowRoot);
+    this.shadowRootStyles.set(shadowRoot, style);
   }
 
-  cleanup() {
+  /**
+   * Completely remove all KeyPilot CSS styles from the page
+   * Used when extension is toggled off
+   */
+  removeAllStyles() {
+    // Remove cursor hidden class
     document.documentElement.classList.remove(CSS_CLASSES.CURSOR_HIDDEN);
     
+    // Remove main stylesheet
     const mainStyle = document.getElementById(ELEMENT_IDS.STYLE);
     if (mainStyle) {
       mainStyle.remove();
     }
     
+    // Remove all shadow root styles
+    for (const [shadowRoot, styleElement] of this.shadowRootStyles) {
+      if (styleElement && styleElement.parentNode) {
+        styleElement.remove();
+      }
+    }
+    
+    // Remove all KeyPilot classes from elements
+    this.removeAllKeyPilotClasses();
+    
+    // Clear tracking
     this.injectedStyles.clear();
+    this.shadowRootStyles.clear();
+    this.isEnabled = false;
+  }
+
+  /**
+   * Restore all KeyPilot CSS styles to the page
+   * Used when extension is toggled back on
+   */
+  restoreAllStyles() {
+    this.isEnabled = true;
+    
+    // Re-inject main styles
+    this.injectSharedStyles();
+    
+    // Re-inject shadow root styles for any shadow roots we previously tracked
+    // Note: We'll need to re-discover shadow roots since they may have changed
+    // This will be handled by the shadow DOM manager during normal operation
+  }
+
+  /**
+   * Remove all KeyPilot CSS classes from DOM elements
+   */
+  removeAllKeyPilotClasses() {
+    const classesToRemove = [
+      CSS_CLASSES.FOCUS,
+      CSS_CLASSES.DELETE,
+      CSS_CLASSES.HIDDEN,
+      CSS_CLASSES.TEXT_FIELD_GLOW,
+      CSS_CLASSES.RIPPLE
+    ];
+    
+    // Remove classes from main document
+    classesToRemove.forEach(className => {
+      const elements = document.querySelectorAll(`.${className}`);
+      elements.forEach(el => el.classList.remove(className));
+    });
+    
+    // Remove classes from shadow roots
+    for (const shadowRoot of this.shadowRootStyles.keys()) {
+      classesToRemove.forEach(className => {
+        const elements = shadowRoot.querySelectorAll(`.${className}`);
+        elements.forEach(el => el.classList.remove(className));
+      });
+    }
+  }
+
+  /**
+   * Check if styles are currently enabled
+   */
+  isStylesEnabled() {
+    return this.isEnabled;
+  }
+
+  cleanup() {
+    this.removeAllStyles();
   }
 }

@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T05:43:51.688Z
+ * Generated on 2025-08-25T05:59:35.475Z
  */
 
 (() => {
@@ -14,6 +14,7 @@
 const KEYBINDINGS = {
   ACTIVATE: ['f', 'F'],
   BACK: ['c', 'C'],
+  BACK2: ['s', 'S'],
   FORWARD: ['v', 'V'],
   DELETE: ['d', 'D'],
   ROOT: ['`', 'Backquote'],
@@ -1317,7 +1318,7 @@ class KeyPilot extends EventManager {
     if (KEYBINDINGS.CANCEL.includes(e.key)) {
       e.preventDefault();
       this.cancelModes();
-    } else if (KEYBINDINGS.BACK.includes(e.key)) {
+    } else if (KEYBINDINGS.BACK.includes(e.key) || KEYBINDINGS.BACK2.includes(e.key)) {
       e.preventDefault();
       history.back();
     } else if (KEYBINDINGS.FORWARD.includes(e.key)) {
@@ -1509,8 +1510,4 @@ class KeyPilot extends EventManager {
 new KeyPilot();
 
 
-  // Initialize KeyPilot
-  if (typeof KeyPilot !== 'undefined') {
-    new KeyPilot();
-  }
 })();

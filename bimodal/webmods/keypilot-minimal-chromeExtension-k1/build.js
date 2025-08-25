@@ -51,10 +51,6 @@ ${moduleContent}
 }
 
 bundledContent += `
-  // Initialize KeyPilot
-  if (typeof KeyPilot !== 'undefined') {
-    new KeyPilot();
-  }
 })();
 `;
 

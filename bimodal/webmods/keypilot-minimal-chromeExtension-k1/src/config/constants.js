@@ -4,6 +4,7 @@
 export const KEYBINDINGS = {
   ACTIVATE: ['f', 'F'],
   BACK: ['c', 'C'],
+  BACK2: ['s', 'S'],
   FORWARD: ['v', 'V'],
   DELETE: ['d', 'D'],
   ROOT: ['`', 'Backquote'],

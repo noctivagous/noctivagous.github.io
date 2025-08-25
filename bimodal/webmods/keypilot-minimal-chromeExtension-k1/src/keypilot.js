@@ -127,7 +127,7 @@ export class KeyPilot extends EventManager {
     if (KEYBINDINGS.CANCEL.includes(e.key)) {
       e.preventDefault();
       this.cancelModes();
-    } else if (KEYBINDINGS.BACK.includes(e.key)) {
+    } else if (KEYBINDINGS.BACK.includes(e.key) || KEYBINDINGS.BACK2.includes(e.key)) {
       e.preventDefault();
       history.back();
     } else if (KEYBINDINGS.FORWARD.includes(e.key)) {

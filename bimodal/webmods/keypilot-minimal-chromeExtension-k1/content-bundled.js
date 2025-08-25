@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T05:59:35.475Z
+ * Generated on 2025-08-25T06:40:09.203Z
  */
 
 (() => {
@@ -1223,6 +1223,15 @@ class KeyPilot extends EventManager {
     this.styleManager = new StyleManager();
     this.shadowDOMManager = new ShadowDOMManager(this.styleManager);
 
+    // Scroll optimization: track current element to reduce queries
+    this.currentTrackedElement = null;
+    this.isScrolling = false;
+    this.scrollTimeout = null;
+
+    // Mouse movement optimization: only query every 2+ pixels
+    this.lastQueryPosition = { x: -1, y: -1 };
+    this.MOUSE_QUERY_THRESHOLD = 3;
+
     this.init();
   }
 
@@ -1340,16 +1349,56 @@ class KeyPilot extends EventManager {
     this.state.setMousePosition(e.clientX, e.clientY);
     this.cursor.updatePosition(e.clientX, e.clientY);
 
-    this.updateElementsUnderCursor(e.clientX, e.clientY);
+    // Only update elements if we're not currently scrolling
+    if (!this.isScrolling) {
+      this.updateElementsUnderCursorWithThreshold(e.clientX, e.clientY);
+    } else {
+      // During scroll, check if cursor is still over the tracked element
+      this.checkTrackedElementDuringScroll(e.clientX, e.clientY);
+    }
   }
 
   handleScroll(_e) {
-    // Update overlays when scrolling to keep them positioned correctly
     const currentState = this.state.getState();
-    this.updateElementsUnderCursor(currentState.lastMouse.x, currentState.lastMouse.y);
-    
-    // Force overlay update even if elements haven't changed, because their positions have
+
+    // Mark that we're scrolling to optimize mouse move handling
+    this.isScrolling = true;
+
+    // Clear any existing scroll timeout
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+    }
+
+    // Only update overlays to reposition them, don't re-query elements yet
     this.updateOverlays(currentState.focusEl, currentState.deleteEl);
+
+    // Set timeout to end scrolling state and re-query elements
+    this.scrollTimeout = setTimeout(() => {
+      this.isScrolling = false;
+      this.currentTrackedElement = null; // Clear tracked element
+      // Reset query position to force a fresh query after scroll
+      this.lastQueryPosition = { x: -1, y: -1 };
+      // Re-query elements after scroll ends
+      this.updateElementsUnderCursor(currentState.lastMouse.x, currentState.lastMouse.y);
+    }, 150); // 150ms delay after scroll stops
+  }
+
+  updateElementsUnderCursorWithThreshold(x, y) {
+    // Check if mouse has moved enough to warrant a new query
+    const deltaX = Math.abs(x - this.lastQueryPosition.x);
+    const deltaY = Math.abs(y - this.lastQueryPosition.y);
+    
+    if (deltaX < this.MOUSE_QUERY_THRESHOLD && deltaY < this.MOUSE_QUERY_THRESHOLD) {
+      // Mouse hasn't moved enough, skip the query
+      return;
+    }
+
+    // Update last query position
+    this.lastQueryPosition.x = x;
+    this.lastQueryPosition.y = y;
+
+    // Perform the actual element query
+    this.updateElementsUnderCursor(x, y);
   }
 
   updateElementsUnderCursor(x, y) {
@@ -1363,6 +1412,9 @@ class KeyPilot extends EventManager {
     const under = this.detector.deepElementFromPoint(x, y);
     const clickable = this.detector.findClickable(under);
 
+    // Update tracked element for scroll optimization
+    this.currentTrackedElement = clickable;
+
     this.state.setFocusElement(clickable);
 
     if (this.state.isDeleteMode()) {
@@ -1371,6 +1423,24 @@ class KeyPilot extends EventManager {
       // Clear delete element when not in delete mode
       this.state.setDeleteElement(null);
     }
+  }
+
+  checkTrackedElementDuringScroll(x, y) {
+    // If we don't have a tracked element, do a full query
+    if (!this.currentTrackedElement) {
+      this.updateElementsUnderCursor(x, y);
+      return;
+    }
+
+    // Quick check: is the cursor still over the tracked element?
+    const elementAtPoint = this.detector.deepElementFromPoint(x, y);
+    const clickableAtPoint = this.detector.findClickable(elementAtPoint);
+
+    // If cursor moved away from tracked element, do a full update
+    if (clickableAtPoint !== this.currentTrackedElement) {
+      this.updateElementsUnderCursor(x, y);
+    }
+    // Otherwise, keep the current tracked element (no DOM queries needed)
   }
 
   handleDeleteKey() {
@@ -1478,6 +1548,12 @@ class KeyPilot extends EventManager {
 
   cleanup() {
     this.stop();
+
+    // Clean up scroll optimization
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = null;
+    }
 
     if (this.focusDetector) {
       this.focusDetector.stop();

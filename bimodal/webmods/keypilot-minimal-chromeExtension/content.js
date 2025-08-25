@@ -622,6 +622,14 @@ html.kpv2-cursor-hidden, html.kpv2-cursor-hidden * { cursor: none !important; }
       }
       return;
     }
+    
+    
+  if (e.code === 'Backquote') {    // reliably detects the ` key
+    e.preventDefault();
+    const origin = location.origin;   // scheme + host
+    window.location.href = origin + '/';
+  }
+
 
 
   }
@@ -639,26 +647,7 @@ html.kpv2-cursor-hidden, html.kpv2-cursor-hidden * { cursor: none !important; }
     addL(document, 'keydown', onKeyDown, true);
   }
 
-// Simple scroll monitor
-window.addEventListener('scroll', () => {
-  // Re-trigger the same logic as a mouse move
-  const evt = new MouseEvent('mousemove', {
-    bubbles: true,
-    cancelable: true,
-    clientX: lastMouseX,
-    clientY: lastMouseY,
-  });
-  document.dispatchEvent(evt);
-}, { passive: true });
 
-// Track last known mouse position so we can reuse it
-let lastMouseX = 0, lastMouseY = 0;
-document.addEventListener('mousemove', e => {
-  lastMouseX = e.clientX;
-  lastMouseY = e.clientY;
- 
-  handleMouseMove(e);   // your existing overlay update function
-});
 
 
   // ------------------------------- Bootstrap ------------------------------

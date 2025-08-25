@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Root Navigation Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        .status {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid #ffeaa7;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #bbdefb;
+        }
+        .key {
+            background: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        .current-url {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        .demo-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .demo-links a {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .demo-links a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Root Navigation Test</h1>
+    
+    <div class="instructions">
+        <h3>Test Instructions:</h3>
+        <ol>
+            <li>Note the current URL below</li>
+            <li>Navigate to a deeper page using the demo links</li>
+            <li>Press the <span class="key">`</span> (backquote) key</li>
+            <li>You should be navigated back to the site root</li>
+        </ol>
+    </div>
+    
+    <div class="status" id="status">
+        Ready to test. Current page loaded.
+    </div>
+    
+    <div class="test-section">
+        <h3>Current URL Information</h3>
+        <div class="current-url">
+            <strong>Current URL:</strong> <span id="current-url"></span><br>
+            <strong>Site Root:</strong> <span id="site-root"></span><br>
+            <strong>Is at Root:</strong> <span id="is-root"></span>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Demo Navigation Links</h3>
+        <p>Use these links to navigate to different "pages" (they're just hash changes for testing):</p>
+        <div class="demo-links">
+            <a href="#page1">Page 1</a>
+            <a href="#page2">Page 2</a>
+            <a href="#section/subsection">Deep Section</a>
+            <a href="#user/profile/settings">User Settings</a>
+            <a href="#admin/dashboard/reports">Admin Reports</a>
+        </div>
+        <p><em>After clicking any link above, press <span class="key">`</span> to return to root</em></p>
+    </div>
+    
+    <div class="test-section">
+        <h3>All KeyPilot Shortcuts</h3>
+        <ul>
+            <li><span class="key">F</span> - Activate element under cursor</li>
+            <li><span class="key">C</span> - Browser back</li>
+            <li><span class="key">V</span> - Browser forward</li>
+            <li><span class="key">D</span> - Toggle delete mode / Delete element</li>
+            <li><span class="key">`</span> - <strong>Navigate to site root (NEW!)</strong></li>
+            <li><span class="key">ESC</span> - Cancel current mode / Exit text focus</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h3>Expected Behavior</h3>
+        <ul>
+            <li><strong>When at root:</strong> Pressing <span class="key">`</span> should do nothing (already at root)</li>
+            <li><strong>When on subpage:</strong> Pressing <span class="key">`</span> should navigate to the site root</li>
+            <li><strong>Cross-domain:</strong> Only works within the same origin for security</li>
+        </ul>
+    </div>
+
+    <script src="content-bundled.js"></script>
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        function updateUrlInfo() {
+            const currentUrl = window.location.href;
+            const siteRoot = window.location.origin;
+            const isAtRoot = currentUrl === siteRoot || currentUrl === siteRoot + '/';
+            
+            document.getElementById('current-url').textContent = currentUrl;
+            document.getElementById('site-root').textContent = siteRoot;
+            document.getElementById('is-root').textContent = isAtRoot ? 'Yes' : 'No';
+            
+            if (isAtRoot) {
+                updateStatus('At site root - backquote key will have no effect');
+            } else {
+                updateStatus('On subpage - press backquote (`) to return to root');
+            }
+        }
+
+        // Update URL info on page load and hash changes
+        updateUrlInfo();
+        window.addEventListener('hashchange', updateUrlInfo);
+        window.addEventListener('popstate', updateUrlInfo);
+
+        // Add click handlers to demo links
+        document.querySelectorAll('.demo-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                setTimeout(updateUrlInfo, 100); // Small delay to ensure hash change is processed
+                updateStatus(`Navigated to ${e.target.textContent} - now press backquote (\`) to return to root`);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Escape Fix Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+            background: #f5f5f5;
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            background: white;
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .google-style {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+        }
+        .google-style h1 {
+            font-size: 48px;
+            margin: 20px 0;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .search-input { 
+            width: 400px; 
+            padding: 12px 16px; 
+            font-size: 16px; 
+            border: none;
+            border-radius: 24px; 
+            margin: 15px 0;
+            display: block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            outline: none;
+        }
+        .search-input:focus {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .status {
+            background: #e8f5e8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ffeaa7;
+            margin: 15px 0;
+        }
+        .test-input {
+            width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .test-input:focus {
+            border-color: #4285f4;
+            outline: none;
+        }
+        .debug-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Escape Fix Test</h1>
+    
+    <div class="status" id="status">
+        Testing the improved Escape key handling...
+    </div>
+    
+    <div class="test-section google-style">
+        <h1>Search</h1>
+        <input type="search" class="search-input" id="google-search" placeholder="Search or type a URL" autofocus>
+        <p><strong>Google.com Style Test</strong></p>
+        <p>This input has autofocus (like Google.com). KeyPilot should detect it's focused and ESC should work.</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>Additional Test Cases</h3>
+        
+        <input type="text" class="test-input" placeholder="Regular text input" id="text1">
+        <input type="email" class="test-input" placeholder="Email input" id="email1">
+        <textarea class="test-input" rows="3" placeholder="Textarea" id="textarea1"></textarea>
+        
+        <div class="highlight">
+            <strong>Test Steps:</strong>
+            <ol>
+                <li><strong>Autofocus Test:</strong> Page loads with search input focused</li>
+                <li><strong>KeyPilot Detection:</strong> Should show text focus message with orange crosshair</li>
+                <li><strong>ESC Test:</strong> Press ESC - should exit text focus mode immediately</li>
+                <li><strong>Manual Test:</strong> Click other inputs, press ESC to test</li>
+            </ol>
+        </div>
+        
+        <div class="debug-info" id="debug-info">
+            Debug info will appear here...
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>What's Fixed</h3>
+        <ul>
+            <li><strong>Capture Phase:</strong> Keydown listener now uses capture phase to catch events before they're handled by the page</li>
+            <li><strong>Event Stopping:</strong> Added stopPropagation() and stopImmediatePropagation() to prevent other handlers from interfering</li>
+            <li><strong>Simple Blur:</strong> Uses the proven approach: document.activeElement.blur() + document.body.focus()</li>
+            <li><strong>Better Timing:</strong> Multiple checks during page load to catch autofocused elements</li>
+        </ul>
+        
+        <div class="highlight">
+            <strong>Expected Behavior:</strong>
+            <ul>
+                <li>Page loads with search input focused (autofocus)</li>
+                <li>KeyPilot immediately detects text focus mode</li>
+                <li>ESC key works reliably to exit text focus</li>
+                <li>Works on Google.com and similar sites</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let eventCount = 0;
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function updateDebug(message) {
+            const debugEl = document.getElementById('debug-info');
+            debugEl.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+        }
+
+        // Add comprehensive event listeners
+        document.querySelectorAll('input, textarea').forEach((input) => {
+            input.addEventListener('focus', (e) => {
+                eventCount++;
+                updateStatus(`FOCUSED: ${e.target.id || e.target.tagName} - Event #${eventCount}`);
+                updateDebug(`Focus event on ${e.target.id || e.target.tagName}`);
+                console.log('Focus event:', e.target);
+            });
+            
+            input.addEventListener('blur', (e) => {
+                eventCount++;
+                updateStatus(`BLURRED: ${e.target.id || e.target.tagName} - Event #${eventCount}`);
+                updateDebug(`Blur event on ${e.target.id || e.target.tagName}`);
+                console.log('Blur event:', e.target);
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    eventCount++;
+                    updateStatus(`ESC pressed in: ${e.target.id || e.target.tagName} - Event #${eventCount}`);
+                    updateDebug(`Escape key pressed in ${e.target.id || e.target.tagName}`);
+                    console.log('Escape key pressed in:', e.target);
+                }
+            });
+        });
+        
+        // Global keydown listener to catch all escape keys
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                console.log('Global escape key detected, active element:', document.activeElement);
+                updateDebug(`Global escape detected, active: ${document.activeElement.tagName}`);
+            }
+        }, true); // Use capture phase
+        
+        // Log initial state
+        setTimeout(() => {
+            const activeEl = document.activeElement;
+            updateStatus(`Page loaded, initial focus: ${activeEl.id || activeEl.tagName}`);
+            updateDebug(`Initial active element: ${activeEl.id || activeEl.tagName}`);
+            console.log('Initial active element:', activeEl);
+        }, 100);
+        
+        // Test the DevTools approach
+        window.testEscapeManually = function() {
+            console.log('Testing manual escape approach...');
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+            document.body.focus();
+            updateDebug('Manual escape test executed');
+        };
+        
+        console.log('Test page loaded. Try window.testEscapeManually() in console to test the manual approach.');
+    </script>
+</body>
+</html>

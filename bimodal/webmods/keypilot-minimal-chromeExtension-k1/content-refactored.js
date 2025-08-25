@@ -48,11 +48,11 @@
   // Utility functions
   function isTextInput(element) {
     if (!element || element.nodeType !== 1) return false;
-    
+
     try {
       // Check if it matches our selector
       if (element.matches(SELECTORS.FOCUSABLE_TEXT)) return true;
-      
+
       // Additional checks for edge cases
       if (element.tagName === 'TEXTAREA') return true;
       if (element.tagName === 'INPUT') {
@@ -60,7 +60,7 @@
         return ['text', 'search', 'url', 'email', 'tel', 'password', 'number'].includes(type);
       }
       if (element.isContentEditable || element.getAttribute('contenteditable') === 'true') return true;
-      
+
       return false;
     } catch {
       return false;
@@ -123,9 +123,9 @@
 
   function getBestRect(element) {
     if (!element) return { left: 0, top: 0, width: 0, height: 0 };
-    
+
     let rect = element.getBoundingClientRect();
-    
+
     // If the element has no height (common with links containing other elements),
     // try to find a child element with height
     if (rect.height === 0 && element.children.length > 0) {
@@ -145,7 +145,7 @@
         }
       }
     }
-    
+
     // If still no height, try to get text content dimensions
     if (rect.height === 0 && element.textContent && element.textContent.trim()) {
       // For text-only elements, use a minimum height
@@ -156,14 +156,14 @@
         height: Math.max(rect.height, 20) // Minimum height
       };
     }
-    
+
     return rect;
   }
 
   // Focus detection
   function checkTextFocus() {
     const activeElement = getDeepActiveElement();
-    
+
     if (isTextInput(activeElement)) {
       if (state.focusedTextElement !== activeElement) {
         console.debug('Text focus detected during check:', activeElement.tagName, activeElement.type || 'N/A', 'ID:', activeElement.id || 'none');
@@ -197,12 +197,12 @@
   // Cursor management
   function createCursor() {
     if (state.cursorEl) return;
-    
+
     const wrap = document.createElement('div');
     wrap.id = 'kpv2-cursor';
     wrap.setAttribute('aria-hidden', 'true');
     wrap.style.cssText = 'position: fixed; left: 0; top: 0; transform: translate(-50%, -50%); z-index: 2147483647; pointer-events: none;';
-    
+
     document.body.appendChild(wrap);
     state.cursorEl = wrap;
     updateCursor();
@@ -210,7 +210,7 @@
 
   function updateCursor() {
     if (!state.cursorEl) return;
-    
+
     const svg = buildCursorSVG(state.mode);
     state.cursorEl.replaceChildren(svg);
   }
@@ -219,13 +219,13 @@
     const NS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('xmlns', NS);
-    
+
     if (mode === MODES.TEXT_FOCUS) {
       // Large cursor with text
       svg.setAttribute('viewBox', '0 0 280 120');
       svg.setAttribute('width', '280');
       svg.setAttribute('height', '120');
-      
+
       // Background
       const bg = document.createElementNS(NS, 'rect');
       bg.setAttribute('x', '5');
@@ -237,34 +237,34 @@
       bg.setAttribute('stroke', 'rgba(255,255,255,0.3)');
       bg.setAttribute('stroke-width', '2');
       svg.appendChild(bg);
-      
+
       // I-beam cursor icon
       const ibeam = document.createElementNS(NS, 'g');
       ibeam.setAttribute('transform', 'translate(25, 35)');
-      
+
       const line = document.createElementNS(NS, 'line');
       line.setAttribute('x1', '15'); line.setAttribute('y1', '10');
       line.setAttribute('x2', '15'); line.setAttribute('y2', '40');
       line.setAttribute('stroke', 'rgba(255,255,255,0.9)');
       line.setAttribute('stroke-width', '3');
       ibeam.appendChild(line);
-      
+
       const top = document.createElementNS(NS, 'line');
       top.setAttribute('x1', '10'); top.setAttribute('y1', '10');
       top.setAttribute('x2', '20'); top.setAttribute('y2', '10');
       top.setAttribute('stroke', 'rgba(255,255,255,0.9)');
       top.setAttribute('stroke-width', '3');
       ibeam.appendChild(top);
-      
+
       const bottom = document.createElementNS(NS, 'line');
       bottom.setAttribute('x1', '10'); bottom.setAttribute('y1', '40');
       bottom.setAttribute('x2', '20'); bottom.setAttribute('y2', '40');
       bottom.setAttribute('stroke', 'rgba(255,255,255,0.9)');
       bottom.setAttribute('stroke-width', '3');
       ibeam.appendChild(bottom);
-      
+
       svg.appendChild(ibeam);
-      
+
       // Text
       const text1 = document.createElementNS(NS, 'text');
       text1.setAttribute('x', '60');
@@ -275,7 +275,7 @@
       text1.setAttribute('font-weight', '500');
       text1.textContent = 'Press ESC to leave';
       svg.appendChild(text1);
-      
+
       const text2 = document.createElementNS(NS, 'text');
       text2.setAttribute('x', '60');
       text2.setAttribute('y', '55');
@@ -285,7 +285,7 @@
       text2.setAttribute('font-weight', '500');
       text2.textContent = 'text field focus';
       svg.appendChild(text2);
-      
+
       // ESC key
       const escKey = document.createElementNS(NS, 'rect');
       escKey.setAttribute('x', '60');
@@ -297,7 +297,7 @@
       escKey.setAttribute('stroke', 'rgba(255,255,255,0.4)');
       escKey.setAttribute('stroke-width', '1');
       svg.appendChild(escKey);
-      
+
       const escText = document.createElementNS(NS, 'text');
       escText.setAttribute('x', '77.5');
       escText.setAttribute('y', '83');
@@ -308,41 +308,61 @@
       escText.setAttribute('text-anchor', 'middle');
       escText.textContent = 'ESC';
       svg.appendChild(escText);
-      
-      // Orange crosshair in lower left corner
+
+      // Orange crosshair in lower left corner - same size as normal crosshair
       const crosshair = document.createElementNS(NS, 'g');
       crosshair.setAttribute('transform', 'translate(15, 95)');
-      
-      // Horizontal line
-      const hLine = document.createElementNS(NS, 'line');
-      hLine.setAttribute('x1', '-8');
-      hLine.setAttribute('y1', '0');
-      hLine.setAttribute('x2', '8');
-      hLine.setAttribute('y2', '0');
-      hLine.setAttribute('stroke', '#ff8c00');
-      hLine.setAttribute('stroke-width', '2.5');
-      hLine.setAttribute('stroke-linecap', 'round');
-      crosshair.appendChild(hLine);
-      
-      // Vertical line
-      const vLine = document.createElementNS(NS, 'line');
-      vLine.setAttribute('x1', '0');
-      vLine.setAttribute('y1', '-8');
-      vLine.setAttribute('x2', '0');
-      vLine.setAttribute('y2', '8');
-      vLine.setAttribute('stroke', '#ff8c00');
-      vLine.setAttribute('stroke-width', '2.5');
-      vLine.setAttribute('stroke-linecap', 'round');
-      crosshair.appendChild(vLine);
-      
+
+      // Horizontal line - same length as normal crosshair (24 pixels each arm)
+      const hLine1 = document.createElementNS(NS, 'line');
+      hLine1.setAttribute('x1', '-24');
+      hLine1.setAttribute('y1', '0');
+      hLine1.setAttribute('x2', '-10');
+      hLine1.setAttribute('y2', '0');
+      hLine1.setAttribute('stroke', '#ff8c00');
+      hLine1.setAttribute('stroke-width', '4');
+      hLine1.setAttribute('stroke-linecap', 'round');
+      crosshair.appendChild(hLine1);
+
+      const hLine2 = document.createElementNS(NS, 'line');
+      hLine2.setAttribute('x1', '10');
+      hLine2.setAttribute('y1', '0');
+      hLine2.setAttribute('x2', '24');
+      hLine2.setAttribute('y2', '0');
+      hLine2.setAttribute('stroke', '#ff8c00');
+      hLine2.setAttribute('stroke-width', '4');
+      hLine2.setAttribute('stroke-linecap', 'round');
+      crosshair.appendChild(hLine2);
+
+      // Vertical line - same length as normal crosshair (24 pixels each arm)
+      const vLine1 = document.createElementNS(NS, 'line');
+      vLine1.setAttribute('x1', '0');
+      vLine1.setAttribute('y1', '-24');
+      vLine1.setAttribute('x2', '0');
+      vLine1.setAttribute('y2', '-10');
+      vLine1.setAttribute('stroke', '#ff8c00');
+      vLine1.setAttribute('stroke-width', '4');
+      vLine1.setAttribute('stroke-linecap', 'round');
+      crosshair.appendChild(vLine1);
+
+      const vLine2 = document.createElementNS(NS, 'line');
+      vLine2.setAttribute('x1', '0');
+      vLine2.setAttribute('y1', '10');
+      vLine2.setAttribute('x2', '0');
+      vLine2.setAttribute('y2', '24');
+      vLine2.setAttribute('stroke', '#ff8c00');
+      vLine2.setAttribute('stroke-width', '4');
+      vLine2.setAttribute('stroke-linecap', 'round');
+      crosshair.appendChild(vLine2);
+
       svg.appendChild(crosshair);
-      
+
     } else {
       // Normal crosshair or delete X
       svg.setAttribute('viewBox', '0 0 94 94');
       svg.setAttribute('width', '94');
       svg.setAttribute('height', '94');
-      
+
       const addLine = (x1, y1, x2, y2, color, w = '4') => {
         const ln = document.createElementNS(NS, 'line');
         ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
@@ -363,7 +383,7 @@
         addLine(60, 47, 84, 47, col);
       }
     }
-    
+
     return svg;
   }
 
@@ -468,9 +488,9 @@
     } catch {
       // fall through to synthetic path
     } finally {
-      try { 
-        activator.removeEventListener('click', onClickCapture, { capture: true }); 
-      } catch {}
+      try {
+        activator.removeEventListener('click', onClickCapture, { capture: true });
+      } catch { }
     }
 
     // Fallback: synthesize realistic event sequence
@@ -485,9 +505,9 @@
     };
 
     const tryDispatch = (type, Ctor, opts) => {
-      try { 
-        activator.dispatchEvent(new Ctor(type, opts)); 
-      } catch {}
+      try {
+        activator.dispatchEvent(new Ctor(type, opts));
+      } catch { }
     };
 
     tryDispatch('mouseover', MouseEvent, base);
@@ -510,7 +530,7 @@
   function handleKeyDown(e) {
     // Debug key presses
     console.log('[KeyPilot] Key pressed:', e.key, 'Code:', e.code);
-    
+
     // Don't interfere with modifier key combinations
     if (hasModifierKeys(e)) {
       return;
@@ -554,7 +574,7 @@
     state.lastMouse.x = e.clientX;
     state.lastMouse.y = e.clientY;
     updateCursorPosition(e.clientX, e.clientY);
-    
+
     updateElementsUnderCursor(e.clientX, e.clientY);
   }
 
@@ -568,16 +588,16 @@
     if (state.mode !== MODES.TEXT_FOCUS) {
       const under = deepElementFromPoint(x, y);
       const clickable = findClickable(under);
-      
+
       state.focusEl = clickable;
-      
+
       if (state.mode === MODES.DELETE) {
         state.deleteEl = under;
       } else {
         // Clear delete element when not in delete mode
         state.deleteEl = null;
       }
-      
+
       updateOverlays();
     }
   }
@@ -596,17 +616,17 @@
 
   function handleEscapeFromTextFocus() {
     console.debug('Escape pressed in text focus mode, attempting to exit');
-    
+
     // Use the simple, proven approach that works in DevTools
     // Blur the active element and set focus to the body
     if (document.activeElement) {
       document.activeElement.blur();
     }
     document.body.focus();
-    
+
     // Force clear the text focus state
     clearTextFocus();
-    
+
     console.debug('Text focus escape completed');
   }
 
@@ -626,7 +646,7 @@
     console.log('[KeyPilot] Root key pressed!');
     console.log('[KeyPilot] Current URL:', window.location.href);
     console.log('[KeyPilot] Origin:', window.location.origin);
-    
+
     // Navigate to the site root (origin)
     const rootUrl = window.location.origin;
     if (rootUrl && rootUrl !== window.location.href) {
@@ -639,7 +659,7 @@
 
   function handleActivateKey() {
     const target = state.focusEl || deepElementFromPoint(state.lastMouse.x, state.lastMouse.y);
-    
+
     if (!target || target === document.documentElement || target === document.body) {
       return;
     }
@@ -664,7 +684,7 @@
     // Handle different input types semantically
     if (target.tagName === 'INPUT') {
       const type = (target.getAttribute('type') || 'text').toLowerCase();
-      
+
       if (type === 'radio') {
         if (!target.checked) {
           target.checked = true;
@@ -672,13 +692,13 @@
         }
         return true;
       }
-      
+
       if (type === 'checkbox') {
         target.checked = !target.checked;
         dispatchInputChange(target);
         return true;
       }
-      
+
       if (type === 'range') {
         return handleRange(target, x);
       }
@@ -710,10 +730,10 @@
   }
 
   function handleTextField(target) {
-    try { 
-      target.focus({ preventScroll: true }); 
-    } catch { 
-      try { target.focus(); } catch { } 
+    try {
+      target.focus({ preventScroll: true });
+    } catch {
+      try { target.focus(); } catch { }
     }
     try {
       const v = target.value ?? '';
@@ -723,17 +743,17 @@
   }
 
   function handleContentEditable(target) {
-    try { 
-      target.focus({ preventScroll: true }); 
-    } catch { 
-      try { target.focus(); } catch { } 
+    try {
+      target.focus({ preventScroll: true });
+    } catch {
+      try { target.focus(); } catch { }
     }
-    
+
     // Try to position cursor at the end of content
     try {
       const selection = window.getSelection();
       const range = document.createRange();
-      
+
       // If there's text content, position at the end
       if (target.childNodes.length > 0) {
         const lastNode = target.childNodes[target.childNodes.length - 1];
@@ -746,7 +766,7 @@
         // Empty contenteditable, position at the beginning
         range.setStart(target, 0);
       }
-      
+
       range.collapse(true);
       selection.removeAllRanges();
       selection.addRange(range);
@@ -754,7 +774,7 @@
       // Fallback: just focus without cursor positioning
       console.debug('Could not position cursor in contenteditable:', error);
     }
-    
+
     return true;
   }
 
@@ -797,7 +817,7 @@
       try {
         element.classList.add('kpv2-hidden');
         element.setAttribute('aria-hidden', 'true');
-      } catch {}
+      } catch { }
     }
   }
 
@@ -818,7 +838,7 @@
     ripple.style.left = `${x}px`;
     ripple.style.top = `${y}px`;
     document.body.appendChild(ripple);
-    
+
     ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
   }
 
@@ -871,20 +891,20 @@
 
     // Check focus periodically (more frequent for better responsiveness)
     setInterval(checkTextFocus, 200);
-    
+
     // Initial check with delay to catch elements focused on page load
     setTimeout(() => {
       checkTextFocus();
       console.debug('Initial focus check completed');
     }, 100);
-    
+
     // Also check when DOM is fully loaded
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         setTimeout(checkTextFocus, 100);
       });
     }
-    
+
     // Check when page is fully loaded (including images, etc.)
     window.addEventListener('load', () => {
       setTimeout(checkTextFocus, 100);

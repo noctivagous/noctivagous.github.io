@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Initial Focus Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        .search-input { 
+            width: 400px; 
+            padding: 12px; 
+            font-size: 16px; 
+            border: 1px solid #ddd; 
+            border-radius: 24px; 
+            margin: 10px 0;
+            display: block;
+        }
+        .status {
+            background: #e3f2fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .google-style {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .google-style h1 {
+            font-size: 90px;
+            color: #4285f4;
+            margin: 20px 0;
+            font-weight: normal;
+        }
+        .google-style .search-input {
+            margin: 20px auto;
+            box-shadow: 0 2px 5px 1px rgba(64,60,67,.16);
+            border: none;
+        }
+        .delayed-focus {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Initial Focus Test</h1>
+    
+    <div class="status" id="status">
+        Testing scenarios where text inputs are focused on page load...
+    </div>
+    
+    <div class="test-section google-style">
+        <h1>Google</h1>
+        <input type="search" class="search-input" id="google-search" placeholder="Search Google or type a URL" autofocus>
+        <p><strong>This input has autofocus</strong> - simulates Google.com behavior</p>
+        <p>Expected: KeyPilot should detect this is focused and show "Press ESC to leave text field focus"</p>
+        <p>Test: Press ESC - should exit text focus mode</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>Delayed Focus Test</h3>
+        <input type="text" class="search-input delayed-focus" id="delayed-focus" placeholder="This will be focused after 1 second">
+        <p><strong>This input will be focused programmatically after 1 second</strong></p>
+        <p>Expected: KeyPilot should detect the focus change and enter text focus mode</p>
+        <p>Test: Wait 1 second, then press ESC - should exit text focus mode</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>Manual Focus Test</h3>
+        <input type="text" class="search-input" id="manual-focus" placeholder="Click to focus this input">
+        <button onclick="focusManual()">Focus the input above</button>
+        <p><strong>Click the button to focus the input programmatically</strong></p>
+        <p>Expected: KeyPilot should detect the focus change</p>
+        <p>Test: Click button, then press ESC - should exit text focus mode</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>Instructions</h3>
+        <ol>
+            <li><strong>Page Load:</strong> The first input should be focused automatically (autofocus)</li>
+            <li><strong>KeyPilot Detection:</strong> Extension should show "Press ESC to leave text field focus"</li>
+            <li><strong>ESC Test:</strong> Press ESC - should return to normal KeyPilot cursor</li>
+            <li><strong>Delayed Focus:</strong> After 1 second, second input gets focused automatically</li>
+            <li><strong>Manual Focus:</strong> Use button to test programmatic focus</li>
+        </ol>
+        
+        <h4>Debug Info:</h4>
+        <ul>
+            <li>Open browser console to see focus detection debug messages</li>
+            <li>Look for "Initial focus check completed" message</li>
+            <li>Watch for "Text focus detected during check" messages</li>
+        </ul>
+    </div>
+
+    <script>
+        let focusCount = 0;
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        function focusManual() {
+            document.getElementById('manual-focus').focus();
+            updateStatus('Manual focus triggered');
+        }
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input').forEach((input) => {
+            input.addEventListener('focus', (e) => {
+                focusCount++;
+                updateStatus(`FOCUSED: ${e.target.id} - Focus count: ${focusCount}`);
+                console.log('Focus event:', e.target);
+            });
+            
+            input.addEventListener('blur', (e) => {
+                updateStatus(`BLURRED: ${e.target.id}`);
+                console.log('Blur event:', e.target);
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    console.log('Escape key pressed in:', e.target.id);
+                    updateStatus(`ESC pressed in: ${e.target.id}`);
+                }
+            });
+        });
+        
+        // Simulate delayed focus (like some SPAs do)
+        setTimeout(() => {
+            const delayedInput = document.getElementById('delayed-focus');
+            delayedInput.focus();
+            updateStatus('Delayed focus triggered after 1 second');
+            console.log('Delayed focus triggered');
+        }, 1000);
+        
+        // Global keydown listener
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                console.log('Global escape key detected, active element:', document.activeElement);
+            }
+        });
+        
+        // Log initial state
+        console.log('Page loaded, initial active element:', document.activeElement);
+        updateStatus(`Page loaded, initial focus: ${document.activeElement.id || document.activeElement.tagName}`);
+    </script>
+</body>
+</html>

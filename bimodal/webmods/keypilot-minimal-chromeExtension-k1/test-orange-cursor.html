@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Orange Cursor Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        input, textarea { 
+            margin: 10px; 
+            padding: 12px; 
+            font-size: 16px; 
+            width: 300px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+        .contenteditable {
+            border: 2px solid #ccc;
+            padding: 12px;
+            min-height: 80px;
+            margin: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            width: 300px;
+        }
+        .status {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid #ffeaa7;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Orange Cursor Test</h1>
+    
+    <div class="instructions">
+        <h3>Test Instructions:</h3>
+        <ol>
+            <li>Hover over any text field below</li>
+            <li>Press <strong>F</strong> to focus the field</li>
+            <li>You should see an <strong>orange crosshair cursor</strong> with message in the bottom half</li>
+            <li>Press <strong>ESC</strong> to exit text focus mode</li>
+        </ol>
+    </div>
+    
+    <div class="status" id="status">
+        Ready to test. Hover over text fields and press F.
+    </div>
+    
+    <div class="test-section">
+        <h3>Text Input Fields</h3>
+        <div>
+            <input type="text" placeholder="Type here..." id="text1">
+        </div>
+        <div>
+            <input type="email" placeholder="Enter email..." id="email1">
+        </div>
+        <div>
+            <input type="password" placeholder="Enter password..." id="password1">
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Textarea</h3>
+        <div>
+            <textarea placeholder="Enter your message here..." rows="4" id="textarea1"></textarea>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Contenteditable</h3>
+        <div>
+            <div contenteditable="true" class="contenteditable" id="contenteditable1">
+                Click here or press F when hovering to edit this text.
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Expected Behavior</h3>
+        <ul>
+            <li><strong>Normal Mode:</strong> Green crosshair cursor when hovering</li>
+            <li><strong>Text Focus Mode:</strong> Orange crosshair cursor with message in bottom half</li>
+            <li><strong>Message:</strong> Should show "Press ESC to leave" and "text field focus"</li>
+            <li><strong>ESC Key:</strong> Should exit text focus mode and return to normal</li>
+        </ul>
+    </div>
+
+    <script src="content-bundled.js"></script>
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        // Add focus/blur event listeners to show mode changes
+        document.querySelectorAll('input, textarea, [contenteditable]').forEach(el => {
+            el.addEventListener('focus', () => {
+                updateStatus(`Text Focus Mode: ${el.id || el.tagName.toLowerCase()} - Orange cursor should be visible`);
+            });
+            
+            el.addEventListener('blur', () => {
+                updateStatus(`Normal Mode: Left ${el.id || el.tagName.toLowerCase()} - Green cursor should be visible`);
+            });
+        });
+    </script>
+</body>
+</html>

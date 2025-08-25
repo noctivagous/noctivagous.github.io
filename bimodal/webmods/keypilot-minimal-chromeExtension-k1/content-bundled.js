@@ -1,41 +1,36 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T03:25:08.977Z
+ * Generated on 2025-08-25T05:14:54.614Z
  */
-
 
 (() => {
-  // Module system simulation
-  const modules = {};
-  const exports = {};
-  
-  // Define modules
+  // Bundled modules
 
-  // Module: src/config/constants.js
-  (() => {
-    /**
+
+  // === src/config/constants.js ===
+  /**
  * Application constants and configuration
  */
-modules.src_config_constants_js.const KEYBINDINGS = {
+const KEYBINDINGS = {
   ACTIVATE: ['f', 'F'],
   BACK: ['c', 'C'],
   FORWARD: ['v', 'V'],
   DELETE: ['d', 'D'],
-  ROOT: ['~'],
+  ROOT: ['`', 'Backquote'],
   CANCEL: ['Escape']
 };
 
-modules.src_config_constants_js.const SELECTORS = {
+const SELECTORS = {
   CLICKABLE: 'a[href], button, input, select, textarea',
   TEXT_INPUTS: 'input[type="text"], input[type="search"], input[type="url"], input[type="email"], input[type="tel"], input[type="password"], input[type="number"], textarea',
   FOCUSABLE_TEXT: 'input[type="text"], input[type="search"], input[type="url"], input[type="email"], input[type="tel"], input[type="password"], input[type="number"], textarea, [contenteditable="true"]'
 };
 
-modules.src_config_constants_js.const ARIA_ROLES = {
+const ARIA_ROLES = {
   CLICKABLE: ['link', 'button']
 };
 
-modules.src_config_constants_js.const CSS_CLASSES = {
+const CSS_CLASSES = {
   CURSOR_HIDDEN: 'kpv2-cursor-hidden',
   FOCUS: 'kpv2-focus',
   DELETE: 'kpv2-delete',
@@ -45,36 +40,34 @@ modules.src_config_constants_js.const CSS_CLASSES = {
   DELETE_OVERLAY: 'kpv2-delete-overlay'
 };
 
-modules.src_config_constants_js.const ELEMENT_IDS = {
+const ELEMENT_IDS = {
   CURSOR: 'kpv2-cursor',
   STYLE: 'kpv2-style'
 };
 
-modules.src_config_constants_js.const Z_INDEX = {
+const Z_INDEX = {
   OVERLAYS: 2147483646,
   CURSOR: 2147483647
 };
 
-modules.src_config_constants_js.const MODES = {
+const MODES = {
   NONE: 'none',
   DELETE: 'delete',
   TEXT_FOCUS: 'text_focus'
 };
 
-modules.src_config_constants_js.const COLORS = {
+const COLORS = {
   FOCUS: 'rgba(0,180,0,0.95)',
   DELETE: 'rgba(220,0,0,0.95)',
   RIPPLE: 'rgba(0,200,0,0.35)'
 };
-  })();
   
-  // Module: src/modules/state-manager.js
-  (() => {
-    /**
+
+  // === src/modules/state-manager.js ===
+  /**
  * Application state management
  */
-
-modules.src_modules_state_manager_js.class StateManager {
+class StateManager {
   constructor() {
     this.state = {
       mode: MODES.NONE,
@@ -158,14 +151,13 @@ modules.src_modules_state_manager_js.class StateManager {
     });
   }
 }
-  })();
   
-  // Module: src/modules/event-manager.js
-  (() => {
-    /**
+
+  // === src/modules/event-manager.js ===
+  /**
  * Centralized event management
  */
-modules.src_modules_event_manager_js.class EventManager {
+class EventManager {
   constructor() {
     this.listeners = new Map();
     this.isActive = false;
@@ -248,14 +240,13 @@ modules.src_modules_event_manager_js.class EventManager {
     return e.ctrlKey || e.metaKey || e.altKey || e.shiftKey;
   }
 }
-  })();
   
-  // Module: src/modules/cursor.js
-  (() => {
-    /**
+
+  // === src/modules/cursor.js ===
+  /**
  * Cursor overlay management
  */
-modules.src_modules_cursor_js.class CursorManager {
+class CursorManager {
   constructor() {
     this.cursorEl = null;
   }
@@ -304,14 +295,15 @@ modules.src_modules_cursor_js.class CursorManager {
         svg.appendChild(ln);
       };
 
-      // Orange crosshair centered in upper portion
-      const centerX = 100;
-      const centerY = 47;
+      // Orange crosshair in lower left corner - same size as normal mode
+      const centerX = 47; // Position in lower left area
+      const centerY = 113; // Position in lower left area of message box
       const col = '#ff8c00'; // Orange color
-      addLine(centerX, centerY - 37, centerX, centerY - 13, col);
-      addLine(centerX, centerY + 13, centerX, centerY + 37, col);
-      addLine(centerX - 37, centerY, centerX - 13, centerY, col);
-      addLine(centerX + 13, centerY, centerX + 37, centerY, col);
+      // Same dimensions as normal mode: arms extend ±24 pixels from center
+      addLine(centerX, centerY - 24, centerX, centerY - 10, col);
+      addLine(centerX, centerY + 10, centerX, centerY + 24, col);
+      addLine(centerX - 24, centerY, centerX - 10, centerY, col);
+      addLine(centerX + 10, centerY, centerX + 24, centerY, col);
       
       // Background for message in bottom half
       const bg = document.createElementNS(NS, 'rect');
@@ -394,14 +386,13 @@ modules.src_modules_cursor_js.class CursorManager {
     return node;
   }
 }
-  })();
   
-  // Module: src/modules/element-detector.js
-  (() => {
-    /**
+
+  // === src/modules/element-detector.js ===
+  /**
  * Element detection and interaction utilities
  */
-modules.src_modules_element_detector_js.class ElementDetector {
+class ElementDetector {
   constructor() {
     this.CLICKABLE_ROLES = ['link', 'button'];
     this.CLICKABLE_SEL = 'a[href], button, input, select, textarea';
@@ -454,14 +445,13 @@ modules.src_modules_element_detector_js.class ElementDetector {
     return el.isContentEditable || el.getAttribute('contenteditable') === 'true';
   }
 }
-  })();
   
-  // Module: src/modules/activation-handler.js
-  (() => {
-    /**
+
+  // === src/modules/activation-handler.js ===
+  /**
  * Smart element activation with semantic handling
  */
-modules.src_modules_activation_handler_js.class ActivationHandler {
+class ActivationHandler {
   constructor(elementDetector) {
     this.detector = elementDetector;
   }
@@ -687,15 +677,13 @@ modules.src_modules_activation_handler_js.class ActivationHandler {
     return Number.isFinite(n) ? n : d; 
   }
 }
-  })();
   
-  // Module: src/modules/focus-detector.js
-  (() => {
-    /**
+
+  // === src/modules/focus-detector.js ===
+  /**
  * Text field focus detection and management
  */
-
-modules.src_modules_focus_detector_js.class FocusDetector {
+class FocusDetector {
   constructor(stateManager) {
     this.state = stateManager;
     this.currentFocusedElement = null;
@@ -817,15 +805,13 @@ modules.src_modules_focus_detector_js.class FocusDetector {
     return this.currentFocusedElement;
   }
 }
-  })();
   
-  // Module: src/modules/overlay-manager.js
-  (() => {
-    /**
+
+  // === src/modules/overlay-manager.js ===
+  /**
  * Visual overlay management for focus and delete indicators
  */
-
-modules.src_modules_overlay_manager_js.class OverlayManager {
+class OverlayManager {
   constructor() {
     this.focusOverlay = null;
     this.deleteOverlay = null;
@@ -1007,15 +993,13 @@ modules.src_modules_overlay_manager_js.class OverlayManager {
     return element;
   }
 }
-  })();
   
-  // Module: src/modules/style-manager.js
-  (() => {
-    /**
+
+  // === src/modules/style-manager.js ===
+  /**
  * CSS injection and style management
  */
-
-modules.src_modules_style_manager_js.class StyleManager {
+class StyleManager {
   constructor() {
     this.injectedStyles = new Set();
   }
@@ -1140,14 +1124,13 @@ modules.src_modules_style_manager_js.class StyleManager {
     this.injectedStyles.clear();
   }
 }
-  })();
   
-  // Module: src/modules/shadow-dom-manager.js
-  (() => {
-    /**
+
+  // === src/modules/shadow-dom-manager.js ===
+  /**
  * Shadow DOM support and patching
  */
-modules.src_modules_shadow_dom_manager_js.class ShadowDOMManager {
+class ShadowDOMManager {
   constructor(styleManager) {
     this.styleManager = styleManager;
     this.shadowRoots = new Set();
@@ -1213,27 +1196,16 @@ modules.src_modules_shadow_dom_manager_js.class ShadowDOMManager {
     this.shadowRoots.clear();
   }
 }
-  })();
   
-  // Module: src/keypilot.js
-  (() => {
-    /**
+
+  // === src/keypilot.js ===
+  /**
  * KeyPilot main application class
  */
-
-
-
-
-
-
-
-
-
-
-modules.src_keypilot_js.class KeyPilot extends EventManager {
+class KeyPilot extends EventManager {
   constructor() {
     super();
-    
+
     // Prevent multiple instances
     if (window.__KeyPilotV22) {
       console.warn('[KeyPilot] Already loaded.');
@@ -1249,7 +1221,7 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
     this.overlayManager = new OverlayManager();
     this.styleManager = new StyleManager();
     this.shadowDOMManager = new ShadowDOMManager(this.styleManager);
-    
+
     this.init();
   }
 
@@ -1259,7 +1231,7 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
     this.cursor.ensure();
     this.focusDetector.start();
     this.start();
-    
+
     // Subscribe to state changes
     this.state.subscribe((newState, prevState) => {
       this.handleStateChange(newState, prevState);
@@ -1267,7 +1239,7 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
 
     // Set up communication with popup
     this.setupPopupCommunication();
-    
+
     this.state.setState({ isInitialized: true });
   }
 
@@ -1295,8 +1267,8 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
     }
 
     // Update visual overlays
-    if (newState.focusEl !== prevState.focusEl || 
-        newState.deleteEl !== prevState.deleteEl) {
+    if (newState.focusEl !== prevState.focusEl ||
+      newState.deleteEl !== prevState.deleteEl) {
       this.updateOverlays(newState.focusEl, newState.deleteEl);
     }
   }
@@ -1312,14 +1284,14 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
   handleKeyDown(e) {
     // Debug key presses
     console.log('[KeyPilot] Key pressed:', e.key, 'Code:', e.code);
-    
+
     // Don't interfere with modifier key combinations (Cmd+C, Ctrl+V, etc.)
     if (this.hasModifierKeys(e)) {
       return;
     }
 
     const currentState = this.state.getState();
-    
+
     // In text focus mode, only handle ESC
     if (currentState.mode === MODES.TEXT_FOCUS) {
       if (KEYBINDINGS.CANCEL.includes(e.key)) {
@@ -1378,7 +1350,7 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
 
   updateElementsUnderCursor(x, y) {
     const currentState = this.state.getState();
-    
+
     // Don't update focus/delete elements when in text focus mode
     if (currentState.mode === MODES.TEXT_FOCUS) {
       return;
@@ -1386,9 +1358,9 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
 
     const under = this.detector.deepElementFromPoint(x, y);
     const clickable = this.detector.findClickable(under);
-    
+
     this.state.setFocusElement(clickable);
-    
+
     if (this.state.isDeleteMode()) {
       this.state.setDeleteElement(under);
     } else {
@@ -1399,13 +1371,13 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
 
   handleDeleteKey() {
     const currentState = this.state.getState();
-    
+
     if (!this.state.isDeleteMode()) {
       this.state.setMode(MODES.DELETE);
     } else {
-      const victim = currentState.deleteEl || 
+      const victim = currentState.deleteEl ||
         this.detector.deepElementFromPoint(currentState.lastMouse.x, currentState.lastMouse.y);
-      
+
       this.cancelModes();
       this.deleteElement(victim);
     }
@@ -1415,7 +1387,7 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
     console.log('[KeyPilot] Root key pressed!');
     console.log('[KeyPilot] Current URL:', window.location.href);
     console.log('[KeyPilot] Origin:', window.location.origin);
-    
+
     // Navigate to the site root (origin)
     const rootUrl = window.location.origin;
     if (rootUrl && rootUrl !== window.location.href) {
@@ -1428,9 +1400,9 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
 
   handleActivateKey() {
     const currentState = this.state.getState();
-    const target = currentState.focusEl || 
+    const target = currentState.focusEl ||
       this.detector.deepElementFromPoint(currentState.lastMouse.x, currentState.lastMouse.y);
-    
+
     if (!target || target === document.documentElement || target === document.body) {
       return;
     }
@@ -1458,23 +1430,23 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
       try {
         element.classList.add('kpv2-hidden');
         element.setAttribute('aria-hidden', 'true');
-      } catch {}
+      } catch { }
     }
   }
 
   handleEscapeFromTextFocus() {
     console.debug('Escape pressed in text focus mode, attempting to exit');
-    
+
     // Use the simple, proven approach that works in DevTools
     // Blur the active element and set focus to the body
     if (document.activeElement) {
       document.activeElement.blur();
     }
     document.body.focus();
-    
+
     // Clear the text focus state
     this.focusDetector.clearTextFocus();
-    
+
     console.debug('Text focus escape completed');
   }
 
@@ -1491,7 +1463,7 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
     ripple.style.left = `${x}px`;
     ripple.style.top = `${y}px`;
     document.body.appendChild(ripple);
-    
+
     ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
   }
 
@@ -1502,43 +1474,40 @@ modules.src_keypilot_js.class KeyPilot extends EventManager {
 
   cleanup() {
     this.stop();
-    
+
     if (this.focusDetector) {
       this.focusDetector.stop();
     }
-    
+
     if (this.cursor && this.cursor.cursorEl) {
       this.cursor.cursorEl.remove();
     }
-    
+
     if (this.overlayManager) {
       this.overlayManager.cleanup();
     }
-    
+
     if (this.styleManager) {
       this.styleManager.cleanup();
     }
-    
+
     if (this.shadowDOMManager) {
       this.shadowDOMManager.cleanup();
     }
   }
 }
-  })();
   
-  // Module: src/content-script.js
-  (() => {
-    /**
+
+  // === src/content-script.js ===
+  /**
  * Content script entry point
  */
-
 // Initialize KeyPilot
 new KeyPilot();
-  })();
   
-  
+
   // Initialize KeyPilot
-  if (modules.src_keypilot_js && modules.src_keypilot_js.KeyPilot) {
-    new modules.src_keypilot_js.KeyPilot();
+  if (typeof KeyPilot !== 'undefined') {
+    new KeyPilot();
   }
 })();

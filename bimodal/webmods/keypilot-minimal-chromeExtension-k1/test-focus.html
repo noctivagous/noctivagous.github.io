@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Focus Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        input, textarea { 
+            margin: 5px; 
+            padding: 8px; 
+            font-size: 14px; 
+        }
+        button { 
+            margin: 5px; 
+            padding: 8px 16px; 
+            font-size: 14px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Focus Detection Test</h1>
+    
+    <div class="test-section">
+        <h3>Text Inputs</h3>
+        <input type="text" placeholder="Text input">
+        <input type="email" placeholder="Email input">
+        <input type="password" placeholder="Password input">
+        <input type="search" placeholder="Search input">
+    </div>
+    
+    <div class="test-section">
+        <h3>Textarea</h3>
+        <textarea placeholder="This is a textarea" rows="4" cols="50"></textarea>
+    </div>
+    
+    <div class="test-section">
+        <h3>Contenteditable</h3>
+        <div contenteditable="true" style="border: 1px solid #ccc; padding: 10px; min-height: 50px;">
+            This is a contenteditable div. Click to edit.
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Non-text Elements</h3>
+        <button>Regular Button</button>
+        <input type="checkbox"> Checkbox
+        <input type="radio" name="test"> Radio
+        <select>
+            <option>Select option</option>
+        </select>
+    </div>
+    
+    <div class="test-section">
+        <h3>Links</h3>
+        <a href="#test">Test Link</a>
+        <a href="https://example.com">External Link</a>
+    </div>
+    
+    <div class="test-section">
+        <h3>Instructions</h3>
+        <p>
+            <strong>Method 1 - Click to focus:</strong><br>
+            1. Click on any text input, textarea, or contenteditable element<br>
+            2. The KeyPilot cursor should change to show "Press ESC to leave text field focus"<br>
+            3. Try pressing F, C, V, or D - they should type normally in the text field<br>
+            4. Press ESC to exit text focus mode<br>
+            5. Now F, C, V, D should work as KeyPilot shortcuts again<br><br>
+            
+            <strong>Method 2 - Hover and press F:</strong><br>
+            1. Hover over any text input, textarea, or contenteditable element (should see green overlay)<br>
+            2. Press F - the element should get focus and cursor should appear inside<br>
+            3. The KeyPilot cursor should change to show "Press ESC to leave text field focus"<br>
+            4. Now you can type normally<br>
+            5. Press ESC to exit text focus mode
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Key Detection Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+        }
+        .key-info {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            border: 1px solid #dee2e6;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #bbdefb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Key Detection Test</h1>
+    
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <p>Press any key to see what JavaScript detects. Pay special attention to the backquote key (`).</p>
+    </div>
+    
+    <div class="key-info" id="keyInfo">
+        Press any key...
+    </div>
+    
+    <div class="key-info">
+        <strong>Expected for backquote:</strong><br>
+        key: "`" or "Backquote"<br>
+        code: "Backquote"
+    </div>
+
+    <script>
+        document.addEventListener('keydown', (e) => {
+            const info = `
+Key pressed:
+- e.key: "${e.key}"
+- e.code: "${e.code}"
+- e.keyCode: ${e.keyCode}
+- e.which: ${e.which}
+- Modifiers: ${e.ctrlKey ? 'Ctrl ' : ''}${e.altKey ? 'Alt ' : ''}${e.shiftKey ? 'Shift ' : ''}${e.metaKey ? 'Meta ' : ''}
+            `.trim();
+            
+            document.getElementById('keyInfo').textContent = info;
+            
+            console.log('Key event:', {
+                key: e.key,
+                code: e.code,
+                keyCode: e.keyCode,
+                which: e.which,
+                ctrlKey: e.ctrlKey,
+                altKey: e.altKey,
+                shiftKey: e.shiftKey,
+                metaKey: e.metaKey
+            });
+        });
+    </script>
+</body>
+</html>

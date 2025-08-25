@@ -50,14 +50,15 @@ export class CursorManager {
         svg.appendChild(ln);
       };
 
-      // Orange crosshair centered in upper portion
-      const centerX = 100;
-      const centerY = 47;
+      // Orange crosshair in lower left corner - same size as normal mode
+      const centerX = 47; // Position in lower left area
+      const centerY = 113; // Position in lower left area of message box
       const col = '#ff8c00'; // Orange color
-      addLine(centerX, centerY - 37, centerX, centerY - 13, col);
-      addLine(centerX, centerY + 13, centerX, centerY + 37, col);
-      addLine(centerX - 37, centerY, centerX - 13, centerY, col);
-      addLine(centerX + 13, centerY, centerX + 37, centerY, col);
+      // Same dimensions as normal mode: arms extend ±24 pixels from center
+      addLine(centerX, centerY - 24, centerX, centerY - 10, col);
+      addLine(centerX, centerY + 10, centerX, centerY + 24, col);
+      addLine(centerX - 24, centerY, centerX - 10, centerY, col);
+      addLine(centerX + 10, centerY, centerX + 24, centerY, col);
       
       // Background for message in bottom half
       const bg = document.createElementNS(NS, 'rect');

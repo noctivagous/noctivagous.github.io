@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Text Activation Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+        }
+        input, textarea { 
+            margin: 5px; 
+            padding: 8px; 
+            font-size: 14px; 
+            width: 200px;
+        }
+        button { 
+            margin: 5px; 
+            padding: 8px 16px; 
+            font-size: 14px; 
+        }
+        .contenteditable {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 50px;
+            margin: 5px;
+            background: #f9f9f9;
+        }
+        .status {
+            background: #e3f2fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Text Activation Test</h1>
+    
+    <div class="status" id="status">
+        Hover over elements and press F to activate them. Watch for focus changes.
+    </div>
+    
+    <div class="test-section">
+        <h3>Text Inputs</h3>
+        <p>Hover over these and press F - cursor should appear inside:</p>
+        <input type="text" placeholder="Text input" id="text1">
+        <input type="email" placeholder="Email input" id="email1">
+        <input type="password" placeholder="Password input" id="password1">
+        <input type="search" placeholder="Search input" id="search1">
+    </div>
+    
+    <div class="test-section">
+        <h3>Textarea</h3>
+        <p>Hover and press F - cursor should appear at the end:</p>
+        <textarea placeholder="This is a textarea" rows="4" id="textarea1">Some existing text</textarea>
+    </div>
+    
+    <div class="test-section">
+        <h3>Contenteditable</h3>
+        <p>Hover and press F - cursor should appear at the end:</p>
+        <div contenteditable="true" class="contenteditable" id="contenteditable1">
+            This is a contenteditable div. Click to edit or press F when hovering.
+        </div>
+        <div contenteditable="true" class="contenteditable" id="contenteditable2">
+            Another contenteditable with <strong>formatted</strong> text.
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Form Controls</h3>
+        <p>These should work as before:</p>
+        <input type="checkbox" id="checkbox1"> <label for="checkbox1">Checkbox (should toggle)</label><br>
+        <input type="radio" name="radio1" id="radio1"> <label for="radio1">Radio 1 (should select)</label><br>
+        <input type="radio" name="radio1" id="radio2"> <label for="radio2">Radio 2 (should select)</label><br>
+        <input type="range" min="0" max="100" value="50" id="range1"> <label for="range1">Range (should set value)</label><br>
+    </div>
+    
+    <div class="test-section">
+        <h3>Buttons and Links</h3>
+        <p>These should work as before:</p>
+        <button onclick="updateStatus('Button clicked!')">Test Button</button>
+        <a href="#test" onclick="updateStatus('Link clicked!'); return false;">Test Link</a>
+    </div>
+    
+    <div class="test-section">
+        <h3>Instructions</h3>
+        <ol>
+            <li><strong>Text Fields:</strong> Hover over text inputs/textareas and press F - cursor should appear inside</li>
+            <li><strong>Contenteditable:</strong> Hover over contenteditable divs and press F - cursor should appear at the end</li>
+            <li><strong>Form Controls:</strong> Hover over checkboxes/radios/ranges and press F - they should activate</li>
+            <li><strong>Buttons/Links:</strong> Hover and press F - they should click</li>
+        </ol>
+        
+        <h4>Expected Behavior:</h4>
+        <ul>
+            <li>Green overlay should appear around focusable elements when hovering</li>
+            <li>Pressing F should focus text fields and position cursor appropriately</li>
+            <li>Pressing F should activate form controls (check/uncheck, select radio, move slider)</li>
+            <li>Pressing F should click buttons and links</li>
+        </ul>
+    </div>
+
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+            setTimeout(() => {
+                document.getElementById('status').textContent = 'Hover over elements and press F to activate them. Watch for focus changes.';
+            }, 2000);
+        }
+
+        // Add focus event listeners to show when elements get focus
+        document.querySelectorAll('input, textarea, [contenteditable]').forEach(el => {
+            el.addEventListener('focus', () => {
+                updateStatus(`Focused: ${el.id || el.tagName.toLowerCase()}`);
+            });
+        });
+    </script>
+</body>
+</html>

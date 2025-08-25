@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Modular Architecture Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+            background: #f5f5f5;
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            background: white;
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-test { 
+            width: 300px; 
+            padding: 12px; 
+            font-size: 16px; 
+            border: 2px solid #ddd; 
+            border-radius: 6px; 
+            margin: 10px 0;
+            display: block;
+        }
+        .input-test:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+        .status {
+            background: #e8f5e8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+            margin: 10px 0;
+        }
+        .link-test {
+            color: #1a73e8;
+            text-decoration: underline;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Modular Architecture Test</h1>
+    
+    <div class="status" id="status">
+        Testing the new modular architecture (content-bundled.js)...
+    </div>
+    
+    <div class="test-section">
+        <h3>✅ Manifest Updated</h3>
+        <p>The manifest.json now uses <code>content-bundled.js</code> instead of <code>content-refactored.js</code></p>
+    </div>
+    
+    <div class="test-section">
+        <h3>🎯 Normal Mode Test</h3>
+        <p>Move your mouse around - you should see a <strong>green crosshair</strong> cursor following your mouse.</p>
+        <a href="#" class="link-test" onclick="return false;">Test Link - Hover and press F</a>
+        <a href="#" class="link-test" onclick="return false;">Another Link - Hover and press F</a>
+        
+        <div class="highlight">
+            <strong>Expected:</strong> Green crosshair cursor, F key should activate links
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🟠 Text Focus Mode Test</h3>
+        <p>Click on any input below to test the <strong>orange crosshair</strong> in the lower left corner:</p>
+        
+        <input type="text" class="input-test" placeholder="Text input - focus me!" id="text1">
+        <input type="email" class="input-test" placeholder="Email input - focus me!" id="email1">
+        <textarea class="input-test" rows="3" placeholder="Textarea - focus me!" id="textarea1"></textarea>
+        
+        <div class="highlight">
+            <strong>Expected:</strong> 
+            <ul>
+                <li>Black message box appears</li>
+                <li><strong>Orange crosshair in lower left corner</strong> of message box</li>
+                <li>Orange crosshair should be <strong>same size</strong> as normal green crosshair</li>
+                <li>Press ESC to exit text focus mode</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🔴 Delete Mode Test</h3>
+        <p>Press <strong>D</strong> key to enter delete mode - cursor should change to red X</p>
+        <p>Press <strong>ESC</strong> to exit delete mode</p>
+        
+        <div class="highlight">
+            <strong>Expected:</strong> Red X cursor when in delete mode
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>⌨️ Keyboard Shortcuts Test</h3>
+        <ul>
+            <li><strong>F</strong> - Activate element under cursor</li>
+            <li><strong>C</strong> - Browser back</li>
+            <li><strong>V</strong> - Browser forward</li>
+            <li><strong>D</strong> - Toggle delete mode</li>
+            <li><strong>ESC</strong> - Cancel/exit current mode</li>
+        </ul>
+        
+        <div class="highlight">
+            <strong>Note:</strong> In text focus mode, only ESC works. F, C, V, D should type normally.
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input, textarea').forEach((input) => {
+            input.addEventListener('focus', (e) => {
+                updateStatus(`✅ FOCUSED: ${e.target.tagName} - Look for ORANGE crosshair in lower left of message box!`);
+                console.log('Focus event:', e.target);
+            });
+            
+            input.addEventListener('blur', (e) => {
+                updateStatus(`✅ BLURRED: ${e.target.tagName} - Orange crosshair should be gone, green crosshair should return`);
+                console.log('Blur event:', e.target);
+            });
+        });
+        
+        updateStatus('✅ Ready to test modular architecture! Move mouse to see green crosshair, click inputs for orange crosshair.');
+    </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "KeyPilot Minimal Kiro",
-    "version": "0.2.1",
+    "name": "KeyPilot Minimal",
+    "version": "0.3.1",
     "description": "Keyboard-first navigation: F click link under cursor; C back; V forward; D delete mode; ESC cancel.",
     "action": {
         "default_title": "KeyPilot Minimal",
@@ -17,7 +17,7 @@
                 "<all_urls>"
             ],
             "js": [
-                "content-refactored.js"
+                "content-bundled.js"
             ],
             "run_at": "document_idle"
         }

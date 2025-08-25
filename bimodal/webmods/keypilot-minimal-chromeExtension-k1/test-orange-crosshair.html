@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KeyPilot Orange Crosshair Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            line-height: 1.6; 
+            background: #f5f5f5;
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            background: white;
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-test { 
+            width: 300px; 
+            padding: 12px; 
+            font-size: 16px; 
+            border: 2px solid #ddd; 
+            border-radius: 6px; 
+            margin: 10px 0;
+            display: block;
+        }
+        .input-test:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+        .status {
+            background: #e8f5e8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+            margin: 10px 0;
+        }
+        .crosshair-demo {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            position: relative;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        .crosshair-demo::before,
+        .crosshair-demo::after {
+            content: '';
+            position: absolute;
+            background: #ff8c00;
+        }
+        .crosshair-demo::before {
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+        .crosshair-demo::after {
+            top: 50%;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>KeyPilot Orange Crosshair Test</h1>
+    
+    <div class="status" id="status">
+        Test the orange crosshair in text focus mode...
+    </div>
+    
+    <div class="test-section">
+        <h3>Text Focus Mode Test</h3>
+        <p>Focus any of these inputs to enter text focus mode and see the orange crosshair <span class="crosshair-demo"></span> in the lower left corner of the message box.</p>
+        
+        <input type="text" class="input-test" placeholder="Text input - focus me!" id="text1">
+        <input type="email" class="input-test" placeholder="Email input - focus me!" id="email1">
+        <textarea class="input-test" rows="3" placeholder="Textarea - focus me!" id="textarea1"></textarea>
+        
+        <div class="highlight">
+            <strong>Expected Behavior:</strong>
+            <ol>
+                <li>Click on any input above</li>
+                <li>KeyPilot should show the text focus message box</li>
+                <li>Look for an orange crosshair <span class="crosshair-demo"></span> in the lower left corner of the message box</li>
+                <li>Press ESC to exit text focus mode</li>
+                <li>Normal green crosshair should return</li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Visual Reference</h3>
+        <p>The orange crosshair should look like this: <span class="crosshair-demo"></span></p>
+        <p>It should appear in the lower left corner of the black message box that says "Press ESC to leave text field focus"</p>
+        
+        <div class="highlight">
+            <strong>What to Look For:</strong>
+            <ul>
+                <li><strong>Color:</strong> Orange (#ff8c00)</li>
+                <li><strong>Position:</strong> Lower left corner of the message box</li>
+                <li><strong>Size:</strong> Small crosshair (16px total span)</li>
+                <li><strong>Style:</strong> Rounded line caps, 2.5px stroke width</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Instructions</h3>
+        <ol>
+            <li><strong>Load Extension:</strong> Make sure KeyPilot extension is loaded</li>
+            <li><strong>Focus Input:</strong> Click on any input field above</li>
+            <li><strong>Check Message Box:</strong> Look for the black message box with white text</li>
+            <li><strong>Find Crosshair:</strong> Look in the lower left corner for the orange crosshair</li>
+            <li><strong>Test ESC:</strong> Press ESC to exit and return to normal mode</li>
+            <li><strong>Repeat:</strong> Try with different input types</li>
+        </ol>
+        
+        <p><strong>Debug:</strong> Open browser console to see focus detection messages</p>
+    </div>
+
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input, textarea').forEach((input) => {
+            input.addEventListener('focus', (e) => {
+                updateStatus(`FOCUSED: ${e.target.tagName} (${e.target.id}) - Look for orange crosshair in message box!`);
+                console.log('Focus event:', e.target);
+            });
+            
+            input.addEventListener('blur', (e) => {
+                updateStatus(`BLURRED: ${e.target.tagName} (${e.target.id}) - Orange crosshair should be gone`);
+                console.log('Blur event:', e.target);
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    console.log('Escape key pressed in:', e.target.id);
+                    updateStatus(`ESC pressed in: ${e.target.id} - Should exit text focus mode`);
+                }
+            });
+        });
+        
+        // Global keydown listener
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                console.log('Global escape key detected, active element:', document.activeElement);
+            }
+        });
+        
+        updateStatus('Ready to test! Click on any input field above.');
+    </script>
+</body>
+</html>

@@ -180,8 +180,19 @@ export class OverlayManager {
 
   updateDeleteOverlay(element) {
     if (!element) {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] updateDeleteOverlay: no element provided');
+      }
       this.hideDeleteOverlay();
       return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateDeleteOverlay called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
     }
 
     if (!this.deleteOverlay) {
@@ -199,6 +210,14 @@ export class OverlayManager {
       });
       document.body.appendChild(this.deleteOverlay);
       
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Delete overlay created and added to DOM:', {
+          element: this.deleteOverlay,
+          className: this.deleteOverlay.className,
+          parent: this.deleteOverlay.parentElement?.tagName
+        });
+      }
+      
       // Start observing the overlay for visibility optimization
       if (this.overlayObserver) {
         this.overlayObserver.observe(this.deleteOverlay);
@@ -206,18 +225,36 @@ export class OverlayManager {
     }
 
     const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Delete overlay positioning:', {
+        rect: rect,
+        overlayExists: !!this.deleteOverlay,
+        overlayVisibility: this.overlayVisibility.delete
+      });
+    }
+    
     if (rect.width > 0 && rect.height > 0) {
-      // Use transform for better performance during scroll
-      this.deleteOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+      // Use left/top positioning instead of transform for consistency with focus overlay
+      this.deleteOverlay.style.left = `${rect.left}px`;
+      this.deleteOverlay.style.top = `${rect.top}px`;
       this.deleteOverlay.style.width = `${rect.width}px`;
       this.deleteOverlay.style.height = `${rect.height}px`;
       this.deleteOverlay.style.display = 'block';
+      this.deleteOverlay.style.visibility = 'visible';
       
-      // Only make visible if it should be visible
-      if (this.overlayVisibility.delete) {
-        this.deleteOverlay.style.visibility = 'visible';
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Delete overlay positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
       }
     } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Delete overlay hidden - invalid rect:', rect);
+      }
       this.hideDeleteOverlay();
     }
   }

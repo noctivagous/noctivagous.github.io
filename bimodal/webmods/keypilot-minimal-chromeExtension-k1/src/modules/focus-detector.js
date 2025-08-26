@@ -122,12 +122,12 @@ export class FocusDetector {
     // Add glow to the focused text field
     element.classList.add(CSS_CLASSES.TEXT_FIELD_GLOW);
     
-    this.state.setMode('text_focus');
-    this.state.setState({ focusedTextElement: element });
-    
-    // Clear the focusEl to ensure hasClickableElement starts as false
-    // This prevents the "Press ESC to click" message from appearing immediately after clicking into a text field
-    this.state.setFocusElement(null);
+    // Set mode and focused element in a single state update to ensure proper cursor initialization
+    this.state.setState({ 
+      mode: 'text_focus',
+      focusedTextElement: element,
+      focusEl: null // Clear to ensure hasClickableElement starts as false
+    });
   }
 
   clearTextFocus() {
@@ -137,8 +137,10 @@ export class FocusDetector {
     }
     
     this.currentFocusedElement = null;
-    this.state.setMode('none');
-    this.state.setState({ focusedTextElement: null });
+    this.state.setState({ 
+      mode: 'none',
+      focusedTextElement: null 
+    });
   }
 
   isInTextFocus() {

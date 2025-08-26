@@ -83,6 +83,9 @@ export class KeyPilot extends EventManager {
     this.setupOptimizedEventListeners();
     this.setupContinuousCursorSync();
 
+    // Initialize cursor position to center of viewport if not set
+    this.initializeCursorPosition();
+
     this.initializationComplete = true;
     this.state.setState({ isInitialized: true });
   }
@@ -209,6 +212,19 @@ export class KeyPilot extends EventManager {
         } : {};
       this.cursor.setMode(newState.mode, options);
       this.updatePopupStatus(newState.mode);
+    }
+
+    // Update focused element for connection line if it changed
+    if (newState.focusedTextElement !== prevState.focusedTextElement) {
+      this.cursor.updateFocusedElement(newState.focusedTextElement);
+      
+      // If entering text focus mode with a focused element, ensure connection lines are visible
+      if (newState.mode === MODES.TEXT_FOCUS && newState.focusedTextElement) {
+        // Small delay to ensure everything is set up
+        setTimeout(() => {
+          this.cursor.refreshConnectionLines();
+        }, 10);
+      }
     }
 
     // Update visual overlays
@@ -364,6 +380,13 @@ export class KeyPilot extends EventManager {
 
     if (this.state.isDeleteMode()) {
       // For delete mode, we need the exact element under cursor, not just clickable
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Delete mode - setting delete element:', {
+          tagName: under?.tagName,
+          className: under?.className,
+          id: under?.id
+        });
+      }
       this.state.setDeleteElement(under);
     } else {
       // Clear delete element when not in delete mode
@@ -375,11 +398,13 @@ export class KeyPilot extends EventManager {
     const currentState = this.state.getState();
 
     if (!this.state.isDeleteMode()) {
+      console.log('[KeyPilot] Entering delete mode');
       this.state.setMode(MODES.DELETE);
     } else {
       const victim = currentState.deleteEl ||
         this.detector.deepElementFromPoint(currentState.lastMouse.x, currentState.lastMouse.y);
 
+      console.log('[KeyPilot] Deleting element:', victim);
       this.cancelModes();
       this.deleteElement(victim);
     }
@@ -658,6 +683,33 @@ export class KeyPilot extends EventManager {
     }
     
     console.log('[KeyPilot] Extension disabled');
+  }
+
+  /**
+   * Initialize cursor position to center of viewport if not already set
+   */
+  initializeCursorPosition() {
+    const currentState = this.state.getState();
+    
+    // If mouse position hasn't been set yet (still at 0,0), initialize to center
+    if (currentState.lastMouse.x === 0 && currentState.lastMouse.y === 0) {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      
+      console.log('[KeyPilot] Initializing cursor position to viewport center:', centerX, centerY);
+      
+      this.state.setMousePosition(centerX, centerY);
+      this.cursor.updatePosition(centerX, centerY);
+      
+      // If we're already in text focus mode, update the connection line
+      if (currentState.mode === 'text_focus' && currentState.focusedTextElement) {
+        // Small delay to ensure the cursor position is fully set
+        setTimeout(() => {
+          this.cursor.updateFocusedElement(currentState.focusedTextElement);
+          this.cursor.refreshConnectionLines();
+        }, 50);
+      }
+    }
   }
 
   /**

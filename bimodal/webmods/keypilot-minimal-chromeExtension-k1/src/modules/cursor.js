@@ -39,6 +39,27 @@ export class CursorManager {
     }
   }
 
+  // Method to update the focused element without changing mode
+  updateFocusedElement(focusedElement) {
+    if (this.focusedElement !== focusedElement) {
+      this.focusedElement = focusedElement;
+
+      // If we're in text focus mode and have connection lines, update them
+      if (this.connectionLineEl && this.focusedElement) {
+        this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
+        this.updateBottomLine();
+      }
+    }
+  }
+
+  // Method to force refresh connection lines (useful for initial setup)
+  refreshConnectionLines() {
+    if (this.focusedElement && this.connectionLineEl) {
+      this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
+      this.updateBottomLine();
+    }
+  }
+
   updatePosition(x, y) {
     if (!this.cursorEl) return;
 
@@ -349,9 +370,21 @@ export class CursorManager {
     // Store reference to focused element for position updates
     this.focusedElement = focusedElement;
 
-    // Update line positions immediately
-    this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
+    // Update bottom line immediately (doesn't depend on cursor position)
     this.updateBottomLine();
+
+    // Update connection line - if cursor position is (0,0), try to get current mouse position
+    let cursorX = this.lastPosition.x;
+    let cursorY = this.lastPosition.y;
+
+    // If cursor position is at origin, it might not have been set yet
+    // Try to get a reasonable default position (center of viewport)
+    if (cursorX === 0 && cursorY === 0) {
+      cursorX = window.innerWidth / 2;
+      cursorY = window.innerHeight / 2;
+    }
+
+    this.updateConnectionLine(cursorX, cursorY);
   }
 
   hideConnectionLine() {

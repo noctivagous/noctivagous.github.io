@@ -1,12 +1,13 @@
 /**
  * Visual overlay management for focus and delete indicators
  */
-import { CSS_CLASSES, Z_INDEX, SELECTORS, MODES } from '../config/constants.js';
+import { CSS_CLASSES, Z_INDEX, SELECTORS, MODES, COLORS } from '../config/constants.js';
 
 export class OverlayManager {
   constructor() {
     this.focusOverlay = null;
     this.deleteOverlay = null;
+    this.focusedTextOverlay = null; // New overlay for focused text fields
     
     // Intersection observer for overlay visibility optimization
     this.overlayObserver = null;
@@ -14,7 +15,8 @@ export class OverlayManager {
     // Track overlay visibility state
     this.overlayVisibility = {
       focus: true,
-      delete: true
+      delete: true,
+      focusedText: true
     };
     
     this.setupOverlayObserver();
@@ -35,6 +37,9 @@ export class OverlayManager {
           } else if (overlay === this.deleteOverlay) {
             this.overlayVisibility.delete = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.focusedTextOverlay) {
+            this.overlayVisibility.focusedText = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           }
         });
       },
@@ -45,13 +50,14 @@ export class OverlayManager {
     );
   }
 
-  updateOverlays(focusEl, deleteEl, mode) {
+  updateOverlays(focusEl, deleteEl, mode, focusedTextElement = null) {
     // Debug logging when debug mode is enabled
     if (window.KEYPILOT_DEBUG && focusEl) {
       console.log('[KeyPilot Debug] Updating overlays:', {
         focusElement: focusEl.tagName,
         mode: mode,
-        willShowFocus: mode === 'none' || mode === 'text_focus'
+        willShowFocus: mode === 'none' || mode === 'text_focus',
+        focusedTextElement: focusedTextElement?.tagName
       });
     }
     
@@ -60,6 +66,13 @@ export class OverlayManager {
       this.updateFocusOverlay(focusEl, mode);
     } else {
       this.hideFocusOverlay();
+    }
+    
+    // Show focused text overlay when in text focus mode
+    if (mode === 'text_focus' && focusedTextElement) {
+      this.updateFocusedTextOverlay(focusedTextElement);
+    } else {
+      this.hideFocusedTextOverlay();
     }
     
     // Only show delete overlay in delete mode
@@ -83,12 +96,12 @@ export class OverlayManager {
     let borderColor, shadowColor;
     if (isTextInput) {
       // Orange color for text inputs in both normal mode and text focus mode
-      borderColor = '#ff8c00';
-      shadowColor = 'rgba(255,140,0,0.45)';
+      borderColor = COLORS.ORANGE;
+      shadowColor = COLORS.ORANGE_SHADOW;
     } else {
       // Green color for all non-text elements
-      borderColor = 'rgba(0,180,0,0.95)';
-      shadowColor = 'rgba(0,180,0,0.45)';
+      borderColor = COLORS.FOCUS_GREEN;
+      shadowColor = COLORS.GREEN_SHADOW;
     }
 
     // Debug logging
@@ -134,7 +147,8 @@ export class OverlayManager {
 
     // Update overlay colors based on current context
     this.focusOverlay.style.border = `3px solid ${borderColor}`;
-    this.focusOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${shadowColor.replace('0.45', '0.5')}`;
+    const brightShadowColor = isTextInput ? COLORS.ORANGE_SHADOW : COLORS.GREEN_SHADOW_BRIGHT;
+    this.focusOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${brightShadowColor}`;
 
     const rect = this.getBestRect(element);
     
@@ -202,8 +216,8 @@ export class OverlayManager {
           position: fixed;
           pointer-events: none;
           z-index: ${Z_INDEX.OVERLAYS};
-          border: 3px solid rgba(220,0,0,0.95);
-          box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45);
+          border: 3px solid ${COLORS.DELETE_RED};
+          box-shadow: 0 0 0 2px ${COLORS.DELETE_SHADOW}, 0 0 12px 2px ${COLORS.DELETE_SHADOW_BRIGHT};
           background: transparent;
           will-change: transform;
         `
@@ -262,6 +276,95 @@ export class OverlayManager {
   hideDeleteOverlay() {
     if (this.deleteOverlay) {
       this.deleteOverlay.style.display = 'none';
+    }
+  }
+
+  updateFocusedTextOverlay(element) {
+    if (!element) {
+      this.hideFocusedTextOverlay();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateFocusedTextOverlay called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
+    }
+
+    if (!this.focusedTextOverlay) {
+      this.focusedTextOverlay = this.createElement('div', {
+        className: 'kpv2-focused-text-overlay',
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS - 1};
+          background: transparent;
+          will-change: transform;
+        `
+      });
+      document.body.appendChild(this.focusedTextOverlay);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focused text overlay created and added to DOM:', {
+          element: this.focusedTextOverlay,
+          className: this.focusedTextOverlay.className,
+          parent: this.focusedTextOverlay.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.focusedTextOverlay);
+      }
+    }
+
+    // Darkened orange color for focused text fields
+    const borderColor = COLORS.ORANGE_SHADOW_DARK; // Slightly more opaque
+    const shadowColor = COLORS.ORANGE_SHADOW_LIGHT; // Darker shadow
+    
+    this.focusedTextOverlay.style.border = `3px solid ${borderColor}`;
+    this.focusedTextOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${COLORS.ORANGE_BORDER}`;
+
+    const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Focused text overlay positioning:', {
+        rect: rect,
+        overlayExists: !!this.focusedTextOverlay,
+        overlayVisibility: this.overlayVisibility.focusedText
+      });
+    }
+    
+    if (rect.width > 0 && rect.height > 0) {
+      // Position the overlay
+      this.focusedTextOverlay.style.left = `${rect.left}px`;
+      this.focusedTextOverlay.style.top = `${rect.top}px`;
+      this.focusedTextOverlay.style.width = `${rect.width}px`;
+      this.focusedTextOverlay.style.height = `${rect.height}px`;
+      this.focusedTextOverlay.style.display = 'block';
+      this.focusedTextOverlay.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focused text overlay positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focused text overlay hidden - invalid rect:', rect);
+      }
+      this.hideFocusedTextOverlay();
+    }
+  }
+
+  hideFocusedTextOverlay() {
+    if (this.focusedTextOverlay) {
+      this.focusedTextOverlay.style.display = 'none';
     }
   }
 
@@ -359,8 +462,8 @@ export class OverlayManager {
     const originalBoxShadow = this.focusOverlay.style.boxShadow;
     
     // Flash with brighter colors
-    this.focusOverlay.style.border = '3px solid rgba(0,255,0,1)';
-    this.focusOverlay.style.boxShadow = '0 0 0 2px rgba(0,255,0,0.8), 0 0 20px 4px rgba(0,255,0,0.9)';
+    this.focusOverlay.style.border = `3px solid ${COLORS.FLASH_GREEN}`;
+    this.focusOverlay.style.boxShadow = `0 0 0 2px ${COLORS.FLASH_GREEN_SHADOW}, 0 0 20px 4px ${COLORS.FLASH_GREEN_GLOW}`;
     this.focusOverlay.style.transition = 'border 0.15s ease-out, box-shadow 0.15s ease-out';
     
     // Reset after animation
@@ -392,6 +495,10 @@ export class OverlayManager {
     if (this.deleteOverlay) {
       this.deleteOverlay.remove();
       this.deleteOverlay = null;
+    }
+    if (this.focusedTextOverlay) {
+      this.focusedTextOverlay.remove();
+      this.focusedTextOverlay = null;
     }
   }
 

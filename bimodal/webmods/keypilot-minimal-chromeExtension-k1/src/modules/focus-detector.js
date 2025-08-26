@@ -48,9 +48,8 @@ export class FocusDetector {
       this.focusCheckInterval = null;
     }
     
-    // Clean up any remaining glow
+    // Clean up any remaining focused element reference
     if (this.currentFocusedElement) {
-      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
       this.currentFocusedElement = null;
     }
   }
@@ -112,15 +111,8 @@ export class FocusDetector {
   }
 
   setTextFocus(element) {
-    // Remove glow from previous element if any
-    if (this.currentFocusedElement && this.currentFocusedElement !== element) {
-      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
-    }
-    
+    // Update current focused element reference
     this.currentFocusedElement = element;
-    
-    // Add glow to the focused text field
-    element.classList.add(CSS_CLASSES.TEXT_FIELD_GLOW);
     
     // Set mode and focused element in a single state update to ensure proper cursor initialization
     this.state.setState({ 
@@ -131,11 +123,7 @@ export class FocusDetector {
   }
 
   clearTextFocus() {
-    // Remove glow from the previously focused element
-    if (this.currentFocusedElement) {
-      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
-    }
-    
+    // Clear focused element reference
     this.currentFocusedElement = null;
     this.state.setState({ 
       mode: 'none',

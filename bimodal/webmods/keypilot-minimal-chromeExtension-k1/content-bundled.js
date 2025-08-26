@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-26T09:14:02.487Z
+ * Generated on 2025-08-26T18:20:20.651Z
  */
 
 (() => {
@@ -48,8 +48,10 @@ const ELEMENT_IDS = {
 };
 
 const Z_INDEX = {
+  CONNECTION_LINE: 2147483646,
   OVERLAYS: 2147483646,
-  CURSOR: 2147483647
+  CURSOR: 2147483647,
+  MESSAGE_BOX: 2147483648
 };
 
 const MODES = {
@@ -59,9 +61,50 @@ const MODES = {
 };
 
 const COLORS = {
-  FOCUS: 'rgba(0,180,0,0.95)',
-  DELETE: 'rgba(220,0,0,0.95)',
-  RIPPLE: 'rgba(0,200,0,0.35)'
+  // Primary cursor colors
+  FOCUS_GREEN: 'rgba(0,180,0,0.95)',
+  FOCUS_GREEN_BRIGHT: 'rgba(0,128,0,0.95)',
+  DELETE_RED: 'rgba(220,0,0,0.95)',
+  ORANGE: '#ff8c00',
+  
+  // Text and background colors
+  TEXT_WHITE_PRIMARY: 'rgba(255,255,255,0.95)',
+  TEXT_WHITE_SECONDARY: 'rgba(255,255,255,0.8)',
+  TEXT_GREEN_BRIGHT: '#6ced2b',
+  
+  // Background colors
+  MESSAGE_BG_BROWN: '#ad6007',
+  MESSAGE_BG_GREEN: '#10911b',
+  
+  // Border and shadow colors
+  ORANGE_BORDER: 'rgba(255,140,0,0.4)',
+  ORANGE_SHADOW: 'rgba(255,140,0,0.45)',
+  ORANGE_SHADOW_DARK: 'rgba(255,140,0,0.8)',
+  ORANGE_SHADOW_LIGHT: 'rgba(255,140,0,0.3)',
+  GREEN_SHADOW: 'rgba(0,180,0,0.45)',
+  GREEN_SHADOW_BRIGHT: 'rgba(0,180,0,0.5)',
+  DELETE_SHADOW: 'rgba(220,0,0,0.35)',
+  DELETE_SHADOW_BRIGHT: 'rgba(220,0,0,0.45)',
+  BLACK_SHADOW: 'rgba(40, 40, 40, 0.7)',
+  
+  // Ripple effect colors
+  RIPPLE_GREEN: 'rgba(0,200,0,0.35)',
+  RIPPLE_GREEN_MID: 'rgba(0,200,0,0.22)',
+  RIPPLE_GREEN_TRANSPARENT: 'rgba(0,200,0,0)',
+  
+  // Flash animation colors
+  FLASH_GREEN: 'rgba(0,255,0,1)',
+  FLASH_GREEN_SHADOW: 'rgba(0,255,0,0.8)',
+  FLASH_GREEN_GLOW: 'rgba(0,255,0,0.9)',
+  
+  // Notification colors
+  NOTIFICATION_SUCCESS: '#4CAF50',
+  NOTIFICATION_ERROR: '#f44336',
+  NOTIFICATION_INFO: '#2196F3',
+  NOTIFICATION_SHADOW: 'rgba(0, 0, 0, 0.15)',
+  
+  // Text field glow
+  TEXT_FIELD_GLOW: 'rgba(255,165,0,0.8)'
 };
 
 
@@ -261,11 +304,11 @@ class CursorManager {
   constructor() {
     this.cursorEl = null;
     this.connectionLineEl = null;
-    this.bottomLineEl = null;
     this.lastPosition = { x: 0, y: 0 };
     this.isStuck = false;
     this.stuckCheckInterval = null;
     this.forceUpdateCount = 0;
+    this.overlayUpdateCallback = null; // Callback to update overlay position
   }
 
   ensure() {
@@ -303,7 +346,11 @@ class CursorManager {
       // If we're in text focus mode and have connection lines, update them
       if (this.connectionLineEl && this.focusedElement) {
         this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-        this.updateBottomLine();
+      }
+
+      // Update overlay position if we have a callback for it
+      if (this.overlayUpdateCallback && this.focusedElement) {
+        this.overlayUpdateCallback(this.focusedElement);
       }
     }
   }
@@ -312,8 +359,17 @@ class CursorManager {
   refreshConnectionLines() {
     if (this.focusedElement && this.connectionLineEl) {
       this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-      this.updateBottomLine();
     }
+
+    // Also refresh overlay if we have a callback for it
+    if (this.overlayUpdateCallback && this.focusedElement) {
+      this.overlayUpdateCallback(this.focusedElement);
+    }
+  }
+
+  // Method to set callback for updating overlay position
+  setOverlayUpdateCallback(callback) {
+    this.overlayUpdateCallback = callback;
   }
 
   updatePosition(x, y) {
@@ -327,7 +383,11 @@ class CursorManager {
 
     // Update connection line position if visible
     this.updateConnectionLine(x, y);
-    // Bottom line doesn't need to update with cursor movement, only when element changes
+
+    // Update overlay position if we have a callback for it
+    if (this.overlayUpdateCallback && this.focusedElement) {
+      this.overlayUpdateCallback(this.focusedElement);
+    }
 
     // Reset stuck detection
     this.isStuck = false;
@@ -463,7 +523,7 @@ class CursorManager {
     if (mode === 'text_focus') {
       // Larger SVG for text mode with message in lower right quadrant
       svg.setAttribute('viewBox', '0 0 200 140');
-      svg.setAttribute('width', '350');
+      svg.setAttribute('width', '400');
       svg.setAttribute('height', '140');
 
       const addLine = (x1, y1, x2, y2, color, w = '4') => {
@@ -476,64 +536,80 @@ class CursorManager {
       };
 
 
-
-      // Background for message in lower right quadrant
-      const bg = document.createElementNS(NS, 'rect');
-      bg.setAttribute('x', '100');  // Right side of crosshair
-      bg.setAttribute('y', '70');   // Lower quadrant
-      bg.setAttribute('width', '165');
-      bg.setAttribute('height', '50');
-      bg.setAttribute('rx', '6');
-      bg.setAttribute('fill', 'rgba(0,0,0,0.85)');
-      bg.setAttribute('stroke', 'rgba(255,140,0,0.4)');
-      bg.setAttribute('stroke-width', '1');
-      bg.style.filter = 'drop-shadow(5px 5px 5px rgba(40, 40, 40, 0.7))';
-
-      svg.appendChild(bg);
-
       // Determine message based on whether there's a clickable element
       const hasClickableElement = options.hasClickableElement || false;
+
+      // Background div for message in lower right quadrant
+      const bg = document.createElement('div');
+      Object.assign(bg.style, {
+        position: 'absolute',
+        left: '100px',  // Right side of crosshair
+        top: '70px',    // Lower quadrant
+        width: '195px',
+        backgroundColor: COLORS.MESSAGE_BG_BROWN, // hasClickableElement ? COLORS.MESSAGE_BG_GREEN : COLORS.MESSAGE_BG_BROWN
+        border: `1px solid ${COLORS.ORANGE_BORDER}`,
+        borderRadius: '6px',
+        filter: `drop-shadow(5px 5px 5px ${COLORS.BLACK_SHADOW})`,
+        zIndex: Z_INDEX.MESSAGE_BOX, // Higher than cursor to ensure visibility
+        pointerEvents: 'none',
+        padding: '8px 9px',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        lineHeight: '1.2'
+      });
+
       const firstLineText = hasClickableElement ? 'Cursor is in a text field.' : 'Cursor is in a text field.';
-      const secondLineText = hasClickableElement ? 'Use ESC to click element.' : 'Press ESC to exit.';
+      const secondLineText = 'Begin typing.';
+      const thirdLineText = hasClickableElement ? 'Use ESC to click this element.' : 'Press ESC to exit.';
 
-      // First line of text message
-      const text1 = document.createElementNS(NS, 'text');
-      text1.setAttribute('x', '109'); // Center of message box
-      text1.setAttribute('y', '90');   // First line position
-      text1.setAttribute('fill', 'rgba(255,255,255,0.95)');
-      text1.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text1.setAttribute('font-size', '12');
-      text1.setAttribute('font-weight', '500');
-      text1.setAttribute('text-anchor', 'left');
+      // First line of text using normal document flow
+      const text1 = document.createElement('div');
+      Object.assign(text1.style, {
+        color: COLORS.TEXT_WHITE_PRIMARY,
+        fontSize: '12px',
+        fontWeight: '800',
+        marginBottom: '2px'
+      });
       text1.textContent = firstLineText;
-      svg.appendChild(text1);
+      bg.appendChild(text1);
 
-      // Second line of text message
-      const text2 = document.createElementNS(NS, 'text');
-      text2.setAttribute('x', '109'); // Center of message box
-      text2.setAttribute('y', '110');   // Second line position
-
-      text2.setAttribute('fill', hasClickableElement ? '#6ced2b' : '#ff8c00');
-
-      //text2.setAttribute('fill', 'rgba(255,255,255,0.95)');
-      text2.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text2.setAttribute('font-size', '12');
-      text2.setAttribute('font-weight', '500');
-      text2.setAttribute('text-anchor', 'left');
+      // Second line of text using normal document flow
+      const text2 = document.createElement('div');
+      Object.assign(text2.style, {
+        color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
+        fontSize: '13px',
+        fontWeight: '600',
+        marginBottom: '2px'
+      });
       text2.textContent = secondLineText;
-      svg.appendChild(text2);
+      bg.appendChild(text2);
 
-
+      // Third line of text using normal document flow
+      const text3 = document.createElement('div');
+      Object.assign(text3.style, {
+        color: COLORS.TEXT_WHITE_SECONDARY,
+        fontSize: '11px',
+        fontWeight: '500'
+      });
+      text3.textContent = thirdLineText;
+      bg.appendChild(text3);
 
       // Orange crosshair at center - same size as normal mode
       const centerX = 100; // Center of the SVG
       const centerY = 70;  // Center of the SVG
-      const col = hasClickableElement ? 'rgba(0,128,0,0.95)' : '#ff8c00'; // Green if clickable, orange if not.
+      const col = hasClickableElement ? COLORS.FOCUS_GREEN_BRIGHT : COLORS.ORANGE; // Green if clickable, orange if not.
       // Same dimensions as normal mode: arms extend ±24 pixels from center
       addLine(centerX, centerY - 24, centerX, centerY - 10, col);
       addLine(centerX, centerY + 10, centerX, centerY + 24, col);
       addLine(centerX - 24, centerY, centerX - 10, centerY, col);
       addLine(centerX + 10, centerY, centerX + 24, centerY, col);
+
+      // Create container to hold both SVG and background div
+      const container = document.createElement('div');
+      container.style.position = 'relative';
+      container.appendChild(svg);
+      container.appendChild(bg);
+
+      return container;
 
 
     } else {
@@ -552,19 +628,19 @@ class CursorManager {
       };
 
       if (mode === 'delete') {
-        addLine(18, 18, 76, 76, 'rgba(220,0,0,0.95)', '5');
-        addLine(76, 18, 18, 76, 'rgba(220,0,0,0.95)', '5');
+        addLine(18, 18, 76, 76, COLORS.DELETE_RED, '5');
+        addLine(76, 18, 18, 76, COLORS.DELETE_RED, '5');
       } else {
-        const col = 'rgba(0,128,0,0.95)';
+        const col = COLORS.FOCUS_GREEN_BRIGHT;
         addLine(47, 10, 47, 34, col);
         addLine(47, 60, 47, 84, col);
         addLine(10, 47, 34, 47, col);
         addLine(60, 47, 84, 47, col);
       }
-    }
 
-    svg.setAttribute('xmlns', NS);
-    return svg;
+      svg.setAttribute('xmlns', NS);
+      return svg;
+    }
   }
 
   hide() {
@@ -582,52 +658,61 @@ class CursorManager {
   showConnectionLine(focusedElement) {
     if (!focusedElement) return;
 
+    // Arrow scale factor - adjust this to make arrow larger/smaller
+    const arrowScale = 0.5;
+
     // Create connection line if it doesn't exist
     if (!this.connectionLineEl) {
-      this.connectionLineEl = this.createElement('div', {
-        id: 'kpv2-connection-line',
-        'aria-hidden': 'true'
-      });
+      const NS = 'http://www.w3.org/2000/svg';
 
-      // Style the connection line
+      // Create SVG container
+      this.connectionLineEl = document.createElementNS(NS, 'svg');
+      this.connectionLineEl.setAttribute('id', 'kpv2-connection-line');
+      this.connectionLineEl.setAttribute('aria-hidden', 'true');
+
+      // Style the SVG container to cover full viewport
       Object.assign(this.connectionLineEl.style, {
         position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100vw',
+        height: '100vh',
         pointerEvents: 'none',
-        zIndex: '2147483647', // Same as cursor
-        width: '5px',
-        backgroundColor: '#ff8c00', // Orange color
-        transformOrigin: 'top center',
-        borderRadius: '2.5px'
+        zIndex: Z_INDEX.CONNECTION_LINE // Lower than cursor and message to appear underneath
       });
 
+      // Create arrowhead marker definition with scaling
+      const defs = document.createElementNS(NS, 'defs');
+      const marker = document.createElementNS(NS, 'marker');
+      marker.setAttribute('id', 'arrowhead');
+      marker.setAttribute('markerWidth', 10 * arrowScale);
+      marker.setAttribute('markerHeight', 7 * arrowScale);
+      marker.setAttribute('refX', 9 * arrowScale);
+      marker.setAttribute('refY', 3.5 * arrowScale);
+      marker.setAttribute('orient', 'auto');
+
+      const polygon = document.createElementNS(NS, 'polygon');
+      const scaledPoints = `0 0, ${10 * arrowScale} ${3.5 * arrowScale}, 0 ${7 * arrowScale}`;
+      polygon.setAttribute('points', scaledPoints);
+      polygon.setAttribute('fill', COLORS.ORANGE); // Same orange color as line
+
+      marker.appendChild(polygon);
+      defs.appendChild(marker);
+      this.connectionLineEl.appendChild(defs);
+
+      // Create the line element
+      this.connectionLine = document.createElementNS(NS, 'line');
+      this.connectionLine.setAttribute('stroke', COLORS.ORANGE); // Orange color
+      this.connectionLine.setAttribute('stroke-width', '11');
+      this.connectionLine.setAttribute('stroke-linecap', 'round');
+      this.connectionLine.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead at end
+
+      this.connectionLineEl.appendChild(this.connectionLine);
       document.body.appendChild(this.connectionLineEl);
-    }
-
-    // Create bottom line if it doesn't exist
-    if (!this.bottomLineEl) {
-      this.bottomLineEl = this.createElement('div', {
-        id: 'kpv2-bottom-line',
-        'aria-hidden': 'true'
-      });
-
-      // Style the bottom line
-      Object.assign(this.bottomLineEl.style, {
-        position: 'fixed',
-        pointerEvents: 'none',
-        zIndex: '2147483647', // Same as cursor
-        height: '5px',
-        backgroundColor: '#ff8c00', // Orange color - same as connection line
-        borderRadius: '2.5px'
-      });
-
-      document.body.appendChild(this.bottomLineEl);
     }
 
     // Store reference to focused element for position updates
     this.focusedElement = focusedElement;
-
-    // Update bottom line immediately (doesn't depend on cursor position)
-    this.updateBottomLine();
 
     // Update connection line - if cursor position is (0,0), try to get current mouse position
     let cursorX = this.lastPosition.x;
@@ -647,40 +732,30 @@ class CursorManager {
     if (this.connectionLineEl) {
       this.connectionLineEl.remove();
       this.connectionLineEl = null;
-    }
-    if (this.bottomLineEl) {
-      this.bottomLineEl.remove();
-      this.bottomLineEl = null;
+      this.connectionLine = null;
     }
     this.focusedElement = null;
   }
 
   updateConnectionLine(cursorX, cursorY) {
-    if (!this.connectionLineEl || !this.focusedElement) return;
+    if (!this.connectionLine || !this.focusedElement) return;
 
     try {
       // Get the focused element's position
       const elementRect = this.focusedElement.getBoundingClientRect();
 
-      // Calculate center of the input element's bottom edge
+      // Calculate center of the input element
       const elementCenterX = elementRect.left + elementRect.width / 2;
-      const elementBottomY = elementRect.bottom;
+      // We want the line drawn to the bottom edge plus 4 because it
+      // aligns with the rectangle that has an outline.
+      const elementCenterY = elementRect.top + elementRect.height + 4;
 
-      // Calculate line properties - from cursor to bottom center of element
-      const deltaX = elementCenterX - cursorX;
-      const deltaY = elementBottomY - cursorY;
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-      // Calculate angle in radians, then convert to degrees
-      const angleRad = Math.atan2(deltaX, -deltaY); // Swapped and negated for correct orientation
-      const angleDeg = 180 + (angleRad * 180 / Math.PI);
-
-      // Position the line at cursor position
-      this.connectionLineEl.style.left = `${cursorX}px`;
-      this.connectionLineEl.style.top = `${cursorY}px`;
-      this.connectionLineEl.style.height = `${distance}px`;
-      this.connectionLineEl.style.transform = `translate(-50%, 0) rotate(${angleDeg}deg)`;
-      this.connectionLineEl.style.display = 'block';
+      // Simply update the line endpoints
+      this.connectionLine.setAttribute('x1', cursorX);
+      this.connectionLine.setAttribute('y1', cursorY);
+      this.connectionLine.setAttribute('x2', elementCenterX);
+      this.connectionLine.setAttribute('y2', elementCenterY);
+      this.connectionLine.style.filter = `drop-shadow(5px 5px 5px ${COLORS.BLACK_SHADOW})`;
 
     } catch (error) {
       // If element is no longer valid, hide the line
@@ -688,24 +763,7 @@ class CursorManager {
     }
   }
 
-  updateBottomLine() {
-    if (!this.bottomLineEl || !this.focusedElement) return;
 
-    try {
-      // Get the focused element's position
-      const elementRect = this.focusedElement.getBoundingClientRect();
-
-      // Position the bottom line along the bottom edge of the input
-      this.bottomLineEl.style.left = `${elementRect.left}px`;
-      this.bottomLineEl.style.top = `${elementRect.bottom}px`;
-      this.bottomLineEl.style.width = `${elementRect.width}px`;
-      this.bottomLineEl.style.display = 'block';
-
-    } catch (error) {
-      // If element is no longer valid, hide the line
-      this.hideConnectionLine();
-    }
-  }
 
   cleanup() {
     if (this.stuckCheckInterval) {
@@ -721,11 +779,7 @@ class CursorManager {
     if (this.connectionLineEl) {
       this.connectionLineEl.remove();
       this.connectionLineEl = null;
-    }
-
-    if (this.bottomLineEl) {
-      this.bottomLineEl.remove();
-      this.bottomLineEl = null;
+      this.connectionLine = null;
     }
   }
 
@@ -1255,9 +1309,8 @@ class FocusDetector {
       this.focusCheckInterval = null;
     }
     
-    // Clean up any remaining glow
+    // Clean up any remaining focused element reference
     if (this.currentFocusedElement) {
-      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
       this.currentFocusedElement = null;
     }
   }
@@ -1319,15 +1372,8 @@ class FocusDetector {
   }
 
   setTextFocus(element) {
-    // Remove glow from previous element if any
-    if (this.currentFocusedElement && this.currentFocusedElement !== element) {
-      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
-    }
-    
+    // Update current focused element reference
     this.currentFocusedElement = element;
-    
-    // Add glow to the focused text field
-    element.classList.add(CSS_CLASSES.TEXT_FIELD_GLOW);
     
     // Set mode and focused element in a single state update to ensure proper cursor initialization
     this.state.setState({ 
@@ -1338,11 +1384,7 @@ class FocusDetector {
   }
 
   clearTextFocus() {
-    // Remove glow from the previously focused element
-    if (this.currentFocusedElement) {
-      this.currentFocusedElement.classList.remove(CSS_CLASSES.TEXT_FIELD_GLOW);
-    }
-    
+    // Clear focused element reference
     this.currentFocusedElement = null;
     this.state.setState({ 
       mode: 'none',
@@ -1368,6 +1410,7 @@ class OverlayManager {
   constructor() {
     this.focusOverlay = null;
     this.deleteOverlay = null;
+    this.focusedTextOverlay = null; // New overlay for focused text fields
     
     // Intersection observer for overlay visibility optimization
     this.overlayObserver = null;
@@ -1375,7 +1418,8 @@ class OverlayManager {
     // Track overlay visibility state
     this.overlayVisibility = {
       focus: true,
-      delete: true
+      delete: true,
+      focusedText: true
     };
     
     this.setupOverlayObserver();
@@ -1396,6 +1440,9 @@ class OverlayManager {
           } else if (overlay === this.deleteOverlay) {
             this.overlayVisibility.delete = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.focusedTextOverlay) {
+            this.overlayVisibility.focusedText = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           }
         });
       },
@@ -1406,13 +1453,14 @@ class OverlayManager {
     );
   }
 
-  updateOverlays(focusEl, deleteEl, mode) {
+  updateOverlays(focusEl, deleteEl, mode, focusedTextElement = null) {
     // Debug logging when debug mode is enabled
     if (window.KEYPILOT_DEBUG && focusEl) {
       console.log('[KeyPilot Debug] Updating overlays:', {
         focusElement: focusEl.tagName,
         mode: mode,
-        willShowFocus: mode === 'none' || mode === 'text_focus'
+        willShowFocus: mode === 'none' || mode === 'text_focus',
+        focusedTextElement: focusedTextElement?.tagName
       });
     }
     
@@ -1421,6 +1469,13 @@ class OverlayManager {
       this.updateFocusOverlay(focusEl, mode);
     } else {
       this.hideFocusOverlay();
+    }
+    
+    // Show focused text overlay when in text focus mode
+    if (mode === 'text_focus' && focusedTextElement) {
+      this.updateFocusedTextOverlay(focusedTextElement);
+    } else {
+      this.hideFocusedTextOverlay();
     }
     
     // Only show delete overlay in delete mode
@@ -1444,12 +1499,12 @@ class OverlayManager {
     let borderColor, shadowColor;
     if (isTextInput) {
       // Orange color for text inputs in both normal mode and text focus mode
-      borderColor = '#ff8c00';
-      shadowColor = 'rgba(255,140,0,0.45)';
+      borderColor = COLORS.ORANGE;
+      shadowColor = COLORS.ORANGE_SHADOW;
     } else {
       // Green color for all non-text elements
-      borderColor = 'rgba(0,180,0,0.95)';
-      shadowColor = 'rgba(0,180,0,0.45)';
+      borderColor = COLORS.FOCUS_GREEN;
+      shadowColor = COLORS.GREEN_SHADOW;
     }
 
     // Debug logging
@@ -1495,7 +1550,8 @@ class OverlayManager {
 
     // Update overlay colors based on current context
     this.focusOverlay.style.border = `3px solid ${borderColor}`;
-    this.focusOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${shadowColor.replace('0.45', '0.5')}`;
+    const brightShadowColor = isTextInput ? COLORS.ORANGE_SHADOW : COLORS.GREEN_SHADOW_BRIGHT;
+    this.focusOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${brightShadowColor}`;
 
     const rect = this.getBestRect(element);
     
@@ -1563,8 +1619,8 @@ class OverlayManager {
           position: fixed;
           pointer-events: none;
           z-index: ${Z_INDEX.OVERLAYS};
-          border: 3px solid rgba(220,0,0,0.95);
-          box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45);
+          border: 3px solid ${COLORS.DELETE_RED};
+          box-shadow: 0 0 0 2px ${COLORS.DELETE_SHADOW}, 0 0 12px 2px ${COLORS.DELETE_SHADOW_BRIGHT};
           background: transparent;
           will-change: transform;
         `
@@ -1623,6 +1679,95 @@ class OverlayManager {
   hideDeleteOverlay() {
     if (this.deleteOverlay) {
       this.deleteOverlay.style.display = 'none';
+    }
+  }
+
+  updateFocusedTextOverlay(element) {
+    if (!element) {
+      this.hideFocusedTextOverlay();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateFocusedTextOverlay called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
+    }
+
+    if (!this.focusedTextOverlay) {
+      this.focusedTextOverlay = this.createElement('div', {
+        className: 'kpv2-focused-text-overlay',
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS - 1};
+          background: transparent;
+          will-change: transform;
+        `
+      });
+      document.body.appendChild(this.focusedTextOverlay);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focused text overlay created and added to DOM:', {
+          element: this.focusedTextOverlay,
+          className: this.focusedTextOverlay.className,
+          parent: this.focusedTextOverlay.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.focusedTextOverlay);
+      }
+    }
+
+    // Darkened orange color for focused text fields
+    const borderColor = COLORS.ORANGE_SHADOW_DARK; // Slightly more opaque
+    const shadowColor = COLORS.ORANGE_SHADOW_LIGHT; // Darker shadow
+    
+    this.focusedTextOverlay.style.border = `3px solid ${borderColor}`;
+    this.focusedTextOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${COLORS.ORANGE_BORDER}`;
+
+    const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Focused text overlay positioning:', {
+        rect: rect,
+        overlayExists: !!this.focusedTextOverlay,
+        overlayVisibility: this.overlayVisibility.focusedText
+      });
+    }
+    
+    if (rect.width > 0 && rect.height > 0) {
+      // Position the overlay
+      this.focusedTextOverlay.style.left = `${rect.left}px`;
+      this.focusedTextOverlay.style.top = `${rect.top}px`;
+      this.focusedTextOverlay.style.width = `${rect.width}px`;
+      this.focusedTextOverlay.style.height = `${rect.height}px`;
+      this.focusedTextOverlay.style.display = 'block';
+      this.focusedTextOverlay.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focused text overlay positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Focused text overlay hidden - invalid rect:', rect);
+      }
+      this.hideFocusedTextOverlay();
+    }
+  }
+
+  hideFocusedTextOverlay() {
+    if (this.focusedTextOverlay) {
+      this.focusedTextOverlay.style.display = 'none';
     }
   }
 
@@ -1720,8 +1865,8 @@ class OverlayManager {
     const originalBoxShadow = this.focusOverlay.style.boxShadow;
     
     // Flash with brighter colors
-    this.focusOverlay.style.border = '3px solid rgba(0,255,0,1)';
-    this.focusOverlay.style.boxShadow = '0 0 0 2px rgba(0,255,0,0.8), 0 0 20px 4px rgba(0,255,0,0.9)';
+    this.focusOverlay.style.border = `3px solid ${COLORS.FLASH_GREEN}`;
+    this.focusOverlay.style.boxShadow = `0 0 0 2px ${COLORS.FLASH_GREEN_SHADOW}, 0 0 20px 4px ${COLORS.FLASH_GREEN_GLOW}`;
     this.focusOverlay.style.transition = 'border 0.15s ease-out, box-shadow 0.15s ease-out';
     
     // Reset after animation
@@ -1753,6 +1898,10 @@ class OverlayManager {
     if (this.deleteOverlay) {
       this.deleteOverlay.remove();
       this.deleteOverlay = null;
+    }
+    if (this.focusedTextOverlay) {
+      this.focusedTextOverlay.remove();
+      this.focusedTextOverlay = null;
     }
   }
 
@@ -1819,7 +1968,7 @@ class StyleManager {
         width: 46px; 
         height: 46px; 
         border-radius: 50%; 
-        background: radial-gradient(circle, rgba(0,200,0,0.35) 0%, rgba(0,200,0,0.22) 60%, rgba(0,200,0,0) 70%); 
+        background: radial-gradient(circle, ${COLORS.RIPPLE_GREEN} 0%, ${COLORS.RIPPLE_GREEN_MID} 60%, ${COLORS.RIPPLE_GREEN_TRANSPARENT} 70%); 
         animation: kpv2-ripple 420ms ease-out forwards; 
       }
       
@@ -1827,8 +1976,8 @@ class StyleManager {
         position: fixed; 
         pointer-events: none; 
         z-index: 2147483646; 
-        border: 3px solid rgba(0,180,0,0.95); 
-        box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5); 
+        border: 3px solid ${COLORS.FOCUS_GREEN}; 
+        box-shadow: 0 0 0 2px ${COLORS.GREEN_SHADOW}, 0 0 10px 2px ${COLORS.GREEN_SHADOW_BRIGHT}; 
         background: transparent; 
       }
       
@@ -1836,15 +1985,12 @@ class StyleManager {
         position: fixed; 
         pointer-events: none; 
         z-index: 2147483646; 
-        border: 3px solid rgba(220,0,0,0.95); 
-        box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45); 
+        border: 3px solid ${COLORS.DELETE_RED}; 
+        box-shadow: 0 0 0 2px ${COLORS.DELETE_SHADOW}, 0 0 12px 2px ${COLORS.DELETE_SHADOW_BRIGHT}; 
         background: transparent; 
       }
       
-      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
-        outline: 2px solid rgba(255,165,0,0.8) !important;
-        outline-offset: 2px !important;
-      }
+
       
       #${ELEMENT_IDS.CURSOR} { 
         position: fixed !important; 
@@ -1892,17 +2038,14 @@ class StyleManager {
         display: none !important; 
       }
       
-      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
-        outline: 2px solid rgba(255,165,0,0.8) !important;
-        outline-offset: 2px !important;
-      }
+
     `;
 
     const style = document.createElement('style');
     style.id = 'keypilot-shadow-styles';
     style.textContent = css;
     shadowRoot.appendChild(style);
-    
+
     this.injectedStyles.add(shadowRoot);
     this.shadowRootStyles.set(shadowRoot, style);
   }
@@ -1914,23 +2057,23 @@ class StyleManager {
   removeAllStyles() {
     // Remove cursor hidden class
     document.documentElement.classList.remove(CSS_CLASSES.CURSOR_HIDDEN);
-    
+
     // Remove main stylesheet
     const mainStyle = document.getElementById(ELEMENT_IDS.STYLE);
     if (mainStyle) {
       mainStyle.remove();
     }
-    
+
     // Remove all shadow root styles
     for (const [shadowRoot, styleElement] of this.shadowRootStyles) {
       if (styleElement && styleElement.parentNode) {
         styleElement.remove();
       }
     }
-    
+
     // Remove all KeyPilot classes from elements
     this.removeAllKeyPilotClasses();
-    
+
     // Clear tracking
     this.injectedStyles.clear();
     this.shadowRootStyles.clear();
@@ -1943,10 +2086,10 @@ class StyleManager {
    */
   restoreAllStyles() {
     this.isEnabled = true;
-    
+
     // Re-inject main styles
     this.injectSharedStyles();
-    
+
     // Re-inject shadow root styles for any shadow roots we previously tracked
     // Note: We'll need to re-discover shadow roots since they may have changed
     // This will be handled by the shadow DOM manager during normal operation
@@ -1960,16 +2103,15 @@ class StyleManager {
       CSS_CLASSES.FOCUS,
       CSS_CLASSES.DELETE,
       CSS_CLASSES.HIDDEN,
-      CSS_CLASSES.TEXT_FIELD_GLOW,
       CSS_CLASSES.RIPPLE
     ];
-    
+
     // Remove classes from main document
     classesToRemove.forEach(className => {
       const elements = document.querySelectorAll(`.${className}`);
       elements.forEach(el => el.classList.remove(className));
     });
-    
+
     // Remove classes from shadow roots
     for (const shadowRoot of this.shadowRootStyles.keys()) {
       classesToRemove.forEach(className => {
@@ -2788,7 +2930,7 @@ class KeyPilotToggleHandler extends EventManager {
       top: '20px',
       left: '50%',
       transform: 'translateX(-50%)',
-      backgroundColor: enabled ? '#4CAF50' : '#f44336',
+      backgroundColor: enabled ? COLORS.NOTIFICATION_SUCCESS : COLORS.NOTIFICATION_ERROR,
       color: 'white',
       padding: '12px 24px',
       borderRadius: '6px',
@@ -2796,7 +2938,7 @@ class KeyPilotToggleHandler extends EventManager {
       fontWeight: '500',
       fontFamily: 'system-ui, -apple-system, sans-serif',
       zIndex: '2147483647',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+      boxShadow: `0 4px 12px ${COLORS.NOTIFICATION_SHADOW}`,
       opacity: '0',
       transition: 'opacity 0.3s ease-in-out',
       pointerEvents: 'none'
@@ -2913,6 +3055,11 @@ class KeyPilot extends EventManager {
     // Always set up communication and state management
     this.state.subscribe((newState, prevState) => {
       this.handleStateChange(newState, prevState);
+    });
+
+    // Set up overlay update callback for cursor manager
+    this.cursor.setOverlayUpdateCallback((focusedElement) => {
+      this.overlayManager.updateFocusedTextOverlay(focusedElement);
     });
 
     this.setupPopupCommunication();
@@ -3053,6 +3200,9 @@ class KeyPilot extends EventManager {
     // Update focused element for connection line if it changed
     if (newState.focusedTextElement !== prevState.focusedTextElement) {
       this.cursor.updateFocusedElement(newState.focusedTextElement);
+      
+      // Update overlays to show the focused text overlay
+      this.updateOverlays(newState.focusEl, newState.deleteEl);
       
       // If entering text focus mode with a focused element, ensure connection lines are visible
       if (newState.mode === MODES.TEXT_FOCUS && newState.focusedTextElement) {
@@ -3255,7 +3405,7 @@ class KeyPilot extends EventManager {
     const rootUrl = window.location.origin;
     if (rootUrl && rootUrl !== window.location.href) {
       console.log('[KeyPilot] Navigating to root:', rootUrl);
-      this.showFlashNotification('Navigating to Site Root...', '#2196F3');
+      this.showFlashNotification('Navigating to Site Root...', COLORS.NOTIFICATION_INFO);
       window.location.href = rootUrl;
     } else {
       console.log('[KeyPilot] Already at root, no navigation needed');
@@ -3365,7 +3515,7 @@ class KeyPilot extends EventManager {
     ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
   }
 
-  showFlashNotification(message, backgroundColor = '#4CAF50') {
+  showFlashNotification(message, backgroundColor = COLORS.NOTIFICATION_SUCCESS) {
     // Create notification overlay
     const notification = document.createElement('div');
     notification.className = 'kpv2-flash-notification';
@@ -3412,7 +3562,7 @@ class KeyPilot extends EventManager {
 
   updateOverlays(focusEl, deleteEl) {
     const currentState = this.state.getState();
-    this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode);
+    this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode, currentState.focusedTextElement);
   }
 
   logPerformanceMetrics() {

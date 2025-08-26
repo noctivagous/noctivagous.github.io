@@ -1,15 +1,17 @@
 /**
  * Cursor overlay management
  */
+import { COLORS, Z_INDEX } from '../config/constants.js';
+
 export class CursorManager {
   constructor() {
     this.cursorEl = null;
     this.connectionLineEl = null;
-    this.bottomLineEl = null;
     this.lastPosition = { x: 0, y: 0 };
     this.isStuck = false;
     this.stuckCheckInterval = null;
     this.forceUpdateCount = 0;
+    this.overlayUpdateCallback = null; // Callback to update overlay position
   }
 
   ensure() {
@@ -47,7 +49,11 @@ export class CursorManager {
       // If we're in text focus mode and have connection lines, update them
       if (this.connectionLineEl && this.focusedElement) {
         this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-        this.updateBottomLine();
+      }
+
+      // Update overlay position if we have a callback for it
+      if (this.overlayUpdateCallback && this.focusedElement) {
+        this.overlayUpdateCallback(this.focusedElement);
       }
     }
   }
@@ -56,8 +62,17 @@ export class CursorManager {
   refreshConnectionLines() {
     if (this.focusedElement && this.connectionLineEl) {
       this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-      this.updateBottomLine();
     }
+
+    // Also refresh overlay if we have a callback for it
+    if (this.overlayUpdateCallback && this.focusedElement) {
+      this.overlayUpdateCallback(this.focusedElement);
+    }
+  }
+
+  // Method to set callback for updating overlay position
+  setOverlayUpdateCallback(callback) {
+    this.overlayUpdateCallback = callback;
   }
 
   updatePosition(x, y) {
@@ -71,7 +86,11 @@ export class CursorManager {
 
     // Update connection line position if visible
     this.updateConnectionLine(x, y);
-    // Bottom line doesn't need to update with cursor movement, only when element changes
+
+    // Update overlay position if we have a callback for it
+    if (this.overlayUpdateCallback && this.focusedElement) {
+      this.overlayUpdateCallback(this.focusedElement);
+    }
 
     // Reset stuck detection
     this.isStuck = false;
@@ -207,7 +226,7 @@ export class CursorManager {
     if (mode === 'text_focus') {
       // Larger SVG for text mode with message in lower right quadrant
       svg.setAttribute('viewBox', '0 0 200 140');
-      svg.setAttribute('width', '350');
+      svg.setAttribute('width', '400');
       svg.setAttribute('height', '140');
 
       const addLine = (x1, y1, x2, y2, color, w = '4') => {
@@ -220,64 +239,80 @@ export class CursorManager {
       };
 
 
-
-      // Background for message in lower right quadrant
-      const bg = document.createElementNS(NS, 'rect');
-      bg.setAttribute('x', '100');  // Right side of crosshair
-      bg.setAttribute('y', '70');   // Lower quadrant
-      bg.setAttribute('width', '165');
-      bg.setAttribute('height', '50');
-      bg.setAttribute('rx', '6');
-      bg.setAttribute('fill', 'rgba(0,0,0,0.85)');
-      bg.setAttribute('stroke', 'rgba(255,140,0,0.4)');
-      bg.setAttribute('stroke-width', '1');
-      bg.style.filter = 'drop-shadow(5px 5px 5px rgba(40, 40, 40, 0.7))';
-
-      svg.appendChild(bg);
-
       // Determine message based on whether there's a clickable element
       const hasClickableElement = options.hasClickableElement || false;
+
+      // Background div for message in lower right quadrant
+      const bg = document.createElement('div');
+      Object.assign(bg.style, {
+        position: 'absolute',
+        left: '100px',  // Right side of crosshair
+        top: '70px',    // Lower quadrant
+        width: '195px',
+        backgroundColor: COLORS.MESSAGE_BG_BROWN, // hasClickableElement ? COLORS.MESSAGE_BG_GREEN : COLORS.MESSAGE_BG_BROWN
+        border: `1px solid ${COLORS.ORANGE_BORDER}`,
+        borderRadius: '6px',
+        filter: `drop-shadow(5px 5px 5px ${COLORS.BLACK_SHADOW})`,
+        zIndex: Z_INDEX.MESSAGE_BOX, // Higher than cursor to ensure visibility
+        pointerEvents: 'none',
+        padding: '8px 9px',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        lineHeight: '1.2'
+      });
+
       const firstLineText = hasClickableElement ? 'Cursor is in a text field.' : 'Cursor is in a text field.';
-      const secondLineText = hasClickableElement ? 'Use ESC to click element.' : 'Press ESC to exit.';
+      const secondLineText = 'Begin typing.';
+      const thirdLineText = hasClickableElement ? 'Use ESC to click this element.' : 'Press ESC to exit.';
 
-      // First line of text message
-      const text1 = document.createElementNS(NS, 'text');
-      text1.setAttribute('x', '109'); // Center of message box
-      text1.setAttribute('y', '90');   // First line position
-      text1.setAttribute('fill', 'rgba(255,255,255,0.95)');
-      text1.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text1.setAttribute('font-size', '12');
-      text1.setAttribute('font-weight', '500');
-      text1.setAttribute('text-anchor', 'left');
+      // First line of text using normal document flow
+      const text1 = document.createElement('div');
+      Object.assign(text1.style, {
+        color: COLORS.TEXT_WHITE_PRIMARY,
+        fontSize: '12px',
+        fontWeight: '800',
+        marginBottom: '2px'
+      });
       text1.textContent = firstLineText;
-      svg.appendChild(text1);
+      bg.appendChild(text1);
 
-      // Second line of text message
-      const text2 = document.createElementNS(NS, 'text');
-      text2.setAttribute('x', '109'); // Center of message box
-      text2.setAttribute('y', '110');   // Second line position
-
-      text2.setAttribute('fill', hasClickableElement ? '#6ced2b' : '#ff8c00');
-
-      //text2.setAttribute('fill', 'rgba(255,255,255,0.95)');
-      text2.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text2.setAttribute('font-size', '12');
-      text2.setAttribute('font-weight', '500');
-      text2.setAttribute('text-anchor', 'left');
+      // Second line of text using normal document flow
+      const text2 = document.createElement('div');
+      Object.assign(text2.style, {
+        color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
+        fontSize: '13px',
+        fontWeight: '600',
+        marginBottom: '2px'
+      });
       text2.textContent = secondLineText;
-      svg.appendChild(text2);
+      bg.appendChild(text2);
 
-
+      // Third line of text using normal document flow
+      const text3 = document.createElement('div');
+      Object.assign(text3.style, {
+        color: COLORS.TEXT_WHITE_SECONDARY,
+        fontSize: '11px',
+        fontWeight: '500'
+      });
+      text3.textContent = thirdLineText;
+      bg.appendChild(text3);
 
       // Orange crosshair at center - same size as normal mode
       const centerX = 100; // Center of the SVG
       const centerY = 70;  // Center of the SVG
-      const col = hasClickableElement ? 'rgba(0,128,0,0.95)' : '#ff8c00'; // Green if clickable, orange if not.
+      const col = hasClickableElement ? COLORS.FOCUS_GREEN_BRIGHT : COLORS.ORANGE; // Green if clickable, orange if not.
       // Same dimensions as normal mode: arms extend ±24 pixels from center
       addLine(centerX, centerY - 24, centerX, centerY - 10, col);
       addLine(centerX, centerY + 10, centerX, centerY + 24, col);
       addLine(centerX - 24, centerY, centerX - 10, centerY, col);
       addLine(centerX + 10, centerY, centerX + 24, centerY, col);
+
+      // Create container to hold both SVG and background div
+      const container = document.createElement('div');
+      container.style.position = 'relative';
+      container.appendChild(svg);
+      container.appendChild(bg);
+
+      return container;
 
 
     } else {
@@ -296,19 +331,19 @@ export class CursorManager {
       };
 
       if (mode === 'delete') {
-        addLine(18, 18, 76, 76, 'rgba(220,0,0,0.95)', '5');
-        addLine(76, 18, 18, 76, 'rgba(220,0,0,0.95)', '5');
+        addLine(18, 18, 76, 76, COLORS.DELETE_RED, '5');
+        addLine(76, 18, 18, 76, COLORS.DELETE_RED, '5');
       } else {
-        const col = 'rgba(0,128,0,0.95)';
+        const col = COLORS.FOCUS_GREEN_BRIGHT;
         addLine(47, 10, 47, 34, col);
         addLine(47, 60, 47, 84, col);
         addLine(10, 47, 34, 47, col);
         addLine(60, 47, 84, 47, col);
       }
-    }
 
-    svg.setAttribute('xmlns', NS);
-    return svg;
+      svg.setAttribute('xmlns', NS);
+      return svg;
+    }
   }
 
   hide() {
@@ -326,52 +361,61 @@ export class CursorManager {
   showConnectionLine(focusedElement) {
     if (!focusedElement) return;
 
+    // Arrow scale factor - adjust this to make arrow larger/smaller
+    const arrowScale = 0.5;
+
     // Create connection line if it doesn't exist
     if (!this.connectionLineEl) {
-      this.connectionLineEl = this.createElement('div', {
-        id: 'kpv2-connection-line',
-        'aria-hidden': 'true'
-      });
+      const NS = 'http://www.w3.org/2000/svg';
 
-      // Style the connection line
+      // Create SVG container
+      this.connectionLineEl = document.createElementNS(NS, 'svg');
+      this.connectionLineEl.setAttribute('id', 'kpv2-connection-line');
+      this.connectionLineEl.setAttribute('aria-hidden', 'true');
+
+      // Style the SVG container to cover full viewport
       Object.assign(this.connectionLineEl.style, {
         position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100vw',
+        height: '100vh',
         pointerEvents: 'none',
-        zIndex: '2147483647', // Same as cursor
-        width: '5px',
-        backgroundColor: '#ff8c00', // Orange color
-        transformOrigin: 'top center',
-        borderRadius: '2.5px'
+        zIndex: Z_INDEX.CONNECTION_LINE // Lower than cursor and message to appear underneath
       });
 
+      // Create arrowhead marker definition with scaling
+      const defs = document.createElementNS(NS, 'defs');
+      const marker = document.createElementNS(NS, 'marker');
+      marker.setAttribute('id', 'arrowhead');
+      marker.setAttribute('markerWidth', 10 * arrowScale);
+      marker.setAttribute('markerHeight', 7 * arrowScale);
+      marker.setAttribute('refX', 9 * arrowScale);
+      marker.setAttribute('refY', 3.5 * arrowScale);
+      marker.setAttribute('orient', 'auto');
+
+      const polygon = document.createElementNS(NS, 'polygon');
+      const scaledPoints = `0 0, ${10 * arrowScale} ${3.5 * arrowScale}, 0 ${7 * arrowScale}`;
+      polygon.setAttribute('points', scaledPoints);
+      polygon.setAttribute('fill', COLORS.ORANGE); // Same orange color as line
+
+      marker.appendChild(polygon);
+      defs.appendChild(marker);
+      this.connectionLineEl.appendChild(defs);
+
+      // Create the line element
+      this.connectionLine = document.createElementNS(NS, 'line');
+      this.connectionLine.setAttribute('stroke', COLORS.ORANGE); // Orange color
+      this.connectionLine.setAttribute('stroke-width', '11');
+      this.connectionLine.setAttribute('stroke-linecap', 'round');
+      this.connectionLine.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead at end
+
+      this.connectionLineEl.appendChild(this.connectionLine);
       document.body.appendChild(this.connectionLineEl);
-    }
-
-    // Create bottom line if it doesn't exist
-    if (!this.bottomLineEl) {
-      this.bottomLineEl = this.createElement('div', {
-        id: 'kpv2-bottom-line',
-        'aria-hidden': 'true'
-      });
-
-      // Style the bottom line
-      Object.assign(this.bottomLineEl.style, {
-        position: 'fixed',
-        pointerEvents: 'none',
-        zIndex: '2147483647', // Same as cursor
-        height: '5px',
-        backgroundColor: '#ff8c00', // Orange color - same as connection line
-        borderRadius: '2.5px'
-      });
-
-      document.body.appendChild(this.bottomLineEl);
     }
 
     // Store reference to focused element for position updates
     this.focusedElement = focusedElement;
-
-    // Update bottom line immediately (doesn't depend on cursor position)
-    this.updateBottomLine();
 
     // Update connection line - if cursor position is (0,0), try to get current mouse position
     let cursorX = this.lastPosition.x;
@@ -391,40 +435,30 @@ export class CursorManager {
     if (this.connectionLineEl) {
       this.connectionLineEl.remove();
       this.connectionLineEl = null;
-    }
-    if (this.bottomLineEl) {
-      this.bottomLineEl.remove();
-      this.bottomLineEl = null;
+      this.connectionLine = null;
     }
     this.focusedElement = null;
   }
 
   updateConnectionLine(cursorX, cursorY) {
-    if (!this.connectionLineEl || !this.focusedElement) return;
+    if (!this.connectionLine || !this.focusedElement) return;
 
     try {
       // Get the focused element's position
       const elementRect = this.focusedElement.getBoundingClientRect();
 
-      // Calculate center of the input element's bottom edge
+      // Calculate center of the input element
       const elementCenterX = elementRect.left + elementRect.width / 2;
-      const elementBottomY = elementRect.bottom;
+      // We want the line drawn to the bottom edge plus 4 because it
+      // aligns with the rectangle that has an outline.
+      const elementCenterY = elementRect.top + elementRect.height + 4;
 
-      // Calculate line properties - from cursor to bottom center of element
-      const deltaX = elementCenterX - cursorX;
-      const deltaY = elementBottomY - cursorY;
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-      // Calculate angle in radians, then convert to degrees
-      const angleRad = Math.atan2(deltaX, -deltaY); // Swapped and negated for correct orientation
-      const angleDeg = 180 + (angleRad * 180 / Math.PI);
-
-      // Position the line at cursor position
-      this.connectionLineEl.style.left = `${cursorX}px`;
-      this.connectionLineEl.style.top = `${cursorY}px`;
-      this.connectionLineEl.style.height = `${distance}px`;
-      this.connectionLineEl.style.transform = `translate(-50%, 0) rotate(${angleDeg}deg)`;
-      this.connectionLineEl.style.display = 'block';
+      // Simply update the line endpoints
+      this.connectionLine.setAttribute('x1', cursorX);
+      this.connectionLine.setAttribute('y1', cursorY);
+      this.connectionLine.setAttribute('x2', elementCenterX);
+      this.connectionLine.setAttribute('y2', elementCenterY);
+      this.connectionLine.style.filter = `drop-shadow(5px 5px 5px ${COLORS.BLACK_SHADOW})`;
 
     } catch (error) {
       // If element is no longer valid, hide the line
@@ -432,24 +466,7 @@ export class CursorManager {
     }
   }
 
-  updateBottomLine() {
-    if (!this.bottomLineEl || !this.focusedElement) return;
 
-    try {
-      // Get the focused element's position
-      const elementRect = this.focusedElement.getBoundingClientRect();
-
-      // Position the bottom line along the bottom edge of the input
-      this.bottomLineEl.style.left = `${elementRect.left}px`;
-      this.bottomLineEl.style.top = `${elementRect.bottom}px`;
-      this.bottomLineEl.style.width = `${elementRect.width}px`;
-      this.bottomLineEl.style.display = 'block';
-
-    } catch (error) {
-      // If element is no longer valid, hide the line
-      this.hideConnectionLine();
-    }
-  }
 
   cleanup() {
     if (this.stuckCheckInterval) {
@@ -465,11 +482,7 @@ export class CursorManager {
     if (this.connectionLineEl) {
       this.connectionLineEl.remove();
       this.connectionLineEl = null;
-    }
-
-    if (this.bottomLineEl) {
-      this.bottomLineEl.remove();
-      this.bottomLineEl = null;
+      this.connectionLine = null;
     }
   }
 

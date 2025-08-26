@@ -12,7 +12,7 @@ import { StyleManager } from './modules/style-manager.js';
 import { ShadowDOMManager } from './modules/shadow-dom-manager.js';
 import { IntersectionObserverManager } from './modules/intersection-observer-manager.js';
 import { OptimizedScrollManager } from './modules/optimized-scroll-manager.js';
-import { KEYBINDINGS, MODES, CSS_CLASSES } from './config/constants.js';
+import { KEYBINDINGS, MODES, CSS_CLASSES, COLORS } from './config/constants.js';
 
 export class KeyPilot extends EventManager {
   constructor() {
@@ -77,6 +77,11 @@ export class KeyPilot extends EventManager {
     // Always set up communication and state management
     this.state.subscribe((newState, prevState) => {
       this.handleStateChange(newState, prevState);
+    });
+
+    // Set up overlay update callback for cursor manager
+    this.cursor.setOverlayUpdateCallback((focusedElement) => {
+      this.overlayManager.updateFocusedTextOverlay(focusedElement);
     });
 
     this.setupPopupCommunication();
@@ -217,6 +222,9 @@ export class KeyPilot extends EventManager {
     // Update focused element for connection line if it changed
     if (newState.focusedTextElement !== prevState.focusedTextElement) {
       this.cursor.updateFocusedElement(newState.focusedTextElement);
+      
+      // Update overlays to show the focused text overlay
+      this.updateOverlays(newState.focusEl, newState.deleteEl);
       
       // If entering text focus mode with a focused element, ensure connection lines are visible
       if (newState.mode === MODES.TEXT_FOCUS && newState.focusedTextElement) {
@@ -419,7 +427,7 @@ export class KeyPilot extends EventManager {
     const rootUrl = window.location.origin;
     if (rootUrl && rootUrl !== window.location.href) {
       console.log('[KeyPilot] Navigating to root:', rootUrl);
-      this.showFlashNotification('Navigating to Site Root...', '#2196F3');
+      this.showFlashNotification('Navigating to Site Root...', COLORS.NOTIFICATION_INFO);
       window.location.href = rootUrl;
     } else {
       console.log('[KeyPilot] Already at root, no navigation needed');
@@ -529,7 +537,7 @@ export class KeyPilot extends EventManager {
     ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
   }
 
-  showFlashNotification(message, backgroundColor = '#4CAF50') {
+  showFlashNotification(message, backgroundColor = COLORS.NOTIFICATION_SUCCESS) {
     // Create notification overlay
     const notification = document.createElement('div');
     notification.className = 'kpv2-flash-notification';
@@ -576,7 +584,7 @@ export class KeyPilot extends EventManager {
 
   updateOverlays(focusEl, deleteEl) {
     const currentState = this.state.getState();
-    this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode);
+    this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode, currentState.focusedTextElement);
   }
 
   logPerformanceMetrics() {

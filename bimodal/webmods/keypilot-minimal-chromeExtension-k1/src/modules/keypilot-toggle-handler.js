@@ -3,6 +3,7 @@
  * Wraps the KeyPilot instance and provides enable/disable control
  */
 import { EventManager } from './event-manager.js';
+import { COLORS } from '../config/constants.js';
 
 export class KeyPilotToggleHandler extends EventManager {
   constructor(keyPilotInstance) {
@@ -188,7 +189,7 @@ export class KeyPilotToggleHandler extends EventManager {
       top: '20px',
       left: '50%',
       transform: 'translateX(-50%)',
-      backgroundColor: enabled ? '#4CAF50' : '#f44336',
+      backgroundColor: enabled ? COLORS.NOTIFICATION_SUCCESS : COLORS.NOTIFICATION_ERROR,
       color: 'white',
       padding: '12px 24px',
       borderRadius: '6px',
@@ -196,7 +197,7 @@ export class KeyPilotToggleHandler extends EventManager {
       fontWeight: '500',
       fontFamily: 'system-ui, -apple-system, sans-serif',
       zIndex: '2147483647',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+      boxShadow: `0 4px 12px ${COLORS.NOTIFICATION_SHADOW}`,
       opacity: '0',
       transition: 'opacity 0.3s ease-in-out',
       pointerEvents: 'none'

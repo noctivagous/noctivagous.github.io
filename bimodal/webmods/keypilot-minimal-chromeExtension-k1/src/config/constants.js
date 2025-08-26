@@ -38,8 +38,10 @@ export const ELEMENT_IDS = {
 };
 
 export const Z_INDEX = {
+  CONNECTION_LINE: 2147483646,
   OVERLAYS: 2147483646,
-  CURSOR: 2147483647
+  CURSOR: 2147483647,
+  MESSAGE_BOX: 2147483648
 };
 
 export const MODES = {
@@ -49,7 +51,48 @@ export const MODES = {
 };
 
 export const COLORS = {
-  FOCUS: 'rgba(0,180,0,0.95)',
-  DELETE: 'rgba(220,0,0,0.95)',
-  RIPPLE: 'rgba(0,200,0,0.35)'
+  // Primary cursor colors
+  FOCUS_GREEN: 'rgba(0,180,0,0.95)',
+  FOCUS_GREEN_BRIGHT: 'rgba(0,128,0,0.95)',
+  DELETE_RED: 'rgba(220,0,0,0.95)',
+  ORANGE: '#ff8c00',
+
+  // Text and background colors
+  TEXT_WHITE_PRIMARY: 'rgba(255,255,255,0.95)',
+  TEXT_WHITE_SECONDARY: 'rgba(255,255,255,0.8)',
+  TEXT_GREEN_BRIGHT: '#6ced2b',
+
+  // Background colors
+  MESSAGE_BG_BROWN: '#ad6007',
+  MESSAGE_BG_GREEN: '#10911b',
+
+  // Border and shadow colors
+  ORANGE_BORDER: 'rgba(255,140,0,0.4)',
+  ORANGE_SHADOW: 'rgba(255,140,0,0.45)',
+  ORANGE_SHADOW_DARK: 'rgba(255,140,0,0.8)',
+  ORANGE_SHADOW_LIGHT: 'rgba(255,140,0,0.3)',
+  GREEN_SHADOW: 'rgba(0,180,0,0.45)',
+  GREEN_SHADOW_BRIGHT: 'rgba(0,180,0,0.5)',
+  DELETE_SHADOW: 'rgba(220,0,0,0.35)',
+  DELETE_SHADOW_BRIGHT: 'rgba(220,0,0,0.45)',
+  BLACK_SHADOW: 'rgba(40, 40, 40, 0.7)',
+
+  // Ripple effect colors
+  RIPPLE_GREEN: 'rgba(0,200,0,0.35)',
+  RIPPLE_GREEN_MID: 'rgba(0,200,0,0.22)',
+  RIPPLE_GREEN_TRANSPARENT: 'rgba(0,200,0,0)',
+
+  // Flash animation colors
+  FLASH_GREEN: 'rgba(0,255,0,1)',
+  FLASH_GREEN_SHADOW: 'rgba(0,255,0,0.8)',
+  FLASH_GREEN_GLOW: 'rgba(0,255,0,0.9)',
+
+  // Notification colors
+  NOTIFICATION_SUCCESS: '#4CAF50',
+  NOTIFICATION_ERROR: '#f44336',
+  NOTIFICATION_INFO: '#2196F3',
+  NOTIFICATION_SHADOW: 'rgba(0, 0, 0, 0.15)',
+
+  // Text field glow
+  TEXT_FIELD_GLOW: 'rgba(255,165,0,0.8)'
 };

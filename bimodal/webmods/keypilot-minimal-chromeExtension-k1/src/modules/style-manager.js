@@ -1,7 +1,7 @@
 /**
  * CSS injection and style management
  */
-import { CSS_CLASSES, ELEMENT_IDS } from '../config/constants.js';
+import { CSS_CLASSES, ELEMENT_IDS, COLORS } from '../config/constants.js';
 
 export class StyleManager {
   constructor() {
@@ -46,7 +46,7 @@ export class StyleManager {
         width: 46px; 
         height: 46px; 
         border-radius: 50%; 
-        background: radial-gradient(circle, rgba(0,200,0,0.35) 0%, rgba(0,200,0,0.22) 60%, rgba(0,200,0,0) 70%); 
+        background: radial-gradient(circle, ${COLORS.RIPPLE_GREEN} 0%, ${COLORS.RIPPLE_GREEN_MID} 60%, ${COLORS.RIPPLE_GREEN_TRANSPARENT} 70%); 
         animation: kpv2-ripple 420ms ease-out forwards; 
       }
       
@@ -54,8 +54,8 @@ export class StyleManager {
         position: fixed; 
         pointer-events: none; 
         z-index: 2147483646; 
-        border: 3px solid rgba(0,180,0,0.95); 
-        box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5); 
+        border: 3px solid ${COLORS.FOCUS_GREEN}; 
+        box-shadow: 0 0 0 2px ${COLORS.GREEN_SHADOW}, 0 0 10px 2px ${COLORS.GREEN_SHADOW_BRIGHT}; 
         background: transparent; 
       }
       
@@ -63,15 +63,12 @@ export class StyleManager {
         position: fixed; 
         pointer-events: none; 
         z-index: 2147483646; 
-        border: 3px solid rgba(220,0,0,0.95); 
-        box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45); 
+        border: 3px solid ${COLORS.DELETE_RED}; 
+        box-shadow: 0 0 0 2px ${COLORS.DELETE_SHADOW}, 0 0 12px 2px ${COLORS.DELETE_SHADOW_BRIGHT}; 
         background: transparent; 
       }
       
-      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
-        outline: 2px solid rgba(255,165,0,0.8) !important;
-        outline-offset: 2px !important;
-      }
+
       
       #${ELEMENT_IDS.CURSOR} { 
         position: fixed !important; 
@@ -119,17 +116,14 @@ export class StyleManager {
         display: none !important; 
       }
       
-      .${CSS_CLASSES.TEXT_FIELD_GLOW} { 
-        outline: 2px solid rgba(255,165,0,0.8) !important;
-        outline-offset: 2px !important;
-      }
+
     `;
 
     const style = document.createElement('style');
     style.id = 'keypilot-shadow-styles';
     style.textContent = css;
     shadowRoot.appendChild(style);
-    
+
     this.injectedStyles.add(shadowRoot);
     this.shadowRootStyles.set(shadowRoot, style);
   }
@@ -141,23 +135,23 @@ export class StyleManager {
   removeAllStyles() {
     // Remove cursor hidden class
     document.documentElement.classList.remove(CSS_CLASSES.CURSOR_HIDDEN);
-    
+
     // Remove main stylesheet
     const mainStyle = document.getElementById(ELEMENT_IDS.STYLE);
     if (mainStyle) {
       mainStyle.remove();
     }
-    
+
     // Remove all shadow root styles
     for (const [shadowRoot, styleElement] of this.shadowRootStyles) {
       if (styleElement && styleElement.parentNode) {
         styleElement.remove();
       }
     }
-    
+
     // Remove all KeyPilot classes from elements
     this.removeAllKeyPilotClasses();
-    
+
     // Clear tracking
     this.injectedStyles.clear();
     this.shadowRootStyles.clear();
@@ -170,10 +164,10 @@ export class StyleManager {
    */
   restoreAllStyles() {
     this.isEnabled = true;
-    
+
     // Re-inject main styles
     this.injectSharedStyles();
-    
+
     // Re-inject shadow root styles for any shadow roots we previously tracked
     // Note: We'll need to re-discover shadow roots since they may have changed
     // This will be handled by the shadow DOM manager during normal operation
@@ -187,16 +181,15 @@ export class StyleManager {
       CSS_CLASSES.FOCUS,
       CSS_CLASSES.DELETE,
       CSS_CLASSES.HIDDEN,
-      CSS_CLASSES.TEXT_FIELD_GLOW,
       CSS_CLASSES.RIPPLE
     ];
-    
+
     // Remove classes from main document
     classesToRemove.forEach(className => {
       const elements = document.querySelectorAll(`.${className}`);
       elements.forEach(el => el.classList.remove(className));
     });
-    
+
     // Remove classes from shadow roots
     for (const shadowRoot of this.shadowRootStyles.keys()) {
       classesToRemove.forEach(className => {

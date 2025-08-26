@@ -1,0 +1,50 @@
+Improving a Code Base With AI Code Editors.
+
+Common improvements an AI could systematically perform on a code base,
+Many improvements require creating new modules (e.g., config files, 
+query builders, feature flag systems). But a large subset can 
+be done in-place, within the existing file and system structure.
+
+
+| Category                 | Example Task                                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| **Magic Values**         | Extract inline numbers (e.g., `60 * 60 * 24`) into named constants for readability.              |
+| **Strings**              | Move repeated inline strings (e.g., error messages, labels, URLs, regex patterns) to constants.  |
+| **Configuration**        | Relocate hardcoded configuration values (API keys, timeouts, file paths) to config files.        |
+| **Styling**              | Consolidate inline CSS styles (font sizes, margins, paddings) into a style/theme constants file. |
+| **Reusable Logic**       | Refactor duplicated code blocks into helper functions or utility modules.                        |
+| **Error Handling**       | Replace inline `throw`/`print` messages with centralized error codes and messages.               |
+| **Logging**              | Extract inline log messages into constants or use structured logging wrappers.                   |
+| **Enums**                | Convert repeated string identifiers or numeric codes into enums or named constants.              |
+| **Internationalization** | Replace user-facing text with keys that map to localization files.                               |
+| **Validation Rules**     | Centralize repeated regex patterns, length limits, and type checks into a validation module.     |
+| **SQL / Queries**        | Move inline queries into separate query builders or repository classes.                          |
+| **File Paths**           | Replace inline relative/absolute paths with constants or environment-configured paths.           |
+| **Thresholds / Limits**  | Extract rate limits, retry counts, and buffer sizes into constants.                              |
+| **Feature Flags**        | Move conditional feature toggles into a centralized feature flag system.                         |
+| **Dependency Versions**  | Remove hardcoded library versions from inline references, using config or dependency managers.   |
+| **Event Names**          | Extract event or action names (like `"onClick"`, `"USER_CREATED"`) into constants/enums.         |
+| **Test Data**            | Replace inline test values with shared fixtures or constants.                                    |
+
+
+| Category                       | Example Optimizations                                                                                   |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| **Algorithmic Efficiency**     | Replace `O(n²)` loops with hashing or sorting methods; switch recursive to iterative if more efficient. |
+| **Data Structures**            | Replace lists with sets/maps where lookup speed is critical; use deque instead of list for queue ops.   |
+| **Memory Usage**               | Avoid unnecessary object creation; use generators instead of lists; reuse buffers.                      |
+| **Database Access**            | Add indexes, batch queries, reduce N+1 queries, use connection pooling.                                 |
+| **I/O Performance**            | Minimize disk/network calls; use streaming instead of full loads; compress data before transfer.        |
+| **Caching**                    | Introduce caching layers (memorization, query caching, file caching) for repeated operations.            |
+| **Concurrency/Parallelism**    | Introduce async I/O, thread pools, or vectorized operations where safe.                                 |
+| **Loop Optimizations**         | Hoist invariant calculations outside loops; replace nested loops with comprehensions or map/reduce.     |
+| **Inlining / Extraction**      | Inline small frequently called functions; extract heavy inline code to reusable optimized functions.    |
+| **Dead Code Removal**          | Eliminate unreachable branches, unused imports, and redundant assignments.                              |
+| **Inlining Constants**         | Replace runtime-computed constants with precomputed values when safe.                                   |
+| **Batching**                   | Group multiple operations (e.g., API calls, DB inserts, DOM updates) into a single batch.               |
+| **Lazy Loading**               | Defer loading heavy modules, resources, or assets until needed.                                         |
+| **Compression/Encoding**       | Optimize payloads with gzip, brotli, or binary encoding; reduce verbose serialization formats.          |
+| **Compiler/Interpreter Hints** | Add type hints for JIT optimizers (e.g., Python typing, C# `readonly`, C++ `constexpr`).                |
+| **Dependency Reduction**       | Remove unused libraries, replace heavy dependencies with lighter equivalents.                           |
+| **Build/Deployment**           | Optimize bundling, tree shaking, minification, code splitting.                                          |
+| **Energy Efficiency**          | Reduce CPU wake-ups in mobile/embedded contexts; optimize polling intervals.                            |
+

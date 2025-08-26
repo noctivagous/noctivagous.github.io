@@ -49,6 +49,7 @@
     focusOverlay: null,
     deleteOverlay: null,
     cursorEl: null,
+    linkOverlayRoot: null,
   };
 
   function dbg() { /* debug removed */ }
@@ -80,6 +81,82 @@
     }
     return el;
   }
+  
+  function* iterInclusiveDescendants(node) {
+  // Walk normal descendants
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT);
+  let n = node; // include self first
+  yield n;
+  while ((n = walker.nextNode())) {
+    yield n;
+    // If we encounter a <slot>, include its flattened assigned nodes
+    if (n instanceof HTMLSlotElement) {
+      const assigned = n.assignedNodes({ flatten: true }) || [];
+      for (const an of assigned) {
+        if (an.nodeType === Node.ELEMENT_NODE) {
+          yield /** @type {Element} */(an);
+          // Also descend into assigned subtrees
+          const subwalker = document.createTreeWalker(an, NodeFilter.SHOW_ELEMENT);
+          let s = an;
+          while ((s = subwalker.nextNode())) yield s;
+        }
+      }
+    }
+  }
+}
+
+// Union helper
+function unionRect(r1, r2) {
+  const left = Math.min(r1.left, r2.left);
+  const top = Math.min(r1.top, r2.top);
+  const right = Math.max(r1.right, r2.right);
+  const bottom = Math.max(r1.bottom, r2.bottom);
+  return new DOMRect(left, top, right - left, bottom - top);
+}
+
+// Return an array of DOMRects in viewport coordinates
+function computeLinkRects(anchor) {
+  const rects = [];
+
+  // 1) All line boxes for the anchor itself (handles multi-line text links)
+  rects.push(...Array.from(anchor.getClientRects()));
+
+  // 2) Media descendants contribute their rects
+  const mediaSelector = 'img, video, picture, canvas, svg, figure';
+  for (const el of iterInclusiveDescendants(anchor)) {
+    // Media & figures
+    if (el.matches?.(mediaSelector)) {
+      const rs = el.getClientRects();
+      for (const r of rs) rects.push(r);
+    }
+    // Elements that visually render a background image (e.g., background-image links)
+    const cs = getComputedStyle(el);
+    if (cs && cs.backgroundImage && cs.backgroundImage !== 'none') {
+      const rs = el.getClientRects();
+      for (const r of rs) rects.push(r);
+    }
+  }
+
+  // 3) Merge rects that overlap or touch (reduce flicker and gaps)
+  rects.sort((a, b) => a.top - b.top || a.left - b.left);
+  const merged = [];
+  const epsilon = 1; // px threshold for "touching"
+  for (const r of rects) {
+    if (!r.width || !r.height) continue;
+    if (!merged.length) { merged.push(r); continue; }
+    const last = merged[merged.length - 1];
+    const verticallyClose = Math.abs(r.top - last.bottom) <= epsilon || (r.top <= last.bottom + epsilon);
+    const horizontallyOverlapping = !(r.left > last.right + epsilon || r.right < last.left - epsilon);
+    if (verticallyClose && horizontallyOverlapping) {
+      merged[merged.length - 1] = unionRect(last, r);
+    } else {
+      merged.push(r);
+    }
+  }
+
+  return merged;
+}
+
 
   function smartClick(el, clientX, clientY) {
     if (!el) return false;
@@ -107,6 +184,81 @@
     return node;
   }
 
+function* iterInclusiveDescendants(node) {
+  // Walk normal descendants
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT);
+  let n = node; // include self first
+  yield n;
+  while ((n = walker.nextNode())) {
+    yield n;
+    // If we encounter a <slot>, include its flattened assigned nodes
+    if (n instanceof HTMLSlotElement) {
+      const assigned = n.assignedNodes({ flatten: true }) || [];
+      for (const an of assigned) {
+        if (an.nodeType === Node.ELEMENT_NODE) {
+          yield /** @type {Element} */(an);
+          // Also descend into assigned subtrees
+          const subwalker = document.createTreeWalker(an, NodeFilter.SHOW_ELEMENT);
+          let s = an;
+          while ((s = subwalker.nextNode())) yield s;
+        }
+      }
+    }
+  }
+}
+
+// Union helper
+function unionRect(r1, r2) {
+  const left = Math.min(r1.left, r2.left);
+  const top = Math.min(r1.top, r2.top);
+  const right = Math.max(r1.right, r2.right);
+  const bottom = Math.max(r1.bottom, r2.bottom);
+  return new DOMRect(left, top, right - left, bottom - top);
+}
+
+// Return an array of DOMRects in viewport coordinates
+function computeLinkRects(anchor) {
+  const rects = [];
+
+  // 1) All line boxes for the anchor itself (handles multi-line text links)
+  rects.push(...Array.from(anchor.getClientRects()));
+
+  // 2) Media descendants contribute their rects
+  const mediaSelector = 'img, video, picture, canvas, svg, figure';
+  for (const el of iterInclusiveDescendants(anchor)) {
+    // Media & figures
+    if (el.matches?.(mediaSelector)) {
+      const rs = el.getClientRects();
+      for (const r of rs) rects.push(r);
+    }
+    // Elements that visually render a background image (e.g., background-image links)
+    const cs = getComputedStyle(el);
+    if (cs && cs.backgroundImage && cs.backgroundImage !== 'none') {
+      const rs = el.getClientRects();
+      for (const r of rs) rects.push(r);
+    }
+  }
+
+  // 3) Merge rects that overlap or touch (reduce flicker and gaps)
+  rects.sort((a, b) => a.top - b.top || a.left - b.left);
+  const merged = [];
+  const epsilon = 1; // px threshold for "touching"
+  for (const r of rects) {
+    if (!r.width || !r.height) continue;
+    if (!merged.length) { merged.push(r); continue; }
+    const last = merged[merged.length - 1];
+    const verticallyClose = Math.abs(r.top - last.bottom) <= epsilon || (r.top <= last.bottom + epsilon);
+    const horizontallyOverlapping = !(r.left > last.right + epsilon || r.right < last.left - epsilon);
+    if (verticallyClose && horizontallyOverlapping) {
+      merged[merged.length - 1] = unionRect(last, r);
+    } else {
+      merged.push(r);
+    }
+  }
+
+  return merged;
+}
+
   function elementAtPointIgnoringUI(x, y) {
     const hud = document.getElementById('kpv2-hud');
     const prev = hud ? hud.style.pointerEvents : null;
@@ -116,15 +268,7 @@
     return el;
   }
 
-  function elementAtPointIgnoringUI(x, y) {
-    const hud = document.getElementById('kpv2-hud');
-    const prev = hud ? hud.style.pointerEvents : null;
-    if (hud) hud.style.pointerEvents = 'none';
-    const el = deepElementFromPoint(x, y);
-    if (hud) hud.style.pointerEvents = prev || '';
-    return el;
-  }
-
+  
   function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
   function asNum(v, d) { const n = Number(v); return Number.isFinite(n) ? n : d; }
   function dispatchInputChange(el) {
@@ -251,6 +395,22 @@ html.kpv2-cursor-hidden, html.kpv2-cursor-hidden * { cursor: none !important; }
 .kpv2-focus-overlay { position: fixed; pointer-events: none; z-index: 2147483646; border: 3px solid rgba(0,180,0,0.95); box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5); background: transparent; }
 .kpv2-delete-overlay { position: fixed; pointer-events: none; z-index: 2147483646; border: 3px solid rgba(220,0,0,0.95); box-shadow: 0 0 0 2px rgba(220,0,0,0.35), 0 0 12px 2px rgba(220,0,0,0.45); background: transparent; }
 #kpv2-cursor { position: fixed; left: 0; top: 0; width: 94px; height: 94px; transform: translate(-50%, -50%); z-index: 2147483647; pointer-events: none; }
+/* High z-index container for overlays */
+.kpv2-overlay-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647; /* ensure top-most */
+}
+
+/* Green rectangle (no fill, just stroke) */
+.kpv2-link-rect {
+  position: absolute;
+  border: 2px solid #00aa00; /* green outline */
+  box-shadow: 0 0 0 2px rgba(0,170,0,0.3) inset; /* subtle presence on light/dark */
+  border-radius: 3px;
+}
+
 `;
 
   function ensureSharedStylesIn(docOrRoot = document) {

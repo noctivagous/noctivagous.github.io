@@ -80,17 +80,24 @@
             <p>
             The increasing complexity of modern software development should stir interest 
             in advancing beyond the primitive .TXT file format for making computer code. 
-            Noctivagous proposed system starts with the following:
+            Noctivagous' proposed system starts with the following:
              </p>
 <div id="m1">
             <h3>1. XML-based Code Elements</h3>
-            <p>All code elements are encoded in XML. Function definitions, control flow, loops, expressions, and data structures sit inside the file as XML tags:</p>
-            <ul >
+            <ul>
+            <li>All code elements are encoded in XML. 
+            <li>Function definitions, 
+            control flow, loops, expressions, and data structures 
+            sit inside the file as XML tags:</p>
+            <ul>
                 <li><code>&lt;function&gt;&lt;/function&gt;</code></li>
                 <li><code>&lt;class&gt;&lt;/class&gt;</code></li>
                 <li><code>&lt;loop&gt;&lt;/loop&gt;</code></li>
 				<li>etc.</li>
             </ul>
+
+			<li>
+			</ul>
 
             <h3>2. Interactive Visual Editor</h3>
             <p>The visual editor renders these XML blocks into interactive code, allowing for a dynamic user experience.</p>
@@ -98,17 +105,34 @@
 </div>
 
 <br/>
-            <h3>Advantages of Ocelot</h4>
+            <h3>Advantages of This Approach</h4>
 
             <h4>Parseability</h4>
-            <p>XML’s structure simplifies real-time parsing. In addition, the XML specification 
-            offers a standardized schema format. As a result, editors can rapidly check the validity of code
+            <p>XML’s structure greatly simplifies real-time parsing and the effects of 
+            this will show up when working with code. 
+            Inside the document, under the editor view, every function, variable, or other
+            code element can carry a unique ID that is separate from its display name.
+            That means when a variable name is changed, all places where the variable
+            is located will immediately reflect the change, as the programmer changes the 
+            name. 
+            <p>
+            The XML specification offers a standardized schema format, so the
+            document format is easily portable. Editors can rapidly check the validity of code
             against a schema.</p>
+            
+            <h4>Working With AI</h4>
+            <p>Instead of having an AI agent read and write lines of code, the AI-based editor 
+            can work with an XML node tree and trace the program quickly.  Later on,
+            higher levels of abstraction for the AI to work with code will naturally be available 
+            because the code sits on top a DOM. 
 
             <h4>A Wide-Ranging Impact</h4>
-            <p>Upgrading the interior of code will effect dramatic changes on the exterior. Curly braces and parentheses will 
-            no longer be utilized by the programmer to define code containers.   Code elements will be inserted and their 
-            boundaries will naturally come with them.  That is, boundaries for code areas will be provided by graphical outlines.   Of course, this means that the methods of inputting code elements by keyboard will change
+            <p>Upgrading the interior of code will effect dramatic changes on the exterior. 
+            Curly braces and parentheses will 
+            no longer be have to be managed by the programmer to define code containers.   
+            Code elements will be inserted in bulk units and their 
+            boundaries will naturally come with them.  That is, 
+            boundaries for code areas will be provided by graphical outlines.   Of course, this means that the methods of inputting code elements by keyboard will change
             significantly. Eliminating the use of type for code boundaries will remove many problems. 
             It isn't just that typos can occur but that curly braces are hard to follow sometimes.
 			Typographic issues of all kinds can be made obsolete: if a keyword or variable name is not entered correctly,

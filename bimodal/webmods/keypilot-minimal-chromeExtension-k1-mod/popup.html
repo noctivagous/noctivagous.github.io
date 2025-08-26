@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KeyPilot </title>
+    <link rel="stylesheet" href="styles/popup.css" />
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <h1>KeyPilot</h1><span class="version">v1.0</span>
+            <div class="header-controls">
+                <div class="toggle-container" id="toggle-container">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="extension-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="unavailable-message" id="unavailable-message" style="display: none;">
+                    <span class="pill unavailable">UNAVAILABLE</span>
+                </div>
+                <span id="status" class="pill ok">ON</span>
+            </div>
+        </header>
+        <div class="keyboard-container">
+            <!-- Row 1 -->
+            <div class="key-group">
+                <div class="key special">F</div>
+                <div class="key-description">Click Element</div>
+            </div>
+            <div class="key-group">
+                <div class="key escape">ESC</div>
+                <div class="key-description">Exit Focus</div>
+            </div>
+            <div class="key-group">
+                <div class="key">`</div>
+                <div class="key-description">Site Root</div>
+            </div>
+            <div class="key-group">
+                <div class="key modifier">C</div>
+                <div class="key-description">Go Back</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="key-group">
+                <div class="key modifier">V</div>
+                <div class="key-description">Go Forward</div>
+            </div>
+            <div class="key-group">
+                <div class="key special2">D</div>
+                <div class="key-description">Delete Mode</div>
+            </div>
+            <div class="key-group">
+                <div class="key toggle" style="font-size: 10px;">Alt+K</div>
+                <div class="key-description">Toggle On/Off</div>
+            </div>
+            <div class="key-group">
+                <!-- Empty cell for alignment -->
+            </div>
+        </div>
+        <footer>
+            <small>Keyboard-first helper. Works in shadow DOM.</small>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

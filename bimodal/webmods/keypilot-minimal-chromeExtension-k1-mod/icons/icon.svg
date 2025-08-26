@@ -1,0 +1,34 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#4A90E2" stroke="#2E5C8A" stroke-width="2"/>
+  
+  <!-- Keyboard base -->
+  <rect x="24" y="48" width="80" height="48" rx="6" ry="6" fill="#FFFFFF" stroke="#333333" stroke-width="2"/>
+  
+  <!-- Keyboard keys -->
+  <rect x="30" y="54" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="42" y="54" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="54" y="54" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="66" y="54" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="78" y="54" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="90" y="54" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  
+  <rect x="30" y="66" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="42" y="66" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="54" y="66" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="66" y="66" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="78" y="66" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="90" y="66" width="8" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  
+  <rect x="36" y="78" width="20" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  <rect x="72" y="78" width="20" height="8" rx="1" fill="#E0E0E0" stroke="#999999" stroke-width="0.5"/>
+  
+  <!-- Navigation arrows -->
+  <g transform="translate(64, 32)">
+    <!-- Up arrow -->
+    <path d="M-6,6 L0,-6 L6,6 Z" fill="#FFD700" stroke="#E6C200" stroke-width="1"/>
+  </g>
+  
+  <!-- Highlight effect -->
+  <circle cx="64" cy="64" r="58" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+</svg>

@@ -4,13 +4,29 @@ const statusEl = document.getElementById('status');
 class PopupToggleController {
     constructor() {
         this.toggleSwitch = null;
+        this.toggleContainer = null;
+        this.unavailableMessage = null;
+        this.keyboardContainer = null;
         this.isInitialized = false;
+        this.isUnavailable = false;
     }
 
     async initialize() {
         this.toggleSwitch = document.getElementById('extension-toggle');
-        if (!this.toggleSwitch) {
-            console.error('Toggle switch element not found');
+        this.toggleContainer = document.getElementById('toggle-container');
+        this.unavailableMessage = document.getElementById('unavailable-message');
+        this.keyboardContainer = document.querySelector('.keyboard-container');
+        
+        if (!this.toggleSwitch || !this.toggleContainer || !this.unavailableMessage) {
+            console.error('Required popup elements not found');
+            return;
+        }
+
+        // Check if extension is available on current page
+        await this.checkAvailability();
+
+        if (this.isUnavailable) {
+            this.showUnavailableState();
             return;
         }
 
@@ -39,7 +55,7 @@ class PopupToggleController {
     }
 
     async handleToggleClick() {
-        if (!this.isInitialized) return;
+        if (!this.isInitialized || this.isUnavailable) return;
 
         const enabled = this.toggleSwitch.checked;
         
@@ -56,8 +72,47 @@ class PopupToggleController {
         }
     }
 
+    async checkAvailability() {
+        try {
+            const tab = await queryActiveTab();
+            if (!tab || !tab.url) {
+                this.isUnavailable = true;
+                return;
+            }
+
+            // Check for restricted URLs where content scripts can't run
+            const restrictedPatterns = [
+                /^chrome:\/\//,
+                /^chrome-extension:\/\//,
+                /^moz-extension:\/\//,
+                /^edge:\/\//,
+                /^about:/,
+                /^file:\/\//,
+                /^data:/,
+                /^javascript:/
+            ];
+
+            this.isUnavailable = restrictedPatterns.some(pattern => pattern.test(tab.url));
+        } catch (error) {
+            console.error('Failed to check availability:', error);
+            this.isUnavailable = true;
+        }
+    }
+
+    showUnavailableState() {
+        this.toggleContainer.style.display = 'none';
+        this.unavailableMessage.style.display = 'flex';
+        
+        if (this.keyboardContainer) {
+            this.keyboardContainer.classList.add('unavailable');
+        }
+        
+        // Update status to show unavailable
+        setStatus('unavailable', false);
+    }
+
     updateToggleState(enabled) {
-        if (this.toggleSwitch) {
+        if (this.toggleSwitch && !this.isUnavailable) {
             this.toggleSwitch.checked = enabled;
         }
     }
@@ -68,21 +123,25 @@ const toggleController = new PopupToggleController();
 
 
 function setStatus(mode, extensionEnabled = true) {
-    if (!extensionEnabled) {
+    if (mode === 'unavailable') {
+        statusEl.textContent = 'UNAVAILABLE';
+        statusEl.classList.remove('ok', 'warn', 'err');
+        statusEl.classList.add('unavailable');
+    } else if (!extensionEnabled) {
         statusEl.textContent = 'OFF';
-        statusEl.classList.remove('ok', 'warn');
+        statusEl.classList.remove('ok', 'warn', 'unavailable');
         statusEl.classList.add('err');
     } else if (mode === 'delete') {
         statusEl.textContent = 'DELETE';
-        statusEl.classList.remove('ok', 'warn');
+        statusEl.classList.remove('ok', 'warn', 'unavailable');
         statusEl.classList.add('err');
     } else if (mode === 'text_focus') {
         statusEl.textContent = 'TEXT';
-        statusEl.classList.remove('ok', 'err');
+        statusEl.classList.remove('ok', 'err', 'unavailable');
         statusEl.classList.add('warn');
     } else {
         statusEl.textContent = 'ON';
-        statusEl.classList.remove('err', 'warn');
+        statusEl.classList.remove('err', 'warn', 'unavailable');
         statusEl.classList.add('ok');
     }
 }
@@ -95,6 +154,11 @@ return tab;
 
 
 async function getStatus() {
+    // If extension is unavailable on this page, don't try to get status
+    if (toggleController.isUnavailable) {
+        return setStatus('unavailable', false);
+    }
+
     try {
         // First check if extension is globally enabled
         let extensionEnabled = true;
@@ -133,6 +197,10 @@ async function getStatus() {
 
 // Listen for push updates from the content script while the popup is open
 chrome.runtime.onMessage.addListener((msg) => {
+    if (toggleController.isUnavailable) {
+        return; // Don't process messages if extension is unavailable
+    }
+
     if (msg && msg.type === 'KP_STATUS') {
         // When receiving status updates, check if extension is still enabled
         chrome.runtime.sendMessage({ type: 'KP_GET_STATE' }).then(response => {

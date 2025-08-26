@@ -391,6 +391,7 @@ export class KeyPilot extends EventManager {
     const rootUrl = window.location.origin;
     if (rootUrl && rootUrl !== window.location.href) {
       console.log('[KeyPilot] Navigating to root:', rootUrl);
+      this.showFlashNotification('Navigating to Site Root...', '#2196F3');
       window.location.href = rootUrl;
     } else {
       console.log('[KeyPilot] Already at root, no navigation needed');
@@ -490,6 +491,51 @@ export class KeyPilot extends EventManager {
     document.body.appendChild(ripple);
 
     ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+  }
+
+  showFlashNotification(message, backgroundColor = '#4CAF50') {
+    // Create notification overlay
+    const notification = document.createElement('div');
+    notification.className = 'kpv2-flash-notification';
+    notification.textContent = message;
+    
+    // Style the notification
+    Object.assign(notification.style, {
+      position: 'fixed',
+      top: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: backgroundColor,
+      color: 'white',
+      padding: '12px 24px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      fontWeight: '500',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      zIndex: '2147483647',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+      opacity: '0',
+      transition: 'opacity 0.3s ease-in-out',
+      pointerEvents: 'none'
+    });
+
+    // Add to document
+    document.body.appendChild(notification);
+
+    // Fade in
+    requestAnimationFrame(() => {
+      notification.style.opacity = '1';
+    });
+
+    // Fade out and remove after 2 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }, 2000);
   }
 
   updateOverlays(focusEl, deleteEl) {

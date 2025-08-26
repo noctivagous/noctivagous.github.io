@@ -27,62 +27,30 @@ export class ActivationHandler {
     } catch {
       // fall through to synthetic path
     } finally {
-      try { 
-        activator.removeEventListener('click', onClickCapture, { capture: true }); 
-      } catch {}
+      try {
+        activator.removeEventListener('click', onClickCapture, { capture: true });
+      } catch { }
     }
 
-    // Fallback: synthesize realistic event sequence
-    return this.synthesizeClickSequence(activator, clientX, clientY);
-  }
-
-  synthesizeClickSequence(activator, clientX, clientY) {
-    const base = {
+    // Fallback: dispatch essential mouse events (matching working script)
+    const opts = {
       bubbles: true,
       cancelable: true,
       composed: true,
       view: window,
       clientX,
-      clientY,
-      button: 0,
+      clientY
     };
 
-    const pBase = {
-      ...base,
-      pointerId: 1,
-      isPrimary: true,
-      pointerType: 'mouse',
-      width: 1,
-      height: 1,
-      pressure: 0.5,
-      tangentialPressure: 0,
-      tiltX: 0,
-      tiltY: 0,
-      twist: 0,
-    };
+    try { activator.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
+    try { activator.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
+    try { activator.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
+    try { activator.dispatchEvent(new MouseEvent('click', opts)); } catch { }
 
-    const tryDispatch = (type, Ctor, opts) => {
-      try { 
-        activator.dispatchEvent(new Ctor(type, opts)); 
-      } catch {}
-    };
-
-    // Event sequence for realistic interaction
-    if ('PointerEvent' in window) {
-      tryDispatch('pointerover', PointerEvent, pBase);
-      tryDispatch('pointerenter', PointerEvent, pBase);
-    }
-    tryDispatch('mouseover', MouseEvent, base);
-
-    if ('PointerEvent' in window) tryDispatch('pointerdown', PointerEvent, pBase);
-    tryDispatch('mousedown', MouseEvent, base);
-
-    if ('PointerEvent' in window) tryDispatch('pointerup', PointerEvent, pBase);
-    tryDispatch('mouseup', MouseEvent, base);
-
-    tryDispatch('click', MouseEvent, base);
     return true;
   }
+
+
 
   handleSmartActivate(target, x, y) {
     if (!target) return false;
@@ -101,6 +69,12 @@ export class ActivationHandler {
 
     if (this.detector.isNativeType(target, 'range')) {
       return this.handleRange(target, x);
+    }
+
+    // Handle role="slider" elements
+    const role = (target.getAttribute && (target.getAttribute('role') || '').trim().toLowerCase()) || '';
+    if (role === 'slider') {
+      return this.handleRoleSlider(target, x, y);
     }
 
     if (this.detector.isTextLike(target)) {
@@ -163,11 +137,71 @@ export class ActivationHandler {
     return true;
   }
 
+  handleRoleSlider(target, clientX, clientY) {
+    // Handle ARIA slider elements with dual approach:
+    // 1. Update ARIA attributes for compliant sliders
+    // 2. Dispatch mouse events for custom implementations like YouTube
+
+    // First, try ARIA attribute approach for standard sliders
+    const rect = target.getBoundingClientRect();
+    if (rect.width > 0) {
+      const min = this.asNum(target.getAttribute('aria-valuemin'), 0);
+      const max = this.asNum(target.getAttribute('aria-valuemax'), 100);
+      const step = this.asNum(target.getAttribute('aria-step'), 1);
+
+      // Calculate new value based on click position
+      const pct = this.clamp((clientX - rect.left) / rect.width, 0, 1);
+      let newValue = min + pct * (max - min);
+
+      // Apply step if specified
+      if (step > 0) {
+        const steps = Math.round((newValue - min) / step);
+        newValue = min + steps * step;
+      }
+
+      newValue = this.clamp(newValue, min, max);
+
+      // Update aria-valuenow attribute
+      const before = target.getAttribute('aria-valuenow');
+      target.setAttribute('aria-valuenow', String(newValue));
+
+      // Dispatch ARIA-compliant events if value changed
+      if (String(newValue) !== before) {
+        this.dispatchInputChange(target);
+
+        // Dispatch custom slider change event
+        try {
+          target.dispatchEvent(new CustomEvent('sliderchange', {
+            bubbles: true,
+            detail: { value: newValue, previousValue: this.asNum(before, min) }
+          }));
+        } catch { }
+      }
+    }
+
+    // Also dispatch mouse events for compatibility with custom implementations
+    const opts = {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      view: window,
+      clientX,
+      clientY
+    };
+
+    try { target.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
+    try { target.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
+    try { target.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
+    try { target.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+
+    return true;
+  }
+
   handleTextField(target) {
-    try { 
-      target.focus({ preventScroll: true }); 
-    } catch { 
-      try { target.focus(); } catch { } 
+    try {
+      target.focus({ preventScroll: true });
+    } catch {
+      try { target.focus(); } catch { }
     }
     try {
       const v = target.value ?? '';
@@ -177,17 +211,17 @@ export class ActivationHandler {
   }
 
   handleContentEditable(target) {
-    try { 
-      target.focus({ preventScroll: true }); 
-    } catch { 
-      try { target.focus(); } catch { } 
+    try {
+      target.focus({ preventScroll: true });
+    } catch {
+      try { target.focus(); } catch { }
     }
-    
+
     // Try to position cursor at the end of content
     try {
       const selection = window.getSelection();
       const range = document.createRange();
-      
+
       // If there's text content, position at the end
       if (target.childNodes.length > 0) {
         const lastNode = target.childNodes[target.childNodes.length - 1];
@@ -200,7 +234,7 @@ export class ActivationHandler {
         // Empty contenteditable, position at the beginning
         range.setStart(target, 0);
       }
-      
+
       range.collapse(true);
       selection.removeAllRanges();
       selection.addRange(range);
@@ -208,7 +242,7 @@ export class ActivationHandler {
       // Fallback: just focus without cursor positioning
       console.debug('Could not position cursor in contenteditable:', error);
     }
-    
+
     return true;
   }
 
@@ -218,12 +252,12 @@ export class ActivationHandler {
     el.dispatchEvent(new Event('change', opts));
   }
 
-  clamp(n, lo, hi) { 
-    return Math.min(hi, Math.max(lo, n)); 
+  clamp(n, lo, hi) {
+    return Math.min(hi, Math.max(lo, n));
   }
 
-  asNum(v, d) { 
-    const n = Number(v); 
-    return Number.isFinite(n) ? n : d; 
+  asNum(v, d) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : d;
   }
 }

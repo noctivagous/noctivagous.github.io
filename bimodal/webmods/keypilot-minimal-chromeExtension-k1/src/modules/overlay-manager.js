@@ -1,7 +1,7 @@
 /**
  * Visual overlay management for focus and delete indicators
  */
-import { CSS_CLASSES, Z_INDEX } from '../config/constants.js';
+import { CSS_CLASSES, Z_INDEX, SELECTORS, MODES } from '../config/constants.js';
 
 export class OverlayManager {
   constructor() {
@@ -57,7 +57,7 @@ export class OverlayManager {
     
     // Show focus overlay in normal mode AND text focus mode
     if (mode === 'none' || mode === 'text_focus') {
-      this.updateFocusOverlay(focusEl);
+      this.updateFocusOverlay(focusEl, mode);
     } else {
       this.hideFocusOverlay();
     }
@@ -70,10 +70,25 @@ export class OverlayManager {
     }
   }
 
-  updateFocusOverlay(element) {
+  updateFocusOverlay(element, mode = MODES.NONE) {
     if (!element) {
       this.hideFocusOverlay();
       return;
+    }
+
+    // Determine if this is a text input element
+    const isTextInput = element.matches && element.matches(SELECTORS.FOCUSABLE_TEXT);
+    
+    // Determine overlay color based on element type
+    let borderColor, shadowColor;
+    if (isTextInput) {
+      // Orange color for text inputs in both normal mode and text focus mode
+      borderColor = '#ff8c00';
+      shadowColor = 'rgba(255,140,0,0.45)';
+    } else {
+      // Green color for all non-text elements
+      borderColor = 'rgba(0,180,0,0.95)';
+      shadowColor = 'rgba(0,180,0,0.45)';
     }
 
     // Debug logging
@@ -81,7 +96,10 @@ export class OverlayManager {
       console.log('[KeyPilot Debug] updateFocusOverlay called for:', {
         tagName: element.tagName,
         className: element.className,
-        text: element.textContent?.substring(0, 30)
+        text: element.textContent?.substring(0, 30),
+        mode: mode,
+        isTextInput: isTextInput,
+        borderColor: borderColor
       });
     }
 
@@ -92,8 +110,6 @@ export class OverlayManager {
           position: fixed;
           pointer-events: none;
           z-index: ${Z_INDEX.OVERLAYS};
-          border: 3px solid rgba(0,180,0,0.95);
-          box-shadow: 0 0 0 2px rgba(0,180,0,0.45), 0 0 10px 2px rgba(0,180,0,0.5);
           background: transparent;
           will-change: transform;
         `
@@ -115,6 +131,10 @@ export class OverlayManager {
         this.overlayObserver.observe(this.focusOverlay);
       }
     }
+
+    // Update overlay colors based on current context
+    this.focusOverlay.style.border = `3px solid ${borderColor}`;
+    this.focusOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${shadowColor.replace('0.45', '0.5')}`;
 
     const rect = this.getBestRect(element);
     
@@ -290,6 +310,36 @@ export class OverlayManager {
       console.log('[KeyPilot Debug] Using original rect:', rect);
     }
     return rect;
+  }
+
+  flashFocusOverlay() {
+    if (!this.focusOverlay || this.focusOverlay.style.display === 'none') {
+      return; // No overlay to flash
+    }
+    
+    // Create flash animation by temporarily changing the overlay style
+    const originalBorder = this.focusOverlay.style.border;
+    const originalBoxShadow = this.focusOverlay.style.boxShadow;
+    
+    // Flash with brighter colors
+    this.focusOverlay.style.border = '3px solid rgba(0,255,0,1)';
+    this.focusOverlay.style.boxShadow = '0 0 0 2px rgba(0,255,0,0.8), 0 0 20px 4px rgba(0,255,0,0.9)';
+    this.focusOverlay.style.transition = 'border 0.15s ease-out, box-shadow 0.15s ease-out';
+    
+    // Reset after animation
+    setTimeout(() => {
+      if (this.focusOverlay) {
+        this.focusOverlay.style.border = originalBorder;
+        this.focusOverlay.style.boxShadow = originalBoxShadow;
+        
+        // Remove transition after reset to avoid interfering with normal updates
+        setTimeout(() => {
+          if (this.focusOverlay) {
+            this.focusOverlay.style.transition = '';
+          }
+        }, 150);
+      }
+    }, 150);
   }
 
   cleanup() {

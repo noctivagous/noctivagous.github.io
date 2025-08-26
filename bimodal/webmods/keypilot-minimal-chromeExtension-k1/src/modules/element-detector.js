@@ -3,7 +3,7 @@
  */
 export class ElementDetector {
   constructor() {
-    this.CLICKABLE_ROLES = ['link', 'button'];
+    this.CLICKABLE_ROLES = ['link', 'button', 'slider'];
     this.CLICKABLE_SEL = 'a[href], button, input, select, textarea';
     this.FOCUSABLE_SEL = 'a[href], button, input, select, textarea, [contenteditable="true"]';
   }

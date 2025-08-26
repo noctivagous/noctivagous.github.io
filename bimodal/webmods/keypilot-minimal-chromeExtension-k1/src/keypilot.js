@@ -199,8 +199,12 @@ export class KeyPilot extends EventManager {
 
   handleStateChange(newState, prevState) {
     // Update cursor mode
-    if (newState.mode !== prevState.mode) {
-      this.cursor.setMode(newState.mode);
+    if (newState.mode !== prevState.mode || 
+        (newState.mode === MODES.TEXT_FOCUS && newState.focusEl !== prevState.focusEl)) {
+      // For text focus mode, pass whether there's a clickable element
+      const options = newState.mode === MODES.TEXT_FOCUS ? 
+        { hasClickableElement: !!newState.focusEl } : {};
+      this.cursor.setMode(newState.mode, options);
       this.updatePopupStatus(newState.mode);
     }
 
@@ -242,7 +246,7 @@ export class KeyPilot extends EventManager {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        this.handleEscapeFromTextFocus();
+        this.handleEscapeFromTextFocus(currentState);
       }
       return;
     }
@@ -331,7 +335,12 @@ export class KeyPilot extends EventManager {
 
     // Use traditional element detection for accuracy
     const under = this.detector.deepElementFromPoint(x, y);
-    const clickable = this.detector.findClickable(under);
+    let clickable = this.detector.findClickable(under);
+    
+    // In text focus mode, exclude the currently focused text element from being considered clickable
+    if (currentState.mode === MODES.TEXT_FOCUS && currentState.focusedTextElement && clickable === currentState.focusedTextElement) {
+      clickable = null;
+    }
     
     // Track with intersection manager for performance metrics and caching
     this.intersectionManager.trackElementAtPoint(x, y);
@@ -400,12 +409,14 @@ export class KeyPilot extends EventManager {
     // Try semantic activation first
     if (this.activator.handleSmartActivate(target, currentState.lastMouse.x, currentState.lastMouse.y)) {
       this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
+      this.overlayManager.flashFocusOverlay();
       return;
     }
 
     // Fallback to click
     this.activator.smartClick(target, currentState.lastMouse.x, currentState.lastMouse.y);
     this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
+    this.overlayManager.flashFocusOverlay();
   }
 
   deleteElement(element) {
@@ -424,8 +435,32 @@ export class KeyPilot extends EventManager {
     }
   }
 
-  handleEscapeFromTextFocus() {
-    console.debug('Escape pressed in text focus mode, attempting to exit');
+  handleEscapeFromTextFocus(currentState) {
+    console.debug('Escape pressed in text focus mode');
+
+    // Check if there's a clickable element under the cursor
+    if (currentState.focusEl) {
+      console.debug('Clickable element found, activating it instead of exiting text focus');
+      
+      // Activate the clickable element
+      const target = currentState.focusEl;
+      
+      // Try semantic activation first
+      if (this.activator.handleSmartActivate(target, currentState.lastMouse.x, currentState.lastMouse.y)) {
+        this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
+        this.overlayManager.flashFocusOverlay();
+        return;
+      }
+
+      // Fallback to click
+      this.activator.smartClick(target, currentState.lastMouse.x, currentState.lastMouse.y);
+      this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
+      this.overlayManager.flashFocusOverlay();
+      return;
+    }
+
+    // No clickable element, exit text focus mode
+    console.debug('No clickable element, exiting text focus mode');
 
     // Use the simple, proven approach that works in DevTools
     // Blur the active element and set focus to the body

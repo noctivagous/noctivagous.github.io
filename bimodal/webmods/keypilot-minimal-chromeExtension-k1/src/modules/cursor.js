@@ -12,33 +12,33 @@ export class CursorManager {
 
   ensure() {
     if (this.cursorEl) return;
-    
-    const wrap = this.createElement('div', { 
-      id: 'kpv2-cursor', 
-      'aria-hidden': 'true' 
+
+    const wrap = this.createElement('div', {
+      id: 'kpv2-cursor',
+      'aria-hidden': 'true'
     });
-    wrap.appendChild(this.buildSvg('none'));
+    wrap.appendChild(this.buildSvg('none', {}));
     document.body.appendChild(wrap);
     this.cursorEl = wrap;
-    
+
     // Start monitoring for stuck cursor
     this.startStuckDetection();
   }
 
-  setMode(mode) {
+  setMode(mode, options = {}) {
     if (!this.cursorEl) return;
-    this.cursorEl.replaceChildren(this.buildSvg(mode));
+    this.cursorEl.replaceChildren(this.buildSvg(mode, options));
   }
 
   updatePosition(x, y) {
     if (!this.cursorEl) return;
-    
+
     // Store the intended position
     this.lastPosition = { x, y };
-    
+
     // Use multiple positioning strategies for maximum compatibility
     this.forceUpdatePosition(x, y);
-    
+
     // Reset stuck detection
     this.isStuck = false;
     this.forceUpdateCount = 0;
@@ -46,22 +46,22 @@ export class CursorManager {
 
   forceUpdatePosition(x, y) {
     if (!this.cursorEl) return;
-    
+
     // Strategy 1: Standard positioning with transform (most performant)
     this.cursorEl.style.left = `${x}px`;
     this.cursorEl.style.top = `${y}px`;
     this.cursorEl.style.transform = 'translate(-50%, -50%)';
-    
+
     // Strategy 2: Force reflow to ensure position update
     this.cursorEl.offsetHeight; // Force reflow
-    
+
     // Strategy 3: Backup positioning using CSS custom properties
     this.cursorEl.style.setProperty('--cursor-x', `${x}px`);
     this.cursorEl.style.setProperty('--cursor-y', `${y}px`);
-    
+
     // Strategy 4: Ensure z-index is maintained
     this.cursorEl.style.zIndex = '2147483647';
-    
+
     // Strategy 5: Ensure element is visible and positioned
     this.cursorEl.style.position = 'fixed';
     this.cursorEl.style.pointerEvents = 'none';
@@ -78,28 +78,28 @@ export class CursorManager {
 
   checkIfStuck() {
     if (!this.cursorEl) return;
-    
+
     const rect = this.cursorEl.getBoundingClientRect();
     const expectedX = this.lastPosition.x;
     const expectedY = this.lastPosition.y;
-    
+
     // Check if cursor is significantly off from expected position
-    const deltaX = Math.abs(rect.left + rect.width/2 - expectedX);
-    const deltaY = Math.abs(rect.top + rect.height/2 - expectedY);
-    
+    const deltaX = Math.abs(rect.left + rect.width / 2 - expectedX);
+    const deltaY = Math.abs(rect.top + rect.height / 2 - expectedY);
+
     if (deltaX > 5 || deltaY > 5) {
       this.isStuck = true;
       this.forceUpdateCount++;
-      
+
       if (window.KEYPILOT_DEBUG) {
         console.warn('[KeyPilot] Cursor appears stuck, forcing update', {
           expected: this.lastPosition,
-          actual: { x: rect.left + rect.width/2, y: rect.top + rect.height/2 },
+          actual: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
           delta: { x: deltaX, y: deltaY },
           forceCount: this.forceUpdateCount
         });
       }
-      
+
       // Try multiple recovery strategies
       this.recoverFromStuck();
     }
@@ -107,12 +107,12 @@ export class CursorManager {
 
   recoverFromStuck() {
     if (!this.cursorEl) return;
-    
+
     const { x, y } = this.lastPosition;
-    
+
     // Recovery strategy 1: Force position update
     this.forceUpdatePosition(x, y);
-    
+
     // Recovery strategy 2: Recreate element if severely stuck
     if (this.forceUpdateCount > 5) {
       if (window.KEYPILOT_DEBUG) {
@@ -120,7 +120,7 @@ export class CursorManager {
       }
       this.recreateCursor();
     }
-    
+
     // Recovery strategy 3: Use requestAnimationFrame for next update
     requestAnimationFrame(() => {
       this.forceUpdatePosition(x, y);
@@ -129,19 +129,19 @@ export class CursorManager {
 
   recreateCursor() {
     if (!this.cursorEl) return;
-    
+
     const currentMode = this.getCurrentMode();
     const { x, y } = this.lastPosition;
-    
+
     // Remove old cursor
     this.cursorEl.remove();
     this.cursorEl = null;
-    
+
     // Recreate cursor
     this.ensure();
-    this.setMode(currentMode);
+    this.setMode(currentMode, {});
     this.forceUpdatePosition(x, y);
-    
+
     // Reset counters
     this.forceUpdateCount = 0;
     this.isStuck = false;
@@ -149,11 +149,11 @@ export class CursorManager {
 
   getCurrentMode() {
     if (!this.cursorEl) return 'none';
-    
+
     // Try to determine current mode from SVG content
     const svg = this.cursorEl.querySelector('svg');
     if (!svg) return 'none';
-    
+
     const lines = svg.querySelectorAll('line');
     if (lines.length === 2) return 'delete'; // X pattern
     if (lines.length === 4) {
@@ -162,20 +162,20 @@ export class CursorManager {
       if (stroke && stroke.includes('255,140,0')) return 'text_focus'; // Orange
       return 'none'; // Green crosshair
     }
-    
+
     return 'none';
   }
 
-  buildSvg(mode) {
+  buildSvg(mode, options = {}) {
     const NS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(NS, 'svg');
-    
+
     if (mode === 'text_focus') {
       // Larger SVG for text mode with message in lower right quadrant
       svg.setAttribute('viewBox', '0 0 200 140');
-      svg.setAttribute('width', '200');
+      svg.setAttribute('width', '350');
       svg.setAttribute('height', '140');
-      
+
       const addLine = (x1, y1, x2, y2, color, w = '4') => {
         const ln = document.createElementNS(NS, 'line');
         ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
@@ -185,58 +185,73 @@ export class CursorManager {
         svg.appendChild(ln);
       };
 
+
+
+      // Background for message in lower right quadrant
+      const bg = document.createElementNS(NS, 'rect');
+      bg.setAttribute('x', '100');  // Right side of crosshair
+      bg.setAttribute('y', '70');   // Lower quadrant
+      bg.setAttribute('width', '165');
+      bg.setAttribute('height', '50');
+      bg.setAttribute('rx', '6');
+      bg.setAttribute('fill', 'rgba(0,0,0,0.85)');
+      bg.setAttribute('stroke', 'rgba(255,140,0,0.4)');
+      bg.setAttribute('stroke-width', '1');
+      bg.style.filter = 'drop-shadow(5px 5px 5px rgba(40, 40, 40, 0.7))';
+
+      svg.appendChild(bg);
+
+      // Determine message based on whether there's a clickable element
+      const hasClickableElement = options.hasClickableElement || false;
+      const firstLineText = hasClickableElement ? 'Cursor is in a text field.' : 'Cursor is in a text field.';
+      const secondLineText = hasClickableElement ? 'Use ESC to click element.' : 'Press ESC to exit.';
+
+      // First line of text message
+      const text1 = document.createElementNS(NS, 'text');
+      text1.setAttribute('x', '109'); // Center of message box
+      text1.setAttribute('y', '90');   // First line position
+      text1.setAttribute('fill', 'rgba(255,255,255,0.95)');
+      text1.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
+      text1.setAttribute('font-size', '12');
+      text1.setAttribute('font-weight', '500');
+      text1.setAttribute('text-anchor', 'left');
+      text1.textContent = firstLineText;
+      svg.appendChild(text1);
+
+      // Second line of text message
+      const text2 = document.createElementNS(NS, 'text');
+      text2.setAttribute('x', '109'); // Center of message box
+      text2.setAttribute('y', '110');   // Second line position
+
+      text2.setAttribute('fill', hasClickableElement ? '#6ced2b' : '#ff8c00');
+
+      //text2.setAttribute('fill', 'rgba(255,255,255,0.95)');
+      text2.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
+      text2.setAttribute('font-size', '12');
+      text2.setAttribute('font-weight', '500');
+      text2.setAttribute('text-anchor', 'left');
+      text2.textContent = secondLineText;
+      svg.appendChild(text2);
+
+
+
       // Orange crosshair at center - same size as normal mode
       const centerX = 100; // Center of the SVG
       const centerY = 70;  // Center of the SVG
-      const col = '#ff8c00'; // Orange color
+      const col = hasClickableElement ? 'rgba(0,128,0,0.95)' : '#ff8c00'; // Green if clickable, orange if not.
       // Same dimensions as normal mode: arms extend ±24 pixels from center
       addLine(centerX, centerY - 24, centerX, centerY - 10, col);
       addLine(centerX, centerY + 10, centerX, centerY + 24, col);
       addLine(centerX - 24, centerY, centerX - 10, centerY, col);
       addLine(centerX + 10, centerY, centerX + 24, centerY, col);
 
-      // Background for message in lower right quadrant
-      const bg = document.createElementNS(NS, 'rect');
-      bg.setAttribute('x', '110');  // Right side of crosshair
-      bg.setAttribute('y', '95');   // Lower quadrant
-      bg.setAttribute('width', '85');
-      bg.setAttribute('height', '40');
-      bg.setAttribute('rx', '6');
-      bg.setAttribute('fill', 'rgba(0,0,0,0.85)');
-      bg.setAttribute('stroke', 'rgba(255,140,0,0.4)');
-      bg.setAttribute('stroke-width', '1');
-      svg.appendChild(bg);
-      
-      // First line of text message
-      const text1 = document.createElementNS(NS, 'text');
-      text1.setAttribute('x', '152.5'); // Center of message box
-      text1.setAttribute('y', '108');   // First line position
-      text1.setAttribute('fill', 'rgba(255,255,255,0.95)');
-      text1.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text1.setAttribute('font-size', '10');
-      text1.setAttribute('font-weight', '500');
-      text1.setAttribute('text-anchor', 'middle');
-      text1.textContent = 'Cursor is in a text field.';
-      svg.appendChild(text1);
-      
-      // Second line of text message
-      const text2 = document.createElementNS(NS, 'text');
-      text2.setAttribute('x', '152.5'); // Center of message box
-      text2.setAttribute('y', '122');   // Second line position
-      text2.setAttribute('fill', 'rgba(255,255,255,0.95)');
-      text2.setAttribute('font-family', 'system-ui, -apple-system, sans-serif');
-      text2.setAttribute('font-size', '10');
-      text2.setAttribute('font-weight', '500');
-      text2.setAttribute('text-anchor', 'middle');
-      text2.textContent = 'Press ESC to exit.';
-      svg.appendChild(text2);
-      
+
     } else {
       // Normal size for other modes
       svg.setAttribute('viewBox', '0 0 94 94');
       svg.setAttribute('width', '94');
       svg.setAttribute('height', '94');
-      
+
       const addLine = (x1, y1, x2, y2, color, w = '4') => {
         const ln = document.createElementNS(NS, 'line');
         ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
@@ -257,7 +272,7 @@ export class CursorManager {
         addLine(60, 47, 84, 47, col);
       }
     }
-    
+
     svg.setAttribute('xmlns', NS);
     return svg;
   }
@@ -279,7 +294,7 @@ export class CursorManager {
       clearInterval(this.stuckCheckInterval);
       this.stuckCheckInterval = null;
     }
-    
+
     if (this.cursorEl) {
       this.cursorEl.remove();
       this.cursorEl = null;

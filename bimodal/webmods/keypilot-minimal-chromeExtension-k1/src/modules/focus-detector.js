@@ -124,6 +124,10 @@ export class FocusDetector {
     
     this.state.setMode('text_focus');
     this.state.setState({ focusedTextElement: element });
+    
+    // Clear the focusEl to ensure hasClickableElement starts as false
+    // This prevents the "Press ESC to click" message from appearing immediately after clicking into a text field
+    this.state.setFocusElement(null);
   }
 
   clearTextFocus() {

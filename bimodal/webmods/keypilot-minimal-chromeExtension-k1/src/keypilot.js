@@ -201,9 +201,12 @@ export class KeyPilot extends EventManager {
     // Update cursor mode
     if (newState.mode !== prevState.mode || 
         (newState.mode === MODES.TEXT_FOCUS && newState.focusEl !== prevState.focusEl)) {
-      // For text focus mode, pass whether there's a clickable element
+      // For text focus mode, pass whether there's a clickable element and the focused element
       const options = newState.mode === MODES.TEXT_FOCUS ? 
-        { hasClickableElement: !!newState.focusEl } : {};
+        { 
+          hasClickableElement: !!newState.focusEl,
+          focusedElement: newState.focusedTextElement
+        } : {};
       this.cursor.setMode(newState.mode, options);
       this.updatePopupStatus(newState.mode);
     }
@@ -407,6 +410,13 @@ export class KeyPilot extends EventManager {
       return;
     }
 
+    console.log('[KeyPilot] Activating element:', {
+      tagName: target.tagName,
+      className: target.className,
+      id: target.id,
+      hasClickHandler: !!(target.onclick || target.getAttribute('onclick'))
+    });
+
     // Try semantic activation first
     if (this.activator.handleSmartActivate(target, currentState.lastMouse.x, currentState.lastMouse.y)) {
       this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
@@ -414,7 +424,8 @@ export class KeyPilot extends EventManager {
       return;
     }
 
-    // Fallback to click
+    // Always try to click the element, regardless of whether it's "detected" as interactive
+    // This ensures videos, custom elements, and other non-standard interactive elements work
     this.activator.smartClick(target, currentState.lastMouse.x, currentState.lastMouse.y);
     this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
     this.overlayManager.flashFocusOverlay();

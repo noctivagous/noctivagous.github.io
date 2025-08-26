@@ -4,8 +4,8 @@
 export class ElementDetector {
   constructor() {
     this.CLICKABLE_ROLES = ['link', 'button', 'slider'];
-    this.CLICKABLE_SEL = 'a[href], button, input, select, textarea';
-    this.FOCUSABLE_SEL = 'a[href], button, input, select, textarea, [contenteditable="true"]';
+    this.CLICKABLE_SEL = 'a[href], button, input, select, textarea, video, audio';
+    this.FOCUSABLE_SEL = 'a[href], button, input, select, textarea, video, audio, [contenteditable="true"]';
   }
 
   deepElementFromPoint(x, y) {
@@ -26,19 +26,27 @@ export class ElementDetector {
     const role = (el.getAttribute && (el.getAttribute('role') || '').trim().toLowerCase()) || '';
     const hasRole = role && this.CLICKABLE_ROLES.includes(role);
     
+    // Check for other interactive indicators
+    const hasClickHandler = el.onclick || el.getAttribute('onclick');
+    const hasTabIndex = el.hasAttribute('tabindex') && el.getAttribute('tabindex') !== '-1';
+    const hasCursor = window.getComputedStyle && window.getComputedStyle(el).cursor === 'pointer';
+    
     // Debug logging
-    if (window.KEYPILOT_DEBUG && (matchesSelector || hasRole)) {
+    if (window.KEYPILOT_DEBUG && (matchesSelector || hasRole || hasClickHandler || hasTabIndex || hasCursor)) {
       console.log('[KeyPilot Debug] isLikelyInteractive:', {
         tagName: el.tagName,
         href: el.href,
         matchesSelector: matchesSelector,
         role: role,
         hasRole: hasRole,
+        hasClickHandler: !!hasClickHandler,
+        hasTabIndex: hasTabIndex,
+        hasCursor: hasCursor,
         selector: this.FOCUSABLE_SEL
       });
     }
     
-    return matchesSelector || hasRole;
+    return matchesSelector || hasRole || hasClickHandler || hasTabIndex || hasCursor;
   }
 
   findClickable(el) {

@@ -9,9 +9,58 @@ export class ActivationHandler {
   smartClick(el, clientX, clientY) {
     if (!el) return false;
 
-    const activator = (el.closest && (el.closest('a[href]') || el.closest('button,[role="button"]'))) || el;
+    // First, try to find a more specific clickable parent (links, buttons)
+    // Prioritize links for video/audio elements (common on video websites)
+    let activator = el;
+    if (el.closest) {
+      let specificClickable;
+      
+      // For video/audio elements, prioritize finding parent links
+      if (el.tagName === 'VIDEO' || el.tagName === 'AUDIO') {
+        specificClickable = el.closest('a[href]');
+        if (specificClickable) {
+          console.log('[KeyPilot] Found parent link for video/audio element:', specificClickable.href);
+        }
+      }
+      
+      // If no specific handling above, look for any clickable parent
+      if (!specificClickable) {
+        specificClickable = el.closest('a[href], button, [role="button"], [onclick], [tabindex]');
+      }
+      
+      if (specificClickable) {
+        activator = specificClickable;
+      }
+    }
 
-    // Try single programmatic activation first
+    // Special handling for links - force them to open in same window
+    if (activator.tagName === 'A' && activator.href) {
+      console.log('[KeyPilot] Activating link in same window:', activator.href);
+      
+      // Store original target and temporarily change it
+      const originalTarget = activator.target;
+      activator.target = '_self';
+      
+      try {
+        // Try programmatic click first
+        activator.click();
+        return true;
+      } catch (error) {
+        console.log('[KeyPilot] Programmatic click failed, using navigation:', error);
+        // Fallback to direct navigation
+        window.location.href = activator.href;
+        return true;
+      } finally {
+        // Restore original target
+        if (originalTarget !== undefined) {
+          activator.target = originalTarget;
+        } else {
+          activator.removeAttribute('target');
+        }
+      }
+    }
+
+    // Try single programmatic activation for non-links
     let prevented = false;
     const onClickCapture = (ev) => {
       if (ev.defaultPrevented) prevented = true;
@@ -32,7 +81,8 @@ export class ActivationHandler {
       } catch { }
     }
 
-    // Fallback: dispatch essential mouse events (matching working script)
+    // Fallback: dispatch essential mouse events on the original element
+    // This ensures we try to click whatever element the user is pointing at
     const opts = {
       bubbles: true,
       cancelable: true,
@@ -42,10 +92,18 @@ export class ActivationHandler {
       clientY
     };
 
-    try { activator.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
-    try { activator.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
-    try { activator.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
-    try { activator.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+
+    // Also try on the activator if it's different
+    if (activator !== el) {
+      try { activator.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
+      try { activator.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
+      try { activator.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
+      try { activator.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+    }
 
     return true;
   }
@@ -57,6 +115,17 @@ export class ActivationHandler {
 
     // Handle label elements
     target = this.resolveLabel(target);
+
+    // IMPORTANT: Check if video/audio is wrapped in a link first
+    // This handles video preview thumbnails on video websites where clicking should navigate
+    if ((target.tagName === 'VIDEO' || target.tagName === 'AUDIO') && target.closest) {
+      const parentLink = target.closest('a[href]');
+      if (parentLink) {
+        // Let the link be handled by smartClick instead of controlling media playback
+        console.log('[KeyPilot] Video/audio wrapped in link, deferring to link activation');
+        return false;
+      }
+    }
 
     // Handle different input types semantically
     if (this.detector.isNativeType(target, 'radio')) {
@@ -83,6 +152,11 @@ export class ActivationHandler {
 
     if (this.detector.isContentEditable(target)) {
       return this.handleContentEditable(target);
+    }
+
+    // Handle video and audio elements (only if not wrapped in a link)
+    if (target.tagName === 'VIDEO' || target.tagName === 'AUDIO') {
+      return this.handleMediaElement(target);
     }
 
     return false;
@@ -244,6 +318,22 @@ export class ActivationHandler {
     }
 
     return true;
+  }
+
+  handleMediaElement(target) {
+    try {
+      // Toggle play/pause for video and audio elements
+      if (target.paused) {
+        target.play();
+      } else {
+        target.pause();
+      }
+      return true;
+    } catch (error) {
+      console.debug('Could not control media element:', error);
+      // Fallback to regular click behavior
+      return false;
+    }
   }
 
   dispatchInputChange(el) {

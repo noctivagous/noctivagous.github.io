@@ -4,6 +4,8 @@
 export class CursorManager {
   constructor() {
     this.cursorEl = null;
+    this.connectionLineEl = null;
+    this.bottomLineEl = null;
     this.lastPosition = { x: 0, y: 0 };
     this.isStuck = false;
     this.stuckCheckInterval = null;
@@ -28,6 +30,13 @@ export class CursorManager {
   setMode(mode, options = {}) {
     if (!this.cursorEl) return;
     this.cursorEl.replaceChildren(this.buildSvg(mode, options));
+
+    // Handle connection line for text mode
+    if (mode === 'text_focus' && options.focusedElement) {
+      this.showConnectionLine(options.focusedElement);
+    } else {
+      this.hideConnectionLine();
+    }
   }
 
   updatePosition(x, y) {
@@ -38,6 +47,10 @@ export class CursorManager {
 
     // Use multiple positioning strategies for maximum compatibility
     this.forceUpdatePosition(x, y);
+
+    // Update connection line position if visible
+    this.updateConnectionLine(x, y);
+    // Bottom line doesn't need to update with cursor movement, only when element changes
 
     // Reset stuck detection
     this.isStuck = false;
@@ -289,6 +302,122 @@ export class CursorManager {
     }
   }
 
+  showConnectionLine(focusedElement) {
+    if (!focusedElement) return;
+
+    // Create connection line if it doesn't exist
+    if (!this.connectionLineEl) {
+      this.connectionLineEl = this.createElement('div', {
+        id: 'kpv2-connection-line',
+        'aria-hidden': 'true'
+      });
+
+      // Style the connection line
+      Object.assign(this.connectionLineEl.style, {
+        position: 'fixed',
+        pointerEvents: 'none',
+        zIndex: '2147483647', // Same as cursor
+        width: '5px',
+        backgroundColor: '#ff8c00', // Orange color
+        transformOrigin: 'top center',
+        borderRadius: '2.5px'
+      });
+
+      document.body.appendChild(this.connectionLineEl);
+    }
+
+    // Create bottom line if it doesn't exist
+    if (!this.bottomLineEl) {
+      this.bottomLineEl = this.createElement('div', {
+        id: 'kpv2-bottom-line',
+        'aria-hidden': 'true'
+      });
+
+      // Style the bottom line
+      Object.assign(this.bottomLineEl.style, {
+        position: 'fixed',
+        pointerEvents: 'none',
+        zIndex: '2147483647', // Same as cursor
+        height: '5px',
+        backgroundColor: '#ff8c00', // Orange color - same as connection line
+        borderRadius: '2.5px'
+      });
+
+      document.body.appendChild(this.bottomLineEl);
+    }
+
+    // Store reference to focused element for position updates
+    this.focusedElement = focusedElement;
+
+    // Update line positions immediately
+    this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
+    this.updateBottomLine();
+  }
+
+  hideConnectionLine() {
+    if (this.connectionLineEl) {
+      this.connectionLineEl.remove();
+      this.connectionLineEl = null;
+    }
+    if (this.bottomLineEl) {
+      this.bottomLineEl.remove();
+      this.bottomLineEl = null;
+    }
+    this.focusedElement = null;
+  }
+
+  updateConnectionLine(cursorX, cursorY) {
+    if (!this.connectionLineEl || !this.focusedElement) return;
+
+    try {
+      // Get the focused element's position
+      const elementRect = this.focusedElement.getBoundingClientRect();
+
+      // Calculate center of the input element's bottom edge
+      const elementCenterX = elementRect.left + elementRect.width / 2;
+      const elementBottomY = elementRect.bottom;
+
+      // Calculate line properties - from cursor to bottom center of element
+      const deltaX = elementCenterX - cursorX;
+      const deltaY = elementBottomY - cursorY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Calculate angle in radians, then convert to degrees
+      const angleRad = Math.atan2(deltaX, -deltaY); // Swapped and negated for correct orientation
+      const angleDeg = 180 + (angleRad * 180 / Math.PI);
+
+      // Position the line at cursor position
+      this.connectionLineEl.style.left = `${cursorX}px`;
+      this.connectionLineEl.style.top = `${cursorY}px`;
+      this.connectionLineEl.style.height = `${distance}px`;
+      this.connectionLineEl.style.transform = `translate(-50%, 0) rotate(${angleDeg}deg)`;
+      this.connectionLineEl.style.display = 'block';
+
+    } catch (error) {
+      // If element is no longer valid, hide the line
+      this.hideConnectionLine();
+    }
+  }
+
+  updateBottomLine() {
+    if (!this.bottomLineEl || !this.focusedElement) return;
+
+    try {
+      // Get the focused element's position
+      const elementRect = this.focusedElement.getBoundingClientRect();
+
+      // Position the bottom line along the bottom edge of the input
+      this.bottomLineEl.style.left = `${elementRect.left}px`;
+      this.bottomLineEl.style.top = `${elementRect.bottom}px`;
+      this.bottomLineEl.style.width = `${elementRect.width}px`;
+      this.bottomLineEl.style.display = 'block';
+
+    } catch (error) {
+      // If element is no longer valid, hide the line
+      this.hideConnectionLine();
+    }
+  }
+
   cleanup() {
     if (this.stuckCheckInterval) {
       clearInterval(this.stuckCheckInterval);
@@ -298,6 +427,16 @@ export class CursorManager {
     if (this.cursorEl) {
       this.cursorEl.remove();
       this.cursorEl = null;
+    }
+
+    if (this.connectionLineEl) {
+      this.connectionLineEl.remove();
+      this.connectionLineEl = null;
+    }
+
+    if (this.bottomLineEl) {
+      this.bottomLineEl.remove();
+      this.bottomLineEl = null;
     }
   }
 

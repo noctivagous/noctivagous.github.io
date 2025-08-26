@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-26T07:29:38.991Z
+ * Generated on 2025-08-26T08:35:54.643Z
  */
 
 (() => {
@@ -260,6 +260,8 @@ class EventManager {
 class CursorManager {
   constructor() {
     this.cursorEl = null;
+    this.connectionLineEl = null;
+    this.bottomLineEl = null;
     this.lastPosition = { x: 0, y: 0 };
     this.isStuck = false;
     this.stuckCheckInterval = null;
@@ -284,6 +286,13 @@ class CursorManager {
   setMode(mode, options = {}) {
     if (!this.cursorEl) return;
     this.cursorEl.replaceChildren(this.buildSvg(mode, options));
+
+    // Handle connection line for text mode
+    if (mode === 'text_focus' && options.focusedElement) {
+      this.showConnectionLine(options.focusedElement);
+    } else {
+      this.hideConnectionLine();
+    }
   }
 
   updatePosition(x, y) {
@@ -294,6 +303,10 @@ class CursorManager {
 
     // Use multiple positioning strategies for maximum compatibility
     this.forceUpdatePosition(x, y);
+
+    // Update connection line position if visible
+    this.updateConnectionLine(x, y);
+    // Bottom line doesn't need to update with cursor movement, only when element changes
 
     // Reset stuck detection
     this.isStuck = false;
@@ -545,6 +558,122 @@ class CursorManager {
     }
   }
 
+  showConnectionLine(focusedElement) {
+    if (!focusedElement) return;
+
+    // Create connection line if it doesn't exist
+    if (!this.connectionLineEl) {
+      this.connectionLineEl = this.createElement('div', {
+        id: 'kpv2-connection-line',
+        'aria-hidden': 'true'
+      });
+
+      // Style the connection line
+      Object.assign(this.connectionLineEl.style, {
+        position: 'fixed',
+        pointerEvents: 'none',
+        zIndex: '2147483647', // Same as cursor
+        width: '5px',
+        backgroundColor: '#ff8c00', // Orange color
+        transformOrigin: 'top center',
+        borderRadius: '2.5px'
+      });
+
+      document.body.appendChild(this.connectionLineEl);
+    }
+
+    // Create bottom line if it doesn't exist
+    if (!this.bottomLineEl) {
+      this.bottomLineEl = this.createElement('div', {
+        id: 'kpv2-bottom-line',
+        'aria-hidden': 'true'
+      });
+
+      // Style the bottom line
+      Object.assign(this.bottomLineEl.style, {
+        position: 'fixed',
+        pointerEvents: 'none',
+        zIndex: '2147483647', // Same as cursor
+        height: '5px',
+        backgroundColor: '#ff8c00', // Orange color - same as connection line
+        borderRadius: '2.5px'
+      });
+
+      document.body.appendChild(this.bottomLineEl);
+    }
+
+    // Store reference to focused element for position updates
+    this.focusedElement = focusedElement;
+
+    // Update line positions immediately
+    this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
+    this.updateBottomLine();
+  }
+
+  hideConnectionLine() {
+    if (this.connectionLineEl) {
+      this.connectionLineEl.remove();
+      this.connectionLineEl = null;
+    }
+    if (this.bottomLineEl) {
+      this.bottomLineEl.remove();
+      this.bottomLineEl = null;
+    }
+    this.focusedElement = null;
+  }
+
+  updateConnectionLine(cursorX, cursorY) {
+    if (!this.connectionLineEl || !this.focusedElement) return;
+
+    try {
+      // Get the focused element's position
+      const elementRect = this.focusedElement.getBoundingClientRect();
+
+      // Calculate center of the input element's bottom edge
+      const elementCenterX = elementRect.left + elementRect.width / 2;
+      const elementBottomY = elementRect.bottom;
+
+      // Calculate line properties - from cursor to bottom center of element
+      const deltaX = elementCenterX - cursorX;
+      const deltaY = elementBottomY - cursorY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Calculate angle in radians, then convert to degrees
+      const angleRad = Math.atan2(deltaX, -deltaY); // Swapped and negated for correct orientation
+      const angleDeg = 180 + (angleRad * 180 / Math.PI);
+
+      // Position the line at cursor position
+      this.connectionLineEl.style.left = `${cursorX}px`;
+      this.connectionLineEl.style.top = `${cursorY}px`;
+      this.connectionLineEl.style.height = `${distance}px`;
+      this.connectionLineEl.style.transform = `translate(-50%, 0) rotate(${angleDeg}deg)`;
+      this.connectionLineEl.style.display = 'block';
+
+    } catch (error) {
+      // If element is no longer valid, hide the line
+      this.hideConnectionLine();
+    }
+  }
+
+  updateBottomLine() {
+    if (!this.bottomLineEl || !this.focusedElement) return;
+
+    try {
+      // Get the focused element's position
+      const elementRect = this.focusedElement.getBoundingClientRect();
+
+      // Position the bottom line along the bottom edge of the input
+      this.bottomLineEl.style.left = `${elementRect.left}px`;
+      this.bottomLineEl.style.top = `${elementRect.bottom}px`;
+      this.bottomLineEl.style.width = `${elementRect.width}px`;
+      this.bottomLineEl.style.display = 'block';
+
+    } catch (error) {
+      // If element is no longer valid, hide the line
+      this.hideConnectionLine();
+    }
+  }
+
   cleanup() {
     if (this.stuckCheckInterval) {
       clearInterval(this.stuckCheckInterval);
@@ -554,6 +683,16 @@ class CursorManager {
     if (this.cursorEl) {
       this.cursorEl.remove();
       this.cursorEl = null;
+    }
+
+    if (this.connectionLineEl) {
+      this.connectionLineEl.remove();
+      this.connectionLineEl = null;
+    }
+
+    if (this.bottomLineEl) {
+      this.bottomLineEl.remove();
+      this.bottomLineEl = null;
     }
   }
 
@@ -581,8 +720,8 @@ class CursorManager {
 class ElementDetector {
   constructor() {
     this.CLICKABLE_ROLES = ['link', 'button', 'slider'];
-    this.CLICKABLE_SEL = 'a[href], button, input, select, textarea';
-    this.FOCUSABLE_SEL = 'a[href], button, input, select, textarea, [contenteditable="true"]';
+    this.CLICKABLE_SEL = 'a[href], button, input, select, textarea, video, audio';
+    this.FOCUSABLE_SEL = 'a[href], button, input, select, textarea, video, audio, [contenteditable="true"]';
   }
 
   deepElementFromPoint(x, y) {
@@ -603,19 +742,27 @@ class ElementDetector {
     const role = (el.getAttribute && (el.getAttribute('role') || '').trim().toLowerCase()) || '';
     const hasRole = role && this.CLICKABLE_ROLES.includes(role);
     
+    // Check for other interactive indicators
+    const hasClickHandler = el.onclick || el.getAttribute('onclick');
+    const hasTabIndex = el.hasAttribute('tabindex') && el.getAttribute('tabindex') !== '-1';
+    const hasCursor = window.getComputedStyle && window.getComputedStyle(el).cursor === 'pointer';
+    
     // Debug logging
-    if (window.KEYPILOT_DEBUG && (matchesSelector || hasRole)) {
+    if (window.KEYPILOT_DEBUG && (matchesSelector || hasRole || hasClickHandler || hasTabIndex || hasCursor)) {
       console.log('[KeyPilot Debug] isLikelyInteractive:', {
         tagName: el.tagName,
         href: el.href,
         matchesSelector: matchesSelector,
         role: role,
         hasRole: hasRole,
+        hasClickHandler: !!hasClickHandler,
+        hasTabIndex: hasTabIndex,
+        hasCursor: hasCursor,
         selector: this.FOCUSABLE_SEL
       });
     }
     
-    return matchesSelector || hasRole;
+    return matchesSelector || hasRole || hasClickHandler || hasTabIndex || hasCursor;
   }
 
   findClickable(el) {
@@ -682,9 +829,58 @@ class ActivationHandler {
   smartClick(el, clientX, clientY) {
     if (!el) return false;
 
-    const activator = (el.closest && (el.closest('a[href]') || el.closest('button,[role="button"]'))) || el;
+    // First, try to find a more specific clickable parent (links, buttons)
+    // Prioritize links for video/audio elements (common on video websites)
+    let activator = el;
+    if (el.closest) {
+      let specificClickable;
+      
+      // For video/audio elements, prioritize finding parent links
+      if (el.tagName === 'VIDEO' || el.tagName === 'AUDIO') {
+        specificClickable = el.closest('a[href]');
+        if (specificClickable) {
+          console.log('[KeyPilot] Found parent link for video/audio element:', specificClickable.href);
+        }
+      }
+      
+      // If no specific handling above, look for any clickable parent
+      if (!specificClickable) {
+        specificClickable = el.closest('a[href], button, [role="button"], [onclick], [tabindex]');
+      }
+      
+      if (specificClickable) {
+        activator = specificClickable;
+      }
+    }
 
-    // Try single programmatic activation first
+    // Special handling for links - force them to open in same window
+    if (activator.tagName === 'A' && activator.href) {
+      console.log('[KeyPilot] Activating link in same window:', activator.href);
+      
+      // Store original target and temporarily change it
+      const originalTarget = activator.target;
+      activator.target = '_self';
+      
+      try {
+        // Try programmatic click first
+        activator.click();
+        return true;
+      } catch (error) {
+        console.log('[KeyPilot] Programmatic click failed, using navigation:', error);
+        // Fallback to direct navigation
+        window.location.href = activator.href;
+        return true;
+      } finally {
+        // Restore original target
+        if (originalTarget !== undefined) {
+          activator.target = originalTarget;
+        } else {
+          activator.removeAttribute('target');
+        }
+      }
+    }
+
+    // Try single programmatic activation for non-links
     let prevented = false;
     const onClickCapture = (ev) => {
       if (ev.defaultPrevented) prevented = true;
@@ -705,7 +901,8 @@ class ActivationHandler {
       } catch { }
     }
 
-    // Fallback: dispatch essential mouse events (matching working script)
+    // Fallback: dispatch essential mouse events on the original element
+    // This ensures we try to click whatever element the user is pointing at
     const opts = {
       bubbles: true,
       cancelable: true,
@@ -715,10 +912,18 @@ class ActivationHandler {
       clientY
     };
 
-    try { activator.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
-    try { activator.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
-    try { activator.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
-    try { activator.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
+    try { el.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+
+    // Also try on the activator if it's different
+    if (activator !== el) {
+      try { activator.dispatchEvent(new MouseEvent('pointerdown', opts)); } catch { }
+      try { activator.dispatchEvent(new MouseEvent('mousedown', opts)); } catch { }
+      try { activator.dispatchEvent(new MouseEvent('mouseup', opts)); } catch { }
+      try { activator.dispatchEvent(new MouseEvent('click', opts)); } catch { }
+    }
 
     return true;
   }
@@ -730,6 +935,17 @@ class ActivationHandler {
 
     // Handle label elements
     target = this.resolveLabel(target);
+
+    // IMPORTANT: Check if video/audio is wrapped in a link first
+    // This handles video preview thumbnails on video websites where clicking should navigate
+    if ((target.tagName === 'VIDEO' || target.tagName === 'AUDIO') && target.closest) {
+      const parentLink = target.closest('a[href]');
+      if (parentLink) {
+        // Let the link be handled by smartClick instead of controlling media playback
+        console.log('[KeyPilot] Video/audio wrapped in link, deferring to link activation');
+        return false;
+      }
+    }
 
     // Handle different input types semantically
     if (this.detector.isNativeType(target, 'radio')) {
@@ -756,6 +972,11 @@ class ActivationHandler {
 
     if (this.detector.isContentEditable(target)) {
       return this.handleContentEditable(target);
+    }
+
+    // Handle video and audio elements (only if not wrapped in a link)
+    if (target.tagName === 'VIDEO' || target.tagName === 'AUDIO') {
+      return this.handleMediaElement(target);
     }
 
     return false;
@@ -917,6 +1138,22 @@ class ActivationHandler {
     }
 
     return true;
+  }
+
+  handleMediaElement(target) {
+    try {
+      // Toggle play/pause for video and audio elements
+      if (target.paused) {
+        target.play();
+      } else {
+        target.pause();
+      }
+      return true;
+    } catch (error) {
+      console.debug('Could not control media element:', error);
+      // Fallback to regular click behavior
+      return false;
+    }
   }
 
   dispatchInputChange(el) {
@@ -2728,9 +2965,12 @@ class KeyPilot extends EventManager {
     // Update cursor mode
     if (newState.mode !== prevState.mode || 
         (newState.mode === MODES.TEXT_FOCUS && newState.focusEl !== prevState.focusEl)) {
-      // For text focus mode, pass whether there's a clickable element
+      // For text focus mode, pass whether there's a clickable element and the focused element
       const options = newState.mode === MODES.TEXT_FOCUS ? 
-        { hasClickableElement: !!newState.focusEl } : {};
+        { 
+          hasClickableElement: !!newState.focusEl,
+          focusedElement: newState.focusedTextElement
+        } : {};
       this.cursor.setMode(newState.mode, options);
       this.updatePopupStatus(newState.mode);
     }
@@ -2934,6 +3174,13 @@ class KeyPilot extends EventManager {
       return;
     }
 
+    console.log('[KeyPilot] Activating element:', {
+      tagName: target.tagName,
+      className: target.className,
+      id: target.id,
+      hasClickHandler: !!(target.onclick || target.getAttribute('onclick'))
+    });
+
     // Try semantic activation first
     if (this.activator.handleSmartActivate(target, currentState.lastMouse.x, currentState.lastMouse.y)) {
       this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
@@ -2941,7 +3188,8 @@ class KeyPilot extends EventManager {
       return;
     }
 
-    // Fallback to click
+    // Always try to click the element, regardless of whether it's "detected" as interactive
+    // This ensures videos, custom elements, and other non-standard interactive elements work
     this.activator.smartClick(target, currentState.lastMouse.x, currentState.lastMouse.y);
     this.showRipple(currentState.lastMouse.x, currentState.lastMouse.y);
     this.overlayManager.flashFocusOverlay();

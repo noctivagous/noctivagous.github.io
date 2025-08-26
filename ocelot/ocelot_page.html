@@ -114,25 +114,29 @@
             code element can carry a unique ID that is separate from its display name.
             That means when a variable name is changed, all places where the variable
             is located will immediately reflect the change, as the programmer changes the 
-            name. 
+            name.  Many types of program editing errors will no longer exist, such as referencing
+            a variable in code earlier than its declaration.  If a code element (e.g. function)
+            doesn't exist with the name just inserted, the code editor can just leave that line
+            there as an inactive line of code that doesn't get compiled.
             <p>
             The XML specification offers a standardized schema format, so the
             document format is easily portable. Editors can rapidly check the validity of code
             against a schema.</p>
             
             <h4>Working With AI</h4>
-            <p>Instead of having an AI agent read and write lines of code, the AI-based editor 
-            can work with an XML node tree and trace the program quickly.  Later on,
-            higher levels of abstraction for the AI to work with code will naturally be available 
+            <p>Instead of having an AI agent read and write lines of code, an AI-based editor 
+            can work with an XML node tree and follow the program's logic quickly.  
+            Higher levels of abstraction for the AI to work with code will be inherently available 
             because the code sits on top a DOM. 
 
             <h4>A Wide-Ranging Impact</h4>
-            <p>Upgrading the interior of code will effect dramatic changes on the exterior. 
-            Curly braces and parentheses will 
-            no longer be have to be managed by the programmer to define code containers.   
-            Code elements will be inserted in bulk units and their 
-            boundaries will naturally come with them.  That is, 
-            boundaries for code areas will be provided by graphical outlines.   Of course, this means that the methods of inputting code elements by keyboard will change
+            <p>Upgrading the interior of code will effect dramatic changes on the exterior
+            while also solving many issues on the interior. 
+            Curly braces and parentheses will no longer be have to be managed by the programmer to define code containers.   
+            Code elements will be inserted in bulk units
+            and their boundaries will naturally come with them.  That is, 
+            boundaries for code areas will be provided by graphical outlines.   
+            Of course, this means that the methods of inputting code elements by keyboard will change
             significantly. Eliminating the use of type for code boundaries will remove many problems. 
             It isn't just that typos can occur but that curly braces are hard to follow sometimes.
 			Typographic issues of all kinds can be made obsolete: if a keyword or variable name is not entered correctly,

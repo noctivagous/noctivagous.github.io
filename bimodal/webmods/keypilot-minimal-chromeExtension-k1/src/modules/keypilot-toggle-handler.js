@@ -112,6 +112,11 @@ export class KeyPilotToggleHandler extends EventManager {
         this.keyPilot.scrollManager.init();
       }
 
+      // Notify HUD manager that KeyPilot is enabled
+      if (this.keyPilot.hudManager) {
+        this.keyPilot.hudManager.handleKeyPilotEnabled();
+      }
+
       console.log('[KeyPilotToggleHandler] KeyPilot enabled');
     } catch (error) {
       console.error('[KeyPilotToggleHandler] Error enabling KeyPilot:', error);
@@ -127,6 +132,11 @@ export class KeyPilotToggleHandler extends EventManager {
     if (!this.keyPilot) return;
 
     try {
+      // Notify HUD manager that KeyPilot is being disabled (before cleanup)
+      if (this.keyPilot.hudManager) {
+        this.keyPilot.hudManager.handleKeyPilotDisabled();
+      }
+
       // Stop event listeners first
       this.keyPilot.stop();
 

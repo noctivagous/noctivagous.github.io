@@ -159,12 +159,16 @@ export class OverlayManager {
   }
 
   updateDeleteOverlay(element) {
+    console.log('[KeyPilot Debug] updateDeleteOverlay called with element:', element);
+    
     if (!element) {
+      console.log('[KeyPilot Debug] No element provided, hiding delete overlay');
       this.hideDeleteOverlay();
       return;
     }
 
     if (!this.deleteOverlay) {
+      console.log('[KeyPilot Debug] Creating delete overlay');
       this.deleteOverlay = this.createElement('div', {
         className: CSS_CLASSES.DELETE_OVERLAY,
         style: `
@@ -179,6 +183,9 @@ export class OverlayManager {
       });
       document.body.appendChild(this.deleteOverlay);
       
+      // Reset visibility to true when creating new overlay
+      this.overlayVisibility.delete = true;
+      
       // Start observing the overlay for visibility optimization
       if (this.overlayObserver) {
         this.overlayObserver.observe(this.deleteOverlay);
@@ -186,6 +193,8 @@ export class OverlayManager {
     }
 
     const rect = this.getBestRect(element);
+    console.log('[KeyPilot Debug] Delete overlay rect:', rect, 'visibility:', this.overlayVisibility.delete);
+    
     if (rect.width > 0 && rect.height > 0) {
       // Use transform for better performance during scroll
       this.deleteOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
@@ -193,11 +202,14 @@ export class OverlayManager {
       this.deleteOverlay.style.height = `${rect.height}px`;
       this.deleteOverlay.style.display = 'block';
       
-      // Only make visible if it should be visible
-      if (this.overlayVisibility.delete) {
-        this.deleteOverlay.style.visibility = 'visible';
-      }
+      console.log('[KeyPilot Debug] Delete overlay positioned and displayed');
+      
+      // Always make visible when actively updating (override observer optimization)
+      this.deleteOverlay.style.visibility = 'visible';
+      this.overlayVisibility.delete = true;
+      console.log('[KeyPilot Debug] Delete overlay made visible (forced)');
     } else {
+      console.log('[KeyPilot Debug] Invalid rect dimensions, hiding delete overlay');
       this.hideDeleteOverlay();
     }
   }

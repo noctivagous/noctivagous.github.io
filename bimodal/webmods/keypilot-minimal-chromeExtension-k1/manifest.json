@@ -20,12 +20,27 @@
                 "default": "Alt+K"
             },
             "description": "Toggle KeyPilot extension on/off"
+        },
+        "toggle-hud": {
+            "suggested_key": {
+                "default": "Alt+H"
+            },
+            "description": "Toggle HUD visibility"
         }
     },
     "host_permissions": [
         "<all_urls>"
     ],
     "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "early-injection.js"
+            ],
+            "run_at": "document_start"
+        },
         {
             "matches": [
                 "<all_urls>"

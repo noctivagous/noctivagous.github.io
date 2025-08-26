@@ -8,6 +8,9 @@ export class CursorManager {
     this.isStuck = false;
     this.stuckCheckInterval = null;
     this.forceUpdateCount = 0;
+    this.currentMode = 'none';
+    this.isEnhanced = false;
+    this.stateBridge = null;
   }
 
   ensure() {
@@ -25,9 +28,238 @@ export class CursorManager {
     this.startStuckDetection();
   }
 
+  /**
+   * Enhance existing cursor placeholder element with full functionality
+   */
+  enhanceExistingElement(existingElement, stateBridge = null) {
+    try {
+      if (!existingElement) {
+        console.warn('[CursorManager] No existing element to enhance');
+        return false;
+      }
+      
+      console.log('[CursorManager] Enhancing existing cursor element');
+      
+      // Store state bridge reference for cursor mode persistence
+      this.stateBridge = stateBridge;
+      
+      // Use the existing element as our cursor
+      this.cursorEl = existingElement;
+      
+      // Ensure it has the correct ID and attributes
+      this.cursorEl.id = 'kpv2-cursor';
+      this.cursorEl.setAttribute('aria-hidden', 'true');
+      
+      // Detect and preserve current cursor mode from placeholder
+      const preservedMode = this.detectPlaceholderMode(existingElement);
+      this.currentMode = preservedMode;
+      
+      // Replace content with proper SVG if needed, preserving mode
+      const currentSvg = this.cursorEl.querySelector('svg');
+      if (!currentSvg || !this.isValidCursorSvg(currentSvg)) {
+        this.cursorEl.replaceChildren(this.buildSvg(this.currentMode));
+      } else {
+        // Update current mode based on existing SVG
+        this.currentMode = this.getCurrentModeFromSvg(currentSvg);
+      }
+      
+      // Ensure proper positioning styles
+      this.cursorEl.style.position = 'fixed';
+      this.cursorEl.style.pointerEvents = 'none';
+      this.cursorEl.style.zIndex = '2147483647';
+      this.cursorEl.style.display = 'block';
+      this.cursorEl.style.visibility = 'visible';
+      
+      // Restore cursor state if available from state bridge
+      if (this.stateBridge) {
+        this.restoreCursorStateFromBridge();
+        
+        // Try to restore cursor position after a brief delay to allow page to settle
+        setTimeout(() => {
+          this.restoreCursorPosition();
+        }, 100);
+      }
+      
+      // Start monitoring for stuck cursor
+      this.startStuckDetection();
+      
+      // Mark as enhanced
+      this.isEnhanced = true;
+      
+      console.log('[CursorManager] Cursor element enhanced successfully with mode:', this.currentMode);
+      return true;
+      
+    } catch (error) {
+      console.error('[CursorManager] Failed to enhance existing element:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Detect cursor mode from placeholder element
+   */
+  detectPlaceholderMode(element) {
+    try {
+      // Check for data attributes that might indicate mode
+      const modeAttr = element.getAttribute('data-cursor-mode');
+      if (modeAttr) {
+        return modeAttr;
+      }
+      
+      // Check SVG content to determine mode
+      const svg = element.querySelector('svg');
+      if (svg) {
+        return this.getCurrentModeFromSvg(svg);
+      }
+      
+      // Default to normal mode
+      return 'none';
+    } catch (error) {
+      console.warn('[CursorManager] Failed to detect placeholder mode:', error);
+      return 'none';
+    }
+  }
+
+  /**
+   * Get current mode from SVG element
+   */
+  getCurrentModeFromSvg(svg) {
+    try {
+      if (!svg || svg.tagName !== 'svg') return 'none';
+      
+      const lines = svg.querySelectorAll('line');
+      if (lines.length === 2) {
+        // Check if it's an X pattern (delete mode)
+        const line1 = lines[0];
+        const line2 = lines[1];
+        if (this.isXPattern(line1, line2)) {
+          return 'delete';
+        }
+      } else if (lines.length === 4) {
+        // Check if it's orange (text focus) or green (normal)
+        const firstLine = lines[0];
+        const stroke = firstLine.getAttribute('stroke');
+        if (stroke && (stroke.includes('255,140,0') || stroke.includes('#ff8c00'))) {
+          return 'text_focus';
+        }
+        return 'none'; // Green crosshair
+      }
+      
+      return 'none';
+    } catch (error) {
+      console.warn('[CursorManager] Failed to get mode from SVG:', error);
+      return 'none';
+    }
+  }
+
+  /**
+   * Check if two lines form an X pattern
+   */
+  isXPattern(line1, line2) {
+    try {
+      const x1_1 = parseFloat(line1.getAttribute('x1'));
+      const y1_1 = parseFloat(line1.getAttribute('y1'));
+      const x2_1 = parseFloat(line1.getAttribute('x2'));
+      const y2_1 = parseFloat(line1.getAttribute('y2'));
+      
+      const x1_2 = parseFloat(line2.getAttribute('x1'));
+      const y1_2 = parseFloat(line2.getAttribute('y1'));
+      const x2_2 = parseFloat(line2.getAttribute('x2'));
+      const y2_2 = parseFloat(line2.getAttribute('y2'));
+      
+      // Check if lines form diagonal pattern (X)
+      const isDiagonal1 = Math.abs((y2_1 - y1_1) / (x2_1 - x1_1)) > 0.5;
+      const isDiagonal2 = Math.abs((y2_2 - y1_2) / (x2_2 - x1_2)) > 0.5;
+      
+      return isDiagonal1 && isDiagonal2;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Restore cursor state from state bridge
+   */
+  restoreCursorStateFromBridge() {
+    try {
+      if (!this.stateBridge) return;
+      
+      const earlyState = this.stateBridge.getEarlyState();
+      if (earlyState && earlyState.cursorMode) {
+        this.currentMode = earlyState.cursorMode;
+        console.log('[CursorManager] Restored cursor mode from state bridge:', this.currentMode);
+      }
+    } catch (error) {
+      console.warn('[CursorManager] Failed to restore cursor state from bridge:', error);
+    }
+  }
+
+  /**
+   * Check if an SVG element is a valid cursor SVG
+   */
+  isValidCursorSvg(svg) {
+    try {
+      if (!svg || svg.tagName !== 'svg') return false;
+      
+      // Check if it has the expected viewBox and dimensions
+      const viewBox = svg.getAttribute('viewBox');
+      if (!viewBox) return false;
+      
+      // Check for expected line elements (crosshair or X)
+      const lines = svg.querySelectorAll('line');
+      return lines.length >= 2; // At least 2 lines for any cursor mode
+      
+    } catch (error) {
+      return false;
+    }
+  }
+
   setMode(mode) {
     if (!this.cursorEl) return;
+    
+    // Update current mode
+    this.currentMode = mode;
+    
+    // Update SVG content
     this.cursorEl.replaceChildren(this.buildSvg(mode));
+    
+    // Add data attribute for mode tracking
+    this.cursorEl.setAttribute('data-cursor-mode', mode);
+    
+    // Persist mode to state bridge if available
+    if (this.stateBridge && this.isEnhanced) {
+      this.persistCursorMode(mode);
+    }
+    
+    console.log('[CursorManager] Cursor mode set to:', mode);
+  }
+
+  /**
+   * Persist cursor mode to state bridge for navigation persistence
+   */
+  persistCursorMode(mode) {
+    try {
+      if (!this.stateBridge) return;
+      
+      // Update state bridge with new cursor mode
+      this.stateBridge.handleCursorModeUpdate(mode);
+      
+      // Sync cursor state across tabs
+      this.stateBridge.syncCursorStateAcrossTabs({
+        mode: mode,
+        timestamp: Date.now()
+      }).catch(error => {
+        console.warn('[CursorManager] Failed to sync cursor state across tabs:', error);
+      });
+      
+      console.log('[CursorManager] Cursor mode persisted:', mode);
+    } catch (error) {
+      console.warn('[CursorManager] Failed to persist cursor mode:', error);
+    }
+  }
+
+  get element() {
+    return this.cursorEl;
   }
 
   updatePosition(x, y) {
@@ -148,22 +380,23 @@ export class CursorManager {
   }
 
   getCurrentMode() {
-    if (!this.cursorEl) return 'none';
-    
-    // Try to determine current mode from SVG content
-    const svg = this.cursorEl.querySelector('svg');
-    if (!svg) return 'none';
-    
-    const lines = svg.querySelectorAll('line');
-    if (lines.length === 2) return 'delete'; // X pattern
-    if (lines.length === 4) {
-      const firstLine = lines[0];
-      const stroke = firstLine.getAttribute('stroke');
-      if (stroke && stroke.includes('255,140,0')) return 'text_focus'; // Orange
-      return 'none'; // Green crosshair
+    // Return cached mode if available
+    if (this.currentMode) {
+      return this.currentMode;
     }
     
-    return 'none';
+    if (!this.cursorEl) return 'none';
+    
+    // Check data attribute first
+    const modeAttr = this.cursorEl.getAttribute('data-cursor-mode');
+    if (modeAttr) {
+      this.currentMode = modeAttr;
+      return this.currentMode;
+    }
+    
+    // Fallback to SVG analysis
+    this.currentMode = this.getCurrentModeFromSvg(this.cursorEl.querySelector('svg'));
+    return this.currentMode;
   }
 
   buildSvg(mode) {
@@ -274,7 +507,132 @@ export class CursorManager {
     }
   }
 
+  /**
+   * Set state bridge for cursor mode persistence
+   */
+  setStateBridge(stateBridge) {
+    this.stateBridge = stateBridge;
+    
+    // Restore cursor state if we have an existing cursor
+    if (this.cursorEl && this.stateBridge) {
+      this.restoreCursorStateFromBridge();
+    }
+  }
+
+  /**
+   * Handle navigation state persistence
+   * Called before page navigation to save cursor state
+   */
+  handleNavigationPersistence() {
+    try {
+      if (!this.stateBridge) return;
+      
+      // Save current cursor mode
+      this.stateBridge.handleCursorModeUpdate(this.currentMode);
+      
+      // Save current cursor position
+      this.stateBridge.saveCursorPosition(this.lastPosition.x, this.lastPosition.y);
+      
+      console.log('[CursorManager] Navigation state prepared:', {
+        mode: this.currentMode,
+        position: this.lastPosition
+      });
+    } catch (error) {
+      console.warn('[CursorManager] Failed to handle navigation persistence:', error);
+    }
+  }
+
+  /**
+   * Restore cursor position when possible
+   * Called after navigation to restore cursor state
+   */
+  restoreCursorPosition() {
+    try {
+      if (!this.stateBridge) return false;
+      
+      const savedPosition = this.stateBridge.getSavedCursorPosition();
+      if (savedPosition) {
+        const { x, y } = savedPosition;
+        
+        // Only restore if position is reasonable (within viewport)
+        if (x >= 0 && y >= 0 && x <= window.innerWidth && y <= window.innerHeight) {
+          this.updatePosition(x, y);
+          console.log('[CursorManager] Cursor position restored:', { x, y });
+          return true;
+        }
+      }
+      
+      return false;
+    } catch (error) {
+      console.warn('[CursorManager] Failed to restore cursor position:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Handle cursor state synchronization across tabs
+   */
+  handleCrossTabSync(syncData) {
+    try {
+      if (!syncData) return;
+      
+      // Update cursor mode if it changed in another tab
+      if (syncData.cursorMode && syncData.cursorMode !== this.currentMode) {
+        this.setMode(syncData.cursorMode);
+        console.log('[CursorManager] Cursor mode synced from another tab:', syncData.cursorMode);
+      }
+      
+      // Note: Position sync is not implemented as it would be disorienting
+      // Each tab maintains its own cursor position
+      
+    } catch (error) {
+      console.warn('[CursorManager] Failed to handle cross-tab sync:', error);
+    }
+  }
+
+  /**
+   * Get cursor state for persistence
+   */
+  getCursorState() {
+    return {
+      mode: this.currentMode,
+      position: { ...this.lastPosition },
+      isEnhanced: this.isEnhanced,
+      timestamp: Date.now()
+    };
+  }
+
+  /**
+   * Set cursor state from persistence
+   */
+  setCursorState(state) {
+    try {
+      if (!state) return false;
+      
+      // Restore mode
+      if (state.mode && state.mode !== this.currentMode) {
+        this.setMode(state.mode);
+      }
+      
+      // Restore position if reasonable
+      if (state.position && state.position.x >= 0 && state.position.y >= 0) {
+        this.updatePosition(state.position.x, state.position.y);
+      }
+      
+      console.log('[CursorManager] Cursor state restored:', state);
+      return true;
+    } catch (error) {
+      console.warn('[CursorManager] Failed to set cursor state:', error);
+      return false;
+    }
+  }
+
   cleanup() {
+    // Save state before cleanup if we have a state bridge
+    if (this.stateBridge && this.isEnhanced) {
+      this.handleNavigationPersistence();
+    }
+    
     if (this.stuckCheckInterval) {
       clearInterval(this.stuckCheckInterval);
       this.stuckCheckInterval = null;
@@ -284,6 +642,11 @@ export class CursorManager {
       this.cursorEl.remove();
       this.cursorEl = null;
     }
+    
+    // Reset state
+    this.currentMode = 'none';
+    this.isEnhanced = false;
+    this.stateBridge = null;
   }
 
   createElement(tag, props = {}, ...children) {

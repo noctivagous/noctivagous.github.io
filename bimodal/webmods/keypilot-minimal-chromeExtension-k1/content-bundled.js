@@ -1,6 +1,6 @@
 /**
- * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-25T17:34:30.328Z
+ * KeyPilot Chrome Extension - Main Content Script Bundle
+ * Generated on 2025-08-26T00:18:27.831Z
  */
 
 (() => {
@@ -44,7 +44,8 @@ const CSS_CLASSES = {
 
 const ELEMENT_IDS = {
   CURSOR: 'kpv2-cursor',
-  STYLE: 'kpv2-style'
+  STYLE: 'kpv2-style',
+  HUD: 'kpv2-hud'
 };
 
 const Z_INDEX = {
@@ -76,7 +77,12 @@ class StateManager {
       lastMouse: { x: 0, y: 0 },
       focusEl: null,
       deleteEl: null,
-      isInitialized: false
+      isInitialized: false,
+      hud: {
+        visible: true,        // HUD visibility state
+        expanded: false,      // HUD expansion state (collapsed by default)
+        activeTab: 'basic'    // Currently active tab in expanded view
+      }
     };
     
     this.subscribers = new Set();
@@ -149,8 +155,49 @@ class StateManager {
     this.setState({
       mode: MODES.NONE,
       focusEl: null,
-      deleteEl: null
+      deleteEl: null,
+      hud: {
+        visible: true,
+        expanded: false,
+        activeTab: 'basic'
+      }
     });
+  }
+
+  // HUD-specific state methods
+  setHUDVisible(visible) {
+    this.setState({ 
+      hud: { ...this.state.hud, visible } 
+    });
+  }
+
+  setHUDExpanded(expanded) {
+    this.setState({ 
+      hud: { ...this.state.hud, expanded } 
+    });
+  }
+
+  setHUDActiveTab(activeTab) {
+    this.setState({ 
+      hud: { ...this.state.hud, activeTab } 
+    });
+  }
+
+  // HUD convenience methods
+  getHUDState() {
+    return { ...this.state.hud };
+  }
+
+  isHUDVisible() {
+    return this.state.hud.visible;
+  }
+
+  isHUDExpanded() {
+    return this.state.hud.expanded;
+  }
+
+  getHUDActiveTab() {
+    return this.state.hud.activeTab;
   }
 }
 
@@ -264,6 +311,9 @@ class CursorManager {
     this.isStuck = false;
     this.stuckCheckInterval = null;
     this.forceUpdateCount = 0;
+    this.currentMode = 'none';
+    this.isEnhanced = false;
+    this.stateBridge = null;
   }
 
   ensure() {
@@ -281,9 +331,238 @@ class CursorManager {
     this.startStuckDetection();
   }
 
+  /**
+   * Enhance existing cursor placeholder element with full functionality
+   */
+  enhanceExistingElement(existingElement, stateBridge = null) {
+    try {
+      if (!existingElement) {
+        console.warn('[CursorManager] No existing element to enhance');
+        return false;
+      }
+      
+      console.log('[CursorManager] Enhancing existing cursor element');
+      
+      // Store state bridge reference for cursor mode persistence
+      this.stateBridge = stateBridge;
+      
+      // Use the existing element as our cursor
+      this.cursorEl = existingElement;
+      
+      // Ensure it has the correct ID and attributes
+      this.cursorEl.id = 'kpv2-cursor';
+      this.cursorEl.setAttribute('aria-hidden', 'true');
+      
+      // Detect and preserve current cursor mode from placeholder
+      const preservedMode = this.detectPlaceholderMode(existingElement);
+      this.currentMode = preservedMode;
+      
+      // Replace content with proper SVG if needed, preserving mode
+      const currentSvg = this.cursorEl.querySelector('svg');
+      if (!currentSvg || !this.isValidCursorSvg(currentSvg)) {
+        this.cursorEl.replaceChildren(this.buildSvg(this.currentMode));
+      } else {
+        // Update current mode based on existing SVG
+        this.currentMode = this.getCurrentModeFromSvg(currentSvg);
+      }
+      
+      // Ensure proper positioning styles
+      this.cursorEl.style.position = 'fixed';
+      this.cursorEl.style.pointerEvents = 'none';
+      this.cursorEl.style.zIndex = '2147483647';
+      this.cursorEl.style.display = 'block';
+      this.cursorEl.style.visibility = 'visible';
+      
+      // Restore cursor state if available from state bridge
+      if (this.stateBridge) {
+        this.restoreCursorStateFromBridge();
+        
+        // Try to restore cursor position after a brief delay to allow page to settle
+        setTimeout(() => {
+          this.restoreCursorPosition();
+        }, 100);
+      }
+      
+      // Start monitoring for stuck cursor
+      this.startStuckDetection();
+      
+      // Mark as enhanced
+      this.isEnhanced = true;
+      
+      console.log('[CursorManager] Cursor element enhanced successfully with mode:', this.currentMode);
+      return true;
+      
+    } catch (error) {
+      console.error('[CursorManager] Failed to enhance existing element:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Detect cursor mode from placeholder element
+   */
+  detectPlaceholderMode(element) {
+    try {
+      // Check for data attributes that might indicate mode
+      const modeAttr = element.getAttribute('data-cursor-mode');
+      if (modeAttr) {
+        return modeAttr;
+      }
+      
+      // Check SVG content to determine mode
+      const svg = element.querySelector('svg');
+      if (svg) {
+        return this.getCurrentModeFromSvg(svg);
+      }
+      
+      // Default to normal mode
+      return 'none';
+    } catch (error) {
+      console.warn('[CursorManager] Failed to detect placeholder mode:', error);
+      return 'none';
+    }
+  }
+
+  /**
+   * Get current mode from SVG element
+   */
+  getCurrentModeFromSvg(svg) {
+    try {
+      if (!svg || svg.tagName !== 'svg') return 'none';
+      
+      const lines = svg.querySelectorAll('line');
+      if (lines.length === 2) {
+        // Check if it's an X pattern (delete mode)
+        const line1 = lines[0];
+        const line2 = lines[1];
+        if (this.isXPattern(line1, line2)) {
+          return 'delete';
+        }
+      } else if (lines.length === 4) {
+        // Check if it's orange (text focus) or green (normal)
+        const firstLine = lines[0];
+        const stroke = firstLine.getAttribute('stroke');
+        if (stroke && (stroke.includes('255,140,0') || stroke.includes('#ff8c00'))) {
+          return 'text_focus';
+        }
+        return 'none'; // Green crosshair
+      }
+      
+      return 'none';
+    } catch (error) {
+      console.warn('[CursorManager] Failed to get mode from SVG:', error);
+      return 'none';
+    }
+  }
+
+  /**
+   * Check if two lines form an X pattern
+   */
+  isXPattern(line1, line2) {
+    try {
+      const x1_1 = parseFloat(line1.getAttribute('x1'));
+      const y1_1 = parseFloat(line1.getAttribute('y1'));
+      const x2_1 = parseFloat(line1.getAttribute('x2'));
+      const y2_1 = parseFloat(line1.getAttribute('y2'));
+      
+      const x1_2 = parseFloat(line2.getAttribute('x1'));
+      const y1_2 = parseFloat(line2.getAttribute('y1'));
+      const x2_2 = parseFloat(line2.getAttribute('x2'));
+      const y2_2 = parseFloat(line2.getAttribute('y2'));
+      
+      // Check if lines form diagonal pattern (X)
+      const isDiagonal1 = Math.abs((y2_1 - y1_1) / (x2_1 - x1_1)) > 0.5;
+      const isDiagonal2 = Math.abs((y2_2 - y1_2) / (x2_2 - x1_2)) > 0.5;
+      
+      return isDiagonal1 && isDiagonal2;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Restore cursor state from state bridge
+   */
+  restoreCursorStateFromBridge() {
+    try {
+      if (!this.stateBridge) return;
+      
+      const earlyState = this.stateBridge.getEarlyState();
+      if (earlyState && earlyState.cursorMode) {
+        this.currentMode = earlyState.cursorMode;
+        console.log('[CursorManager] Restored cursor mode from state bridge:', this.currentMode);
+      }
+    } catch (error) {
+      console.warn('[CursorManager] Failed to restore cursor state from bridge:', error);
+    }
+  }
+
+  /**
+   * Check if an SVG element is a valid cursor SVG
+   */
+  isValidCursorSvg(svg) {
+    try {
+      if (!svg || svg.tagName !== 'svg') return false;
+      
+      // Check if it has the expected viewBox and dimensions
+      const viewBox = svg.getAttribute('viewBox');
+      if (!viewBox) return false;
+      
+      // Check for expected line elements (crosshair or X)
+      const lines = svg.querySelectorAll('line');
+      return lines.length >= 2; // At least 2 lines for any cursor mode
+      
+    } catch (error) {
+      return false;
+    }
+  }
+
   setMode(mode) {
     if (!this.cursorEl) return;
+    
+    // Update current mode
+    this.currentMode = mode;
+    
+    // Update SVG content
     this.cursorEl.replaceChildren(this.buildSvg(mode));
+    
+    // Add data attribute for mode tracking
+    this.cursorEl.setAttribute('data-cursor-mode', mode);
+    
+    // Persist mode to state bridge if available
+    if (this.stateBridge && this.isEnhanced) {
+      this.persistCursorMode(mode);
+    }
+    
+    console.log('[CursorManager] Cursor mode set to:', mode);
+  }
+
+  /**
+   * Persist cursor mode to state bridge for navigation persistence
+   */
+  persistCursorMode(mode) {
+    try {
+      if (!this.stateBridge) return;
+      
+      // Update state bridge with new cursor mode
+      this.stateBridge.handleCursorModeUpdate(mode);
+      
+      // Sync cursor state across tabs
+      this.stateBridge.syncCursorStateAcrossTabs({
+        mode: mode,
+        timestamp: Date.now()
+      }).catch(error => {
+        console.warn('[CursorManager] Failed to sync cursor state across tabs:', error);
+      });
+      
+      console.log('[CursorManager] Cursor mode persisted:', mode);
+    } catch (error) {
+      console.warn('[CursorManager] Failed to persist cursor mode:', error);
+    }
+  }
+
+  get element() {
+    return this.cursorEl;
   }
 
   updatePosition(x, y) {
@@ -404,22 +683,23 @@ class CursorManager {
   }
 
   getCurrentMode() {
-    if (!this.cursorEl) return 'none';
-    
-    // Try to determine current mode from SVG content
-    const svg = this.cursorEl.querySelector('svg');
-    if (!svg) return 'none';
-    
-    const lines = svg.querySelectorAll('line');
-    if (lines.length === 2) return 'delete'; // X pattern
-    if (lines.length === 4) {
-      const firstLine = lines[0];
-      const stroke = firstLine.getAttribute('stroke');
-      if (stroke && stroke.includes('255,140,0')) return 'text_focus'; // Orange
-      return 'none'; // Green crosshair
+    // Return cached mode if available
+    if (this.currentMode) {
+      return this.currentMode;
     }
     
-    return 'none';
+    if (!this.cursorEl) return 'none';
+    
+    // Check data attribute first
+    const modeAttr = this.cursorEl.getAttribute('data-cursor-mode');
+    if (modeAttr) {
+      this.currentMode = modeAttr;
+      return this.currentMode;
+    }
+    
+    // Fallback to SVG analysis
+    this.currentMode = this.getCurrentModeFromSvg(this.cursorEl.querySelector('svg'));
+    return this.currentMode;
   }
 
   buildSvg(mode) {
@@ -530,7 +810,132 @@ class CursorManager {
     }
   }
 
+  /**
+   * Set state bridge for cursor mode persistence
+   */
+  setStateBridge(stateBridge) {
+    this.stateBridge = stateBridge;
+    
+    // Restore cursor state if we have an existing cursor
+    if (this.cursorEl && this.stateBridge) {
+      this.restoreCursorStateFromBridge();
+    }
+  }
+
+  /**
+   * Handle navigation state persistence
+   * Called before page navigation to save cursor state
+   */
+  handleNavigationPersistence() {
+    try {
+      if (!this.stateBridge) return;
+      
+      // Save current cursor mode
+      this.stateBridge.handleCursorModeUpdate(this.currentMode);
+      
+      // Save current cursor position
+      this.stateBridge.saveCursorPosition(this.lastPosition.x, this.lastPosition.y);
+      
+      console.log('[CursorManager] Navigation state prepared:', {
+        mode: this.currentMode,
+        position: this.lastPosition
+      });
+    } catch (error) {
+      console.warn('[CursorManager] Failed to handle navigation persistence:', error);
+    }
+  }
+
+  /**
+   * Restore cursor position when possible
+   * Called after navigation to restore cursor state
+   */
+  restoreCursorPosition() {
+    try {
+      if (!this.stateBridge) return false;
+      
+      const savedPosition = this.stateBridge.getSavedCursorPosition();
+      if (savedPosition) {
+        const { x, y } = savedPosition;
+        
+        // Only restore if position is reasonable (within viewport)
+        if (x >= 0 && y >= 0 && x <= window.innerWidth && y <= window.innerHeight) {
+          this.updatePosition(x, y);
+          console.log('[CursorManager] Cursor position restored:', { x, y });
+          return true;
+        }
+      }
+      
+      return false;
+    } catch (error) {
+      console.warn('[CursorManager] Failed to restore cursor position:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Handle cursor state synchronization across tabs
+   */
+  handleCrossTabSync(syncData) {
+    try {
+      if (!syncData) return;
+      
+      // Update cursor mode if it changed in another tab
+      if (syncData.cursorMode && syncData.cursorMode !== this.currentMode) {
+        this.setMode(syncData.cursorMode);
+        console.log('[CursorManager] Cursor mode synced from another tab:', syncData.cursorMode);
+      }
+      
+      // Note: Position sync is not implemented as it would be disorienting
+      // Each tab maintains its own cursor position
+      
+    } catch (error) {
+      console.warn('[CursorManager] Failed to handle cross-tab sync:', error);
+    }
+  }
+
+  /**
+   * Get cursor state for persistence
+   */
+  getCursorState() {
+    return {
+      mode: this.currentMode,
+      position: { ...this.lastPosition },
+      isEnhanced: this.isEnhanced,
+      timestamp: Date.now()
+    };
+  }
+
+  /**
+   * Set cursor state from persistence
+   */
+  setCursorState(state) {
+    try {
+      if (!state) return false;
+      
+      // Restore mode
+      if (state.mode && state.mode !== this.currentMode) {
+        this.setMode(state.mode);
+      }
+      
+      // Restore position if reasonable
+      if (state.position && state.position.x >= 0 && state.position.y >= 0) {
+        this.updatePosition(state.position.x, state.position.y);
+      }
+      
+      console.log('[CursorManager] Cursor state restored:', state);
+      return true;
+    } catch (error) {
+      console.warn('[CursorManager] Failed to set cursor state:', error);
+      return false;
+    }
+  }
+
   cleanup() {
+    // Save state before cleanup if we have a state bridge
+    if (this.stateBridge && this.isEnhanced) {
+      this.handleNavigationPersistence();
+    }
+    
     if (this.stuckCheckInterval) {
       clearInterval(this.stuckCheckInterval);
       this.stuckCheckInterval = null;
@@ -540,6 +945,11 @@ class CursorManager {
       this.cursorEl.remove();
       this.cursorEl = null;
     }
+    
+    // Reset state
+    this.currentMode = 'none';
+    this.isEnhanced = false;
+    this.stateBridge = null;
   }
 
   createElement(tag, props = {}, ...children) {
@@ -1195,12 +1605,16 @@ class OverlayManager {
   }
 
   updateDeleteOverlay(element) {
+    console.log('[KeyPilot Debug] updateDeleteOverlay called with element:', element);
+    
     if (!element) {
+      console.log('[KeyPilot Debug] No element provided, hiding delete overlay');
       this.hideDeleteOverlay();
       return;
     }
 
     if (!this.deleteOverlay) {
+      console.log('[KeyPilot Debug] Creating delete overlay');
       this.deleteOverlay = this.createElement('div', {
         className: CSS_CLASSES.DELETE_OVERLAY,
         style: `
@@ -1215,6 +1629,9 @@ class OverlayManager {
       });
       document.body.appendChild(this.deleteOverlay);
       
+      // Reset visibility to true when creating new overlay
+      this.overlayVisibility.delete = true;
+      
       // Start observing the overlay for visibility optimization
       if (this.overlayObserver) {
         this.overlayObserver.observe(this.deleteOverlay);
@@ -1222,6 +1639,8 @@ class OverlayManager {
     }
 
     const rect = this.getBestRect(element);
+    console.log('[KeyPilot Debug] Delete overlay rect:', rect, 'visibility:', this.overlayVisibility.delete);
+    
     if (rect.width > 0 && rect.height > 0) {
       // Use transform for better performance during scroll
       this.deleteOverlay.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
@@ -1229,11 +1648,14 @@ class OverlayManager {
       this.deleteOverlay.style.height = `${rect.height}px`;
       this.deleteOverlay.style.display = 'block';
       
-      // Only make visible if it should be visible
-      if (this.overlayVisibility.delete) {
-        this.deleteOverlay.style.visibility = 'visible';
-      }
+      console.log('[KeyPilot Debug] Delete overlay positioned and displayed');
+      
+      // Always make visible when actively updating (override observer optimization)
+      this.deleteOverlay.style.visibility = 'visible';
+      this.overlayVisibility.delete = true;
+      console.log('[KeyPilot Debug] Delete overlay made visible (forced)');
     } else {
+      console.log('[KeyPilot Debug] Invalid rect dimensions, hiding delete overlay');
       this.hideDeleteOverlay();
     }
   }
@@ -1371,9 +1793,11 @@ class StyleManager {
     this.isEnabled = true; // Track if styles should be active
   }
 
+  
   injectSharedStyles() {
     if (this.injectedStyles.has('main') || !this.isEnabled) return;
 
+    // Don't put CSS comments inside the css variable.
     const css = `
       html.${CSS_CLASSES.CURSOR_HIDDEN}, 
       html.${CSS_CLASSES.CURSOR_HIDDEN} * { 
@@ -1445,6 +1869,208 @@ class StyleManager {
         visibility: visible !important;
         will-change: transform, left, top !important;
       }
+      
+      
+      .kpv2-hud {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 2147483647;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        min-width: 200px;
+        max-width: 300px;
+        pointer-events: auto;
+      }
+      
+      /* Status Bar */
+      .kpv2-hud-status-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      /* Mode Indicator */
+      .kpv2-hud-mode-indicator {
+        flex: 1;
+      }
+      
+      .kpv2-hud-mode-text {
+        color: #fff;
+        font-weight: 500;
+        font-size: 12px;
+      }
+      
+      /* Controls Section */
+      .kpv2-hud-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      /* Toggle Switches */
+      .kpv2-hud-toggle {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        cursor: pointer;
+      }
+      
+      .kpv2-hud-toggle-input {
+        width: 32px;
+        height: 16px;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        position: relative;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .kpv2-hud-toggle-input:checked {
+        background: #4CAF50;
+      }
+      
+      .kpv2-hud-toggle-input::before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: white;
+        top: 2px;
+        left: 2px;
+        transition: transform 0.2s ease;
+      }
+      
+      .kpv2-hud-toggle-input:checked::before {
+        transform: translateX(16px);
+      }
+      
+      .kpv2-hud-toggle-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 10px;
+        font-weight: 400;
+        user-select: none;
+      }
+      
+      /* Expand Button */
+      .kpv2-hud-expand-btn {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: color 0.2s ease, background-color 0.2s ease;
+        margin-left: 8px;
+      }
+      
+      .kpv2-hud-expand-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      .kpv2-hud-expand-icon {
+        display: inline-block;
+        font-size: 10px;
+        transition: transform 0.2s ease;
+      }
+      
+      .kpv2-hud-expand-btn.expanded .kpv2-hud-expand-icon {
+        transform: rotate(180deg);
+      }
+      
+      /* Instructions Panel */
+      .kpv2-hud-instructions {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: none;
+      }
+      
+      .kpv2-hud-instructions.expanded {
+        display: block;
+      }
+      
+      /* Tabs */
+      .kpv2-hud-tabs {
+        display: flex;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      .kpv2-hud-tab {
+        flex: 1;
+        padding: 8px 12px;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        font-size: 11px;
+        transition: color 0.2s ease, background-color 0.2s ease;
+      }
+      
+      .kpv2-hud-tab:hover {
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      
+      .kpv2-hud-tab.active {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* Tab Content */
+      .kpv2-hud-tab-content {
+        position: relative;
+      }
+      
+      .kpv2-hud-tab-panel {
+        display: none;
+      }
+      
+      .kpv2-hud-tab-panel.active {
+        display: block;
+      }
+      
+      /* Control List */
+      .kpv2-hud-control-list {
+        padding: 12px;
+      }
+      
+      .kpv2-hud-control-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      
+      .kpv2-hud-control-item:last-child {
+        margin-bottom: 0;
+      }
+      
+      .kpv2-hud-control-item kbd {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+        padding: 2px 6px;
+        font-size: 10px;
+        color: #fff;
+        min-width: 24px;
+        text-align: center;
+        font-family: monospace;
+      }
+      
+      .kpv2-hud-control-item span {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 11px;
+      }
     `;
 
     this.injectCSS(css, ELEMENT_IDS.STYLE);
@@ -1490,35 +2116,35 @@ class StyleManager {
     style.id = 'keypilot-shadow-styles';
     style.textContent = css;
     shadowRoot.appendChild(style);
-    
+
     this.injectedStyles.add(shadowRoot);
     this.shadowRootStyles.set(shadowRoot, style);
   }
 
-  /**
-   * Completely remove all KeyPilot CSS styles from the page
-   * Used when extension is toggled off
-   */
+  
+   // Completely remove all KeyPilot CSS styles from the page
+   // Used when extension is toggled off
+   
   removeAllStyles() {
     // Remove cursor hidden class
     document.documentElement.classList.remove(CSS_CLASSES.CURSOR_HIDDEN);
-    
+
     // Remove main stylesheet
     const mainStyle = document.getElementById(ELEMENT_IDS.STYLE);
     if (mainStyle) {
       mainStyle.remove();
     }
-    
+
     // Remove all shadow root styles
     for (const [shadowRoot, styleElement] of this.shadowRootStyles) {
       if (styleElement && styleElement.parentNode) {
         styleElement.remove();
       }
     }
-    
+
     // Remove all KeyPilot classes from elements
     this.removeAllKeyPilotClasses();
-    
+
     // Clear tracking
     this.injectedStyles.clear();
     this.shadowRootStyles.clear();
@@ -1531,10 +2157,10 @@ class StyleManager {
    */
   restoreAllStyles() {
     this.isEnabled = true;
-    
+
     // Re-inject main styles
     this.injectSharedStyles();
-    
+
     // Re-inject shadow root styles for any shadow roots we previously tracked
     // Note: We'll need to re-discover shadow roots since they may have changed
     // This will be handled by the shadow DOM manager during normal operation
@@ -1551,13 +2177,13 @@ class StyleManager {
       CSS_CLASSES.TEXT_FIELD_GLOW,
       CSS_CLASSES.RIPPLE
     ];
-    
+
     // Remove classes from main document
     classesToRemove.forEach(className => {
       const elements = document.querySelectorAll(`.${className}`);
       elements.forEach(el => el.classList.remove(className));
     });
-    
+
     // Remove classes from shadow roots
     for (const shadowRoot of this.shadowRootStyles.keys()) {
       classesToRemove.forEach(className => {
@@ -1660,22 +2286,22 @@ class ShadowDOMManager {
 class IntersectionObserverManager {
   constructor(elementDetector) {
     this.elementDetector = elementDetector;
-    
+
     // Observer for tracking interactive elements in viewport
     this.interactiveObserver = null;
-    
+
     // Observer for tracking overlay visibility
     this.overlayObserver = null;
-    
+
     // Cache of interactive elements currently in viewport
     this.visibleInteractiveElements = new Set();
-    
+
     // Cache of element positions for quick lookups
     this.elementPositionCache = new Map();
-    
+
     // Debounced cache update
     this.cacheUpdateTimeout = null;
-    
+
     // Performance metrics
     this.metrics = {
       cacheHits: 0,
@@ -1687,7 +2313,7 @@ class IntersectionObserverManager {
   init() {
     this.setupInteractiveElementObserver();
     this.setupOverlayObserver();
-    
+
     // Only start periodic updates after observers are set up
     if (this.interactiveObserver && this.overlayObserver) {
       this.startPeriodicCacheUpdate();
@@ -1695,15 +2321,16 @@ class IntersectionObserverManager {
   }
 
   setupInteractiveElementObserver() {
+    console.log('[KeyPilot Debug] Setting up interactiveObserver');
     try {
       // Observer for interactive elements with expanded root margin for preloading
       this.interactiveObserver = new IntersectionObserver(
         (entries) => {
           this.metrics.observerUpdates++;
-          
+
           entries.forEach(entry => {
             const element = entry.target;
-            
+
             if (entry.isIntersecting) {
               this.visibleInteractiveElements.add(element);
               this.updateElementPositionCache(element, element.getBoundingClientRect());
@@ -1720,8 +2347,9 @@ class IntersectionObserverManager {
           threshold: [0, 0.1, 0.5, 1.0]
         }
       );
+      console.log('[KeyPilot Debug] interactiveObserver created successfully');
     } catch (error) {
-      console.warn('[KeyPilot] Failed to create IntersectionObserver for interactive elements:', error);
+      console.warn('[KeyPilot Debug] Failed to create IntersectionObserver for interactive elements:', error);
       this.interactiveObserver = null;
     }
   }
@@ -1733,7 +2361,7 @@ class IntersectionObserverManager {
         (entries) => {
           entries.forEach(entry => {
             const overlay = entry.target;
-            
+
             // Hide overlays that are completely out of view to save rendering
             if (entry.intersectionRatio === 0) {
               overlay.style.visibility = 'hidden';
@@ -1754,18 +2382,22 @@ class IntersectionObserverManager {
   }
 
   startPeriodicCacheUpdate() {
+    console.log('[KeyPilot Debug] Starting periodic cache update');
     // Periodically refresh the cache of interactive elements
     this.discoverInteractiveElements();
-    
+
     // Set up periodic updates every 2 seconds
-    setInterval(() => {
+    this.cacheUpdateInterval = setInterval(() => {
+      console.log('[KeyPilot Debug] Periodic cache update triggered');
       this.discoverInteractiveElements();
     }, 2000);
+    console.log('[KeyPilot Debug] Periodic cache update interval set:', this.cacheUpdateInterval);
   }
 
   discoverInteractiveElements() {
     // Skip if observer is not initialized
     if (!this.interactiveObserver) {
+  //    console.log('[KeyPilot Debug] discoverInteractiveElements: interactiveObserver is null, skipping');
       return;
     }
 
@@ -1774,10 +2406,25 @@ class IntersectionObserverManager {
       'a[href], button, input, select, textarea, [role="button"], [role="link"], [contenteditable="true"], [onclick], [tabindex]:not([tabindex="-1"])'
     );
 
+//    console.log(`[KeyPilot Debug] discoverInteractiveElements: Found ${interactiveElements.length} elements, observer exists: ${!!this.interactiveObserver}`);
+
     // Observe new elements
-    interactiveElements.forEach(element => {
+    interactiveElements.forEach((element, index) => {
       if (!this.isElementObserved(element)) {
-        this.interactiveObserver.observe(element);
+        // Double-check observer exists right before calling observe
+        if (!this.interactiveObserver) {
+          console.error(`[KeyPilot Debug] Observer became null during forEach loop at index ${index}/${interactiveElements.length}`);
+          return;
+        }
+        if (!this.interactiveObserver.observe) {
+          console.error(`[KeyPilot Debug] Observer exists but observe method is missing at index ${index}`, this.interactiveObserver);
+          return;
+        }
+        try {
+          this.interactiveObserver.observe(element);
+        } catch (error) {
+          console.error(`[KeyPilot Debug] Error calling observe on element ${index}:`, error, 'Observer state:', !!this.interactiveObserver);
+        }
       }
     });
 
@@ -1787,8 +2434,8 @@ class IntersectionObserverManager {
 
   isElementObserved(element) {
     // Check if element is already being observed
-    return this.visibleInteractiveElements.has(element) || 
-           this.elementPositionCache.has(element);
+    return this.visibleInteractiveElements.has(element) ||
+      this.elementPositionCache.has(element);
   }
 
   cleanupRemovedElements() {
@@ -1823,24 +2470,35 @@ class IntersectionObserverManager {
   trackElementAtPoint(x, y) {
     // This method is called to track elements for performance optimization
     // It doesn't replace the main element detection, just optimizes it
-    
+
     const element = this.elementDetector.deepElementFromPoint(x, y);
     const clickable = this.elementDetector.findClickable(element);
-    
+
     // Check if we found this element in our cache (for metrics)
     if (clickable && this.visibleInteractiveElements.has(clickable)) {
       this.metrics.cacheHits++;
     } else {
       this.metrics.cacheMisses++;
     }
-    
+
     // Add to cache if it's interactive and visible but not already cached
     if (clickable && this.interactiveObserver && this.isElementVisible(clickable) && !this.visibleInteractiveElements.has(clickable)) {
       this.visibleInteractiveElements.add(clickable);
-      this.interactiveObserver.observe(clickable);
-      this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());
+
+      // Double-check observer exists right before calling observe
+      if (!this.interactiveObserver) {
+        console.error('[KeyPilot Debug] trackElementAtPoint: Observer became null before observe call');
+        return clickable;
+      }
+
+      try {
+        this.interactiveObserver.observe(clickable);
+        this.updateElementPositionCache(clickable, clickable.getBoundingClientRect());
+      } catch (error) {
+        console.error('[KeyPilot Debug] trackElementAtPoint: Error calling observe:', error, 'Observer state:', !!this.interactiveObserver);
+      }
     }
-    
+
     return clickable;
   }
 
@@ -1850,27 +2508,27 @@ class IntersectionObserverManager {
   }
 
   isPointInRect(x, y, rect) {
-    return x >= rect.left && 
-           x <= rect.right && 
-           y >= rect.top && 
-           y <= rect.bottom;
+    return x >= rect.left &&
+      x <= rect.right &&
+      y >= rect.top &&
+      y <= rect.bottom;
   }
 
   rectsAreClose(rect1, rect2, tolerance = 5) {
     return Math.abs(rect1.left - rect2.left) <= tolerance &&
-           Math.abs(rect1.top - rect2.top) <= tolerance &&
-           Math.abs(rect1.width - rect2.width) <= tolerance &&
-           Math.abs(rect1.height - rect2.height) <= tolerance;
+      Math.abs(rect1.top - rect2.top) <= tolerance &&
+      Math.abs(rect1.width - rect2.width) <= tolerance &&
+      Math.abs(rect1.height - rect2.height) <= tolerance;
   }
 
   isElementVisible(element) {
     const rect = element.getBoundingClientRect();
-    return rect.width > 0 && 
-           rect.height > 0 && 
-           rect.bottom > 0 && 
-           rect.right > 0 && 
-           rect.top < window.innerHeight && 
-           rect.left < window.innerWidth;
+    return rect.width > 0 &&
+      rect.height > 0 &&
+      rect.bottom > 0 &&
+      rect.right > 0 &&
+      rect.top < window.innerHeight &&
+      rect.left < window.innerWidth;
   }
 
   // Observe overlay elements for visibility optimization
@@ -1890,7 +2548,7 @@ class IntersectionObserverManager {
   getMetrics() {
     const totalQueries = this.metrics.cacheHits + this.metrics.cacheMisses;
     const cacheHitRate = totalQueries > 0 ? (this.metrics.cacheHits / totalQueries * 100).toFixed(1) : 0;
-    
+
     return {
       ...this.metrics,
       cacheHitRate: `${cacheHitRate}%`,
@@ -1901,21 +2559,32 @@ class IntersectionObserverManager {
 
   // Cleanup method
   cleanup() {
+    console.log('[KeyPilot Debug] cleanup() called, clearing observers and intervals');
+
     if (this.interactiveObserver) {
+      console.log('[KeyPilot Debug] Disconnecting interactiveObserver');
       this.interactiveObserver.disconnect();
       this.interactiveObserver = null;
     }
-    
+
     if (this.overlayObserver) {
+      console.log('[KeyPilot Debug] Disconnecting overlayObserver');
       this.overlayObserver.disconnect();
       this.overlayObserver = null;
     }
-    
+
     if (this.cacheUpdateTimeout) {
+      console.log('[KeyPilot Debug] Clearing cacheUpdateTimeout');
       clearTimeout(this.cacheUpdateTimeout);
       this.cacheUpdateTimeout = null;
     }
-    
+
+    if (this.cacheUpdateInterval) {
+      console.log('[KeyPilot Debug] Clearing cacheUpdateInterval');
+      clearInterval(this.cacheUpdateInterval);
+      this.cacheUpdateInterval = null;
+    }
+
     this.visibleInteractiveElements.clear();
     this.elementPositionCache.clear();
   }
@@ -2295,6 +2964,11 @@ class KeyPilotToggleHandler extends EventManager {
         this.keyPilot.scrollManager.init();
       }
 
+      // Notify HUD manager that KeyPilot is enabled
+      if (this.keyPilot.hudManager) {
+        this.keyPilot.hudManager.handleKeyPilotEnabled();
+      }
+
       console.log('[KeyPilotToggleHandler] KeyPilot enabled');
     } catch (error) {
       console.error('[KeyPilotToggleHandler] Error enabling KeyPilot:', error);
@@ -2310,6 +2984,11 @@ class KeyPilotToggleHandler extends EventManager {
     if (!this.keyPilot) return;
 
     try {
+      // Notify HUD manager that KeyPilot is being disabled (before cleanup)
+      if (this.keyPilot.hudManager) {
+        this.keyPilot.hudManager.handleKeyPilotDisabled();
+      }
+
       // Stop event listeners first
       this.keyPilot.stop();
 
@@ -2429,6 +3108,2194 @@ class KeyPilotToggleHandler extends EventManager {
 }
 
 
+  // Module: src/modules/hud-manager.js
+/**
+ * HUD (Heads-Up Display) interface management
+ * Provides real-time status information and quick access to controls
+ */
+class HUDManager extends EventManager {
+  constructor(stateManager, styleManager) {
+    super();
+    
+    this.stateManager = stateManager;
+    this.styleManager = styleManager;
+    this.hudElement = null;
+    this.statusBar = null;
+    this.isUpdatingFromSync = false; // Flag to prevent broadcast loops
+    
+    // Storage keys for HUD state persistence
+    this.STORAGE_KEYS = {
+      HUD_VISIBLE: 'keypilot_hud_visible',
+      HUD_EXPANDED: 'keypilot_hud_expanded',
+      HUD_ACTIVE_TAB: 'keypilot_hud_active_tab'
+    };
+    
+    // Mode display mapping
+    this.modeDisplayMap = {
+      [MODES.NONE]: 'Normal Mode',
+      [MODES.DELETE]: 'Delete Mode',
+      [MODES.TEXT_FOCUS]: 'Text Focus Mode'
+    };
+    
+    // Subscribe to state changes
+    this.unsubscribe = this.stateManager.subscribe((newState, prevState) => {
+      this.handleStateChange(newState, prevState);
+    });
+  }
+
+  /**
+   * Create the main HUD container element
+   */
+  createHUDElement() {
+    if (this.hudElement) return this.hudElement;
+    
+    const hud = document.createElement('div');
+    hud.id = ELEMENT_IDS.HUD;
+    hud.className = 'kpv2-hud';
+    
+    // Create status bar
+    this.statusBar = this.createStatusBar();
+    hud.appendChild(this.statusBar);
+    
+    // Create instructions panel
+    const instructionsPanel = this.createInstructionsPanel();
+    hud.appendChild(instructionsPanel);
+    
+    this.hudElement = hud;
+    return hud;
+  }
+
+  /**
+   * Detect existing HUD placeholder elements from early injection
+   * @returns {HTMLElement|null} Existing HUD element or null
+   */
+  detectExistingHUDElement() {
+    try {
+      // Look for HUD element with early injection marker
+      const existingHUD = document.querySelector('#' + ELEMENT_IDS.HUD + '[data-early-injection="true"]');
+      if (existingHUD) {
+        console.log('[HUDManager] Found existing HUD placeholder from early injection');
+        return existingHUD;
+      }
+      
+      // Also check for HUD element without marker (fallback)
+      const fallbackHUD = document.getElementById(ELEMENT_IDS.HUD);
+      if (fallbackHUD) {
+        console.log('[HUDManager] Found existing HUD element (no early injection marker)');
+        return fallbackHUD;
+      }
+      
+      console.log('[HUDManager] No existing HUD element found');
+      return null;
+    } catch (error) {
+      console.error('[HUDManager] Error detecting existing HUD element:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Create the status bar component
+   */
+  createStatusBar() {
+    const statusBar = document.createElement('div');
+    statusBar.className = 'kpv2-hud-status-bar';
+    
+    // Mode indicator
+    const modeIndicator = document.createElement('div');
+    modeIndicator.className = 'kpv2-hud-mode-indicator';
+    
+    const modeText = document.createElement('span');
+    modeText.className = 'kpv2-hud-mode-text';
+    modeText.textContent = this.getCurrentModeDisplay();
+    
+    modeIndicator.appendChild(modeText);
+    statusBar.appendChild(modeIndicator);
+    
+    // Controls section
+    const controls = this.createControlsSection();
+    statusBar.appendChild(controls);
+    
+    // Expand button
+    const expandBtn = this.createExpandButton();
+    statusBar.appendChild(expandBtn);
+    
+    return statusBar;
+  }
+
+  /**
+   * Create the controls section with toggle switches
+   */
+  createControlsSection() {
+    const controls = document.createElement('div');
+    controls.className = 'kpv2-hud-controls';
+    
+    // HUD toggle switch - initially checked since HUD is visible when created
+    const hudVisible = this.stateManager.isHUDVisible();
+    const hudToggle = this.createToggleSwitch('hud', 'HUD', hudVisible);
+    controls.appendChild(hudToggle);
+    
+    // KeyPilot toggle switch - initially checked since extension is active
+    const keypilotToggle = this.createToggleSwitch('keypilot', 'KeyPilot', true);
+    controls.appendChild(keypilotToggle);
+    
+    return controls;
+  }
+
+  /**
+   * Create a toggle switch element
+   */
+  createToggleSwitch(type, label, checked = false) {
+    const toggle = document.createElement('label');
+    toggle.className = 'kpv2-hud-toggle';
+    
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'kpv2-hud-toggle-input';
+    input.setAttribute('data-toggle', type);
+    input.checked = checked;
+    
+    const slider = document.createElement('span');
+    slider.className = 'kpv2-hud-toggle-slider';
+    
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'kpv2-hud-toggle-label';
+    labelSpan.textContent = label;
+    
+    // Add event listener for toggle switch
+    input.addEventListener('change', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.handleToggleSwitch(type, e.target.checked);
+    });
+    
+    toggle.appendChild(input);
+    toggle.appendChild(slider);
+    toggle.appendChild(labelSpan);
+    
+    return toggle;
+  }
+
+  /**
+   * Create the expand/collapse button
+   */
+  createExpandButton() {
+    const expandBtn = document.createElement('button');
+    expandBtn.className = 'kpv2-hud-expand-btn';
+    expandBtn.setAttribute('aria-label', 'Expand HUD');
+    
+    const icon = document.createElement('span');
+    icon.className = 'kpv2-hud-expand-icon';
+    icon.textContent = '▲';
+    
+    expandBtn.appendChild(icon);
+    
+    // Add click event listener for expand/collapse
+    expandBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleExpansion();
+    });
+    
+    return expandBtn;
+  }
+
+  /**
+   * Create the instructions panel
+   */
+  createInstructionsPanel() {
+    const instructions = document.createElement('div');
+    instructions.className = 'kpv2-hud-instructions';
+    
+    // Initially hidden (collapsed state)
+    instructions.style.display = 'none';
+    
+    // Create tabs
+    const tabs = this.createTabsSection();
+    instructions.appendChild(tabs);
+    
+    // Create tab content
+    const tabContent = this.createTabContent();
+    instructions.appendChild(tabContent);
+    
+    return instructions;
+  }
+
+  /**
+   * Create the tabs navigation section
+   */
+  createTabsSection() {
+    const tabs = document.createElement('div');
+    tabs.className = 'kpv2-hud-tabs';
+    
+    const basicTab = document.createElement('button');
+    basicTab.className = 'kpv2-hud-tab active';
+    basicTab.setAttribute('data-tab', 'basic');
+    basicTab.textContent = 'Basic Controls';
+    
+    // Add click event listener for tab switching
+    basicTab.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.setActiveTab('basic');
+    });
+    
+    tabs.appendChild(basicTab);
+    
+    return tabs;
+  }
+
+  /**
+   * Create the tab content section
+   */
+  createTabContent() {
+    const tabContent = document.createElement('div');
+    tabContent.className = 'kpv2-hud-tab-content';
+    
+    // Basic controls panel
+    const basicPanel = this.createBasicControlsPanel();
+    tabContent.appendChild(basicPanel);
+    
+    return tabContent;
+  }
+
+  /**
+   * Create the basic controls panel
+   */
+  createBasicControlsPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'kpv2-hud-tab-panel active';
+    panel.setAttribute('data-panel', 'basic');
+    
+    const controlList = document.createElement('div');
+    controlList.className = 'kpv2-hud-control-list';
+    
+    // Define control items
+    const controls = [
+      { key: 'F', description: 'Click/Activate element' },
+      { key: 'C', description: 'Browser back' },
+      { key: 'V', description: 'Browser forward' },
+      { key: 'ESC', description: 'Cancel/Exit mode' },
+      { key: 'Alt+K', description: 'Toggle KeyPilot' },
+      { key: 'Alt+H', description: 'Toggle HUD' }
+    ];
+    
+    // Create control items
+    controls.forEach(control => {
+      const item = this.createControlItem(control.key, control.description);
+      controlList.appendChild(item);
+    });
+    
+    panel.appendChild(controlList);
+    
+    return panel;
+  }
+
+  /**
+   * Create a control item element
+   */
+  createControlItem(key, description) {
+    const item = document.createElement('div');
+    item.className = 'kpv2-hud-control-item';
+    
+    const kbd = document.createElement('kbd');
+    kbd.textContent = key;
+    
+    const span = document.createElement('span');
+    span.textContent = description;
+    
+    item.appendChild(kbd);
+    item.appendChild(span);
+    
+    return item;
+  }
+
+  /**
+   * Get the display text for the current mode
+   */
+  getCurrentModeDisplay() {
+    const currentMode = this.stateManager.getState().mode;
+    return this.modeDisplayMap[currentMode] || 'Unknown Mode';
+  }
+
+  /**
+   * Show the HUD
+   */
+  show() {
+    if (!this.hudElement) {
+      this.createHUDElement();
+      document.body.appendChild(this.hudElement);
+    }
+    
+    // Remove hidden class and set display
+    this.hudElement.classList.remove('kpv2-hidden');
+    this.hudElement.style.display = 'block';
+    
+    // State change will trigger automatic saving via handleStateChange
+    this.stateManager.setHUDVisible(true);
+  }
+
+  /**
+   * Hide the HUD
+   */
+  hide() {
+    if (this.hudElement) {
+      // Add hidden class and set display
+      this.hudElement.classList.add('kpv2-hidden');
+      this.hudElement.style.display = 'none';
+    }
+    
+    // State change will trigger automatic saving via handleStateChange
+    this.stateManager.setHUDVisible(false);
+  }
+
+  /**
+   * Preserve state during enhancement process
+   * Maintains visibility, expansion, and active tab state
+   */
+  preserveStateFromPlaceholder(placeholderElement) {
+    try {
+      const preservedState = {
+        visible: !placeholderElement.classList.contains('kpv2-hidden'),
+        expanded: placeholderElement.classList.contains('kpv2-hud-expanded'),
+        activeTab: 'basic' // Default tab for early injection
+      };
+      
+      // Check for active tab from placeholder
+      const activeTabButton = placeholderElement.querySelector('.kpv2-hud-tab-button.active');
+      if (activeTabButton && activeTabButton.dataset.tab) {
+        preservedState.activeTab = activeTabButton.dataset.tab;
+      }
+      
+      console.log('[HUDManager] State preserved from placeholder:', preservedState);
+      return preservedState;
+    } catch (error) {
+      console.error('[HUDManager] Failed to preserve state from placeholder:', error);
+      return {
+        visible: true,
+        expanded: false,
+        activeTab: 'basic'
+      };
+    }
+  }
+
+  /**
+   * Toggle HUD visibility
+   */
+  toggle() {
+    const isVisible = this.stateManager.isHUDVisible();
+    if (isVisible) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
+
+  /**
+   * Internal method to update DOM for expanded state
+   */
+  _updateExpandedDOM(expanded) {
+    if (!this.hudElement) return;
+    
+    const instructionsPanel = this.hudElement.querySelector('.kpv2-hud-instructions');
+    const expandBtn = this.hudElement.querySelector('.kpv2-hud-expand-btn');
+    const expandIcon = this.hudElement.querySelector('.kpv2-hud-expand-icon');
+    
+    if (expanded) {
+      if (instructionsPanel) {
+        instructionsPanel.classList.add('expanded');
+        instructionsPanel.style.display = 'block';
+      }
+      
+      if (expandBtn) {
+        expandBtn.classList.add('expanded');
+        expandBtn.setAttribute('aria-label', 'Collapse HUD');
+      }
+      
+      if (expandIcon) {
+        expandIcon.textContent = '▼';
+      }
+    } else {
+      if (instructionsPanel) {
+        instructionsPanel.classList.remove('expanded');
+        instructionsPanel.style.display = 'none';
+      }
+      
+      if (expandBtn) {
+        expandBtn.classList.remove('expanded');
+        expandBtn.setAttribute('aria-label', 'Expand HUD');
+      }
+      
+      if (expandIcon) {
+        expandIcon.textContent = '▲';
+      }
+    }
+  }
+
+  /**
+   * Expand the HUD to show instructions panel
+   */
+  expand() {
+    this._updateExpandedDOM(true);
+    // State change will trigger automatic saving via handleStateChange
+    this.stateManager.setHUDExpanded(true);
+  }
+
+  /**
+   * Collapse the HUD to hide instructions panel
+   */
+  collapse() {
+    this._updateExpandedDOM(false);
+    // State change will trigger automatic saving via handleStateChange
+    this.stateManager.setHUDExpanded(false);
+  }
+
+  /**
+   * Toggle HUD expansion state
+   */
+  toggleExpansion() {
+    const isExpanded = this.stateManager.isHUDExpanded();
+    if (isExpanded) {
+      this.collapse();
+    } else {
+      this.expand();
+    }
+  }
+
+  /**
+   * Set the active tab in the instructions panel
+   */
+  setActiveTab(tabName) {
+    if (!this.hudElement) return;
+    
+    // State change will trigger automatic saving via handleStateChange
+    this.stateManager.setHUDActiveTab(tabName);
+    
+    // Update tab button states
+    const tabs = this.hudElement.querySelectorAll('.kpv2-hud-tab');
+    tabs.forEach(tab => {
+      const tabType = tab.getAttribute('data-tab');
+      if (tabType === tabName) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+    
+    // Update tab panel states
+    const panels = this.hudElement.querySelectorAll('.kpv2-hud-tab-panel');
+    panels.forEach(panel => {
+      const panelType = panel.getAttribute('data-panel');
+      if (panelType === tabName) {
+        panel.classList.add('active');
+        panel.style.display = 'block';
+      } else {
+        panel.classList.remove('active');
+        panel.style.display = 'none';
+      }
+    });
+  }
+
+  /**
+   * Update the mode display in the status bar
+   */
+  updateModeDisplay(mode) {
+    if (!this.statusBar) return;
+    
+    const modeText = this.statusBar.querySelector('.kpv2-hud-mode-text');
+    if (modeText) {
+      modeText.textContent = this.modeDisplayMap[mode] || 'Unknown Mode';
+    }
+  }
+
+  /**
+   * Handle toggle switch interactions
+   */
+  handleToggleSwitch(type, checked) {
+    switch (type) {
+      case 'hud':
+        this.handleHUDToggle(checked);
+        break;
+      case 'keypilot':
+        this.handleKeyPilotToggle(checked);
+        break;
+      default:
+        console.warn('[HUDManager] Unknown toggle type:', type);
+    }
+  }
+
+  /**
+   * Handle HUD toggle switch (hide/show HUD)
+   */
+  handleHUDToggle(enabled) {
+    if (enabled) {
+      this.show();
+    } else {
+      this.hide();
+    }
+  }
+
+  /**
+   * Handle KeyPilot toggle switch (enable/disable extension)
+   */
+  async handleKeyPilotToggle(enabled) {
+    try {
+      // Send message to service worker to toggle KeyPilot state
+      await chrome.runtime.sendMessage({
+        type: 'KP_SET_STATE',
+        enabled: enabled
+      });
+      
+      // If KeyPilot is being disabled, hide the HUD
+      if (!enabled) {
+        this.hide();
+        // Update the HUD toggle switch to reflect that HUD is now hidden
+        this.updateToggleSwitchState('hud', false);
+      }
+    } catch (error) {
+      console.error('[HUDManager] Failed to toggle KeyPilot state:', error);
+      // Revert the toggle switch state on error
+      this.updateToggleSwitchState('keypilot', !enabled);
+    }
+  }
+
+  /**
+   * Update the state of a toggle switch
+   */
+  updateToggleSwitchState(type, checked) {
+    if (!this.hudElement) return;
+    
+    const toggleInput = this.hudElement.querySelector(`input[data-toggle="${type}"]`);
+    if (toggleInput) {
+      toggleInput.checked = checked;
+    }
+  }
+
+  /**
+   * Update toggle switches based on current state
+   */
+  updateToggleSwitches() {
+    if (!this.hudElement) return;
+    
+    // Update HUD toggle switch
+    const hudVisible = this.stateManager.isHUDVisible();
+    this.updateToggleSwitchState('hud', hudVisible);
+    
+    // Update KeyPilot toggle switch - we'll need to get this from the toggle handler
+    // For now, assume it's enabled if HUD is visible
+    this.updateToggleSwitchState('keypilot', true);
+  }
+
+  /**
+   * Handle KeyPilot being disabled externally (e.g., via Alt+K)
+   * This should hide the HUD and update toggle switches
+   */
+  handleKeyPilotDisabled() {
+    // Hide the HUD when KeyPilot is disabled
+    this.hide();
+    
+    // Update toggle switches to reflect disabled state
+    this.updateToggleSwitchState('hud', false);
+    this.updateToggleSwitchState('keypilot', false);
+  }
+
+  /**
+   * Handle KeyPilot being enabled externally (e.g., via Alt+K)
+   * This should restore HUD state and update toggle switches
+   */
+  async handleKeyPilotEnabled() {
+    // Update KeyPilot toggle switch
+    this.updateToggleSwitchState('keypilot', true);
+    
+    try {
+      // Load HUD state from storage to restore previous state
+      const storedState = await this.loadHUDState();
+      
+      // Update StateManager with loaded state (this will trigger handleStateChange)
+      this.stateManager.setState({
+        hud: {
+          visible: storedState.visible,
+          expanded: storedState.expanded,
+          activeTab: storedState.activeTab
+        }
+      });
+      
+      console.log('[HUDManager] KeyPilot enabled, restored HUD state:', storedState);
+    } catch (error) {
+      console.error('[HUDManager] Error restoring HUD state on KeyPilot enable:', error);
+      
+      // Fallback to current state if loading fails
+      const hudState = this.stateManager.getHUDState();
+      if (hudState.visible) {
+        this.show();
+        this.updateToggleSwitchState('hud', true);
+      }
+    }
+  }
+
+  /**
+   * Handle state changes from StateManager
+   */
+  handleStateChange(newState, prevState) {
+    // Track if any HUD state changed for storage persistence and cross-tab sync
+    let hudStateChanged = false;
+    const hudChanges = {};
+    
+    // Update mode display if mode changed
+    if (newState.mode !== prevState.mode) {
+      this.updateModeDisplay(newState.mode);
+    }
+    
+    // Handle HUD visibility changes
+    if (newState.hud.visible !== prevState.hud.visible) {
+      this.preserveVisibilityState(newState.hud.visible);
+      
+      // Update toggle switch state
+      this.updateToggleSwitchState('hud', newState.hud.visible);
+      hudStateChanged = true;
+      hudChanges.visible = newState.hud.visible;
+    }
+    
+    // Handle HUD expansion changes
+    if (newState.hud.expanded !== prevState.hud.expanded) {
+      this.preserveExpansionState(newState.hud.expanded);
+      hudStateChanged = true;
+      hudChanges.expanded = newState.hud.expanded;
+    }
+    
+    // Handle active tab changes
+    if (newState.hud.activeTab !== prevState.hud.activeTab) {
+      this.preserveActiveTabSelection(newState.hud.activeTab);
+      hudStateChanged = true;
+      hudChanges.activeTab = newState.hud.activeTab;
+    }
+    
+    // Save HUD state to storage and broadcast to other tabs if any HUD state changed
+    // Only broadcast if this change wasn't triggered by a sync message
+    if (hudStateChanged) {
+      this.saveHUDState();
+      
+      if (!this.isUpdatingFromSync) {
+        this.broadcastHUDStateChange(newState.hud);
+      }
+    }
+  }
+
+  /**
+   * Preserve visibility state during placeholder upgrade
+   * Maintains smooth transition without flickering
+   */
+  preserveVisibilityState(visible) {
+    try {
+      if (!this.hudElement) return;
+      
+      if (visible) {
+        // Show HUD smoothly
+        this.hudElement.classList.remove('kpv2-hidden');
+        this.hudElement.style.display = 'block';
+        
+        // Ensure HUD is in DOM if not already
+        if (!this.hudElement.parentNode) {
+          document.body.appendChild(this.hudElement);
+        }
+      } else {
+        // Hide HUD smoothly
+        this.hudElement.classList.add('kpv2-hidden');
+        this.hudElement.style.display = 'none';
+      }
+      
+      console.log('[HUDManager] Visibility state preserved:', visible);
+    } catch (error) {
+      console.error('[HUDManager] Failed to preserve visibility state:', error);
+    }
+  }
+
+  /**
+   * Preserve expansion state across injection phases
+   * Maintains expanded/collapsed state during enhancement
+   */
+  preserveExpansionState(expanded) {
+    try {
+      if (!this.hudElement) return;
+      
+      // Update DOM to reflect expansion state
+      this._updateExpandedDOM(expanded);
+      
+      // Ensure expansion state is consistent across all elements
+      const instructionsPanel = this.hudElement.querySelector('.kpv2-hud-instructions');
+      const expandBtn = this.hudElement.querySelector('.kpv2-hud-expand-btn');
+      const expandIcon = this.hudElement.querySelector('.kpv2-hud-expand-icon');
+      
+      if (expanded) {
+        // Expanded state
+        if (instructionsPanel) {
+          instructionsPanel.classList.add('expanded');
+          instructionsPanel.style.display = 'block';
+        }
+        
+        if (expandBtn) {
+          expandBtn.classList.add('expanded');
+          expandBtn.setAttribute('aria-label', 'Collapse HUD');
+        }
+        
+        if (expandIcon) {
+          expandIcon.textContent = '▼';
+        }
+        
+        // Add expanded class to main HUD element
+        this.hudElement.classList.add('kpv2-hud-expanded');
+      } else {
+        // Collapsed state
+        if (instructionsPanel) {
+          instructionsPanel.classList.remove('expanded');
+          instructionsPanel.style.display = 'none';
+        }
+        
+        if (expandBtn) {
+          expandBtn.classList.remove('expanded');
+          expandBtn.setAttribute('aria-label', 'Expand HUD');
+        }
+        
+        if (expandIcon) {
+          expandIcon.textContent = '▲';
+        }
+        
+        // Remove expanded class from main HUD element
+        this.hudElement.classList.remove('kpv2-hud-expanded');
+      }
+      
+      console.log('[HUDManager] Expansion state preserved:', expanded);
+    } catch (error) {
+      console.error('[HUDManager] Failed to preserve expansion state:', error);
+    }
+  }
+
+  /**
+   * Keep active tab selection consistent across injection phases
+   * Maintains selected tab during enhancement process
+   */
+  preserveActiveTabSelection(activeTab) {
+    try {
+      if (!this.hudElement) return;
+      
+      // Update tab button states
+      const tabs = this.hudElement.querySelectorAll('.kpv2-hud-tab');
+      tabs.forEach(tab => {
+        const tabType = tab.getAttribute('data-tab');
+        if (tabType === activeTab) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      // Update tab panel states
+      const panels = this.hudElement.querySelectorAll('.kpv2-hud-tab-panel');
+      panels.forEach(panel => {
+        const panelType = panel.getAttribute('data-panel');
+        if (panelType === activeTab) {
+          panel.classList.add('active');
+          panel.style.display = 'block';
+        } else {
+          panel.classList.remove('active');
+          panel.style.display = 'none';
+        }
+      });
+      
+      // Also handle placeholder tab buttons if they exist
+      const placeholderTabs = this.hudElement.querySelectorAll('.kpv2-hud-tab-button');
+      placeholderTabs.forEach(tab => {
+        const tabType = tab.getAttribute('data-tab');
+        if (tabType === activeTab) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      console.log('[HUDManager] Active tab selection preserved:', activeTab);
+    } catch (error) {
+      console.error('[HUDManager] Failed to preserve active tab selection:', error);
+    }
+  }
+
+  /**
+   * Enhance existing HUD placeholder element with full functionality
+   */
+  async enhanceExistingElement(existingElement, earlyState = null, stateBridge = null) {
+    try {
+      if (!existingElement) {
+        console.warn('[HUDManager] No existing element to enhance, falling back to normal initialization');
+        return await this.initialize();
+      }
+      
+      console.log('[HUDManager] Enhancing existing HUD element');
+      
+      // Use the existing element as our HUD
+      this.hudElement = existingElement;
+      
+      // Remove early injection marker
+      this.hudElement.removeAttribute('data-early-injection');
+      
+      // Ensure proper ID and classes
+      this.hudElement.id = ELEMENT_IDS.HUD;
+      if (!this.hudElement.classList.contains('kpv2-hud')) {
+        this.hudElement.classList.add('kpv2-hud');
+      }
+      
+      // Preserve current visibility state from placeholder
+      const wasVisible = !this.hudElement.classList.contains('kpv2-hidden');
+      const wasExpanded = this.hudElement.classList.contains('kpv2-hud-expanded');
+      
+      // Find or create status bar
+      this.statusBar = this.hudElement.querySelector('.kpv2-hud-status-bar');
+      if (!this.statusBar) {
+        this.statusBar = this.createStatusBar();
+        this.hudElement.appendChild(this.statusBar);
+      } else {
+        // Enhance existing status bar
+        this.enhanceStatusBar();
+      }
+      
+      // Find or create instructions panel
+      let instructionsPanel = this.hudElement.querySelector('.kpv2-hud-instructions');
+      if (!instructionsPanel) {
+        instructionsPanel = this.createInstructionsPanel();
+        this.hudElement.appendChild(instructionsPanel);
+      }
+      
+      // Load state from early injection or storage
+      let targetState;
+      if (earlyState && stateBridge) {
+        // Use early state if available, preserving placeholder state as fallback
+        targetState = {
+          visible: earlyState.hudVisible !== undefined ? earlyState.hudVisible : wasVisible,
+          expanded: earlyState.hudExpanded !== undefined ? earlyState.hudExpanded : wasExpanded,
+          activeTab: earlyState.hudActiveTab || 'basic'
+        };
+        console.log('[HUDManager] Using early state for enhancement:', targetState);
+      } else {
+        // Fall back to storage, preserving placeholder state as final fallback
+        try {
+          const loadedState = await this.loadHUDState();
+          targetState = {
+            visible: loadedState.visible !== undefined ? loadedState.visible : wasVisible,
+            expanded: loadedState.expanded !== undefined ? loadedState.expanded : wasExpanded,
+            activeTab: loadedState.activeTab || 'basic'
+          };
+        } catch (error) {
+          console.warn('[HUDManager] Failed to load stored state, using placeholder state:', error);
+          targetState = {
+            visible: wasVisible,
+            expanded: wasExpanded,
+            activeTab: 'basic'
+          };
+        }
+        console.log('[HUDManager] Using stored state for enhancement:', targetState);
+      }
+      
+      // Perform seamless transition from placeholder to full HUD
+      const finalState = this.performSeamlessTransition(existingElement, targetState);
+      
+      // Update StateManager with final state (this will trigger handleStateChange)
+      this.stateManager.setState({
+        hud: {
+          visible: finalState.visible,
+          expanded: finalState.expanded,
+          activeTab: finalState.activeTab
+        }
+      });
+      
+      // Update toggle switches to reflect current state
+      this.updateToggleSwitches();
+      
+      // Set up message listener for cross-tab HUD toggle
+      this.setupMessageListener();
+      
+      console.log('[HUDManager] HUD element enhanced successfully');
+      return true;
+      
+    } catch (error) {
+      console.error('[HUDManager] Failed to enhance existing element:', error);
+      // Fall back to normal initialization
+      return await this.initialize();
+    }
+  }
+
+  /**
+   * Apply state to DOM elements directly
+   * Used during enhancement to prevent flickering
+   */
+  applyStateToDOM(state) {
+    try {
+      // Apply visibility state using preservation method
+      this.preserveVisibilityState(state.visible);
+      
+      // Apply expansion state using preservation method
+      this.preserveExpansionState(state.expanded);
+      
+      // Apply active tab using preservation method
+      this.preserveActiveTabSelection(state.activeTab);
+      
+      console.log('[HUDManager] State applied to DOM:', state);
+    } catch (error) {
+      console.error('[HUDManager] Failed to apply state to DOM:', error);
+    }
+  }
+
+  /**
+   * Implement seamless transition from placeholder to full HUD
+   * Ensures no visual disruption during enhancement
+   */
+  performSeamlessTransition(placeholderElement, targetState) {
+    try {
+      // Step 1: Capture current visual state
+      const currentVisibility = !placeholderElement.classList.contains('kpv2-hidden');
+      const currentExpansion = placeholderElement.classList.contains('kpv2-hud-expanded');
+      
+      // Step 2: Preserve visual continuity during DOM manipulation
+      const transitionState = {
+        visible: targetState.visible !== undefined ? targetState.visible : currentVisibility,
+        expanded: targetState.expanded !== undefined ? targetState.expanded : currentExpansion,
+        activeTab: targetState.activeTab || 'basic'
+      };
+      
+      // Step 3: Apply transition state immediately to prevent flickering
+      this.applyStateToDOM(transitionState);
+      
+      // Step 4: Update StateManager to reflect the transition
+      this.stateManager.setState({
+        hud: transitionState
+      });
+      
+      // Step 5: Ensure all interactive elements are properly enhanced
+      this.enhanceStatusBar();
+      
+      console.log('[HUDManager] Seamless transition completed:', transitionState);
+      return transitionState;
+    } catch (error) {
+      console.error('[HUDManager] Failed to perform seamless transition:', error);
+      // Return fallback state
+      return {
+        visible: true,
+        expanded: false,
+        activeTab: 'basic'
+      };
+    }
+  }
+
+  /**
+   * Enhance status bar with full functionality (event listeners, etc.)
+   */
+  enhanceStatusBar() {
+    try {
+      // Find expand button and add event listener if not already present
+      const expandBtn = this.statusBar.querySelector('.kpv2-hud-expand-btn');
+      if (expandBtn && !expandBtn.hasAttribute('data-enhanced')) {
+        expandBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.toggleExpansion();
+        });
+        expandBtn.setAttribute('data-enhanced', 'true');
+      } else if (!expandBtn) {
+        // Create expand button if it doesn't exist
+        const newExpandBtn = this.createExpandButton();
+        this.statusBar.appendChild(newExpandBtn);
+      }
+      
+      // Find toggle switches and enhance them
+      const toggleSwitches = this.statusBar.querySelectorAll('.kpv2-hud-toggle input[type="checkbox"]');
+      toggleSwitches.forEach(toggle => {
+        if (!toggle.hasAttribute('data-enhanced')) {
+          toggle.addEventListener('change', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const toggleType = e.target.getAttribute('data-toggle');
+            this.handleToggleSwitch(toggleType, e.target.checked);
+          });
+          toggle.setAttribute('data-enhanced', 'true');
+        }
+      });
+      
+      // If no toggle switches exist, create the controls section
+      if (toggleSwitches.length === 0) {
+        const existingControls = this.statusBar.querySelector('.kpv2-hud-controls');
+        if (!existingControls) {
+          const controls = this.createControlsSection();
+          // Insert controls before expand button
+          const expandBtn = this.statusBar.querySelector('.kpv2-hud-expand-btn');
+          if (expandBtn) {
+            this.statusBar.insertBefore(controls, expandBtn);
+          } else {
+            this.statusBar.appendChild(controls);
+          }
+        }
+      }
+      
+      // Ensure mode indicator exists and is updated
+      const modeIndicator = this.statusBar.querySelector('.kpv2-hud-mode-indicator');
+      if (!modeIndicator) {
+        const newModeIndicator = document.createElement('div');
+        newModeIndicator.className = 'kpv2-hud-mode-indicator';
+        
+        const modeText = document.createElement('span');
+        modeText.className = 'kpv2-hud-mode-text';
+        modeText.textContent = this.getCurrentModeDisplay();
+        
+        newModeIndicator.appendChild(modeText);
+        this.statusBar.insertBefore(newModeIndicator, this.statusBar.firstChild);
+      }
+      
+      console.log('[HUDManager] Status bar enhanced with event listeners');
+      
+    } catch (error) {
+      console.error('[HUDManager] Failed to enhance status bar:', error);
+    }
+  }
+
+  /**
+   * Check if HUD manager is initialized
+   */
+  isInitialized() {
+    return this.hudElement !== null;
+  }
+
+  /**
+   * Initialize the HUD based on stored state
+   * Detects early injection placeholders and enhances them if found
+   */
+  async initialize(earlyState = null, stateBridge = null) {
+    try {
+      // First, check for existing HUD element from early injection
+      const existingElement = this.detectExistingHUDElement();
+      
+      if (existingElement) {
+        // Enhance existing placeholder element
+        console.log('[HUDManager] Found existing HUD element, enhancing...');
+        return await this.enhanceExistingElement(existingElement, earlyState, stateBridge);
+      }
+      
+      // No existing element found, proceed with normal initialization
+      console.log('[HUDManager] No existing HUD element found, creating new one');
+      
+      // Load HUD state from storage
+      const storedState = await this.loadHUDState();
+      
+      // Update StateManager with loaded state (this will trigger handleStateChange)
+      this.stateManager.setState({
+        hud: {
+          visible: storedState.visible,
+          expanded: storedState.expanded,
+          activeTab: storedState.activeTab
+        }
+      });
+      
+      // Explicitly show/hide HUD based on loaded state
+      // This ensures HUD is shown even if state didn't change
+      if (storedState.visible) {
+        this.show();
+      } else {
+        this.hide();
+      }
+      
+      // Set initial expansion state
+      this._updateExpandedDOM(storedState.expanded);
+      
+      // Set initial active tab
+      this.setActiveTab(storedState.activeTab);
+      
+      // Update toggle switches to reflect current state
+      this.updateToggleSwitches();
+      
+      // Set up message listener for cross-tab HUD toggle
+      this.setupMessageListener();
+      
+      console.log('[HUDManager] Initialized with stored state:', storedState);
+      return true;
+    } catch (error) {
+      console.error('[HUDManager] Error during initialization, using current state:', error);
+      
+      // Fallback to current state if loading fails
+      const hudState = this.stateManager.getHUDState();
+      
+      if (hudState.visible) {
+        this.show();
+      } else {
+        this.hide();
+      }
+      
+      // Set initial expansion state
+      this._updateExpandedDOM(hudState.expanded);
+      
+      // Set initial active tab
+      this.setActiveTab(hudState.activeTab);
+      
+      // Update toggle switches to reflect current state
+      this.updateToggleSwitches();
+      
+      // Set up message listener for cross-tab HUD toggle
+      this.setupMessageListener();
+      
+      return false;
+    }
+  }
+
+  /**
+   * Broadcast HUD state changes to other tabs via service worker
+   */
+  async broadcastHUDStateChange(hudState) {
+    try {
+      // Send complete HUD state to service worker for broadcasting
+      await chrome.runtime.sendMessage({
+        type: 'KP_SET_COMPLETE_HUD_STATE',
+        hudState: hudState
+      });
+      
+      console.log('[HUDManager] Broadcasted HUD state change:', hudState);
+    } catch (error) {
+      console.error('[HUDManager] Failed to broadcast HUD state change:', error);
+      // Don't throw - allow the application to continue even if broadcasting fails
+    }
+  }
+
+  /**
+   * Set up Chrome runtime message listener for HUD synchronization messages
+   */
+  setupMessageListener() {
+    // Remove existing listener if it exists
+    if (this.messageListener) {
+      chrome.runtime.onMessage.removeListener(this.messageListener);
+    }
+    
+    // Create new message listener
+    this.messageListener = (message, sender, sendResponse) => {
+      if (message.type === 'KP_HUD_TOGGLE') {
+        console.log('[HUDManager] Received HUD toggle message:', message);
+        
+        // Set flag to prevent broadcast loop
+        this.isUpdatingFromSync = true;
+        
+        // Update HUD visibility based on message (without triggering broadcast)
+        this.stateManager.setState({
+          hud: { ...this.stateManager.getHUDState(), visible: message.visible }
+        });
+        
+        // Reset flag after state update
+        this.isUpdatingFromSync = false;
+        
+        // Send acknowledgment
+        sendResponse({
+          type: 'KP_HUD_TOGGLE_ACK',
+          visible: message.visible,
+          timestamp: Date.now()
+        });
+        
+        return true; // Indicate we'll send a response
+      } else if (message.type === 'KP_HUD_STATE_SYNC') {
+        console.log('[HUDManager] Received complete HUD state sync message:', message);
+        
+        // Set flag to prevent broadcast loop
+        this.isUpdatingFromSync = true;
+        
+        // Update complete HUD state based on message (without triggering broadcast)
+        this.stateManager.setState({
+          hud: {
+            visible: message.hudState.visible,
+            expanded: message.hudState.expanded,
+            activeTab: message.hudState.activeTab
+          }
+        });
+        
+        // Reset flag after state update
+        this.isUpdatingFromSync = false;
+        
+        // Send acknowledgment
+        sendResponse({
+          type: 'KP_HUD_STATE_SYNC_ACK',
+          hudState: message.hudState,
+          timestamp: Date.now()
+        });
+        
+        return true; // Indicate we'll send a response
+      }
+    };
+    
+    // Add the message listener
+    chrome.runtime.onMessage.addListener(this.messageListener);
+    console.log('[HUDManager] Message listener set up for cross-tab HUD synchronization');
+  }
+
+  /**
+   * Save HUD state to Chrome storage
+   * Uses sync storage with local storage fallback
+   */
+  async saveHUDState() {
+    try {
+      const hudState = this.stateManager.getHUDState();
+      const stateData = {
+        [this.STORAGE_KEYS.HUD_VISIBLE]: hudState.visible,
+        [this.STORAGE_KEYS.HUD_EXPANDED]: hudState.expanded,
+        [this.STORAGE_KEYS.HUD_ACTIVE_TAB]: hudState.activeTab,
+        hud_timestamp: Date.now()
+      };
+
+      try {
+        // Try chrome.storage.sync first
+        await chrome.storage.sync.set(stateData);
+        console.log('[HUDManager] HUD state saved to sync storage:', hudState);
+      } catch (syncError) {
+        console.warn('[HUDManager] Failed to save to sync storage, trying local:', syncError);
+        
+        try {
+          // Fallback to chrome.storage.local
+          await chrome.storage.local.set(stateData);
+          console.log('[HUDManager] HUD state saved to local storage:', hudState);
+        } catch (localError) {
+          console.error('[HUDManager] Failed to save HUD state to any storage:', localError);
+          throw localError;
+        }
+      }
+    } catch (error) {
+      console.error('[HUDManager] Error saving HUD state:', error);
+      // Don't throw - allow the application to continue even if storage fails
+    }
+  }
+
+  /**
+   * Load HUD state from Chrome storage
+   * Uses sync storage with local storage fallback
+   * @returns {Promise<Object>} HUD state object with visible, expanded, and activeTab properties
+   */
+  async loadHUDState() {
+    const defaultState = {
+      visible: true,
+      expanded: false,
+      activeTab: 'basic'
+    };
+
+    try {
+      let storageResult = {};
+
+      try {
+        // Try chrome.storage.sync first
+        storageResult = await chrome.storage.sync.get([
+          this.STORAGE_KEYS.HUD_VISIBLE,
+          this.STORAGE_KEYS.HUD_EXPANDED,
+          this.STORAGE_KEYS.HUD_ACTIVE_TAB
+        ]);
+        
+        // Check if we got any HUD data from sync storage
+        if (storageResult[this.STORAGE_KEYS.HUD_VISIBLE] === undefined) {
+          throw new Error('No HUD data in sync storage');
+        }
+        
+        console.log('[HUDManager] HUD state loaded from sync storage:', storageResult);
+      } catch (syncError) {
+        console.warn('[HUDManager] Failed to load from sync storage, trying local:', syncError);
+        
+        try {
+          // Fallback to chrome.storage.local
+          storageResult = await chrome.storage.local.get([
+            this.STORAGE_KEYS.HUD_VISIBLE,
+            this.STORAGE_KEYS.HUD_EXPANDED,
+            this.STORAGE_KEYS.HUD_ACTIVE_TAB
+          ]);
+          
+          console.log('[HUDManager] HUD state loaded from local storage:', storageResult);
+        } catch (localError) {
+          console.error('[HUDManager] Failed to load from local storage:', localError);
+          throw localError;
+        }
+      }
+
+      // Build state object with fallbacks to defaults
+      const loadedState = {
+        visible: storageResult[this.STORAGE_KEYS.HUD_VISIBLE] !== undefined 
+          ? storageResult[this.STORAGE_KEYS.HUD_VISIBLE] 
+          : defaultState.visible,
+        expanded: storageResult[this.STORAGE_KEYS.HUD_EXPANDED] !== undefined 
+          ? storageResult[this.STORAGE_KEYS.HUD_EXPANDED] 
+          : defaultState.expanded,
+        activeTab: storageResult[this.STORAGE_KEYS.HUD_ACTIVE_TAB] || defaultState.activeTab
+      };
+
+      console.log('[HUDManager] Final loaded HUD state:', loadedState);
+      return loadedState;
+    } catch (error) {
+      console.error('[HUDManager] Error loading HUD state, using defaults:', error);
+      return defaultState;
+    }
+  }
+
+  /**
+   * Clean up HUD elements and event listeners
+   */
+  cleanup() {
+    super.cleanup();
+    
+    if (this.hudElement && this.hudElement.parentNode) {
+      this.hudElement.parentNode.removeChild(this.hudElement);
+    }
+    
+    this.hudElement = null;
+    this.statusBar = null;
+    
+    if (this.unsubscribe) {
+      this.unsubscribe();
+      this.unsubscribe = null;
+    }
+    
+    // Remove message listener
+    if (this.messageListener) {
+      chrome.runtime.onMessage.removeListener(this.messageListener);
+      this.messageListener = null;
+    }
+  }
+
+  /**
+   * Override EventManager methods (not used for HUD but required by base class)
+   */
+  handleKeyDown(e) {
+    // HUD doesn't handle keyboard events directly
+    // Keyboard shortcuts will be handled by the main KeyPilot class
+  }
+
+  handleMouseMove(e) {
+    // HUD doesn't need mouse move handling
+  }
+
+  handleScroll(e) {
+    // HUD is fixed positioned, no scroll handling needed
+  }
+}
+
+
+  // Module: src/modules/state-bridge.js
+/**
+ * State Bridge for Early Injection
+ * Manages state synchronization between early injection and full initialization phases
+ * Handles storage operations and service worker communication for early injection
+ */
+
+// Minimal event emitter for early injection (when EventManager is not available)
+class MinimalEventEmitter {
+  constructor() {
+    this.listeners = new Map();
+  }
+  
+  emit(event, data) {
+    const eventListeners = this.listeners.get(event);
+    if (eventListeners) {
+      eventListeners.forEach(listener => {
+        try {
+          listener(data);
+        } catch (error) {
+          console.error(`[MinimalEventEmitter] Error in ${event} listener:`, error);
+        }
+      });
+    }
+  }
+  
+  on(event, listener) {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, []);
+    }
+    this.listeners.get(event).push(listener);
+  }
+  
+  removeAllListeners() {
+    this.listeners.clear();
+  }
+}
+
+class StateBridge extends (typeof EventManager !== 'undefined' ? EventManager : MinimalEventEmitter) {
+  constructor() {
+    super();
+    
+    // Storage keys for early injection state
+    this.STORAGE_KEYS = {
+      EXTENSION_ENABLED: 'keypilot_enabled',
+      HUD_VISIBLE: 'keypilot_hud_visible',
+      HUD_EXPANDED: 'keypilot_hud_expanded',
+      HUD_ACTIVE_TAB: 'keypilot_hud_active_tab',
+      CURSOR_MODE: 'keypilot_cursor_mode',
+      EARLY_STATE_TIMESTAMP: 'keypilot_early_state_timestamp'
+    };
+    
+    // Default state values
+    this.DEFAULT_STATE = {
+      extensionEnabled: true,
+      hudVisible: true,
+      hudExpanded: false,
+      hudActiveTab: 'basic',
+      cursorMode: 'none',
+      timestamp: Date.now()
+    };
+    
+    // Current early state cache
+    this.earlyState = { ...this.DEFAULT_STATE };
+    
+    // Service worker communication status
+    this.serviceWorkerAvailable = false;
+    
+    // State synchronization status
+    this.syncInProgress = false;
+    
+    console.log('[StateBridge] Initialized with default state:', this.earlyState);
+  }
+
+  /**
+   * Initialize the state bridge
+   * Sets up service worker communication and loads initial state
+   */
+  async initialize() {
+    try {
+      // Test service worker availability
+      await this.testServiceWorkerConnection();
+      
+      // Load initial state from storage
+      await this.loadEarlyState();
+      
+      // Set up message listener for state updates
+      this.setupMessageListener();
+      
+      console.log('[StateBridge] Initialized successfully');
+      return true;
+    } catch (error) {
+      console.error('[StateBridge] Failed to initialize:', error);
+      // Continue with cached state even if initialization fails
+      return false;
+    }
+  }
+
+  /**
+   * Test service worker connection
+   */
+  async testServiceWorkerConnection() {
+    try {
+      if (!chrome?.runtime?.sendMessage) {
+        throw new Error('Chrome runtime not available');
+      }
+      
+      // Test with a simple ping message
+      const response = await chrome.runtime.sendMessage({ 
+        type: 'KP_GET_STATE',
+        source: 'early-injection'
+      });
+      
+      if (response && typeof response.enabled === 'boolean') {
+        this.serviceWorkerAvailable = true;
+        console.log('[StateBridge] Service worker connection established');
+        return true;
+      } else {
+        throw new Error('Invalid response from service worker');
+      }
+    } catch (error) {
+      console.warn('[StateBridge] Service worker unavailable:', error.message);
+      this.serviceWorkerAvailable = false;
+      return false;
+    }
+  }
+
+  /**
+   * Load early state from storage
+   * Tries service worker first, then direct storage access
+   */
+  async loadEarlyState() {
+    try {
+      let loadedState = null;
+      
+      // Try service worker first if available
+      if (this.serviceWorkerAvailable) {
+        loadedState = await this.loadStateFromServiceWorker();
+      }
+      
+      // Fallback to direct storage access
+      if (!loadedState) {
+        loadedState = await this.loadStateFromStorage();
+      }
+      
+      // Merge loaded state with defaults
+      if (loadedState) {
+        this.earlyState = {
+          ...this.DEFAULT_STATE,
+          ...loadedState,
+          timestamp: Date.now()
+        };
+        console.log('[StateBridge] State loaded:', this.earlyState);
+      } else {
+        console.log('[StateBridge] Using default state');
+      }
+      
+      return this.earlyState;
+    } catch (error) {
+      console.error('[StateBridge] Failed to load early state:', error);
+      // Return default state on failure
+      return this.earlyState;
+    }
+  }
+
+  /**
+   * Load state from service worker
+   */
+  async loadStateFromServiceWorker() {
+    try {
+      // Get extension enabled state
+      const extensionResponse = await chrome.runtime.sendMessage({ 
+        type: 'KP_GET_STATE' 
+      });
+      
+      // Get complete HUD state
+      const hudResponse = await chrome.runtime.sendMessage({ 
+        type: 'KP_GET_COMPLETE_HUD_STATE' 
+      });
+      
+      if (extensionResponse && hudResponse) {
+        return {
+          extensionEnabled: extensionResponse.enabled,
+          hudVisible: hudResponse.hudState.visible,
+          hudExpanded: hudResponse.hudState.expanded,
+          hudActiveTab: hudResponse.hudState.activeTab,
+          cursorMode: 'none', // Default cursor mode for early injection
+          timestamp: Math.max(extensionResponse.timestamp || 0, hudResponse.timestamp || 0)
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.warn('[StateBridge] Failed to load from service worker:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Load state directly from Chrome storage
+   */
+  async loadStateFromStorage() {
+    try {
+      // Try sync storage first
+      let result = await this.getFromStorage('sync');
+      
+      // Fallback to local storage
+      if (!result || Object.keys(result).length === 0) {
+        result = await this.getFromStorage('local');
+      }
+      
+      if (result && Object.keys(result).length > 0) {
+        return {
+          extensionEnabled: result[this.STORAGE_KEYS.EXTENSION_ENABLED] ?? this.DEFAULT_STATE.extensionEnabled,
+          hudVisible: result[this.STORAGE_KEYS.HUD_VISIBLE] ?? this.DEFAULT_STATE.hudVisible,
+          hudExpanded: result[this.STORAGE_KEYS.HUD_EXPANDED] ?? this.DEFAULT_STATE.hudExpanded,
+          hudActiveTab: result[this.STORAGE_KEYS.HUD_ACTIVE_TAB] ?? this.DEFAULT_STATE.hudActiveTab,
+          cursorMode: result[this.STORAGE_KEYS.CURSOR_MODE] ?? this.DEFAULT_STATE.cursorMode,
+          timestamp: result[this.STORAGE_KEYS.EARLY_STATE_TIMESTAMP] ?? Date.now()
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.warn('[StateBridge] Failed to load from storage:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get data from Chrome storage
+   */
+  async getFromStorage(storageType) {
+    try {
+      const storage = storageType === 'sync' ? chrome.storage.sync : chrome.storage.local;
+      const keys = Object.values(this.STORAGE_KEYS);
+      
+      return await storage.get(keys);
+    } catch (error) {
+      console.warn(`[StateBridge] Failed to access ${storageType} storage:`, error);
+      return {};
+    }
+  }
+
+  /**
+   * Save early state to storage
+   */
+  async saveEarlyState(state = null) {
+    if (this.syncInProgress) {
+      console.log('[StateBridge] Sync already in progress, skipping save');
+      return false;
+    }
+    
+    try {
+      this.syncInProgress = true;
+      
+      const stateToSave = state || this.earlyState;
+      stateToSave.timestamp = Date.now();
+      
+      // Update local cache
+      this.earlyState = { ...stateToSave };
+      
+      // Try service worker first if available
+      if (this.serviceWorkerAvailable) {
+        const saved = await this.saveStateViaServiceWorker(stateToSave);
+        if (saved) {
+          console.log('[StateBridge] State saved via service worker');
+          return true;
+        }
+      }
+      
+      // Fallback to direct storage
+      const saved = await this.saveStateToStorage(stateToSave);
+      if (saved) {
+        console.log('[StateBridge] State saved to storage');
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('[StateBridge] Failed to save early state:', error);
+      return false;
+    } finally {
+      this.syncInProgress = false;
+    }
+  }
+
+  /**
+   * Save state via service worker
+   */
+  async saveStateViaServiceWorker(state) {
+    try {
+      // Save extension enabled state
+      const extensionResponse = await chrome.runtime.sendMessage({
+        type: 'KP_SET_STATE',
+        enabled: state.extensionEnabled
+      });
+      
+      // Save complete HUD state
+      const hudResponse = await chrome.runtime.sendMessage({
+        type: 'KP_SET_COMPLETE_HUD_STATE',
+        hudState: {
+          visible: state.hudVisible,
+          expanded: state.hudExpanded,
+          activeTab: state.hudActiveTab
+        }
+      });
+      
+      return extensionResponse?.enabled === state.extensionEnabled && 
+             hudResponse?.hudState?.visible === state.hudVisible;
+    } catch (error) {
+      console.warn('[StateBridge] Failed to save via service worker:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Save state directly to Chrome storage
+   */
+  async saveStateToStorage(state) {
+    const stateData = {
+      [this.STORAGE_KEYS.EXTENSION_ENABLED]: state.extensionEnabled,
+      [this.STORAGE_KEYS.HUD_VISIBLE]: state.hudVisible,
+      [this.STORAGE_KEYS.HUD_EXPANDED]: state.hudExpanded,
+      [this.STORAGE_KEYS.HUD_ACTIVE_TAB]: state.hudActiveTab,
+      [this.STORAGE_KEYS.CURSOR_MODE]: state.cursorMode,
+      [this.STORAGE_KEYS.EARLY_STATE_TIMESTAMP]: state.timestamp
+    };
+    
+    try {
+      // Try sync storage first
+      await chrome.storage.sync.set(stateData);
+      return true;
+    } catch (syncError) {
+      console.warn('[StateBridge] Sync storage failed, trying local:', syncError);
+      
+      try {
+        // Fallback to local storage
+        await chrome.storage.local.set(stateData);
+        return true;
+      } catch (localError) {
+        console.error('[StateBridge] Both storage methods failed:', localError);
+        return false;
+      }
+    }
+  }
+
+  /**
+   * Set up message listener for state synchronization
+   */
+  setupMessageListener() {
+    try {
+      if (!chrome?.runtime?.onMessage) {
+        console.warn('[StateBridge] Chrome runtime messaging not available');
+        return;
+      }
+      
+      chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        // Handle state synchronization messages
+        if (message.type === 'KP_TOGGLE_STATE') {
+          this.handleExtensionToggle(message.enabled);
+          sendResponse({ success: true });
+          return true;
+        }
+        
+        if (message.type === 'KP_HUD_STATE_SYNC') {
+          this.handleHUDStateSync(message.hudState);
+          sendResponse({ success: true });
+          return true;
+        }
+        
+        if (message.type === 'KP_CURSOR_MODE_UPDATE') {
+          this.handleCursorModeUpdate(message.mode);
+          sendResponse({ success: true });
+          return true;
+        }
+        
+        if (message.type === 'KP_EARLY_STATE_REQUEST') {
+          sendResponse({ 
+            success: true, 
+            state: this.earlyState 
+          });
+          return true;
+        }
+        
+        if (message.type === 'KP_NAVIGATION_STATE_UPDATE') {
+          this.handleNavigationStateUpdate(message.navigationState);
+          sendResponse({ success: true });
+          return true;
+        }
+      });
+      
+      console.log('[StateBridge] Message listener set up');
+    } catch (error) {
+      console.error('[StateBridge] Failed to set up message listener:', error);
+    }
+  }
+
+  /**
+   * Handle extension toggle from service worker
+   */
+  handleExtensionToggle(enabled) {
+    try {
+      this.earlyState.extensionEnabled = enabled;
+      this.earlyState.timestamp = Date.now();
+      
+      // Emit event for early injection components
+      this.emit('extensionToggle', { enabled });
+      
+      console.log('[StateBridge] Extension toggle handled:', enabled);
+    } catch (error) {
+      console.error('[StateBridge] Failed to handle extension toggle:', error);
+    }
+  }
+
+  /**
+   * Handle cursor mode updates for persistence
+   */
+  handleCursorModeUpdate(mode) {
+    try {
+      this.earlyState.cursorMode = mode;
+      this.earlyState.timestamp = Date.now();
+      
+      // Save to storage for navigation persistence
+      this.saveEarlyState().catch(error => {
+        console.warn('[StateBridge] Failed to save cursor mode:', error);
+      });
+      
+      // Emit event for components
+      this.emit('cursorModeUpdate', { mode });
+      
+      console.log('[StateBridge] Cursor mode updated:', mode);
+    } catch (error) {
+      console.error('[StateBridge] Failed to handle cursor mode update:', error);
+    }
+  }
+
+  /**
+   * Handle HUD state synchronization from service worker
+   */
+  handleHUDStateSync(hudState) {
+    try {
+      this.earlyState.hudVisible = hudState.visible;
+      this.earlyState.hudExpanded = hudState.expanded;
+      this.earlyState.hudActiveTab = hudState.activeTab;
+      this.earlyState.timestamp = Date.now();
+      
+      // Emit event for early injection components
+      this.emit('hudStateSync', { hudState });
+      
+      console.log('[StateBridge] HUD state sync handled:', hudState);
+    } catch (error) {
+      console.error('[StateBridge] Failed to handle HUD state sync:', error);
+    }
+  }
+
+  /**
+   * Get current early state
+   */
+  getEarlyState() {
+    return { ...this.earlyState };
+  }
+
+  /**
+   * Update early state
+   */
+  updateEarlyState(updates) {
+    try {
+      const prevState = { ...this.earlyState };
+      this.earlyState = {
+        ...this.earlyState,
+        ...updates,
+        timestamp: Date.now()
+      };
+      
+      // Emit state change event
+      this.emit('stateChange', {
+        prevState,
+        newState: this.earlyState,
+        updates
+      });
+      
+      console.log('[StateBridge] Early state updated:', updates);
+      return true;
+    } catch (error) {
+      console.error('[StateBridge] Failed to update early state:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Alias for updateEarlyState for compatibility with main script
+   */
+  updateState(updates) {
+    return this.updateEarlyState(updates);
+  }
+
+  /**
+   * Sync with service worker
+   * Forces a fresh state load from service worker
+   */
+  async syncWithServiceWorker() {
+    try {
+      if (!this.serviceWorkerAvailable) {
+        console.warn('[StateBridge] Service worker not available for sync');
+        return false;
+      }
+      
+      const freshState = await this.loadStateFromServiceWorker();
+      if (freshState) {
+        this.earlyState = {
+          ...this.DEFAULT_STATE,
+          ...freshState,
+          timestamp: Date.now()
+        };
+        
+        // Emit sync event
+        this.emit('serviceWorkerSync', { state: this.earlyState });
+        
+        console.log('[StateBridge] Synced with service worker:', this.earlyState);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('[StateBridge] Failed to sync with service worker:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Handle state transition from early injection to full initialization
+   * Returns state for main script to use
+   */
+  handleStateTransition() {
+    try {
+      const transitionState = {
+        ...this.earlyState,
+        transitionTimestamp: Date.now(),
+        source: 'early-injection'
+      };
+      
+      // Emit transition event
+      this.emit('stateTransition', { state: transitionState });
+      
+      console.log('[StateBridge] State transition handled:', transitionState);
+      return transitionState;
+    } catch (error) {
+      console.error('[StateBridge] Failed to handle state transition:', error);
+      return this.earlyState;
+    }
+  }
+
+  /**
+   * Create fallback state management
+   * Used when service worker is unavailable
+   */
+  createFallbackState() {
+    try {
+      const fallbackState = {
+        ...this.DEFAULT_STATE,
+        timestamp: Date.now(),
+        fallback: true
+      };
+      
+      this.earlyState = fallbackState;
+      
+      console.log('[StateBridge] Fallback state created:', fallbackState);
+      return fallbackState;
+    } catch (error) {
+      console.error('[StateBridge] Failed to create fallback state:', error);
+      return this.DEFAULT_STATE;
+    }
+  }
+
+  /**
+   * Check if service worker is available
+   */
+  isServiceWorkerAvailable() {
+    return this.serviceWorkerAvailable;
+  }
+
+  /**
+   * Get state age in milliseconds
+   */
+  getStateAge() {
+    return Date.now() - (this.earlyState.timestamp || 0);
+  }
+
+  /**
+   * Check if state is stale (older than 5 seconds)
+   */
+  isStateStale() {
+    return this.getStateAge() > 5000;
+  }
+
+  /**
+   * Handle navigation state updates from other tabs
+   */
+  handleNavigationStateUpdate(navigationState) {
+    try {
+      // Check if this is a more recent state
+      if (navigationState.navigationTimestamp > (this.earlyState.timestamp || 0)) {
+        // Update early state with navigation state
+        this.earlyState = {
+          ...this.earlyState,
+          extensionEnabled: navigationState.extensionEnabled,
+          hudVisible: navigationState.hudVisible,
+          hudExpanded: navigationState.hudExpanded,
+          hudActiveTab: navigationState.hudActiveTab,
+          cursorMode: navigationState.cursorMode,
+          timestamp: navigationState.navigationTimestamp
+        };
+        
+        // Emit navigation state update event
+        this.emit('navigationStateUpdate', { 
+          navigationState,
+          updatedState: this.earlyState 
+        });
+        
+        console.log('[StateBridge] Navigation state update handled:', navigationState);
+      } else {
+        console.log('[StateBridge] Ignoring older navigation state update');
+      }
+    } catch (error) {
+      console.error('[StateBridge] Failed to handle navigation state update:', error);
+    }
+  }
+
+  /**
+   * Save state before navigation
+   * @param {string} url - URL being navigated to
+   */
+  async savePreNavigationState(url = 'unknown') {
+    try {
+      if (!this.serviceWorkerAvailable) {
+        console.warn('[StateBridge] Service worker unavailable for pre-navigation state save');
+        return false;
+      }
+      
+      const response = await chrome.runtime.sendMessage({
+        type: 'KP_PRE_NAVIGATION_STATE',
+        url: url,
+        state: this.earlyState
+      });
+      
+      if (response && response.type === 'KP_PRE_NAVIGATION_STATE_SAVED') {
+        console.log('[StateBridge] Pre-navigation state saved');
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('[StateBridge] Failed to save pre-navigation state:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Sync state during navigation
+   * Ensures state persists across page transitions
+   */
+  async syncNavigationState() {
+    try {
+      if (!this.serviceWorkerAvailable) {
+        console.warn('[StateBridge] Service worker unavailable for navigation sync');
+        return false;
+      }
+      
+      const navigationState = {
+        ...this.earlyState,
+        navigationTimestamp: Date.now(),
+        sourceTabId: null // Will be set by service worker
+      };
+      
+      const response = await chrome.runtime.sendMessage({
+        type: 'KP_NAVIGATION_STATE_SYNC',
+        state: navigationState
+      });
+      
+      if (response && response.success) {
+        console.log('[StateBridge] Navigation state synchronized');
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('[StateBridge] Failed to sync navigation state:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Handle rapid navigation conflicts
+   * @param {Object} incomingState - Incoming navigation state
+   * @returns {boolean} Whether the incoming state was applied
+   */
+  handleNavigationConflict(incomingState) {
+    try {
+      const currentTimestamp = this.earlyState.timestamp || 0;
+      const incomingTimestamp = incomingState.navigationTimestamp || 0;
+      
+      // If incoming state is newer, apply it
+      if (incomingTimestamp > currentTimestamp) {
+        this.earlyState = {
+          ...this.earlyState,
+          ...incomingState,
+          timestamp: incomingTimestamp
+        };
+        
+        this.emit('navigationConflictResolved', {
+          resolvedState: this.earlyState,
+          incomingState
+        });
+        
+        console.log('[StateBridge] Navigation conflict resolved - applied incoming state');
+        return true;
+      }
+      
+      console.log('[StateBridge] Navigation conflict resolved - kept current state');
+      return false;
+    } catch (error) {
+      console.error('[StateBridge] Failed to handle navigation conflict:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Ensure state persistence during page transitions
+   * Called during beforeunload or similar events
+   */
+  async ensureStatePersistence() {
+    try {
+      // Save current state to storage
+      const saved = await this.saveEarlyState();
+      
+      // Also sync with service worker if available
+      if (this.serviceWorkerAvailable) {
+        await this.syncNavigationState();
+      }
+      
+      console.log('[StateBridge] State persistence ensured:', saved);
+      return saved;
+    } catch (error) {
+      console.error('[StateBridge] Failed to ensure state persistence:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Save cursor position for restoration after navigation
+   */
+  saveCursorPosition(x, y) {
+    try {
+      this.earlyState.cursorPosition = { x, y };
+      this.earlyState.timestamp = Date.now();
+      
+      // Save to storage for navigation persistence
+      this.saveEarlyState().catch(error => {
+        console.warn('[StateBridge] Failed to save cursor position:', error);
+      });
+      
+      console.log('[StateBridge] Cursor position saved:', { x, y });
+    } catch (error) {
+      console.error('[StateBridge] Failed to save cursor position:', error);
+    }
+  }
+
+  /**
+   * Get saved cursor position
+   */
+  getSavedCursorPosition() {
+    try {
+      return this.earlyState.cursorPosition || null;
+    } catch (error) {
+      console.error('[StateBridge] Failed to get saved cursor position:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Sync cursor state across tabs
+   */
+  async syncCursorStateAcrossTabs(cursorState) {
+    try {
+      if (!this.serviceWorkerAvailable) {
+        console.warn('[StateBridge] Service worker unavailable for cursor sync');
+        return false;
+      }
+      
+      const response = await chrome.runtime.sendMessage({
+        type: 'KP_CURSOR_STATE_BROADCAST',
+        cursorState: cursorState
+      });
+      
+      if (response && response.success) {
+        console.log('[StateBridge] Cursor state synced across tabs');
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('[StateBridge] Failed to sync cursor state across tabs:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Clean up the state bridge
+   */
+  cleanup() {
+    try {
+      // Remove event listeners
+      this.removeAllListeners();
+      
+      // Clear state cache
+      this.earlyState = { ...this.DEFAULT_STATE };
+      
+      console.log('[StateBridge] Cleaned up');
+    } catch (error) {
+      console.error('[StateBridge] Error during cleanup:', error);
+    }
+  }
+}
+
+
   // Module: src/keypilot.js
 /**
  * KeyPilot main application class
@@ -2456,6 +5323,7 @@ class KeyPilot extends EventManager {
     this.overlayManager = new OverlayManager();
     this.styleManager = new StyleManager();
     this.shadowDOMManager = new ShadowDOMManager(this.styleManager);
+    this.hudManager = new HUDManager(this.state, this.styleManager);
     
     // Intersection Observer optimizations
     this.intersectionManager = new IntersectionObserverManager(this.detector);
@@ -2476,24 +5344,53 @@ class KeyPilot extends EventManager {
   }
 
   async init() {
-    // Always set up styles and shadow DOM support
-    this.setupStyles();
+    // Step 1: Detect early injection and get placeholders
+    const earlyInjectionResult = this.detectEarlyInjection();
+    
+    // Step 2: Set up styles and shadow DOM support (skip if early injection handled styles)
+    if (!earlyInjectionResult.stylesInjected) {
+      this.setupStyles();
+    }
     this.setupShadowDOMSupport();
     
-    // Always ensure cursor exists (but may be hidden)
-    this.cursor.ensure();
+    // Step 3: Handle cursor initialization based on early injection
+    if (earlyInjectionResult.detected) {
+      // Enhance existing cursor placeholder with state bridge
+      await this.enhanceCursorPlaceholder(
+        earlyInjectionResult.placeholders.cursor, 
+        earlyInjectionResult.stateBridge
+      );
+    } else {
+      // Create cursor normally (fallback)
+      this.cursor.ensure();
+    }
     
-    // Query service worker for current enabled state
+    // Step 4: Handle placeholder transition and migrate state if early injection occurred
+    if (earlyInjectionResult.detected) {
+      this.handlePlaceholderTransition(earlyInjectionResult);
+      this.migrateStateFromPlaceholders(earlyInjectionResult);
+    }
+    
+    // Step 5: Query service worker for current enabled state
     await this.queryInitialState();
     
-    // Only initialize functionality if enabled
+    // Step 6: Handle fallback scenarios if needed
+    if (!earlyInjectionResult.detected || 
+        document.documentElement.getAttribute('data-kpv2-early-injection') === 'failed') {
+      this.handleEarlyInjectionFallback(earlyInjectionResult);
+    }
+    
+    // Step 7: Initialize functionality based on enabled state
     if (this.enabled) {
-      this.initializeEnabledState();
+      await this.initializeEnabledState(earlyInjectionResult);
     } else {
       this.initializeDisabledState();
     }
+    
+    // Step 8: Set up navigation persistence for cursor state
+    this.setupNavigationPersistence(earlyInjectionResult);
 
-    // Always set up communication and state management
+    // Step 8: Always set up communication and state management
     this.state.subscribe((newState, prevState) => {
       this.handleStateChange(newState, prevState);
     });
@@ -2504,6 +5401,71 @@ class KeyPilot extends EventManager {
 
     this.initializationComplete = true;
     this.state.setState({ isInitialized: true });
+  }
+
+  /**
+   * Detect if early injection occurred successfully
+   * Returns information about placeholders and injection status
+   */
+  detectEarlyInjection() {
+    const result = {
+      detected: false,
+      stylesInjected: false,
+      placeholders: {
+        hud: null,
+        cursor: null
+      },
+      earlyState: null,
+      stateBridge: null
+    };
+
+    try {
+      // Check for early injection marker
+      const injectionStatus = document.documentElement.getAttribute('data-kpv2-early-injection');
+      
+      if (injectionStatus === 'complete') {
+        result.detected = true;
+        console.log('[KeyPilot] Early injection detected successfully');
+        
+        // Look for placeholder elements
+        result.placeholders.hud = document.getElementById('kpv2-hud');
+        result.placeholders.cursor = document.getElementById('kpv2-cursor');
+        
+        // Check if placeholders have early injection markers
+        if (result.placeholders.hud && result.placeholders.hud.getAttribute('data-early-injection') === 'true') {
+          console.log('[KeyPilot] HUD placeholder found');
+        }
+        
+        if (result.placeholders.cursor && result.placeholders.cursor.getAttribute('data-early-injection') === 'true') {
+          console.log('[KeyPilot] Cursor placeholder found');
+        }
+        
+        // Check if critical styles were injected
+        const criticalStylesElement = document.getElementById('kpv2-critical-styles');
+        if (criticalStylesElement) {
+          result.stylesInjected = true;
+          console.log('[KeyPilot] Critical styles detected');
+        }
+        
+        // Try to get early injector instance and state bridge
+        if (window.kpv2EarlyInjector) {
+          result.stateBridge = window.kpv2EarlyInjector.getStateBridge();
+          result.earlyState = window.kpv2EarlyInjector.getEarlyState();
+          console.log('[KeyPilot] Early injector instance found, state:', result.earlyState);
+        }
+        
+      } else if (injectionStatus === 'failed') {
+        console.warn('[KeyPilot] Early injection failed, using fallback initialization');
+      } else {
+        console.log('[KeyPilot] No early injection detected, using normal initialization');
+      }
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error detecting early injection:', error);
+      // Continue with fallback
+    }
+    
+    return result;
   }
 
   /**
@@ -2528,12 +5490,54 @@ class KeyPilot extends EventManager {
   }
 
   /**
+   * Enhance cursor placeholder with full functionality
+   */
+  async enhanceCursorPlaceholder(cursorPlaceholder, stateBridge = null) {
+    try {
+      if (!cursorPlaceholder) {
+        console.warn('[KeyPilot] No cursor placeholder to enhance, creating new cursor');
+        this.cursor.ensure();
+        return;
+      }
+      
+      console.log('[KeyPilot] Enhancing cursor placeholder');
+      
+      // Tell cursor manager to use existing element with state bridge
+      this.cursor.enhanceExistingElement(cursorPlaceholder, stateBridge);
+      
+      // Remove early injection marker
+      cursorPlaceholder.removeAttribute('data-early-injection');
+      
+      console.log('[KeyPilot] Cursor placeholder enhanced successfully');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Failed to enhance cursor placeholder:', error);
+      // Fallback to creating new cursor
+      this.cursor.ensure();
+    }
+  }
+
+  /**
    * Initialize KeyPilot in enabled state
    */
-  initializeEnabledState() {
+  async initializeEnabledState(earlyInjectionResult = null) {
     this.focusDetector.start();
     this.intersectionManager.init();
     this.scrollManager.init();
+    
+    // Handle HUD initialization based on early injection
+    if (earlyInjectionResult && earlyInjectionResult.detected && earlyInjectionResult.placeholders.hud) {
+      // Enhance existing HUD placeholder
+      await this.hudManager.enhanceExistingElement(
+        earlyInjectionResult.placeholders.hud,
+        earlyInjectionResult.earlyState,
+        earlyInjectionResult.stateBridge
+      );
+    } else {
+      // Initialize HUD normally (fallback)
+      await this.hudManager.initialize();
+    }
+    
     this.start();
     this.cursor.show();
   }
@@ -2549,6 +5553,851 @@ class KeyPilot extends EventManager {
     // Ensure overlays are hidden
     this.overlayManager.hideFocusOverlay();
     this.overlayManager.hideDeleteOverlay();
+  }
+
+  /**
+   * Handle fallback scenarios when early injection fails or is incomplete
+   */
+  handleEarlyInjectionFallback(earlyInjectionResult) {
+    try {
+      console.log('[KeyPilot] Handling early injection fallback');
+      
+      // Determine fallback strategy based on injection status
+      const injectionStatus = document.documentElement.getAttribute('data-kpv2-early-injection');
+      
+      if (injectionStatus === 'failed') {
+        console.log('[KeyPilot] Early injection failed, performing cleanup and full fallback');
+        this.handleFailedInjectionFallback(earlyInjectionResult);
+      } else if (!earlyInjectionResult.detected) {
+        console.log('[KeyPilot] No early injection detected, using normal initialization');
+        this.handleNoInjectionFallback();
+      } else {
+        console.log('[KeyPilot] Partial early injection detected, ensuring completeness');
+        this.handlePartialInjectionFallback(earlyInjectionResult);
+      }
+      
+      // Always ensure all functionality works regardless of injection timing
+      this.ensureFunctionalityAvailable();
+      
+      // Verify critical components are working
+      this.verifyComponentIntegrity();
+      
+      console.log('[KeyPilot] Fallback handling completed');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error during fallback handling:', error);
+      // Continue with basic functionality
+      this.handleCriticalFallback();
+    }
+  }
+
+  /**
+   * Handle fallback when early injection completely failed
+   */
+  handleFailedInjectionFallback(earlyInjectionResult) {
+    try {
+      console.log('[KeyPilot] Handling failed injection fallback');
+      
+      // Clean up any partial state from failed injection
+      this.cleanupFailedEarlyInjection();
+      
+      // Reset to clean state for normal initialization
+      this.resetToCleanState();
+      
+      // Ensure no early injection artifacts remain
+      this.removeEarlyInjectionArtifacts();
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error in failed injection fallback:', error);
+    }
+  }
+
+  /**
+   * Handle fallback when no early injection was attempted
+   */
+  handleNoInjectionFallback() {
+    try {
+      console.log('[KeyPilot] Handling no injection fallback - normal initialization');
+      
+      // This is the normal case - just ensure everything is set up correctly
+      // No special handling needed, just log for debugging
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error in no injection fallback:', error);
+    }
+  }
+
+  /**
+   * Handle fallback when early injection was partial or incomplete
+   */
+  handlePartialInjectionFallback(earlyInjectionResult) {
+    try {
+      console.log('[KeyPilot] Handling partial injection fallback');
+      
+      // Check what's missing and fill in the gaps
+      if (!earlyInjectionResult.placeholders.hud) {
+        console.log('[KeyPilot] HUD placeholder missing, will create normally');
+      }
+      
+      if (!earlyInjectionResult.placeholders.cursor) {
+        console.log('[KeyPilot] Cursor placeholder missing, will create normally');
+      }
+      
+      if (!earlyInjectionResult.stylesInjected) {
+        console.log('[KeyPilot] Critical styles missing, will inject normally');
+      }
+      
+      // Let the normal initialization handle missing pieces
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error in partial injection fallback:', error);
+    }
+  }
+
+  /**
+   * Handle critical fallback when all other fallbacks fail
+   */
+  handleCriticalFallback() {
+    try {
+      console.warn('[KeyPilot] Executing critical fallback - minimal functionality mode');
+      
+      // Ensure absolute minimum functionality
+      if (!this.state) {
+        console.error('[KeyPilot] State manager missing in critical fallback');
+        return;
+      }
+      
+      if (!this.cursor) {
+        console.error('[KeyPilot] Cursor manager missing in critical fallback');
+        return;
+      }
+      
+      // Try to create cursor with minimal functionality
+      try {
+        this.cursor.ensure();
+      } catch (error) {
+        console.error('[KeyPilot] Failed to create cursor in critical fallback:', error);
+      }
+      
+      // Try to inject basic styles
+      try {
+        if (this.styleManager) {
+          this.styleManager.injectSharedStyles();
+        }
+      } catch (error) {
+        console.error('[KeyPilot] Failed to inject styles in critical fallback:', error);
+      }
+      
+      console.log('[KeyPilot] Critical fallback completed');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Critical fallback failed:', error);
+      // At this point, we can't do much more
+    }
+  }
+
+  /**
+   * Reset to clean state for normal initialization
+   */
+  resetToCleanState() {
+    try {
+      // Reset any flags or state that might interfere with normal initialization
+      this.initializationComplete = false;
+      
+      // Clear any cached elements that might be from failed injection
+      if (this.hudManager) {
+        this.hudManager.hudElement = null;
+      }
+      
+      if (this.cursor) {
+        this.cursor.cursorEl = null;
+      }
+      
+      console.log('[KeyPilot] Reset to clean state for normal initialization');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error resetting to clean state:', error);
+    }
+  }
+
+  /**
+   * Remove any artifacts from early injection attempts
+   */
+  removeEarlyInjectionArtifacts() {
+    try {
+      // Remove early injection markers
+      document.documentElement.removeAttribute('data-kpv2-early-injection');
+      
+      // Remove any global early injection variables
+      if (window.kpv2EarlyInjector) {
+        try {
+          // Try to cleanup early injector if it has cleanup method
+          if (typeof window.kpv2EarlyInjector.cleanup === 'function') {
+            window.kpv2EarlyInjector.cleanup();
+          }
+        } catch (error) {
+          console.warn('[KeyPilot] Error cleaning up early injector:', error);
+        }
+        
+        delete window.kpv2EarlyInjector;
+      }
+      
+      console.log('[KeyPilot] Early injection artifacts removed');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error removing early injection artifacts:', error);
+    }
+  }
+
+  /**
+   * Clean up any partial state from failed early injection
+   */
+  cleanupFailedEarlyInjection() {
+    try {
+      // Remove any partial placeholder elements
+      const partialHUD = document.getElementById('kpv2-hud');
+      if (partialHUD && partialHUD.getAttribute('data-early-injection') === 'true') {
+        partialHUD.remove();
+        console.log('[KeyPilot] Removed partial HUD placeholder');
+      }
+      
+      const partialCursor = document.getElementById('kpv2-cursor');
+      if (partialCursor && partialCursor.getAttribute('data-early-injection') === 'true') {
+        partialCursor.remove();
+        console.log('[KeyPilot] Removed partial cursor placeholder');
+      }
+      
+      // Remove partial critical styles
+      const partialStyles = document.getElementById('kpv2-critical-styles');
+      if (partialStyles) {
+        partialStyles.remove();
+        console.log('[KeyPilot] Removed partial critical styles');
+      }
+      
+      // Clear early injection marker
+      document.documentElement.removeAttribute('data-kpv2-early-injection');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error cleaning up failed early injection:', error);
+    }
+  }
+
+  /**
+   * Ensure all functionality is available regardless of injection timing
+   */
+  ensureFunctionalityAvailable() {
+    try {
+      console.log('[KeyPilot] Ensuring all functionality is available');
+      
+      // Ensure cursor exists and is functional
+      this.ensureCursorFunctionality();
+      
+      // Ensure styles are injected
+      this.ensureStylesFunctionality();
+      
+      // Ensure HUD functionality
+      this.ensureHUDFunctionality();
+      
+      // Ensure event handling is set up
+      this.ensureEventHandling();
+      
+      // Ensure state management is working
+      this.ensureStateManagement();
+      
+      console.log('[KeyPilot] All functionality availability ensured');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error ensuring functionality availability:', error);
+    }
+  }
+
+  /**
+   * Ensure cursor functionality is available
+   */
+  ensureCursorFunctionality() {
+    try {
+      if (!this.cursor) {
+        console.error('[KeyPilot] Cursor manager not available');
+        return;
+      }
+      
+      // Check if cursor element exists and is in DOM
+      if (!this.cursor.element || !document.contains(this.cursor.element)) {
+        console.log('[KeyPilot] Creating cursor element');
+        this.cursor.ensure();
+      }
+      
+      // Verify cursor can be positioned
+      if (this.cursor.element) {
+        const testX = 100, testY = 100;
+        this.cursor.updatePosition(testX, testY);
+        
+        // Check if position was applied
+        const rect = this.cursor.element.getBoundingClientRect();
+        if (Math.abs(rect.left + rect.width/2 - testX) > 10 || 
+            Math.abs(rect.top + rect.height/2 - testY) > 10) {
+          console.warn('[KeyPilot] Cursor positioning may not be working correctly');
+        }
+      }
+      
+      console.log('[KeyPilot] Cursor functionality ensured');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error ensuring cursor functionality:', error);
+    }
+  }
+
+  /**
+   * Ensure styles functionality is available
+   */
+  ensureStylesFunctionality() {
+    try {
+      if (!this.styleManager) {
+        console.error('[KeyPilot] Style manager not available');
+        return;
+      }
+      
+      // Check if styles are injected
+      const hasSharedStyles = document.getElementById('kpv2-shared-styles');
+      const hasCriticalStyles = document.getElementById('kpv2-critical-styles');
+      
+      if (!hasSharedStyles && !hasCriticalStyles) {
+        console.log('[KeyPilot] Injecting styles');
+        this.styleManager.injectSharedStyles();
+      }
+      
+      // Verify styles were injected
+      const stylesAfterInjection = document.getElementById('kpv2-shared-styles') || 
+                                   document.getElementById('kpv2-critical-styles');
+      
+      if (!stylesAfterInjection) {
+        console.warn('[KeyPilot] Styles injection may have failed');
+      }
+      
+      console.log('[KeyPilot] Styles functionality ensured');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error ensuring styles functionality:', error);
+    }
+  }
+
+  /**
+   * Ensure HUD functionality is available
+   */
+  ensureHUDFunctionality() {
+    try {
+      if (!this.hudManager) {
+        console.error('[KeyPilot] HUD manager not available');
+        return;
+      }
+      
+      // HUD initialization will be handled by the main initialization flow
+      // Just verify the manager is ready
+      if (typeof this.hudManager.initialize !== 'function') {
+        console.error('[KeyPilot] HUD manager initialize method not available');
+        return;
+      }
+      
+      console.log('[KeyPilot] HUD functionality ready for initialization');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error ensuring HUD functionality:', error);
+    }
+  }
+
+  /**
+   * Ensure event handling is set up
+   */
+  ensureEventHandling() {
+    try {
+      // Verify event manager base functionality
+      if (typeof this.addEventListener !== 'function') {
+        console.error('[KeyPilot] Event handling not available');
+        return;
+      }
+      
+      // Event listeners will be set up by the main initialization flow
+      console.log('[KeyPilot] Event handling functionality ready');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error ensuring event handling:', error);
+    }
+  }
+
+  /**
+   * Ensure state management is working
+   */
+  ensureStateManagement() {
+    try {
+      if (!this.state) {
+        console.error('[KeyPilot] State manager not available');
+        return;
+      }
+      
+      // Test basic state functionality
+      if (typeof this.state.getState !== 'function' || 
+          typeof this.state.setState !== 'function') {
+        console.error('[KeyPilot] State manager methods not available');
+        return;
+      }
+      
+      // Test state access
+      const currentState = this.state.getState();
+      if (!currentState || typeof currentState !== 'object') {
+        console.warn('[KeyPilot] State manager may not be working correctly');
+      }
+      
+      console.log('[KeyPilot] State management functionality ensured');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error ensuring state management:', error);
+    }
+  }
+
+  /**
+   * Handle seamless transition from placeholders to full functionality
+   */
+  handlePlaceholderTransition(earlyInjectionResult) {
+    try {
+      if (!earlyInjectionResult.detected) {
+        console.log('[KeyPilot] No placeholder transition needed');
+        return;
+      }
+      
+      console.log('[KeyPilot] Handling placeholder transition to full functionality');
+      
+      // Preserve visual continuity during transition
+      this.preserveVisualContinuity(earlyInjectionResult);
+      
+      // Ensure no flickering during enhancement
+      this.preventTransitionFlicker(earlyInjectionResult);
+      
+      // Set up state bridge integration if available
+      if (earlyInjectionResult.stateBridge) {
+        this.integrateStateBridge(earlyInjectionResult.stateBridge);
+      }
+      
+      console.log('[KeyPilot] Placeholder transition completed');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error during placeholder transition:', error);
+      // Continue with normal functionality
+    }
+  }
+
+  /**
+   * Preserve visual continuity during placeholder enhancement
+   */
+  preserveVisualContinuity(earlyInjectionResult) {
+    try {
+      // Ensure HUD remains visible during enhancement
+      if (earlyInjectionResult.placeholders.hud) {
+        const hud = earlyInjectionResult.placeholders.hud;
+        
+        // Temporarily prevent any visibility changes
+        hud.style.transition = 'none';
+        
+        // Restore transitions after enhancement
+        setTimeout(() => {
+          if (hud.style) {
+            hud.style.transition = '';
+          }
+        }, 100);
+      }
+      
+      // Ensure cursor remains visible during enhancement
+      if (earlyInjectionResult.placeholders.cursor) {
+        const cursor = earlyInjectionResult.placeholders.cursor;
+        
+        // Temporarily prevent any visibility changes
+        cursor.style.transition = 'none';
+        
+        // Restore transitions after enhancement
+        setTimeout(() => {
+          if (cursor.style) {
+            cursor.style.transition = '';
+          }
+        }, 100);
+      }
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error preserving visual continuity:', error);
+    }
+  }
+
+  /**
+   * Prevent flickering during transition from placeholders to full elements
+   */
+  preventTransitionFlicker(earlyInjectionResult) {
+    try {
+      // Use requestAnimationFrame to ensure smooth transition
+      requestAnimationFrame(() => {
+        // Any visual updates should happen here to prevent flickering
+        if (earlyInjectionResult.placeholders.hud) {
+          // Ensure HUD maintains its position and visibility
+          const hud = earlyInjectionResult.placeholders.hud;
+          const computedStyle = window.getComputedStyle(hud);
+          
+          // Preserve current visibility state
+          if (computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden') {
+            hud.style.opacity = '1';
+          }
+        }
+        
+        if (earlyInjectionResult.placeholders.cursor) {
+          // Ensure cursor maintains its position and visibility
+          const cursor = earlyInjectionResult.placeholders.cursor;
+          const computedStyle = window.getComputedStyle(cursor);
+          
+          // Preserve current visibility state
+          if (computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden') {
+            cursor.style.opacity = '1';
+          }
+        }
+      });
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error preventing transition flicker:', error);
+    }
+  }
+
+  /**
+   * Integrate with state bridge from early injection
+   */
+  integrateStateBridge(stateBridge) {
+    try {
+      if (!stateBridge) return;
+      
+      console.log('[KeyPilot] Integrating with state bridge from early injection');
+      
+      // Set up event listeners for state bridge events
+      stateBridge.on('stateChange', (data) => {
+        this.handleStateBridgeStateChange(data.newState, data.prevState);
+      });
+      
+      stateBridge.on('extensionToggle', (data) => {
+        if (data.enabled !== this.enabled) {
+          if (data.enabled) {
+            this.enable();
+          } else {
+            this.disable();
+          }
+        }
+      });
+      
+      // Sync current state with state bridge
+      const currentState = this.state.getState();
+      stateBridge.updateState({
+        mode: currentState.mode,
+        extensionEnabled: this.enabled,
+        hudVisible: currentState.hud?.visible,
+        hudExpanded: currentState.hud?.expanded,
+        hudActiveTab: currentState.hud?.activeTab
+      });
+      
+      console.log('[KeyPilot] State bridge integration completed');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error integrating state bridge:', error);
+    }
+  }
+
+  /**
+   * Handle state changes from state bridge
+   */
+  handleStateBridgeStateChange(newState, prevState) {
+    try {
+      // Update local state based on state bridge changes
+      if (newState.mode !== prevState.mode) {
+        this.state.setState({ mode: newState.mode });
+      }
+      
+      if (newState.hudVisible !== prevState.hudVisible ||
+          newState.hudExpanded !== prevState.hudExpanded ||
+          newState.hudActiveTab !== prevState.hudActiveTab) {
+        this.state.setState({
+          hud: {
+            visible: newState.hudVisible,
+            expanded: newState.hudExpanded,
+            activeTab: newState.hudActiveTab
+          }
+        });
+      }
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error handling state bridge state change:', error);
+    }
+  }
+
+  /**
+   * Migrate state from placeholders to full elements
+   */
+  migrateStateFromPlaceholders(earlyInjectionResult) {
+    try {
+      if (!earlyInjectionResult.detected || !earlyInjectionResult.earlyState) {
+        console.log('[KeyPilot] No early state to migrate');
+        return;
+      }
+      
+      console.log('[KeyPilot] Migrating state from placeholders to full elements');
+      
+      const earlyState = earlyInjectionResult.earlyState;
+      
+      // Migrate HUD state
+      if (earlyState.hudVisible !== undefined || earlyState.hudExpanded !== undefined) {
+        const hudState = {
+          visible: earlyState.hudVisible !== undefined ? earlyState.hudVisible : true,
+          expanded: earlyState.hudExpanded !== undefined ? earlyState.hudExpanded : false,
+          activeTab: earlyState.hudActiveTab || 'status'
+        };
+        
+        // Update state manager with migrated HUD state
+        this.state.setState({ hud: hudState });
+        console.log('[KeyPilot] HUD state migrated:', hudState);
+      }
+      
+      // Migrate cursor mode state
+      if (earlyState.cursorMode) {
+        this.state.setState({ mode: earlyState.cursorMode });
+        console.log('[KeyPilot] Cursor mode migrated:', earlyState.cursorMode);
+      }
+      
+      // Migrate extension enabled state
+      if (earlyState.extensionEnabled !== undefined) {
+        this.enabled = earlyState.extensionEnabled;
+        console.log('[KeyPilot] Extension enabled state migrated:', this.enabled);
+      }
+      
+      console.log('[KeyPilot] State migration completed');
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error migrating state from placeholders:', error);
+      // Continue with default state
+    }
+  }
+
+  /**
+   * Verify that critical components are working properly
+   */
+  verifyComponentIntegrity() {
+    try {
+      console.log('[KeyPilot] Verifying component integrity');
+      
+      const issues = [];
+      const warnings = [];
+      
+      // Check cursor manager
+      const cursorCheck = this.verifyCursorIntegrity();
+      if (cursorCheck.issues.length > 0) issues.push(...cursorCheck.issues);
+      if (cursorCheck.warnings.length > 0) warnings.push(...cursorCheck.warnings);
+      
+      // Check state manager
+      const stateCheck = this.verifyStateIntegrity();
+      if (stateCheck.issues.length > 0) issues.push(...stateCheck.issues);
+      if (stateCheck.warnings.length > 0) warnings.push(...stateCheck.warnings);
+      
+      // Check style manager
+      const styleCheck = this.verifyStyleIntegrity();
+      if (styleCheck.issues.length > 0) issues.push(...styleCheck.issues);
+      if (styleCheck.warnings.length > 0) warnings.push(...styleCheck.warnings);
+      
+      // Check HUD manager
+      const hudCheck = this.verifyHUDIntegrity();
+      if (hudCheck.issues.length > 0) issues.push(...hudCheck.issues);
+      if (hudCheck.warnings.length > 0) warnings.push(...hudCheck.warnings);
+      
+      // Check other critical components
+      const otherCheck = this.verifyOtherComponentsIntegrity();
+      if (otherCheck.issues.length > 0) issues.push(...otherCheck.issues);
+      if (otherCheck.warnings.length > 0) warnings.push(...otherCheck.warnings);
+      
+      // Report results
+      if (issues.length > 0) {
+        console.error('[KeyPilot] Component integrity issues detected:', issues);
+        // Continue anyway - partial functionality is better than none
+      }
+      
+      if (warnings.length > 0) {
+        console.warn('[KeyPilot] Component integrity warnings:', warnings);
+      }
+      
+      if (issues.length === 0 && warnings.length === 0) {
+        console.log('[KeyPilot] All components verified as functional');
+      }
+      
+      return { issues, warnings };
+      
+    } catch (error) {
+      console.error('[KeyPilot] Error verifying component integrity:', error);
+      return { issues: ['Component integrity verification failed'], warnings: [] };
+    }
+  }
+
+  /**
+   * Verify cursor manager integrity
+   */
+  verifyCursorIntegrity() {
+    const issues = [];
+    const warnings = [];
+    
+    try {
+      if (!this.cursor) {
+        issues.push('Cursor manager not available');
+        return { issues, warnings };
+      }
+      
+      // Check essential methods
+      const requiredMethods = ['ensure', 'updatePosition', 'setMode', 'show', 'hide'];
+      for (const method of requiredMethods) {
+        if (typeof this.cursor[method] !== 'function') {
+          issues.push(`Cursor manager missing ${method} method`);
+        }
+      }
+      
+      // Check if cursor element can be created
+      if (!this.cursor.element) {
+        warnings.push('Cursor element not yet created');
+      }
+      
+    } catch (error) {
+      issues.push(`Cursor integrity check failed: ${error.message}`);
+    }
+    
+    return { issues, warnings };
+  }
+
+  /**
+   * Verify state manager integrity
+   */
+  verifyStateIntegrity() {
+    const issues = [];
+    const warnings = [];
+    
+    try {
+      if (!this.state) {
+        issues.push('State manager not available');
+        return { issues, warnings };
+      }
+      
+      // Check essential methods
+      const requiredMethods = ['getState', 'setState', 'subscribe', 'reset'];
+      for (const method of requiredMethods) {
+        if (typeof this.state[method] !== 'function') {
+          issues.push(`State manager missing ${method} method`);
+        }
+      }
+      
+      // Test basic state operations
+      try {
+        const currentState = this.state.getState();
+        if (!currentState || typeof currentState !== 'object') {
+          warnings.push('State manager returning invalid state');
+        }
+      } catch (error) {
+        issues.push(`State manager getState failed: ${error.message}`);
+      }
+      
+    } catch (error) {
+      issues.push(`State integrity check failed: ${error.message}`);
+    }
+    
+    return { issues, warnings };
+  }
+
+  /**
+   * Verify style manager integrity
+   */
+  verifyStyleIntegrity() {
+    const issues = [];
+    const warnings = [];
+    
+    try {
+      if (!this.styleManager) {
+        issues.push('Style manager not available');
+        return { issues, warnings };
+      }
+      
+      // Check essential methods
+      const requiredMethods = ['injectSharedStyles'];
+      for (const method of requiredMethods) {
+        if (typeof this.styleManager[method] !== 'function') {
+          issues.push(`Style manager missing ${method} method`);
+        }
+      }
+      
+    } catch (error) {
+      issues.push(`Style integrity check failed: ${error.message}`);
+    }
+    
+    return { issues, warnings };
+  }
+
+  /**
+   * Verify HUD manager integrity
+   */
+  verifyHUDIntegrity() {
+    const issues = [];
+    const warnings = [];
+    
+    try {
+      if (!this.hudManager) {
+        issues.push('HUD manager not available');
+        return { issues, warnings };
+      }
+      
+      // Check essential methods
+      const requiredMethods = ['initialize', 'show', 'hide'];
+      for (const method of requiredMethods) {
+        if (typeof this.hudManager[method] !== 'function') {
+          issues.push(`HUD manager missing ${method} method`);
+        }
+      }
+      
+      // Check if enhance method is available for early injection
+      if (typeof this.hudManager.enhanceExistingElement !== 'function') {
+        warnings.push('HUD manager missing enhanceExistingElement method');
+      }
+      
+    } catch (error) {
+      issues.push(`HUD integrity check failed: ${error.message}`);
+    }
+    
+    return { issues, warnings };
+  }
+
+  /**
+   * Verify other critical components integrity
+   */
+  verifyOtherComponentsIntegrity() {
+    const issues = [];
+    const warnings = [];
+    
+    try {
+      // Check detector
+      if (!this.detector || typeof this.detector.deepElementFromPoint !== 'function') {
+        issues.push('Element detector not functional');
+      }
+      
+      // Check activator
+      if (!this.activator || typeof this.activator.smartClick !== 'function') {
+        issues.push('Activation handler not functional');
+      }
+      
+      // Check focus detector
+      if (!this.focusDetector || typeof this.focusDetector.start !== 'function') {
+        issues.push('Focus detector not functional');
+      }
+      
+      // Check overlay manager
+      if (!this.overlayManager || typeof this.overlayManager.updateOverlays !== 'function') {
+        issues.push('Overlay manager not functional');
+      }
+      
+    } catch (error) {
+      issues.push(`Other components integrity check failed: ${error.message}`);
+    }
+    
+    return { issues, warnings };
   }
 
   setupOptimizedEventListeners() {
@@ -2616,11 +6465,57 @@ class KeyPilot extends EventManager {
     });
   }
 
+  /**
+   * Set up navigation persistence for cursor state
+   */
+  setupNavigationPersistence(earlyInjectionResult = null) {
+    try {
+      // Set up state bridge for cursor if available
+      if (earlyInjectionResult && earlyInjectionResult.stateBridge) {
+        this.cursor.setStateBridge(earlyInjectionResult.stateBridge);
+      }
+      
+      // Handle page navigation events
+      window.addEventListener('beforeunload', () => {
+        if (this.cursor) {
+          this.cursor.handleNavigationPersistence();
+        }
+      });
+      
+      // Handle visibility changes (tab switching, etc.)
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && this.cursor) {
+          this.cursor.handleNavigationPersistence();
+        }
+      });
+      
+      // Set up cross-tab cursor state synchronization
+      if (chrome && chrome.runtime && chrome.runtime.onMessage) {
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+          if (message.type === 'KP_CURSOR_STATE_SYNC') {
+            this.cursor.handleCrossTabSync(message.cursorState);
+            sendResponse({ success: true });
+            return true;
+          }
+        });
+      }
+      
+      console.log('[KeyPilot] Navigation persistence set up for cursor');
+    } catch (error) {
+      console.error('[KeyPilot] Failed to set up navigation persistence:', error);
+    }
+  }
+
   handleStateChange(newState, prevState) {
     // Update cursor mode
     if (newState.mode !== prevState.mode) {
       this.cursor.setMode(newState.mode);
       this.updatePopupStatus(newState.mode);
+      
+      // Update HUD mode display when KeyPilot mode changes
+      if (this.hudManager && this.enabled) {
+        this.hudManager.updateModeDisplay(newState.mode);
+      }
     }
 
     // Update visual overlays
@@ -2780,13 +6675,17 @@ class KeyPilot extends EventManager {
 
   handleDeleteKey() {
     const currentState = this.state.getState();
+    console.log('[KeyPilot Debug] Delete key pressed, current mode:', currentState.mode);
 
     if (!this.state.isDeleteMode()) {
+      console.log('[KeyPilot Debug] Entering delete mode');
       this.state.setMode(MODES.DELETE);
     } else {
+      console.log('[KeyPilot Debug] Already in delete mode, executing delete');
       const victim = currentState.deleteEl ||
         this.detector.deepElementFromPoint(currentState.lastMouse.x, currentState.lastMouse.y);
 
+      console.log('[KeyPilot Debug] Delete victim:', victim);
       this.cancelModes();
       this.deleteElement(victim);
     }
@@ -2878,6 +6777,11 @@ class KeyPilot extends EventManager {
 
   updateOverlays(focusEl, deleteEl) {
     const currentState = this.state.getState();
+    console.log('[KeyPilot Debug] updateOverlays called:', {
+      focusEl: focusEl?.tagName,
+      deleteEl: deleteEl?.tagName,
+      mode: currentState.mode
+    });
     this.overlayManager.updateOverlays(focusEl, deleteEl, currentState.mode);
   }
 
@@ -2904,7 +6808,7 @@ class KeyPilot extends EventManager {
   /**
    * Enable KeyPilot functionality
    */
-  enable() {
+  async enable() {
     if (this.enabled) return;
     
     this.enabled = true;
@@ -2934,8 +6838,18 @@ class KeyPilot extends EventManager {
         this.scrollManager.init();
       }
       
-      // Reset state to normal mode
-      this.state.reset();
+      // Initialize HUD manager and restore HUD state from storage
+      if (this.hudManager) {
+        await this.hudManager.handleKeyPilotEnabled();
+      }
+      
+      // Reset only the KeyPilot state to normal mode, preserve HUD state
+      this.state.setState({
+        mode: MODES.NONE,
+        focusEl: null,
+        deleteEl: null
+        // Don't reset HUD state - it was restored by hudManager.initialize()
+      });
     }
     
     console.log('[KeyPilot] Extension enabled');
@@ -2963,6 +6877,11 @@ class KeyPilot extends EventManager {
       if (this.overlayManager) {
         this.overlayManager.hideFocusOverlay();
         this.overlayManager.hideDeleteOverlay();
+      }
+      
+      // Notify HUD manager that KeyPilot is being disabled
+      if (this.hudManager) {
+        this.hudManager.handleKeyPilotDisabled();
       }
       
       // Stop focus detector
@@ -3016,6 +6935,11 @@ class KeyPilot extends EventManager {
 
     if (this.overlayManager) {
       this.overlayManager.cleanup();
+    }
+
+    // Clean up HUD manager
+    if (this.hudManager) {
+      this.hudManager.cleanup();
     }
 
     if (this.styleManager) {

@@ -10,7 +10,12 @@ export class StateManager {
       lastMouse: { x: 0, y: 0 },
       focusEl: null,
       deleteEl: null,
-      isInitialized: false
+      isInitialized: false,
+      hud: {
+        visible: true,        // HUD visibility state
+        expanded: false,      // HUD expansion state (collapsed by default)
+        activeTab: 'basic'    // Currently active tab in expanded view
+      }
     };
     
     this.subscribers = new Set();
@@ -83,7 +88,48 @@ export class StateManager {
     this.setState({
       mode: MODES.NONE,
       focusEl: null,
-      deleteEl: null
+      deleteEl: null,
+      hud: {
+        visible: true,
+        expanded: false,
+        activeTab: 'basic'
+      }
     });
+  }
+
+  // HUD-specific state methods
+  setHUDVisible(visible) {
+    this.setState({ 
+      hud: { ...this.state.hud, visible } 
+    });
+  }
+
+  setHUDExpanded(expanded) {
+    this.setState({ 
+      hud: { ...this.state.hud, expanded } 
+    });
+  }
+
+  setHUDActiveTab(activeTab) {
+    this.setState({ 
+      hud: { ...this.state.hud, activeTab } 
+    });
+  }
+
+  // HUD convenience methods
+  getHUDState() {
+    return { ...this.state.hud };
+  }
+
+  isHUDVisible() {
+    return this.state.hud.visible;
+  }
+
+  isHUDExpanded() {
+    return this.state.hud.expanded;
+  }
+
+  getHUDActiveTab() {
+    return this.state.hud.activeTab;
   }
 }

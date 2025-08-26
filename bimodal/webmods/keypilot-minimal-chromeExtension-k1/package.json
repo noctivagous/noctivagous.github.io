@@ -13,11 +13,14 @@
     "test:manual": "echo 'Please follow the manual test cases in tests/manual-test-cases.md'"
   },
   "devDependencies": {
-    "jest": "^29.0.0"
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^30.0.5"
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ],
     "testMatch": [
       "**/tests/**/*.test.js"
     ],

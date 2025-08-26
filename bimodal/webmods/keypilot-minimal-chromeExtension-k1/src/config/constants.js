@@ -34,7 +34,8 @@ export const CSS_CLASSES = {
 
 export const ELEMENT_IDS = {
   CURSOR: 'kpv2-cursor',
-  STYLE: 'kpv2-style'
+  STYLE: 'kpv2-style',
+  HUD: 'kpv2-hud'
 };
 
 export const Z_INDEX = {

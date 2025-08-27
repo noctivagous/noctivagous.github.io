@@ -215,11 +215,11 @@ export class KeyPilot extends EventManager {
       this.updatePopupStatus(newState.mode);
     }
 
-    // Update overlays when focused text element changes
-    if (newState.focusedTextElement !== prevState.focusedTextElement) {
+    // Update overlays when focused text element changes or when overlay update is triggered
+    if (newState.focusedTextElement !== prevState.focusedTextElement ||
+        newState._overlayUpdateTrigger !== prevState._overlayUpdateTrigger) {
       // Update overlays to show the focused text overlay
       this.updateOverlays(newState.focusEl, newState.deleteEl);
-
     }
 
     // Update visual overlays

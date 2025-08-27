@@ -8,6 +8,16 @@ class ExtensionToggleManager {
     this.STORAGE_KEY = 'keypilot_enabled';
     this.DEFAULT_STATE = true;
     this.initialized = false;
+    
+    // Cursor settings constants
+    this.CURSOR_STORAGE_KEYS = {
+      SIZE: 'keypilot_cursor_size',
+      VISIBLE: 'keypilot_cursor_visible'
+    };
+    this.CURSOR_DEFAULTS = {
+      SIZE: 1.0,
+      VISIBLE: true
+    };
   }
 
   /**
@@ -111,6 +121,106 @@ class ExtensionToggleManager {
   }
 
   /**
+   * Get cursor settings from storage
+   * @returns {Promise<{size: number, visible: boolean}>} Current cursor settings
+   */
+  async getCursorSettings() {
+    const settings = {
+      size: this.CURSOR_DEFAULTS.SIZE,
+      visible: this.CURSOR_DEFAULTS.VISIBLE
+    };
+
+    try {
+      // Try chrome.storage.sync first
+      const syncResult = await chrome.storage.sync.get([
+        this.CURSOR_STORAGE_KEYS.SIZE,
+        this.CURSOR_STORAGE_KEYS.VISIBLE
+      ]);
+      
+      if (syncResult[this.CURSOR_STORAGE_KEYS.SIZE] !== undefined) {
+        settings.size = syncResult[this.CURSOR_STORAGE_KEYS.SIZE];
+      }
+      if (syncResult[this.CURSOR_STORAGE_KEYS.VISIBLE] !== undefined) {
+        settings.visible = syncResult[this.CURSOR_STORAGE_KEYS.VISIBLE];
+      }
+      
+      return settings;
+    } catch (syncError) {
+      console.warn('chrome.storage.sync unavailable for cursor settings, trying local storage:', syncError);
+      
+      try {
+        // Fallback to chrome.storage.local
+        const localResult = await chrome.storage.local.get([
+          this.CURSOR_STORAGE_KEYS.SIZE,
+          this.CURSOR_STORAGE_KEYS.VISIBLE
+        ]);
+        
+        if (localResult[this.CURSOR_STORAGE_KEYS.SIZE] !== undefined) {
+          settings.size = localResult[this.CURSOR_STORAGE_KEYS.SIZE];
+        }
+        if (localResult[this.CURSOR_STORAGE_KEYS.VISIBLE] !== undefined) {
+          settings.visible = localResult[this.CURSOR_STORAGE_KEYS.VISIBLE];
+        }
+        
+        return settings;
+      } catch (localError) {
+        console.error('Both sync and local storage failed for cursor settings:', localError);
+      }
+    }
+    
+    // Return default settings if all storage methods fail
+    return settings;
+  }
+
+  /**
+   * Set cursor settings in storage and notify all tabs
+   * @param {Object} settings - Cursor settings object
+   * @param {number} [settings.size] - Cursor size (0.5 - 2.0)
+   * @param {boolean} [settings.visible] - Cursor visibility
+   * @returns {Promise<{size: number, visible: boolean}>} The settings that were set
+   */
+  async setCursorSettings(settings) {
+    // Get current settings first
+    const currentSettings = await this.getCursorSettings();
+    
+    // Merge with new settings, validating values
+    const newSettings = {
+      size: settings.size !== undefined ? 
+        Math.max(0.5, Math.min(2.0, Number(settings.size))) : currentSettings.size,
+      visible: settings.visible !== undefined ? 
+        Boolean(settings.visible) : currentSettings.visible
+    };
+
+    const settingsData = {
+      [this.CURSOR_STORAGE_KEYS.SIZE]: newSettings.size,
+      [this.CURSOR_STORAGE_KEYS.VISIBLE]: newSettings.visible,
+      timestamp: Date.now()
+    };
+
+    try {
+      // Try to save to chrome.storage.sync first
+      await chrome.storage.sync.set(settingsData);
+      console.log('Cursor settings saved to sync storage:', newSettings);
+    } catch (syncError) {
+      console.warn('Failed to save cursor settings to sync storage, trying local:', syncError);
+      
+      try {
+        // Fallback to chrome.storage.local
+        await chrome.storage.local.set(settingsData);
+        console.log('Cursor settings saved to local storage:', newSettings);
+      } catch (localError) {
+        console.error('Failed to save cursor settings to any storage:', localError);
+        // Continue execution even if storage fails
+      }
+    }
+
+    // Notify all tabs about the cursor settings change
+    await this.notifyAllTabsCursorSettings(newSettings);
+    
+    return newSettings;
+  }
+
+  /**
    * Notify all tabs about state change
    * @param {boolean} enabled - New enabled state
    */
@@ -138,6 +248,36 @@ class ExtensionToggleManager {
       console.log('Notified', tabs.length, 'tabs about state change:', enabled);
     } catch (error) {
       console.error('Failed to notify tabs:', error);
+    }
+  }
+
+  /**
+   * Notify all tabs about cursor settings change
+   * @param {Object} settings - New cursor settings
+   */
+  async notifyAllTabsCursorSettings(settings) {
+    try {
+      const tabs = await chrome.tabs.query({});
+      const message = {
+        type: 'KP_CURSOR_SETTINGS_CHANGED',
+        settings: settings,
+        timestamp: Date.now()
+      };
+
+      // Send message to all tabs
+      const notifications = tabs.map(async (tab) => {
+        try {
+          await chrome.tabs.sendMessage(tab.id, message);
+        } catch (error) {
+          // Ignore errors for tabs that don't have content scripts
+          console.debug('Could not notify tab', tab.id, 'about cursor settings:', error.message);
+        }
+      });
+
+      await Promise.allSettled(notifications);
+      console.log('Notified', tabs.length, 'tabs about cursor settings change:', settings);
+    } catch (error) {
+      console.error('Failed to notify tabs about cursor settings:', error);
     }
   }
 }
@@ -224,6 +364,55 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           console.log('State toggled via message to:', toggledState);
           break;
           
+        case 'KP_GET_CURSOR_SETTINGS':
+          // Content script or popup requesting current cursor settings
+          const currentCursorSettings = await extensionToggleManager.getCursorSettings();
+          sendResponse({
+            type: 'KP_CURSOR_SETTINGS_RESPONSE',
+            settings: currentCursorSettings,
+            timestamp: Date.now()
+          });
+          console.log('Sent current cursor settings:', currentCursorSettings);
+          break;
+
+        case 'KP_SET_CURSOR_SIZE':
+          // Popup requesting cursor size change
+          if (typeof message.size === 'number' && message.size >= 0.5 && message.size <= 2.0) {
+            const newCursorSettings = await extensionToggleManager.setCursorSettings({ size: message.size });
+            sendResponse({
+              type: 'KP_CURSOR_SETTINGS_CHANGED',
+              settings: newCursorSettings,
+              timestamp: Date.now()
+            });
+            console.log('Cursor size changed via message to:', message.size);
+          } else {
+            console.error('Invalid cursor size value in KP_SET_CURSOR_SIZE:', message.size);
+            sendResponse({
+              type: 'KP_ERROR',
+              error: 'Invalid cursor size value'
+            });
+          }
+          break;
+
+        case 'KP_SET_CURSOR_VISIBILITY':
+          // Popup requesting cursor visibility change
+          if (typeof message.visible === 'boolean') {
+            const newCursorSettings = await extensionToggleManager.setCursorSettings({ visible: message.visible });
+            sendResponse({
+              type: 'KP_CURSOR_SETTINGS_CHANGED',
+              settings: newCursorSettings,
+              timestamp: Date.now()
+            });
+            console.log('Cursor visibility changed via message to:', message.visible);
+          } else {
+            console.error('Invalid cursor visibility value in KP_SET_CURSOR_VISIBILITY:', message.visible);
+            sendResponse({
+              type: 'KP_ERROR',
+              error: 'Invalid cursor visibility value'
+            });
+          }
+          break;
+
         case 'KP_CLOSE_TAB':
           // Request to close current tab
           if (sender.tab && sender.tab.id) {

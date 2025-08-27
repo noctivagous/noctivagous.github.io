@@ -339,18 +339,20 @@ export class OverlayManager {
     this.focusedTextOverlay.style.border = `3px solid ${borderColor}`;
     this.focusedTextOverlay.style.boxShadow = `0 0 0 2px ${shadowColor}, 0 0 10px 2px ${COLORS.ORANGE_BORDER}`;
 
+    // Always get fresh rect to handle dynamic position/size changes
     const rect = this.getBestRect(element);
     
     if (window.KEYPILOT_DEBUG) {
       console.log('[KeyPilot Debug] Focused text overlay positioning:', {
         rect: rect,
         overlayExists: !!this.focusedTextOverlay,
-        overlayVisibility: this.overlayVisibility.focusedText
+        overlayVisibility: this.overlayVisibility.focusedText,
+        timestamp: Date.now()
       });
     }
     
     if (rect.width > 0 && rect.height > 0) {
-      // Position the overlay
+      // Position the overlay with fresh coordinates
       this.focusedTextOverlay.style.left = `${rect.left}px`;
       this.focusedTextOverlay.style.top = `${rect.top}px`;
       this.focusedTextOverlay.style.width = `${rect.width}px`;
@@ -363,7 +365,8 @@ export class OverlayManager {
           left: rect.left,
           top: rect.top,
           width: rect.width,
-          height: rect.height
+          height: rect.height,
+          timestamp: Date.now()
         });
       }
     } else {
@@ -421,18 +424,20 @@ export class OverlayManager {
       }
     }
 
+    // Always get fresh rect to handle dynamic position/size changes
     const rect = this.getBestRect(element);
     
     if (window.KEYPILOT_DEBUG) {
       console.log('[KeyPilot Debug] Active text input frame positioning:', {
         rect: rect,
         overlayExists: !!this.activeTextInputFrame,
-        overlayVisibility: this.overlayVisibility.activeTextInput
+        overlayVisibility: this.overlayVisibility.activeTextInput,
+        timestamp: Date.now()
       });
     }
     
     if (rect.width > 0 && rect.height > 0) {
-      // Position the pulsing frame
+      // Position the pulsing frame with fresh coordinates
       this.activeTextInputFrame.style.left = `${rect.left}px`;
       this.activeTextInputFrame.style.top = `${rect.top}px`;
       this.activeTextInputFrame.style.width = `${rect.width}px`;
@@ -445,7 +450,8 @@ export class OverlayManager {
           left: rect.left,
           top: rect.top,
           width: rect.width,
-          height: rect.height
+          height: rect.height,
+          timestamp: Date.now()
         });
       }
     } else {

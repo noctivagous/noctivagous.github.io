@@ -99,3 +99,15 @@ export const COLORS = {
   // Text field glow
   TEXT_FIELD_GLOW: 'rgba(255,165,0,0.8)'
 };
+
+export const CURSOR_SETTINGS = {
+  DEFAULT_SIZE: 1.0,
+  MIN_SIZE: 0.5,
+  MAX_SIZE: 2.0,
+  SIZE_STEP: 0.1,
+  DEFAULT_VISIBLE: true,
+  STORAGE_KEYS: {
+    SIZE: 'keypilot_cursor_size',
+    VISIBLE: 'keypilot_cursor_visible'
+  }
+};

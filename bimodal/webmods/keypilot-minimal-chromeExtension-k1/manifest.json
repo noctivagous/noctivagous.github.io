@@ -12,7 +12,8 @@
     },
     "permissions": [
         "storage",
-        "commands"
+        "commands",
+        "tabs"
     ],
     "commands": {
         "toggle-extension": {

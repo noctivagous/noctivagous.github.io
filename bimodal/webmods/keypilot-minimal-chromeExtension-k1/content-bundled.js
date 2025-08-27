@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-27T17:01:33.291Z
+ * Generated on 2025-08-27T17:32:01.612Z
  */
 
 (() => {
@@ -18,6 +18,7 @@ const KEYBINDINGS = {
   FORWARD: ['v', 'V'],
   DELETE: ['d', 'D'],
   ROOT: ['`', 'Backquote'],
+  CLOSE_TAB: ['/', '/'],
   CANCEL: ['Escape']
 };
 
@@ -530,7 +531,7 @@ class CursorManager {
       Object.assign(text2.style, {
         color: COLORS.TEXT_WHITE_SECONDARY,
         fontSize: '13px',
-        fontWeight: '600',
+        fontWeight: '500',
         marginBottom: '2px'
       });
       text2.textContent = secondLineText;
@@ -541,7 +542,7 @@ class CursorManager {
       Object.assign(text3.style, {
         color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
         fontSize: '11px',
-        fontWeight: '500'
+        fontWeight: '600'
       });
       text3.textContent = thirdLineText;
       bg.appendChild(text3);
@@ -2257,6 +2258,14 @@ class StyleManager {
         border-radius: 2px;
         z-index: 1;
       }
+      
+      /* Add left padding to focused text inputs */
+      input:focus,
+      textarea:focus,
+      [contenteditable="true"]:focus,
+      [contenteditable=""]:focus {
+        padding-left: 5pt !important;
+      }
     `;
 
     this.injectCSS(css, ELEMENT_IDS.STYLE);
@@ -2292,6 +2301,13 @@ class StyleManager {
         display: none !important; 
       }
       
+      /* Add left padding to focused text inputs in shadow DOM */
+      input:focus,
+      textarea:focus,
+      [contenteditable="true"]:focus,
+      [contenteditable=""]:focus {
+        padding-left: 5pt !important;
+      }
 
     `;
 
@@ -3578,6 +3594,9 @@ class KeyPilot extends EventManager {
     } else if (KEYBINDINGS.ROOT.includes(e.key)) {
       e.preventDefault();
       this.handleRootKey();
+    } else if (KEYBINDINGS.CLOSE_TAB.includes(e.key)) {
+      e.preventDefault();
+      this.handleCloseTabKey();
     } else if (KEYBINDINGS.DELETE.includes(e.key)) {
       e.preventDefault();
       this.handleDeleteKey();
@@ -3709,6 +3728,19 @@ class KeyPilot extends EventManager {
       window.location.href = rootUrl;
     } else {
       console.log('[KeyPilot] Already at root, no navigation needed');
+    }
+  }
+
+  handleCloseTabKey() {
+    console.log('[KeyPilot] Close tab key pressed!');
+    
+    try {
+      // Send message to background script to close the current tab
+      chrome.runtime.sendMessage({ type: 'KP_CLOSE_TAB' });
+      this.showFlashNotification('Closing Tab...', COLORS.NOTIFICATION_INFO);
+    } catch (error) {
+      console.error('[KeyPilot] Failed to close tab:', error);
+      this.showFlashNotification('Failed to Close Tab', COLORS.NOTIFICATION_ERROR);
     }
   }
 

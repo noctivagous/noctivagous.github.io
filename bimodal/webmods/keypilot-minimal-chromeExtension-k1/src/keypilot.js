@@ -287,6 +287,9 @@ export class KeyPilot extends EventManager {
     } else if (KEYBINDINGS.ROOT.includes(e.key)) {
       e.preventDefault();
       this.handleRootKey();
+    } else if (KEYBINDINGS.CLOSE_TAB.includes(e.key)) {
+      e.preventDefault();
+      this.handleCloseTabKey();
     } else if (KEYBINDINGS.DELETE.includes(e.key)) {
       e.preventDefault();
       this.handleDeleteKey();
@@ -418,6 +421,19 @@ export class KeyPilot extends EventManager {
       window.location.href = rootUrl;
     } else {
       console.log('[KeyPilot] Already at root, no navigation needed');
+    }
+  }
+
+  handleCloseTabKey() {
+    console.log('[KeyPilot] Close tab key pressed!');
+    
+    try {
+      // Send message to background script to close the current tab
+      chrome.runtime.sendMessage({ type: 'KP_CLOSE_TAB' });
+      this.showFlashNotification('Closing Tab...', COLORS.NOTIFICATION_INFO);
+    } catch (error) {
+      console.error('[KeyPilot] Failed to close tab:', error);
+      this.showFlashNotification('Failed to Close Tab', COLORS.NOTIFICATION_ERROR);
     }
   }
 

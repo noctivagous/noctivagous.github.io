@@ -128,6 +128,14 @@ export class StyleManager {
         border-radius: 2px;
         z-index: 1;
       }
+      
+      /* Add left padding to focused text inputs */
+      input:focus,
+      textarea:focus,
+      [contenteditable="true"]:focus,
+      [contenteditable=""]:focus {
+        padding-left: 5pt !important;
+      }
     `;
 
     this.injectCSS(css, ELEMENT_IDS.STYLE);
@@ -163,6 +171,13 @@ export class StyleManager {
         display: none !important; 
       }
       
+      /* Add left padding to focused text inputs in shadow DOM */
+      input:focus,
+      textarea:focus,
+      [contenteditable="true"]:focus,
+      [contenteditable=""]:focus {
+        padding-left: 5pt !important;
+      }
 
     `;
 

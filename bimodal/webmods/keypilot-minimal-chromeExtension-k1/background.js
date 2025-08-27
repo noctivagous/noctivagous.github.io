@@ -224,6 +224,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           console.log('State toggled via message to:', toggledState);
           break;
           
+        case 'KP_CLOSE_TAB':
+          // Request to close current tab
+          if (sender.tab && sender.tab.id) {
+            try {
+              await chrome.tabs.remove(sender.tab.id);
+              console.log('Closed tab:', sender.tab.id);
+              // No need to send response as tab will be closed
+            } catch (error) {
+              console.error('Failed to close tab:', error);
+              sendResponse({
+                type: 'KP_ERROR',
+                error: 'Failed to close tab: ' + error.message
+              });
+            }
+          } else {
+            console.error('No valid tab ID in close tab request');
+            sendResponse({
+              type: 'KP_ERROR',
+              error: 'No valid tab ID'
+            });
+          }
+          break;
+          
         default:
           console.warn('Unknown message type:', message.type);
           sendResponse({

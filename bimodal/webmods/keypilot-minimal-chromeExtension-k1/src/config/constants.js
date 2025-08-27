@@ -8,6 +8,7 @@ export const KEYBINDINGS = {
   FORWARD: ['v', 'V'],
   DELETE: ['d', 'D'],
   ROOT: ['`', 'Backquote'],
+  CLOSE_TAB: ['/', '/'],
   CANCEL: ['Escape']
 };
 

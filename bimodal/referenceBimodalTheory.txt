@@ -410,11 +410,95 @@ variable-length operations, and the interface maintains predictability by
 always signaling which stage of the sequence is active.
 
 
+KeyPilot Chrome Extension
+------------------------------------
+
+**Keyboard-first navigation for the web with instant visual feedback**
+
+KeyPilot transforms your browsing experience by providing keyboard shortcuts for common web interactions, eliminating the 
+need for mouse navigation.
+
+
+## ✨ Key Features
+
+### ⌨️ Keyboard Navigation
+- **F key**: Activate links and controls under cursor
+- **S key**: Browser back navigation  
+- **V key**: Browser forward navigation
+- **D key**: Toggle delete mode / Delete elements
+- **ESC key**: Cancel current mode / Exit text focus
+- **/ key**: Close current tab
+
+### 🎛️ Global Controls
+- **Alt+K**: Toggle entire extension on/off globally
+- **Extension Popup**: Mouse-based toggle controls
+
+There are two main modes in play unless the user
+activates a separate one, the delete mode.
+
+The two main activities a user engages in while using
+a web browser is either clicking on links
+or entering and editing text in a text field.
+
+The extension has its own criteria of what is
+clickable under the mouse.  On hover, 
+clickable link objects are outlined with a green rectangle. 
+Clickable text fields (inputs with text, textarea, etc.)
+are given an orange outline.
+
+There is one main mode monitored, which is text mode (text entry).
+That is when keys will enter text into a text field and
+the only key that KeyPilot monitors is the ESC key, which
+will move the mode back to hovering over page elements.
+A text mode is activated either because the page focused on a text field,
+usually on load, or the user clicked a text field (with regular mouse button
+clicks or the F key in KeyPilot).  This triggers a 
+semi-transparent overlay frame around the page frame as an internal
+border of the web page and then the orange outlines
+stays in place on the text field. 
+
+The D key activates a selection hovering mode where
+the outlines is red and the second press of D deletes
+that page element.  The ESC key escapes the delete mode.
+
+
+
+The Key-Click UI Adapted to a Desktop OS GUI
+------------------------------------
+
+To make the Key-Click UI compatible with a desktop OS of today,
+a desktop OS would have a meta-keyboard mode that is
+entered and exited through some sequence of keys, such as pressing
+Esc three times in a row.  This would be entering and exiting
+the Key-Click UI meta-keyboard mode. 
+
+Adapting the key-click UI to a desktop OS
+would follow the same GUI adapter pattern as KeyPilot, a Chrome extension
+that clicks on websites but also allows entering text fields. It seems
+like the issue would be, just like KeyPilot, the transition and indicators
+of switching between clicking and dragging objects and the editing of text
+fields, as usually there are only these two activities.  For right-handed
+users, double-click would be the D key, the right-click would be moved to the S 
+key while the left click is moved to the F key, middle-click E.  For left-handed, the right click would be moved
+to L while the double-click is assigned to K, middle-click I.  
+Using Tab as a window selection key would be for right-handed users while 
+the backslash key would likely be for left-handed.  In KeyPilot, 
+the Backquote key is used for navigating
+to the site root and this would be the equals key for left-handed
+users.
+
+Windows would be manipulated by clicking them with the Activation/Select
+Key (Tab usually) and the space bar would activate the drag lock to
+drag them around.  The F key would be clicking inside apps.
+
+
+
 Keys in Bimodal Control Applications
 ------------------------------------
 
 Across these applications, the same guiding principle applies: **one hand
-steers, the other hand triggers.** The specific key map adapts to the software
+steers, the other hand triggers.** (But we also point out that in the Bimodal
+Control theory it isn't always about the hands.)  The specific key map adapts to the software
 domain, but the division of labor is constant, yielding smoother workflows,
 faster command execution, and reduced repetitive strain.
 

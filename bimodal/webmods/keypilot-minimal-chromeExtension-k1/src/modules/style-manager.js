@@ -1,7 +1,7 @@
 /**
  * CSS injection and style management
  */
-import { CSS_CLASSES, ELEMENT_IDS, COLORS } from '../config/constants.js';
+import { CSS_CLASSES, ELEMENT_IDS, COLORS, Z_INDEX } from '../config/constants.js';
 
 export class StyleManager {
   constructor() {
@@ -80,6 +80,53 @@ export class StyleManager {
         display: block !important;
         visibility: visible !important;
         will-change: transform, left, top !important;
+      }
+      
+      .${CSS_CLASSES.VIEWPORT_MODAL_FRAME} {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        border: 9pt solid ${COLORS.ORANGE};
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: ${Z_INDEX.VIEWPORT_MODAL_FRAME};
+        box-sizing: border-box;
+        will-change: transform;
+      }
+      
+      @keyframes kpv2-pulse { 
+        0% { opacity: 0.7; }
+        50% { opacity: 1; }
+        100% { opacity: 0.7; }
+      }
+      
+      .${CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME} {
+        position: fixed;
+        pointer-events: none;
+        z-index: ${Z_INDEX.OVERLAYS + 1};
+        border: 3px solid ${COLORS.ORANGE};
+        box-shadow: 0 0 0 2px ${COLORS.ORANGE_SHADOW}, 0 0 10px 2px ${COLORS.ORANGE_SHADOW_DARK};
+        background: transparent;
+        animation: kpv2-pulse 1.5s ease-in-out infinite;
+        will-change: transform, opacity;
+      }
+      
+      .${CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME}::before {
+        content: "ACTIVE TEXT INPUT";
+        position: absolute;
+        top: -24px;
+        left: 0;
+        background: ${COLORS.ORANGE};
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: bold;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        white-space: nowrap;
+        border-radius: 2px;
+        z-index: 1;
       }
     `;
 
@@ -181,7 +228,9 @@ export class StyleManager {
       CSS_CLASSES.FOCUS,
       CSS_CLASSES.DELETE,
       CSS_CLASSES.HIDDEN,
-      CSS_CLASSES.RIPPLE
+      CSS_CLASSES.RIPPLE,
+      CSS_CLASSES.VIEWPORT_MODAL_FRAME,
+      CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME
     ];
 
     // Remove classes from main document

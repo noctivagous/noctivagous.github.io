@@ -8,15 +8,19 @@ export class OverlayManager {
     this.focusOverlay = null;
     this.deleteOverlay = null;
     this.focusedTextOverlay = null; // New overlay for focused text fields
+    this.viewportModalFrame = null; // Viewport modal frame for text focus mode
+    this.activeTextInputFrame = null; // Pulsing frame for active text inputs
     
     // Intersection observer for overlay visibility optimization
     this.overlayObserver = null;
+    this.resizeObserver = null; // ResizeObserver for viewport modal frame
     
     // Track overlay visibility state
     this.overlayVisibility = {
       focus: true,
       delete: true,
-      focusedText: true
+      focusedText: true,
+      activeTextInput: true
     };
     
     this.setupOverlayObserver();
@@ -39,6 +43,9 @@ export class OverlayManager {
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           } else if (overlay === this.focusedTextOverlay) {
             this.overlayVisibility.focusedText = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.activeTextInputFrame) {
+            this.overlayVisibility.activeTextInput = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           }
         });
@@ -71,9 +78,14 @@ export class OverlayManager {
     // Show focused text overlay when in text focus mode
     if (mode === 'text_focus' && focusedTextElement) {
       this.updateFocusedTextOverlay(focusedTextElement);
+      this.updateActiveTextInputFrame(focusedTextElement);
     } else {
       this.hideFocusedTextOverlay();
+      this.hideActiveTextInputFrame();
     }
+    
+    // Show viewport modal frame when in text focus mode
+    this.updateViewportModalFrame(mode === 'text_focus');
     
     // Only show delete overlay in delete mode
     if (mode === 'delete') {
@@ -368,6 +380,88 @@ export class OverlayManager {
     }
   }
 
+  updateActiveTextInputFrame(element) {
+    if (!element) {
+      this.hideActiveTextInputFrame();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateActiveTextInputFrame called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
+    }
+
+    if (!this.activeTextInputFrame) {
+      this.activeTextInputFrame = this.createElement('div', {
+        className: CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME,
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS + 1};
+          background: transparent;
+          will-change: transform, opacity;
+        `
+      });
+      document.body.appendChild(this.activeTextInputFrame);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Active text input frame created and added to DOM:', {
+          element: this.activeTextInputFrame,
+          className: this.activeTextInputFrame.className,
+          parent: this.activeTextInputFrame.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.activeTextInputFrame);
+      }
+    }
+
+    const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Active text input frame positioning:', {
+        rect: rect,
+        overlayExists: !!this.activeTextInputFrame,
+        overlayVisibility: this.overlayVisibility.activeTextInput
+      });
+    }
+    
+    if (rect.width > 0 && rect.height > 0) {
+      // Position the pulsing frame
+      this.activeTextInputFrame.style.left = `${rect.left}px`;
+      this.activeTextInputFrame.style.top = `${rect.top}px`;
+      this.activeTextInputFrame.style.width = `${rect.width}px`;
+      this.activeTextInputFrame.style.height = `${rect.height}px`;
+      this.activeTextInputFrame.style.display = 'block';
+      this.activeTextInputFrame.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Active text input frame positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Active text input frame hidden - invalid rect:', rect);
+      }
+      this.hideActiveTextInputFrame();
+    }
+  }
+
+  hideActiveTextInputFrame() {
+    if (this.activeTextInputFrame) {
+      this.activeTextInputFrame.style.display = 'none';
+    }
+  }
+
   updateElementClasses(focusEl, deleteEl, prevFocusEl, prevDeleteEl) {
     // Remove previous classes
     if (prevFocusEl && prevFocusEl !== focusEl) {
@@ -482,10 +576,261 @@ export class OverlayManager {
     }, 150);
   }
 
+  createViewportModalFrame() {
+    if (this.viewportModalFrame) {
+      return this.viewportModalFrame;
+    }
+
+    this.viewportModalFrame = this.createElement('div', {
+      className: CSS_CLASSES.VIEWPORT_MODAL_FRAME,
+      style: `
+        display: none;
+      `
+    });
+
+    document.body.appendChild(this.viewportModalFrame);
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame created and added to DOM:', {
+        element: this.viewportModalFrame,
+        className: this.viewportModalFrame.className,
+        parent: this.viewportModalFrame.parentElement?.tagName
+      });
+    }
+
+    return this.viewportModalFrame;
+  }
+
+  showViewportModalFrame() {
+    if (!this.viewportModalFrame) {
+      this.createViewportModalFrame();
+    }
+
+    this.viewportModalFrame.style.display = 'block';
+
+    // Set up ResizeObserver to handle viewport changes with enhanced monitoring
+    if (!this.resizeObserver && window.ResizeObserver) {
+      this.resizeObserver = new ResizeObserver((entries) => {
+        // Debounce resize updates to avoid excessive calls during continuous resizing
+        if (this.resizeTimeout) {
+          clearTimeout(this.resizeTimeout);
+        }
+        this.resizeTimeout = setTimeout(() => {
+          this.updateViewportModalFrameSize();
+          this.resizeTimeout = null;
+        }, 16); // ~60fps for smooth updates
+      });
+      
+      // Observe both document element and body for comprehensive viewport tracking
+      this.resizeObserver.observe(document.documentElement);
+      if (document.body) {
+        this.resizeObserver.observe(document.body);
+      }
+    }
+
+    // Enhanced fallback to window resize events if ResizeObserver is not available
+    if (!window.ResizeObserver) {
+      this.windowResizeHandler = this.debounce(() => {
+        this.updateViewportModalFrameSize();
+      }, 16);
+      window.addEventListener('resize', this.windowResizeHandler);
+      window.addEventListener('orientationchange', this.windowResizeHandler);
+    }
+
+    // Listen for fullscreen changes
+    this.fullscreenHandler = () => {
+      // Small delay to allow fullscreen transition to complete
+      setTimeout(() => {
+        this.updateViewportModalFrameSize();
+      }, 100);
+    };
+    document.addEventListener('fullscreenchange', this.fullscreenHandler);
+    document.addEventListener('webkitfullscreenchange', this.fullscreenHandler);
+    document.addEventListener('mozfullscreenchange', this.fullscreenHandler);
+    document.addEventListener('MSFullscreenChange', this.fullscreenHandler);
+
+    // Listen for zoom changes (via visual viewport API if available)
+    if (window.visualViewport) {
+      this.visualViewportHandler = () => {
+        this.updateViewportModalFrameSize();
+      };
+      window.visualViewport.addEventListener('resize', this.visualViewportHandler);
+    }
+
+    // Initial size update
+    this.updateViewportModalFrameSize();
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame shown with enhanced resize handling');
+    }
+  }
+
+  hideViewportModalFrame() {
+    if (this.viewportModalFrame) {
+      this.viewportModalFrame.style.display = 'none';
+    }
+
+    // Clean up ResizeObserver
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+
+    // Clean up resize timeout
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
+    // Remove window resize listener fallback
+    if (this.windowResizeHandler) {
+      window.removeEventListener('resize', this.windowResizeHandler);
+      window.removeEventListener('orientationchange', this.windowResizeHandler);
+      this.windowResizeHandler = null;
+    }
+
+    // Remove fullscreen change listeners
+    if (this.fullscreenHandler) {
+      document.removeEventListener('fullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('webkitfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('mozfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('MSFullscreenChange', this.fullscreenHandler);
+      this.fullscreenHandler = null;
+    }
+
+    // Remove visual viewport listener
+    if (this.visualViewportHandler && window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', this.visualViewportHandler);
+      this.visualViewportHandler = null;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame hidden and all listeners cleaned up');
+    }
+  }
+
+  updateViewportModalFrame(show) {
+    if (show) {
+      this.showViewportModalFrame();
+    } else {
+      this.hideViewportModalFrame();
+    }
+  }
+
+  updateViewportModalFrameSize() {
+    if (!this.viewportModalFrame || this.viewportModalFrame.style.display === 'none') {
+      return;
+    }
+
+    // Get current viewport dimensions with fallbacks
+    let viewportWidth, viewportHeight;
+
+    // Use visual viewport API if available (handles zoom and mobile keyboards)
+    if (window.visualViewport) {
+      viewportWidth = window.visualViewport.width;
+      viewportHeight = window.visualViewport.height;
+    } else {
+      // Fallback to standard viewport dimensions
+      viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+      viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    }
+
+    // Handle fullscreen mode detection
+    const isFullscreen = !!(
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    );
+
+    // Adjust for developer tools if not in fullscreen
+    if (!isFullscreen) {
+      // Check if developer tools might be open by comparing window dimensions
+      const windowWidth = window.outerWidth;
+      const windowHeight = window.outerHeight;
+      
+      // If there's a significant difference, dev tools might be open
+      const widthDiff = Math.abs(windowWidth - viewportWidth);
+      const heightDiff = Math.abs(windowHeight - viewportHeight);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Viewport size analysis:', {
+          viewportWidth,
+          viewportHeight,
+          windowWidth,
+          windowHeight,
+          widthDiff,
+          heightDiff,
+          isFullscreen,
+          visualViewportAvailable: !!window.visualViewport
+        });
+      }
+    }
+
+    // Update frame dimensions using calculated viewport size
+    this.viewportModalFrame.style.width = `${viewportWidth}px`;
+    this.viewportModalFrame.style.height = `${viewportHeight}px`;
+
+    // Ensure frame stays positioned at viewport origin
+    this.viewportModalFrame.style.left = '0px';
+    this.viewportModalFrame.style.top = '0px';
+
+    // Handle zoom level changes by ensuring the frame covers the visible area
+    if (window.visualViewport) {
+      // Adjust position for visual viewport offset (mobile keyboards, etc.)
+      this.viewportModalFrame.style.left = `${window.visualViewport.offsetLeft}px`;
+      this.viewportModalFrame.style.top = `${window.visualViewport.offsetTop}px`;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame size updated:', {
+        width: `${viewportWidth}px`,
+        height: `${viewportHeight}px`,
+        left: this.viewportModalFrame.style.left,
+        top: this.viewportModalFrame.style.top,
+        isFullscreen,
+        zoomLevel: window.devicePixelRatio || 1
+      });
+    }
+  }
+
   cleanup() {
     if (this.overlayObserver) {
       this.overlayObserver.disconnect();
       this.overlayObserver = null;
+    }
+    
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+
+    // Clean up resize timeout
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
+    // Clean up window resize handlers
+    if (this.windowResizeHandler) {
+      window.removeEventListener('resize', this.windowResizeHandler);
+      window.removeEventListener('orientationchange', this.windowResizeHandler);
+      this.windowResizeHandler = null;
+    }
+
+    // Clean up fullscreen handlers
+    if (this.fullscreenHandler) {
+      document.removeEventListener('fullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('webkitfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('mozfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('MSFullscreenChange', this.fullscreenHandler);
+      this.fullscreenHandler = null;
+    }
+
+    // Clean up visual viewport handler
+    if (this.visualViewportHandler && window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', this.visualViewportHandler);
+      this.visualViewportHandler = null;
     }
     
     if (this.focusOverlay) {
@@ -499,6 +844,14 @@ export class OverlayManager {
     if (this.focusedTextOverlay) {
       this.focusedTextOverlay.remove();
       this.focusedTextOverlay = null;
+    }
+    if (this.viewportModalFrame) {
+      this.viewportModalFrame.remove();
+      this.viewportModalFrame = null;
+    }
+    if (this.activeTextInputFrame) {
+      this.activeTextInputFrame.remove();
+      this.activeTextInputFrame = null;
     }
   }
 
@@ -514,5 +867,18 @@ export class OverlayManager {
       }
     }
     return element;
+  }
+
+  // Utility method for debouncing function calls
+  debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
   }
 }

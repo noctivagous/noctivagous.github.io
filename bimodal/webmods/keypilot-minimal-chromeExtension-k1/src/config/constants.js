@@ -29,7 +29,9 @@ export const CSS_CLASSES = {
   RIPPLE: 'kpv2-ripple',
   FOCUS_OVERLAY: 'kpv2-focus-overlay',
   DELETE_OVERLAY: 'kpv2-delete-overlay',
-  TEXT_FIELD_GLOW: 'kpv2-text-field-glow'
+  TEXT_FIELD_GLOW: 'kpv2-text-field-glow',
+  VIEWPORT_MODAL_FRAME: 'kpv2-viewport-modal-frame',
+  ACTIVE_TEXT_INPUT_FRAME: 'kpv2-active-text-input-frame'
 };
 
 export const ELEMENT_IDS = {
@@ -38,7 +40,7 @@ export const ELEMENT_IDS = {
 };
 
 export const Z_INDEX = {
-  CONNECTION_LINE: 2147483646,
+  VIEWPORT_MODAL_FRAME: 2147483645,
   OVERLAYS: 2147483646,
   CURSOR: 2147483647,
   MESSAGE_BOX: 2147483648

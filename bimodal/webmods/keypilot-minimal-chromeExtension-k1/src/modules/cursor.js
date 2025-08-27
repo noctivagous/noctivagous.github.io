@@ -6,12 +6,10 @@ import { COLORS, Z_INDEX } from '../config/constants.js';
 export class CursorManager {
   constructor() {
     this.cursorEl = null;
-    this.connectionLineEl = null;
     this.lastPosition = { x: 0, y: 0 };
     this.isStuck = false;
     this.stuckCheckInterval = null;
     this.forceUpdateCount = 0;
-    this.overlayUpdateCallback = null; // Callback to update overlay position
   }
 
   ensure() {
@@ -32,48 +30,9 @@ export class CursorManager {
   setMode(mode, options = {}) {
     if (!this.cursorEl) return;
     this.cursorEl.replaceChildren(this.buildSvg(mode, options));
-
-    // Handle connection line for text mode
-    if (mode === 'text_focus' && options.focusedElement) {
-      this.showConnectionLine(options.focusedElement);
-    } else {
-      this.hideConnectionLine();
-    }
   }
 
-  // Method to update the focused element without changing mode
-  updateFocusedElement(focusedElement) {
-    if (this.focusedElement !== focusedElement) {
-      this.focusedElement = focusedElement;
 
-      // If we're in text focus mode and have connection lines, update them
-      if (this.connectionLineEl && this.focusedElement) {
-        this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-      }
-
-      // Update overlay position if we have a callback for it
-      if (this.overlayUpdateCallback && this.focusedElement) {
-        this.overlayUpdateCallback(this.focusedElement);
-      }
-    }
-  }
-
-  // Method to force refresh connection lines (useful for initial setup)
-  refreshConnectionLines() {
-    if (this.focusedElement && this.connectionLineEl) {
-      this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-    }
-
-    // Also refresh overlay if we have a callback for it
-    if (this.overlayUpdateCallback && this.focusedElement) {
-      this.overlayUpdateCallback(this.focusedElement);
-    }
-  }
-
-  // Method to set callback for updating overlay position
-  setOverlayUpdateCallback(callback) {
-    this.overlayUpdateCallback = callback;
-  }
 
   updatePosition(x, y) {
     if (!this.cursorEl) return;
@@ -83,14 +42,6 @@ export class CursorManager {
 
     // Use multiple positioning strategies for maximum compatibility
     this.forceUpdatePosition(x, y);
-
-    // Update connection line position if visible
-    this.updateConnectionLine(x, y);
-
-    // Update overlay position if we have a callback for it
-    if (this.overlayUpdateCallback && this.focusedElement) {
-      this.overlayUpdateCallback(this.focusedElement);
-    }
 
     // Reset stuck detection
     this.isStuck = false;
@@ -278,9 +229,9 @@ export class CursorManager {
       // Second line of text using normal document flow
       const text2 = document.createElement('div');
       Object.assign(text2.style, {
-        color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
+        color: COLORS.TEXT_WHITE_SECONDARY,
         fontSize: '13px',
-        fontWeight: '600',
+        fontWeight: '500',
         marginBottom: '2px'
       });
       text2.textContent = secondLineText;
@@ -289,9 +240,9 @@ export class CursorManager {
       // Third line of text using normal document flow
       const text3 = document.createElement('div');
       Object.assign(text3.style, {
-        color: COLORS.TEXT_WHITE_SECONDARY,
+        color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
         fontSize: '11px',
-        fontWeight: '500'
+        fontWeight: '600'
       });
       text3.textContent = thirdLineText;
       bg.appendChild(text3);
@@ -358,113 +309,7 @@ export class CursorManager {
     }
   }
 
-  showConnectionLine(focusedElement) {
-    if (!focusedElement) return;
 
-    // Arrow scale factor - adjust this to make arrow larger/smaller
-    const arrowScale = 0.5;
-
-    // Create connection line if it doesn't exist
-    if (!this.connectionLineEl) {
-      const NS = 'http://www.w3.org/2000/svg';
-
-      // Create SVG container
-      this.connectionLineEl = document.createElementNS(NS, 'svg');
-      this.connectionLineEl.setAttribute('id', 'kpv2-connection-line');
-      this.connectionLineEl.setAttribute('aria-hidden', 'true');
-
-      // Style the SVG container to cover full viewport
-      Object.assign(this.connectionLineEl.style, {
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: 'none',
-        zIndex: Z_INDEX.CONNECTION_LINE // Lower than cursor and message to appear underneath
-      });
-
-      // Create arrowhead marker definition with scaling
-      const defs = document.createElementNS(NS, 'defs');
-      const marker = document.createElementNS(NS, 'marker');
-      marker.setAttribute('id', 'arrowhead');
-      marker.setAttribute('markerWidth', 10 * arrowScale);
-      marker.setAttribute('markerHeight', 7 * arrowScale);
-      marker.setAttribute('refX', 9 * arrowScale);
-      marker.setAttribute('refY', 3.5 * arrowScale);
-      marker.setAttribute('orient', 'auto');
-
-      const polygon = document.createElementNS(NS, 'polygon');
-      const scaledPoints = `0 0, ${10 * arrowScale} ${3.5 * arrowScale}, 0 ${7 * arrowScale}`;
-      polygon.setAttribute('points', scaledPoints);
-      polygon.setAttribute('fill', COLORS.ORANGE); // Same orange color as line
-
-      marker.appendChild(polygon);
-      defs.appendChild(marker);
-      this.connectionLineEl.appendChild(defs);
-
-      // Create the line element
-      this.connectionLine = document.createElementNS(NS, 'line');
-      this.connectionLine.setAttribute('stroke', COLORS.ORANGE); // Orange color
-      this.connectionLine.setAttribute('stroke-width', '11');
-      this.connectionLine.setAttribute('stroke-linecap', 'round');
-      this.connectionLine.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead at end
-
-      this.connectionLineEl.appendChild(this.connectionLine);
-      document.body.appendChild(this.connectionLineEl);
-    }
-
-    // Store reference to focused element for position updates
-    this.focusedElement = focusedElement;
-
-    // Update connection line - if cursor position is (0,0), try to get current mouse position
-    let cursorX = this.lastPosition.x;
-    let cursorY = this.lastPosition.y;
-
-    // If cursor position is at origin, it might not have been set yet
-    // Try to get a reasonable default position (center of viewport)
-    if (cursorX === 0 && cursorY === 0) {
-      cursorX = window.innerWidth / 2;
-      cursorY = window.innerHeight / 2;
-    }
-
-    this.updateConnectionLine(cursorX, cursorY);
-  }
-
-  hideConnectionLine() {
-    if (this.connectionLineEl) {
-      this.connectionLineEl.remove();
-      this.connectionLineEl = null;
-      this.connectionLine = null;
-    }
-    this.focusedElement = null;
-  }
-
-  updateConnectionLine(cursorX, cursorY) {
-    if (!this.connectionLine || !this.focusedElement) return;
-
-    try {
-      // Get the focused element's position
-      const elementRect = this.focusedElement.getBoundingClientRect();
-
-      // Calculate center of the input element
-      const elementCenterX = elementRect.left + elementRect.width / 2;
-      // We want the line drawn to the bottom edge plus 4 because it
-      // aligns with the rectangle that has an outline.
-      const elementCenterY = elementRect.top + elementRect.height + 4;
-
-      // Simply update the line endpoints
-      this.connectionLine.setAttribute('x1', cursorX);
-      this.connectionLine.setAttribute('y1', cursorY);
-      this.connectionLine.setAttribute('x2', elementCenterX);
-      this.connectionLine.setAttribute('y2', elementCenterY);
-      this.connectionLine.style.filter = `drop-shadow(5px 5px 5px ${COLORS.BLACK_SHADOW})`;
-
-    } catch (error) {
-      // If element is no longer valid, hide the line
-      this.hideConnectionLine();
-    }
-  }
 
 
 
@@ -477,12 +322,6 @@ export class CursorManager {
     if (this.cursorEl) {
       this.cursorEl.remove();
       this.cursorEl = null;
-    }
-
-    if (this.connectionLineEl) {
-      this.connectionLineEl.remove();
-      this.connectionLineEl = null;
-      this.connectionLine = null;
     }
   }
 

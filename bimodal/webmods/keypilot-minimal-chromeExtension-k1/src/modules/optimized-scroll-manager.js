@@ -33,6 +33,7 @@ export class OptimizedScrollManager {
   init() {
     this.setupScrollObserver();
     this.setupScrollListeners();
+    this.setupStateSubscription();
   }
 
   setupScrollObserver() {
@@ -74,6 +75,39 @@ export class OptimizedScrollManager {
     });
   }
 
+  setupStateSubscription() {
+    // Subscribe to state changes to track new elements
+    this.stateUnsubscribe = this.stateManager.subscribe((newState, prevState) => {
+      // Start observing new elements
+      if (newState.focusEl !== prevState.focusEl) {
+        if (prevState.focusEl) {
+          this.unobserveElementForScroll(prevState.focusEl);
+        }
+        if (newState.focusEl) {
+          this.observeElementForScroll(newState.focusEl);
+        }
+      }
+      
+      if (newState.deleteEl !== prevState.deleteEl) {
+        if (prevState.deleteEl) {
+          this.unobserveElementForScroll(prevState.deleteEl);
+        }
+        if (newState.deleteEl) {
+          this.observeElementForScroll(newState.deleteEl);
+        }
+      }
+      
+      if (newState.focusedTextElement !== prevState.focusedTextElement) {
+        if (prevState.focusedTextElement) {
+          this.unobserveElementForScroll(prevState.focusedTextElement);
+        }
+        if (newState.focusedTextElement) {
+          this.observeElementForScroll(newState.focusedTextElement);
+        }
+      }
+    });
+  }
+
   handleScroll(event) {
     this.scrollMetrics.scrollEvents++;
     
@@ -111,6 +145,11 @@ export class OptimizedScrollManager {
       this.updateOverlayPosition(currentState.deleteEl, 'delete');
     }
     
+    // Update focused text element overlays (both focused text overlay and active text input frame)
+    if (currentState.focusedTextElement && this.scrollSensitiveElements.has(currentState.focusedTextElement)) {
+      this.updateOverlayPosition(currentState.focusedTextElement, 'focusedText');
+    }
+    
     this.scrollMetrics.overlayUpdates++;
   }
 
@@ -132,6 +171,10 @@ export class OptimizedScrollManager {
     
     if (currentState.deleteEl) {
       this.observeElementForScroll(currentState.deleteEl);
+    }
+    
+    if (currentState.focusedTextElement) {
+      this.observeElementForScroll(currentState.focusedTextElement);
     }
   }
 
@@ -158,6 +201,10 @@ export class OptimizedScrollManager {
         this.overlayManager.updateFocusOverlay(element);
       } else if (type === 'delete') {
         this.overlayManager.updateDeleteOverlay(element);
+      } else if (type === 'focusedText') {
+        // Update both the focused text overlay and active text input frame
+        this.overlayManager.updateFocusedTextOverlay(element);
+        this.overlayManager.updateActiveTextInputFrame(element);
       }
     });
   }
@@ -172,6 +219,11 @@ export class OptimizedScrollManager {
     
     if (currentState.deleteEl === element) {
       this.overlayManager.hideDeleteOverlay();
+    }
+    
+    if (currentState.focusedTextElement === element) {
+      this.overlayManager.hideFocusedTextOverlay();
+      this.overlayManager.hideActiveTextInputFrame();
     }
   }
 
@@ -246,6 +298,11 @@ export class OptimizedScrollManager {
     if (this.scrollTimeout) {
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = null;
+    }
+    
+    if (this.stateUnsubscribe) {
+      this.stateUnsubscribe();
+      this.stateUnsubscribe = null;
     }
     
     this.scrollSensitiveElements.clear();

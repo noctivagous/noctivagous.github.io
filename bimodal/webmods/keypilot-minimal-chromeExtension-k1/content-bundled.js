@@ -1,6 +1,6 @@
 /**
  * KeyPilot Chrome Extension - Bundled Version
- * Generated on 2025-08-26T18:20:20.651Z
+ * Generated on 2025-08-27T17:01:33.291Z
  */
 
 (() => {
@@ -39,7 +39,9 @@ const CSS_CLASSES = {
   RIPPLE: 'kpv2-ripple',
   FOCUS_OVERLAY: 'kpv2-focus-overlay',
   DELETE_OVERLAY: 'kpv2-delete-overlay',
-  TEXT_FIELD_GLOW: 'kpv2-text-field-glow'
+  TEXT_FIELD_GLOW: 'kpv2-text-field-glow',
+  VIEWPORT_MODAL_FRAME: 'kpv2-viewport-modal-frame',
+  ACTIVE_TEXT_INPUT_FRAME: 'kpv2-active-text-input-frame'
 };
 
 const ELEMENT_IDS = {
@@ -48,7 +50,7 @@ const ELEMENT_IDS = {
 };
 
 const Z_INDEX = {
-  CONNECTION_LINE: 2147483646,
+  VIEWPORT_MODAL_FRAME: 2147483645,
   OVERLAYS: 2147483646,
   CURSOR: 2147483647,
   MESSAGE_BOX: 2147483648
@@ -66,16 +68,16 @@ const COLORS = {
   FOCUS_GREEN_BRIGHT: 'rgba(0,128,0,0.95)',
   DELETE_RED: 'rgba(220,0,0,0.95)',
   ORANGE: '#ff8c00',
-  
+
   // Text and background colors
   TEXT_WHITE_PRIMARY: 'rgba(255,255,255,0.95)',
   TEXT_WHITE_SECONDARY: 'rgba(255,255,255,0.8)',
   TEXT_GREEN_BRIGHT: '#6ced2b',
-  
+
   // Background colors
   MESSAGE_BG_BROWN: '#ad6007',
   MESSAGE_BG_GREEN: '#10911b',
-  
+
   // Border and shadow colors
   ORANGE_BORDER: 'rgba(255,140,0,0.4)',
   ORANGE_SHADOW: 'rgba(255,140,0,0.45)',
@@ -86,23 +88,23 @@ const COLORS = {
   DELETE_SHADOW: 'rgba(220,0,0,0.35)',
   DELETE_SHADOW_BRIGHT: 'rgba(220,0,0,0.45)',
   BLACK_SHADOW: 'rgba(40, 40, 40, 0.7)',
-  
+
   // Ripple effect colors
   RIPPLE_GREEN: 'rgba(0,200,0,0.35)',
   RIPPLE_GREEN_MID: 'rgba(0,200,0,0.22)',
   RIPPLE_GREEN_TRANSPARENT: 'rgba(0,200,0,0)',
-  
+
   // Flash animation colors
   FLASH_GREEN: 'rgba(0,255,0,1)',
   FLASH_GREEN_SHADOW: 'rgba(0,255,0,0.8)',
   FLASH_GREEN_GLOW: 'rgba(0,255,0,0.9)',
-  
+
   // Notification colors
   NOTIFICATION_SUCCESS: '#4CAF50',
   NOTIFICATION_ERROR: '#f44336',
   NOTIFICATION_INFO: '#2196F3',
   NOTIFICATION_SHADOW: 'rgba(0, 0, 0, 0.15)',
-  
+
   // Text field glow
   TEXT_FIELD_GLOW: 'rgba(255,165,0,0.8)'
 };
@@ -303,12 +305,10 @@ class EventManager {
 class CursorManager {
   constructor() {
     this.cursorEl = null;
-    this.connectionLineEl = null;
     this.lastPosition = { x: 0, y: 0 };
     this.isStuck = false;
     this.stuckCheckInterval = null;
     this.forceUpdateCount = 0;
-    this.overlayUpdateCallback = null; // Callback to update overlay position
   }
 
   ensure() {
@@ -329,48 +329,9 @@ class CursorManager {
   setMode(mode, options = {}) {
     if (!this.cursorEl) return;
     this.cursorEl.replaceChildren(this.buildSvg(mode, options));
-
-    // Handle connection line for text mode
-    if (mode === 'text_focus' && options.focusedElement) {
-      this.showConnectionLine(options.focusedElement);
-    } else {
-      this.hideConnectionLine();
-    }
   }
 
-  // Method to update the focused element without changing mode
-  updateFocusedElement(focusedElement) {
-    if (this.focusedElement !== focusedElement) {
-      this.focusedElement = focusedElement;
 
-      // If we're in text focus mode and have connection lines, update them
-      if (this.connectionLineEl && this.focusedElement) {
-        this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-      }
-
-      // Update overlay position if we have a callback for it
-      if (this.overlayUpdateCallback && this.focusedElement) {
-        this.overlayUpdateCallback(this.focusedElement);
-      }
-    }
-  }
-
-  // Method to force refresh connection lines (useful for initial setup)
-  refreshConnectionLines() {
-    if (this.focusedElement && this.connectionLineEl) {
-      this.updateConnectionLine(this.lastPosition.x, this.lastPosition.y);
-    }
-
-    // Also refresh overlay if we have a callback for it
-    if (this.overlayUpdateCallback && this.focusedElement) {
-      this.overlayUpdateCallback(this.focusedElement);
-    }
-  }
-
-  // Method to set callback for updating overlay position
-  setOverlayUpdateCallback(callback) {
-    this.overlayUpdateCallback = callback;
-  }
 
   updatePosition(x, y) {
     if (!this.cursorEl) return;
@@ -380,14 +341,6 @@ class CursorManager {
 
     // Use multiple positioning strategies for maximum compatibility
     this.forceUpdatePosition(x, y);
-
-    // Update connection line position if visible
-    this.updateConnectionLine(x, y);
-
-    // Update overlay position if we have a callback for it
-    if (this.overlayUpdateCallback && this.focusedElement) {
-      this.overlayUpdateCallback(this.focusedElement);
-    }
 
     // Reset stuck detection
     this.isStuck = false;
@@ -575,7 +528,7 @@ class CursorManager {
       // Second line of text using normal document flow
       const text2 = document.createElement('div');
       Object.assign(text2.style, {
-        color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
+        color: COLORS.TEXT_WHITE_SECONDARY,
         fontSize: '13px',
         fontWeight: '600',
         marginBottom: '2px'
@@ -586,7 +539,7 @@ class CursorManager {
       // Third line of text using normal document flow
       const text3 = document.createElement('div');
       Object.assign(text3.style, {
-        color: COLORS.TEXT_WHITE_SECONDARY,
+        color: hasClickableElement ? COLORS.TEXT_GREEN_BRIGHT : COLORS.ORANGE,
         fontSize: '11px',
         fontWeight: '500'
       });
@@ -655,113 +608,7 @@ class CursorManager {
     }
   }
 
-  showConnectionLine(focusedElement) {
-    if (!focusedElement) return;
 
-    // Arrow scale factor - adjust this to make arrow larger/smaller
-    const arrowScale = 0.5;
-
-    // Create connection line if it doesn't exist
-    if (!this.connectionLineEl) {
-      const NS = 'http://www.w3.org/2000/svg';
-
-      // Create SVG container
-      this.connectionLineEl = document.createElementNS(NS, 'svg');
-      this.connectionLineEl.setAttribute('id', 'kpv2-connection-line');
-      this.connectionLineEl.setAttribute('aria-hidden', 'true');
-
-      // Style the SVG container to cover full viewport
-      Object.assign(this.connectionLineEl.style, {
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: 'none',
-        zIndex: Z_INDEX.CONNECTION_LINE // Lower than cursor and message to appear underneath
-      });
-
-      // Create arrowhead marker definition with scaling
-      const defs = document.createElementNS(NS, 'defs');
-      const marker = document.createElementNS(NS, 'marker');
-      marker.setAttribute('id', 'arrowhead');
-      marker.setAttribute('markerWidth', 10 * arrowScale);
-      marker.setAttribute('markerHeight', 7 * arrowScale);
-      marker.setAttribute('refX', 9 * arrowScale);
-      marker.setAttribute('refY', 3.5 * arrowScale);
-      marker.setAttribute('orient', 'auto');
-
-      const polygon = document.createElementNS(NS, 'polygon');
-      const scaledPoints = `0 0, ${10 * arrowScale} ${3.5 * arrowScale}, 0 ${7 * arrowScale}`;
-      polygon.setAttribute('points', scaledPoints);
-      polygon.setAttribute('fill', COLORS.ORANGE); // Same orange color as line
-
-      marker.appendChild(polygon);
-      defs.appendChild(marker);
-      this.connectionLineEl.appendChild(defs);
-
-      // Create the line element
-      this.connectionLine = document.createElementNS(NS, 'line');
-      this.connectionLine.setAttribute('stroke', COLORS.ORANGE); // Orange color
-      this.connectionLine.setAttribute('stroke-width', '11');
-      this.connectionLine.setAttribute('stroke-linecap', 'round');
-      this.connectionLine.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead at end
-
-      this.connectionLineEl.appendChild(this.connectionLine);
-      document.body.appendChild(this.connectionLineEl);
-    }
-
-    // Store reference to focused element for position updates
-    this.focusedElement = focusedElement;
-
-    // Update connection line - if cursor position is (0,0), try to get current mouse position
-    let cursorX = this.lastPosition.x;
-    let cursorY = this.lastPosition.y;
-
-    // If cursor position is at origin, it might not have been set yet
-    // Try to get a reasonable default position (center of viewport)
-    if (cursorX === 0 && cursorY === 0) {
-      cursorX = window.innerWidth / 2;
-      cursorY = window.innerHeight / 2;
-    }
-
-    this.updateConnectionLine(cursorX, cursorY);
-  }
-
-  hideConnectionLine() {
-    if (this.connectionLineEl) {
-      this.connectionLineEl.remove();
-      this.connectionLineEl = null;
-      this.connectionLine = null;
-    }
-    this.focusedElement = null;
-  }
-
-  updateConnectionLine(cursorX, cursorY) {
-    if (!this.connectionLine || !this.focusedElement) return;
-
-    try {
-      // Get the focused element's position
-      const elementRect = this.focusedElement.getBoundingClientRect();
-
-      // Calculate center of the input element
-      const elementCenterX = elementRect.left + elementRect.width / 2;
-      // We want the line drawn to the bottom edge plus 4 because it
-      // aligns with the rectangle that has an outline.
-      const elementCenterY = elementRect.top + elementRect.height + 4;
-
-      // Simply update the line endpoints
-      this.connectionLine.setAttribute('x1', cursorX);
-      this.connectionLine.setAttribute('y1', cursorY);
-      this.connectionLine.setAttribute('x2', elementCenterX);
-      this.connectionLine.setAttribute('y2', elementCenterY);
-      this.connectionLine.style.filter = `drop-shadow(5px 5px 5px ${COLORS.BLACK_SHADOW})`;
-
-    } catch (error) {
-      // If element is no longer valid, hide the line
-      this.hideConnectionLine();
-    }
-  }
 
 
 
@@ -774,12 +621,6 @@ class CursorManager {
     if (this.cursorEl) {
       this.cursorEl.remove();
       this.cursorEl = null;
-    }
-
-    if (this.connectionLineEl) {
-      this.connectionLineEl.remove();
-      this.connectionLineEl = null;
-      this.connectionLine = null;
     }
   }
 
@@ -1411,15 +1252,19 @@ class OverlayManager {
     this.focusOverlay = null;
     this.deleteOverlay = null;
     this.focusedTextOverlay = null; // New overlay for focused text fields
+    this.viewportModalFrame = null; // Viewport modal frame for text focus mode
+    this.activeTextInputFrame = null; // Pulsing frame for active text inputs
     
     // Intersection observer for overlay visibility optimization
     this.overlayObserver = null;
+    this.resizeObserver = null; // ResizeObserver for viewport modal frame
     
     // Track overlay visibility state
     this.overlayVisibility = {
       focus: true,
       delete: true,
-      focusedText: true
+      focusedText: true,
+      activeTextInput: true
     };
     
     this.setupOverlayObserver();
@@ -1442,6 +1287,9 @@ class OverlayManager {
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           } else if (overlay === this.focusedTextOverlay) {
             this.overlayVisibility.focusedText = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.activeTextInputFrame) {
+            this.overlayVisibility.activeTextInput = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           }
         });
@@ -1474,9 +1322,14 @@ class OverlayManager {
     // Show focused text overlay when in text focus mode
     if (mode === 'text_focus' && focusedTextElement) {
       this.updateFocusedTextOverlay(focusedTextElement);
+      this.updateActiveTextInputFrame(focusedTextElement);
     } else {
       this.hideFocusedTextOverlay();
+      this.hideActiveTextInputFrame();
     }
+    
+    // Show viewport modal frame when in text focus mode
+    this.updateViewportModalFrame(mode === 'text_focus');
     
     // Only show delete overlay in delete mode
     if (mode === 'delete') {
@@ -1771,6 +1624,88 @@ class OverlayManager {
     }
   }
 
+  updateActiveTextInputFrame(element) {
+    if (!element) {
+      this.hideActiveTextInputFrame();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateActiveTextInputFrame called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
+    }
+
+    if (!this.activeTextInputFrame) {
+      this.activeTextInputFrame = this.createElement('div', {
+        className: CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME,
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS + 1};
+          background: transparent;
+          will-change: transform, opacity;
+        `
+      });
+      document.body.appendChild(this.activeTextInputFrame);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Active text input frame created and added to DOM:', {
+          element: this.activeTextInputFrame,
+          className: this.activeTextInputFrame.className,
+          parent: this.activeTextInputFrame.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.activeTextInputFrame);
+      }
+    }
+
+    const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Active text input frame positioning:', {
+        rect: rect,
+        overlayExists: !!this.activeTextInputFrame,
+        overlayVisibility: this.overlayVisibility.activeTextInput
+      });
+    }
+    
+    if (rect.width > 0 && rect.height > 0) {
+      // Position the pulsing frame
+      this.activeTextInputFrame.style.left = `${rect.left}px`;
+      this.activeTextInputFrame.style.top = `${rect.top}px`;
+      this.activeTextInputFrame.style.width = `${rect.width}px`;
+      this.activeTextInputFrame.style.height = `${rect.height}px`;
+      this.activeTextInputFrame.style.display = 'block';
+      this.activeTextInputFrame.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Active text input frame positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Active text input frame hidden - invalid rect:', rect);
+      }
+      this.hideActiveTextInputFrame();
+    }
+  }
+
+  hideActiveTextInputFrame() {
+    if (this.activeTextInputFrame) {
+      this.activeTextInputFrame.style.display = 'none';
+    }
+  }
+
   updateElementClasses(focusEl, deleteEl, prevFocusEl, prevDeleteEl) {
     // Remove previous classes
     if (prevFocusEl && prevFocusEl !== focusEl) {
@@ -1885,10 +1820,261 @@ class OverlayManager {
     }, 150);
   }
 
+  createViewportModalFrame() {
+    if (this.viewportModalFrame) {
+      return this.viewportModalFrame;
+    }
+
+    this.viewportModalFrame = this.createElement('div', {
+      className: CSS_CLASSES.VIEWPORT_MODAL_FRAME,
+      style: `
+        display: none;
+      `
+    });
+
+    document.body.appendChild(this.viewportModalFrame);
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame created and added to DOM:', {
+        element: this.viewportModalFrame,
+        className: this.viewportModalFrame.className,
+        parent: this.viewportModalFrame.parentElement?.tagName
+      });
+    }
+
+    return this.viewportModalFrame;
+  }
+
+  showViewportModalFrame() {
+    if (!this.viewportModalFrame) {
+      this.createViewportModalFrame();
+    }
+
+    this.viewportModalFrame.style.display = 'block';
+
+    // Set up ResizeObserver to handle viewport changes with enhanced monitoring
+    if (!this.resizeObserver && window.ResizeObserver) {
+      this.resizeObserver = new ResizeObserver((entries) => {
+        // Debounce resize updates to avoid excessive calls during continuous resizing
+        if (this.resizeTimeout) {
+          clearTimeout(this.resizeTimeout);
+        }
+        this.resizeTimeout = setTimeout(() => {
+          this.updateViewportModalFrameSize();
+          this.resizeTimeout = null;
+        }, 16); // ~60fps for smooth updates
+      });
+      
+      // Observe both document element and body for comprehensive viewport tracking
+      this.resizeObserver.observe(document.documentElement);
+      if (document.body) {
+        this.resizeObserver.observe(document.body);
+      }
+    }
+
+    // Enhanced fallback to window resize events if ResizeObserver is not available
+    if (!window.ResizeObserver) {
+      this.windowResizeHandler = this.debounce(() => {
+        this.updateViewportModalFrameSize();
+      }, 16);
+      window.addEventListener('resize', this.windowResizeHandler);
+      window.addEventListener('orientationchange', this.windowResizeHandler);
+    }
+
+    // Listen for fullscreen changes
+    this.fullscreenHandler = () => {
+      // Small delay to allow fullscreen transition to complete
+      setTimeout(() => {
+        this.updateViewportModalFrameSize();
+      }, 100);
+    };
+    document.addEventListener('fullscreenchange', this.fullscreenHandler);
+    document.addEventListener('webkitfullscreenchange', this.fullscreenHandler);
+    document.addEventListener('mozfullscreenchange', this.fullscreenHandler);
+    document.addEventListener('MSFullscreenChange', this.fullscreenHandler);
+
+    // Listen for zoom changes (via visual viewport API if available)
+    if (window.visualViewport) {
+      this.visualViewportHandler = () => {
+        this.updateViewportModalFrameSize();
+      };
+      window.visualViewport.addEventListener('resize', this.visualViewportHandler);
+    }
+
+    // Initial size update
+    this.updateViewportModalFrameSize();
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame shown with enhanced resize handling');
+    }
+  }
+
+  hideViewportModalFrame() {
+    if (this.viewportModalFrame) {
+      this.viewportModalFrame.style.display = 'none';
+    }
+
+    // Clean up ResizeObserver
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+
+    // Clean up resize timeout
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
+    // Remove window resize listener fallback
+    if (this.windowResizeHandler) {
+      window.removeEventListener('resize', this.windowResizeHandler);
+      window.removeEventListener('orientationchange', this.windowResizeHandler);
+      this.windowResizeHandler = null;
+    }
+
+    // Remove fullscreen change listeners
+    if (this.fullscreenHandler) {
+      document.removeEventListener('fullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('webkitfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('mozfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('MSFullscreenChange', this.fullscreenHandler);
+      this.fullscreenHandler = null;
+    }
+
+    // Remove visual viewport listener
+    if (this.visualViewportHandler && window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', this.visualViewportHandler);
+      this.visualViewportHandler = null;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame hidden and all listeners cleaned up');
+    }
+  }
+
+  updateViewportModalFrame(show) {
+    if (show) {
+      this.showViewportModalFrame();
+    } else {
+      this.hideViewportModalFrame();
+    }
+  }
+
+  updateViewportModalFrameSize() {
+    if (!this.viewportModalFrame || this.viewportModalFrame.style.display === 'none') {
+      return;
+    }
+
+    // Get current viewport dimensions with fallbacks
+    let viewportWidth, viewportHeight;
+
+    // Use visual viewport API if available (handles zoom and mobile keyboards)
+    if (window.visualViewport) {
+      viewportWidth = window.visualViewport.width;
+      viewportHeight = window.visualViewport.height;
+    } else {
+      // Fallback to standard viewport dimensions
+      viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+      viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    }
+
+    // Handle fullscreen mode detection
+    const isFullscreen = !!(
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    );
+
+    // Adjust for developer tools if not in fullscreen
+    if (!isFullscreen) {
+      // Check if developer tools might be open by comparing window dimensions
+      const windowWidth = window.outerWidth;
+      const windowHeight = window.outerHeight;
+      
+      // If there's a significant difference, dev tools might be open
+      const widthDiff = Math.abs(windowWidth - viewportWidth);
+      const heightDiff = Math.abs(windowHeight - viewportHeight);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Viewport size analysis:', {
+          viewportWidth,
+          viewportHeight,
+          windowWidth,
+          windowHeight,
+          widthDiff,
+          heightDiff,
+          isFullscreen,
+          visualViewportAvailable: !!window.visualViewport
+        });
+      }
+    }
+
+    // Update frame dimensions using calculated viewport size
+    this.viewportModalFrame.style.width = `${viewportWidth}px`;
+    this.viewportModalFrame.style.height = `${viewportHeight}px`;
+
+    // Ensure frame stays positioned at viewport origin
+    this.viewportModalFrame.style.left = '0px';
+    this.viewportModalFrame.style.top = '0px';
+
+    // Handle zoom level changes by ensuring the frame covers the visible area
+    if (window.visualViewport) {
+      // Adjust position for visual viewport offset (mobile keyboards, etc.)
+      this.viewportModalFrame.style.left = `${window.visualViewport.offsetLeft}px`;
+      this.viewportModalFrame.style.top = `${window.visualViewport.offsetTop}px`;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Viewport modal frame size updated:', {
+        width: `${viewportWidth}px`,
+        height: `${viewportHeight}px`,
+        left: this.viewportModalFrame.style.left,
+        top: this.viewportModalFrame.style.top,
+        isFullscreen,
+        zoomLevel: window.devicePixelRatio || 1
+      });
+    }
+  }
+
   cleanup() {
     if (this.overlayObserver) {
       this.overlayObserver.disconnect();
       this.overlayObserver = null;
+    }
+    
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+
+    // Clean up resize timeout
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
+    // Clean up window resize handlers
+    if (this.windowResizeHandler) {
+      window.removeEventListener('resize', this.windowResizeHandler);
+      window.removeEventListener('orientationchange', this.windowResizeHandler);
+      this.windowResizeHandler = null;
+    }
+
+    // Clean up fullscreen handlers
+    if (this.fullscreenHandler) {
+      document.removeEventListener('fullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('webkitfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('mozfullscreenchange', this.fullscreenHandler);
+      document.removeEventListener('MSFullscreenChange', this.fullscreenHandler);
+      this.fullscreenHandler = null;
+    }
+
+    // Clean up visual viewport handler
+    if (this.visualViewportHandler && window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', this.visualViewportHandler);
+      this.visualViewportHandler = null;
     }
     
     if (this.focusOverlay) {
@@ -1902,6 +2088,14 @@ class OverlayManager {
     if (this.focusedTextOverlay) {
       this.focusedTextOverlay.remove();
       this.focusedTextOverlay = null;
+    }
+    if (this.viewportModalFrame) {
+      this.viewportModalFrame.remove();
+      this.viewportModalFrame = null;
+    }
+    if (this.activeTextInputFrame) {
+      this.activeTextInputFrame.remove();
+      this.activeTextInputFrame = null;
     }
   }
 
@@ -1917,6 +2111,19 @@ class OverlayManager {
       }
     }
     return element;
+  }
+
+  // Utility method for debouncing function calls
+  debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
   }
 }
 
@@ -2002,6 +2209,53 @@ class StyleManager {
         display: block !important;
         visibility: visible !important;
         will-change: transform, left, top !important;
+      }
+      
+      .${CSS_CLASSES.VIEWPORT_MODAL_FRAME} {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        border: 9pt solid ${COLORS.ORANGE};
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: ${Z_INDEX.VIEWPORT_MODAL_FRAME};
+        box-sizing: border-box;
+        will-change: transform;
+      }
+      
+      @keyframes kpv2-pulse { 
+        0% { opacity: 0.7; }
+        50% { opacity: 1; }
+        100% { opacity: 0.7; }
+      }
+      
+      .${CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME} {
+        position: fixed;
+        pointer-events: none;
+        z-index: ${Z_INDEX.OVERLAYS + 1};
+        border: 3px solid ${COLORS.ORANGE};
+        box-shadow: 0 0 0 2px ${COLORS.ORANGE_SHADOW}, 0 0 10px 2px ${COLORS.ORANGE_SHADOW_DARK};
+        background: transparent;
+        animation: kpv2-pulse 1.5s ease-in-out infinite;
+        will-change: transform, opacity;
+      }
+      
+      .${CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME}::before {
+        content: "ACTIVE TEXT INPUT";
+        position: absolute;
+        top: -24px;
+        left: 0;
+        background: ${COLORS.ORANGE};
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: bold;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        white-space: nowrap;
+        border-radius: 2px;
+        z-index: 1;
       }
     `;
 
@@ -2103,7 +2357,9 @@ class StyleManager {
       CSS_CLASSES.FOCUS,
       CSS_CLASSES.DELETE,
       CSS_CLASSES.HIDDEN,
-      CSS_CLASSES.RIPPLE
+      CSS_CLASSES.RIPPLE,
+      CSS_CLASSES.VIEWPORT_MODAL_FRAME,
+      CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME
     ];
 
     // Remove classes from main document
@@ -2517,6 +2773,7 @@ class OptimizedScrollManager {
   init() {
     this.setupScrollObserver();
     this.setupScrollListeners();
+    this.setupStateSubscription();
   }
 
   setupScrollObserver() {
@@ -2558,6 +2815,39 @@ class OptimizedScrollManager {
     });
   }
 
+  setupStateSubscription() {
+    // Subscribe to state changes to track new elements
+    this.stateUnsubscribe = this.stateManager.subscribe((newState, prevState) => {
+      // Start observing new elements
+      if (newState.focusEl !== prevState.focusEl) {
+        if (prevState.focusEl) {
+          this.unobserveElementForScroll(prevState.focusEl);
+        }
+        if (newState.focusEl) {
+          this.observeElementForScroll(newState.focusEl);
+        }
+      }
+      
+      if (newState.deleteEl !== prevState.deleteEl) {
+        if (prevState.deleteEl) {
+          this.unobserveElementForScroll(prevState.deleteEl);
+        }
+        if (newState.deleteEl) {
+          this.observeElementForScroll(newState.deleteEl);
+        }
+      }
+      
+      if (newState.focusedTextElement !== prevState.focusedTextElement) {
+        if (prevState.focusedTextElement) {
+          this.unobserveElementForScroll(prevState.focusedTextElement);
+        }
+        if (newState.focusedTextElement) {
+          this.observeElementForScroll(newState.focusedTextElement);
+        }
+      }
+    });
+  }
+
   handleScroll(event) {
     this.scrollMetrics.scrollEvents++;
     
@@ -2595,6 +2885,11 @@ class OptimizedScrollManager {
       this.updateOverlayPosition(currentState.deleteEl, 'delete');
     }
     
+    // Update focused text element overlays (both focused text overlay and active text input frame)
+    if (currentState.focusedTextElement && this.scrollSensitiveElements.has(currentState.focusedTextElement)) {
+      this.updateOverlayPosition(currentState.focusedTextElement, 'focusedText');
+    }
+    
     this.scrollMetrics.overlayUpdates++;
   }
 
@@ -2616,6 +2911,10 @@ class OptimizedScrollManager {
     
     if (currentState.deleteEl) {
       this.observeElementForScroll(currentState.deleteEl);
+    }
+    
+    if (currentState.focusedTextElement) {
+      this.observeElementForScroll(currentState.focusedTextElement);
     }
   }
 
@@ -2642,6 +2941,10 @@ class OptimizedScrollManager {
         this.overlayManager.updateFocusOverlay(element);
       } else if (type === 'delete') {
         this.overlayManager.updateDeleteOverlay(element);
+      } else if (type === 'focusedText') {
+        // Update both the focused text overlay and active text input frame
+        this.overlayManager.updateFocusedTextOverlay(element);
+        this.overlayManager.updateActiveTextInputFrame(element);
       }
     });
   }
@@ -2656,6 +2959,11 @@ class OptimizedScrollManager {
     
     if (currentState.deleteEl === element) {
       this.overlayManager.hideDeleteOverlay();
+    }
+    
+    if (currentState.focusedTextElement === element) {
+      this.overlayManager.hideFocusedTextOverlay();
+      this.overlayManager.hideActiveTextInputFrame();
     }
   }
 
@@ -2730,6 +3038,11 @@ class OptimizedScrollManager {
     if (this.scrollTimeout) {
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = null;
+    }
+    
+    if (this.stateUnsubscribe) {
+      this.stateUnsubscribe();
+      this.stateUnsubscribe = null;
     }
     
     this.scrollSensitiveElements.clear();
@@ -3057,10 +3370,7 @@ class KeyPilot extends EventManager {
       this.handleStateChange(newState, prevState);
     });
 
-    // Set up overlay update callback for cursor manager
-    this.cursor.setOverlayUpdateCallback((focusedElement) => {
-      this.overlayManager.updateFocusedTextOverlay(focusedElement);
-    });
+
 
     this.setupPopupCommunication();
     this.setupOptimizedEventListeners();
@@ -3190,27 +3500,17 @@ class KeyPilot extends EventManager {
       // For text focus mode, pass whether there's a clickable element and the focused element
       const options = newState.mode === MODES.TEXT_FOCUS ? 
         { 
-          hasClickableElement: !!newState.focusEl,
-          focusedElement: newState.focusedTextElement
+          hasClickableElement: !!newState.focusEl
         } : {};
       this.cursor.setMode(newState.mode, options);
       this.updatePopupStatus(newState.mode);
     }
 
-    // Update focused element for connection line if it changed
+    // Update overlays when focused text element changes
     if (newState.focusedTextElement !== prevState.focusedTextElement) {
-      this.cursor.updateFocusedElement(newState.focusedTextElement);
-      
       // Update overlays to show the focused text overlay
       this.updateOverlays(newState.focusEl, newState.deleteEl);
-      
-      // If entering text focus mode with a focused element, ensure connection lines are visible
-      if (newState.mode === MODES.TEXT_FOCUS && newState.focusedTextElement) {
-        // Small delay to ensure everything is set up
-        setTimeout(() => {
-          this.cursor.refreshConnectionLines();
-        }, 10);
-      }
+
     }
 
     // Update visual overlays
@@ -3686,15 +3986,6 @@ class KeyPilot extends EventManager {
       
       this.state.setMousePosition(centerX, centerY);
       this.cursor.updatePosition(centerX, centerY);
-      
-      // If we're already in text focus mode, update the connection line
-      if (currentState.mode === 'text_focus' && currentState.focusedTextElement) {
-        // Small delay to ensure the cursor position is fully set
-        setTimeout(() => {
-          this.cursor.updateFocusedElement(currentState.focusedTextElement);
-          this.cursor.refreshConnectionLines();
-        }, 50);
-      }
     }
   }
 

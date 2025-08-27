@@ -79,10 +79,7 @@ export class KeyPilot extends EventManager {
       this.handleStateChange(newState, prevState);
     });
 
-    // Set up overlay update callback for cursor manager
-    this.cursor.setOverlayUpdateCallback((focusedElement) => {
-      this.overlayManager.updateFocusedTextOverlay(focusedElement);
-    });
+
 
     this.setupPopupCommunication();
     this.setupOptimizedEventListeners();
@@ -212,27 +209,17 @@ export class KeyPilot extends EventManager {
       // For text focus mode, pass whether there's a clickable element and the focused element
       const options = newState.mode === MODES.TEXT_FOCUS ? 
         { 
-          hasClickableElement: !!newState.focusEl,
-          focusedElement: newState.focusedTextElement
+          hasClickableElement: !!newState.focusEl
         } : {};
       this.cursor.setMode(newState.mode, options);
       this.updatePopupStatus(newState.mode);
     }
 
-    // Update focused element for connection line if it changed
+    // Update overlays when focused text element changes
     if (newState.focusedTextElement !== prevState.focusedTextElement) {
-      this.cursor.updateFocusedElement(newState.focusedTextElement);
-      
       // Update overlays to show the focused text overlay
       this.updateOverlays(newState.focusEl, newState.deleteEl);
-      
-      // If entering text focus mode with a focused element, ensure connection lines are visible
-      if (newState.mode === MODES.TEXT_FOCUS && newState.focusedTextElement) {
-        // Small delay to ensure everything is set up
-        setTimeout(() => {
-          this.cursor.refreshConnectionLines();
-        }, 10);
-      }
+
     }
 
     // Update visual overlays
@@ -708,15 +695,6 @@ export class KeyPilot extends EventManager {
       
       this.state.setMousePosition(centerX, centerY);
       this.cursor.updatePosition(centerX, centerY);
-      
-      // If we're already in text focus mode, update the connection line
-      if (currentState.mode === 'text_focus' && currentState.focusedTextElement) {
-        // Small delay to ensure the cursor position is fully set
-        setTimeout(() => {
-          this.cursor.updateFocusedElement(currentState.focusedTextElement);
-          this.cursor.refreshConnectionLines();
-        }, 50);
-      }
     }
   }
 

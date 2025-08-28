@@ -1,5 +1,11 @@
 ALTERNATIVE TO THE DATED UNIX TERMINAL
 
+When 50 lines scroll by in the Terminal app and there
+is no acknowledgment of it by the Terminal app 
+or any catching of it to process it and place it inside 
+GUI (such as placing it into a table or a panel), then
+the situation is partly broken.
+
 When a system has been built up and developed around a paradigm
 for a long time, rewiring it is not a simple matter, which
 is a cause for the UNIX terminal remaining unchallenged and being
@@ -9,8 +15,8 @@ a keyboard-driven GUI.  There is a multitude of unrecognized
 concepts that have to be identified, such as the current working
 directory and then understand why this is different from the file
 navigator GUI.  Foremost, the file navigator GUI does not operate
-on the files in the same compact way and for the advanced user
-it departs a main stream of interaction to accomplish certain tasks.  
+on the files in the same compact way and, for the advanced user,
+it departs from the primary stream of interaction to accomplish tasks.  
 For example, changing permissions on a file in the GUI file navigator
 leaves the navigator window and opens up a separate properties panel
 which then has a separate tab or section that has to be navigated

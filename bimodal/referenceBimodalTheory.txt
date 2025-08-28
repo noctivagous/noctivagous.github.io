@@ -461,6 +461,43 @@ The D key activates a selection hovering mode where
 the outlines is red and the second press of D deletes
 that page element.  The ESC key escapes the delete mode.
 
+Selection Rectangle
+
+The H key activates a selection rectangle and its default mode is text.
+The rectangle works like desktop file selection you 
+can start from any point and drag in any direction (up, down, left,
+right, or diagonally) and the rectangle will be drawn  from your starting
+point to your current cursor position.   The first point
+establishes that the mode has begun.  Moving the cursor adjusts
+the rectangle.  A second press ends the selection rectangle.
+There are three configurable parameters programmatically.
+	- What data types are being selected (e.g. text).
+		- What schemes there are for selecting the data
+			- Should text be selected by 
+				- the HTML element criteria (elements containing text),
+				- paragraphs only.
+				- sentences only.
+				- etc.
+				
+	- Whether the selection is live (updates on rectangle resizing)
+		- The selection occurs at the end or is updated live.
+		
+The / key closes a tab.  Q and W go across tabs, going left and right.
+
+Key Mappings Configuration Page
+Keys functions can be changed on a key mapping settings page.
+
+
+Popover Keys
+	
+Available keys include I for selecting a an element or text underneath the cursor
+and showing a popover for it.
+	- The popover is a general structure for anything.
+	- It can serve as a preview of the link clicked with I in an iframe
+	- The popover can be of any size, including taking up most of the viewport.
+	- It might be used to click on a word and get a dictionary definition.
+
+
 
 
 The Key-Click UI Adapted to a Desktop OS GUI
@@ -491,6 +528,11 @@ Windows would be manipulated by clicking them with the Activation/Select
 Key (Tab usually) and the space bar would activate the drag lock to
 drag them around.  The F key would be clicking inside apps.
 
+The drag-line will be applied to windows.  Any window or tab
+that is hovered will be closed with the / (forward slash) key.
+
+Opening a document in the File Navigator can have more than one
+key, one for View and another for Edit.  
 
 
 Keys in Bimodal Control Applications

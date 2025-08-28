@@ -1,4 +1,40 @@
 
+BROWSER TABS
+
+Tabs frequently serve a certain role which is
+that the person wants to keep the current 
+page open as if it is a directory or listing 
+of links and then return to it after vising
+one of the links.  A search results 
+page or a news website may have multiple links to follow 
+and instead of "writing over" the
+page by navigating to a single link, which may be
+a new website and will involve possible
+navigation of many pages on that website,
+which will cut the person off from the directory,
+there is the existence of tabs.
+
+The issue of tabs is one where it isn't
+serving the role.  What is not provided in the web browser
+is the ability to view a link from that
+originating site, search results or listings within the 
+page.  Instead the link is opened in 
+a new tab and then, it seems, 
+the person can return to the directory 
+or listing page after browsing that site or
+followed page.  That tab though may be far away from the
+originating tab, which disconnects the
+web browser user from the directory tab.
+
+So, in fact, it would be better if a link could
+be opened within the same viewport or browser page
+frame and it could be split or multiple.  A link
+viewer that overlays the page would allow looking
+at the pages from the links within the page.
+
+
+WEB PAGES
+
 In the future the web browser's window might not just be
 limited to loading a web page (.HTML) that cannot
 be edited.  Instead, every loaded document might
@@ -180,6 +216,8 @@ a way that is recognized by the server natively.
 
 E-MAIL
 
+-- E-MAIL UNREAD COUNTS SORTED BY TIME
+
 E-mail message unread count is three instead of
 one.  An unread email message starts in A)
 then moves to B) after 2 days, then only in
@@ -190,6 +228,27 @@ b) 1 week unread (last week)
 c) total unread (all time)
 
 Three counts are displayed A/B/C
+
+
+-- LOOKING AT RECEIVED E-MAILS IN TERMS OF
+TIME
+
+---- E-MAIL CLIENT INCLUDES AN OPTIONAL MONTHLY CALENDAR VIEW
+WITH RECEIVED COUNTS FOR EACH DAY
+
+Each day on the calendar for the month will have
+a count of messages received.  A preview of messages
+will sit in the day's outline.
+
+But when e-mails are shown in their normal, top-down
+format, there are spacers and containers 
+that separate them by day, week, and month, so that
+e-mails can be skimmed in terms of time.
+Currently there are dates, but no separation
+of messages by day.  For some people it might
+be beneficial to separate by hour of the day.
+
+
 
 
 

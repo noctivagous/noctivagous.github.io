@@ -30,6 +30,13 @@ the File Navigator without launching a separate app.
 	- Make a blank text file and edit it.
 	- Open up a text editor.
 	- Go through a PDF.
+	- Compress or convert an image file in place (copied)
+		- "Image Functions"
+			- "[X] Convert to  [JPG]
+			   [X] Compress	   [80%]
+			   [ ] Crop		   [   ]
+			    OK]
+				"
 	
 
 When a window opens that views or edits files in

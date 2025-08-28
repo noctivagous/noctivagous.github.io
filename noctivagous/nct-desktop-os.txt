@@ -30,6 +30,7 @@ the File Navigator without launching a separate app.
 	- Make a blank text file and edit it.
 	- Open up a text editor.
 	- Go through a PDF.
+	
 
 When a window opens that views or edits files in
 the workspace, it can have a different appearance.
@@ -45,5 +46,43 @@ The Finder or File Navigator should be much more capable
 of producing editing, and processing files.  It should 
 be able to perform editing functions on many file types
 without launching apps.   These would be extensions built
-for the File Navigator
+for the File Navigator.
+
+INTEGRATION OF THE WEB INTO FILES IN THE FILE NAVIGATOR.
+
+If a file contains a link to a website and it ends 
+in .weburl the File Navigator can view the website
+inside the File Navigator (with a WebView) without having 
+to open up a web browser.  But importantly, interactions
+that take place within this WebView can directly connect
+to the File Navigator, allowing the user to make
+a drag-line, for example, from a hyperlink inside
+the WebView to a file system location.
+
+
+APP CONTAINING WINDOWS
+
+The typical File Navigator window of today 
+shows a list of files or links in the leftmost panel
+and then files are navigated to the right.
+A list view in the leftmost panel can be clicked on 
+and maintained.
+
+In fact a window like this, where there is a list
+on the left, can be a container for the smaller apps
+like we just mentioned, with the list being
+various programs that are open that are extensions
+installed in the File Navigator such as calculator
+or lightweight spreadsheet editor.
+
+
+
+
+
+
+
+
+
+
+
 

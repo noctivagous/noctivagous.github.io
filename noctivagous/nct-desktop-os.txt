@@ -1,0 +1,49 @@
+
+NOCTIVAGOUS DESKTOP OS
+
+A calculator doesn't have to be opened as a separate app
+inside the File Navigator.  Relatively lightweight
+viewing and editing programs can be embedded into
+the File Navigator.  Viewers and editors for various 
+file types can be installed as extensions and open
+up windows within the File Navigator.
+When the activity is more involved and takes more time, 
+the user can open up an app.
+
+This also holds true for batch operations applied to
+files.  It should be possible in the File Navigator
+to make use of another type of extension which are 
+GUI wrappers for terminal commands and, 
+for example, select 10 images and have the File Navigator
+make a new directory where they are all sized in different
+combinations.  The File Navigator should be much more
+extended.
+
+EXTENDING THE FILE NAVIGATOR
+
+File Navigator --> Workspace (File Navigator + Extended Functions)
+
+Some functionality found in smaller apps, such as text editing 
+and basic photo editing, should be available inside
+the File Navigator without launching a separate app.
+
+	- Make a blank text file and edit it.
+	- Open up a text editor.
+	- Go through a PDF.
+
+When a window opens that views or edits files in
+the workspace, it can have a different appearance.
+
+For full spreadsheet editing, the user opens up the
+spreadsheet app.  But for just editing or looking at
+the document in a normal window size, this can be an extension
+to the File Navigator.
+
+Since there will be a lot of windows, it will
+	
+The Finder or File Navigator should be much more capable 
+of producing editing, and processing files.  It should 
+be able to perform editing functions on many file types
+without launching apps.   These would be extensions built
+for the File Navigator
+

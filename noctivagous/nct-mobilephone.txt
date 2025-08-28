@@ -30,9 +30,20 @@ person presses the button to reply and a
 tone plays, the person replies and then
 presses the button again and it is sent.
 
+This phone is different in that
+it has multiple dedicated LEDs 
+on the edge that will blink according to the
+messaging status of the phone, which
+means that you don't have to check
+your phones screen and you don't
+need vibration mode.  You can see
+your phone blinking from across
+the room.
+
 This is like a walkie talkie feature
 that accommodates the recipient and the
 sender.
+
 
 The recipient sees or feels a vibration
 and the buttons on the side assist in

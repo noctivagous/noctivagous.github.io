@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug ESC Exit Label</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        
+        .debug-section {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        input, textarea {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin: 10px 0 60px 0; /* Extra bottom margin for ESC label */
+        }
+        
+        .status {
+            background: #e7f3ff;
+            border-left: 4px solid #007cba;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .debug-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #005a87;
+        }
+    </style>
+</head>
+<body>
+    <h1>🐛 Debug ESC Exit Label</h1>
+    
+    <div class="status">
+        <strong>Debug Mode:</strong> This page helps debug the ESC exit label functionality.
+        <br><strong>Expected:</strong> When you focus a text field, you should see both "ACTIVE TEXT INPUT" at the top and "Press ESC to exit" at the bottom.
+    </div>
+
+    <div class="debug-info" id="debug-output">
+        Debug information will appear here...
+    </div>
+
+    <div class="debug-section">
+        <h3>Test Input Field</h3>
+        <p>Focus this input to test ESC exit label:</p>
+        <input type="text" id="test-input" placeholder="Focus me to see ESC exit label">
+        
+        <div>
+            <button onclick="focusInput()">Focus Input</button>
+            <button onclick="blurInput()">Blur Input</button>
+            <button onclick="checkLabels()">Check Labels</button>
+            <button onclick="clearDebug()">Clear Debug</button>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h3>Test Textarea</h3>
+        <p>Focus this textarea to test with larger field:</p>
+        <textarea id="test-textarea" placeholder="Focus me to see ESC exit label" rows="3"></textarea>
+    </div>
+
+    <script>
+        let debugOutput = document.getElementById('debug-output');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugOutput.innerHTML += `[${timestamp}] ${message}<br>`;
+            debugOutput.scrollTop = debugOutput.scrollHeight;
+            console.log(`[Debug] ${message}`);
+        }
+        
+        function focusInput() {
+            document.getElementById('test-input').focus();
+            log('Manually focused input field');
+        }
+        
+        function blurInput() {
+            document.getElementById('test-input').blur();
+            log('Manually blurred input field');
+        }
+        
+        function checkLabels() {
+            // Check for KeyPilot labels
+            const activeTextLabels = document.querySelectorAll('.kpv2-active-text-input-frame');
+            const escExitLabels = document.querySelectorAll('.kpv2-esc-exit-label');
+            
+            log(`Found ${activeTextLabels.length} "ACTIVE TEXT INPUT" labels`);
+            log(`Found ${escExitLabels.length} "Press ESC to exit" labels`);
+            
+            if (escExitLabels.length > 0) {
+                const label = escExitLabels[0];
+                log(`ESC label text: "${label.textContent}"`);
+                log(`ESC label position: left=${label.style.left}, top=${label.style.top}`);
+                log(`ESC label display: ${label.style.display}`);
+                log(`ESC label visibility: ${label.style.visibility}`);
+            }
+            
+            if (activeTextLabels.length > 0) {
+                const frame = activeTextLabels[0];
+                log(`Active text frame position: left=${frame.style.left}, top=${frame.style.top}`);
+                log(`Active text frame display: ${frame.style.display}`);
+            }
+        }
+        
+        function clearDebug() {
+            debugOutput.innerHTML = 'Debug cleared...<br>';
+        }
+        
+        // Monitor KeyPilot extension
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Debug page loaded');
+            
+            setTimeout(() => {
+                if (window.__KeyPilotV22) {
+                    log('✅ KeyPilot extension detected');
+                } else {
+                    log('❌ KeyPilot extension not detected');
+                }
+            }, 1000);
+            
+            // Add focus/blur listeners
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach((input, index) => {
+                input.addEventListener('focus', () => {
+                    log(`📝 Text field ${index + 1} focused`);
+                    setTimeout(() => checkLabels(), 100);
+                });
+                
+                input.addEventListener('blur', () => {
+                    log(`📝 Text field ${index + 1} blurred`);
+                    setTimeout(() => checkLabels(), 100);
+                });
+            });
+            
+            // Monitor for DOM changes (KeyPilot labels being added/removed)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1) { // Element node
+                            if (node.classList && node.classList.contains('kpv2-esc-exit-label')) {
+                                log('🏷️ ESC exit label added to DOM');
+                            }
+                            if (node.classList && node.classList.contains('kpv2-active-text-input-frame')) {
+                                log('🏷️ Active text input frame added to DOM');
+                            }
+                        }
+                    });
+                    
+                    mutation.removedNodes.forEach((node) => {
+                        if (node.nodeType === 1) { // Element node
+                            if (node.classList && node.classList.contains('kpv2-esc-exit-label')) {
+                                log('🏷️ ESC exit label removed from DOM');
+                            }
+                            if (node.classList && node.classList.contains('kpv2-active-text-input-frame')) {
+                                log('🏷️ Active text input frame removed from DOM');
+                            }
+                        }
+                    });
+                });
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+        
+        // Listen for ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                log('🔑 ESC key pressed');
+                setTimeout(() => checkLabels(), 100);
+            }
+        });
+    </script>
+</body>
+</html>

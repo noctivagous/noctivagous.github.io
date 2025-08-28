@@ -2,29 +2,34 @@
 
 **Keyboard-first navigation for the web with instant visual feedback**
 
-KeyPilot transforms your browsing experience by providing intuitive keyboard shortcuts for common web interactions, eliminating the need for mouse navigation. With the latest **Early Injection** technology, the interface appears instantly during page navigation for a seamless, persistent experience.
+KeyPilot transforms your browsing experience by providing intuitive keyboard 
+shortcuts for common web interactions, eliminating the need for mouse navigation. 
+
+
+KeyPilot Chrome Extension
+------------------------------------
+
+**Keyboard-first navigation for the web with instant visual feedback**
+
+KeyPilot transforms your browsing experience by providing keyboard shortcuts for common web interactions, eliminating the 
+need for mouse navigation.
+
 
 ## ✨ Key Features
 
-### 🚀 Instant Interface (New!)
-- **HUD appears within 50ms** of page navigation
-- **Cursor appears within 50ms** of page navigation  
-- **No visual flickering** during page loads
-- **Seamless navigation** between pages
-- **State persistence** across all page changes
-
 ### ⌨️ Keyboard Navigation
 - **F key**: Activate links and controls under cursor
-- **C key**: Browser back navigation  
+- **S key**: Browser back navigation  
 - **V key**: Browser forward navigation
 - **D key**: Toggle delete mode / Delete elements
 - **ESC key**: Cancel current mode / Exit text focus
+- **/ key**: Close current tab
+
 
 ### 🎛️ Global Controls
-- **Alt+K**: Toggle entire extension on/off globally
-- **Alt+H**: Toggle HUD (Heads-Up Display) interface
-- **Extension Popup**: Mouse-based toggle controls
-- **Cross-Tab Sync**: State changes apply to all open tabs instantly
+- **Alt+K**: Toggle entire extension on/off globally across all tabs.
+- **Extension Popup**: Shows how to use it.
+- **Cross-Tab Sync**: State changes apply to all open tabs instantly.
 
 ### 🎯 Smart Modes
 - **Normal Mode**: Green crosshair cursor with all shortcuts active
@@ -32,29 +37,37 @@ KeyPilot transforms your browsing experience by providing intuitive keyboard sho
 - **Delete Mode**: Red X cursor for element deletion
 - **Disabled Mode**: Complete extension disable (no visual elements or shortcuts)
 
-### 📊 HUD Interface
-- **Real-time Status**: Current mode display in bottom-left corner
-- **Toggle Controls**: Built-in switches for extension and HUD control
-- **Expandable Instructions**: Collapsible keyboard shortcut reference
-- **Tabbed Interface**: Organized controls and help sections
-- **Dark Theme**: Semi-transparent design that doesn't interfere with content
 
-## 🚀 What's New: Early Injection
+There are two main modes in play unless the user
+activates a separate one, the delete mode.
 
-KeyPilot now uses advanced **two-phase injection** technology:
+The two main activities a user engages in while using
+a web browser is either clicking on links
+or entering and editing text in a text field.
 
-### Before vs After
-| Before | After |
-|--------|-------|
-| Interface appeared after 2-5 seconds | ✅ Interface appears within 50ms |
-| Jarring "pop-in" effect | ✅ Seamless, persistent interface |
-| Settings reset during navigation | ✅ State maintained across all pages |
-| Disconnected experience | ✅ Fluid, native-feeling navigation |
+The extension has its own criteria of what is
+clickable under the mouse.  On hover, 
+clickable link objects are outlined with a green rectangle. 
+Clickable text fields (inputs with text, textarea, etc.)
+are given an orange outline.
 
-### How It Works
-1. **Instant Phase**: Critical visual elements appear immediately when navigation starts
-2. **Full Phase**: Complete functionality loads after the page is ready
-3. **State Bridge**: Seamless transition between phases with no data loss
+There is one main mode monitored, which is text mode (text entry).
+That is when keys will enter text into a text field and
+the only key that KeyPilot monitors is the ESC key, which
+will move the mode back to hovering over page elements.
+A text mode is activated either because the page focused on a text field,
+usually on load, or the user clicked a text field (with regular mouse button
+clicks or the F key in KeyPilot).  This triggers a 
+semi-transparent overlay frame around the page frame as an internal
+border of the web page and then the orange outlines
+stays in place on the text field. 
+
+The D key activates a selection hovering mode where
+the outlines is red and the second press of D deletes
+that page element.  The ESC key escapes the delete mode.
+
+
+
 
 ## 📦 Installation
 
@@ -90,7 +103,7 @@ KeyPilot now uses advanced **two-phase injection** technology:
 | **D** | Toggle delete mode / Delete element | Normal mode |
 | **ESC** | Cancel mode / Exit text focus | All modes |
 | **Alt+K** | Toggle extension globally | Always |
-| **Alt+H** | Toggle HUD interface | Always |
+
 
 ### Smart Text Field Handling
 - **Automatic Detection**: Extension detects when you're in text fields
@@ -98,32 +111,98 @@ KeyPilot now uses advanced **two-phase injection** technology:
 - **Visual Feedback**: Orange crosshair indicates text focus mode
 - **F Key Activation**: Hover over text fields and press F to focus them
 
-### HUD Interface Controls
-- **Status Display**: Shows current mode (Normal, Delete, Text Focus)
-- **Extension Toggle**: Enable/disable KeyPilot entirely
-- **HUD Toggle**: Show/hide the HUD interface
-- **Instructions Panel**: Expandable keyboard shortcut reference
-- **Cross-Tab Sync**: Changes apply to all browser tabs instantly
 
 ## 🔧 Advanced Features
 
 ### Cross-Tab Synchronization
 - Settings sync instantly across all open tabs
-- HUD state maintained when opening new tabs
 - Extension toggle affects all tabs simultaneously
 - State persists across browser sessions
 
-### Performance Optimization
-- **< 10ms page load impact** with early injection
-- **Minimal memory footprint** (~25KB during early phase)
-- **Efficient DOM manipulation** with hardware acceleration
-- **Smart caching** for instant state restoration
 
 ### Browser Compatibility
 - ✅ **Chrome**: Full support (recommended)
 - ✅ **Edge**: Full support  
 - ⚠️ **Firefox**: Limited support
 - ❌ **Safari**: Not supported
+
+## 📁 Project Structure
+
+```
+KeyPilot/
+├── 📄 manifest.json              # Chrome extension configuration
+├── 📄 background.js              # Service worker for global commands
+├── 📄 content-bundled.js         # Generated content script (do not edit)
+├── 📄 build.js                   # Build system for bundling modules
+├── 📄 popup.html                 # Extension popup interface
+├── 📄 popup.js                   # Popup functionality
+├── 📄 page.js                    # Page-level scripts
+├── 📄 package.json               # Node.js dependencies and scripts
+├── 📄 babel.config.cjs           # Babel configuration
+│
+├── 📁 src/                       # Source modules (edit these)
+│   ├── 📄 content-script.js      # Entry point for content script
+│   ├── 📄 keypilot.js            # Main orchestrator class
+│   │
+│   ├── 📁 config/
+│   │   └── 📄 constants.js       # Central configuration constants
+│   │
+│   ├── 📁 modules/               # Core functionality modules
+│   │   ├── 📄 state-manager.js           # Global state with subscriber pattern
+│   │   ├── 📄 event-manager.js           # Base class for event handling
+│   │   ├── 📄 cursor.js                  # Visual cursor overlays
+│   │   ├── 📄 element-detector.js        # DOM traversal & classification
+│   │   ├── 📄 activation-handler.js      # Click/interaction logic
+│   │   ├── 📄 focus-detector.js          # Text field detection
+│   │   ├── 📄 overlay-manager.js         # Visual feedback system
+│   │   ├── 📄 keypilot-toggle-handler.js # Cross-tab state sync
+│   │   ├── 📄 optimized-scroll-manager.js # Scroll optimization
+│   │   ├── 📄 intersection-observer-manager.js # Performance monitoring
+│   │   ├── 📄 shadow-dom-manager.js      # Shadow DOM support
+│   │   └── 📄 style-manager.js           # CSS injection management
+│   │
+│   └── 📁 utils/                 # Utility functions
+│
+├── 📁 styles/
+│   └── 📄 popup.css              # Popup styling
+│
+├── 📁 icons/                     # Extension icons
+│   ├── 📄 icon.svg               # Source icon
+│   ├── 📄 icon16.png             # 16x16 icon
+│   ├── 📄 icon48.png             # 48x48 icon
+│   └── 📄 icon128.png            # 128x128 icon
+│
+├── 📁 tests/                     # Test suites
+│   ├── 📄 setup.js               # Test configuration
+│   ├── 📄 esc-exit-label.test.js # ESC key functionality tests
+│   ├── 📄 esc-exit-label-simple.test.js # Simplified ESC tests
+│   └── 📄 manual-esc-exit-label-test.md # Manual testing procedures
+│
+├── 📁 .kiro/                     # Kiro IDE configuration
+├── 📁 .vscode/                   # VS Code settings
+├── 📁 .git/                      # Git repository
+└── 📁 node_modules/              # Dependencies
+```
+
+### Key Files Explained
+
+#### Core Extension Files
+- **`manifest.json`**: Chrome extension configuration and permissions
+- **`background.js`**: Service worker handling global shortcuts (Alt+K)
+- **`content-bundled.js`**: Auto-generated from `src/` modules (never edit directly)
+- **`build.js`**: Bundles ES6 modules into browser-compatible code
+
+#### Source Architecture (`src/`)
+- **`content-script.js`**: Entry point that instantiates the main KeyPilot class
+- **`keypilot.js`**: Main orchestrator that coordinates all modules
+- **`config/constants.js`**: Central configuration for keybindings and selectors
+- **`modules/`**: Single-responsibility classes following dependency injection pattern
+
+#### Development Workflow
+1. **Edit**: Modify files in `src/` directory or `background.js`
+2. **Build**: Run `node build.js` to regenerate `content-bundled.js`
+3. **Test**: Reload extension in Chrome and validate functionality
+4. **Debug**: Use browser console and test files for validation
 
 ## 🛠️ Development
 
@@ -132,107 +211,9 @@ KeyPilot now uses advanced **two-phase injection** technology:
 # Build the extension
 node build.js
 
-# Run tests
-npm test
-
-# Run specific test suites
-npm test -- tests/early-injection-unit.test.js
-npm test -- tests/hud-cross-tab-sync.test.js
-npm run test:toggle
-```
-
-### Project Structure
-```
-├── src/                          # Source modules
-│   ├── config/constants.js       # Application constants
-│   ├── modules/                  # Core functionality
-│   │   ├── state-manager.js      # State management
-│   │   ├── cursor.js             # Cursor overlay
-│   │   ├── hud-manager.js        # HUD interface
-│   │   └── ...                   # Other modules
-│   ├── early-injection.js        # Early injection script
-│   └── keypilot.js               # Main application
-├── docs/                         # Documentation
-├── tests/                        # Test suites
-├── build.js                      # Build script
-├── early-injection.js            # Generated early bundle
-├── content-bundled.js            # Generated main bundle
-└── manifest.json                 # Extension manifest
-```
-
-### Testing
-```bash
-# Unit tests
-npm test -- tests/early-injection-unit.test.js
-
-# Integration tests  
-npm test -- tests/early-injection-integration.test.js
-
-# Performance tests
-npm test -- tests/early-injection-performance.test.js
-
-# Manual testing
-open test-early-injection-detection.html
-open test-hud-integration.html
-```
-
-## 📚 Documentation
-
-### User Guides
-- [User Guide - Early Injection](docs/user-guide-early-injection.md)
-- [Troubleshooting Edge Cases](docs/troubleshooting-edge-cases.md)
-
-### Technical Documentation
-- [Early Injection Architecture](docs/early-injection-architecture.md)
-- [Debugging Guide](docs/early-injection-debugging.md)
-- [Build and Deployment](docs/build-deployment.md)
-
-### Specifications
-- [Early Injection Spec](.kiro/specs/early-injection/)
-- [HUD Interface Spec](.kiro/specs/hud-interface/)
-- [Extension Toggle Spec](.kiro/specs/extension-toggle/)
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#### Interface Not Appearing Instantly
-1. Check extension is enabled in `chrome://extensions/`
-2. Reload the extension
-3. Test on different websites
-
-#### Settings Not Persisting
-1. Verify storage permissions are granted
-2. Test cross-tab sync by opening multiple tabs
-3. Clear extension data and reconfigure
-
-#### Performance Issues
-1. Check if other extensions conflict
-2. Test in incognito mode
-3. Monitor browser console for errors
-
-### Debug Mode
-Enable detailed logging in browser console:
-```javascript
-window.KPV2_DEBUG_EARLY_INJECTION = true;
-```
-
-### Getting Help
-1. Check the [troubleshooting guides](docs/)
-2. Test in incognito mode to isolate issues
-3. Report bugs with browser version and specific steps to reproduce
-
-## 🤝 Contributing
-
-### Development Setup
-1. Clone the repository
-2. Run `npm install` to install dependencies
-3. Run `node build.js` to build the extension
-4. Load in Chrome for testing
 
 ### Testing Guidelines
 - Write tests for new features
-- Ensure early injection performance < 10ms
 - Test across different page types
 - Verify cross-browser compatibility
 
@@ -246,25 +227,3 @@ window.KPV2_DEBUG_EARLY_INJECTION = true;
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
-
-- Chrome Extension APIs for powerful browser integration
-- Modern web standards for performance optimization
-- Community feedback for user experience improvements
-
-## 📈 Roadmap
-
-### Upcoming Features
-- **Custom Themes**: Personalize colors and styles
-- **Advanced Gestures**: Mouse gesture support
-- **Enhanced Performance**: Even faster injection times
-- **Mobile Support**: Extension for mobile browsers
-
-### Performance Goals
-- **< 5ms early injection**: Further optimize initial load
-- **< 20KB bundle size**: Reduce early injection payload
-- **Universal compatibility**: Support more edge cases
-
----
-
-**Experience the web like never before with KeyPilot's instant, keyboard-first navigation.**

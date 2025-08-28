@@ -68,6 +68,23 @@ export class StyleManager {
         background: transparent; 
       }
       
+      .${CSS_CLASSES.HIGHLIGHT_OVERLAY} { 
+        position: fixed; 
+        pointer-events: none; 
+        z-index: 2147483646; 
+        border: 3px solid ${COLORS.HIGHLIGHT_BLUE}; 
+        box-shadow: 0 0 0 2px ${COLORS.HIGHLIGHT_SHADOW}, 0 0 12px 2px ${COLORS.HIGHLIGHT_SHADOW_BRIGHT}; 
+        background: transparent; 
+      }
+      
+      .${CSS_CLASSES.HIGHLIGHT_SELECTION} { 
+        position: fixed; 
+        pointer-events: none; 
+        z-index: 2147483645; 
+        background: ${COLORS.HIGHLIGHT_SELECTION_BG}; 
+        border: 1px solid ${COLORS.HIGHLIGHT_SELECTION_BORDER}; 
+      }
+      
 
       
       #${ELEMENT_IDS.CURSOR} { 
@@ -127,6 +144,22 @@ export class StyleManager {
         white-space: nowrap;
         border-radius: 2px;
         z-index: 1;
+      }
+      
+      .${CSS_CLASSES.ESC_EXIT_LABEL} {
+        position: fixed;
+        pointer-events: none;
+        z-index: ${Z_INDEX.OVERLAYS + 1};
+        background: ${COLORS.ORANGE};
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: bold;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        white-space: nowrap;
+        border-radius: 2px;
+        animation: kpv2-pulse 1.5s ease-in-out infinite;
+        will-change: transform, opacity;
       }
       
       /* Add left padding to focused text inputs */
@@ -242,10 +275,14 @@ export class StyleManager {
     const classesToRemove = [
       CSS_CLASSES.FOCUS,
       CSS_CLASSES.DELETE,
+      CSS_CLASSES.HIGHLIGHT,
       CSS_CLASSES.HIDDEN,
       CSS_CLASSES.RIPPLE,
       CSS_CLASSES.VIEWPORT_MODAL_FRAME,
-      CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME
+      CSS_CLASSES.ACTIVE_TEXT_INPUT_FRAME,
+      CSS_CLASSES.ESC_EXIT_LABEL,
+      CSS_CLASSES.HIGHLIGHT_OVERLAY,
+      CSS_CLASSES.HIGHLIGHT_SELECTION
     ];
 
     // Remove classes from main document

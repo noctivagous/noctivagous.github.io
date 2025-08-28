@@ -10,6 +10,9 @@ export class StateManager {
       lastMouse: { x: 0, y: 0 },
       focusEl: null,
       deleteEl: null,
+      highlightEl: null,
+      highlightStartPosition: null,
+      currentSelection: null,
       isInitialized: false
     };
     
@@ -64,15 +67,34 @@ export class StateManager {
     this.setState({ deleteEl: element });
   }
 
+  setHighlightElement(element) {
+    this.setState({ highlightEl: element });
+  }
+
+  setHighlightStartPosition(position) {
+    this.setState({ highlightStartPosition: position });
+  }
+
+  setCurrentSelection(selection) {
+    this.setState({ currentSelection: selection });
+  }
+
   clearElements() {
     this.setState({ 
       focusEl: null, 
-      deleteEl: null 
+      deleteEl: null,
+      highlightEl: null,
+      highlightStartPosition: null,
+      currentSelection: null
     });
   }
 
   isDeleteMode() {
     return this.state.mode === MODES.DELETE;
+  }
+
+  isHighlightMode() {
+    return this.state.mode === MODES.HIGHLIGHT;
   }
 
   isTextFocusMode() {
@@ -83,7 +105,10 @@ export class StateManager {
     this.setState({
       mode: MODES.NONE,
       focusEl: null,
-      deleteEl: null
+      deleteEl: null,
+      highlightEl: null,
+      highlightStartPosition: null,
+      currentSelection: null
     });
   }
 }

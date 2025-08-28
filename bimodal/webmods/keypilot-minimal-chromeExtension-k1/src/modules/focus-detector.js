@@ -193,7 +193,7 @@ export class FocusDetector {
         this.inputTimeout = null;
       }, 16);
     };
-    
+
     element.addEventListener('input', this.inputEventHandler);
     console.debug('Input event listener set up for text element');
 
@@ -284,14 +284,14 @@ export class FocusDetector {
           this.lastKnownRect.height !== currentRect.height) {
 
           console.debug('Position polling detected element change:', {
-            oldRect: { 
-              left: this.lastKnownRect.left, 
+            oldRect: {
+              left: this.lastKnownRect.left,
               top: this.lastKnownRect.top,
               width: this.lastKnownRect.width,
               height: this.lastKnownRect.height
             },
-            newRect: { 
-              left: currentRect.left, 
+            newRect: {
+              left: currentRect.left,
               top: currentRect.top,
               width: currentRect.width,
               height: currentRect.height

@@ -14,7 +14,7 @@ export class ActivationHandler {
     let activator = el;
     if (el.closest) {
       let specificClickable;
-      
+
       // For video/audio elements, prioritize finding parent links
       if (el.tagName === 'VIDEO' || el.tagName === 'AUDIO') {
         specificClickable = el.closest('a[href]');
@@ -22,12 +22,12 @@ export class ActivationHandler {
           console.log('[KeyPilot] Found parent link for video/audio element:', specificClickable.href);
         }
       }
-      
+
       // If no specific handling above, look for any clickable parent
       if (!specificClickable) {
         specificClickable = el.closest('a[href], button, [role="button"], [onclick], [tabindex]');
       }
-      
+
       if (specificClickable) {
         activator = specificClickable;
       }
@@ -36,11 +36,11 @@ export class ActivationHandler {
     // Special handling for links - force them to open in same window
     if (activator.tagName === 'A' && activator.href) {
       console.log('[KeyPilot] Activating link in same window:', activator.href);
-      
+
       // Store original target and temporarily change it
       const originalTarget = activator.target;
       activator.target = '_self';
-      
+
       try {
         // Try programmatic click first
         activator.click();

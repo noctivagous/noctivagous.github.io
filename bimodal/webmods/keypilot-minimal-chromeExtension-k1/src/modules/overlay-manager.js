@@ -7,9 +7,14 @@ export class OverlayManager {
   constructor() {
     this.focusOverlay = null;
     this.deleteOverlay = null;
+    this.highlightOverlay = null; // Overlay for highlight mode
+    this.highlightRectangleOverlay = null; // Real-time highlight rectangle overlay
+    this.highlightSelectionOverlays = []; // Array of overlays for selected text regions
+    this.highlightModeIndicator = null; // Visual indicator for highlight mode
     this.focusedTextOverlay = null; // New overlay for focused text fields
     this.viewportModalFrame = null; // Viewport modal frame for text focus mode
     this.activeTextInputFrame = null; // Pulsing frame for active text inputs
+    this.escExitLabel = null; // ESC exit instruction label
     
     // Intersection observer for overlay visibility optimization
     this.overlayObserver = null;
@@ -19,8 +24,11 @@ export class OverlayManager {
     this.overlayVisibility = {
       focus: true,
       delete: true,
+      highlight: true,
+      highlightRectangle: true,
       focusedText: true,
-      activeTextInput: true
+      activeTextInput: true,
+      escExitLabel: true
     };
     
     this.setupOverlayObserver();
@@ -41,11 +49,20 @@ export class OverlayManager {
           } else if (overlay === this.deleteOverlay) {
             this.overlayVisibility.delete = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.highlightOverlay) {
+            this.overlayVisibility.highlight = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.highlightRectangleOverlay) {
+            this.overlayVisibility.highlightRectangle = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           } else if (overlay === this.focusedTextOverlay) {
             this.overlayVisibility.focusedText = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           } else if (overlay === this.activeTextInputFrame) {
             this.overlayVisibility.activeTextInput = isVisible;
+            overlay.style.visibility = isVisible ? 'visible' : 'hidden';
+          } else if (overlay === this.escExitLabel) {
+            this.overlayVisibility.escExitLabel = isVisible;
             overlay.style.visibility = isVisible ? 'visible' : 'hidden';
           }
         });
@@ -63,13 +80,13 @@ export class OverlayManager {
       console.log('[KeyPilot Debug] Updating overlays:', {
         focusElement: focusEl.tagName,
         mode: mode,
-        willShowFocus: mode === 'none' || mode === 'text_focus',
+        willShowFocus: mode === 'none' || mode === 'text_focus' || mode === 'highlight',
         focusedTextElement: focusedTextElement?.tagName
       });
     }
     
-    // Show focus overlay in normal mode AND text focus mode
-    if (mode === 'none' || mode === 'text_focus') {
+    // Show focus overlay in normal mode, text focus mode, AND highlight mode
+    if (mode === 'none' || mode === 'text_focus' || mode === 'highlight') {
       this.updateFocusOverlay(focusEl, mode);
     } else {
       this.hideFocusOverlay();
@@ -79,9 +96,11 @@ export class OverlayManager {
     if (mode === 'text_focus' && focusedTextElement) {
       this.updateFocusedTextOverlay(focusedTextElement);
       this.updateActiveTextInputFrame(focusedTextElement);
+      this.updateEscExitLabel(focusedTextElement);
     } else {
       this.hideFocusedTextOverlay();
       this.hideActiveTextInputFrame();
+      this.hideEscExitLabel();
     }
     
     // Show viewport modal frame when in text focus mode
@@ -92,6 +111,16 @@ export class OverlayManager {
       this.updateDeleteOverlay(deleteEl);
     } else {
       this.hideDeleteOverlay();
+    }
+    
+    // Show highlight overlay in highlight mode
+    if (mode === 'highlight') {
+      this.updateHighlightOverlay(focusEl);
+      this.showHighlightModeIndicator();
+    } else {
+      this.hideHighlightOverlay();
+      this.hideHighlightModeIndicator();
+      this.hideHighlightRectangleOverlay();
     }
   }
 
@@ -291,6 +320,477 @@ export class OverlayManager {
     }
   }
 
+  updateHighlightOverlay(element) {
+    if (!element) {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] updateHighlightOverlay: no element provided');
+      }
+      this.hideHighlightOverlay();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateHighlightOverlay called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
+    }
+
+    if (!this.highlightOverlay) {
+      this.highlightOverlay = this.createElement('div', {
+        className: CSS_CLASSES.HIGHLIGHT_OVERLAY,
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS};
+          border: 3px solid ${COLORS.HIGHLIGHT_BLUE};
+          box-shadow: 0 0 0 2px ${COLORS.HIGHLIGHT_SHADOW}, 0 0 12px 2px ${COLORS.HIGHLIGHT_SHADOW_BRIGHT};
+          background: transparent;
+          will-change: transform;
+        `
+      });
+      document.body.appendChild(this.highlightOverlay);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight overlay created and added to DOM:', {
+          element: this.highlightOverlay,
+          className: this.highlightOverlay.className,
+          parent: this.highlightOverlay.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.highlightOverlay);
+      }
+    }
+
+    const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Highlight overlay positioning:', {
+        rect: rect,
+        overlayExists: !!this.highlightOverlay,
+        overlayVisibility: this.overlayVisibility.highlight
+      });
+    }
+    
+    if (rect.width > 0 && rect.height > 0) {
+      // Use left/top positioning instead of transform for consistency with other overlays
+      this.highlightOverlay.style.left = `${rect.left}px`;
+      this.highlightOverlay.style.top = `${rect.top}px`;
+      this.highlightOverlay.style.width = `${rect.width}px`;
+      this.highlightOverlay.style.height = `${rect.height}px`;
+      this.highlightOverlay.style.display = 'block';
+      this.highlightOverlay.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight overlay positioned at:', {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight overlay hidden - invalid rect:', rect);
+      }
+      this.hideHighlightOverlay();
+    }
+  }
+
+  hideHighlightOverlay() {
+    if (this.highlightOverlay) {
+      this.highlightOverlay.style.display = 'none';
+    }
+  }
+
+  /**
+   * Update the highlight rectangle overlay showing the selection area
+   * @param {Object} startPosition - Starting position {x, y}
+   * @param {Object} currentPosition - Current cursor position {x, y}
+   */
+  updateHighlightRectangleOverlay(startPosition, currentPosition) {
+    if (!startPosition || !currentPosition) {
+      this.hideHighlightRectangleOverlay();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateHighlightRectangleOverlay called:', {
+        startPosition,
+        currentPosition
+      });
+    }
+
+    if (!this.highlightRectangleOverlay) {
+      this.highlightRectangleOverlay = this.createElement('div', {
+        className: 'kpv2-highlight-rectangle-overlay',
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS - 2};
+          background: ${COLORS.HIGHLIGHT_SELECTION_BG};
+          border: 2px dashed ${COLORS.HIGHLIGHT_BLUE};
+          box-shadow: 0 0 0 1px ${COLORS.HIGHLIGHT_SHADOW}, 0 0 8px 1px ${COLORS.HIGHLIGHT_SHADOW_BRIGHT};
+          will-change: transform;
+          opacity: 0.8;
+        `
+      });
+      document.body.appendChild(this.highlightRectangleOverlay);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight rectangle overlay created and added to DOM:', {
+          element: this.highlightRectangleOverlay,
+          className: this.highlightRectangleOverlay.className,
+          parent: this.highlightRectangleOverlay.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.highlightRectangleOverlay);
+      }
+    }
+
+    // Calculate rectangle dimensions
+    const left = Math.min(startPosition.x, currentPosition.x);
+    const top = Math.min(startPosition.y, currentPosition.y);
+    const width = Math.abs(currentPosition.x - startPosition.x);
+    const height = Math.abs(currentPosition.y - startPosition.y);
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Highlight rectangle overlay positioning:', {
+        left, top, width, height,
+        startPosition, currentPosition
+      });
+    }
+    
+    // Only show if rectangle has meaningful size
+    if (width > 5 && height > 5) {
+      this.highlightRectangleOverlay.style.left = `${left}px`;
+      this.highlightRectangleOverlay.style.top = `${top}px`;
+      this.highlightRectangleOverlay.style.width = `${width}px`;
+      this.highlightRectangleOverlay.style.height = `${height}px`;
+      this.highlightRectangleOverlay.style.display = 'block';
+      this.highlightRectangleOverlay.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight rectangle overlay positioned at:', {
+          left, top, width, height
+        });
+      }
+    } else {
+      // Hide if rectangle is too small
+      this.highlightRectangleOverlay.style.display = 'none';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight rectangle overlay hidden - too small:', { width, height });
+      }
+    }
+  }
+
+  /**
+   * Hide the highlight rectangle overlay
+   */
+  hideHighlightRectangleOverlay() {
+    if (this.highlightRectangleOverlay) {
+      this.highlightRectangleOverlay.style.display = 'none';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight rectangle overlay hidden');
+      }
+    }
+  }
+
+  /**
+   * Update selection overlays to highlight the actual selected text regions with shadow DOM support
+   * @param {Selection} selection - Browser Selection object
+   */
+  updateHighlightSelectionOverlays(selection) {
+    // Clear existing selection overlays
+    this.clearHighlightSelectionOverlays();
+
+    if (!selection || selection.rangeCount === 0) {
+      return;
+    }
+
+    try {
+      // Create overlays for each range in the selection
+      for (let i = 0; i < selection.rangeCount; i++) {
+        const range = selection.getRangeAt(i);
+        this.createSelectionOverlaysForRangeWithShadowSupport(range);
+      }
+
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Updated highlight selection overlays with shadow DOM support:', {
+          rangeCount: selection.rangeCount,
+          overlayCount: this.highlightSelectionOverlays.length,
+          selectedText: selection.toString().substring(0, 50)
+        });
+      }
+    } catch (error) {
+      console.warn('[KeyPilot] Error updating highlight selection overlays with shadow DOM support:', error);
+      this.clearHighlightSelectionOverlays();
+    }
+  }
+
+  /**
+   * Create selection overlays for a specific range with shadow DOM support
+   * @param {Range} range - DOM Range object
+   */
+  createSelectionOverlaysForRangeWithShadowSupport(range) {
+    if (!range || range.collapsed) {
+      return;
+    }
+
+    try {
+      // Get all rectangles for the range (handles multi-line selections)
+      const rects = this.getClientRectsWithShadowSupport(range);
+      
+      for (let i = 0; i < rects.length; i++) {
+        const rect = rects[i];
+        
+        // Skip zero-width or zero-height rectangles
+        if (rect.width <= 0 || rect.height <= 0) {
+          continue;
+        }
+
+        // Create overlay element for this rectangle
+        const overlay = this.createElement('div', {
+          className: CSS_CLASSES.HIGHLIGHT_SELECTION,
+          style: `
+            position: fixed;
+            left: ${rect.left}px;
+            top: ${rect.top}px;
+            width: ${rect.width}px;
+            height: ${rect.height}px;
+            background: ${COLORS.HIGHLIGHT_SELECTION_BG};
+            border: 1px solid ${COLORS.HIGHLIGHT_SELECTION_BORDER};
+            pointer-events: none;
+            z-index: ${Z_INDEX.OVERLAYS - 1};
+            will-change: transform;
+          `
+        });
+
+        // Append to main document body (overlays should always be in main document)
+        document.body.appendChild(overlay);
+        this.highlightSelectionOverlays.push(overlay);
+
+        // Start observing the overlay for visibility optimization
+        if (this.overlayObserver) {
+          this.overlayObserver.observe(overlay);
+        }
+      }
+
+      if (window.KEYPILOT_DEBUG && rects.length > 0) {
+        console.log('[KeyPilot Debug] Created selection overlays for range with shadow DOM support:', {
+          rectCount: rects.length,
+          firstRect: {
+            left: rects[0].left,
+            top: rects[0].top,
+            width: rects[0].width,
+            height: rects[0].height
+          }
+        });
+      }
+    } catch (error) {
+      console.warn('[KeyPilot] Error creating selection overlays for range with shadow DOM support:', error);
+    }
+  }
+
+  /**
+   * Get client rectangles for a range with shadow DOM support
+   * @param {Range} range - DOM Range object
+   * @returns {DOMRectList|Array} - Client rectangles
+   */
+  getClientRectsWithShadowSupport(range) {
+    try {
+      // First try the standard method
+      const rects = range.getClientRects();
+      if (rects && rects.length > 0) {
+        return rects;
+      }
+
+      // If no rectangles found, try alternative methods for shadow DOM
+      return this.getAlternativeClientRects(range);
+    } catch (error) {
+      console.warn('[KeyPilot] Error getting client rects with shadow DOM support:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get alternative client rectangles for shadow DOM ranges
+   * @param {Range} range - DOM Range object
+   * @returns {Array} - Array of rectangle objects
+   */
+  getAlternativeClientRects(range) {
+    try {
+      const rects = [];
+      
+      // Try to get bounding rect as fallback
+      const boundingRect = range.getBoundingClientRect();
+      if (boundingRect && boundingRect.width > 0 && boundingRect.height > 0) {
+        rects.push(boundingRect);
+      }
+      
+      // For shadow DOM, we might need to manually calculate rectangles
+      // by walking through the range contents
+      if (rects.length === 0) {
+        const shadowRects = this.calculateShadowDOMRects(range);
+        rects.push(...shadowRects);
+      }
+      
+      return rects;
+    } catch (error) {
+      console.warn('[KeyPilot] Error getting alternative client rects:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Calculate rectangles for shadow DOM ranges manually
+   * @param {Range} range - DOM Range object
+   * @returns {Array} - Array of rectangle objects
+   */
+  calculateShadowDOMRects(range) {
+    try {
+      const rects = [];
+      
+      // Get start and end containers
+      const startContainer = range.startContainer;
+      const endContainer = range.endContainer;
+      
+      if (startContainer === endContainer && startContainer.nodeType === Node.TEXT_NODE) {
+        // Single text node selection
+        const textRect = this.getTextNodeRect(startContainer, range.startOffset, range.endOffset);
+        if (textRect) {
+          rects.push(textRect);
+        }
+      } else {
+        // Multi-node selection - this is more complex for shadow DOM
+        // For now, use bounding rect as approximation
+        try {
+          const boundingRect = range.getBoundingClientRect();
+          if (boundingRect && boundingRect.width > 0 && boundingRect.height > 0) {
+            rects.push(boundingRect);
+          }
+        } catch (error) {
+          // Ignore errors in complex shadow DOM scenarios
+        }
+      }
+      
+      return rects;
+    } catch (error) {
+      console.warn('[KeyPilot] Error calculating shadow DOM rects:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get rectangle for a portion of a text node
+   * @param {Text} textNode - Text node
+   * @param {number} startOffset - Start character offset
+   * @param {number} endOffset - End character offset
+   * @returns {DOMRect|null} - Rectangle or null
+   */
+  getTextNodeRect(textNode, startOffset, endOffset) {
+    try {
+      const ownerDocument = textNode.ownerDocument || document;
+      const tempRange = ownerDocument.createRange();
+      tempRange.setStart(textNode, startOffset);
+      tempRange.setEnd(textNode, endOffset);
+      
+      const rect = tempRange.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 ? rect : null;
+    } catch (error) {
+      console.warn('[KeyPilot] Error getting text node rect:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Create selection overlays for a specific range (legacy method for compatibility)
+   * @param {Range} range - DOM Range object
+   */
+  createSelectionOverlaysForRange(range) {
+    // Delegate to the shadow DOM-aware method
+    this.createSelectionOverlaysForRangeWithShadowSupport(range);
+  }
+
+  /**
+   * Clear all highlight selection overlays
+   */
+  clearHighlightSelectionOverlays() {
+    this.highlightSelectionOverlays.forEach(overlay => {
+      if (this.overlayObserver) {
+        this.overlayObserver.unobserve(overlay);
+      }
+      if (overlay.parentNode) {
+        overlay.parentNode.removeChild(overlay);
+      }
+    });
+    this.highlightSelectionOverlays = [];
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Cleared all highlight selection overlays');
+    }
+  }
+
+  /**
+   * Show highlight mode indicator
+   */
+  showHighlightModeIndicator() {
+    if (this.highlightModeIndicator) {
+      return; // Already showing
+    }
+
+    this.highlightModeIndicator = this.createElement('div', {
+      className: 'kpv2-highlight-mode-indicator',
+      style: `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${COLORS.HIGHLIGHT_BLUE};
+        color: white;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px ${COLORS.HIGHLIGHT_SHADOW};
+        z-index: ${Z_INDEX.MESSAGE_BOX};
+        pointer-events: none;
+        will-change: transform, opacity;
+        animation: kpv2-pulse 1.5s ease-in-out infinite;
+      `
+    });
+    
+    this.highlightModeIndicator.textContent = 'HIGHLIGHT MODE - Press H to copy';
+    document.body.appendChild(this.highlightModeIndicator);
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] Highlight mode indicator shown');
+    }
+  }
+
+  /**
+   * Hide highlight mode indicator
+   */
+  hideHighlightModeIndicator() {
+    if (this.highlightModeIndicator) {
+      this.highlightModeIndicator.remove();
+      this.highlightModeIndicator = null;
+
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] Highlight mode indicator hidden');
+      }
+    }
+  }
+
   updateFocusedTextOverlay(element) {
     if (!element) {
       this.hideFocusedTextOverlay();
@@ -465,6 +965,91 @@ export class OverlayManager {
   hideActiveTextInputFrame() {
     if (this.activeTextInputFrame) {
       this.activeTextInputFrame.style.display = 'none';
+    }
+  }
+
+  updateEscExitLabel(element) {
+    if (!element) {
+      this.hideEscExitLabel();
+      return;
+    }
+
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] updateEscExitLabel called for:', {
+        tagName: element.tagName,
+        className: element.className,
+        id: element.id
+      });
+    }
+
+    if (!this.escExitLabel) {
+      this.escExitLabel = this.createElement('div', {
+        className: CSS_CLASSES.ESC_EXIT_LABEL,
+        style: `
+          position: fixed;
+          pointer-events: none;
+          z-index: ${Z_INDEX.OVERLAYS + 1};
+          will-change: transform, opacity;
+        `
+      });
+      this.escExitLabel.textContent = 'Press ESC to exit';
+      document.body.appendChild(this.escExitLabel);
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] ESC exit label created and added to DOM:', {
+          element: this.escExitLabel,
+          className: this.escExitLabel.className,
+          parent: this.escExitLabel.parentElement?.tagName
+        });
+      }
+      
+      // Start observing the overlay for visibility optimization
+      if (this.overlayObserver) {
+        this.overlayObserver.observe(this.escExitLabel);
+      }
+    }
+
+    // Always get fresh rect to handle dynamic position/size changes
+    const rect = this.getBestRect(element);
+    
+    if (window.KEYPILOT_DEBUG) {
+      console.log('[KeyPilot Debug] ESC exit label positioning:', {
+        rect: rect,
+        overlayExists: !!this.escExitLabel,
+        overlayVisibility: this.overlayVisibility.escExitLabel,
+        timestamp: Date.now()
+      });
+    }
+    
+    if (rect.width > 0 && rect.height > 0) {
+      // Position the label at the bottom of the text field
+      const labelLeft = rect.left;
+      const labelTop = rect.top + rect.height + 8; // 8px gap below the text field
+      
+      this.escExitLabel.style.left = `${labelLeft}px`;
+      this.escExitLabel.style.top = `${labelTop}px`;
+      this.escExitLabel.style.display = 'block';
+      this.escExitLabel.style.visibility = 'visible';
+      
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] ESC exit label positioned at:', {
+          left: labelLeft,
+          top: labelTop,
+          elementBottom: rect.top + rect.height,
+          timestamp: Date.now()
+        });
+      }
+    } else {
+      if (window.KEYPILOT_DEBUG) {
+        console.log('[KeyPilot Debug] ESC exit label hidden - invalid rect:', rect);
+      }
+      this.hideEscExitLabel();
+    }
+  }
+
+  hideEscExitLabel() {
+    if (this.escExitLabel) {
+      this.escExitLabel.style.display = 'none';
     }
   }
 
@@ -847,6 +1432,20 @@ export class OverlayManager {
       this.deleteOverlay.remove();
       this.deleteOverlay = null;
     }
+    if (this.highlightOverlay) {
+      this.highlightOverlay.remove();
+      this.highlightOverlay = null;
+    }
+    if (this.highlightRectangleOverlay) {
+      this.highlightRectangleOverlay.remove();
+      this.highlightRectangleOverlay = null;
+    }
+    // Clear highlight selection overlays
+    this.clearHighlightSelectionOverlays();
+    if (this.highlightModeIndicator) {
+      this.highlightModeIndicator.remove();
+      this.highlightModeIndicator = null;
+    }
     if (this.focusedTextOverlay) {
       this.focusedTextOverlay.remove();
       this.focusedTextOverlay = null;
@@ -858,6 +1457,10 @@ export class OverlayManager {
     if (this.activeTextInputFrame) {
       this.activeTextInputFrame.remove();
       this.activeTextInputFrame = null;
+    }
+    if (this.escExitLabel) {
+      this.escExitLabel.remove();
+      this.escExitLabel = null;
     }
   }
 

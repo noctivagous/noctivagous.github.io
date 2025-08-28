@@ -7,6 +7,7 @@ export const KEYBINDINGS = {
   BACK2: ['s', 'S'],
   FORWARD: ['v', 'V'],
   DELETE: ['d', 'D'],
+  HIGHLIGHT: ['h', 'H'],
   ROOT: ['`', 'Backquote'],
   CLOSE_TAB: ['/', '/'],
   CANCEL: ['Escape']
@@ -26,13 +27,17 @@ export const CSS_CLASSES = {
   CURSOR_HIDDEN: 'kpv2-cursor-hidden',
   FOCUS: 'kpv2-focus',
   DELETE: 'kpv2-delete',
+  HIGHLIGHT: 'kpv2-highlight',
   HIDDEN: 'kpv2-hidden',
   RIPPLE: 'kpv2-ripple',
   FOCUS_OVERLAY: 'kpv2-focus-overlay',
   DELETE_OVERLAY: 'kpv2-delete-overlay',
+  HIGHLIGHT_OVERLAY: 'kpv2-highlight-overlay',
+  HIGHLIGHT_SELECTION: 'kpv2-highlight-selection',
   TEXT_FIELD_GLOW: 'kpv2-text-field-glow',
   VIEWPORT_MODAL_FRAME: 'kpv2-viewport-modal-frame',
-  ACTIVE_TEXT_INPUT_FRAME: 'kpv2-active-text-input-frame'
+  ACTIVE_TEXT_INPUT_FRAME: 'kpv2-active-text-input-frame',
+  ESC_EXIT_LABEL: 'kpv2-esc-exit-label'
 };
 
 export const ELEMENT_IDS = {
@@ -50,7 +55,8 @@ export const Z_INDEX = {
 export const MODES = {
   NONE: 'none',
   DELETE: 'delete',
-  TEXT_FOCUS: 'text_focus'
+  TEXT_FOCUS: 'text_focus',
+  HIGHLIGHT: 'highlight'
 };
 
 export const COLORS = {
@@ -58,6 +64,7 @@ export const COLORS = {
   FOCUS_GREEN: 'rgba(0,180,0,0.95)',
   FOCUS_GREEN_BRIGHT: 'rgba(0,128,0,0.95)',
   DELETE_RED: 'rgba(220,0,0,0.95)',
+  HIGHLIGHT_BLUE: 'rgba(0,120,255,0.95)',
   ORANGE: '#ff8c00',
 
   // Text and background colors
@@ -78,6 +85,8 @@ export const COLORS = {
   GREEN_SHADOW_BRIGHT: 'rgba(0,180,0,0.5)',
   DELETE_SHADOW: 'rgba(220,0,0,0.35)',
   DELETE_SHADOW_BRIGHT: 'rgba(220,0,0,0.45)',
+  HIGHLIGHT_SHADOW: 'rgba(0,120,255,0.35)',
+  HIGHLIGHT_SHADOW_BRIGHT: 'rgba(0,120,255,0.45)',
   BLACK_SHADOW: 'rgba(40, 40, 40, 0.7)',
 
   // Ripple effect colors
@@ -97,7 +106,11 @@ export const COLORS = {
   NOTIFICATION_SHADOW: 'rgba(0, 0, 0, 0.15)',
 
   // Text field glow
-  TEXT_FIELD_GLOW: 'rgba(255,165,0,0.8)'
+  TEXT_FIELD_GLOW: 'rgba(255,165,0,0.8)',
+
+  // Highlight selection colors
+  HIGHLIGHT_SELECTION_BG: 'rgba(0,120,255,0.3)',
+  HIGHLIGHT_SELECTION_BORDER: 'rgba(0,120,255,0.6)'
 };
 
 export const CURSOR_SETTINGS = {

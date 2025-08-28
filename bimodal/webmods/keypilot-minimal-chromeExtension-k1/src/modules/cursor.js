@@ -164,6 +164,7 @@ export class CursorManager {
       const firstLine = lines[0];
       const stroke = firstLine.getAttribute('stroke');
       if (stroke && stroke.includes('255,140,0')) return 'text_focus'; // Orange
+      if (stroke && stroke.includes('0,120,255')) return 'highlight'; // Blue
       return 'none'; // Green crosshair
     }
 
@@ -284,6 +285,13 @@ export class CursorManager {
       if (mode === 'delete') {
         addLine(18, 18, 76, 76, COLORS.DELETE_RED, '5');
         addLine(76, 18, 18, 76, COLORS.DELETE_RED, '5');
+      } else if (mode === 'highlight') {
+        // Blue selection cursor - crosshair style similar to normal mode
+        const col = COLORS.HIGHLIGHT_BLUE;
+        addLine(47, 10, 47, 34, col);
+        addLine(47, 60, 47, 84, col);
+        addLine(10, 47, 34, 47, col);
+        addLine(60, 47, 84, 47, col);
       } else {
         const col = COLORS.FOCUS_GREEN_BRIGHT;
         addLine(47, 10, 47, 34, col);

@@ -1,10 +1,25 @@
 ALTERNATIVE TO THE DATED UNIX TERMINAL
 
+
+
 When 50 lines scroll by in the Terminal app and there
 is no acknowledgment of it by the Terminal app 
 or any catching of it to process it and place it inside 
 GUI (such as placing it into a table or a panel), then
-the situation is partly broken.
+the situation is partly broken.  
+
+A patch for the situation with command line programs is 
+to have them send a command to the shell declaring that they are sending a message
+and then providing information about what type of message
+they are sending.  Then as the Terminal app receives these
+it can sort them into containers if there are a large number of them. 
+They could also send information
+like buttons and the terminal could render them.
+Instead of using text to make progress bars, they could
+send information with progress bar tags and updates
+and the Terminal app would render them normally.
+
+REVISING THE TERMINAL
 
 When a system has been built up and developed around a paradigm
 for a long time, rewiring it is not a simple matter, which

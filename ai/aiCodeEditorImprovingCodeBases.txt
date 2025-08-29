@@ -1,9 +1,74 @@
-Improving a Code Base With AI Code Editors.
+Working with AI Code Editor / Improving a Code Base With AI Code Editors.
+
+
+BUILDING UP THE SPECS BY HAVING THE AGENT MAKE QUESTIONS IN THE CHAT
+AND SUGGESTIONS.
+
+--"ASK QUESTIONS OF ME [IN THIS AI CHAT] AND PUT THE RESULTS IN A TEXT FILE"
+
+1) This project is about [] and read [files].  Ask questions
+from me, macro, tech, etc., and put the results in a text
+file and we'll use that as the project orientation.
+
+	--> project_orientation_questions.txt
+
+2) Let's address some issues in [project_orientation_questions.txt]
+and make a new file called [].  We want to address some
+other aspects  [].
+
+
+-- 
+
+REPORTS FOR INVESTIGATION
+
+"Here is @devdocs.txt.  There is also @steering.  Read those and 
+then undertake an extensive inventory of the repo so that we can 
+figure out why text mode isn't being activated or isn't set up 
+correctly.  put your results in a text file."
+
+---> "I've completed a comprehensive investigation of the 
+KeyPilot extension's text mode functionality and created 
+a detailed report saved as text-mode-investigation-report.txt. 
+Here are the key findings:"
+
+"I have successfully completed a comprehensive analysis and 
+restructure of the KeyPilot extension's build system, 
+similar to the text mode restructure. Here's what was accomplished:"
+
+
+DESIGN OF SPECIFICATIONS FOR INCREMENTAL ACCUMULATION OF CODE
+
+-- Building incrementally so you can try out parts of the 
+program as we go is a much better approach. This allows for:
+
+- Early feedback on the direction and user experience.
+- Course correction if something doesn't feel right.
+- Motivation from seeing working features quickly.
+- Risk reduction by validating core concepts early.
+
+
+
+VARIABLE AND FUNCTION NAMING
+
+Make sure that variable and function names are descriptive,
+part of a plan, and have comments where needed
+
+
+FEATURES
+
+For larger feature changes made to a code base with an AI code editor, 
+implement these can be implement as optional enhancements 
+that can be toggled via a feature flag, instead of just having the AI replace
+code.
+
+
+CODE BASE 
 
 Common improvements an AI could systematically perform on a code base,
 Many improvements require creating new modules (e.g., config files, 
 query builders, feature flag systems). But a large subset can 
 be done in-place, within the existing file and system structure.
+
 
 
 | Category                 | Example Task                                                                                     |

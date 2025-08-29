@@ -1,0 +1,329 @@
+Detail Collection Menus / Preliminary Menus for AI Chatbots
+
+"Ask any questions before proceeding."  - often asks micro level details
+"Ask any overarching questions before proceeding." - often asks business plan-like or product requirements more macro level questions.
+"Ask any [  ] questions before proceeding." 
+
+"Ask any questions before proceeding." I added this to a prompt while trying
+to port an especially detailed section of a software project to another platform and I then
+received a table of questions from the AI (I have the AI make tables instead of lists
+generally).  This allowed me to inform the AI about aspects where it needed
+clarification or didn't have enough information.  After I answered the table of 
+questions, I received a followup table with default proposals for the conversion 
+with some minor additional questions.  The righthand column was a list where 
+if I didn't say anything it would proceed what was stated there. 
+This allowed me to evaluate the plans of the AI after it received 
+information from me and I answered its remaining questions and made minor changes.  
+After the AI asked for more clarification during this exchange, it eventually 
+presented a summary of what it was about to do.  There is no doubt that for
+this conversion the interaction benefitted from.
+
+
+One time I submitted a prompt to a different AI, "Make a playing card with the 
+image of a joker on it."  What the AI carried in its assumptions was very 
+different than what I expected.  It made an image of a joker using an actor
+from a recent comic book movie.  It rendered the image in a photorealistic style with 
+the joker standing inside a life-sized, scaled up playing card frame.  Of course, 
+I knew ahead of time that the best way to get the desired result from an AI in this 
+situation is to provide it a list of specifics and details:
+  
+- What illustration style (etched illustration, not photorealistic). 
+- What the joker should look like (comic book/real life). - What the joker should be doing. 
+- The position of the joker on the card. 
+- The clothing. 
+- etc.  
+
+For routine usage of AI, manually providing a wide-ranging list of details like that takes 
+too much effort.  And if you have the AI generate all of this information on its own, your 
+role in the output will be. Yet, because it is needed to align AI image generation with the user's 
+objectives, an additional step can be inserted into the AI chatbot software before
+the output is made.  The AI can proactively suggest relevant details in parametric form
+in an intermediate sequence, which is a menu or series of menus that is shown before the 
+image is generated.  The AI will collect information.
+
+
+"Detail Collection Menus And Their Different Types,"
+
+After the user submits a prompt, the AI responds with a structured menu (e.g., dropdowns, 
+text fields) tailored to the requested output type (image, text, video, code). The menu 
+includes parameters expected and relevant to the situation and an open-ended text field for 
+additional details.  If the menu is too short or too long, the user can choose to 
+alter the number of details provided in place.  The length of such a menu can be
+set on a scale from 1 to 5.
+
+This detail collection menu does not have to be limited to one form. It can be utilized 
+in different ways to improve the AI's interaction with the user.  
+
+ALL-AT-ONCE INFORMATION COLLECTION MENUS
+The type of menu  sequence just mentioned is one in which all of the details are collected 
+upfront on just one menu, with the list length ranging on scale from 1 to 5. After 
+submission, the AI generates the result.  
+
+FOLLOWUP MENU SEQUENCES
+In another kind of mode, the detail collection menu that immediately follows the prompt 
+collects information but then follows with subsequent menus that get more details based 
+on the information the user provided.  This allows moving from general questions to
+more specific aspects.  If at any point the user wants to move on from the menus 
+and let the AI fill in the rest, he can opt to do that. 
+
+So, whereas one type of menu asks for everything upfront, another kind may ask for 
+information and then the AI interacts successively with the user in more specific menus 
+get a finished set of requirements.  The user can choose to fill out every menu 
+or proceed with what was collected so far.
+
+FOLLOWUP PROPOSALS FOR EVALUATION / PREVIEWS
+After not actually collecting any information, another issue with many uses of AI
+is that it isn't configured to tell the user about what it is going to do before it does
+it. This is particularly an issue when the task given to the AI produces complex output,
+such as code.  So, not only should the AI collect information but it should also
+be able to present to the user a stage where it says to the user what it is about to do
+so that the user can check off everything and make minor changes.
+
+The user can enable this last segment of the menu sequence where the AI describes
+what it is planning in response to the details it collected, indicating what it will do
+and sometimes showing sample output.  It will provide a menu of its plans and sometimes a 
+preview.  The user gets to add and make revisions before submission.
+
+
+Examples For First Menu: 
+---------------------------------------- 
+
+"Example for Images,"
+For “Make a playing card with a joker,” the AI could prompt:
+- Illustration style: [Cartoon, Etched, Photorealistic, Abstract]
+- Joker type: [Classic Jester, Comic Book, Modern Clown, Custom]
+- Pose/Action: [Standing, Dancing, Laughing, Custom]
+- Position on card: [Centered, Top Half, Full Card]
+- Clothing: [Traditional Jester, Modern Suit, Custom]
+- Card context: [Tabletop, Life-Sized, Floating]
+- Additional details: [Text field for specifics, e.g., “red and black color scheme”]"
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
+[Refresh with More Details [Optional Textfield for Specifics]]
+
+"Example for Text,"
+For “Write a story about a hero,” the AI could prompt:
+- Genre: [Fantasy, Sci-Fi, Historical, Other]
+- Tone: [Serious, Humorous, Dark, Uplifting]
+- Hero’s traits: [Brave, Flawed, Reluctant, Custom]
+- Setting: [Medieval, Futuristic, Urban, Custom]
+- Length: [Short (100 words), Medium (500 words), Long (1000+ words)]
+- Additional details: [Text field, e.g., “include a dragon”]"
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
+[Refresh with More Details [Optional Textfield for Specifics]]
+
+
+"Example for Video,"
+For “Create a video of a car chase,” the AI could prompt:
+- Style: [Realistic, Animated, Cinematic]
+- Setting: [City, Desert, Mountain, Custom]
+- Car types: [Sports Car, Vintage, Futuristic, Custom]
+- Camera angle: [First-Person, Overhead, Side View]
+- Duration: [30s, 1min, 3min]
+- Additional details: [Text field, e.g., “rainy night”]"
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
+[Refresh with More Details [Optional Textfield for Specifics]]
+
+
+"Example for Code,"
+For “Write a program to sort numbers,” the AI could prompt:
+- Language: [Python, Java, C++, Other]
+- Algorithm: [Bubble Sort, Quick Sort, Merge Sort, Custom]
+- Input type: [Array, List, File Input]
+- Output format: [Sorted List, Visual Graph, File]
+- Additional details: [Text field, e.g., “handle duplicates”]
+[Proceed with Generation] [Next Detail Collection Step] [Show Plans in Response]
+[Refresh with More Details [Optional Textfield for Specifics]]
+
+----------------------------------------  
+
+"Benefits,"
+- Reduces ambiguity in user prompts.
+- Educates users on relevant details they may not have considered.
+- Improves output quality by aligning with user intent.
+- Saves time by minimizing iterative revisions."
+
+This detail collection menu will end up listing details that the user 
+didn't anticipate for the situation, which demonstrates its value.  
+A preliminary menu like this doesn't have to be limited to the generation 
+of images, of course, and can be applied to any AI situation such as 
+text, video, and code.
+
+The gradual kind of menu sequence starts general and allows the AI to 
+progressively collect information to form an accurate description 
+of what the user is going for.  
+
+"Purpose Of The Detail Collection Menus,"
+"To guide users in clarifying their intent by prompting for specific details 
+before content generation, ensuring the AI’s output aligns with expectations.
+
+
+"Implementation Considerations,"
+- User Experience: Menus should be concise to avoid overwhelming users. 
+Default options or “skip” buttons can streamline the process and
+menu items can be mapped to keyboard keys on desktop.
+- Adaptability: The AI will dynamically adjust prompts to the user
+based on context (e.g., different options for “joker” vs. “landscape”).
+- Learning: Optionally, the AI could learn from user patterns to suggest personalized 
+defaults over time though the downsides of this have been demonstrated in that
+sometimes the user wants to be free of this and at other times the 
+AI takes all actions as information for user patterns.
+- Accessibility: Ensure menus are intuitive for non-technical users, 
+with clear labels and examples.
+- Flexibility: Include an open-ended text field for users to specify 
+details not covered by dropdowns.  Allow deletion and addition of 
+menu items.
+
+
+"Challenges,"
+- Balancing detail granularity with simplicity to avoid user frustration.
+- Ensuring the AI correctly interprets open-ended responses.
+- Handling cases where users skip or ignore the menu.
+- Scaling the system to cover diverse content types and use cases.
+
+"Potential Enhancements,"
+- Preview mode: Show a rough draft or description 
+of the output based on selected options before final generation.
+- Iterative refinement: Allow users to adjust selections after seeing a preview.
+- Natural language integration: Let users describe details conversationally, 
+with the AI parsing and confirming key parameters.
+- Template library: Offer pre-configured templates for common tasks 
+(e.g., “classic joker card”)."
+
+
+
+
+----------------------------------------
+----------------------------------------
+
+AFTER RECEIVING THE INITIAL PROMPT FROM THE USER,
+THE AI GENERATES A MENU OF IMPORTANT AND RELEVANT
+DETAILS FOR THE SITUATION.
+
+THE USER TO FILLS THESE OUT AND SUBMITS THE 
+FORM TO GET BETTER RESULTS FROM AI FROM THE START.
+
+STEPS:
+--> THE USER SENDS A PROMPT FOR THE AI TO CARRY OUT A TASK
+(E.G. GENERATE AN IMAGE).
+
+--> A PRELIMINARY MENU IS GENERATED BY AI BEFORE FULFILLING THE REQUEST 
+THAT ALLOWS IT TO COLLECT INFORMATION ABOUT THE SITUATION FROM
+THE USER BEFORE UNDERTAKING WORK.  THE AI DOESN'T JUST
+IMMEDIATELY ATTEMPT TO DO THE THING ASKED LIKE TODAY.
+
+--> IF IT IS AN IMAGE BEING GENERATED, THE AI COMES UP WITH
+ALL OF THE DETAILS OF THE IMAGE'S SCENE THAT THE USER WOULD WANT TO
+SPECIFY AND THEN FORMATS THAT INFORMATION INSIDE A PRELIMINARY 
+FORM TO BE FILLED OUT.
+
+-------> AFTER THE USER MAKES SELECTIONS FROM THE PRELIMINARY FORM AND
+SUBMITS IT, THE AI GENERATES THE IMAGE. THROUGH THIS, THE AI GENERATES 
+MORE SATISFACTORY, TAILORED OUTPUT FROM THE START.
+
+
+SUMMARY:
+--> In Many Cases, After The User Submits The Initial Prompt,
+The AI Should Generate Details for The Situation
+For The User to Fill Out or Configure Before It Generates Output. 
+
+
+---
+
+
+Often it is the case that too much labor is required of the user to put together 
+a complete and detailed text prompt to get a satisfactory result from AI on
+the first submission.  The usual sequence involves the user repeatedly reacting to what the 
+AI generated in order to correct and revise it, which is a labor-intensive 
+and tiresome process.  This happens because the user hardly ever
+provides comprehensive details from the start and lets the AI operate off of
+its assumptions and guesses about what the user wants.  But there is no way to accurately
+know what the AI will assume every time.  This is a key reason that usage of AI in
+AI chatbots falls short of expectations.  The AI should be involved in proactively 
+suggesting and collecting specifications for the situation in preliminary menus. 
+The user may not anticipate everything that a situation entails.
+
+Take for example the generation of an image.  
+
+I said to the AI, "Make a playing card with the image of a joker on it."  
+I found out, after getting the result, that what the AI had sitting in its 
+assumptions was far from what I was expecting (and perhaps far from what other 
+people would expect too). It made an image of a joker featuring an actor from a 
+recent movie in a photorealistic style inside a life-sized playing card frame.  
+It turns out that I was going to have to tell the AI a significant number of 
+specifying details upfront to get what I wanted: 
+	- what illustration style (etching, not photorealistic). 
+	- what the joker should look like (comic book/real life). 
+	- what the joker should be doing. 
+	- The position of the joker on the card.
+	- The clothing.
+	- etc.
+
+That's too much to ask of me for every AI prompt. For routine usage of AI, such a 
+wide-ranging list of situational parameters takes too much work to 
+come up with inside a text box.  It is work that the AI should generate once it 
+sees that the prompt needs it.  It can provide format this in a preliminary menu 
+as the first response instead of generating the image first.
+
+
+To summarize, the chat exchange should really be the AI coming up with these kinds of
+situational parameters first and then asking them in a preliminary menu (that features GUI
+form controls like dropdown menus, checkboxes, etc.).
+
+Example:
+
+--- User: Make a playing card with the image of a joker on it.
+
+--- AI: You said you want a joker on a playing card.
+
+	- What illustration style? [dropdown menu] 
+	- What kind of joker? [dropdown menu] Other: [Textfield]
+	- What position should the joker be in? [dropdown menu] Other: [Textfield]. 
+	- Looking in what direction?  [dropdown menu]
+	- What clothing style? [dropdown menu]
+	- This is a playing card that is on a table or life-sized?
+	More specifying information: [Textfield].
+
+-------
+
+This is a set of details that the user might not fully anticipate, will have
+a hard time listing off just for routine usage of AI.  The user will 
+only find out many of them are relevant after the image has been generated.  
+Then the user will have to respond with revising instructions to generate 
+new images.
+
+If this is image is being generated in a node flow diagram scripting environment, 
+then it would be the AI generating and displaying a preliminary menu that generates 
+the nodes and their default parameters.
+
+It should be that the AI is taking care of the intermediate work of providing
+a menu of parameters for the context.
+
+
+
+--
+
+A software application is useful proportionate to the amount of control the user
+has over the output, with an application like Excel demonstrating high levels of
+user control (data entry cells, charts generated).  The usability of those 
+controls and a smooth arrangement of them is what makes quality software.  
+When, however, software produces flashy, advanced output but the user's ability to 
+control the output is limited, e.g. AI-generated images produced just from text prompts, 
+then this is largely a novelty or an uncomfortable and unfinished situation.  
+The effort required to turn the output into something of value is too high.  
+AI generation of images can be put into other software contexts where user control is 
+higher, such as node flow diagram scripting environments.  
+
+During an onstage interview, an OpenAI executive called ChatGPT "the world's greatest 
+parlor trick."  People everywhere have managed since the time he said that to make 
+ChatGPT work for them in spite of the undeveloped state of the front-end.  It is 
+still the case that ChatGPT produces a novelty effect because the front-end software 
+is incomplete. The amount of control the user can have over the output is much less 
+than it should be (e.g. there is no control over output length, it is hard to steer 
+responses, etc.).  Addressing this gap requires more than just the addition of gui
+controls.  The AI should generate parameters for any situation.  Intermediate menus are 
+important for AI chatbot software like ChatGPT to assist the user in making use
+of the AI.
+
+
+
+

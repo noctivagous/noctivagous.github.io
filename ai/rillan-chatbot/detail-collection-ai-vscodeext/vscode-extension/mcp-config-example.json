@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "rillan-ai-workflow-interface": {
+      "command": "node",
+      "args": ["./mcp-server.js"],
+      "cwd": "./vscode-extension",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "analyze_project_request",
+        "generate_form_specification",
+        "validate_form_data"
+      ]
+    }
+  }
+}

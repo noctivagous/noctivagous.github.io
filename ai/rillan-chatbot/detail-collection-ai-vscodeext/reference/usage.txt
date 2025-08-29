@@ -1,0 +1,24 @@
+Usage
+MCP Server: Created mcp-server.mjs with ES module support
+Kiro Integration: MCP configuration in .kiro/settings/mcp.json
+🚀 How to Use It
+Test the MCP Tools
+You can now use these MCP tools in Kiro:
+
+analyze_project_context - Analyze user requests and suggest form approaches
+generate_detail_collection_form - Create dynamic forms based on context
+collect_project_details - Start full detail collection workflows
+get_workspace_context - Get current workspace information
+Install the VS Code Extension
+To install the extension in VS Code:
+
+cd vscode-extension
+npm run vscode:prepublish
+code --install-extension .
+Test MCP Integration
+Try asking me to use one of the MCP tools:
+
+"Use the analyze_project_context tool to analyze this request: 'I want to build a web application for task management'"
+
+The extension provides intelligent form generation that adapts to different project types and complexity levels, making it easier to collect structured requirements for AI assistants.
+

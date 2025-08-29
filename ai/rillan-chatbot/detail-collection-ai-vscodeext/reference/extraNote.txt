@@ -1,0 +1,59 @@
+This extension is not supposed to be limited to vague scenarios but rather
+encompasses  and   What we really want is for the AI to determine the forms and
+then the extension be a framework for various scenarios.  We want the AI to open
+up a webview from this chat, have the programmer answer questions on the form
+(that is better than the .txt limitations of a chat window) and submit them and
+then in the chat window the AI still makes new forms that show up in a web view
+and then there is back and forth, taking the programmer away from the chat panel
+to fill out forms.  The forms should be easy to fill out and click, with
+defaults.
+
+AI dynamically generates forms and creates an interactive workflow. 
+
+Here's what we need:
+
+AI-driven form generation - Forms created by AI based on context
+Chat-to-webview workflow - AI can trigger form creation from chat
+Multi-stage interaction - Preliminary questions → Plans → Execution
+Easy-to-use forms with defaults and smart UI
+
+No more runaway AI - Forms collect detailed specs first
+Guided interaction - AI presents options before executing
+User control - Developers stay in charge of decisions
+Structured input - AI gets complete context, not guesses
+
+1. Dynamic Form Generation
+I can programmatically generate forms during our conversations by:
+
+Analyzing conversation context to determine what information I need
+Calling generateFormFromContext() or generateFormFromAISpec()
+Specifying form complexity (minimal, standard, comprehensive)
+Defining custom fields, sections, and validation rules
+2. Contextual Form Triggering
+Instead of you manually running commands, I can:
+
+Detect when you provide vague requests like "make a calculator app"
+Automatically trigger appropriate forms to collect missing details
+Generate investigation forms when you mention bugs or issues
+Create refactoring forms when discussing code improvements
+3. Real-time Form Customization
+I can control form behavior by:
+
+Setting slideshow vs single-page layouts
+Configuring grid displays for options
+Enabling user modifications (adding custom options)
+Adjusting complexity based on project scope
+4. Response Processing
+When you submit forms, I receive:
+
+Structured JSON data back in our chat context
+User modifications and additions you made
+Processed responses formatted for AI consumption
+Ability to trigger follow-up forms if needed
+5. Workflow Orchestration
+I can create multi-stage workflows by:
+
+Chaining multiple forms together
+Branching based on your responses
+Maintaining conversation history and context
+Adapting subsequent forms based on previous answers

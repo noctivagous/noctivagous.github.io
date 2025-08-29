@@ -1,0 +1,323 @@
+{
+  "name": "rillan-ai-workflow-interface",
+  "displayName": "Rillan AI Workflow Interface",
+  "description": "Interactive GUI menus for collecting project details and specifications in VS Code",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/rillan-ai-workflow-forms.git"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rillan-ai-workflow-interface.startDetailCollection",
+        "title": "Start Detail Collection",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.showDetailCollector",
+        "title": "Show Detail Collector",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.quickCollection",
+        "title": "Quick Detail Collection",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.rillanDemo",
+        "title": "Rillan AI Form Demo",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.testSlideshow",
+        "title": "Test Slideshow Demo",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiGenerateForm",
+        "title": "AI Generate Form",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiTestFormResponse",
+        "title": "AI Test Form Response",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiMinimalForm",
+        "title": "AI Minimal Form Template",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiStandardForm",
+        "title": "AI Standard Form Template",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiComprehensiveForm",
+        "title": "AI Comprehensive Form Template",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiInvestigationForm",
+        "title": "AI Investigation Form",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiRefactoringForm",
+        "title": "AI Refactoring Form",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiEnhancedSpecTest",
+        "title": "🧪 Test Enhanced AI Form Specification",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiInvestigationFormEnhanced",
+        "title": "🔍 AI Investigation Form (Enhanced)",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiRefactoringFormEnhanced",
+        "title": "🔧 AI Refactoring Form (Enhanced)",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.aiInstructionFormEnhanced",
+        "title": "🤖 AI Instruction Form (Enhanced)",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.testAISuggestion",
+        "title": "🧪 Test AI Form Suggestion",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillanAI.showFormSuggestion",
+        "title": "Show AI Form Suggestion",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.startWorkflow",
+        "title": "🔄 Start AI Workflow",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.showActiveWorkflows",
+        "title": "📋 Show Active Workflows",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.testDynamicWorkflow",
+        "title": "🧪 Test Dynamic Workflow Control",
+        "category": "Rillan AI"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.startMCPServer",
+        "title": "🚀 Start MCP Server",
+        "category": "Rillan AI MCP"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.stopMCPServer",
+        "title": "🛑 Stop MCP Server",
+        "category": "Rillan AI MCP"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.restartMCPServer",
+        "title": "🔄 Restart MCP Server",
+        "category": "Rillan AI MCP"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.mcpServerStatus",
+        "title": "📊 MCP Server Status",
+        "category": "Rillan AI MCP"
+      },
+      {
+        "command": "rillan-ai-workflow-interface.testMCPServer",
+        "title": "🧪 Test MCP Server",
+        "category": "Rillan AI MCP"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "rillan-ai-workflow-interface.startDetailCollection",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.showDetailCollector",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.quickCollection",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.rillanDemo",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.testSlideshow",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiGenerateForm",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiTestFormResponse",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiMinimalForm",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiStandardForm",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiComprehensiveForm",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiInvestigationForm",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiRefactoringForm",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiEnhancedSpecTest",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiInvestigationFormEnhanced",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiRefactoringFormEnhanced",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.aiInstructionFormEnhanced",
+          "when": "true"
+        },
+        {
+          "command": "rillan-ai-workflow-interface.testAISuggestion",
+          "when": "true"
+        },
+        {
+          "command": "rillanAI.showFormSuggestion",
+          "when": "true"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Rillan AI",
+      "properties": {
+        "rillanAI.preferredComplexity": {
+          "type": "string",
+          "enum": [
+            "minimal",
+            "standard",
+            "comprehensive"
+          ],
+          "default": "standard",
+          "description": "Default complexity level for AI-generated forms"
+        },
+        "rillanAI.formStyle": {
+          "type": "string",
+          "enum": [
+            "slideshow",
+            "single_page",
+            "accordion"
+          ],
+          "default": "slideshow",
+          "description": "Preferred form presentation style"
+        },
+        "rillanAI.gridThreshold": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Maximum number of options to display as grid (vs dropdown)"
+        },
+        "rillanAI.autoAdvance": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically advance to next slide after completing current slide"
+        },
+        "rillanAI.allowAISuggestions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allow AI to proactively suggest forms during conversations"
+        },
+        "rillanAI.autoAcceptSuggestions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically accept AI form suggestions without user confirmation"
+        },
+        "rillanAI.suggestionNotificationStyle": {
+          "type": "string",
+          "enum": [
+            "popup",
+            "statusbar",
+            "both"
+          ],
+          "default": "popup",
+          "description": "How to display AI form suggestions to the user"
+        },
+        "rillanAI.autoStartMCPServer": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically start the MCP server when the extension activates"
+        },
+        "rillanAI.mcpServerPort": {
+          "type": "number",
+          "default": 3000,
+          "description": "Port for the MCP server (if using HTTP transport)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "mcp:start": "node mcp-server.js",
+    "mcp:test": "node test-mcp.js",
+    "mcp:install": "npm install @modelcontextprotocol/sdk"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^3.6.0",
+    "eslint": "^8.26.0",
+    "mocha": "^11.7.1",
+    "typescript": "^4.8.4"
+  }
+}

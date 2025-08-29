@@ -1,0 +1,19 @@
+{
+    "folders": [
+        {
+            "name": "Rillan AI Workflow Interface Extension",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "typescript.preferences.includePackageJsonAutoImports": "on",
+        "typescript.suggest.autoImports": true,
+        "extensions.ignoreRecommendations": false
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.vscode-typescript-next",
+            "ms-vscode.vscode-eslint"
+        ]
+    }
+}

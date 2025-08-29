@@ -1,6 +1,43 @@
 
 NOCTIVAGOUS DESKTOP OS
 
+The desktop itself seems to be a conundrum:
+what is it exactly?  It is more of a bulletin
+board for quick reference.  So when people
+saw that there was a need for more than one
+of them they conceptualized it not as framed 
+boards for the purpose of quick reference but
+as entirely separate workspaces being swapped
+out. For this reason a lot of people find
+multiple desktop workspace functionality of
+operating systems to be unpleasant. It would
+actually be more stable if the "desktop" were
+a carousel of bulletin boards (what it serves 
+as today) that is not associated with a specific
+workspace.  This carousel's loaded bulletin board
+would remained fixed whereas what could exist in
+virtual space outside of the computer monitor
+are the windows, with a conveyor system of moving
+them in and out depending on which area they are in.  
+In this way, a computer screen will be
+regarded as a spatial frame and the limitation
+of the frame would be acknowledged at the 
+bulletin board carousel level, what is now "the 
+desktop", and not having items outside of that
+frame.
+
+
+THE LIGHTWEIGHT APPS AND UTILITIES AS EXTENSIONS FOR THE FILE NAVIGATOR
+
+In the 1990s every app took a lot of computing resources
+but as time went on every app was treated the same
+even though many can just be built into the File Navigator
+as small extensions, which would reduce the number of
+apps in the app list for a task bar or dock.  An extension
+to the File Navigator also allows for other types of
+small utility programs that may just be for specific
+tasks.
+
 A calculator doesn't have to be opened as a separate app
 inside the File Navigator.  Relatively lightweight
 viewing and editing programs can be embedded into
@@ -86,10 +123,86 @@ or lightweight spreadsheet editor.
 
 
 
+——-----
+2024
+
+
+REPLACING DRAG AND DROP BETWEEN SOFTWARE APPLICATIONS
+instead of drag and drop between applications:
+intermediate spaces
+
+one application: “browse to find file”
+	  	“drag onto this area”
+
+instead 
+——> put flag in flag column or menu
+——> move to place of file 
+——> key-click from flag to the file (or type out what is in the key-label
 
 
 
 
 
+
+
+App icons are not on the windows, which
+would improve the app experience right away.
+
+Window thumbnails could appear in
+the menubar dropdown lists, for any app when it is active, and have
+corresponding keyboard shortcuts displayed.  The
+thumbmails could be much larger than the menubar.
+
+Also, the frontmost window of the app could provide
+thumbnails of other windows in the app or
+references to them in the titlebar.
+The windows are usually not referring to each
+other.  The frontmost window, no matter where it
+is, would make a frame starting from the corner
+that can make the largest rectangle on screen.
+You press a key and all other windows in that
+app are shown as thumbnails.
+
+
+
+
+
+APPLE
+
+—> Windows currently cannot be scaled down
+(shrunk) and moved around in a shrunken state.
+
+—> Folders cannot be made bigger than other
+folders.
+
+—> Image documents cannot be made bigger
+than other image documents.
+
+—> There are no tabbed views on the desktop
+for organizing (unless with add-ons).
+
+
+One section of the keyboard does not apply to
+one section of the screen, with another section
+of the keyboard sending information 
+to another screen.
+
+—
+
+
+
+Grouping or locking windows 
+together so that they move in step or are always available together.
+
+
+	exclusive index selection + horizontal stack —> segm control
+
+	multiple index selection + horizontal stack —> segm control
+
+
+----
+
+
+slider with L and R steppers
 
 

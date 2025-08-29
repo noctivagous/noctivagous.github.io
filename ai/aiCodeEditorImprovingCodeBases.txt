@@ -1,18 +1,44 @@
 Working with AI Code Editor / Improving a Code Base With AI Code Editors.
 
+DIALECTICAL INTERACTION WITH AI AGENTS
+
+The AI has various characteristics which is that, left by itself, 
+it has sensitive movement.  It can go to extremes without being
+given structure.  Once given an instruction it will suddenly
+go far in that direction with whatever guidance was given to it
+and its built-in assumptions.  This means that it really needs
+to be given workflow and process, not allowed to react and then act.
+If it often lacks common sense then it is important to elicit
+its questions.
+
 
 BUILDING UP THE SPECS BY HAVING THE AGENT MAKE QUESTIONS IN THE CHAT
 AND SUGGESTIONS.
 
+This is important because it helps you override the misunderstandings
+and assumptions the AI will have when it looks at things.  It will basically list
+off how it will go about things and you can correct its assumptions
+and guide it.
+
+
 --"ASK QUESTIONS OF ME [IN THIS AI CHAT] AND PUT THE RESULTS IN A TEXT FILE"
 
-1) This project is about [] and read [files].  Ask questions
+a) "This project is about [] and read [files].  Ask questions
 from me, macro, tech, etc., and put the results in a text
-file and we'll use that as the project orientation.
+file and we'll use that as the project orientation." 	--> project_orientation_questions.txt
 
-	--> project_orientation_questions.txt
+	-->
 
-2) Let's address some issues in [project_orientation_questions.txt]
+-- "Now that you have made the project orientation file, take information from these 
+reference and demo files and [either put in a separate file or apply
+to project_orientation_questions.txt] what you think they mean for the project.
+Here are my answers to your questions but also things you should look into.
+"
+
+
+-- GOING BACK TO FILES
+
+Let's address some issues in [project_orientation_questions.txt]
 and make a new file called [].  We want to address some
 other aspects  [].
 
@@ -47,11 +73,15 @@ program as we go is a much better approach. This allows for:
 - Risk reduction by validating core concepts early.
 
 
+NOTES ON THE AI AND CODE
+
+
+
 
 VARIABLE AND FUNCTION NAMING
 
 Make sure that variable and function names are descriptive,
-part of a plan, and have comments where needed
+part of a plan, and have comments where needed.
 
 
 FEATURES

@@ -544,7 +544,23 @@ Control theory it isn't always about the hands.)  The specific key map adapts to
 domain, but the division of labor is constant, yielding smoother workflows,
 faster command execution, and reduced repetitive strain.
 
----
+
+
+Use in Combination with Dial Knobs
+------------------------------------
+
+Instead of a keyboard key replacing
+the mouse click when the mouse is
+hovered over an element, use
+a dial knob like the ones that protrude
+from the side of devices.  This will allow
+for operations like rotation and scale
+on objects immediately underneath the mouse pointer.
+it will also allow controlling values inside
+text fields.
+
+
+
 
 Application to Tablet Interfaces
 --------------------------------
@@ -580,6 +596,34 @@ metaphor but a generalizable interaction pattern for both keyboard-based and
 touch-based environments. Tablets thus benefit from the same balanced operator
 set, enhancing predictability, symmetry, and ease of learning across platforms.
 
+
+Video Game Controllers
+-----------
+
+Video game controllers should be seen as activating
+functions.  One button activates the function for
+jump.  Another activates the function for whatever
+action the the onscreen character can perform.
+The arrows on the arrow pads are each functions
+for something.  In this way, the conventional video game
+controller is a pad of activators for functions or
+procedures.  There are sometimes combinations of
+them and sequences assigned to additional functions.
+
+A Bimodal Control example input device for video games
+would be a long slider, possibly 5 inches wide, oriented
+horizontal to the video game player and installed in a 
+stable way to a table.  The video game mechanic using this would involve one
+hand sliding the slider knob back and forth.  The left hand
+would have from 2-4 large buttons or pads located to the left of the slider
+to press while the right hand moves the knob back and forth.
+
+
+
+
+
+
+
 Conclusion
 ----------
 
@@ -590,3 +634,8 @@ Conclusion
 - Bimodal Control highlights a generalizable design principle: **the
   alternation of input activity between two separate physical locations**,
   leading to a new vista for user interfaces.
+  
+  
+  
+
+  

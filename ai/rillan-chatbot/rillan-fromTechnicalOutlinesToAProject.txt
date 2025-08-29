@@ -1,0 +1,85 @@
+If you want to make use of AI to generate large amounts of code for a project
+type with topics that you don't know that well, you really should have AI 
+collect information in forms along the way, because as a single individual, if
+you aren't working with a team on a project over an extended period of time and
+instead are trying to get AI to do the equivalent of a team's work for you, this
+means that there is a lot of detail under the surface.  Because even though you
+can put together a detailed outline of your project, the AI should collect your
+preferences and notify you of the implications.  You are trying to use AI to do
+more than what a person can do which means you are not going to see all of the
+details under the ground, the root system.  But the AI is capable in these ways.
+ The following project is relatively speculative and should have an AI close to
+the person along the way to discuss what is going on.
+
+
+AGENTIC CODE EDITOR
+
+"Somehow the AI code editors would be better off if they had access to a live
+version of the program running, even if it is partial. Maybe this would When the
+AI writes code, it could look at the stack of active memory and the internal
+graph being executed instead of just the lines of code in the text file to avoid
+mistakes.  This way it would act and edit based on what is going on.  This
+suggests that perhaps there could be a middle state of computer code (a
+different convention) in which the code, when loaded into the editor, is already
+loaded live in some respects, and then the AI code editor would work with both
+the file of text and the running program internals. "
+
+An agentic IDE run inside a Chrome extension and thus have access to the
+devtools. It would be an editor that stores projects in IndexDB but exports them
+when the user wants. It would run on the client end. It could use CodeMirror and
+then a GUI framework.
+
+The agent should not read entire files but still be able to act “agentically,”
+by representing code and documents as structured trees.
+
+-> This can be turned into an MCP server for existing code agents to use.
+
+It will interact with a parser and get varying levels of detail and then just
+send commands to the parser and review the results. Instead of the agent trying
+to “own” the source text, you make a parser the central authority. The agent
+then only needs to send commands to the parser, and review structured results at
+varying levels of detail. The agent doesn’t need to read files itself. It just
+sends intention-level commands to the parser (like list, insert, replace,
+remove), and then reviews the results to decide the next step.
+
+ command API (like a set of verbs the agent would send to the parser: list,
+ inspect, insert, replace, delete, generate). If the agent were naïvely walking
+ the tree and micromanaging every little node, it could easily end up making
+ many small calls to the parser. But the system can be designed to balance
+ granularity and efficiency.
+
+In practice: Use summaries and snapshots for observation. Use single intention
+commands for modifications. Let the parser handle detail, so the agent isn’t
+sending floods of micro-requests.
+
+TWO TREES: THE CODE TREE AND THELogic Tree maintaining two complementary trees:
+
+Code Tree (AST / Source Representation) - Produced by a parser. - Knows how the
+program is written (syntax, tokens, structure).
+
+Example: “this function adds two numbers using a + operator.”
+
+Logic Tree (Semantic Representation / Flow Tree) - Abstracted view of what the
+program does. -Captures intent and relationships, not syntax.
+
+Example: “this function computes the sum of its two parameters.”
+
+
+Workflow
+
+Parser builds AST.
+
+Mapper transforms AST → Logic Tree.
+
+Agent reasons on Logic Tree (e.g., “duplicate addition logic detected”).
+
+Agent maps intent back into a parser command against the AST.
+
+Parser generates code.
+
+✅ In this setup, the agent never confuses syntax with semantics. It can:
+
+Use the Code Tree to guarantee correct syntax.
+
+Use the Logic Tree to reason about program meaning, efficiency, and refactoring.
+

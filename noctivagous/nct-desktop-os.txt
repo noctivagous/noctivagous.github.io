@@ -38,6 +38,12 @@ put a dialog box up so that you can convert or operate
 on the selected image or do batch processing.  In this way
 the user can customize the File Navigator to his work.
 
+The goal of the OS is to have everything a user needs.
+But let's say that there is a certain kind
+of file viewing the user wants natively available inside
+the File Navigator. With an extension that serves this role,
+this will be available.
+
 
 THE LIGHTWEIGHT APPS AND UTILITIES AS EXTENSIONS FOR THE FILE NAVIGATOR
 

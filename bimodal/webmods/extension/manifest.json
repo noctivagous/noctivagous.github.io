@@ -1,0 +1,64 @@
+{
+    "manifest_version": 3,
+    "name": "KeyPilot",
+    "version": "0.3.4",
+    "description": "Keyboard-first navigation: F click link under cursor; C back; V forward; D delete mode; ESC cancel.",
+    "action": {
+        "default_title": "KeyPilot Minimal",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "storage",
+        "commands",
+        "tabs",
+        "debugger",
+        "scripting",
+        "userScripts"
+    ],
+    "commands": {
+        "toggle-extension": {
+            "suggested_key": {
+                "default": "Alt+K"
+            },
+            "description": "Toggle KeyPilot extension on/off"
+        },
+        "reload-extension": {
+            "suggested_key": {
+                "default": "Alt+R"
+            },
+            "description": "Reload KeyPilot extension"
+        }
+    },
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "devtools_page": "devtools.html",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "early-inject.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content-bundled.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    }
+}

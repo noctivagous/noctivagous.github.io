@@ -1,0 +1,535 @@
+/**
+ * KeyPilot Settings UI Styles
+ */
+
+/* Settings Container */
+.keypilot-settings-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.keypilot-settings-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.keypilot-settings-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.keypilot-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.keypilot-settings-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.keypilot-settings-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.keypilot-settings-close:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Tabs */
+.keypilot-settings-tabs {
+  display: flex;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  overflow-x: auto;
+}
+
+.keypilot-tab-button {
+  background: none;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.keypilot-tab-button:hover {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+.keypilot-tab-button.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  background: white;
+}
+
+/* Content */
+.keypilot-settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.keypilot-tab-panel {
+  display: none;
+}
+
+.keypilot-tab-panel.active {
+  display: block;
+}
+
+.keypilot-panel-description {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  color: #0c4a6e;
+}
+
+.keypilot-panel-description p {
+  margin: 0;
+}
+
+/* Settings Groups */
+.keypilot-settings-group {
+  margin-bottom: 32px;
+}
+
+.keypilot-settings-group h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.keypilot-setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.keypilot-setting-item:last-child {
+  border-bottom: none;
+}
+
+.keypilot-setting-item label {
+  font-weight: 500;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.keypilot-setting-item input[type="range"] {
+  width: 120px;
+  margin: 0 12px;
+}
+
+.keypilot-setting-item input[type="color"] {
+  width: 40px;
+  height: 32px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.keypilot-setting-item input[type="number"] {
+  width: 80px;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.keypilot-setting-item select {
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+}
+
+.keypilot-setting-value {
+  font-size: 12px;
+  color: #6b7280;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Keybindings Panel */
+.keypilot-keybindings-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.keypilot-keybinding-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.keypilot-keybinding-item:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.keypilot-keybinding-info {
+  flex: 1;
+}
+
+.keypilot-action-name {
+  display: block;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.keypilot-action-description {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.keypilot-keybinding-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.keypilot-key-display {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.keypilot-key-display.recording {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.keypilot-record-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.keypilot-record-btn:hover {
+  background: #2563eb;
+}
+
+/* Keybinding Recorder */
+.keypilot-keybinding-recorder {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000000;
+}
+
+.keypilot-recorder-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.keypilot-recorder-text {
+  font-weight: 500;
+  color: #92400e;
+}
+
+.keypilot-recorder-cancel {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Footer */
+.keypilot-settings-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.keypilot-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.keypilot-btn-primary {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.keypilot-btn-primary:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.keypilot-btn-secondary {
+  background: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.keypilot-btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+/* Notifications */
+.keypilot-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000001;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.keypilot-notification-success {
+  background: #10b981;
+  color: white;
+}
+
+.keypilot-notification-error {
+  background: #ef4444;
+  color: white;
+}
+
+.keypilot-notification-info {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .keypilot-settings-overlay {
+    padding: 10px;
+  }
+  
+  .keypilot-settings-modal {
+    max-height: 95vh;
+  }
+  
+  .keypilot-settings-content {
+    padding: 16px;
+  }
+  
+  .keypilot-setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .keypilot-keybinding-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .keypilot-keybinding-input {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .keypilot-settings-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .keypilot-btn {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .keypilot-settings-modal {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .keypilot-settings-header,
+  .keypilot-settings-tabs,
+  .keypilot-settings-footer {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .keypilot-settings-header h2 {
+    color: #f9fafb;
+  }
+  
+  .keypilot-tab-button {
+    color: #9ca3af;
+  }
+  
+  .keypilot-tab-button:hover {
+    color: #f3f4f6;
+    background: #374151;
+  }
+  
+  .keypilot-tab-button.active {
+    background: #1f2937;
+    color: #60a5fa;
+  }
+  
+  .keypilot-panel-description {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+    color: #dbeafe;
+  }
+  
+  .keypilot-settings-group h3 {
+    color: #f9fafb;
+    border-color: #374151;
+  }
+  
+  .keypilot-setting-item {
+    border-color: #374151;
+  }
+  
+  .keypilot-setting-item label {
+    color: #e5e7eb;
+  }
+  
+  .keypilot-keybinding-item {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .keypilot-keybinding-item:hover {
+    background: #1f2937;
+    border-color: #4b5563;
+  }
+  
+  .keypilot-action-name {
+    color: #f9fafb;
+  }
+  
+  .keypilot-key-display {
+    background: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+  
+  .keypilot-btn-secondary {
+    background: #374151;
+    color: #e5e7eb;
+    border-color: #4b5563;
+  }
+  
+  .keypilot-btn-secondary:hover {
+    background: #4b5563;
+    border-color: #6b7280;
+  }
+}

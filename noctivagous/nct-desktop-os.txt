@@ -26,6 +26,18 @@ bulletin board carousel level, what is now "the
 desktop", and not having items outside of that
 frame.
 
+BENEFITS OF EXTENSIONS IN THE FILE NAVIGATOR: NON-APPS (FILTERS)
+
+Let's say you download an extension for the File Navigator 
+that is a pack  of image conversion macros that can be installed in
+the File Navigator Extensions directory.  
+They can be based on a scripting language so you can examine 
+them and they can also include binary programs. When you 
+call one of them, they can through the scripting language
+put a dialog box up so that you can convert or operate
+on the selected image or do batch processing.  In this way
+the user can customize the File Navigator to his work.
+
 
 THE LIGHTWEIGHT APPS AND UTILITIES AS EXTENSIONS FOR THE FILE NAVIGATOR
 
@@ -119,6 +131,50 @@ various programs that are open that are extensions
 installed in the File Navigator such as calculator
 or lightweight spreadsheet editor.
 
+
+-- FILES AND DIRECTORIES --
+
+FILE AND DIRECTORY GROUPS AND SUBGROUPS
+
+Some files and directories should be in a collection
+within a directory.  And within that one or more subgroups
+can be established.
+
+Additionally, another feature of collections is
+that the user will be able to determine the listing
+order of the files so that they are.
+
+LISTING ORDER OF FILES AND DIRECTORIES WITHIN A DIRECTORY
+
+Even without using groups or collections within
+a directory, it can be possible for the user to determine
+the listing order of files and directories so that
+they show up in an organized way.  This would be
+helpful for establishing the linear presentation of
+a directory in a list view.
+
+
+THE FILE NAVIGATOR MASKS FILES AND DIRECTORIES
+
+The reality is that if a file navigator
+acknowledged configuration files within a directory
+it could render it in any way, including with
+behaviors.
+
+
+
+LAYERING THE CONCEPT OF READ/WRITE FOR GUI
+
+Let's say there is a file type called a form.
+It is read-only unless you open it inside
+a program to edit it.  But what are you editing
+about it?  The arrangement of the form or its values?
+The typical document, with the exception of PDF,
+is either a document you read or one that you edit.
+In a viewer, you are just reading the file
+and you usually can't save any values to it.  
+A PDF, for example, that you have to go into the 
+program that
 
 
 

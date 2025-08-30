@@ -1,0 +1,104 @@
+.nctlayout document
+
+Comes with a set of conventions
+for sizing and laying out containers
+for layouts but does not contain
+document data.  At the last level
+of the document can define the slot
+as a text area, image, video, or
+other media including id, label,
+and other attributes.
+
+role attributes allow defining
+a slot's behavior. relationship tags 
+set up automatic gui.
+
+this file format can be used
+by programs for print documents,
+and by app kits for gui layouts.
+
+the goal is to have visible scaffolding
+of different page layout conventions
+and a file format for easily laying
+things out or having a program lay
+them out.
+
+multiple layouts for the pages setup
+can be contained in layers in 
+the document, allowing for stacked
+designs, which can help with gui
+design that normally has single-layer
+design.  because it adheres to a grid system,
+even a gui design can span multiple layers
+in this document file format. for
+a page design or web page, the text
+may reside on one layer while there
+are multiple background layers
+underneath, all of which are animatable
+on a web page.
+
+LAYOUT TYPE
+	symmetrical grid
+	column-based 
+	module-based
+	
+		asymmetrical
+		sy
+		
+PAGES SETUP
+	single
+	recto+verso
+	web
+	viewport
+
+GRID FEATURES
+	baseline grid
+
+FEATURES
+	running heads
+	captions
+	folio numbers
+	title
+	body text
+
+	LOCATION
+	STYLE PROPERTIES
+		font family
+		font size
+		bold italic
+	
+	
+MARGINS
+	head
+	foot
+	left
+	right
+	module
+	
+TEXT STYLES
+	
+
+PRINT PAGE SIZE
+ISO 216 / DIN 476
+
+
+constant variables
+
+RATIO
+	phi - golden section
+
+RECTANGLE
+	square [1:1]
+	goldenRectangle [8:13]
+	
+SEQUENCE
+	function
+	fibonacci
+	
+SEQUENCE-OPERATION
+	subdivide
+	
+	
+	
+
+

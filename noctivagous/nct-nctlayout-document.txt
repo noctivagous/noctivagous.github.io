@@ -274,14 +274,15 @@ ARTICLECOLUMNGROUP inherits from SLOTGROUP
 	
 TABLE for convenient layout of tables
 
-TEMPLATE
+
+LAYOUTFROMSTOCK
 	in keeping with the goals of convenience,
 	this tag allows immediate construction of
 	a layout tied to the document data section.
 	the document data section can also just
 	reference a file of text.
 	
-	<template type="magazine" primary-color="#0055A4" slots="heading,body,image"
+	<layoutfromstock type="magazine" primary-color="#0055A4" slots="heading,body,image"
 	datasource="documentData1" datamapping=""/>
 
 
@@ -374,6 +375,33 @@ EMBEDDED ATTRIBUTES
 		buttons, hyperlinks, sliders.
 	text-editable
 		text fields
+
+CORE DRAWING CLASSES AND UTILS
+
+	LAYOUTFRAME <layoutframe-core>
+		the viewport initially for
+		a web browser
+
+	BOXCONTENT <boxcontent-core>
+
+	LAYOUTBOX INHERITS FROM LAYOUTFRAME
+		CARRIES BOXCONTENT
+
+	HORIZONTAL LINE REPEATER <horizontalLineRepeater-utils>
+		drawing class for horizontal lines
+		such as for baseline grids	
+	VERTICAL LINE REPEATER <verticalLineRepeater-utils>
+		such as
+		
+	GRID-MAKER <gridmaker-utils>
+		all-purpose drawing class
+			dots
+			lines
+			crosshair
+			combination set
+
+		
+		
 
 FUTURE
 

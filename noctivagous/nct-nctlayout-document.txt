@@ -34,6 +34,22 @@ such as a column grid with 12pt baseline
 as well as hierarchy. when loaded in a viewer, if it is
 empty it will show a column grid.
 
+in a .nctlayout document, many things are
+prioritized that are not on the web such
+as table styling and allowing different
+customizations.  standard concerns a professional
+print designer has should be included.
+it is usually brochure design where print
+design is found using many principles
+of the profession.
+
+the buildout of the document type includes
+how it will be viewed, including toggling
+of different aspects and layers. the built-in
+viewer for web will when asked
+show a design style guide page generated 
+from the document.
+
 
 <nctlayout>
 	<pagesetup></pagesetup>
@@ -252,8 +268,12 @@ SLOTGROUP inherits from GROUP
 ARTICLECOLUMNGROUP inherits from SLOTGROUP
 	spans multiple columns and flows
 	the text.  a configurable control.
+
+
+
 	
-	
+TABLE for convenient layout of tables
+
 TEMPLATE
 	in keeping with the goals of convenience,
 	this tag allows immediate construction of
@@ -354,11 +374,29 @@ FUTURE
 	of a carousel and an
 	top tabs.
 
-	behavior relationships:
-	
-	<behaviorRelationship target="box2" source="button1"
-	action="animate">
+	INTERACTIVE / LOGIC
 
+		TRIGGER 
+		can sit anywhere in the layer but often inside
+		the element that it is assigned to.
+	
+  	   	<trigger id="macro1" keydownsequence="Ctrl+Shift+S,3" target="app" action="showAlert"
+  	   	data="title:'hello',description:'this is an alert'">
+  	   	
+  	   		assignedto="#button1"
+  	   		
+  	   		
+
+		behavior relationships:
+	
+		<behaviorRelationship target="box2" source="button1"
+		action="animate">
+
+		SWITCHVIEW
+			An index or indices 
+
+		TABVIEW inherits from SWITCHVIEW
+	
 	
 NEXT STEPS:
 

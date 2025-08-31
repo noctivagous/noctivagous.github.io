@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KeyPilot </title>
+    <link rel="stylesheet" href="styles/popup.css" />
+</head>
+
+<body>
+    <div class="wrap" style="width:550pt">
+        <header>
+            <h1>KeyPilot</h1><span class="version">0.05</span>
+            <div class="header-controls">
+                <div class="toggle-container" id="toggle-container">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="extension-toggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="unavailable-message" id="unavailable-message" style="display: none;">
+                    <span class="pill unavailable">UNAVAILABLE</span>
+                </div>
+                <span id="status" class="pill ok">ON</span>
+            </div>
+        </header>
+        <div class="keyboard-container">
+            <object data="img/keyboard-withlabels2.svg" type="image/svg+xml" class="keyboard-svg" aria-label="Interactive keyboard layout showing key assignments">
+                <!-- Fallback content if SVG fails to load -->
+                <div class="keyboard-fallback">
+                    <p>Keyboard layout not available. Please check your connection.</p>
+                </div>
+            </object>
+        </div>
+        
+         <section class="legend-panel" aria-labelledby="legend-title">
+      <h2 id="legend-title">Assigned Keys</h2>
+      <table class="legend-table" role="table">
+        <thead>
+          <tr><th>Key / Combo</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>F</td><td>Click Element</td></tr>
+          <tr><td>G</td><td>Click Element into New Tab</td></tr>
+
+          <tr><td>Alt + K</td><td>Toggle On/Off</td></tr>
+          <tr><td>`</td><td>Go to Site Root</td></tr>
+          <tr><td>Q</td><td>Move To Previous Tab</td></tr>
+          <tr><td>W</td><td>Move To Next Tab</td></tr>
+
+          <tr><td>1</td><td>Close Tab</td></tr>
+          <tr><td>Esc</td><td>Exit Focus</td></tr>
+          <tr><td>S</td><td>Go Back (History)</td></tr>
+          <tr><td>R</td><td>Go Forward (History)</td></tr>
+          <tr><td>D</td><td>Delete Mode</td></tr>
+          <tr><td>H</td><td>Select Text Mode</td></tr>
+        </tbody>
+      </table>
+    </section>
+        
+        <footer>
+            <small>Keyboard-first helper. Works in shadow DOM.</small>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

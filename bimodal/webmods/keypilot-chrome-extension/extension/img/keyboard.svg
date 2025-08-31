@@ -1,0 +1,270 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+
+  <defs>
+    <linearGradient id="bggrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e6e6f5"/>
+      <stop offset="55%" stop-color="#1b2441"/>
+      <stop offset="100%" stop-color="#0f1530"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#0b1022" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+<rect width="100%" height="100%" fill="url(#bggrad)"/>
+<text x="40" y="60" font-family="Inter, system-ui" font-size="48" font-weight="700" fill="#ffffff" opacity="0.92">keypilot</text>
+<g filter="url(#shadow)">
+<rect x="40" y="210" rx="22" ry="22" width="1120" height="420" fill="#ffffff" stroke="rgba(255,255,255,0.3)" />
+</g>
+<g>
+<rect x="64" y="234" rx="12" ry="12" width="70" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="99.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">esc</text>
+</g>
+<g>
+<rect x="144" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="174.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">1</text>
+</g>
+<g>
+<rect x="214" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="244.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">2</text>
+</g>
+<g>
+<rect x="284" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="314.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">3</text>
+</g>
+<g>
+<rect x="354" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="384.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">4</text>
+</g>
+<g>
+<rect x="424" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="454.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">5</text>
+</g>
+<g>
+<rect x="494" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="524.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">6</text>
+</g>
+<g>
+<rect x="564" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="594.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">7</text>
+</g>
+<g>
+<rect x="634" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="664.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">8</text>
+</g>
+<g>
+<rect x="704" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="734.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">9</text>
+</g>
+<g>
+<rect x="774" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="804.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">0</text>
+</g>
+<g>
+<rect x="844" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="874.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">-</text>
+</g>
+<g>
+<rect x="914" y="234" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="944.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">=</text>
+</g>
+<g>
+<rect x="984" y="234" rx="12" ry="12" width="160" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="1064.0" y="270.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Backspace</text>
+</g>
+<g>
+<rect x="64" y="304" rx="12" ry="12" width="110" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="119.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Tab</text>
+</g>
+<g>
+<rect x="184" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="214.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Q</text>
+</g>
+<g>
+<rect x="254" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="284.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">W</text>
+</g>
+<g>
+<rect x="324" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="354.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">E</text>
+</g>
+<g>
+<rect x="394" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="424.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">R</text>
+</g>
+<g>
+<rect x="464" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="494.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">T</text>
+</g>
+<g>
+<rect x="534" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="564.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Y</text>
+</g>
+<g>
+<rect x="604" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="634.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">U</text>
+</g>
+<g>
+<rect x="674" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="704.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">I</text>
+</g>
+<g>
+<rect x="744" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="774.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">O</text>
+</g>
+<g>
+<rect x="814" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="844.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">P</text>
+</g>
+<g>
+<rect x="884" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="914.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">[</text>
+</g>
+<g>
+<rect x="954" y="304" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="984.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">]</text>
+</g>
+<g>
+<rect x="1024" y="304" rx="12" ry="12" width="90" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="1069.0" y="340.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">\</text>
+</g>
+<g>
+<rect x="64" y="374" rx="12" ry="12" width="130" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="129.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Caps</text>
+</g>
+<g>
+<rect x="204" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="234.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">A</text>
+</g>
+<g>
+<rect x="274" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="304.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">S</text>
+</g>
+<g>
+<rect x="344" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="374.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">D</text>
+</g>
+<g>
+<rect x="414" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="444.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">F</text>
+</g>
+<g>
+<rect x="484" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="514.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">G</text>
+</g>
+<g>
+<rect x="554" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="584.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">H</text>
+</g>
+<g>
+<rect x="624" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="654.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">J</text>
+</g>
+<g>
+<rect x="694" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="724.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">K</text>
+</g>
+<g>
+<rect x="764" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="794.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">L</text>
+</g>
+<g>
+<rect x="834" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="864.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">;</text>
+</g>
+<g>
+<rect x="904" y="374" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="934.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">'</text>
+</g>
+<g>
+<rect x="974" y="374" rx="12" ry="12" width="150" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="1049.0" y="410.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Enter</text>
+</g>
+<g>
+<rect x="64" y="444" rx="12" ry="12" width="170" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="149.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Shift</text>
+</g>
+<g>
+<rect x="244" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="274.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Z</text>
+</g>
+<g>
+<rect x="314" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="344.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">X</text>
+</g>
+<g>
+<rect x="384" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="414.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">C</text>
+</g>
+<g>
+<rect x="454" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="484.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">V</text>
+</g>
+<g>
+<rect x="524" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="554.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">B</text>
+</g>
+<g>
+<rect x="594" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="624.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">N</text>
+</g>
+<g>
+<rect x="664" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="694.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">M</text>
+</g>
+<g>
+<rect x="734" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="764.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">,</text>
+</g>
+<g>
+<rect x="804" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="834.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">.</text>
+</g>
+<g>
+<rect x="874" y="444" rx="12" ry="12" width="60" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="904.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">/</text>
+</g>
+<g>
+<rect x="944" y="444" rx="12" ry="12" width="170" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="1029.0" y="480.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Shift</text>
+</g>
+<g>
+<rect x="64" y="514" rx="12" ry="12" width="100" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="114.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Ctrl</text>
+</g>
+<g>
+<rect x="174" y="514" rx="12" ry="12" width="90" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="219.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Opt</text>
+</g>
+<g>
+<rect x="274" y="514" rx="12" ry="12" width="90" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="319.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Cmd</text>
+</g>
+<g>
+<rect x="374" y="514" rx="12" ry="12" width="442" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="595.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="500" font-size="20" fill="#2a2f3a">modifier</text>
+</g>
+<g>
+<rect x="826" y="514" rx="12" ry="12" width="90" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="871.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Cmd</text>
+</g>
+<g>
+<rect x="926" y="514" rx="12" ry="12" width="90" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="971.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Opt</text>
+</g>
+<g>
+<rect x="1026" y="514" rx="12" ry="12" width="90" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="1071.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Fn</text>
+</g>
+<g>
+<rect x="1126" y="514" rx="12" ry="12" width="100" height="60" fill="#f4f7fb" stroke="#d8dee8" stroke-width="2"/>
+<text x="1176.0" y="550.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="normal" font-size="20" fill="#2a2f3a">Ctrl</text>
+</g>
+<circle cx="36" cy="264" r="18" fill="#5b6cff"/>
+<text x="36" y="270" text-anchor="middle" font-family="Inter, system-ui" font-weight="700" font-size="16" fill="#ffffff">1</text>
+<g>
+<rect x="840" y="192" rx="14" ry="14" width="220" height="34" fill="#e8ebff" />
+<text x="950" y="214" text-anchor="middle" font-family="Inter, system-ui" font-size="14" font-weight="600" fill="#4f5bd5">move focus special tab</text>
+</g>
+<text x="600.0" y="660" text-anchor="middle" font-family="Inter, system-ui" font-size="14" fill="#c9d1ea">Chme Poventab</text>
+</svg>

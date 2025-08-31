@@ -2,15 +2,36 @@
 
 Comes with a set of conventions
 for sizing and laying out containers
-for layouts but does not contain
-document data.  At the last level
-of the document can define the slot
-as a text area, image, video, or
+for layouts but does not focus on
+document data.  In the <layout> part of the document 
+define the slot as a text area, image, video, or
 other media including id, label,
-and other attributes.
+and other attributes but these don't
+contain the data. document data is contained in a separate
+are of the document called <documentdata>
+and its tags are matched with the
+corresponding ids in the layout area.
+
+<nctlayout>
+	<pagesetup></pagesetup>
+	<layouts>
+		<layout>
+			<layer>
+				<layoutGrids>
+				<!-- corresponds to layout layer -->
+				<layoutGridType premade="module"></layoutGridType>
+				<layoutGridType premade="column"></layoutGridType>
+				</layoutDefinition>
+			</layer>
+		</layout>
+	</layouts>
+	<documentdata>
+		
+	</documentdata>
+</nctlayout>
 
 role attributes allow defining
-a slot's behavior. relationship tags 
+a layout slot's behavior. relationship tags 
 set up automatic gui.
 
 this file format can be used
@@ -60,6 +81,7 @@ FEATURES
 	folio numbers
 	title
 	body text
+	text block
 
 	LOCATION
 	STYLE PROPERTIES
@@ -97,7 +119,12 @@ SEQUENCE
 	
 SEQUENCE-OPERATION
 	subdivide
+
+NCTLAYOUT VIEWER FEATURES
 	
+	background grid
+	baseline grid - yellow
+	module grid - light blue
 	
 	
 

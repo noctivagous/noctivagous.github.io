@@ -311,6 +311,10 @@ FUTURE
 	of a carousel and an
 	top tabs.
 
+	behavior relationships:
+	
+	<behaviorRelationship target="box2" source="button1"
+	action="animate">
 
 	
 NEXT STEPS:

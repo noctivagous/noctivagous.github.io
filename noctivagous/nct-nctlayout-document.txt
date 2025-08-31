@@ -281,7 +281,28 @@ Makes web viewer a design tool; visualizes print features
 for web devs. Use  Canvas for overlays (e.g., color swatches, 
 LAYOUTBOX borders). Add UI for toggles and AI prompt input. 
 Export as HTML or PDF.
+
+
+MANUAL GRID SCAFFOLD
+	place a graphic on a grid,
+	with 30 cols and 40 rows,
+	no margins.
 	
+	<gridscaffold id="dotGrid" cols="30" rows="40" 
+	spacing="offset" location="intersection" operation="repeat" sourceData="dotCircle.svg">
+
+	location="intersection" puts the shape at line intersections
+	
+	access lines and cells of the grid with another tag,
+	for custom placement of objects.
+	
+
+EMBEDDED ATTRIBUTES
+	clickable
+		buttons, hyperlinks, sliders.
+	text-editable
+		text fields
+
 FUTURE
 
 	gui relationship tags 
@@ -294,7 +315,9 @@ FUTURE
 	
 NEXT STEPS:
 
-	Start with a proof-of-concept: a simple JS parser that renders a basic .nctlayout file in a browser.
+	Start with a proof-of-concept: a simple JS parser that 
+	renders a basic .nctlayout file in a browser. A limited
+	set of tags for the first proof-of-concept demo.
 
 	Use JavaScript’s DOMParser to parse XML, generating HTML
 	Responsiveness: Use CSS media queries for viewport scaling

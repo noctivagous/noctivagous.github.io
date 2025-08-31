@@ -1,5 +1,22 @@
 .nctlayout document
 
+a layout document file format based
+on the field of print design
+and uses terms within the profession.
+the file format is supposed to provide 
+conveniences that embed print design, such 
+as a color scheme defined by one color and 
+then operations produce the color scheme
+(e.g., complementary, analogous, or 
+monochromatic schemes), enabling rapid 
+creation of professional layouts.
+a web designer can make one of these 
+documents with AI and immediately have a 
+web page.  the beginning stage of
+this is to get a layout document running
+and it will provide programmatic hooks 
+inside the document.
+
 Comes with a set of conventions
 for sizing and laying out containers
 for layouts but does not focus on
@@ -12,6 +29,8 @@ are of the document called <documentdata>
 and its tags are matched with the
 corresponding ids in the layout area.
 
+
+
 <nctlayout>
 	<pagesetup></pagesetup>
 	<layouts>
@@ -21,7 +40,7 @@ corresponding ids in the layout area.
 				<!-- corresponds to layout layer -->
 				<layoutGridType premade="module"></layoutGridType>
 				<layoutGridType premade="column"></layoutGridType>
-				</layoutDefinition>
+				</layoutGrids>
 			</layer>
 		</layout>
 	</layouts>
@@ -31,8 +50,7 @@ corresponding ids in the layout area.
 </nctlayout>
 
 role attributes allow defining
-a layout slot's behavior. relationship tags 
-set up automatic gui.
+a layout slot's behavior. 
 
 this file format can be used
 by programs for print documents,
@@ -75,19 +93,62 @@ PAGES SETUP
 GRID FEATURES
 	baseline grid
 
-FEATURES
-	running heads
-	captions
-	folio numbers
-	title
-	body text
-	text block
+FEATURES  <features>
+	running heads  <runninghead>
+	captions  <caption>
+	folio numbers <pagenumber>
+	title	<heading>
+	body text 
+	text block <textblock>
 
-	LOCATION
+
 	STYLE PROPERTIES
 		font family
 		font size
 		bold italic
+
+COLOR SCHEME <colorscheme>
+	<colorscheme id="analogous1" base-color="#0055A4" operation="analogous" count="3"/>
+
+	operation
+		complementary, 
+		triadic, 
+		split-complementary, 
+		analogous
+		monochromatic.
+
+	allows automatic darkening and lightening of font style groups
+	in the print hierarchy of the document.
+	they can be automated with the typographyscale tag.
+	or custom operations (e.g., darken by 10% for typography)
+	
+TYPOGRAPHY <typography>
+
+	TYPOGRAPHY SCALE
+	<typographyscale base-size="16pt" ratio="golden" levels="5" apply="colorscheme"/> in <features>
+	
+	effect: Generates font sizes (e.g., 16pt, 25.888pt, 41.856pt) 
+	via JS. Map to CSS: h1 { font-size: 2.618rem; }. 
+	Inherit via hierarchy (e.g., style-inherit="font-size").
+	
+	<typographyscale base-size="16pt" ratio="golden" levels="5" 
+	apply="colorscheme:analogous1"/> in <typography>.
+	 Link font sizes to color scheme (e.g., larger fonts get darker shades).
+	
+	
+REGISTRATION MARKS (PRINT)
+	located in <pagesetup>
+	<registrationmarks color="black" size="5mm"/> and <colorbars type="cmyk"/>	
+	Supports professional print prep; hides in web view unless debugging.
+
+BOX GENERATION <boxgeneration>
+	Since the data is contained in the <documentdata> section,
+	boxes can be generated according to data with 
+	SEQUENCE
+	
+	<boxgeneration sequence="fibonacci" count="4" 
+	slot-type="text"/> under <layout>. 
+	Generate slots with sizes based on sequence (e.g., Fibonacci ratios).
 	
 	
 MARGINS
@@ -96,9 +157,84 @@ MARGINS
 	left
 	right
 	module
+
+PROGRAMMATIC HOOKS <hook>
+	<hook event="render" script="bindData()"/> 
+	in <nctlayout> for JS callbacks, such as
+	inside a button. 
 	
-TEXT STYLES
 	
+
+TEXT STYLES <textstyle>
+
+	incorporating print design 
+	typography features that 
+	manage how text flows and appears,
+	particularly to prevent undesirable 
+	formatting issues and ensure 
+	professional presentation. 
+	 	
+	widowcontrol <widowcontrol>
+		In print design, a "widow" is a single word or short line at the end of a paragraph that appears alone at the top of a new page or column, creating an unbalanced look
+		<widowcontrol lines="2"/> specifies that at least two lines of a paragraph must appear together at the top of a page/column to avoid widows.
+		Maps to CSS widows: 2;
+	
+	orphancontrol <orphancontrol>
+	
+		<orphancontrol lines="1"/> ensures at least one line (though typically two or more) stays with the paragraph at the bottom of a page/column.
+		Maps to CSS orphans: 1;,
+	
+	justification <justification> 
+		Justification controls how text aligns within a text block. "Ragged-right" (also called left-aligned) means text aligns flush left with uneven right edges, common in informal or modern print layouts for readability. Other types could include justify (even edges on both sides), flush-left, flush-right, or center.
+		Provides typographic flexibility to match design intent (e.g., formal justified text for books vs. ragged-right for brochures).
+		<justification type="ragged-right"/>
+		
+		Maps to CSS text-align: left; for ragged-right. Full justification (text-align: justify;) may need browser polyfills for advanced hyphenation or spacing control.
+		
+
+
+	
+	These features are common in print design 
+	(e.g., books, magazines) to control 
+	text block aesthetics and readability. 
+	The goal is to embed these in .nctlayout’s 
+	XML structure, allowing precise control 
+	in print layouts while mapping to 
+	web technologies (CSS) for rendering,
+	with fallbacks or polyfills to handle browser limitations.
+	
+	
+LAYOUTBOX - base class for slot and
+allows nesting. it can be used by itself to assist in viewing
+layouts before any media.  it is a 
+placeholder for empty slots, a 
+debugging tool for grid visualization.
+it can be utilized or not and just
+direct placement of objects instead.
+
+	it can be laid out relative to the grid installed
+		left:column[0]
+		right:left:column[3]
+
+	LOCATION
+		attach to: 
+	
+	
+TEMPLATE
+	in keeping with the goals of convenience,
+	this tag allows immediate construction of
+	a layout tied to the document data section.
+	the document data section can also just
+	reference a file of text.
+	
+	<template type="magazine" primary-color="#0055A4" slots="heading,body,image"
+	datasource="documentData1" datamapping=""/>
+
+
+	.nctlayout files can automatically set text controls 
+	based on layout type (e.g., ragged-right for brochures, justify for books
+
+
 
 PRINT PAGE SIZE
 ISO 216 / DIN 476
@@ -122,10 +258,131 @@ SEQUENCE-OPERATION
 
 NCTLAYOUT VIEWER FEATURES
 	
-	background grid
-	baseline grid - yellow
-	module grid - light blue
+	expected toggles for a viewer
+	of this page, a mod which should be
+	available when any .nctlayout is
+	rendered (built-in debugging).
+	for any page, enter nctLayoutViewer()
+	and GUI toggles show up
 	
-	
+		background grid
+		baseline grid - yellow
+		module grid - light blue
+		color scheme - (e.g., highlight generated colors)
+		layout boxes
+		print marks
 
+	therefore has built-in export
+	to document file formats like
+	pdf.
+	
+Support real-time AI preview (e.g., update on prompt change).
+Makes web viewer a design tool; visualizes print features 
+for web devs. Use  Canvas for overlays (e.g., color swatches, 
+LAYOUTBOX borders). Add UI for toggles and AI prompt input. 
+Export as HTML or PDF.
+	
+FUTURE
+
+	gui relationship tags 
+	set up automatic gui
+	by allowing definition
+	of a carousel and an
+	top tabs.
+
+
+	
+NEXT STEPS:
+
+	Start with a proof-of-concept: a simple JS parser that renders a basic .nctlayout file in a browser.
+
+	Use JavaScript’s DOMParser to parse XML, generating HTML
+	Responsiveness: Use CSS media queries for viewport scaling
+
+
+### SECTION NEEDS TO BE  UPDATED TO REFLECT ABOVE INFORMATION:
+
+The goal is to enable nested structures that reflect print design’s visual hierarchy (e.g., headline > subhead > body) and layout hierarchy (e.g., nested grids or sections), with inheritance of properties and web rendering via HTML/CSS. The table below outlines proposed additions, their benefits for web rendering, and implementation ideas.
+
+| Component                  | Proposed Hierarchy Additions                                                                 | Web Benefits                                                                 | Implementation Ideas                                                                 |
+|----------------------------|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| **Overall Structure (<nctlayout>)** | Add optional <hierarchy> section to define global inheritance rules (e.g., default font or margin propagation). Allow nested <nctlayout> tags for modular sub-documents. | Supports composable layouts; aligns with web component models (e.g., Web Components). | Use XML parser (e.g., DOMParser) to process nested <nctlayout> tags. Add attributes like `inherit="font margin"` to control hierarchy behavior. |
+| **Layouts and Layers**    | Support nested <layer> tags: `<layer id="parent"><layer id="child">...</layer></layer>`. Add `parent-id` attribute for relational hierarchy without nesting. | Enables multi-layered web GUIs; supports CSS animations for nested layers. | Map to nested `<div>` elements with CSS `z-index` for stacking. Use `data-parent-id` for JS-driven relationships (e.g., event delegation). |
+| **Layout Grids**          | Allow nested <layoutGridType> (e.g., `<layoutGridType type="module"><layoutGridType type="column">...</layoutGridType></layoutGridType>`). Introduce <group> for logical slot grouping. | Facilitates sub-grids for responsive design; aligns with CSS Grid’s subgrid. | Render as CSS Grid with `grid-template-areas`. Use `inherit-from="parent"` for properties like `baseline-grid`. |
+| **Slots and Media**       | Enable nested slots: `<slot id="parent" type="section"><slot id="child" type="text">...</slot></slot>`. Add attributes like `role="heading1"` for semantic hierarchy. | Maps to HTML semantics (<section>, <h1>); supports accessibility (ARIA roles). | Generate `<section>` or `<article>` for parent slots, `<h1>`, `<p>` for children. Use `role` to apply ARIA attributes (e.g., `aria-level="1"`). |
+| **Document Data (<documentdata>)** | Support hierarchical data: `<data id="parent"><data id="child" parent-id="parent">...</data>`. Link to slots via IDs. | Enables dynamic content updates; supports nested data binding in web apps. | Use JS to map data IDs to slots (e.g., `querySelector("[data-id]")`). Support JSON-like nesting for web APIs. |
+| **Features (e.g., Margins, Text Styles)** | Add inheritance attributes: `<slot style-inherit="font-family font-size">`. Define hierarchy-aware styles (e.g., `font-size` scales by level: h1 > h2). | Ensures consistent typography; mirrors print’s visual hierarchy in CSS. | Map to CSS custom properties (e.g., `--base-font-size`) with cascading rules. Use `:where([role="heading1"])` for level-specific styles. |
+| **Relationships and Roles** | Use `role` attributes (e.g., `role="heading1"`, `role="body"`) to define print hierarchy. Add `relationship` tags for parent-child links (e.g., `<relationship parent="slot1" child="slot2"/>`). | Automates web interactivity (e.g., collapsible sections); enhances semantics. | Translate `role` to HTML tags (<h1>, <p>). Use JS (e.g., Alpine.js) for dynamic relationships like toggling children. |
+| **Print/Web Specifics**   | Map print sizes (e.g., ISO 216 A4) to CSS units (em/rem) for web scaling. Support sequence-based hierarchies (e.g., Fibonacci for heading sizes). | Ensures print-to-web consistency; supports computational layouts. | Use `@media print` for ISO sizes, `calc()` for ratios (e.g., golden section). JS for dynamic sequence calculations. |
+| **Viewer Features**       | Extend web-based viewer to display hierarchical grids (e.g., toggle baseline in yellow, module in light blue). Support hierarchy visualization (e.g., tree view). | Aids web-based editing; visualizes nested structures for designers. | Use Canvas/SVG for grid overlays. Add tree-view UI (e.g., nested <ul>) for hierarchy inspection. |
+
+### Implementation Details
+1. **XML Structure Extension**:
+   ```xml
+   <nctlayout>
+       <pagesetup type="web" size="A4" responsive="true"/>
+       <hierarchy inherit="font-family margin"/>
+       <layouts>
+           <layout>
+               <layer id="main">
+                   <layoutGrids>
+                       <layoutGridType type="module">
+                           <layoutGridType type="column" inherit-from="parent"/>
+                       </layoutGridType>
+                   </layoutGrids>
+                   <slot id="section1" role="section">
+                       <slot id="heading1" role="heading1" style-inherit="font-family"/>
+                       <slot id="body1" role="body" parent-id="section1"/>
+                   </slot>
+               </layer>
+           </layout>
+       </layouts>
+       <documentdata>
+           <data id="heading1">Main Title</data>
+           <data id="body1" parent-id="heading1">Body text...</data>
+       </documentdata>
+   </nctlayout>
+   ```
+   This nests a heading and body within a section, with inheritance for font styles.
+
+2. **Web Rendering**:
+   - **Parser**: Use JavaScript’s DOMParser to parse XML, generating HTML:
+     ```html
+     <div class="nct-root">
+         <section data-id="section1">
+             <h1 data-id="heading1">Main Title</h1>
+             <p data-id="body1">Body text...</p>
+         </section>
+     </div>
+     ```
+   - **CSS**: Define hierarchical styles:
+     ```css
+     :where([role="heading1"]) { font-size: 2em; font-family: var(--base-font); }
+     :where([role="body"]) { font-size: 1em; margin-left: inherit; }
+     .nct-root { display: grid; grid-template-areas: "section1"; }
+     ```
+   - **JS**: Dynamically bind data and handle relationships:
+     ```javascript
+     document.querySelectorAll("[data-id]").forEach(slot => {
+         const data = documentdata.find(d => d.id === slot.dataset.id);
+         slot.textContent = data?.content || "";
+     });
+     ```
+
+3. **Web Features**:
+   - **Responsiveness**: Use CSS media queries for viewport scaling:
+     ```css
+     @media (max-width: 600px) {
+         [role="section"] { grid-template-columns: 1fr; }
+     }
+     ```
+   - **Accessibility**: Map roles to ARIA (e.g., `role="heading1"` → `aria-level="1"`).
+   - **Interactivity**: Add JS for collapsible sections or animated layer transitions.
+
+4. **Viewer**: Build a web app (e.g., with React or Vue) to toggle grids and visualize hierarchy as a collapsible tree. Export to HTML/CSS or PDF via jsPDF.
+
+### Next Steps
+- **Prototype**: Start with a simple JS parser to render a nested heading/body layout in a browser, using the above XML example.
+- **Feedback**: If you have a sample .nctlayout file or specific print hierarchy (e.g., magazine-style with headline, subhead, columns), I can refine the structure or provide code snippets.
+- **Priorities**: Should we focus on a specific aspect (e.g., typography inheritance, nested grids, or viewer UI)?
 

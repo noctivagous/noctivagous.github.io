@@ -29,6 +29,10 @@ are of the document called <documentdata>
 and its tags are matched with the
 corresponding ids in the layout area.
 
+an .nctlayout document comes with defaults, 
+such as a column grid with 12pt baseline
+as well as hierarchy. when loaded in a viewer, if it is
+empty it will show a column grid.
 
 
 <nctlayout>
@@ -162,8 +166,13 @@ PROGRAMMATIC HOOKS <hook>
 	<hook event="render" script="bindData()"/> 
 	in <nctlayout> for JS callbacks, such as
 	inside a button. 
+
+LAYOUT
+	a whole set of elements arranged on a layout
 	
-	
+LAYER
+	a layer within the layout.
+
 
 TEXT STYLES <textstyle>
 
@@ -173,6 +182,9 @@ TEXT STYLES <textstyle>
 	particularly to prevent undesirable 
 	formatting issues and ensure 
 	professional presentation. 
+	
+	the library should implement 
+	browser polyfills for advanced hyphenation and spacing control.
 	 	
 	widowcontrol <widowcontrol>
 		In print design, a "widow" is a single word or short line at the end of a paragraph that appears alone at the top of a new page or column, creating an unbalanced look
@@ -185,11 +197,14 @@ TEXT STYLES <textstyle>
 		Maps to CSS orphans: 1;,
 	
 	justification <justification> 
-		Justification controls how text aligns within a text block. "Ragged-right" (also called left-aligned) means text aligns flush left with uneven right edges, common in informal or modern print layouts for readability. Other types could include justify (even edges on both sides), flush-left, flush-right, or center.
+		Justification controls how text aligns within a text block. "Ragged-right" (also called left-aligned) 
+		means text aligns flush left with uneven right edges, common in informal or modern print layouts 
+		for readability. Other types could include justify (even edges on both sides), flush-left, flush-right, or center.
 		Provides typographic flexibility to match design intent (e.g., formal justified text for books vs. ragged-right for brochures).
 		<justification type="ragged-right"/>
 		
-		Maps to CSS text-align: left; for ragged-right. Full justification (text-align: justify;) may need browser polyfills for advanced hyphenation or spacing control.
+		Maps to CSS text-align: left; for ragged-right. Full justification (text-align: justify;) 
+
 		
 
 
@@ -205,7 +220,9 @@ TEXT STYLES <textstyle>
 	
 	
 LAYOUTBOX - base class for slot and
-allows nesting. it can be used by itself to assist in viewing
+allows nesting.  it will only render
+a box with a fill and stroke.  it 
+can be used by itself to assist in viewing
 layouts before any media.  it is a 
 placeholder for empty slots, a 
 debugging tool for grid visualization.
@@ -218,6 +235,23 @@ direct placement of objects instead.
 
 	LOCATION
 		attach to: 
+
+SLOT inherits from LAYOUTBOX
+
+GROUP only displays in debugging mode.
+can be declared anywhere in the layer
+and references elements by id to group
+them. does not have to contain the elements
+like in SVG but often will.
+
+SLOTGROUP inherits from GROUP
+	might make use of <program>
+	to establish relationships
+	among elements.
+	
+ARTICLECOLUMNGROUP inherits from SLOTGROUP
+	spans multiple columns and flows
+	the text.  a configurable control.
 	
 	
 TEMPLATE
@@ -255,6 +289,15 @@ SEQUENCE
 	
 SEQUENCE-OPERATION
 	subdivide
+
+DOCUMENT DATA
+	There are different ways to set up the relationship
+	between the document data and the layout.
+	
+	items inside document data can just declare their targets,
+	such as a text data element that targets a articlecolumngroup that 
+	spans multiple columns.  a box can swap out text.
+	
 
 NCTLAYOUT VIEWER FEATURES
 	
@@ -406,7 +449,9 @@ The goal is to enable nested structures that reflect print design’s visual hie
    - **Accessibility**: Map roles to ARIA (e.g., `role="heading1"` → `aria-level="1"`).
    - **Interactivity**: Add JS for collapsible sections or animated layer transitions.
 
-4. **Viewer**: Build a web app (e.g., with React or Vue) to toggle grids and visualize hierarchy as a collapsible tree. Export to HTML/CSS or PDF via jsPDF.
+4. **Viewer**: Build a web app (e.g., with React or Vue) to 
+toggle grids and visualize hierarchy as a collapsible tree. 
+Export to HTML/CSS or PDF via jsPDF.
 
 ### Next Steps
 - **Prototype**: Start with a simple JS parser to render a nested heading/body layout in a browser, using the above XML example.

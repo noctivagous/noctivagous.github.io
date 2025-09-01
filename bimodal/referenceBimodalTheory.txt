@@ -124,6 +124,13 @@ for the keyboard as key-click layouts and swap them out.  Modifier keys can enha
 existing key-clicks, such as scale and rotate increment/decrement buttons, that
 can have their amounts increased or decreased with Shift and Alt respectively.
 
+It depends on what the key-clicks are used for, in particular during a mode.  
+In one situation, the mode is made of three keys, a selection key, the target
+key, and escape (cancel).  so, let's say that the tool is called select-and-transport.
+the selection key is pressed, entering selection mode.  it is now used to 
+select objects and they are outlined or highlighted on hover.  the other key is used to
+select the target folder among multiple shown.  once pressed, transport happens
+immediately and the mode is exited.
 
 - **Tab or or F (Selection Clicks And Activation Clicks) **  
   The Tab key is a control that we often can use consistently across an

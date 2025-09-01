@@ -214,7 +214,31 @@ can have their amounts increased or decreased with Shift and Alt respectively.
     visual elements in dense layouts, since the dashed line provides spatial
     context without disturbing existing alignments.  
   - In timeline editors, a similar principle applies when dragging clips to
-    new positions: the drag line shows the intended offset before confirming.  
+    new positions: the drag line shows the intended offset before confirming. 
+
+- **Live Lines (e.g. Drag Line, Live Rotation, Live Scale))
+   What we call a drag line, or a line extending from an object, 
+   can be applied in various ways. As soon as it begins, the object
+   can remain stationary and then the changing length and angle of
+   the line can affect properties. In the case of rotation, the
+   object can rotate around the first point of the live line, such as
+   one of the points of a regular polygon-- it will be like a pivot point.
+   Any point on a vector graphics object can be selected as the origin
+   for the operation, such as a live rotation.
+   Then in the case of scaling, the length of the line will alter the
+   scale relative to the first point of the live line.  It can affect any
+   property, including shear.  If scale and rotate are combined, the
+   object will scale in accordance with the length of the line while
+   simultaneously rotating with the angle.  Various conventions can be
+   applied to this, such as locking the scaling to the x and y axes
+   or stepping the rotation at angles.  If the scaling operation
+   starts from the left edge of a rectangle and moves in the right direction,
+   this can be received as scaling to the right, fixed on the x axis.
+   The rectangle might scale from its center point but if a convention
+   is applied it might only scale up on the x axis or y axis, in two
+   directions.	It can be applied to the operation of resizing windows, with there being 
+	to start with the H and V keys adjusting the width and height
+of the window after the drag line has begun. 
 
 - **M (Copy Line Relocation)**  
   This operation demonstrates how the same convention within key-clicks can
@@ -310,6 +334,14 @@ can have their amounts increased or decreased with Shift and Alt respectively.
   In this way, the number pad operates both as a selection grid and a flexible
   command surface, expanding the reach of key-click based control while
   preserving the separation of steering and activation.  
+
+
+**Key-Clicks for Selecting When The Objects Self-Highlight**
+
+In some vector-drawing programs, the objects underneath the
+cursor will highlight, allowing the resolution of any ambiguity
+as to which object it is that is supposed to receive the click.
+This can be helpful for key-click.
 
 
 **Assignments in Various Demos**
@@ -524,6 +556,11 @@ the Backquote key is used for navigating
 to the site root and this would be the equals key for left-handed
 users.
 
+What we call a drag line can be applied in various ways, not just dragging.
+I can be applied to the operation of resizing windows, with there being 
+to start with the H and V keys adjusting the width and height
+of the window after the drag line has begun.
+
 Windows would be manipulated by clicking them with the Activation/Select
 Key (Tab usually) and the space bar would activate the drag lock to
 drag them around.  The F key would be clicking inside apps.
@@ -611,12 +648,21 @@ procedures.  There are sometimes combinations of
 them and sequences assigned to additional functions.
 
 A Bimodal Control example input device for video games
-would be a long slider, possibly 5 inches wide, oriented
+would be a long slider, 6-8 inches wide, oriented
 horizontal to the video game player and installed in a 
-stable way to a table.  The video game mechanic using this would involve one
-hand sliding the slider knob back and forth.  The left hand
-would have from 2-4 large buttons or pads located to the left of the slider
-to press while the right hand moves the knob back and forth.
+stable way to a table.  The video game mechanic using this would 
+involve one hand sliding the slider knob back and forth.  
+The left hand would have from 2-4 large buttons or pads 
+located to the left of the slider to press while the 
+right hand moves the knob back and forth.
+
+In a more involved game it would be a 2D slider where
+the right hand holds on to a knob on a mechanical rig
+and moves in the X and Y directions, a device that 
+may not be available right now.  Then the left hand 
+would press buttons as usual.
+
+
 
 
 

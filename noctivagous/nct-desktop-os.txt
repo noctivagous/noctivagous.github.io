@@ -1,6 +1,25 @@
 
 NOCTIVAGOUS DESKTOP OS
 
+A lot of unrecognized limitations in software GUI 
+are vestiges from the 1980s.  Why is there only 
+one clipboard to copy to?  When you copy something to
+the clipboard, why is there no way to access it
+or look at it?  You don't get even a menu
+indicator.
+
+In fact you could have an operation that is
+set up to Control/Command+C "Copy" (
+which is actually copying the data of the
+selected object(s) to a running server
+that is accessible by all programs) straight
+to a file if you were able to set that up.
+It could be the case that the Control/Command+C "Copy"
+command were configurable in the Edit menu to
+send the data to a Scrapbook app or a file or
+make new files with each operation-- instead
+of it being a temporary place for the data.
+
 The desktop itself seems to be a conundrum:
 what is it exactly?  It is more of a bulletin
 board for quick reference.  So when people
@@ -181,6 +200,7 @@ In a viewer, you are just reading the file
 and you usually can't save any values to it.  
 A PDF, for example, that you have to go into the 
 program that
+
 
 
 

@@ -1,0 +1,14 @@
+
+CONTROL THE DESKTOP COMPUTER 
+FROM A TABLET COMPUTER
+
+
+- Set up a web server on the
+desktop computer with functionality
+built in to serve web pages with 
+buttons that activate functions on
+the computer.
+
+- Serve macro grid pads.
+
+- App launchers.

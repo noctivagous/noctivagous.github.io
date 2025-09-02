@@ -8,13 +8,16 @@ the desktop OS will involve
 the desktop vs. application windows.
 The desktop will be on the top and
 the application windows will be
-underneath.
+underneath.  The bottom layer is
+a customizable UI.
 
-2) Application windows can be
+2) Applications and application windows can be
 duplicated inside other applications.
-For example, file Navigator windows will
-be available inside any application
-windows.
+For example, File Navigator windows will
+be available inside any application's
+window layer. You can use one application
+inside the layer of another.
+
 
 -----
 

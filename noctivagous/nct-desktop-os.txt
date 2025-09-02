@@ -1,12 +1,38 @@
 
 NOCTIVAGOUS DESKTOP OS
 
+The first ui design changes made to
+the desktop OS will involve 
+
+1) Reversing the layering of 
+the desktop vs. application windows.
+The desktop will be on the top and
+the application windows will be
+underneath.
+
+2) Application windows can be
+duplicated inside other applications.
+For example, file Navigator windows will
+be available inside any application
+windows.
+
+-----
+
 A lot of unrecognized limitations in software GUI 
 are vestiges from the 1980s.  Why is there only 
 one clipboard to copy to?  When you copy something to
 the clipboard, why is there no way to access it
 or look at it?  You don't get even a menu
-indicator.
+indicator.  It doesn't animate the selection
+to tell you that it copied the objects
+to the clipboard.
+
+Why would File Navigator windows be exclusive
+and be unable to be including in the
+app's grouping of windows?  It's a major drawback
+that there is switching of environments going on.
+When you are in an app, on any OS, why can't you bring
+a File Navigator window in with you?
 
 In fact you could have an operation that is
 set up to Control/Command+C "Copy" (
@@ -44,6 +70,31 @@ of the frame would be acknowledged at the
 bulletin board carousel level, what is now "the 
 desktop", and not having items outside of that
 frame.
+
+ALTERNATIVE TO COPY-AND-PASTE: TAGGING FIELDS
+FOR ROUTING DATA FROM ANOTHER APP
+
+By default, wherever your text cursor is located
+in a text editor will be considered the target
+of data from another app or window.  The OS
+app kit will have a feature that the user 
+can mark a text field, document editing area, or drop area
+for receiving data from another app. (Even so, the user
+can find all available recipients from the other app.)
+
+	1) mark a text field or document window in
+	the app as the recipient
+	2) switch to another app. the operation
+	is
+		- send to OS data recipient (there is only
+		one for all apps)
+		- send to app data recipient 
+			-select app > select recipient
+			
+			
+SWITCHING BETWEEN APPS: THE APP LIST
+
+
 
 BENEFITS OF EXTENSIONS IN THE FILE NAVIGATOR: NON-APPS (FILTERS)
 
@@ -177,6 +228,13 @@ the listing order of files and directories so that
 they show up in an organized way.  This would be
 helpful for establishing the linear presentation of
 a directory in a list view.
+
+
+HARDWARE
+
+Dedicated pad for scrolling horizontally and
+vertically.  
+
 
 
 THE FILE NAVIGATOR MASKS FILES AND DIRECTORIES

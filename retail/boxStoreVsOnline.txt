@@ -1,0 +1,19 @@
+
+Roam the store for the aisle (no directory).
+	Have to find employee to find a thing (not integrated into apps really)
+Scan the shelf.
+Data available is found on the product itself.
+Presentation of product information is not in a page format 
+Comparison situation
+Locked cases means having to ask employee.
+Have to go to checkout.
+
+VS.
+
+More holistic view, an aisle. 
+Look at the actual product.
+	sometimes less need for reviews when you can look at it
+Better sense of its scale.
+Drive to get it, come back with it.
+Sometimes can ask questions from the store workers (hardware store).
+The place to get a thing when you need to get it on your schedule

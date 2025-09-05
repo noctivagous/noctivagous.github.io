@@ -1,5 +1,27 @@
 #SingleInstance Force
 
+; Hotkey Summary
+; --------------------------------------------------
+; | Hotkey | Action              | Description                                  |
+; --------------------------------------------------
+; | Esc    | Toggle Script       | Toggles script on/off with 3 sequential presses within 2 seconds. |
+; | F1     | Double Left Click   | Simulates two left mouse clicks.              |
+; | F2     | Middle Click        | Simulates a single middle mouse button click. |
+; | F3     | Right Click         | Simulates a single right mouse button click.  |
+; | F4     | Click or Drag       | Quick press for a left click; hold for drag (press and release mouse). |
+; |--------------------------------------------------
+; | F5     | Drag Lock Toggle    | Press once to hold left mouse button down, press again to release. |
+; | F6     | Cut                 | Sends Ctrl+X to cut selected content.         |
+; | F7     | Paste               | Sends Ctrl+V to paste clipboard content.      |
+; | F8     | Copy                | Sends Ctrl+C to copy selected content.        |
+; |---------------------------------------------------
+; | F9     | Close Window        | Sends Alt+F4 to close the active window.      |
+; | F10    | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
+; | F11    | New Window          | Sends Ctrl+N to open a new window in supported applications. |
+; --------------------------------------------------
+
+
+
 ; Initialize drag state
 isDragging := false
 
@@ -18,7 +40,38 @@ lastEscPressTime := 0
 
 
 
+; Escape key hotkey to toggle script on/off with 3 sequential presses
+$Esc::
+{
+    global escPressCount, lastEscPressTime, isScriptActive
+    currentTime := A_TickCount
+    ; Check if previous press was within 2 seconds (2000 ms)
+    if (currentTime - lastEscPressTime > 2000)
+        escPressCount := 0  ; Reset counter if too much time has passed
+    escPressCount += 1
+    lastEscPressTime := currentTime
 
+    if (escPressCount >= 3)
+    {
+        isScriptActive := !isScriptActive  ; Toggle script state
+        escPressCount := 0  ; Reset counter
+        ; Enable or disable hotkeys
+        Hotkey "F1", isScriptActive ? "On" : "Off"
+        Hotkey "F2", isScriptActive ? "On" : "Off"
+        Hotkey "F3", isScriptActive ? "On" : "Off"
+        Hotkey "*F4", isScriptActive ? "On" : "Off"
+        Hotkey "F5", isScriptActive ? "On" : "Off"
+        Hotkey "F6", isScriptActive ? "On" : "Off"
+        Hotkey "F7", isScriptActive ? "On" : "Off"
+        Hotkey "F8", isScriptActive ? "On" : "Off"
+        Hotkey "F9", isScriptActive ? "On" : "Off"
+        Hotkey "F10", isScriptActive ? "On" : "Off"
+        Hotkey "F11", isScriptActive ? "On" : "Off"
+        ; Notify user of state change
+        TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "Function Keys Script", 1
+    }
+    return
+}
 
 
 

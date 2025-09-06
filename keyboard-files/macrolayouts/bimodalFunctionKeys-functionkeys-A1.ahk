@@ -1,3 +1,7 @@
+#Requires AutoHotkey v2.0
+
+#SingleInstance Force
+#UseHook
 ; ---------------------
 ;
 ;  AutoHotKey Script for Key-Clicks - (Bimodal Control Theory)
@@ -55,13 +59,17 @@
 ; | F8     | Copy                | Sends Ctrl+C to copy selected content.        |
 ; |---------------------------------------------------
 ; | F9     | Close Window        | Sends Alt+F4 to close the active window.      |
-; | F10    | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
 ; | F11    | New Window          | Sends Ctrl+N to open a new window in supported applications. |
 ; --------------------------------------------------
-
-
-
-#SingleInstance Force
+; | Hotkey | Action              | Description                                  |
+; |--------|---------------------|----------------------------------------------|
+; | `      | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
+; | 1      | Browser Back        | Navigates to the previous page in the browser. |
+; | 2      | Browser Forward     | Navigates to the next page in the browser.   |
+; | 3      | Tab Left            | Switches to the previous browser tab (Ctrl+Shift+Tab). |
+; | 4      | Tab Right           | Switches to the next browser tab (Ctrl+Tab). |
+; | 5      | New Tab             | Opens a new browser tab (Ctrl+T).            |
+; | 6      | Close Tab           | Closes the active browser tab (Ctrl+W).      |
 
 
 
@@ -80,6 +88,68 @@ isScriptActive := true
 ; Initialize Escape press counter and timer
 escPressCount := 0
 lastEscPressTime := 0
+
+
+
+; ---------------------------
+; ` → Windows + Tab (Task View)
+; Shows all open windows and virtual desktops.
+; ---------------------------
+`::Send "#{Tab}"
+
+; ---------------------------
+; 1 key hotkey for browser back
+; ---------------------------
+$1::
+{
+    SendInput "{Browser_Back}"
+    return
+}
+
+; ---------------------------
+; 2 key hotkey for browser forward
+; ---------------------------
+$2::
+{
+    SendInput "{Browser_Forward}"
+    return
+}
+
+; ---------------------------
+; 3 key hotkey for tab left
+; ---------------------------
+$3::
+{
+    SendInput "^+{Tab}"
+    return
+}
+
+; ---------------------------
+; 4 key hotkey for tab right
+; ---------------------------
+$4::
+{
+    SendInput "^{Tab}"
+    return
+}
+
+; ---------------------------
+; 5 key hotkey for new tab
+; ---------------------------
+$5::
+{
+    SendInput "^t"
+    return
+}
+
+; ---------------------------
+; 6 key hotkey for close tab
+; ---------------------------
+$6::
+{
+    SendInput "^w"
+    return
+}
 
 
 
@@ -110,6 +180,12 @@ $Esc::
         Hotkey "F9", isScriptActive ? "On" : "Off"
         Hotkey "F10", isScriptActive ? "On" : "Off"
         Hotkey "F11", isScriptActive ? "On" : "Off"
+        Hotkey "1", isScriptActive ? "On" : "Off"
+        Hotkey "2", isScriptActive ? "On" : "Off"
+        Hotkey "3", isScriptActive ? "On" : "Off"
+        Hotkey "4", isScriptActive ? "On" : "Off"
+        Hotkey "5", isScriptActive ? "On" : "Off"
+        Hotkey "6", isScriptActive ? "On" : "Off"
         ; Notify user of state change
         TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "Function Keys Script", 1
     }
@@ -117,12 +193,11 @@ $Esc::
 }
 
 
-
 ; F4 key: Quick press for click, hold for drag
 *F4::
 {
     SetTimer(CheckF4Hold, -50)  ; Start 100ms timer to detect hold
-    KeyWait "F1"                 ; Wait for F1 to be released
+    KeyWait "F4"                 ; Wait for F4 to be released
     return
 }
 
@@ -159,9 +234,6 @@ Click 2 ; Simulates two left mouse clicks
 
 
 
-
-
-
 ; ---------------------------
 ; F5 → Drag lock toggle
 ; Press once to hold left mouse button down,
@@ -169,26 +241,37 @@ Click 2 ; Simulates two left mouse clicks
 ; ---------------------------
 ; F5 key hotkey for drag lock
 
+; F5 key hotkey for drag lock with cursor change and ToolTip
 $F5::
 {
-
     global isDragging
-   
+    static originalCursor := 0  ; Store original cursor
+
     if (isDragging)
     {
         ; Release drag on second press
         Click "Up"
         isDragging := false
+        ; Restore original cursor
+        DllCall("SystemParametersInfo", "UInt", 0x57, "UInt", 0, "Ptr", originalCursor, "UInt", 0)
+        ; Remove ToolTip
+        ToolTip
     }
     else
     {
         ; Start drag on first press
         Click "Down"
         isDragging := true
+        ; Store current cursor and set to crosshair
+        originalCursor := DllCall("CopyIcon", "Ptr", DllCall("GetCursor", "Ptr"))
+        DllCall("SetSystemCursor", "Ptr", DllCall("LoadCursor", "Ptr", 0, "Int", 32515), "Int", 32512)  ; IDC_CROSS
+        ; Show ToolTip near cursor
+        CoordMode "ToolTip", "Screen"
+        MouseGetPos(&x, &y)
+        ToolTip "Drag Lock ON", x + 20, y + 20
     }
     return
 }
-
 
 
 
@@ -234,11 +317,6 @@ F9::Send "!{F4}"
 
 
 
-; ---------------------------
-; F10 → Windows + Tab (Task View)
-; Shows all open windows and virtual desktops.
-; ---------------------------
-F10::Send "#{Tab}"
 
 
 
@@ -248,4 +326,5 @@ F10::Send "#{Tab}"
 ; Opens a new window in browsers, File Explorer, and many other apps.
 ; ---------------------------
 F11::Send "^n"
+
 

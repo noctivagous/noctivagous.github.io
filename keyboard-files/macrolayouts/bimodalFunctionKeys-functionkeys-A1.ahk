@@ -1,10 +1,49 @@
-#SingleInstance Force
-
-; Hotkey Summary
+; ---------------------
+;
+;  AutoHotKey Script for Key-Clicks - (Bimodal Control Theory)
+;
+;  A key-click means moving the screen cursor with the mouse while 
+;  clicking with keyboard keys.
+;
+; ---------------------
+;
+;  --- How to Use ---
+; 
+;  By default the script turns on after you open it. 
+;  Toggle the script off and on by pressing Escape three times in a row.
+;
+;
+;  ---- F1 through F4, F5 ----
+;
+;  F1 through F4 are the home keys for using the script.
+;
+;  Begin using this script by positioning the index finger on F4 for left click
+;  and then clicking screen elements.
+;
+;  Right click is located to the left, on F3. Middle click is F2.
+;  Double-click with F1, such as for opening applications and files in
+;  the File Explorer.
+;
+;  All other keys are located relative to this position.
+;
+;
+;  ---- F5 - Drag Lock ---- 
+; 
+;  The drag lock has been assigned to F5, which, lets you drag screen
+;  elements and highlight text without having to hold down the F4 key.  
+;  The first press turns on dragging of the element underneath the cursor.
+;  The second press turns it off.
+;
+;
+;
+;
+; --- Hotkey Summary ---
+;
 ; --------------------------------------------------
 ; | Hotkey | Action              | Description                                  |
 ; --------------------------------------------------
 ; | Esc    | Toggle Script       | Toggles script on/off with 3 sequential presses within 2 seconds. |
+; --------------------------------------------------
 ; | F1     | Double Left Click   | Simulates two left mouse clicks.              |
 ; | F2     | Middle Click        | Simulates a single middle mouse button click. |
 ; | F3     | Right Click         | Simulates a single right mouse button click.  |
@@ -19,6 +58,10 @@
 ; | F10    | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
 ; | F11    | New Window          | Sends Ctrl+N to open a new window in supported applications. |
 ; --------------------------------------------------
+
+
+
+#SingleInstance Force
 
 
 

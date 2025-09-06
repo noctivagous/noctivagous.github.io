@@ -178,7 +178,7 @@ $Esc::
         Hotkey "F7", isScriptActive ? "On" : "Off"
         Hotkey "F8", isScriptActive ? "On" : "Off"
         Hotkey "F9", isScriptActive ? "On" : "Off"
-        Hotkey "F10", isScriptActive ? "On" : "Off"
+
         Hotkey "F11", isScriptActive ? "On" : "Off"
         Hotkey "1", isScriptActive ? "On" : "Off"
         Hotkey "2", isScriptActive ? "On" : "Off"

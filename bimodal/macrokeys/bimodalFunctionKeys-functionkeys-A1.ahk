@@ -1,7 +1,74 @@
 #Requires AutoHotkey v2.0
 
+; ---------------------------
+; Display Hotkey Information GUI on Startup
+; ---------------------------
 #SingleInstance Force
 #UseHook
+
+
+isGuiVisible := false  ; Track GUI visibility
+
+; Create GUI for hotkey information
+
+; Create GUI for hotkey information
+GuiHotkeys := Gui("-MaximizeBox", "Noctivagous Key-Click Script Hotkeys")
+GuiHotkeys.SetFont("s10", "Arial")
+GuiHotkeys.Add("Text", "x10 y10 w600", "Below is the hotkey guide, arranged like a keyboard. Press 9 to toggle visibility.")
+
+; Define hotkeys with their key names, actions, and positions (button and text coordinates)
+hotkeys := [
+    ["Esc (2x)", "Toggle Script", "x10 y40", "x10 y60"],
+    ["Esc (4x)", "Exit Script", "x10 y70", "x10 y90"],
+    ["F1", "Double Left Click", "x100 y40", "x100 y60"],
+    ["F2", "Middle Click", "x150 y40", "x150 y60"],
+    ["F3", "Right Click", "x200 y40", "x200 y60"],
+    ["F4", "Click or Drag", "x250 y40", "x250 y60"],
+    ["F5", "Drag Lock Toggle", "x300 y40", "x300 y60"],
+    ["F6", "Cut", "x350 y40", "x350 y60"],
+    ["F7", "Paste", "x400 y40", "x400 y60"],
+    ["F8", "Copy", "x450 y40", "x450 y60"],
+    ["F9", "Close Window", "x500 y40", "x500 y60"],
+    ["F11", "New Window", "x550 y40", "x550 y60"],
+    ["``", "Task View", "x10 y90", "x10 y110"],
+    ["1", "Browser Back", "x60 y90", "x60 y110"],
+    ["2", "Browser Forward", "x110 y90", "x110 y110"],
+    ["3", "Tab Left", "x160 y90", "x160 y110"],
+    ["4", "Tab Right", "x210 y90", "x210 y110"],
+    ["5", "New Tab", "x260 y90", "x260 y110"],
+    ["6", "Close Tab", "x310 y90", "x310 y110"],
+    ["-", "Minimize Window", "x360 y90", "x360 y110"],
+    ["=", "Maximize/Restore", "x410 y90", "x410 y110"],
+    ["9", "Toggle GUI", "x460 y90", "x460 y110"]
+]
+
+; Add button and text controls for each hotkey
+for index, row in hotkeys
+{
+    GuiHotkeys.Add("Button", row[3] " w50 h20", row[1])  ; Button with key name
+    GuiHotkeys.Add("Text", row[4] " w100", row[2])      ; Text with action
+}
+
+; Show the GUI on script startup
+;GuiHotkeys.Show("w620 h160")
+
+; 9 hotkey to toggle GUI visibility
+$9::
+{
+    global isGuiVisible
+    if (isGuiVisible)
+    {
+        GuiHotkeys.Hide()
+        isGuiVisible := false
+    }
+    else
+    {
+        GuiHotkeys.Show("w620 h160")
+        isGuiVisible := true
+    }
+    return
+}
+
 ; ---------------------
 ;  NOCTIVAGOUS
 ;  KEY-CLICK SCRIPT FOR WINDOWS 
@@ -49,7 +116,7 @@
 ; --------------------------------------------------
 ; | Hotkey | Action              | Description                                  |
 ; --------------------------------------------------
-; | Esc    | Toggle Script       | Toggles script on/off with 3 sequential presses within 2 seconds. |
+; | Esc    | Toggle Script       | Toggles script on/off with 2 sequential presses within 2 seconds. |
 ; --------------------------------------------------
 ; | F1     | Double Left Click   | Simulates two left mouse clicks.              |
 ; | F2     | Middle Click        | Simulates a single middle mouse button click. |
@@ -79,8 +146,6 @@
 ; Initialize drag state
 isDragging := false
 
-; Initialize collapsed windows map
-global oCollapsedWindows := Map()
 
 ; Initialize opacity state
 isTransparent := false
@@ -155,8 +220,7 @@ $6::
 }
 
 
-
-; Escape key hotkey to toggle script on/off with 2 sequential presses
+; Escape key hotkey to toggle script on/off with 2 presses, exit with 4 presses
 $Esc::
 {
     global escPressCount, lastEscPressTime, isScriptActive
@@ -167,10 +231,9 @@ $Esc::
     escPressCount += 1
     lastEscPressTime := currentTime
 
-    if (escPressCount >= 2)
+    if (escPressCount = 2)
     {
         isScriptActive := !isScriptActive  ; Toggle script state
-        escPressCount := 0  ; Reset counter
         ; Enable or disable hotkeys
         Hotkey "F1", isScriptActive ? "On" : "Off"
         Hotkey "F2", isScriptActive ? "On" : "Off"
@@ -181,7 +244,6 @@ $Esc::
         Hotkey "F7", isScriptActive ? "On" : "Off"
         Hotkey "F8", isScriptActive ? "On" : "Off"
         Hotkey "F9", isScriptActive ? "On" : "Off"
-
         Hotkey "F11", isScriptActive ? "On" : "Off"
         Hotkey "1", isScriptActive ? "On" : "Off"
         Hotkey "2", isScriptActive ? "On" : "Off"
@@ -189,12 +251,18 @@ $Esc::
         Hotkey "4", isScriptActive ? "On" : "Off"
         Hotkey "5", isScriptActive ? "On" : "Off"
         Hotkey "6", isScriptActive ? "On" : "Off"
+        Hotkey "-", isScriptActive ? "On" : "Off"
+        Hotkey "=", isScriptActive ? "On" : "Off"
         ; Notify user of state change
         TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "Function Keys Script", 1
     }
+    else if (escPressCount >= 4)
+    {
+        TrayTip "Script Exited", "Function Keys Script has been terminated.", 1
+        ExitApp
+    }
     return
 }
-
 
 ; F4 key: Quick press for click, hold for drag
 *F4::
@@ -349,3 +417,27 @@ F9::Send "!{F4}"
 F11::Send "^n"
 
 
+
+; ---------------------------
+; - → Minimize active window
+; ---------------------------
+$-::
+{
+    WinMinimize "A"
+    return
+}
+
+
+
+; ---------------------------
+; = → Maximize/Restore active window
+; ---------------------------
+$=::
+{
+    WinGetMaximize := WinGetMinMax("A")
+    if (WinGetMaximize = 1)  ; Window is maximized
+        WinRestore "A"
+    else
+        WinMaximize "A"
+    return
+}

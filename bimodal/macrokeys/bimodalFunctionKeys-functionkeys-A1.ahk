@@ -3,7 +3,10 @@
 #SingleInstance Force
 #UseHook
 ; ---------------------
-;
+;  NOCTIVAGOUS
+;  KEY-CLICK SCRIPT FOR WINDOWS 
+;  - FUNCTION KEYS
+;  - A2
 ;  AutoHotKey Script for Key-Clicks - (Bimodal Control Theory)
 ;
 ;  A key-click means moving the screen cursor with the mouse while 
@@ -50,10 +53,10 @@
 ; --------------------------------------------------
 ; | F1     | Double Left Click   | Simulates two left mouse clicks.              |
 ; | F2     | Middle Click        | Simulates a single middle mouse button click. |
-; | F3     | Right Click         | Simulates a single right mouse button click.  |
+; | F3     | Right Click         | Quick press for a right click; hold for drag (press and release mouse).
 ; | F4     | Click or Drag       | Quick press for a left click; hold for drag (press and release mouse). |
 ; |--------------------------------------------------
-; | F5     | Drag Lock Toggle    | Press once to hold left mouse button down, press again to release. |
+; | F5     | Drag Lock Toggle    | Press once to hold left mouse button down, press again to release. Also called "stick drag".|
 ; | F6     | Cut                 | Sends Ctrl+X to cut selected content.         |
 ; | F7     | Paste               | Sends Ctrl+V to paste clipboard content.      |
 ; | F8     | Copy                | Sends Ctrl+C to copy selected content.        |
@@ -153,7 +156,7 @@ $6::
 
 
 
-; Escape key hotkey to toggle script on/off with 3 sequential presses
+; Escape key hotkey to toggle script on/off with 2 sequential presses
 $Esc::
 {
     global escPressCount, lastEscPressTime, isScriptActive
@@ -164,14 +167,14 @@ $Esc::
     escPressCount += 1
     lastEscPressTime := currentTime
 
-    if (escPressCount >= 3)
+    if (escPressCount >= 2)
     {
         isScriptActive := !isScriptActive  ; Toggle script state
         escPressCount := 0  ; Reset counter
         ; Enable or disable hotkeys
         Hotkey "F1", isScriptActive ? "On" : "Off"
         Hotkey "F2", isScriptActive ? "On" : "Off"
-        Hotkey "F3", isScriptActive ? "On" : "Off"
+        Hotkey "*F3", isScriptActive ? "On" : "Off"
         Hotkey "*F4", isScriptActive ? "On" : "Off"
         Hotkey "F5", isScriptActive ? "On" : "Off"
         Hotkey "F6", isScriptActive ? "On" : "Off"
@@ -216,9 +219,27 @@ CheckF4Hold()
 
 ; ---------------------------
 ; F3 → Right click (simulates pressing the right mouse button once)
+; Quick press for click, hold for drag
 ; ---------------------------
-F3::Click "Right"
 
+*F3::
+{
+    SetTimer(CheckF3Hold, -50)  ; Start 50ms timer to detect hold
+    KeyWait "F3"                 ; Wait for F4 to be released
+    return
+}
+
+
+CheckF3Hold()
+{
+    if GetKeyState("F3", "P") {  ; If F3 is still held
+        MouseClick "Right", , , , , "D"  ; Press left mouse button (start drag)
+        KeyWait "F3"                    ; Wait for F3 release
+        MouseClick "Right", , , , , "U"  ; Release left mouse button (end drag)
+    } else {
+        MouseClick "Right"               ; Perform single left-click
+    }
+}
 
 
 ; ---------------------------

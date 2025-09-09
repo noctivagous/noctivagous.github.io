@@ -1,7 +1,6 @@
 #Requires AutoHotkey v2.0
-
 #SingleInstance Force
-#UseHook
+
 ; ---------------------
 ;
 ;  AutoHotKey Script for Key-Clicks - (Bimodal Control Theory)
@@ -14,11 +13,12 @@
 ;  --- How to Use ---
 ; 
 ;  By default the script turns on after you open it. 
-;  Toggle the script off and on by pressing Escape two times in a row.
+;  Toggle the script off and on by pressing F5.
+;  Exit the script by pressing Escape three times in a row.
 ;
 ;
 ;  ---- a through f, g ----
-;
+; 
 ;  a through f are the home keys for using the script.
 ;
 ;  Begin using this script by positioning the index finger on f for left click
@@ -39,29 +39,26 @@
 ;  The second press turns it off.
 ;
 ;
-;
-;
 ; --- Hotkey Summary ---
 ;
 ; --------------------------------------------------
 ; | Hotkey | Action              | Description                                  |
-; --------------------------------------------------
-; | Esc    | Toggle Script       | Toggles script on/off with 2 sequential presses within 2 seconds. |
-; --------------------------------------------------
-; | F1     | Double Left Click   | Simulates two left mouse clicks.              |
-; | F2     | Middle Click        | Simulates a single middle mouse button click. |
-; | F3     | Right Click         | Simulates a single right mouse button click.  |
-; | F4     | Click or Drag       | Quick press for a left click; hold for drag (press and release mouse). |
-; |--------------------------------------------------
-; | F5     | Drag Lock Toggle    | Press once to hold left mouse button down, press again to release. |
+; |--------|---------------------|----------------------------------------------|
+; | Esc    | Exit Script         | Exits the script with 3 sequential presses within 2 seconds. |
+; | F5     | Toggle Script       | Toggles script on/off with a single press.    |
+; | a      | Double Left Click   | Simulates two left mouse clicks.              |
+; | s      | Middle Click        | Simulates a single middle mouse button click. |
+; | d      | Right Click         | Simulates a single right mouse button click.  |
+; | f      | Click or Drag       | Quick press for a left click; hold for drag (press and release mouse). |
+; | g      | Drag Lock Toggle    | Press once to hold left mouse button down, press again to release. |
 ; | F6     | Cut                 | Sends Ctrl+X to cut selected content.         |
 ; | F7     | Paste               | Sends Ctrl+V to paste clipboard content.      |
 ; | F8     | Copy                | Sends Ctrl+C to copy selected content.        |
 ; |---------------------------------------------------
 ; | F9     | Close Window        | Sends Alt+F4 to close the active window.      |
 ; | F11    | New Window          | Sends Ctrl+N to open a new window in supported applications. |
-; --------------------------------------------------
-; | Hotkey | Action              | Description                                  |
+; | c      | Page Up             | Simulates PageUp key press.                   |
+; | v      | Page Down           | Simulates PageDown key press.                 |
 ; |--------|---------------------|----------------------------------------------|
 ; | `      | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
 ; | 1      | Browser Back        | Navigates to the previous page in the browser. |
@@ -70,7 +67,8 @@
 ; | 4      | Tab Right           | Switches to the next browser tab (Ctrl+Tab). |
 ; | 5      | New Tab             | Opens a new browser tab (Ctrl+T).            |
 ; | 6      | Close Tab           | Closes the active browser tab (Ctrl+W).      |
-
+; | e      | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
+; |---------------------------------------------------|
 
 
 ; Initialize drag state
@@ -82,20 +80,29 @@ global oCollapsedWindows := Map()
 ; Initialize opacity state
 isTransparent := false
 
+; Initialize Escape press counter for exit
+escExitCount := 0
+
 ; Initialize script active state
 isScriptActive := true
 
-; Initialize Escape press counter and timer
-escPressCount := 0
+; Initialize Escape press timer
 lastEscPressTime := 0
 
-
-
 ; ---------------------------
-; ` → Windows + Tab (Task View)
-; Shows all open windows and virtual desktops.
+; ` → Task View (Win+Tab)
 ; ---------------------------
 `::Send "#{Tab}"
+
+; ---------------------------
+; c → Page Up
+; ---------------------------
+c::Send "{PgUp}"
+
+; ---------------------------
+; v → Page Down
+; ---------------------------
+v::Send "{PgDn}"
 
 ; ---------------------------
 ; 1 key hotkey for browser back
@@ -151,97 +158,100 @@ $6::
     return
 }
 
-
-
-; Escape key hotkey to toggle script on/off with 2 sequential presses
+; ---------------------------
+; Esc key hotkey to exit script with 3 sequential presses
+; ---------------------------
 $Esc::
 {
-    global escPressCount, lastEscPressTime, isScriptActive
+    global escExitCount, lastEscPressTime
     currentTime := A_TickCount
     ; Check if previous press was within 2 seconds (2000 ms)
     if (currentTime - lastEscPressTime > 2000)
-        escPressCount := 0  ; Reset counter if too much time has passed
-    escPressCount += 1
+        escExitCount := 0  ; Reset counter if too much time has passed
+    escExitCount += 1
     lastEscPressTime := currentTime
 
-    if (escPressCount >= 2)
+    if (escExitCount >= 3)
     {
-        isScriptActive := !isScriptActive  ; Toggle script state
-        escPressCount := 0  ; Reset counter
-        ; Enable or disable hotkeys
-        Hotkey "a", isScriptActive ? "On" : "Off"
-        Hotkey "s", isScriptActive ? "On" : "Off"
-        Hotkey "d", isScriptActive ? "On" : "Off"
-        Hotkey "*f", isScriptActive ? "On" : "Off"
-        Hotkey "g", isScriptActive ? "On" : "Off"
-        Hotkey "F6", isScriptActive ? "On" : "Off"
-        Hotkey "F7", isScriptActive ? "On" : "Off"
-        Hotkey "F8", isScriptActive ? "On" : "Off"
-        Hotkey "F9", isScriptActive ? "On" : "Off"
-
-        Hotkey "F11", isScriptActive ? "On" : "Off"
-        Hotkey "1", isScriptActive ? "On" : "Off"
-        Hotkey "2", isScriptActive ? "On" : "Off"
-        Hotkey "3", isScriptActive ? "On" : "Off"
-        Hotkey "4", isScriptActive ? "On" : "Off"
-        Hotkey "5", isScriptActive ? "On" : "Off"
-        Hotkey "6", isScriptActive ? "On" : "Off"
-        ; Notify user of state change
-        TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "Function Keys Script", 1
+        ExitApp  ; Exit the script
     }
     return
 }
 
+; ---------------------------
+; F5 key hotkey to toggle script on/off
+; ---------------------------
+$F5::
+{
+    global isScriptActive
+    isScriptActive := !isScriptActive  ; Toggle script state
+    ; Enable or disable hotkeys
+    Hotkey "a", isScriptActive ? "On" : "Off"
+    Hotkey "s", isScriptActive ? "On" : "Off"
+    Hotkey "d", isScriptActive ? "On" : "Off"
+    Hotkey "*f", isScriptActive ? "On" : "Off"
+    Hotkey "g", isScriptActive ? "On" : "Off"
+    Hotkey "c", isScriptActive ? "On" : "Off"
+    Hotkey "v", isScriptActive ? "On" : "Off"
+    Hotkey "e", isScriptActive ? "On" : "Off"
+    Hotkey "F6", isScriptActive ? "On" : "Off"
+    Hotkey "F7", isScriptActive ? "On" : "Off"
+    Hotkey "F8", isScriptActive ? "On" : "Off"
+    Hotkey "F9", isScriptActive ? "On" : "Off"
+    Hotkey "F11", isScriptActive ? "On" : "Off"
+    Hotkey "1", isScriptActive ? "On" : "Off"
+    Hotkey "2", isScriptActive ? "On" : "Off"
+    Hotkey "3", isScriptActive ? "On" : "Off"
+    Hotkey "4", isScriptActive ? "On" : "Off"
+    Hotkey "5", isScriptActive ? "On" : "Off"
+    Hotkey "6", isScriptActive ? "On" : "Off"
+    ; Notify user of state change
+    TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "Function Keys Script", 1
+    return
+}
+
+; ---------------------------
+; e → Task View (Win+Tab)
+; ---------------------------
+e::Send "#{Tab}"
 
 ; f key: Quick press for click, hold for drag
 *f::
 {
-    SetTimer(CheckfHold, -50)  ; Start 100ms timer to detect hold
-    KeyWait "f"                 ; Wait for F4 to be released
+    SetTimer(CheckfHold, -50)  ; Start 50ms timer to detect hold
+    KeyWait "f"                ; Wait for f to be released
     return
 }
-
 
 CheckfHold()
 {
     if GetKeyState("f", "P") {  ; If f is still held
         MouseClick "Left", , , , , "D"  ; Press left mouse button (start drag)
-        KeyWait "f"                    ; Wait for F4 release
+        KeyWait "f"                    ; Wait for f release
         MouseClick "Left", , , , , "U"  ; Release left mouse button (end drag)
     } else {
         MouseClick "Left"               ; Perform single left-click
     }
 }
 
-
 ; ---------------------------
-; d → Right click (simulates pressing the right mouse button once)
+; d → Right click
 ; ---------------------------
 d::Click "Right"
 
-
-
 ; ---------------------------
-; s → Middle click (simulates pressing the middle mouse button once)
+; s → Middle click
 ; ---------------------------
 s::Click "Middle"
 
-
-$a:: {
-Click 2 ; Simulates two left mouse clicks
+$a::
+{
+    Click 2 ; Simulates two left mouse clicks
 }
-
-
-
 
 ; ---------------------------
 ; g → Drag lock toggle
-; Press once to hold left mouse button down,
-; press again to release (useful for dragging without holding).
 ; ---------------------------
-; g key hotkey for drag lock
-
-; g key hotkey for drag lock with cursor change and ToolTip
 $g::
 {
     global isDragging
@@ -273,11 +283,8 @@ $g::
     return
 }
 
-
-
-
 ; ---------------------------
-; F8 key hotkey for copy
+; F8 → Copy
 ; ---------------------------
 $F8::
 {
@@ -285,10 +292,8 @@ $F8::
     return
 }
 
-
-
 ; ---------------------------
-; F7 key hotkey for paste
+; F7 → Paste
 ; ---------------------------
 $F7::
 {
@@ -296,10 +301,8 @@ $F7::
     return
 }
 
-
-
 ; ---------------------------
-; F6 key hotkey for cut
+; F6 → Cut
 ; ---------------------------
 $F6::
 {
@@ -307,24 +310,12 @@ $F6::
     return
 }
 
-
-
-
 ; ---------------------------
-; F9 → Close active window (same as Alt+F4)
+; F9 → Close active window
 ; ---------------------------
 F9::Send "!{F4}"
 
-
-
-
-
-
-
 ; ---------------------------
-; F11 → New window (Ctrl+N)
-; Opens a new window in browsers, File Explorer, and many other apps.
+; F11 → New window
 ; ---------------------------
 F11::Send "^n"
-
-

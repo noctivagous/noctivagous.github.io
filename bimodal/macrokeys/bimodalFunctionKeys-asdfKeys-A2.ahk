@@ -63,13 +63,13 @@
 ; | b      | Cut                 | Sends Ctrl+X to cut selected content.         |
 ; |---------------------------------------------------|
 ; | F9     | Close Window        | Sends Alt+F4 to close the active window.      |
-; | n      | New Window          | Sends Ctrl+N to open a new window in supported applications. |
 ; |--------|---------------------|----------------------------------------------|
 ; | q      | Browser Back        | Navigates to the previous page in the browser. |
 ; | w      | Browser Forward     | Navigates to the next page in the browser.   |
 ; | 3      | Tab Left            | Switches to the previous browser tab (Ctrl+Shift+Tab). |
 ; | 4      | Tab Right           | Switches to the next browser tab (Ctrl+Tab). |
-; | r      | Close Tab           | Closes the active browser tab (Ctrl+W).      |
+; | r      | Close Tab           | Closes with Ctrl+W.      |
+; | t      | New Tab             | Sends Ctrl+T to open a new window in supported applications. |
 ; | e      | Task View           | Sends Win+Tab to show open windows and virtual desktops. |
 ; |---------------------------------------------------|
 
@@ -174,6 +174,7 @@ $Esc::
 
     if (escExitCount >= 3)
     {
+	 TrayTip "Exit Script", "ASDF Keys Script", 1
         ExitApp  ; Exit the script
     }
     return
@@ -192,7 +193,7 @@ $`::
         Hotkey key, isScriptActive ? "On" : "Off"
     }
     ; Notify user of state change
-    TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "Function Keys Script", 1
+    TrayTip "Script " . (isScriptActive ? "Enabled" : "Disabled"), "ASDF Keys Script", 1
     return
 }
 
@@ -247,6 +248,8 @@ CheckdHold()
 ; ---------------------------
 s::Click "Middle"
 
+
+
 $a::
 {
     Click 2 ; Simulates two left mouse clicks
@@ -255,6 +258,7 @@ $a::
 ; ---------------------------
 ; g → Drag lock toggle
 ; ---------------------------
+
 $g::
 {
     global isDragging
@@ -281,7 +285,7 @@ $g::
         ; Show ToolTip near cursor
         CoordMode "ToolTip", "Screen"
         MouseGetPos(&x, &y)
-        ToolTip "Drag Lock ON", x + 20, y + 20
+        ;ToolTip "Drag Lock ON", x + 20, y + 20
     }
     return
 }
@@ -319,6 +323,17 @@ $b::
 $n::
 {
     Send "^n"
+    return
+}
+
+
+
+; ---------------------------
+; n → New tab
+; ---------------------------
+$t::
+{
+    Send "^t"
     return
 }
 

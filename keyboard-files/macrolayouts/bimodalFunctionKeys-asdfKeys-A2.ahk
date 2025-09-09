@@ -92,7 +92,7 @@ isScriptActive := true
 lastEscPressTime := 0
 
 ; Define list of hotkeys to toggle (excluding Esc and ` for toggle/exit)
-global hotkeyList := ["a", "s", "*d", "*f", "g", "c", "z", "x", "v", "e", "h", "y", "b", "F9", "n", "q", "w", "3", "4", "r"]
+global hotkeyList := ["a", "s", "*d", "*f", "g", "c", "z", "x", "v", "e", "h", "y", "b", "F9", "n", "q", "w", "3", "4", "r","t"]
 
 ; ---------------------------
 ; c → Page Up

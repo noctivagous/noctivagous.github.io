@@ -1,0 +1,458 @@
+
+---
+
+# Annulus Sequencer Specification
+
+---
+
+## Introduction
+
+This project is the design of a **circular music sequencer** built on a **bimodal 
+interface model**. The sequencer departs from the traditional linear piano roll by 
+arranging pitch in **concentric annuli**, where **each ring represents an octave** 
+and **each radial sector represents a note within that octave**. This radial 
+structure allows multiple octave stacks (Annulus Tracks) to be instantiated 
+side-by-side, providing a grid of instruments that together can form a complete 
+composition.
+
+The most important design emphasis is **bimodal key-click interaction**.
+
+* **Mouse motion** (or any continuous pointer device) positions the cursor within 
+the annulus space.
+* **Keyboard keys** (the “clicks”) commit all actions: deposition of notes, creation 
+of polylines, adjustment of timing gaps, modification of parameters, and editing of 
+objects.
+
+This strict separation ensures **precise, repeatable control**, avoids the ambiguity 
+of mixed pointer+click interfaces, and makes the system efficient for performance and 
+live composition.
+
+Within this interface, the sequencer is organized as follows:
+
+* **Notes** are deposited into sectors via keyboard command. Notes can be **single tones (circles)** or **chords (squares)**, selected in advance with hotkeys. Velocity is encoded directly in the **radius/size** of the note symbol.
+* **Polylines** connect sequences of notes in the order they were deposited. Playback follows deposition order rather than angular position, enabling flexible reuse of the same pitch or chord at multiple points in a sequence.
+* **Timing** is fully explicit: the gap between notes is measured in beats and is adjustable at the moment of deposition using the `-` and `+` keys, or retroactively by hovering a connecting line and adjusting it. Each polyline also supports **pre-delay** and **post-delay** values, edited at its start and end points. Timing is thus **entirely symbolic and decoupled from the radial geometry**.
+* **Editing** follows vector-graphics logic. Entire polylines can be selected (G), moved in order (1/2), renamed, and deleted. Individual notes can be selected (H), resized for velocity, or reordered within their polyline (3/4). A standalone note deposited with **D** is internally treated as a polyline of one, so it integrates into the same editing model.
+* **Line styles** encode transition types between notes (legato, staccato, slide, etc.), and are switchable via number keys.
+* **Playback** supports local previews (E for start→cursor, Shift+E for tail→cursor) and a global transport (Space) to run all annuli in parallel.
+
+The **Annulus Track**—a stack of concentric octave rings—is the fundamental object-oriented component. Each track can contain any number of octaves and can be duplicated in a grid layout. Together these tracks form a **multi-track radial sequencer**, with each annulus stack functioning like an independent instrument line. Some tracks may emphasize melody across several octaves, others may be limited to a single-octave percussion set.
+
+---
+
+## Key Goals
+
+The sequencer is designed around a set of concrete goals that emphasize speed, clarity, and direct musical expression:
+
+* **Rapid Construction of Melodies and Songs**
+  The deposition model allows a musician to “draw” melodic or harmonic lines as polylines. Each note is immediately connected to the last, producing a sequence that is musically structured from the outset. Because timing gaps are adjustable in real time, the user can shape rhythmic feel without leaving deposition mode.
+
+* **Real-Time Preview While Depositing**
+  As each segment of a polyline is created, the sequencer plays back up to the current point. This gives immediate auditory feedback so the composer can hear how the phrase unfolds in context, making it possible to lay down material accurately and quickly.
+
+* **Bimodal Undo and Revision**
+  With the **Q key**, the last note of an active polyline can be undone, giving the composer instant recovery from missteps without breaking flow. This keeps the deposition process fluid and performance-ready.
+
+* **Hover-Based Playback for Revision**
+  When no polyline is being deposited, the composer can hover over any existing polyline and press **E** to audition it. This allows quick review and targeted revision of any line, reinforcing the “vector graphics” editing paradigm applied to musical material.
+
+* **Explicit Symbolic Timing**
+  By decoupling timing from radial geometry, the sequencer ensures that rhythmic structure is explicit, adjustable, and precise. This enables nuanced control over phrasing while preserving the intuitive visual mapping of pitch to annuli.
+
+* **Expandable Multi-Track Environment**
+  Because each Annulus Track is a self-contained component, multiple tracks can be duplicated and arranged on the page. This creates a flexible grid for building layered compositions with independent instruments and octave ranges.
+
+Together, these goals define a system where **musical ideas can be constructed, previewed, and revised at high speed**, with strong feedback loops between deposition, playback, and editing — all governed by a consistent bimodal key-click interface.
+
+---
+
+## Geometry & Structure
+
+* **Annulus Track** = one instrument, consisting of concentric rings.
+* **Rings** = octaves.
+* **Sectors** = semitones.
+* **Notes** = symbols (circle for single, square for chord) placed at sector midpoints.
+
+---
+
+## Note Types
+
+* **Single Note** (circle): deposited with **F** when mode = 6.
+* **Chord** (square): deposited with **F** when mode = 7. Uses chord preset formulas (major, minor, etc.), with optional ghost notes.
+
+---
+
+## Timing & Playback
+
+* **Gap in beats**: adjustable globally during deposition (`-`/`+`) or per-segment after deposition.
+* **Pre-delay / post-delay**: adjustable with **9** / **0** on first/last note.
+* **Playback order**: follows deposition order.
+* **Global transport**: Spacebar triggers all annuli in sync.
+* **Local previews**:
+
+  * **E** = play from start to cursor (inclusive).
+  * **Shift+E** = play tail (last note to cursor).
+* **Undo**: **Q** removes last note in active polyline.
+
+---
+
+## Editing & Selection
+
+* **G** = select/deselect entire polyline.
+* **H** = select/deselect individual note.
+* **Delete** = remove selected objects.
+* **1/2** = move selected polyline earlier/later in global order.
+* **3/4** = move selected note earlier/later within its polyline.
+* Polyline labels show **order number** and **custom name**.
+
+---
+
+## Line Encoding
+
+* Line styles map to transitions (solid, dashed, noisy, etc.).
+* Styles chosen by number keys.
+
+---
+
+## UI Panels
+
+* **Top Panel**: deposition mode (single/chord), chord preset, global gap, selected polyline info.
+* **Bottom Panel**: cursor info, hovered segment gap, pre/post delay, velocity values.
+
+---
+
+## Data Model
+
+```js
+Note = {
+  ringIdx, sectorIdx, midi, velocity, radiusPt,
+  angleRad, rMid,
+  type: "single" | "chord",
+  selected: false
+}
+
+Polyline = {
+  id, name, order,
+  notes: [Note,...],
+  segments: [{from,to,gapBeats,transition},...],
+  preDelayBeats, postDelayBeats,
+  selected: false
+}
+
+AnnulusTrack = {
+  center, ringConfig, sequences:[Polyline],
+  currentSequence:null,
+  gapGlobalBeats, bpm, styleMap
+}
+```
+
+---
+
+Extra notes:
+
+ The order label for the polyline should be on the first note.  
+ The annulus sectors should have their note labeled (e.g. C2, D2, etc.)
+ 
+ Inside every circle (or square) should be the name of the note.
+ 
+ When the annulus ring is playing, when a circle is played it should flash.
+ 
+
+ The E key plays back the currently active polyline.  A note is always
+ hanging on the cursor until a polyline is ended and the movement
+ of the cursor plays the note underneath it.   This comes from 
+ the global parameter "playNoteUnderCursorOnHover". By default,
+ whether a polyline is being drawn or not, the note underneath
+ the cursor is played.
+ 
+ The [ and ] keys change the velocity of the current note.
+ 
+ The cursor should always have a circle underneath it that is
+ stroked with no fill that reflects the diamater of the current
+ velocity parameter.
+ 
+ There should be clear divisions between the annulus sectors.
+ 
+ When a note is deposited, it is a circle.  When a chord is
+ deposited, it is a square, but it will have accompanying, faded
+ boxes on the other notes that make up the chord, connected by
+ a different kind of line, so that it is clear what the chord is
+ made of.  Those chord notes should be adjustable after being
+ deposited (the polyline is thus a kind of tree).
+ 
+ The annulus component can be configured in different notes,
+ from pythagorean to equal temperament (12 semitones).
+ 
+ -----
+ 
+Dealing with having two or more notes in a row at a single location:
+
+
+Great question — this is something most sequencers run into when supporting **repeated notes** or **ornaments** at the same pitch/time location. In our annulus-based sequencer, there are a few design strategies we can use:
+
+---
+
+## 1. **Explicit Gap, Even If Zero**
+
+* Each segment stores a **`gapBeats`** value.
+* If two notes are deposited at the same **sector/ring** location, they are still two entries in the polyline.
+* They can have a **nonzero gap** (staccato repetition) or a **zero gap** (true unison/stack).
+* The rendering would **draw multiple circles or squares stacked**, with small offsets (e.g., slightly rotated jitter or concentric outlines) to avoid overlap.
+
+---
+
+## 2. **Visual Offsetting**
+
+* When multiple notes share the same sector, the renderer can:
+
+  * **Jitter** each by a small angular offset around the center of the sector.
+  * Or **nest** them concentrically (different radii, maybe slight color differences).
+* The user still perceives them as being "the same pitch," but it’s clear visually that there are multiple notes.
+
+---
+
+## 3. **Note Stack Indicator**
+
+* Instead of showing multiple overlapping circles, the UI can:
+
+  * Render one symbol (circle/square).
+  * Add a **small badge number** (e.g., “×2”, “×3”) showing how many notes exist at that location in the sequence.
+* Hovering or selecting expands them into their individual entries for editing.
+* This keeps the annulus uncluttered while still supporting repeated notes.
+
+---
+
+## 4. **UI Behavior**
+
+* During deposition, if the cursor is at the same location as the last note:
+
+  * **Option A**: Deposit another note, but automatically advance with a default `gapBeats` (e.g. 1 beat).
+  * **Option B**: If Shift is held, deposit a stacked note *at the same timing* (gap = 0).
+* During playback, the scheduler simply respects the gaps (0 or >0), so stacked notes can be simultaneous or sequential.
+
+---
+
+## 5. **Editing**
+
+* Selection logic should allow the user to cycle through stacked notes at a location with repeated presses of **H** (note select).
+* If using the "badge number" visualization, clicking/selecting expands them.
+
+---
+
+
+* **Represent each repeated note explicitly in the data model.**
+* Use **Option 2 (visual jittering or concentric rings)** for clarity.
+* Add **Option 3 (badge indicators)** if clutter becomes an issue.
+* Playback already works — each note has its own scheduling entry — so the only real work is **visual disambiguation** and **selection cycling**.
+
+---
+
+Our sequencer app will be built on a foundation of states and modes to keep track of everything.
+ 
+
+Here’s a structured proposal for the **UI panels** so they cover all controls and sync cleanly with keypresses. This will fit at the bottom of your spec sheet under a section like **UI Panels and Controls**.
+
+---
+
+# UI Panels and Controls
+
+The sequencer relies on a **stateful/mode-driven UI**. The top and bottom panels display all relevant context, parameters, and feedback to keep the bimodal workflow transparent.
+
+---
+
+## Top Panel (Global and Deposition Context)
+
+* **Mode Indicator**:
+
+  * Current deposition mode: Single note (6) or Chord (7).
+  * Current chord preset (Shift+Number).
+* **Global Gap**: current default gap between notes in beats (`-`/`+`).
+* **Active Polyline Info**:
+
+  * Order number, name, total length in beats.
+  * If none active: display hovered polyline info.
+* **Playback Controls**:
+
+  * Transport status (Stopped, Playing, Preview).
+  * BPM display (editable in settings).
+* **Global States**:
+
+  * `playNoteUnderCursorOnHover` (On/Off).
+  * Global velocity cursor (current \[ ] value).
+* **Instrument/Track Context**:
+
+  * Active Annulus Track ID and number of octaves.
+
+---
+
+## Bottom Panel (Local and Hover Context)
+
+* **Cursor Info**:
+
+  * Note name and octave (e.g. C#3).
+  * MIDI number.
+  * Current velocity value (derived from cursor circle radius).
+* **Hover Segment Info**:
+
+  * If hovering over a segment: display gap in beats and transition style.
+* **Hover Note Info**:
+
+  * If first note: show pre-delay value.
+  * If last note: show post-delay value.
+  * If middle: show note order within the polyline.
+* **Selection Info**:
+
+  * Selected polyline(s): order, name, length.
+  * Selected note(s): pitch, velocity, order within line.
+* **Editing Feedback**:
+
+  * Numeric readouts update in real time for \[ ] (velocity), -/+ (gap), 9/0 (delays), and order shuffles (1–4).
+* **Stacked Notes Indicator** (when applicable):
+
+  * Badge showing ×2, ×3 if multiple notes exist at cursor location.
+  * Cycling instructions for selection (H to cycle).
+
+---
+
+## States and Modes Summary
+
+* **Deposition State**: Active polyline in progress vs. idle.
+* **Deposition Mode**: Single note / Chord preset.
+* **Selection Mode**: Polyline selected (G) vs. Note selected (H).
+* **Playback Mode**:
+
+  * Local preview (E / Shift+E).
+  * Global transport (Space).
+* **Editing Mode**:
+
+  * Velocity adjustment (\[ ]).
+  * Gap editing (-/+).
+  * Delay editing (9/0).
+  * Order adjustment (1–4).
+* **Cursor State**: Always shows a stroked circle reflecting current velocity size.
+
+---
+
+To incorporate **note duration** into your spec sheet, we need to extend both the **data model** and the **UI/controls**. Here’s a proposed addition you can append near the **Timing & Playback** and **Data Model** sections:
+
+---
+
+## Note Duration
+
+* **Definition**:
+  Each note has a `durationBeats` property, expressed in beats, separate from the `gapBeats` that define space between notes.
+* **Deposition Default**:
+  Newly deposited notes inherit a global default duration (e.g. 1 beat).
+* **Adjustment**:
+
+  * During deposition: use `,` and `.` keys to decrease/increase the current note’s duration.
+  * Post-deposition: hover a note and use `,`/`.` to adjust its `durationBeats`.
+* **UI Feedback**:
+
+  * Bottom panel shows numeric duration of hovered/selected note.
+  * Notes are drawn with a **ring outline proportional to duration** (longer duration = thicker outline).
+  * In playback, note symbol **flashes for the entire duration** rather than just on attack.
+
+---
+
+## Data Model (extended)
+
+```js
+Note = {
+  ringIdx, sectorIdx, midi, velocity, radiusPt,
+  angleRad, rMid,
+  type: "single" | "chord",
+  durationBeats: 1.0,  // NEW: length of note in beats
+  selected: false
+}
+```
+---
+
+
+## Arpeggio Property
+
+* **Definition**:
+  Any note (single or chord) can optionally have an **arpeggio pattern**. This determines how the pitches inside a chord are played back (instead of sounding simultaneously).
+
+* **Parameters**:
+
+  * `arpeggioType`: up, down, up-down, random, or none (default).
+  * `arpeggioRateBeats`: delay in beats between successive tones of the arpeggio.
+
+* **Representation**:
+
+  * Graphically indicated by a **diagonal hatch** or **arrow marker** over the chord square.
+  * Bottom panel displays arpeggio type + rate when hovering over or selecting a chord.
+
+* **Playback**:
+
+  * Scheduler expands the chord into sequential tones, scheduled according to `arpeggioRateBeats`.
+  * Duration of the chord applies to the full span of the arpeggio.
+
+---
+
+## Transition Types
+
+* **Definition**:
+  Every segment between two notes has a **transitionType**. This defines what happens in the time between the notes.
+
+* **Default**:
+
+  * **Silence**: no sound between notes, playback resumes at the next note attack.
+
+* **Other Types**:
+
+  * **Slide (Glissando)**: continuous pitch ramp from source to target note.
+  * **Tie (Legato Sustain)**: first note sustains until the second note begins.
+  * **Staccato Gap**: enforced silence before the second note.
+  * (Additional styles can be added, e.g. noise-texture fill or perlin tremolo.)
+
+* **Representation**:
+
+  * **Solid line** = silence (default).
+  * **Dashed line** = legato tie.
+  * **Curved or gradient line** = slide.
+  * **Dotted line** = staccato enforced gap.
+
+* **Controls**:
+
+  * Transition type is set during or after deposition using number keys (`1–9` mapped to styles).
+  * Numeric or symbolic indicator shown in the bottom panel when hovering over a segment.
+
+* **Playback**:
+
+  * Silence: skip.
+  * Slide: oscillator pitch ramps linearly or exponentially.
+  * Tie: sustain gain until next note.
+  * Staccato: explicit rest inserted before next note.
+
+---
+
+✅ This would extend the **Note object** with `arpeggioType` and `arpeggioRateBeats`, and the **Segment object** with `transitionType`.
+
+
+---
+
+## Playback (extended)
+
+* **Scheduling**:
+  When scheduling a note, its oscillator is started at `tSec` and stopped at `tSec + durationBeats * MS_PER_BEAT/1000`.
+* **Polyphonic handling**:
+  Chords extend all voices for the specified duration.
+* **Interaction with gaps**:
+  The `gapBeats` still determines spacing between attacks, but overlapping is now possible if `durationBeats > gapBeats`.
+
+---
+
+
+---
+
+## Rendering
+
+* Rings and sectors drawn as concentric annuli.
+* Notes drawn as circles (single) or squares (chord).
+* Polylines drawn with styled lines, labeled with order + name.
+* Dividers (single line segment) placed between annulus sectors.
+* Hover states highlight target and show numeric values.
+* Multiple tracks laid out in grid, sharing a global transport.
+* Semitones should be darker than tones in the circle.

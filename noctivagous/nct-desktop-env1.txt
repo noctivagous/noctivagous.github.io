@@ -1,16 +1,30 @@
 ﻿ADDITIONAL PROPERTIES FOR FILES AND DIRECTORIES
 
 
-Files and directories should have descriptions entries included with them to explain what they are, which will be displayed in the File Navigator.  This will allow browsing the drive and becoming familiar with what the system is about, such as what sbin, bin, usr, etc. all mean and what their contents are about.
+DESCRIPTION PROPERTY
 
 
-Additionally, the File Navigator should have the option to assign classifications to files and the filesystem should already come shipped with taxonomy classifications for every file and directory.  This way, regardless of where the file is located, its purpose is displayed.
+Files and directories should have descriptions entries included with them that explain what they are in a sentence, which can be displayed in the File Navigator.  This will allow browsing the drive and becoming familiar with what the system’s structure, such as what sbin, bin, usr, etc. all mean and what their contents are about.  Especially for a UNIX system like Linux, there are many files and directories that are not obvious by their name and this could allow viewing their purposes at a glance.
+
+
+CLASSIFICATION PROPERTY 
+Additionally, the File Navigator should feature the option to assign classifications to files.  The filesystem should already come shipped with taxonomy classifications for every system and application file and directory, sometimes more than one per file or directory.  This way, regardless of where the file is located, it can be compiled in a search result with similar files.  This will also allow, for example, greying-out directories and files that are of a certain category.  If the user does not want to go through system files, he can browse the filesystem with that category hidden the whole time.  In the inverse scenario, this would allow browsing the file system with just one or a few classifications (labels/tags) turned on, perhaps only browsing the system files for example.  
+
+
+
+
+RELATED FILES
 
 
 This also allows for an entry which is “related files” which will allow files to be associated with each other.  This can carry an option where related files and directories inside a directory can be “glued” which means that when they are moved they have to move together.
 
 
 The “related files” entry and a unique identifier or marker for a group of files that are related to each other will allow for tracking and uninstallation of all files and directories installed by a package.  They all carry the same unique marker, which is initially placed on them by the installer.
+
+
+
+
+APPEARANCE PROPERTIES
 
 
 Another property that can be added is one that changes the appearance of the directory or file on the filesystem, whether it is the highlight color of the directory or file or its font size relative to other files.
@@ -35,7 +49,13 @@ Related to this, the File Navigator can have two separate navigation window type
 For organizing the filesystem, a user might first tag all files that are part of a project or category of scrapbooking with a specific tag.  Then the user can make a so-called “smart” directory that either 1) moves all of the files with that tag inside it or 2) shows a maintained mirror list of these files.
 
 
-We have also said that there should be grouping and subgroup operations available for the contents of any directory so that related files are located next to each other.  Grouping and subgrouping will allow a directory to have a custom presentation, such as tabviews for the different groups and subgroups.  It will allow making use of other GUI controls like accordion controls for different sections of a directory.  A directory’s presentation might be customizable.
+GROUPING AND SUBGROUPING (COLLECTIONS) OF FILES AND DIRECTORIES
+
+
+We have also said that there should be grouping and subgroup operations available for the contents of any directory so that related files can be placed in collections and arranged next to each other.  In a tree representation, grouping and subgrouping can be indicated by outlines and sub-outlines for the groups and subgroups of files and directories located at the same tree level.  will also allow a directory to have a custom presentation, such as tabviews for the different groups and subgroups of files.  It will allow making use of other GUI controls like accordion controls for different sections of a directory.  A directory’s presentation might be customizable.
+
+
+GUI CONTROLS FOR THE FILE NAVIGATOR
 
 
 A File Navigator system can list files in a directory by separating them into tabs (A-K, K-P, etc.).

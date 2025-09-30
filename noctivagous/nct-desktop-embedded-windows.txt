@@ -1,0 +1,24 @@
+﻿NCT DESKTOP OS:
+
+
+EMBEDDED WINDOWS (OR WINDOW-IN-WINDOW FUNCTIONALITY)
+Reducing the Activity of Application Switching
+
+
+
+
+SCENARIO: A set of installation instructions are being followed on a web page that provide lots of CLI (terminal) commands.  To follow the instructions, instead of switching to the Terminal app and setting up the window side by side with the browser, the user right-clicks inside the window and inserts (embeds) a terminal window inside the web page, which by default affixes to the left edge of the web page (viewport) so that as the page scrolls it remains fixed, allowing each step of the instructions to be executed.  The embedded window, since it sits inside the web browser window, will move with its parent window and minimize along with it.  It can be resized and it can also be collapsed into its title bar or minimized inside the window into a rectangle at the top of the web page (its viewport frame).
+
+
+        OTHER, RELATED SCENARIOS:
+
+
+* The user inserts a File Manager (or File Navigator) window into the web browser page for the task of dragging images from the page into various folders on the filesystem.
+* The user inserts a word processing window into the web page for copying and pasting (or dragging) text and images into the word processing document.  (Also applicable to spreadsheets).
+* The user inserts a web browser window into a word processing document and navigates to a certain URL in order to drag text and images from the page to the document.
+* The user wants to drag files from the File Manager to upload them to the web server on the web page and inserts a File Manager window into the web browser page for this task.
+
+
+
+
+BACKGROUND INFORMATION: A common activity for the desktop computer user is switching back and forth between two applications to use one with the other, such as switching to the File Manager to drop a file onto an upload area of a web page in the web browser.  The inverse is, for example, setting up the File Manager so that individual images from the page can be dropped onto file directories.  This usually involves the uncomfortable task of resolving window occlusion, with the application that needs to be utilized with the current one sitting behind the other windows.  The user interface situation doesn’t stop being unpleasant after switching to the other application because in the desktop environment only one window and application can accept focus at a time.

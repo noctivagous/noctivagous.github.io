@@ -2,21 +2,36 @@
 
 
 EMBEDDED WINDOWS (OR WINDOW-IN-WINDOW FUNCTIONALITY)
-Reducing the Activity of Application Switching
+Reducing Application Switching for Coupled Software Application Tasks
 
 
+Using two software applications at the same time is a foundational activity of using an operating system, but the window management situation can be improved through the use of embedding one application’s window inside the other’s window such that the nested window moves with and minimizes along with its parent window.
 
 
-SCENARIO: A set of installation instructions are being followed on a web page that provide lots of CLI (terminal) commands.  To follow the instructions, instead of switching to the Terminal app and setting up the window side by side with the browser, the user right-clicks inside the window and inserts (embeds) a terminal window inside the web page, which by default affixes to the left edge of the web page (viewport) so that as the page scrolls it remains fixed, allowing each step of the instructions to be executed.  The embedded window, since it sits inside the web browser window, will move with its parent window and minimize along with it.  It can be resized and it can also be collapsed into its title bar or minimized inside the window into a rectangle at the top of the web page (its viewport frame).
+SCENARIO: A set of installation instructions are being followed on a web page that involve lots CLI (terminal) commands.  To carry out the steps, the user, instead of switching to the Terminal app and arranging the window side by side with the browser window, right-clicks inside the web browser window and inserts (embeds) a terminal window inside the web page viewport.  By default this affixes the embedded window to the left edge of the web page (the window’s viewport frame) so that as the page scrolls it remains fixed. This allows for each step of the instructions to be executed without changing and alternating window focus.  The embedded window, since it sits inside the browser window, will minimize along with its parent window and move with it.  It can be resized inside the window’s viewport frame, and it can also be collapsed into its title bar, horizontally or vertically, to be minimized inside the window.
 
 
         OTHER, RELATED SCENARIOS:
 
 
-* The user inserts a File Manager (or File Navigator) window into the web browser page for the task of dragging images from the page into various folders on the filesystem.
-* The user inserts a word processing window into the web page for copying and pasting (or dragging) text and images into the word processing document.  (Also applicable to spreadsheets).
-* The user inserts a web browser window into a word processing document and navigates to a certain URL in order to drag text and images from the page to the document.
-* The user wants to drag files from the File Manager to upload them to the web server on the web page and inserts a File Manager window into the web browser page for this task.
+* The user inserts a File Navigator window into the web browser page for the task of dragging images from the web page into various folders on the filesystem.
+* The user inserts a text editor or word processing window into the web page for copying and pasting (or dragging) text and/or images into the word processing document.  (Also applicable for copying data to and from spreadsheets).
+* In a word processing application document, the user inserts a web browser window into the document viewport and navigates to a certain URL in order to drag text and images from the page to the document.
+* The user wants to drag files from the File Manager to a web page to upload them to the web server. He right clicks and inserts a File Manager window into the web browser page for this task.
+
+
+        GLOBALLY AVAILABLE WINDOW APPS FOR INSERTION
+
+
+* This means that the system provides an “Insert Window…” function universally into the right-click context menu with various app window types available.
+
+
+EMBED WINDOW VS. (MULTI-APP WINDOWS) INSERT WINDOW INTO FRAME
+* Currently in a window manager you can manually set up two windows side by side and there are convenience functions that allow you to set up this workspace layout.  In practice, it doesn’t work very well but it is available.  As an alternative, if the window manager provided it, you could construct an empty window and then place the two windows inside it as subwindows, sitting next to each other.   Since they sit inside the same parent window and its frame they will move and minimize together along with the parent window.  We can call this a multi-app window.
+* A multi-app window is one that was put together by the user where, for example, it has been divided horizontally in equal proportion (1:1), with the Terminal on the left and the web browser on the right.  This is an alternative to the Terminal window being embedded inside and on top of the web browser window.  The titlebar of the window contains the titles of both windows and when the window minimizes, they minimize together, having been added to a new window container.  The advantage of this is layout stability versus just manually setting up two windows side by side and they could be moved.
+* Embedding a window places it inside the window’s viewport without changing the A second layout alternative to “Insert Window…” is “Insert Window Into Frame
+
+
 
 
 

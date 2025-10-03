@@ -1,4 +1,44 @@
-﻿ADDITIONAL PROPERTIES FOR FILES AND DIRECTORIES
+﻿ADDITIONAL PROPERTIES, BEHAVIORS AND STATES FOR FILES AND DIRECTORIES
+
+
+On the hard disk, a file directory is just a listing of the files and directories it contains and in the past it was just output on the screen in plain text.  When a file system is presented in a GUI in what is called the File Navigator or File Manager, the presentation and behavior of the filesystem does not have to confine itself to this limited situation that came from text terminal screens.
+
+
+In a GUI File Navigator, the user could change the generic directory to behave in ways specific to its contents.  A directory might take on a set of states and presentation layers specific to its purpose:
+
+
+* A photo album.
+   * The window defaults to image viewing functions
+   * The window carries photo editing functions, including batch operations for image editing. 
+* A scrapbook
+   * The window provides functions for tagging or classifying images.
+* A video clip bin (for video editors)
+   * The window provides basic editing functions such as trim to prepare duplicates of clips for editing.
+* A bookshelf (for PDFs)
+   * The window provides eBook viewers
+
+
+* A “smart” collection folder
+   * The directory receives updates from the file system about files with a given tag or subject classification on the hard drive and compiles them into this mirror listing.
+   * Alternatively, the directory moves all files or directories with a given tag or classification to its location as soon as they are given that tag or classification.
+
+
+* A web bookmarks folder
+   * Browser each .weburl (example file extension) file will retrieve the web page.
+
+
+* An internet feeds folder
+   * Contains and allows for layout of feeds from remote sources, including e-mail.
+
+
+In this way, the File Navigator takes on software functionality that is often the domain of applications, but this provides better conveniences for use of the computer.
+ 
+
+
+
+
+
+
 
 
 DESCRIPTION PROPERTY

@@ -1,0 +1,48 @@
+﻿NCT DESKTOP OS
+
+
+
+
+LIMITED SCREEN SPACE WINDOW OCCLUSION
+
+
+A main issue in window management in a desktop computing environment is that the windows occlude one another and the frontmost window may completely block the view of everything underneath it and so there are various schemes implemented to help the user deal with moving them out of the way and later returning to them.  The most commonly used scheme today is the minimization function, which hides the window by shrinking it down into a different location of the screen.  The drawback of this is that it isn’t a pleasant process to fetch and restore the window.  There is also the WindowShade or title bar approach, which hides everything of the window except its title bar.  The window is collapsed into its titlebar. This is an effective alternative to window minimization because the titlebar of the window remains on screen and the user does not have to go fetch it at a different location where it exists in a different minimized state, such as the Dock or the Task Bar.  A drawback to some users is that when many windows are collapsed into their title bars, there are multiple floating title bars and the situation can feel cluttered and without organization.
+
+
+
+
+COLLAPSING THE WINDOW TO THE LEFT, INTO A VERTICAL TITLEBAR
+
+
+Noctivagous has researched a different kind of window collapse, which it finds to be effective, and this is collapsing the window to the left into a vertical strip.  This is a vertical titlebar instead of a horizontal one.  It is possible that a window manager would allow this collapse to push
+
+
+
+
+TURNING ALL WINDOWS INTO HOLLOWED FRAMES WHILE KEEPING THEIR TITLEBARS
+
+
+
+
+Users minimize windows for a few reasons.  The first is to temporarily 
+
+
+
+
+WINDOWS MINIMIZATION GRID
+Scaling the Windows into a grid
+
+
+There is a problem with the window minimization function, in any desktop operating system’s window manager, and it is that the windows either become part of a cluttered list (Mac OS’ Dock) or they have to be recalled somehow to see where they are (Windows 10 and later).
+
+
+A different setup involves the minimization function scaling down the window to a 200pt x 200pt thumbnail crop (as part of an animation) and then moving the window to a slot on the system’s Minimized Windows Grid, the location where all applications’ minimized windows are placed when the “minimize” function is activated.  This Minimized Windows Grid automatically sorts the minimized windows into tabs according to the software applications, though alternatively all minimized windows of software applications can be scrolled through.
+
+
+The added benefit of this is that the thumbnails can be large and it can be possible to go to the Minimized Windows Grid overlay and observe the activity of any given window.  It can be possible as well to temporarily pop the window out to full size within the Minimized Window Grid overlay, work with it, and then minimize it back into its slot.
+
+
+This provides a deliberate organization of windows into thumbnails at the point of minimization instead of the reactive Mission Control on Mac OS.   At the point of window minimization, the user knows where the window went specifically in the Minimized Windows Grid, whereas Mission Control is an on-the-fly compilation of everything.
+
+
+MINIMIZATION PURPOSE

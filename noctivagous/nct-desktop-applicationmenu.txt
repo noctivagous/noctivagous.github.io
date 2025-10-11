@@ -1,0 +1,14 @@
+﻿A Different Application Menu UI
+
+
+The mouse should not have to travel to the top of the screen to a menubar just to activate the display of the application’s menus.  The user activates the display of a menu often because a desired function is not memorized as a shortcut or it isn’t known yet whether it is there or in which parent menu it is nested. A convention from Mac OS that  isthe application menu is located at the top of the screen and then has to be traveled to by the mouse cursor.  A horizontal bar on Mac OS, a vertical list on NeXT.  
+
+
+Right-click is by convention today set up to be the contextual-menu that offers functions related to the screen objects underneath the location of the click.  But if mouse clicks are still being used (before replacing them with key-clicks from Bimodal Control UI Theory), the right click can instead be set up to display an application menu box and then either the existing shortcut labels or single-press key labels can be prominently assigned and shown next to each function.  
+When this is the case, the menus don’t have to be limited to linear lists but also can involve multi-column layouts.  This menu box that appears at the location of the cursor would likely span the width of the screen at the Y location of the cursor and it would be a rearrangement of what is now found inside the application menu (the system menubar in Mac OS, which is embedded inside individual windows for an application running inside Windows and Linux).  
+
+
+Keyboard shortcuts today are set up to activate menu functions when the menu is still hidden and because they use modifier keys they do not interfere with regular use of the keyboard.  But in this setup, when the application menu box is displayed as a result of a right-click, the functions in the menus can just be activated with individual keys if it is set up that way while the existing shortcut combinations can work as well.
+
+
+Reducing mouse travel can occur if the application menu is displayed upon right-click.

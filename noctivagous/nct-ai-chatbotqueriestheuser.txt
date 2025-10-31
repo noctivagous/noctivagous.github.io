@@ -8,11 +8,12 @@ When the user asks the AI chatbot a question to get a broad solution,
 often the user won't realize or even know much of the information 
 that the AI needs to collect, or typing it all out might be 
 too much work up front.  He might say, "Help me
-get a laptop PC for under $500" but not realize at the time
+get a desktop PC for under $500" but not realize at the time
 that there are different form factors like tower, mini, etc.
 Or it could be that he realizes these things but it
 is too laborious to recall and type out each one and it would be
 better if the AI came up with these list items with defaults filled in.
+Workarounds for this are provided below.
 
 This is normal in real life, that there is
 information the receptionist or expert has to gather
@@ -41,6 +42,7 @@ default answers selected or text filled in and
 I will reply with changes." 
     - (In the future this will produce an 
     actual interactive form inside the AI chatbot chat session).
+- "Ask clarifying questions."
 
 
 TYPES OF QUESTIONS THE AI WILL BE ABLE TO ASK IN THE FUTURE

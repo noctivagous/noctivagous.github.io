@@ -1,0 +1,126 @@
+The AI Chatbot Queries The User for Important Information 
+Before Proceeding
+
+ARTICLE SUMMARY
+
+AI chatbots like Claude or Grok are all descendants of a "research preview"
+from OpenAI in 2011 called ChatGPT that unexpectedly took off (hence
+the technical "GPT" product name that persists to the present day).
+Almost nothing was done to the core of the interaction sequence or how
+a chat flows. There is a critical feature they lack which is the ability 
+to gather information before answering. It isn't hard for the AI companies 
+to implement this.  They just haven't done it.  Try out the difference by testing
+out a prompt addition below.
+
+
+PROMPT ADDITIONS 
+
+Add one of these phrases to the end of a prompt to assist the AI in the
+collection of relevant information and details for your
+project or problem.  We will explain the reason to do
+this in the section below, though you will find it self-evident
+after using one of them.
+
+- "Ask any questions before proceeding."
+- "Ask clarifying questions."
+- "For this project, collect information from me with 
+default options selected and text answers filled in and
+I will reply with changes." 
+
+To illustrate, the user might say, "Help me get a desktop PC for under $500," 
+but he did not realize before submitting the prompt that there are different 
+desktop computer form factors like tower, mini, etc. as well as many other
+specifications. Providing them will allow the AI to produce a more productive 
+answer. It could also be that he realizes these aspects of buying a computer 
+but the task of recalling and typing out each item is too demanding, especially 
+for a mere AI chat session. It would be better if the AI came up with a list of
+these items (RAM, hard drive space, processor speed, etc.) on its own
+with default answers filled in.  Since this feature isn't found in any of the 
+AI chatbots of today, the prompt additions above can act as workarounds.  
+What they do is greatly improve the flow of the chat for complex projects 
+where any wrong assumptions by the AI will put drag on the chat. 
+
+In the future the prompt additions above can produce an actual interactive 
+form inside the AI chatbot chat session, something possible in software now
+but not provided by any of the apps yet.
+
+
+THE PROBLEM: AI CHATBOTS DON'T REFLECT EXPERT/RECEPTIONIST
+INTERACTIONS
+
+An expert, such as an interior designer, knows questions to ask a client to
+tailor results and efforts.  The questions that the expert asks also
+are a consequence of having expert knowledge and training and are part of the
+consultation. The AI is an expert on many topics. It can come up with questions 
+to ask too, but in the current AI chatbot software convention it is never 
+set up to ask them, which is just an historical artifact.
+
+
+
+THE IMPORTANCE OF THE AI ASKING FOR RELEVANT DETAILS
+
+As it stands today, if the user doesn't provide enough details and 
+information, the AI chatbot is configured to answer with whatever assumptions it 
+generates.
+The problem is that there are some times where as soon as it does
+this, the user will have to make changes it and fill in the information,
+which greatly expands the chat length and work the user has to do, who
+ends up chasing the AI down like this.
+When the user asks the AI chatbot a question to get a solution,
+often he won't realize or know much of the information 
+that the AI requires to produce a satisfactory answer. 
+So sometimes the AI might as well ask some questions before answering
+so as not to waste the user's time and effort.
+
+
+
+
+
+AI AS EXPERT
+
+For an AI chatbot, the AI (an LLM in this case) can be viewed 
+in terms of an expert since it is trained on so much data.
+The AI chatbot of today doesn't feel finished in part because
+this is normal in real life, that there is
+information the receptionist or expert has to gather
+that the client didn't realize or know needed to be provided.
+If the client doesn't provide it, the receptionist 
+will have to fill in the blanks with results that might be a mismatch
+or unsatisfactory to the user.  This is what is happening right
+now with the AI chatbots and it is a reason their productivity
+is mixed.
+
+Like in real life, the AI needs the ability to gather
+information once given a task but right now it will only reply with
+its own assumptions embedded for any information missing that
+it would have collected, which necessarily will produce the occasional or frequent 
+unsatisfactory experience with the AI, especially
+for project questions.  Some tasks just require the collection
+of more information if the user doesn't provide a specifications
+document.
+
+
+
+
+TYPES OF QUESTIONS THE AI WILL BE ABLE TO ASK IN THE FUTURE
+
+- pressing questions - question the AI truly needs to
+answer or assist effectively.
+
+    - A small menu appears quickly underneath the user's query and 
+    it has up to 5 options with number keys corresponding to
+    response. 
+        - E.g. "Do you want a 1) laptop or 2) notebook computer?" 
+
+
+- questionnaire form - a list of questions for
+the AI to provide the user so that it can collect
+information.  It can have defaults selected.
+Can be multiple choice or text, etc.
+Can have levels of specificity.
+    - example is a technical
+    specifications questionnaire before
+    the AI generates code.
+    
+    
+    

@@ -1,0 +1,67 @@
+
+The AI Chatbot Queries The User Before Proceeding.
+
+THE PROBLEM: AI CHATBOTS DON'T REFLECT EXPERT/RECEPTIONIST
+INTERACTIONS
+
+When the user asks the AI chatbot a question to get a broad solution,
+often the user won't realize or even know much of the information 
+that the AI needs to collect, or typing it all out might be 
+too much work up front.  He might say, "Help me
+get a laptop PC for under $500" but not realize at the time
+that there are different form factors like tower, mini, etc.
+Or it could be that he realizes these things but it
+is too laborious to recall and type out each one and it would be
+better if the AI came up with these list items with defaults filled in.
+
+This is normal in real life, that there is
+information the receptionist or expert has to gather
+that the client didn't realize or know needed to be provided.
+If the client doesn't provide it, the receptionist 
+will have to fill in the blanks with results that might be a mismatch
+or unsatisfactory to the user.  This is what is happening right
+now with the AI chatbots and it is a reason their productivity
+is mixed.
+
+Like in real life, the AI needs the ability to gather
+information once given a task but right now it will only reply with
+its own assumptions embedded for any information missing that
+it would have collected, which necessarily will produce the occasional or frequent 
+unsatisfactory experience with the AI, especially
+for project questions.  Some tasks just require the collection
+of more information if the user doesn't provide a specifications
+document.
+
+
+WORKAROUNDS THE USER CAN INSERT TODAY:
+
+- "Ask any questions before proceeding."
+- "For this project, collect information from me with 
+default answers selected or text filled in and
+I will reply with changes." 
+    - (In the future this will produce an 
+    actual interactive form inside the AI chatbot chat session).
+
+
+TYPES OF QUESTIONS THE AI WILL BE ABLE TO ASK IN THE FUTURE
+
+- pressing questions - question the AI truly needs to
+answer or assist effectively.
+
+    - A small menu appears quickly underneath the user's query and 
+    it has up to 5 options with number keys corresponding to
+    response. 
+        - E.g. "Do you want a 1) laptop or 2) notebook computer?" 
+
+
+- questionnaire form - a list of questions for
+the AI to provide the user so that it can collect
+information.  It can have defaults selected.
+Can be multiple choice or text, etc.
+Can have levels of specificity.
+    - example is a technical
+    specifications questionnaire before
+    the AI generates code.
+    
+    
+    

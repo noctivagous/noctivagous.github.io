@@ -1,40 +1,69 @@
 
-Agentic AI Hybrid Interface IDE
+A Hybrid Interface Agentic (AI-Driven) IDE
 
 
-The AI code editor works with the user to construct diagrams of the files and code.
-The user is not confined to working either in a diagram or the code level 
-and has access to both all the time. Clicking on any part of the diagram,
-such as one of its components, will reveal code in a popover. This way
-the user can work at the overview level of the code while actually
-opening up the code and editing.   The user can see the big picture
-and the individual lines of code at the same time in the
-same workspace. Multiple popovers can remain open at the same time.
+A code editor of this kind centers around a very
+large, zoomable workspace.  It works with the 
+user to construct diagrams of the files and code.
+The user is not confined to working in either a diagram or 
+the code level: clicking on any part of the diagram,
+such as one of its object components, will reveal its code 
+in a popover. This way the user can stay at the overview level of 
+the code while actually opening up the code and editing.   
+The user can see the big picture and the individual lines 
+of code at the same time in the same workspace.
+Multiple popovers can remain open at the same time
+and different parts of the diagram workspace can be
+set to different detail levels.  The user can select
+sections of code as diagram components or lines inside
+the popover editor and the AI receives prompts to change either one.
 
 What the user is working with is more like a UML diagram 
-but with more detail in the diagram available as the user
-zooms in, by default.  We say this is by default because 
-at the same time, importantly, the user does not
+but with more detail in the diagram available when the user
+zooms in.  At the same time, importantly, the user does not
 have to zoom in to open a section up into greater detail.
-One section of the diagram can be assigned to, say, the
-most macro level of detail while another is kept at a
-micro one.
+One section of the diagram can be assigned to the
+most micro level of detail (just before it comes a file of text)
+while another is kept at a macro one.
 
 Since multiple popovers can be opened at the same time,
-the user can then have the code open in certain sections 
-while editing others at the diagrammatic component level,
-instructing the AI at either level of detail.
+the user can then set up the code to be open for certain sections 
+while editing other parts of the project at 
+the diagrammatic component level, instructing the 
+AI at either level of detail.
+
+A benefit of this is that when editing the code, the user
+can start at the diagrammatic overview, click a component,
+and then be editing just the code for that component.  That is,
+it jumps to and only shows the code for that component
+of the diagram, greatly reducing the need to scroll through
+a file of text (code).
+
+A reorganization of the project's files and components will be
+happening at a more macro level of detail for
+while optimizing a procedure will happen in a popover.
+
 
 SOLVING THE PROBLEMS FOUND IN VIBE CODING
 
-It addresses the problems of vibe coding that the user
-cannot see the code whereas working at the code level
-in one of these IDEs is too challenging because of
-the volume of code that the AI produces.  This 
-spans low-level line-by-line editing and 
-pure no-code abstraction diagram. 
+When there is a code editor that can represent the
+code in diagram form and show its files' content in popovers,
+it addresses the problems of vibe coding, that the user
+cannot get a clear picture of what the AI is doing 
+Always working at the code level in one of these IDEs 
+while having the AI generate code is too challenging because of
+the volume of code that the AI produces and that it
+inserts it into multiple files.  A workspace that 
+doesn't limit editing to the code's text will 
+span pure no-code abstraction diagram all the
+way down to low-level line-by-line editing. 
 The AI builds and maintaining a living diagram of the codebase 
-while the user operates at the structural, intent.
+while the user operates at the structural level
+in the diagrams and inspects at the code level
+when necessary.
+
+
+
 
 EXECUTING CONTEXTUAL COMMANDS AND PROMPTS ON COMPONENTS
 

@@ -2,6 +2,19 @@
 A Hybrid Interface Agentic (AI-Driven) IDE
 
 
+Note: An upgrade to the common IDE that moves
+towards GUI is only viable if it uses
+what is called Bimodal Control / Dual Input UI Theory,
+which means in this case that mouse button clicks are
+moved to keyboard keys, including a dedicated drag-lock
+(a.k.a. "sticky drag") key. The mouse is used 
+for steering of the cursor while the keyboard keys 
+are used for activation of functions.  (The
+mouse buttons are not used.)
+
+
+
+
 A code editor of this kind centers around a very
 large, zoomable workspace.  It works with the 
 user to construct diagrams of the files and code.

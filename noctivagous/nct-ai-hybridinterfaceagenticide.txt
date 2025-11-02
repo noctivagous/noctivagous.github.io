@@ -12,17 +12,30 @@ for steering of the cursor while the keyboard keys
 are used for activation of functions.  (The
 mouse buttons are not used.)
 
+AI IS TOO BIG FOR A PLAIN TEXT IDE
 
+The general rule in technology is that when
+the form factor or technology has advanced, 
+changes and upgrades have to be made elsewhere too.  
+If you now have AI generating lots of code, you have
+to update the IDE and not keep it the same.
+To give a historical example from the 2000s: Apple quickly
+realized that the iPod's clickwheel wouldn't 
+serve the needs of the iPhone. The situation cannot
+remain the same in different contexts. AI's code-generation
+capabilities are too big for the small plain text editing
+interactivity that preceded it. At the minimum, an IDE can move 
+towards hybrid diagram and code editing.
 
-
-A code editor of this kind centers around a very
+The code editor proposed here centers around a very
 large, zoomable workspace.  It works with the 
-user to construct diagrams of the files and code.
+user to construct diagrams of the files and their code.
 The user is not confined to working in either a diagram or 
-the code level: clicking on any part of the diagram,
+code view of a project: clicking on any part of the diagram,
 such as one of its object components, will reveal its code 
 in a popover. This way the user can stay at the overview level of 
-the code while actually opening up the code and editing.   
+the code while opening up the code, editing it, and having the
+AI make additions or changes at any level of detail.   
 The user can see the big picture and the individual lines 
 of code at the same time in the same workspace.
 Multiple popovers can remain open at the same time
@@ -30,31 +43,37 @@ and different parts of the diagram workspace can be
 set to different detail levels.  The user can select
 sections of code as diagram components or lines inside
 the popover editor and the AI receives prompts to change either one.
+For example, if multiple components are selected,
+the user's instructions to the AI are naturally understood to be
+limited to them (and this reduces typing). 
 
 What the user is working with is more like a UML diagram 
 but with more detail in the diagram available when the user
 zooms in.  At the same time, importantly, the user does not
-have to zoom in to open a section up into greater detail.
+have to zoom in to expand a section to a higher detail level.
 One section of the diagram can be assigned to the
-most micro level of detail (just before it comes a file of text)
-while another is kept at a macro one.
-
-Since multiple popovers can be opened at the same time,
-the user can then set up the code to be open for certain sections 
-while editing other parts of the project at 
-the diagrammatic component level, instructing the 
-AI at either level of detail.
+most micro level of detail (just before it is the lines of code)
+while another is kept at a macro one.  The software developer
+can then work on different parts of the project at
+the right levels of detail for the given task.
 
 A benefit of this is that when editing the code, the user
 can start at the diagrammatic overview, click a component,
-and then be editing just the code for that component.  That is,
-it jumps to and only shows the code for that component
-of the diagram, greatly reducing the need to scroll through
-a file of text (code).
+and then be editing just the code for that component, exit it,
+and then select a group of components and instruct the AI
+to do something with them.  A major benefit of a popover of
+code for a diagram's component is that the popover editor 
+jumps to and only shows the code for that part of the
+code that matches the component of the diagram. This 
+greatly reduces the need to scroll through
+a file of text (code), because a file of code often
+has more than one section that would show up as a component
+in a diagram.
 
 A reorganization of the project's files and components will be
-happening at a more macro level of detail for
-while optimizing a procedure will happen in a popover.
+happening at a more macro level of detail 
+whereas optimizing a code procedure can happen in a
+code editor popover.
 
 
 SOLVING THE PROBLEMS FOUND IN VIBE CODING

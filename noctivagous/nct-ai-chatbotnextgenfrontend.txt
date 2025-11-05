@@ -1,18 +1,97 @@
 Going Beyond The 2022 ChatGPT App Format
 
+INTERACTIVE MODES
+
 The next generation of AI chatbot web app should be a focus of the AI industry. To begin with, we can recognize that the current AI chatbot software is often being put into modes by the user, such as step-by-step walkthrough (a step–result–interpret loop).  The AI chatbot apps give these kinds of examples for the user to follow for how to use the chatbot, such as having it quiz or teach a subject, but this is quite hacky because the GUI doesn't change when the AI is used for different tasks.  If it is quizzing the user, it should be able to change the GUI into a quiz format.  Currently, whatever mode it has been placed into by the user is forced inside the same vertical scrolling chat of plain text.  Since these instructions ("start quizzing me on..." or "collect information from me about...") are actually instructing the AI to interact in different modes, for each one the GUI of the app should change.  The user might enter a quiz mode on purpose through the overall GUI of the app or it might be that the AI naturally changes the GUI.
 
 A quiz mode would be one where the GUI can show one question at a time while the chatbot app itself has been provided multiple choice buttons and other form input controls that it can display to get an answer.  Another use of the chabot app is asking it how to do things, so similarly the app layout for a step-by-step walkthrough mode would be one where there is one slide shown at a time to guide the user through the task.  This might be used when asking the AI how to troubleshoot a computer problem, for example, or diagnose a car or appliance issue.  The author of this article has made use of AI chatbots in this mode while configuring Linux at the command line level, which is a relatively complex task.  To simulate a walkthrough mode for this in today's scrolling chatbot GUI, give it the following prompt: "I want to [e.g.: optimize the speed of my Linux system with the Terminal].  Let's do this one step at a time and I give you results. A step–result–interpret loop."  This is definitely better for the task than the default response and layout of the chatbot, which would just generate a list of instructions for the user to follow.  Complexities and unexpected results can arise at each step when working with the Terminal and the AI can respond according to the output that the user reports back to it.  Each step is one in which the AI either gathers information or gives instructions and then asks for the results, is presented one at a time, with a text input area underneath or to the side for the user's response.  The AI chatbot will improve if its GUI adapts to this scenario and others.  These are different types of modes that can be collected.  In a new type of chatbot, it will make a big difference that there are designated modes offered to the user that activate corresponding GUI and workflows.  The welcome screen might provide a menu of them.  The design of the software will be different than just a plain chat. When the user approaches the software, there are entry points provided for how to use it and the burden isn't on the user for how to make the AI valuable for the situation.
 
 Another mode gathers information in the form of questionnaires, either all at once on a single form or spread out one question at a time, before taking action, such as to set up a software development project or project where there are placeholders it can generate.  A little more mode dynamic would be a teaching mode for course instruction, and the GUI would change to accommodate that, too.
 
+When studying a book that has arcane vocabulary or is in a foreign language, the reader can activate the corresponding mode in the AI chatbot software, which allows opening up a document viewer inside the app, displaying its contents page by page, and tools will then be provided for looking up definitions and getting more information about a selected word or paragraph.
+
+At the bottom of this document we provide multiple examples of different interactive modes for the AI chatbot software.
+
+
+EXTENSIBILITY
+
 The extensibility of the chatbot software is a topic that relates to this because users may want to make their own functionality and modes for the AI chatbot app.  These modes can be programmed and supplied by users in the form of files that contain a sequence and workflow descriptor (declarative) data format.  It will describe which GUI to use for a specific step of a mode and it allows providing prompt text to go control every aspect of the sequence.  By implementing all of this, the AI chatbot of today, which has remained the same since 2022, can go beyond a one-size-fits-all vertical scrolling GUI and actually accommodate different situations.
 
-When studying a book that has complex vocabulary or is in a foreign language, the reader can activate the corresponding mode in the AI chatbot software, which allows opening up a document viewer inside the app, displaying its contents page by page, and tools will then be provided for looking up definitions and getting more information about a selected word or paragraph.
+If given a set of workflow components and GUI controls, the AI could put together its own GUI forms and sequences for a situation that is a mix of these situation. But a stock set of modes will provide familiar usage of the AI and structure for it.  It is better to guide the AI today than to let it do what it wants.
 
-It's also the case that if given a set of workflow components and GUI controls, the AI could put together its own GUI forms and sequences for any situation. At the same time, though, a stock set of modes will provide known usage of the AI and structure for it. It is better to guide the AI today than to let it do what it wants.
+If this AI app is running on the desktop, it can be given an AI agent that is allowed to execute apps and open up windows, which would allow it to generate an on-the-fly instructions for a user for an app that is unfamiliar.  (In the future, it could be the case that the AI is given a set of complete application kit components and wires up its own apps on the fly.)
 
-If this AI app is running on the desktop, it can be given an AI agent that is allowed to execute apps and open up windows, which would allow it to generate an on-the-fly instructions for a user for an app that is unfamiliar.
+Extensibility allows the programming community to try out variations on and additions to the current chat.
 
 
-In the future, it could be the case that the AI is given a set of complete application kit components and wires up its own apps on the fly.
+
+IMPROVING THE CONVENTIONAL SCROLLING CHAT
+
+An AI chatbot web app like ChatGPT could be given some commands that work with the actual app, such as, "Take the last response you generated and put it in the scrapbook."  This is part of the issue that the software should be built out more to be like traditional app software.
+
+There is also the overlooked matter that the flow of the conversation with the AI in today's chatbot software is narrow and limited and it can never flow like a real chat, either in real life or onlione, where there commonly is an alternation between questions that ask for short answers and long ones.  In actuality, the chat software of today is following a very limiting query-and-response format and is not like chatting.  In real conversations, people ask for clarification when they need more information or something is vague, whereas the chatbot is programmed to just proceed with assumptions that fill in any unknown information.  In real convesations, people make brief suggestions, ask to make sure everything is ok, and there is a back and forth toward a goal.  After an expert or consultant asks for clarification, it gives him information about where to guide the project, what the other person's goals are and what the person needs to know.  So this is a key improvement that should be made in the next generation of AI chatbots so that they are more normal and natural for real life and the intake of information.
+ 
+Take the case of a certain feature to implement, which is brief clarifying menus. The user looking to buy a product asks how to get started and the AI responds like a store employee or expert to begin the process.  The flow of the interaction is more natural and will be easier on the user for this situation.  The user can always ask a question.
+
+USER: I am looking to buy a mini PC.  
+AI: What is your budget? Press a key: 1) <$300 2) <$500 3) <$700 4) >$700 
+USER: 3  
+AI: 1) Linux or 2) Windows? 
+USER: 1
+AI: There are a lot of options and it depends on whether you want an Intel CPU
+or a Ryzen.  The Ryzen chips focus more on multi-threaded processing. Which
+do you prefer?  1) Intel 2) Ryzen.
+USER: 2
+
+
+Map kit - research things across a map that remains stationary during the chat.
+
+
+
+SUMMARY OF EXAMPLE MODES: 
+
+1. Quiz Mode
+GUI: Displays one question at a time with multiple-choice buttons, checkboxes, text inputs, or sliders. Progress bar, score tracker, and "Reveal Answer" button.
+Workflow: AI generates questions from a topic; user submits answers; AI provides immediate feedback, explanations, and adapts difficulty.
+
+2. Step-by-Step Walkthrough Mode
+GUI: Carousel or slide-based layout showing one step at a time (instruction + expected result). Side panel for user input (e.g., paste terminal output). "Next" button enabled after submission.
+Workflow: Step → User reports result → AI interprets/adjusts → Next step. Ideal for troubleshooting (e.g., Linux config, appliance repair).
+
+3. Questionnaire/Information Gathering Mode
+GUI: Form-based (single-page for all questions or one-at-a-time). Inputs include text fields, dropdowns, file uploads, date pickers. Progress indicators and validation.
+Workflow: AI asks structured questions to collect data (e.g., for project setup); compiles responses; generates output (e.g., code scaffolds, plans).
+
+4. Teaching/Course Instruction Mode
+GUI: Lesson dashboard with modules, embedded videos/images, note-taking panel, and interactive exercises. Timeline navigation for revisiting sections.
+Workflow: AI delivers content in sequenced lessons; interleaves quizzes, examples, and Q&A; tracks user progress and adapts pacing.
+
+5. Document Study Mode
+GUI: Integrated document viewer (PDF/text upload, page-by-page flip). Highlight/select tools for words/paragraphs; pop-up side panel for definitions, translations, or explanations.
+Workflow: User uploads/navigates document; selects text; AI provides lookups, summaries, or context; supports foreign languages or arcane terms.
+
+6. Goal Tracking/Habit Building Mode
+GUI: Dashboard with progress calendars, checklists, streak counters, and reminder notifications. Editable goals with sub-tasks.
+Workflow: AI helps set SMART goals via questionnaire; provides daily check-ins; analyzes progress; adjusts plans (combines teaching and walkthrough).
+
+7. Language Learning/Conversation Practice Mode
+GUI: Chat with voice input/output, pronunciation feedback, vocabulary flashcards. Immersive scenarios (e.g., virtual cafe dialogue).
+Workflow: AI converses in target language; corrects errors in real-time; drills grammar/vocab; tracks fluency progress (blends quiz and teaching).
+
+8. Role-Playing/Simulation Mode
+GUI: Character avatars, dialogue bubbles, and scenario timeline. Branching choice buttons for user decisions; environmental descriptions with images.
+Workflow: AI sets up scenario (e.g., negotiation, historical event); responds in-character; adapts based on user choices; ends with debrief/analysis.
+Data Analysis/Visualization Mode
+GUI: Upload zone for datasets; interactive charts/graphs (draggable filters, zoom). Query bar for natural language asks; export buttons.
+Workflow: User uploads data; AI suggests visualizations; iterates on queries (e.g., "Show trends in sales"); explains insights step-by-step.
+
+9. Custom Workflow Builder Mode (For Extensibility)
+GUI: Drag-and-drop builder for components (e.g., forms, slides, buttons). Preview pane and export/share for mode files.
+Workflow: Users/AI define sequences via declarative files (JSON/YAML); describe GUI per step, prompts, and logic; app loads and runs custom modes.
+
+These modes can be mixed (e.g., AI proposes a hybrid of walkthrough + data analysis for a task) or extended via user-uploaded workflow descriptors. A stock set ensures guided, familiar experiences, while allowing AI to assemble novel GUIs from components for unstructured queries.
+
+
+
+
+

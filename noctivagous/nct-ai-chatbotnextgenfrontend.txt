@@ -12,6 +12,28 @@ As part of a transitional stage, today's chatbot software could equip the AI wit
 
 ---
 
+Traditional Software Menus at The Top
+
+The absence of conventional menus makes feature discovery harder and constrains the user’s ability to engage with the system in predictable, software-like ways.
+
+User Burden - Users must remember phrasing or prompt formats for each operation instead of choosing from labeled functions.
+Mode Ambiguity - When entering specialized tasks (teaching, quizzes, translation), the system lacks persistent visual state indicators or toggles.
+Interface Inflexibility - A pure chat stream prevents multimodal interaction—no contextual toolbars, visual previews, or hierarchical options.
+Cognitive Load - Without visual affordances, the user must track modes mentally, making complex workflows cumbersome.
+
+
+The AI chatbot software format found everywhere, because it still follows closely the 2022 prototype (the ChatGPT "Research Preview") didn't take up the task of incorporating normal user interface elements, like menus that allow the user to access features.
+
+Integrating conventional GUI elements atop conversational engines—persistent menu bars, context grids, or modular “mode” panes—would bridge natural language flexibility with standard user interface predictability.
+
+
+prompt keywords grid menu: "analyze", "summarize", "grammar check", etc.
+
+Example: 1) Select some text and press the "analyze" button from the grid of actions and either a popover appears or a new chat.
+
+
+---
+
 EXAMPLE MODES AND THEIR GUIs: 
 
 1. Quiz Mode
@@ -58,21 +80,40 @@ Extensibility allows the programming community to try out variations on and addi
 
 IMPROVING THE CONVENTIONAL SCROLLING CHAT
 
+App-Integrated Commands
+
 An AI chatbot web app like ChatGPT could be given some commands that work with the actual app, such as, "Take the last response you generated and put it in the scrapbook."  This is part of the issue that the software should be built out more to be like traditional app software.  Interactions with the chatbot should be able to reference aspects of the software itself.
 
-There is also the overlooked matter that the flow of the conversation with the AI in today's chatbot software is narrow and limited and it can never flow like a real chat, either in real life or onlione, where there commonly is an alternation between questions that ask for short answers and long ones.  In actuality, the chat software of today is following a very limiting query-and-response format and is not like chatting.  In real conversations, people ask for clarification when they need more information or something is vague, whereas the chatbot is programmed to just proceed with assumptions that fill in any unknown information.  In real convesations, people make brief suggestions, ask to make sure everything is ok, and there is a back and forth toward a goal.  After an expert or consultant asks for clarification, it gives him information about where to guide the project, what the other person's goals are and what the person needs to know.  So this is a key improvement that should be made in the next generation of AI chatbots so that they are more normal and natural for real life and the intake of information.
- 
-Take the case of a certain feature to implement, which is brief clarifying menus. The user looking to buy a product asks how to get started and the AI responds like a store employee or expert to begin the process.  The flow of the interaction is more natural and will be easier on the user for this situation.  The user can always ask a question.
+
+More Natural Conversations
+
+There is also the overlooked matter that the flow of the conversation with the AI in today's chatbot software is narrow and limited and it can never flow like a real chat, either in real life or onlione, where there commonly is an alternation between questions that ask for short answers and long ones.  In actuality, the chat software of today is following a very limiting query-and-response format and is not like chatting.  In real conversations, people ask for clarification when they need more information or something is vague, whereas the chatbot is programmed to just proceed with assumptions that fill in any unknown information.  In real convesations, people make brief suggestions, ask to make sure everything is ok, and there is a back and forth toward a goal.  After an expert or consultant asks for clarification, it gives him information about where to guide the project, what the other person's goals are and what the person needs to know.  So this is a key improvement that should be made in the next generation of AI chatbots so that they are more normal and natural for real life and the intake of information.  
+
+Take the case of a certain feature to implement, which is brief clarifying menus. The user looking to buy a product asks how to get started and the AI responds like a store employee or expert to begin the process.  The flow of the interaction is more natural and will be easier on the user for this situation.  The user can always ask a question.  Notice that the conversation is free of flattery.  It gives the information needed without too much fluff.
 
 USER: I am looking to buy a mini PC.  
 AI: What is your budget? Press a key: 1) <$300 2) <$500 3) <$700 4) >$700 
 USER: 3  
 AI: 1) Linux or 2) Windows? 
 USER: 1
-AI: There are a lot of options and it depends on whether you want an Intel CPU
-or a Ryzen.  The Ryzen chips focus more on multi-threaded processing. Which
-do you prefer?  1) Intel 2) Ryzen.
+AI: There are a lot of configuration and it depends first on whether you want an Intel CPU
+or an AMD (Intel-compatible) one.  The AMD chips focus more on multi-threaded processing. Which
+do you prefer?  1) Intel 2) AMD.
 USER: 2
+AI: How much RAM do you need?  If you can afford it, the baseline today is 16GB.
+
+1) 8GB
+2) 16GB
+3) 32GB
+4) 64GB+
+
+USER: 2
+AI: Storage next.  I am tracking the cost.
+
+1) 256GB SSD
+2) 512GB SSD
+3) 1TB SSD
+4) 2TB+ SSD
 
 
 Map kit - research things across a map that remains stationary during the chat.
@@ -88,11 +129,16 @@ If this AI app is running on the desktop, the capabilities of the app widen. It 
 
 SUMMARY OF EXAMPLE MODES: 
 
+Each mode can carry settings or is launched with parameters (e.g. a quiz mode is launched with or without "Reveal Answer" or a document review mode's settings shows and
+hides various features).
+
 1. Quiz Mode
+Converts conversational questioning into a structured, trackable exercise.
 GUI: Displays one question at a time with multiple-choice buttons, checkboxes, text inputs, or sliders. Progress bar, score tracker, and "Reveal Answer" button.
 Workflow: AI generates questions from a topic; user submits answers; AI provides immediate feedback, explanations, and adapts difficulty.
 
 2. Step-by-Step Walkthrough Mode
+Guides complex, procedural learning (e.g., coding tutorials, design setups).
 GUI: Carousel or slide-based layout showing one step at a time (instruction + expected result). Side panel for user input (e.g., paste terminal output). "Next" button enabled after submission.
 Workflow: Step → User reports result → AI interprets/adjusts → Next step. Ideal for troubleshooting (e.g., Linux config, appliance repair).
 
@@ -123,7 +169,13 @@ Data Analysis/Visualization Mode
 GUI: Upload zone for datasets; interactive charts/graphs (draggable filters, zoom). Query bar for natural language asks; export buttons.
 Workflow: User uploads data; AI suggests visualizations; iterates on queries (e.g., "Show trends in sales"); explains insights step-by-step.
 
-9. Custom Workflow Builder Mode (For Extensibility)
+9. General Review Mode
+Multi-purpose. Enables direct comparison between source and output, useful for document editing or translation.
+Split view: original content on one side, AI’s annotated or summarized outputs on the other.  A stack of user-prompted output from the AI on the review side.
+Enables direct comparison between source and output, useful for document editing or translation.
+
+
+10. Custom Workflow Builder Mode (For Extensibility)
 GUI: Drag-and-drop builder for components (e.g., forms, slides, buttons). Preview pane and export/share for mode files.
 Workflow: Users/AI define sequences via declarative files (JSON/YAML); describe GUI per step, prompts, and logic; app loads and runs custom modes.
 

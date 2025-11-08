@@ -1,0 +1,16 @@
+NAIVE EXPLORATIONS INTO ALTERNATIVE AI ARCHITECURES
+
+For today's LLM, each time a token is generated, the model must perform a full forward pass through the entire neural network.  To generate even one token, all parameters—from the first embedding layer through every transformer block—must be engaged. The computation does not shortcut or “partially” activate the model; every forward pass traverses the entire depth of the network.  Techniques such as quantization, pruning, distillation, and speculative decoding attempt to mitigate the inefficiency, but the core architecture remains inherently exhaustive with nothing economical.
+
+This is why LLM inference requires specialized parallel hardware: the model is large, the operations are dense, and each token generation step is a full, end-to-end computation.
+
+In effect, these models trade selective computation (doing only what’s needed) for universal applicability (being able to represent virtually any linguistic or semantic pattern). 
+
+
+ANCIENT CHINESE SCIENCE AS TRAINING FRAMEWORK
+
+Luoshu provides a means of organizing the information trained, into 9 interconnected categories, still allowing interconnection and across the trigrams.  It provides a framework to start with for the training and one for query.  It also carries the possibility of always-running neural network, one that can adapt and change its contents in response to outside interactions.
+
+HIGHER LEVEL ABSTRACTION
+
+Neural nets stem from the perceptron, a 1950s computer science proposal: two inputs and an output. Today, it could be possible to produce an AI at a higher level of abstraction where units are larger and processed differently.  

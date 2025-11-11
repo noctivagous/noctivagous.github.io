@@ -1,0 +1,321 @@
+<!--
+Offset-Tap Canvas Demo (Smoothed Direction + Hover + Flash)
+This demo illustrates a predictive touchscreen input model where the effective tap point
+is offset ahead of the user's finger (default 100 px). The finger drag continuously updates
+a snapped directional line and target dot. When the offset dot hovers over a square,
+that square highlights. Upon liftoff, the square flashes. The version uses a small motion
+threshold and a rolling-average smoothing filter to suppress jitter.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offset-Tap Canvas Demo (Smoothed + Hover)</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #f2f2f2;
+    font-family: sans-serif;
+  }
+
+  #message {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 8px 14px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  canvas {
+    touch-action: none;
+    display: block;
+  }
+  
+  #instructions-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 100%;
+  background: #fff;
+  border-left: 2px solid #ccc;
+  box-sizing: border-box;
+  padding: 20px;
+  font-family: sans-serif;
+  overflow-y: auto;
+}
+
+#instructions-panel h2 {
+  margin-top: 10px;
+  font-size: 18px;
+  text-align: center;
+}
+
+#instructions-panel p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 8px 0;
+}
+
+#c {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* leave room for the right-hand panel */
+  width: calc(100% - 260px);
+  height: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<div id="instructions-panel">
+  <h1>Drag to Click<h1>
+  <h2>How to Use</h2>
+  <p><b>1. Touch and drag; a line extends 100 pt forward.</b>
+  <p>- The dot at the end of the line is what will tap a square on finger liftoff.</p>
+  <p><b>2. When the dot hovers over a square, that square highlights.</b>
+   <p> - Lift your finger to click the highlighted square.</p>
+</div>
+
+
+<div id="message"></div>
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+//const toggleBtn = document.getElementById('toggle');
+const message = document.getElementById('message');
+
+let offsetMode = true; // default ON
+let touch = null;
+const offsetDist = 100;
+const snapDeg = 1 * Math.PI / 180;
+const fingerRadius = 20;
+const grid = [];
+const rows = 6, cols = 8, cellSize = 80;
+
+// jitter control
+const moveThreshold = 4;
+const smoothWindow = 5;
+const dirHistory = [];
+
+function resize() {
+  canvas.width = window.innerWidth - 260; // leave space for instructions panel
+  canvas.height = window.innerHeight;
+  draw();
+}
+
+window.addEventListener('resize', resize);
+
+// grid creation
+for (let r = 0; r < rows; r++) {
+  for (let c = 0; c < cols; c++) {
+    grid.push({x: c * cellSize + 60, y: r * cellSize + 100,
+               size: 50, blink: 0, hover: false, label: `(${r+1},${c+1})`});
+  }
+}
+
+
+
+canvas.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  touch = {x: t.clientX, y: t.clientY, dir: 0};
+  dirHistory.length = 0;
+  updateHover();
+  e.preventDefault();
+});
+
+canvas.addEventListener('touchmove', e => {
+  if (!touch) return;
+  const t = e.touches[0];
+  const dx = t.clientX - touch.x;
+  const dy = t.clientY - touch.y;
+
+  if (Math.abs(dx) < moveThreshold && Math.abs(dy) < moveThreshold) {
+    updateHover();
+    return;
+  }
+
+  let angle = Math.atan2(dy, dx);
+  const snapped = angle; // Math.round(angle / snapDeg) * snapDeg;
+
+  dirHistory.push(snapped);
+  if (dirHistory.length > smoothWindow) dirHistory.shift();
+  const avgDir = dirHistory.reduce((a,b)=>a+b,0)/dirHistory.length;
+
+  touch.dir = avgDir;
+  touch.x = t.clientX;
+  touch.y = t.clientY;
+  updateHover();
+  e.preventDefault();
+});
+
+canvas.addEventListener('touchend', () => {
+  if (!touch) return;
+  let clickX = touch.x;
+  let clickY = touch.y;
+  if (offsetMode) {
+    clickX += offsetDist * Math.cos(touch.dir);
+    clickY += offsetDist * Math.sin(touch.dir);
+  }
+  triggerClick(clickX, clickY);
+  flashDot(clickX, clickY);
+  clearHover();
+  touch = null;
+});
+
+function updateHover() {
+  if (!touch) return;
+  let hx = touch.x, hy = touch.y;
+  if (offsetMode) {
+    hx += offsetDist * Math.cos(touch.dir);
+    hy += offsetDist * Math.sin(touch.dir);
+  }
+  for (const obj of grid) {
+    const half = obj.size / 2;
+    obj.hover = (hx >= obj.x - half && hx <= obj.x + half &&
+                 hy >= obj.y - half && hy <= obj.y + half);
+  }
+}
+
+function clearHover() { for (const obj of grid) obj.hover = false; }
+
+function triggerClick(x, y) {
+  for (const obj of grid) {
+    const half = obj.size / 2;
+    if (x >= obj.x - half && x <= obj.x + half &&
+        y >= obj.y - half && y <= obj.y + half) {
+      obj.blink = 10;
+      showMessage(`Clicked square ${obj.label}`);
+      break;
+    }
+  }
+}
+
+function showMessage(text) {
+  message.textContent = text;
+  message.style.opacity = 1;
+  clearTimeout(message._timer);
+  message._timer = setTimeout(() => { message.style.opacity = 0; }, 1500);
+}
+
+function flashDot(x, y) {
+  ctx.beginPath();
+  ctx.arc(x, y, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = 'red';
+  ctx.fill();
+  setTimeout(draw, 120);
+}
+
+function lighten(hex, amt) {
+  const num = parseInt(hex.replace('#',''),16);
+  let r = Math.min(255, ((num >> 16) & 255) + 255 * amt);
+  let g = Math.min(255, ((num >> 8) & 255) + 255 * amt);
+  let b = Math.min(255, (num & 255) + 255 * amt);
+  return `rgb(${r|0},${g|0},${b|0})`;
+}
+
+function darken(hex, amt) {
+  const num = parseInt(hex.replace('#',''),16);
+  let r = Math.max(0, ((num >> 16) & 255) - 255 * amt);
+  let g = Math.max(0, ((num >> 8) & 255) - 255 * amt);
+  let b = Math.max(0, (num & 255) - 255 * amt);
+  return `rgb(${r|0},${g|0},${b|0})`;
+}
+
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // draw grid with hover and blink states
+for (const obj of grid) {
+  const half = obj.size / 2;
+  const x0 = obj.x - half;
+  const y0 = obj.y - half;
+  const w = obj.size;
+  const h = obj.size;
+
+  // Determine visual state color
+  let base = '#aaa';
+  if (obj.blink > 0) base = '#00baff';
+  else if (obj.hover) base = '#ffd54f';
+
+  // Create vertical gradient for shading
+  const grad = ctx.createLinearGradient(x0, y0, x0, y0 + h);
+  grad.addColorStop(0, lighten(base, 0.25));   // lighter top
+  grad.addColorStop(0.5, base);
+  grad.addColorStop(1, darken(base, 0.25));    // darker bottom
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(x0, y0, w, h, 8);              // slightly rounded corners
+  ctx.fill();
+
+  // Inner highlight for glossy effect
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(x0 + 2, y0 + 2, w - 4, h / 2 - 1, 6);
+  ctx.stroke();
+
+  // Outer border
+  ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(x0, y0, w, h, 8);
+  ctx.stroke();
+
+  // Text label
+  ctx.fillStyle = '#fff';
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(obj.label, obj.x, obj.y);
+
+  if (obj.blink > 0) obj.blink--;
+}
+
+  // draw pointer visuals
+  if (touch) {
+    const endX = offsetMode ? touch.x + offsetDist * Math.cos(touch.dir) : touch.x;
+    const endY = offsetMode ? touch.y + offsetDist * Math.sin(touch.dir) : touch.y;
+
+    // finger circle
+    ctx.beginPath();
+    ctx.arc(touch.x, touch.y, fingerRadius, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(50,50,50,0.25)';
+    ctx.fill();
+
+    // offset line and dot
+    if (offsetMode) {
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(touch.x, touch.y);
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(endX, endY, 6, 0, 2 * Math.PI);
+      ctx.fillStyle = '#333';
+      ctx.fill();
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+resize();
+</script>
+</body>
+</html>
+

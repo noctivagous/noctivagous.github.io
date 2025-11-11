@@ -1,0 +1,48 @@
+
+Features for File Navigators
+
+FILETYPE MODES: FILTERING + VIEWER
+
+1. FILETYPE MODES: FILTERING + VIEWER
+
+In the File Navigator, there is an option
+called images-only and it filters all
+files displayed to just images and presents
+them in a photo viewer presentation that has its own
+views such as carousel, grid, and list.   This would allow
+browsing a directory that contains images
+while excluding other file types from the
+listing. It allows browsing them without
+having to open up a separate app.
+
+The same could be applied to other file types
+such as video and text.  And importantly, it
+could be recursively applied to a directory
+(taking in its subdirectories), so that a directory
+with organized images in its subtree would
+have all of the images listed and organized.
+
+When videos are listed, they can be shown
+with thumbnails that are made of a
+grid of frames.
+
+
+2. FILE AND DIRECTORY TAGGING
+
+A related feature to this is tagging, including
+recognition by the system that once the user
+tags a file of a certain name that it will move
+the file to a predetermined directory location
+(e.g. "Video Project 1").  Tags also would
+allow searching the file system in a different
+way and setting up pseudo-directories that
+compile a listing of all files and directories
+of a certain tag or tags.
+
+3. EVENTS
+
+When a directory's contents changes and it is
+registered as an observed directory, an action
+is triggered, such as a script (or system action).
+
+

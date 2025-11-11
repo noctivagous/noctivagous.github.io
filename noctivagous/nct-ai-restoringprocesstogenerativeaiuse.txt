@@ -1,0 +1,21 @@
+RESTORING PROCESS TO USING GENERATIVE AI
+
+The software issue of process for using generative AI is completely missing, with everything being collapsed into a prompt of text-to-output (for images, video, or text) that directly produces the media without any preview or intermediate step.  After you send a text prompt to the AI, you won't immediately realize how many details the AI actually filled in on its own. 
+
+
+1. The general AI tools need to collect information in one form or another.
+
+You need to be able to control every aspect of what is generated, but not through your labor of typing it out.  This means the use should be configuring premade parameters, such as components named Lighting, Setting, Flora, etc.). For generative AI to work for images and video, it needs dedicated software applications built around it.  If a story is being made, all of the parameters should be laid out for describing each character and scene in the software, and the AI can assist with this.  Just like normal, you need a plan to review.  In other situations, the AI might generate a multi-part questionnaire to collect information.
+
+2. You need a preview of what generative AI is going to do so you know what to expect and can make changes.  
+
+If you just give the AI a line or paragraph of text, it should show you everything it filled in.   
+Poseable wireframe models and storyboard sequences will increase the probability of expected output for the user in the first step, but the AI can also generate previews for the user, like how 3D software can do low-intensity rendering.  This will allow the person to make adjustments.
+
+3. The AI should only generate final output after you have approved.
+
+Gone should be the experience of having something surprising come out of the AI, good or bad, unless the user specifically wants that kind of situation.  Before the AI code editor inserts the code, it should give a summary of what it is about to do so that its plans can be reviewed at the last step.
+
+
+In summary, the generative AI tools need to collect information, show a preview, allow you to make adjustments, and then let you decide when to approve the plan before execution.  
+

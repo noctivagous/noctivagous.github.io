@@ -1,0 +1,18 @@
+nct-desktop-treemapapplicationoverview
+
+A tree map application-overview sits on the desktop and it updates live.
+
+- Each application appears as a rectangular region whose size changes according to the number of its open windows. 
+That is, each treemap box contains the application icon and thumbnails of windows of the running application.
+- The treemap automatically adjusts when applications and windows open or close. 
+- Inside each box, the system displays the application’s icon, name, and static previews of its windows along with their titles.  It can be configured to display CPU and memory usage or show these on hover.
+- Each application is assigned a distinct color. Users can click either an application icon or window preview to bring that window into focus.
+- In the future this allows transiting resources from one application to another more efficiently, as an alternative to copy and paste.  Since the applications are viewed in an overview layout as a treemap, they can register available resources with this application. 
+- This allows for an application concept where the user sets up receiving places and sending places as markers within app windows, these are revealed in the treemap, and in this overview application they can be moved between apps.
+- This also allows for applications to expose resources as ports or outlets as nodes/patches in node-based programming, with the wiring up taking place here.
+
+
+Implementation 
+
+The system runs continuously as a lightweight overlay on the desktop, integrates with the underlying window manager for event detection and control, updates automatically when changes occur, and can be configured through an integrated settings panel. 
+

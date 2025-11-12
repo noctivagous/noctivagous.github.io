@@ -1,0 +1,41 @@
+
+Why Direct Touch of Buttons on Tablets And Mobile Devices Is Often 
+Unpleasant (Interfaces with Changing Buttons)
+
+CASE EXAMPLE
+
+It is less taxing cognitively for the user of 
+a tablet device to touch a button that is located on a grid 
+(such as an app on the homescreen) by getting to it the following way:
+
+First, set up buttons to the left and above the grid for
+the rows and columns.  These will be used to locate
+the button to be pressed.
+
+1) Press the button to indicate its row (located just to the left of its row on the grid)
+2) Press the button to indicate its column (located just above its column on the 
+grid) 
+
+The button is then activated.
+
+This is actually more natural to do than touching the button directly.
+
+
+THEORY
+
+- In the 1970s, machine interfaces were translated to 
+the personal desktop computer screen at Xerox PARC, with 
+the buttons represented with pixels and clicked by the mouse 
+cursor.  For the first time, users were pressing machine
+buttons consecutively in an interactive scheme.
+- Buttons that activate functions originally come from panels on physical, 
+electronic or mechanical machines. Pressing buttons once 
+within a long period is normally how these machines are used.
+They were not live machines, like musical instruments. 
+Therefore the spatial coordination required to hit a button 
+on physical equipment (machines) is only occasional.
+- The issue is that using buttons as a continuous interface for manipulating 
+software interfaces is something else.  If the physical device,
+such as the desktop computer or tablet is not designed properly
+to be live, the spatial coordination will be more taxing than it appears.
+

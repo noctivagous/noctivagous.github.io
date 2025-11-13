@@ -4,28 +4,34 @@ A Declarative Application XML Format
 The issue being addresed  is that app SDKs are still providing very low level 
 conventions for writing apps, such as having people manually specify,
 inside keyDown event functions, each key combination with if statements.
-There is too much like this that amounts to a common activity that can be
-abstracted into higher-level components and then when this is done the
-apps can be constructed faster because the right utilities are in place. 
-Today's app SDKs, and for the last few decades have just just been adding 
-functions, variables, and object classes to the programming languages.  
-They aren't identifying situations where the work is unnecessarily tedious 
-and manual for the job of making an app.
+There is too much like this that is a common activity that can be
+abstracted into higher-level components, and then when this is done the
+apps can be constructed more rapidly because the right utilities are in place. 
+Today's app SDKs, and for the last few decades, have just been supplying direct 
+functions, variables, and object classes that work inside the programming 
+languages.  They aren't identifying situations where the work is unnecessarily 
+tedious and manual for the job of making an app.
 
 Consider:
 
-    - Programming inside keyDown, mouseDown, mouseDragged, etc. for more
+    - Programming inside keyDown(), mouseDown(), mouseDragged(), etc. for more
     than simple scenarios is too low level and is the wrong software 
-    architecture for apps with complex input schematics.
-        - The example problem: programming each key's corresponding character code 
-        and what it does inside  a keyDown event function vs. a keyMappings property list that
-        defines actions (functions to call) for keyDown, keyUp.  This then
-        can be wrapped inside an input context so that it is self-contained
-        and separated from other parts of the app.  For the same window,
-        different inputContexts might be swapped out.
+    architecture for apps requiring complex input software designs.
+        - The example: 
+        Programming each key's corresponding character code 
+        and what it does inside an if statement in a keyDown() event function 
+        vs. 
+        A keyMap property list that
+        defines actions (functions to call) for keyDown, keyUp for each keyCode.  
+        
+        
 
-    - This is then rearchitected to a higher level and into
-    a different set of concepts.  
+    - This is then rearchitected further to a higher level and into
+    a different set of concepts.   The keyMap can be wrapped inside an 
+    input context (inputContext) so that it is self-contained
+    and separated from other inputContexts of the app, as needed.  For the same window,
+    different inputContexts might be swapped out.
+        
         - An inputContext covers a set of input definitions (e.g. key mappings)
         for a loaded context, which can be swapped out.  Within an inputContext, there
         are additional conventions to make swapping out different types of
@@ -39,9 +45,10 @@ In short, there are many app scenarios that could be set up completely
 in a declarative file format, it's just that more conveniences and 
 other conventions need to be provided that result from identifying 
 various patterns where the programmer is involve in relatively low level code
-for making an app. Patterns occur in the code of application software development that
-can be re-architected into higher-level components inside a declarative
-app format, one that builds on top of the past, such as MXML and XUL.  
+for making an app.  Then these patterns, which occur in many places in
+the code of application software development,can be re-architected into 
+higher-level components, building on top of the declarative app formats of
+past, such as MXML and XUL.
 
 A calculator app is an example we use because it should be, by now, 
 describable through a provided set of higher-level conceptual components 
@@ -91,17 +98,18 @@ INPUT CONTEXTS
 
 KEY MAPPINGS
 
-- Key Mappings <keyMapping>
+- Key Map <keyMap>
 ---Is a property list placed inside an input context for keyboard actions.
-It can cover 
 
+- Key Mappings <keyMapping>
+---The mapping for a specific key.
 
 - Key Mapping Action <keymappingAction event="keyDown">
---- Placed inside a <keyMapping>.
+--- The action for an event for a specific key. Placed inside a <keyMapping>.
 
 
-
-<keymapping keyCode="48" label="0">
+<keyMap>
+                <keymapping keyCode="48" label="0">
                         <keymappingAction event="keyDown" target="#display" action="append" value="0"/>
                     </keymapping>
                     <keymapping keyCode="49" label="1">
@@ -110,7 +118,8 @@ It can cover
                     <keymapping keyCode="50" label="2">
                         <keymappingAction event="keyDown" target="#display" action="append" value="2"/>
                     </keymapping>
-      
+</keyMap>
+                    
                     
 ARRAYS
 

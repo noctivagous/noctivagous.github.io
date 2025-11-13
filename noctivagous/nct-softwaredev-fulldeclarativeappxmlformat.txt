@@ -124,14 +124,85 @@ KEY MAPPINGS
 ARRAYS
 
 - Selected Item Array <selectedItemArray>,<selectedItemsArray> 
+--- Arrays never carry their index, but this can help.
 --- Wraps a list that has a selected index
 --- For multiple scenarios both inside the code and to set up GUI controls with indices.
 --- Default index value is 0
 
 
+FUNCTION CONVENIENCES (SUBCLASSES OF FUNCTION)
+
+Functions are used for a variety of classifiable purposes and instead of defining
+plain a function for everything the software developer can use premade components
+for the various uses of them.
 
 - Converters <converter>
---- <valueConverter name="radToDeg" type="float" ... >
+--- <valueConverter name="radToDeg" type="float" output="input * PI / 180" ... >
+
+- Repeat
+--- <repeat from="i" to="10" step="1" ><printLog string="${i}"></repeat>
+
+
+LAYERED PROPERTY RELATIONS TABLE/GRID
+
+A grid of boxes in which each cell has multiple layers.
+
+A grid of buttons. Layers of properties and data compiled from diff places:
+- The background style
+- The text of the button
+- The action (what the button does)
+- The associated data (such as a sound to play).
+
+
+
+
+MESSAGE SENDING BETWEEN OBJECTS
+
+Historically the declarative formats lacked a lot of the functions
+found in code.  You weren't able to control one object from another 
+or its styles.  The code in the attributes can do things if there
+is message passing.
+
+Every action in the application is triggered by sending short, readable messages. You write these messages directly inside event attributes (onPress, onChange, keyDown actions, etc.). A message is always a simple string, and the runtime instantly knows what to do with it because it follows a few crystal-clear rules.
+If the message name has no caret (ˆ), it is a built-in action that the system guarantees every component understands, or it is an official system command.
+
+Example Message Sending:
+
+
+<button title="Increment"
+        onPress="msg#numField1:(INCREMENTBY:1) ; 
+                 msg#numField2:(INCREMENTBY:2) ;
+                 msg#alertArea:^(ROTATEBOX: deg=40, duration=0.3)" />
+
+<numberField id="numField1"
+             onChange="msg#alertArea:^(FLASHTEXT:'Incremented') ;
+                       sys:log('field1 changed to {#value}')" />
+
+<textArea id="alertArea">
+  <!-- These are custom → must use ^ when calling -->
+  <messageHandler name="FLASHTEXT" params="text">
+    <animate property="background" from="#ffff00" to="transparent" duration="0.5s"/>
+    <set property="text" value="{text}"/>
+  </messageHandler>
+
+  <messageHandler name="ROTATEBOX" params="deg=0, duration=0.2">
+    <animate property="rotate" to="{deg}deg" duration="{duration}s" ease="easeOutBack"/>
+  </messageHandler>
+</textArea>
+
+
+
+
+Examples:
+msg#display:clear – every text display knows how to clear itself.
+msg#counter:(SET:10) – every counter, number field, slider, etc. understands SET.
+sys:log('hello') – official runtime command to write to the console.
+sys:swapInputContext('gameplay') – official command to change input mode.
+If the message name starts with a single caret (ˆ), it is a custom action defined by you inside the target component itself.
+Examples:
+
+What you can actually write
+You can chain as many messages as you want with semicolons; they fire in exact order:
 
 
 ---
@@ -140,3 +211,11 @@ ARRAYS
 <appScene name="Calculator"> 
 <inputContext> 
 <!-- selectedItemArray wraps a list, allows swapping active element, such as swapping out the active keyMapping ---> <selectedItemArray active="first"> <keyMappings> <keymapping hid="" keyCode="1" modifiers=""> <keymappingAction event="keyDown"> </keymappingAction> </keymapping> </keyMappings> </selectedItemArray> </inputContext> </appScene> </app>
+
+
+
+TODO
+
+
+
+

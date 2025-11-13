@@ -1,38 +1,24 @@
 
 A Declarative Application XML Format
 
---> Is cross-platform as long as a runtime is built for any
-given programming language and system.
-
-
-Patterns occur in the code of application software development that
-can be rearchitected into higher-level components inside a declarative
-app format, one that builds on top of the past, such as MXML and XUL.  
-In short, there are many app scenarios that could be set up completely 
-in a declarative file format, it's just that there needs to be more 
-conveniences and other conventions that identify.
-A calculator is an example we use because it should be describable through
-a provided set of higher-level components that make it easy to construct 
-at the outset.  A set of these components will be utilized in other app
-scenarios as well.
-The XML app formats of the past just did not have the conveniences and other 
-conventions to make the apps fully self-contained.  The issue being addresed 
-is that app SDKs are still providing very low level conventions for writing
-apps, such as having people write inside keyDown event functions, because
-they are just adding functions, variables, and classes to the code.
-
-This kit can be developed while testing it against different scenarios,
-calculator, a tetris-style game, vector-editor, and then.
-
-
-
+The issue being addresed  is that app SDKs are still providing very low level 
+conventions for writing apps, such as having people manually specify,
+inside keyDown event functions, each key combination with if statements.
+There is too much like this that amounts to a common activity that can be
+abstracted into higher-level components and then when this is done the
+apps can be constructed faster because the right utilities are in place. 
+Today's app SDKs, and for the last few decades have just just been adding 
+functions, variables, and object classes to the programming languages.  
+They aren't identifying situations where the work is unnecessarily tedious 
+and manual for the job of making an app.
 
 Consider:
+
     - Programming inside keyDown, mouseDown, mouseDragged, etc. for more
     than simple scenarios is too low level and is the wrong software 
     architecture for apps with complex input schematics.
-        - The example problem: programming each keypress and what it does inside 
-        a keyDown event function vs. a keyMappings property list that
+        - The example problem: programming each key's corresponding character code 
+        and what it does inside  a keyDown event function vs. a keyMappings property list that
         defines actions (functions to call) for keyDown, keyUp.  This then
         can be wrapped inside an input context so that it is self-contained
         and separated from other parts of the app.  For the same window,
@@ -47,6 +33,36 @@ Consider:
         and swappable.
     - Conventions are provided in this application format
     and states and workflows are natively supported.
+
+
+In short, there are many app scenarios that could be set up completely 
+in a declarative file format, it's just that more conveniences and 
+other conventions need to be provided that result from identifying 
+various patterns where the programmer is involve in relatively low level code
+for making an app. Patterns occur in the code of application software development that
+can be re-architected into higher-level components inside a declarative
+app format, one that builds on top of the past, such as MXML and XUL.  
+
+A calculator app is an example we use because it should be, by now, 
+describable through a provided set of higher-level conceptual components 
+that make it easy to construct at the outset.  They are components that haven't
+existed before in any app SDK because, to begin with, they address the
+inadequacies and oversights of existing SDKs when they ask the software developer
+to write certain code situations with the bare tools of the programming language.
+
+By placing this inside an XML format we also address the integration of
+GUI into the app code as well.
+
+--> Is cross-platform as long as a runtime or interpreter 
+is built for any given programming language and system.
+
+
+A set of these components will be generalized so that they can be utilized in 
+other app scenarios as well.
+
+
+This kit can be developed while testing it against different scenarios,
+calculator, a tetris-style game, vector-editor, and then.
 
 
 APPLICATION SETUP

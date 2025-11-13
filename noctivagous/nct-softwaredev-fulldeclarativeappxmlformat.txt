@@ -1,0 +1,117 @@
+
+A Declarative Application XML Format
+
+--> Is cross-platform as long as a runtime is built for any
+given programming language and system.
+
+
+Patterns occur in the code of application software development that
+can be rearchitected into higher-level components inside a declarative
+app format, one that builds on top of the past, such as MXML and XUL.  
+In short, there are many app scenarios that could be set up completely 
+in a declarative file format, it's just that there needs to be more 
+conveniences and other conventions that identify.
+A calculator is an example we use because it should be describable through
+a provided set of higher-level components that make it easy to construct 
+at the outset.  A set of these components will be utilized in other app
+scenarios as well.
+The XML app formats of the past just did not have the conveniences and other 
+conventions to make the apps fully self-contained.  The issue being addresed 
+is that app SDKs are still providing very low level conventions for writing
+apps, such as having people write inside keyDown event functions, because
+they are just adding functions, variables, and classes to the code.
+
+This kit can be developed while testing it against different scenarios,
+calculator, a tetris-style game, vector-editor, and then.
+
+
+
+
+Consider:
+    - Programming inside keyDown, mouseDown, mouseDragged, etc. for more
+    than simple scenarios is too low level and is the wrong software 
+    architecture for apps with complex input schematics.
+        - The example problem: programming each keypress and what it does inside 
+        a keyDown event function vs. a keyMappings property list that
+        defines actions (functions to call) for keyDown, keyUp.  This then
+        can be wrapped inside an input context so that it is self-contained
+        and separated from other parts of the app.  For the same window,
+        different inputContexts might be swapped out.
+
+    - This is then rearchitected to a higher level and into
+    a different set of concepts.  
+        - An inputContext covers a set of input definitions (e.g. key mappings)
+        for a loaded context, which can be swapped out.  Within an inputContext, there
+        are additional conventions to make swapping out different types of
+        input interactions possible.  Thus other aspects become modular
+        and swappable.
+    - Conventions are provided in this application format
+    and states and workflows are natively supported.
+
+
+APPLICATION SETUP
+
+- app <app id="com.example.calculator" version="1.0">
+- appSettings
+
+
+- Application Scenes <appScene>
+--- Like game scenes, can be swapped out.
+--- Can be inside a <window> or wrap a <window> or <windowGroup>.
+
+
+
+INPUT CONTEXTS
+
+- Input Contexts <inputContext>
+--- Swaps out the events within an appScene.
+--- example:
+    In an inputContext, a list of buttons (<button>), such as for a calculator,
+    carry an attribute not only for what happens when they are pressed (onPress),
+    but also a keyMapping attribute to indicate which key activates
+    them.  By placing them inside a inputContext, their
+    keyMappings
+
+
+KEY MAPPINGS
+
+- Key Mappings <keyMapping>
+---Is a property list placed inside an input context for keyboard actions.
+It can cover 
+
+
+- Key Mapping Action <keymappingAction event="keyDown">
+--- Placed inside a <keyMapping>.
+
+
+
+<keymapping keyCode="48" label="0">
+                        <keymappingAction event="keyDown" target="#display" action="append" value="0"/>
+                    </keymapping>
+                    <keymapping keyCode="49" label="1">
+                        <keymappingAction event="keyDown" target="#display" action="append" value="1"/>
+                    </keymapping>
+                    <keymapping keyCode="50" label="2">
+                        <keymappingAction event="keyDown" target="#display" action="append" value="2"/>
+                    </keymapping>
+      
+                    
+ARRAYS
+
+- Selected Item Array <selectedItemArray>,<selectedItemsArray> 
+--- Wraps a list that has a selected index
+--- For multiple scenarios both inside the code and to set up GUI controls with indices.
+--- Default index value is 0
+
+
+
+- Converters <converter>
+--- <valueConverter name="radToDeg" type="float" ... >
+
+
+---
+
+<app> 
+<appScene name="Calculator"> 
+<inputContext> 
+<!-- selectedItemArray wraps a list, allows swapping active element, such as swapping out the active keyMapping ---> <selectedItemArray active="first"> <keyMappings> <keymapping hid="" keyCode="1" modifiers=""> <keymappingAction event="keyDown"> </keymappingAction> </keymapping> </keyMappings> </selectedItemArray> </inputContext> </appScene> </app>

@@ -96,6 +96,33 @@ Defining programmable scaffold sets eliminates the need for a separate flow-layo
 
 
 
+HELPER FUNCTIONS FOR MAKING SCAFFOLDS
+
+subdivide(direction:horizontally parts:3 gutter:12pt inset:0)
+
+element.subdivideHorizontally(
+    parts:   Int,              // number of equal (or weighted) subdivisions
+    gutter:  Dimension = 0pt,  // space between each part
+    inset:   Dimension = 0pt,  // padding applied to the leftmost and rightmost edges
+    weights: [Float]? = nil    // optional explicit weights instead of equal parts
+) → [GuidelineScaffold]
+
+When you call
+myContainer.subdivideHorizontally(parts: 3, gutter: 12pt, inset: 16pt)
+the system instantly creates a new temporary dynamic scaffold that is 
+automatically parented to myContainer and returns it (or returns its three 
+column guideline pairs) so you can use them immediately.
+The scaffold contains exactly these named vertical guidelines:
+
+myContainer.subdiv3.col0.left     → inset
+myContainer.subdiv3.col0.right    → inset + (width - 2×inset - 2×gutter)/3
+myContainer.subdiv3.col1.left     → col0.right + gutter
+myContainer.subdiv3.col1.right    → col1.left + (width - 2×inset - 2×gutter)/3
+myContainer.subdiv3.col2.left     → col1.right + gutter
+myContainer.subdiv3.col2.right    → parent.right - inset
+
+
+
 EXTRA: GUIDELINE BEHAVIOR DECLARATIONS
 
 Guidlines can be programmed with behaviors.  The scaffolds

@@ -4,11 +4,14 @@ TANDEM WIDGETS
 Matching widgets on server scripts and client pages
 that can talk to each other.
 
-Stock GUI components for server
-and client for lists, tables, image galleries, etc.
+--> Paired, synchronized widgets with built-in communication protocols
 
-Because server widget has conventions built in for
-receiving commands from client widget and client
+
+Matching stock components for server and client sides 
+for lists, tables, image galleries, etc.
+
+Because the server widget has conventions built in for
+receiving commands from client widget and the client
 widget has commands for talking to server, as
 well as periodic timers for updates both ways,
 the situation is more effortless for the software developer.
@@ -28,8 +31,23 @@ shelfList = ["shelf object 1","shelf object 2"];
 
 
 
+FOR DESKTOP/MOBILE SOFTWARE
+
+We are doing this for the web, but we can discuss how this would apply to desktop software, with the object classes inside the program's code conforming to a widget protocol (what would be the "server" side) and then the GUI system would have the equivalent of the "client" for what is in the window.
+
+The window is not controlling the app. It’s reflecting it.
 
 
-The 
+THE WIDGET PROTOCOL
+
+Both server and client widgets conform to a standard interface:
+
+class TandemWidgetProtocol:
+    def get_data(self) -> Any
+    def set_data(self, data: Any)
+    def command(self, name: str, *args)  # e.g. "select", "filter"
+    def on(self, event: str, callback)   # e.g. "select", "change"
+    def refresh(self)
+    def destroy(self)
 
 

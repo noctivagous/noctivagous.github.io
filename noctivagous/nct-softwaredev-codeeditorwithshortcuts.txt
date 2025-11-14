@@ -1,0 +1,22 @@
+The code editors (IDEs) were never built out like normal applications that help you do your job, where for example you could insert a function template with Alt/Opt+F, an object class template with Alt/Opt+C, or go through a step-by-step walkthrough to configure something  large and complicated in the code project.  They don't do these things.
+
+Alt/Opt+D - Declare a variable or object. 
+    --> Followed by letter of variable type 
+    I for integer, F for float, S for string, etc.
+    
+    O for object
+    --> followed by object
+
+Insert Template:
+
+    Alt/Opt+F - Function
+    Alt/Opt+C - Class
+    Alt/Opt+I - If statement
+    Alt/Opt+S - Switch
+    Alt/Opt+V - Variable
+
+
+    [key combination] - switch to configure mode
+    so that it collects information in keyboard-controlled
+    menu slides before inserting the template to complete
+    some of its parameters (e.g. return value).

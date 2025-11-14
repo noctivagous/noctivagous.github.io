@@ -1,4 +1,4 @@
-nct-softwaredev-guidelinebasedlayouts
+nct-softwaredev-guidelinebasedlayouts-AISUMMARIZED
 ========================================
 
 GUIDELINE-BASED LAYOUTS

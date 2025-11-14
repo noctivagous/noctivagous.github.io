@@ -1,0 +1,50 @@
+nct-softwaredev-guidelinebasedlayouts-grounduppage
+
+Pages built from the ground up.
+By default, guidelines are strictly layout objects 
+(invisible, weightless, exactly like in every other constraint system).
+In this system, you can make them visible when you explicitly want to
+and you can use the system to fill in their boxes or ContentAreas
+
+
+- Styles applied to guidelines
+    - For the 4 inset edges (guidelines) generated for one scaffold layer,
+    a style is applied and it is turned into 3pt black line.
+    - Its resulting box can have a background color or image applied.
+    
+    
+  ContentArea.left   → style stroke: 3pt #000000
+  ContentArea.right  → style stroke: 3pt #000000
+  ContentArea.top    → style stroke: 3pt #000000
+  ContentArea.bottom → style stroke: 3pt #000000
+  ContentArea.box    → background: #FFF9F0, cornerRadius: 24pt
+  
+  
+- Functions for filling in content
+    - a set of images are distributed across a set of boxes (populate them).
+    
+    
+No separate “container view” is required – the scaffold itself is the styled frame.
+
+• Content-fill helper functions (one-liner population)
+
+subdivideAndFillImages(
+images: [ImageAsset],
+columns: 3,
+rows: auto,
+hGutter: 12pt,
+vGutter: 12pt,
+inset: 20pt,
+fitMode: cover | contain | stretch
+)
+
+
+One call measures the images, creates a perfect grid scaffold inside the caller, places each image into its own cell, and applies the chosen fit mode.
+Other instant-fill helpers include:
+
+subdivideAndFillText(lines: [String], …)
+subdivideAndFillCards(components: [Card], columns: 4, …)
+distributeEvenly(views: [View], direction: horizontal | vertical, spacing: 16pt)
+
+These primitives let an entire page – background, decorative frames, grids, and content – be authored in just a handful of declarative lines, with zero nested view wrappers and full designer–developer parity because every line and box is a visible, named guideline or scaffold.
+

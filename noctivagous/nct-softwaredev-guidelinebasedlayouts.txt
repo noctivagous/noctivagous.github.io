@@ -1,0 +1,109 @@
+nct-softwaredev-guidelinebasedlayouts
+
+GUIDELINE-BASED LAYOUTS 
+A software developer can construct a layout manually with
+a flex or fixed guideline or make use of premade/programmed
+scaffolds of guidelines.
+
+A guideline is a layout line spanning either the horizontal or vertical axis
+on which a GUI element 
+    - can have one of its box edges affixed.  
+    - can use to center.
+    
+ 
+So, to center a button of predetermined width and height 
+in the middle of the viewport horizontally and vertically, 
+the software developer can set up two flex-based guidelines 
+(they are deposited in terms of ratio to the dimensional length 
+they are on), one vertical at 0.5 of the viewport width and one 
+horizontal at 0.5 of the viewport height.  This then makes
+a crossing.  The button then has its center origin placed
+on both guidelines.  If there were only one guideline,
+such as a horizontal guideline, the button would by default remain
+fixed to the far left edge of the viewport while having its
+vertical length aligned on the horiziontal axis in one of
+three ways: top, bottom, centered.  It would be there until
+a vertical guideline was applied that determined its y coordinate.
+
+An object can also set its offset/margin relative to a guideline.
+
+Every layout has at least one guideline and every guideline
+belongs to at least one (blank) scaffold.  The premade
+scaffolds that come with the system come with parameters.
+
+
+GUIDELINE GRIDS (Scaffolds)
+
+Guideline grids are premade scaffolds provided by the layout
+system and it is expected that a layout has more than
+one. An object can use guidelines from more than one scaffold,
+such as one fixed scaffold and one flex scaffold, allowing 
+one edge to remain stationary while the other is set to
+move as the viewport width moves.
+
+We'll start with a 12pt grid and the buttons
+and elements are laid out according to the guidelines
+(the grid lines in this case).
+
+    1) A FIXED GRID
+
+    2) A FLEX GRID -
+
+    3) AN INSET FRAME
+    The frame of the viewport is brought inward by
+    a certain fixed value, producing 4 guidelines.
+    
+    4) CUSTOM GUIDELINE PLACEMENT
+    
+The layout engine recognizes multiple, layered guideline grids (scaffolds)
+for any layout and allows an object to use lines from
+more than one grid.  This way, a button can use the left
+inset frame edge as a fixed location and then in a different
+flex grid.
+
+
+
+A GUI ELEMENT'S BOUNDING BOX AS PROVIDING GUIDELINES; THE GUIDELINE LAYOUT TREE
+
+Once an element has been placed on a guideline, objects
+can be laid out relative to its bounding box.
+
+
+TECHNICAL SPECIFICS
+
+
+
+
+EXTRA: COMMANDS FOR DEFINING/PROGRAMMING A SCAFFOLD SETS
+
+We mentioned that the system comes with premade scaffolds
+but these can be programmed with a language or parameters
+for different situations.
+
+    - repeatInterval
+        - xStart and xEnd (for vertical)
+        
+        - yStart and yEnd (for horizontal)
+
+A BENEFIT:
+- There is only one layout engine: the guideline engine.
+- There are only two kinds of scaffolds:
+- Static (premade or custom fixed/flex/inset)
+- Dynamic / programmable (FlowScaffold, MasonryScaffold, etc.)
+
+All wrapping, flowing, masonry, staggered, or any future exotic layout is just a dynamic scaffold with a different script.
+Defining programmable scaffold sets eliminates the need for a separate flow-layout engine by turning traditional wrapping flow into a pure constraint problem. A dynamic FlowScaffold is given the list of child elements, their measured sizes, the available width, the desired gutter and line-spacing, and a simple wrapping rule.
+
+
+
+EXTRA: GUIDELINE BEHAVIOR DECLARATIONS
+
+Guidlines can be programmed with behaviors.  The scaffolds
+can as well.  Can accept actions to trigger behaviors and states.
+This will eventually link into any programmed app scenario.
+
+
+
+
+
+

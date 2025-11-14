@@ -1,0 +1,57 @@
+nct-softwaredev-guidelinebasedlayouts
+========================================
+
+GUIDELINE-BASED LAYOUTS
+
+Core concept  
+A guideline is an invisible layout line that spans either the horizontal or vertical axis of a container. GUI elements are positioned exclusively by attaching to these lines.
+
+A single element can:
+- Affix one of its bounding box edges (left, right, top, bottom) to a guideline
+- Center itself on a guideline
+- Apply a fixed or percentage offset/margin from a guideline
+
+Example: to perfectly center a button in the viewport  
+→ Create one vertical flex guideline at 0.5 (50 % of width)  
+→ Create one horizontal flex guideline at 0.5 (50 % of height)  
+→ Set the button’s centerX and centerY to those two guidelines.
+
+Every layout always has at least one guideline, and every guideline belongs to at least one scaffold.
+
+SCAFFOLDS (Guideline Grids)
+
+A scaffold is a named collection of guidelines. The engine supports multiple layered scaffolds simultaneously, and any element may use guidelines from several scaffolds at once.
+
+Built-in scaffold types
+1. Fixed Grid – guidelines at regular intervals (e.g., 8 pt or 12 pt baseline grid)
+2. Flex / Ratio Grid – guidelines expressed as ratios (0.0 → 1.0) or column counts (12-column, 24-column, etc.)
+3. Inset Frame – four guidelines offset inward from the container edges by a fixed amount (safe-area / padding)
+4. Custom static scaffolds – defined by the developer
+
+Key advantage: one edge can be pinned to a fixed scaffold while the opposite edge uses a flex scaffold → natural responsive behaviour with fixed margins.
+
+ELEMENT BOUNDING BOXES BECOME GUIDELINES
+
+Once an element is placed, its four edges (and center lines, baseline, etc.) automatically become named guidelines that other elements can reference, forming a natural layout tree without rigid hierarchy.
+
+PROGRAMMABLE / DYNAMIC SCAFFOLDS
+
+Scaffolds can be scripted or parameterised:
+- repeatInterval, xStart/xEnd, yStart/yEnd, gutter, alignment, etc.
+- Full dynamic scaffolds (FlowScaffold, MasonryScaffold, StaggeredGridScaffold, etc.)
+
+How traditional flow/wrap is achieved without a separate engine  
+A dynamic FlowScaffold receives the list of children and the available width. In a single pre-pass it measures each child, performs classic greedy line-breaking, then emits an explicit set of row guidelines (row0.left, row0.baseline, row1.left, …). Every child is then positioned with ordinary constraints against those pre-computed guidelines. The visual result is identical to flex-wrap or UIStackView, but the underlying mechanism remains 100 % guideline/constraint-based.
+
+GUIDELINE & SCAFFOLD BEHAVIORS
+
+Guidelines and scaffolds can carry behaviours, states, and actions (e.g., animate, scrollTo, collapse, reveal). This allows layout itself to participate in app logic.
+
+RESULTING SYSTEM PROPERTIES
+
+- Only one layout engine exists: the guideline + constraint solver
+- Only two categories of scaffolds: static and dynamic/programmable
+- All common paradigms (fixed grids, responsive columns, centering, stacking, wrapping, masonry, staggered grids, future exotic layouts) are expressed uniformly as scaffolds
+- Designer–developer alignment is near-perfect because the visible guidelines in design tools are the exact same objects used at runtime
+
+

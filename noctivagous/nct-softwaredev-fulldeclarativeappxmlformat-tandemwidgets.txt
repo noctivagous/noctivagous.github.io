@@ -1,0 +1,35 @@
+
+TANDEM WIDGETS
+
+Matching widgets on server scripts and client pages
+that can talk to each other.
+
+Stock GUI components for server
+and client for lists, tables, image galleries, etc.
+
+Because server widget has conventions built in for
+receiving commands from client widget and client
+widget has commands for talking to server, as
+well as periodic timers for updates both ways,
+the situation is more effortless for the software developer.
+
+  
+
+CLIENT:>
+<!-- talks to shelfList list widget with widgetId "shelfList" located
+at list1.py -->
+<listview-clientwidget src="list1.py" widgetId="shelfList">
+</listview-clientwidget>
+
+SERVER:
+
+obj shelfList = ListViewServerWidget(format:[1]); // number of indices is 1
+shelfList = ["shelf object 1","shelf object 2"];
+
+
+
+
+
+The 
+
+

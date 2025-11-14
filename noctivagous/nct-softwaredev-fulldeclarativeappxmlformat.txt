@@ -138,9 +138,30 @@ for the various uses of them.
 
 - Converters <converter>
 --- <valueConverter name="radToDeg" type="float" output="input * PI / 180" ... >
+OR
+<converter name="radToDeg" input="{v}" output="{v * 180 / PI}"/>
+
 
 - Repeat
 --- <repeat from="i" to="10" step="1" ><printLog string="${i}"></repeat>
+--- 
+<repeat from="i" to="10">
+  <button label="Item {i}"/>
+</repeat>
+
+
+
+- Timer
+<timer interval="2s" once="true" onTimeout="state:ready;mesg:...;state#button1:off" />
+
+
+
+- Selected Item Array - Can be shown in different views
+<selectedItemArray id="tools" activeIndex="0">
+  <item name="select"/>
+  <item name="pencil"/>
+  <item name="eraser"/>
+</selectedItemArray>
 
 
 LAYERED PROPERTY RELATIONS TABLE/GRID
@@ -180,6 +201,7 @@ Example Message Sending:
 
 <textArea id="alertArea">
   <!-- These are custom → must use ^ when calling -->
+  <!-- Inside any component you can declare exactly which custom (ˆ) messages it understands: -->
   <messageHandler name="FLASHTEXT" params="text">
     <animate property="background" from="#ffff00" to="transparent" duration="0.5s"/>
     <set property="text" value="{text}"/>
@@ -214,8 +236,170 @@ You can chain as many messages as you want with semicolons; they fire in exact o
 
 
 
-TODO
+STATES AND WORKFLOW
 
+<app id="com.example.calculator">
+
+  <!-- Define all possible states.  Only applies to documentStateContext -->
+  <states id="documentOpened" stateContext="documentStateContext">
+    <state name="ready"          default="true" />
+    <state name="editing" />
+    <state name="result" />
+    <state name="error" />
+    <state name="historyOpen" />
+  </states>
+
+  <!-- Optional: declarative transitions with actions -->
+  <workflow id="documentOpened">
+    <transition from="ready"     event="startEdit"     to="editing" />
+    <transition from="editing"   event="equals"        to="result" />
+    <transition from="*"         event="clear"         to="ready" 
+                do="msg#display:clear ; sys:log('cleared')" />
+    <transition from="*"         event="showHistory"   to="historyOpen" />
+    <transition from="historyOpen" event="hideHistory" to="ready" />
+  </workflow>
+
+</app>
+
+
+StateContext like InputContext allows wrapping
+a set of things with a context so that, like a namespace,
+there is separation of code.
+
+<StateContext>
+</StateContext>
+
+
+onPress="state:ready"
+onPress="state#button3:presentation.on" <!-- sets the state of button3 to presentation.on (hierarchical state)
+-->
+
+
+Hierarchical States
+
+<states>
+  <state name="game.playing"  />
+  <state name="game.paused"   />
+  <state name="ui.modalOpen"  />   <!-- can be active at the same time -->
+</states>
+
+You can test with <banner visibleOnState="game.playing !ui.modalOpen"/>
+
+More:
+
+<states type="hierarchical">
+  <state name="game" default="true">
+    <entry do="msg#hud:show"/>
+    <exit  do="msg#hud:hide"/>
+
+    <state name="playing">
+      <state name="normal"/>
+      <state name="aiming"/>
+      <state name="paused" />
+    </state>
+
+    <state name="menu"/>
+  </state>
+</states>
+
+
+
+
+Attribute,Meaning,Example
+visibleOnState,Visible only when app is in one of these states (space or comma separated),"visibleOnState=""error"""
+hiddenOnState,Hidden in these states (opposite of above),"hiddenOnState=""ready editing"""
+enabledOnState,Enabled only in these states,"enabledOnState=""editing"""
+activeOnState,Receives input focus / is the “active tool” only in these states,"activeOnState=""editing"""
+inputContextOnState,Automatically swap inputContext when entering these states,"inputContextOnState=""historyOpen"""
+sceneOnState,Show this entire scene only in these states,"sceneOnState=""historyOpen"""
+
+
+STATE MACHINE TIERS – Plain-text reference for the XML format
+
+────────────────────────────────────────────────────────────
+TIER 1 – Simple / Flat (default, recommended for 95% of apps)
+────────────────────────────────────────────────────────────
+One single active state at a time. No nesting.
+
+<states>
+  <state name="ready"      default="true"/>
+  <state name="editing"/>
+  <state name="result"/>
+  <state name="error"/>
+</states>
+
+<workflow>
+  <transition from="*"        event="clear"   to="ready"/>
+  <transition from="editing"  event="equals"  to="result"/>
+  <transition from="*"        event="error"   to="error"/>
+</workflow>
+
+Usage:
+onPress="transition:clear"        or   "state:ready"
+visibleOnState="error"
+enabledOnState="editing"
+inputContextOnState="ready editing"
+sceneOnState="result"
+
+Perfect for: calculators, forms, dialogs, settings screens, login flows.
+
+────────────────────────────────────────────────────────────
+TIER 2 – Hierarchical (opt-in with one attribute)
+────────────────────────────────────────────────────────────
+Add type="hierarchical" → nesting, entry/exit actions, history.
+
+<states type="hierarchical">
+  <state name="app" default="true">
+    <entry do="msg#hud:show"/>
+    <exit  do="msg#hud:hide"/>
+
+    <state name="menu"/>
+    
+    <state name="game">
+      <state name="playing">
+        <state name="normal"/>
+        <state name="aiming"/>
+        <state name="paused"/>
+      </state>
+      <state name="inventory"/>
+      <history type="deep"/>   <!-- remember last sub-state when leaving/re-entering "game" -->
+    </state>
+  </state>
+</states>
+
+Transitions automatically trigger entry/exit actions of all affected states.
+State names use dot notation: state:game.playing.paused
+visibleOnState="game.playing !game.playing.paused"
+
+Perfect for: games, vector editors, IDE-style tools, anything with deep modes.
+
+────────────────────────────────────────────────────────────
+TIER 3 – Full / Parallel (explicit opt-in, rare)
+────────────────────────────────────────────────────────────
+type="parallel" or type="scxml"
+
+Allows multiple independent regions, guards, event parameters, etc.
+
+<states type="parallel">
+  <region id="power">   off | booting | on </region>
+  <region id="mode">    menu | gameplay | map </region>
+  <region id="audio">   muted | sfxOnly | full </region>
+</states>
+
+<transition event="equals" 
+            when="{#operand2 != 0}" to="result"
+            otherwise="error"/>
+
+Used only for extremely complex apps (flight simulators, MMOs, industrial control).
+
+────────────────────────────────────────────────────────────
+Summary – how to choose
+────────────────────────────────────────────────────────────
+- Default → Tier 1 (flat)          – start here, covers almost everything
+- Need sub-modes or entry/exit? → add type="hierarchical" (Tier 2)
+- Need multiple independent states at once? → type="parallel" (Tier 3)
+
+All tiers are 100% backward compatible – you can upgrade later without breaking anything.
 
 
 

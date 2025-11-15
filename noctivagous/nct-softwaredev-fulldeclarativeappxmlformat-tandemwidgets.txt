@@ -1,19 +1,16 @@
 
 TANDEM WIDGETS
 
-Matching widgets on server scripts and client pages
+- Matching widgets on server scripts and client pages
 that can talk to each other.
 
---> Paired, synchronized widgets with built-in communication protocols
-
-
-Matching stock components for server and client sides 
-for lists, tables, image galleries, etc.
+- Matching stock components for server and client sides 
+for lists, tables, image galleries, etc.  
 
 Because the server widget has conventions built in for
 receiving commands from client widget and the client
 widget has commands for talking to server, as
-well as periodic timers for updates both ways,
+well as either periodic timers or observers for updates both ways,
 the situation is more effortless for the software developer.
 
   
@@ -26,7 +23,7 @@ at list1.py -->
 
 SERVER:
 
-obj shelfList = ListViewServerWidget(format:[1]); // number of indices is 1
+obj shelfList = ListViewServerWidget(format:[1]); // one level for the list. 
 shelfList = ["shelf object 1","shelf object 2"];
 
 
@@ -38,7 +35,7 @@ We are doing this for the web, but we can discuss how this would apply to deskto
 The window is not controlling the app. It’s reflecting it.
 
 
-THE WIDGET PROTOCOL
+EXAMPLE WIDGET PROTOCOL
 
 Both server and client widgets conform to a standard interface:
 
@@ -49,5 +46,27 @@ class TandemWidgetProtocol:
     def on(self, event: str, callback)   # e.g. "select", "change"
     def refresh(self)
     def destroy(self)
+
+
+HISTORICAL REASONS
+
+Widgets are a concept that haven't been applied to server-side scripts
+and programs. Then, when they are there, they naturally fit with the client-side
+widgets, and the two sides can be designed together and result in pairs 
+that talk to each other. With there now being server-side widgets, other configurations are 
+possible besides just the tandem client-server widget combination, but this gets
+the situation started.
+
+Beyond simple client-server pairs, you can build:
+
+Server-to-Server Widgets: For batch processing or logging.
+Client-to-Client Widgets: For collaborative UIs (e.g., shared whiteboard).
+Observer Networks: Multiple clients observing one server widget (e.g., a master-detail view).
+
+
+
+
+
+
 
 

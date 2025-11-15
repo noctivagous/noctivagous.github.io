@@ -1,0 +1,17 @@
+nct-bimodal-tabletcursorwithscreenclickbuttons
+
+A cursor exists on the tablet screen.
+It takes the form of a 90pt x 90pt square, 
+placed in front  of the finger.  It either only shows up
+when the finger is in contact with the
+screen or it stays in place on finger lift
+until transported immediately by the next touch.
+
+At the same time, on the left side of the screen 
+there is a click button.  The left hand presses this
+button on the screen to click while the right
+hand moves the cursor.  So, touching the screen
+is not always equivalent to clicking unless
+an area is designated, which would be the click
+button in this case.
+

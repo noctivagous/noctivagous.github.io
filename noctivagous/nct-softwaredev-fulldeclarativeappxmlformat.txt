@@ -50,6 +50,17 @@ the code of application software development,can be re-architected into
 higher-level components, building on top of the declarative app formats of
 past, such as MXML and XUL.
 
+It is said that apps loaded from declarative XML
+tags can have slowdown issues because every
+tag has to be interpreted into code. But not every tag
+has to be interpreted when the app starts. 
+An app made in declarative tags can have a loading
+order convention in which the order of loading
+is determined in advance.  A section of the app might
+be loaded first (settings) while another is loaded last.
+It can also feature a CPU threads tag attribute for 
+the loading.
+
 A calculator app is an example we use because it should be, by now, 
 describable through a provided set of higher-level conceptual components 
 that make it easy to construct at the outset.  They are components that haven't
@@ -400,6 +411,8 @@ Summary – how to choose
 - Need multiple independent states at once? → type="parallel" (Tier 3)
 
 All tiers are 100% backward compatible – you can upgrade later without breaking anything.
+
+
 
 
 

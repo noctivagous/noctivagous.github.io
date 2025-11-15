@@ -1,0 +1,33 @@
+
+
+
+Making an integer variable.
+
+1. Make the variable code line.
+
+   V key makes a variable reference box.
+   D key makes a variable declaration box,
+   which includes a box to the left to indicate)
+   
+
+
+2. Set the variable's type
+ 
+    The cursor remains over the box (or exited and re-entered).
+    
+    The I key is pressed and this turns the box into an integer. 
+    (The O key is for an object, etc.)
+
+    -> An "untitled_int_variable" name is automatically made and shown 
+    to the right.
+
+4. Name the variable
+
+    As long as the cursor remains hovered over the variable, typing
+    will change the name of the variable.  Exiting the box
+    finalizes the variable name.
+    
+5. Move the variable.
+
+    Pressing the M key will drag-lock or "sticky drag" the variable
+    for moving it inside the code until the M key is pressed again.

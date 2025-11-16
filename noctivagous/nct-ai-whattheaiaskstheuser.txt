@@ -80,14 +80,40 @@ ONE-AT-A-TIME BACK-AND-FORTH TASK-EXECUTION GUI
 
 EXAMPLE: MAKING AN API SPECIFICATION
 
-The user has a direction to take an API specification
-and would like the AI to assist in filling in and generating
-more parts of the API.  But the user knows that the AI
-will have to be re-aligned to what he wants and be guided.
+The user has made some preliminary plans for
+an API, has several examples. He has a 
+direction to take this API specification
+and would like the AI to assist in generating
+and filling parts of the API.  But this will
+be a back-and-forth process. Instead of the
+chat format, the user will have an output pane
+for taking the right parts of what the AI generated
+and placing them into the output pane stack.
+
+The user knows that the AI and its recommendations
+will have to be re-aligned to what he was going for 
+and be guided, since large portions of the API don't
+exist.  This also brings up the issue of that when
+the user has said something to correct the AI on
+its direction, the AI does not have to produce
+a long response but can respond naturally with
+a short acknowledgment and a question about it
+for resolving an ambiguity or specific.
+
+The AI will have to be able to ask a few questions
+and for this there is an "Ask Questions" button
+and section next to the text field entry area.
+This is because the AI will know on a deep level
+some aspects of what can and should be done that
+the user may not have realized yet or know.
+
+The purpose of the interface is to start
+be able to guide, revise, and refine and
+store pieces of the conversation along the way.
 
 --
 
-User: Take this example document for an API specification.
+User: Take this incomplete document for an API specification.
 We want to build out the rest of it.
 
 AI: Here is the first [type of API call category] section suggestion:

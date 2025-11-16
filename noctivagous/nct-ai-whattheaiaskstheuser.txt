@@ -60,4 +60,21 @@ Another view for the output pane is accordion. When the output placed into
 the output pane is represented as an image thumbnail, clicking a thumbnail 
 displays the full output spanning the whole window viewport as an overlay.
 
+--------
+
+PREVIEW BEFORE CONFIRMATION OF ACTION TO TAKE
+
+"Here is what I am planning to do"
+
+In the response:
+
+For a code addition for the project, in the response's
+left column it says "Here is what I am planning to do:" followed
+by a list underneath and in the right column there are
+accordion items of each code section that will be added
+or removed, including which document it pertains to.
+
+
+
+
 

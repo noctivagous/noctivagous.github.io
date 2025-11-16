@@ -1,0 +1,31 @@
+nct-ai-declarativexmlformatforflow
+
+
+A raw chatbot script is a back and forth
+determined by.
+
+But you might want to use an editable, 
+declarative XML format to guide it, which would 
+allow putting together various system prompts,
+defining different modes, providing 
+different logic sequences (such as with
+<switch> and <if>/<ifelse> tags), flow,
+and workflow.
+
+So then there would be something like
+chatbotxmlinterpreter.py that interprets
+this XML format so that you can take
+an app and load (or reload this script)
+after editing.
+
+(It also points to scenarios of hot reloading
+code that is interpreted from XML in
+a language like Python, where all of the
+running program is discarded on reload.)
+
+Instructions in this format would allow
+defining sequences and instructions
+for what GUI to add to the window,
+(what window to make).  Instructions
+would include how to handle the response
+from the AI model.

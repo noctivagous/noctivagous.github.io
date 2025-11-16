@@ -1,0 +1,72 @@
+EXPANDING OPERATIONS AVAILABLE FOR MAKING
+AND USING SELECTIONS
+
+THE VAGUENESS OF THE MOUSE CLICK, ACTING AS OPENING
+THINGS AND SELECTING THINGS COLLAPSED INTO ONE CLICK
+(THE SAME ISSUE AS TOUCHSCREEN TAP) IS FIXED WITH BIMODAL CONTROL
+
+On tablet, the keyboard keys mentioned below 
+would correspond to buttons placed
+on left edge touchscreen.
+
+
+SELECT CLICKS
+
+select (accumulative) paragraph click (P key)
+    - clicking a paragraph adds it to the selection
+
+select (accumulative) sentence click (S key)
+    - clicking a sentence adds it to the selection.
+
+select click general (accumulative)
+    - first click selects a word
+    - second selects a sentence.
+
+text select rectangle
+    - first click (T key) sets point of four-quadrant roaming rectangle.
+    - second click (T key) finishes
+    
+    
+
+SELECT CLICKS COMBINED WITH ACTION(MODE)
+
+Selections are usually tied to 
+1) drag and drop  or
+2) copy/cut to the pasteboard
+
+But they can be sent elsewhere in another setup.
+If, for example, a document and its cursor is
+made the current target, the selection can be
+copied there immediately without having to
+use the paste function.
+
+One or two presses does something
+besides copy to clipboard.
+
+Example 1: One at a time action.  
+
+    Selection is in one-at-a-time mode (is not accumulative).
+    
+    Select a paragraph with the P key
+    The second press of the P key places it
+    in the scrapbook (or a document that is set as the target).
+
+    Alternatively, it might take only one press of the P key
+    to copy or move the paragraph to the scrapbook.
+    Moving the paragraph would be the equivalent to cut and
+    paste whereas copying the paragraph would be equivalent
+    to copy and paste.
+    
+
+Example 2: Accumulative, Followed By Action Key
+
+    1. Select paragraphs with the P key
+
+    2. Press the T key to transfer the selection to the
+    target document (or the scrapbook, if it is set
+    as the target).
+    
+    
+    
+
+

@@ -64,7 +64,7 @@ displays the full output spanning the whole window viewport as an overlay.
 
 PREVIEW BEFORE CONFIRMATION OF ACTION TO TAKE
 
-"Here is what I am planning to do"
+"AI: Here is what I am planning to do"
 
 In the response:
 
@@ -73,6 +73,50 @@ left column it says "Here is what I am planning to do:" followed
 by a list underneath and in the right column there are
 accordion items of each code section that will be added
 or removed, including which document it pertains to.
+
+---------
+
+ONE-AT-A-TIME BACK-AND-FORTH TASK-EXECUTION GUI
+
+EXAMPLE: MAKING AN API SPECIFICATION
+
+The user has a direction to take an API specification
+and would like the AI to assist in filling in and generating
+more parts of the API.  But the user knows that the AI
+will have to be re-aligned to what he wants and be guided.
+
+--
+
+User: Take this example document for an API specification.
+We want to build out the rest of it.
+
+AI: Here is the first [type of API call category] section suggestion:
+
+[1 - REVISE...] [2 - ACCEPT] [3 - NO, BECAUSE...]
+
+--
+
+In this example, when the user accepts the proposed section,
+which he can edit in place, this puts it in the output pane,
+adding it to the text stack.  This way the interactions with
+the AI will produce the end result at the same time without copy
+and paste or a separate editor open.
+
+The user can also select an item in the stack in the output
+pane and tell the AI that he wants to work on it and before
+doing anything to it, the AI will show the same proposal
+and interactive menus.
+
+
+
+
+
+AI:
+
+
+
+
+
 
 
 

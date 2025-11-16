@@ -1,0 +1,29 @@
+
+FOR AI CHATBOT SOFTWARE
+
+-------
+
+different types of clarifying questions.
+
+    the user talks about a thing. the user then asks the ai
+    to do a thing with the text provided or respond to it.
+    
+- understanding what the user wanted the ai to do in the request.
+
+- understanding what the user was saying.
+
+
+--------
+
+for responses
+
+a difference between
+
+    - a conversational answer from the AI (can be put into the chat conversation).
+        - the user has asked the AI what it can and cannot do or what it did, etc.
+        - AI affirms or briefly answers a query.
+    
+    - the product of a task carried out by the AI (should be put into output pane).
+        - code generated.
+        - a translation made.
+        - a research summary.

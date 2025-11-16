@@ -5,19 +5,40 @@ FOR AI CHATBOT SOFTWARE
 
 different types of clarifying questions.
 
-    the user talks about a thing. the user then asks the ai
+    scenario: the user talks about a thing with text. the user then asks the ai
     to do a thing with the text provided or respond to it.
-    
-- understanding what the user wanted the ai to do in the request.
 
-- understanding what the user was saying.
+questions:
+
+- for understanding what the user was saying.  "Did you mean...?"
+     
+- for understanding what the user wanted the ai to do in the request.
+    - resolving ambiguity.  "When you asked me to ... did you mean...?"
+    - gathering details on issues the user didn't specify or realize
+    "How do you want me to..."
+    
+-------
+WHAT INFORMATION IS BEING ASKED FOR
+
+Clarifying questions vs. Information gathering
+
+If the user doesn't know what needs to be provided
+to achieve a task, the AI will, in the process of clarifying
+the task, collect that information from the user.
+
+This might be different that the separate task of collecting
+information, such as to get specifics about how to do
+something like set up a software development project, which
+has many details.
+Each task has a different scope and some have unlimited
+details that can be filled in.
 
 
 --------
 
-for responses
+THE DIFFERENT TYPES OF RESPONSES THE AI PROVIDES
 
-a difference between
+There is a difference between
 
     - a conversational answer from the AI (can be put into the chat conversation).
         - the user has asked the AI what it can and cannot do or what it did, etc.
@@ -27,3 +48,16 @@ a difference between
         - code generated.
         - a translation made.
         - a research summary.
+        
+"If you are fulfilling a request that produces output such as code or text
+like an article or translation, put the output in the output pane.
+If you are answering a question.
+
+
+--> Special UI.  The output pane's default view is thumbnail and not the
+full output.  It is also 1/2 to 1/3 the width of the converstaion column.  
+Another view for the output pane is accordion. When the output placed into 
+the output pane is represented as an image thumbnail, clicking a thumbnail 
+displays the full output spanning the whole window viewport as an overlay.
+
+

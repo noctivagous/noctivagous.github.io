@@ -1,0 +1,32 @@
+nct-desktop-applaunchmenus
+
+Instead of just launching the app,
+you open the app's launch menu
+which has actions that command
+the app after it is finished opening.
+This is because after a user opens
+an app he then does something with it.
+Instead the user can enter the app
+with the command.
+
+For a web browser:
+
+- Search the web: [______]  (the user can search from this launch menu)
+
+    - After the web browser app is finished
+    launching, it searches the web with this term.
+
+- Open a bookmark: [bookmark list].
+
+    - These lists would appear as a grid.
+
+- Open a bookmark from a menu.
+- Search YouTube: [______].
+
+It provides direct action to
+open the app up with what you
+are trying to do with it, regardless
+of whether you have already opened
+it.
+
+

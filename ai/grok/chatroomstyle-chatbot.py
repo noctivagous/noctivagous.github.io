@@ -1,4 +1,45 @@
 # chatroomstyle-chatbot-v1.py
+
+"""
+
+Chatroom Style Chatbot v1
+
+Introduction
+
+The script launches a window with a chatroom style GUI
+for interacting with AI with shorter, more rapid 
+responses than the conventional chatbot.
+
+   - The LLM system prompt placed in the script limits the model's 
+   responses in the chat to 1-3 paragraphs, letting the AI decide how long.
+   - The AI's responses arrive in about 1-2 seconds using 
+   a fast AI model.
+
+
+Implementation
+
+Uses Python tkinter (cross-platform GUI lib) and 
+the Python llm library made by Simon Willison 
+(https://github.com/simonw/llm).
+
+Responses are processed by a markdown-rendering
+function that converts them to the scrollview's own
+tags provided by tkinter.
+
+After the response is received, the script will
+scroll the chat to 4 lines above the user's
+query line, setting up every query and response
+to be read from the top.
+
+
+Layout
+
+The scrollview is at the top and the one-line
+input box is at the bottom.  Pressing the Return key submits.
+
+"""
+
+
 import tkinter as tk
 from tkinter import scrolledtext, Menu
 import ttkbootstrap as ttkb
@@ -453,7 +494,7 @@ class GrokChatBot:
     def _scroll_to_last_user_message(self):
         """Scroll so the last 'You:' line is exactly 4 lines below the top"""
         if not self.last_user_message_index:
-            print("[ScrollDebug] No saved user index → falling back to end")
+            #print("[ScrollDebug] No saved user index → falling back to end")
             self.chat_display.see(tk.END)
             return
 
@@ -461,13 +502,13 @@ class GrokChatBot:
 
         # Get the line number of the saved "You:" position
         line_num = int(self.chat_display.index(self.last_user_message_index).split('.')[0])
-        print(f"[ScrollDebug] Last 'You:' saved at line {line_num}")
+        #print(f"[ScrollDebug] Last 'You:' saved at line {line_num}")
 
         total_lines = int(self.chat_display.index(tk.END).split('.')[0])
         target_line = max(1, line_num - 4)
 
         fraction = (target_line - 1) / total_lines if total_lines > 1 else 0.0
-        print(f"[ScrollDebug] Scrolling to fraction {fraction:.4f} (target line {target_line})")
+        #print(f"[ScrollDebug] Scrolling to fraction {fraction:.4f} (target line {target_line})")
 
         self.chat_display.yview_moveto(fraction)
         

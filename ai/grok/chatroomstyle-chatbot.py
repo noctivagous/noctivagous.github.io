@@ -51,19 +51,29 @@ def generate_response_raw(messages: List[Dict[str, str]]) -> str:
     
     
     system_prompt = (
-"""You are Grok, a helpful and maximally truthful AI built by xAI,
-        not based on any other companies.  You are in a chat window
-        that looks like IRC.   Don't answer with full page responses
-every time.  Instead, ask questions and
-respond naturally like a person, where
-you might ask a question, give a paragraph, 
-ask a question, etc.  Your answers will be more and
-faster than a person, but you want it to flow naturally. You determine your
+"""
+You are a knowledgeable tech person residing in a chat room.
+You are in a chat window that looks like IRC so your responses 
+should be one or two paragraphs.   You want the dialogue to flow naturally
+between you and the user and this is what you are interested in.
+Don't ask questions that are designed just to prolong the discussion,
+for example, because that is unnatural.
+
+The user is asking questions, so you will reply with one or two
+paragraphs. Don't answer with full page responses
+unless the user requests that you do that or carry out a task.  For example, 
+if your response in the chat would include lots of code, 
+you ask before showing it or any long response.
+
+Ask questions and respond naturally like a person, where
+you might ask just a question, or give just a paragraph, 
+and ask a question, etc.   You determine your
 own response length and whether to ask a question or not.
 Respond naturally and conversationally, asking questions at the very 
 end of replies only if they're genuinely relevant to clarifying or 
-advancing the topic, not just to prolong the discussion.
+advancing the topic.  You can ask nothing at the end.
 When explaining concepts, avoid the phrase 'Think [analogy/example]'.
+Avoid using 'super' as an intensifier.
 """
     )
 
@@ -104,15 +114,9 @@ CODE_FG = "#212529"
 LINK_FG = "#0d6efd"
 GROK_NAME_COLOR = "#2f4e3f"
 
-import re
-import webbrowser
-
 # ----------------------------------------------------------------------
 # ---------------------  Simple Regex-Based Markdown Renderer ---------
 # ----------------------------------------------------------------------
-import re
-import webbrowser
-
 
     
 def render_markdown_message(widget: scrolledtext.ScrolledText, sender: str, text: str) -> None:
@@ -265,7 +269,7 @@ class GrokChatBot:
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Grok Chatbot (Powered by xAI & Simon Willison's LLM Library)")
+        self.root.title("Grok Chatbot (Powered by xAI & Python LLM Library)")
         self.root.geometry("700x850")
         ttkb.Style("cosmo")
         self.root.configure(bg=WINDOW_BG_COLOR)
@@ -299,7 +303,9 @@ class GrokChatBot:
 
         self.entry = ttkb.Entry(input_frame, font=("Consolas", 11))
         self.entry.grid(row=0, column=0, sticky="ew", padx=(0, 10))
-        self.entry.bind("<Return>", self.send_message)
+
+        self.entry.bind("<Return>", lambda e: self.send_message() or "break")
+
         self.entry.focus_set()
         self._setup_context_menu(self.entry)
 

@@ -1,0 +1,127 @@
+nct-softwaredev-custompythoneditor.txt
+
+
+Code Editor Objectives:
+
+1. Differentiation of code in the file.
+
+Either:
+
+    A.  Different code elements are highlighted with different background
+        colors.  Functions are highlighted in orange.
+        
+            Implementation: Idlelib's Text widget handles this nicely via `tag_config` for backgrounds.
+
+    B. Visual borders (like vector-drawn outlines) 
+    around function and class blocks directly in the text editor widget.
+
+
+- To the left of the code lines, vertically, are labels
+for each section with brackets.
+
+- Collapsible functions
+    - shortcuts to collapse all.
+
+
+Then for indentation columns, the code has background color or overlay
+vertical lines.
+
+
+2. Indentation Slots
+
+    The programmer is always working inside an indentation slot.
+   
+    When code is pasted in, it is indented to the indentation slot.
+   
+    This is a feature overlayed on top of the feature of the programming language.
+    
+    Bounding boxes are established for the indentation or rectangles.
+
+
+-
+
+With idlelib and Tkinter, you can achieve this by using a `Text` widget (from `idlelib.EditorWindow` or plain Tkinter) and tagging ranges of text with custom tags. Then, configure those tags to draw borders via the widget's tag configuration—Tkinter's Text widget supports options like `borderwidth`, `relief` (e.g., 'solid' for a border), and even background colors to frame the block. For vector-like precision, you'd parse the code (maybe with Python's `ast` module to find def/class nodes) and apply tags to the exact line ranges.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+import ast
+from idlelib import EditorWindow  # Or use tk.Text directly
+
+class OutlinedEditor:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.text = EditorWindow.EditorWindow(self.root, {})  # Or tk.Text(self.root)
+        self.text.pack(fill='both', expand=True)
+        self.parse_and_outline()
+    
+    def parse_and_outline(self):
+        code = self.text.get('1.0', tk.END)  # Get current text
+        tree = ast.parse(code)
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                start_line = node.lineno
+                end_line = node.end_lineno if hasattr(node, 'end_lineno') else start_line + 1
+                start_pos = f"{start_line}.0"
+                end_pos = f"{end_line + 1}.0"  # Extend to cover the block
+                tag = f"outline_{start_line}"
+                self.text.tag_add(tag, start_pos, end_pos)
+                self.text.tag_config(tag, borderwidth=2, relief='solid', background='lightgray')  # Border around the range
+    
+    # Call this on text change, e.g., bind to <<Modified>>
+
+editor = OutlinedEditor()
+editor.root.mainloop()
+```
+
+This applies a solid border and light background to the tagged range, outlining the function/class block. It's not perfect for nested stuff or multi-line defs (you might need to adjust for indentation), and redrawing on edits requires event binding. For fancier vector borders (like SVG-style), you'd need a canvas overlay or a more advanced widget like `tkinter.ttk.Treeview` for the editor itself, but that complicates things.
+
+
+For highlighting backgrounds instead. Building on the earlier sketch, tweak the `parse_and_outline` method like this:
+
+```python
+def parse_and_outline(self):
+    code = self.text.get('1.0', tk.END)
+    tree = ast.parse(code)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef):
+            start_line = node.lineno
+            end_line = node.end_lineno if hasattr(node, 'end_lineno') else start_line + 1
+            start_pos = f"{start_line}.0"
+            end_pos = f"{end_line + 1}.0"
+            tag = f"func_{start_line}"
+            self.text.tag_add(tag, start_pos, end_pos)
+            self.text.tag_config(tag, background='orange')  # Orange for functions
+        elif isinstance(node, ast.ClassDef):
+            # Similar for classes, e.g., blue background
+            start_line = node.lineno
+            end_line = node.end_lineno if hasattr(node, 'end_lineno') else start_line + 1
+            start_pos = f"{start_line}.0"
+            end_pos = f"{end_line + 1}.0"
+            tag = f"class_{start_line}"
+            self.text.tag_add(tag, start_pos, end_pos)
+            self.text.tag_config(tag, background='lightblue')
+    
+    # Bind to text changes for live updates
+    self.text.bind('<<Modified>>', lambda e: self.parse_and_outline())
+```
+
+Example VS Code extensions:
+
+Bracket Pair Colorizer (now often bundled as "Rainbow Brackets" in VS Code's marketplace) is an extension that colors matching brackets, parentheses, and braces differently—think rainbow-style—so you can easily spot nested code blocks without squinting. It's great for languages like Python, JS, or C++ where indentation and pairing matter, and it highlights the whole pair, not just the symbols.
+
+Indent Rainbow, on the other hand, colors the background of indented lines in a gradient or spectrum (like rainbow stripes), making nested structures (e.g., inside functions or classes) visually pop without changing text colors. Super handy for spotting indentation errors in Python.
+
+
+
+2. Keyboard shortcuts for generating code.
+
+Alt-A - AI-generated code insert at cursor (dialog window, sends code to AI model)
+Alt-F - Begin Function template prompt sequence (e.g. Enter name of function:).
+Alt-C - Begin Class template prompt sequence
+L- loop
+I- integer
+S - string
+T - tuple
+
+

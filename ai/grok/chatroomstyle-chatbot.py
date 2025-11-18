@@ -16,7 +16,6 @@ import webbrowser
 # SETTINGS AND CONFIG —
 # ======================================================================
 GROK_MODEL = "grok-4-fast-non-reasoning-latest"   # ← edit this one line!
-# Other popular options:
 # "grok-4-fast"                    # with reasoning (slower, more expensive)
 # "grok-4"                         # full reasoning model
 # "grok-beta"                      # previous generation
@@ -40,49 +39,46 @@ WINDOW_BG_COLOR= GRAY_COLOR_2
 # ----------------------------------------------------------------------
 # --------------------------  USER HOOKS  -------------------------------
 # ----------------------------------------------------------------------
-
 def generate_response_raw(messages: List[Dict[str, str]]) -> str:
     model = llm.get_model(GROK_MODEL)
-    
-    # Let llm manage the conversation instead of doing it manually
-    conversation = model.conversation()
-    
-    # Optional: set a persistent system prompt once
-    conversation.system = (
-"""
+
+    # Create (or reuse) a persistent conversation object
+    # We store it on the model itself so it survives across calls
+    if not hasattr(model, "_grok_conversation"):
+        conv = model.conversation()
+        
+        # Set the system prompt ONCE
+        conv.system = (
+            """
 You are a knowledgeable tech person residing in a chat room.
-You are in a chat window that looks like IRC so your responses 
-should be one or two paragraphs.   You want the dialogue to flow naturally
+You are in a chat window that looks like IRC so your responses
+should be one or two paragraphs. You want the dialogue to flow naturally
 between you and the user and this is what you are interested in.
 Don't ask questions that are designed just to prolong the discussion,
 for example, because that is unnatural.
-
 The user is asking questions, so you will reply with one or two
 paragraphs. Don't answer with full page responses
-unless the user requests that you do that or carry out a task.  For example, 
-if your response in the chat would include lots of code, 
+unless the user requests that you do that or carry out a task. For example,
+if your response in the chat would include lots of code,
 you ask before showing it or any long response.
-
 Ask questions and respond naturally like a person, where
-you might ask just a question, or give just a paragraph, 
-and ask a question, etc.   You determine your
+you might ask just a question, or give just a paragraph,
+and ask a question, etc. You determine your
 own response length and whether to ask a question or not.
-Respond naturally and conversationally, asking questions at the very 
-end of replies only if they're genuinely relevant to clarifying or 
-advancing the topic.  You can ask nothing at the end.
+Respond naturally and conversationally, asking questions at the very
+end of replies only if they're genuinely relevant to clarifying or advancing the topic.
+You can ask nothing at the end.
 When explaining concepts, avoid the phrase 'Think [analogy/example]'.
 Avoid using 'super' as an intensifier.
-"""    )
-    
-    # Feed the whole history just once – llm will cache it internally
-    for msg in messages[:-1]:   # all but the last (which is the new user message)
-        if msg["role"] == "user":
-            conversation.user(msg["content"])
-        elif msg["role"] == "assistant":
-            conversation.assistant(msg["content"])
-    
-    # Now just prompt with the latest user message
-    response = conversation.prompt(messages[-1]["content"])
+            """.strip()
+        )
+        
+        model._grok_conversation = conv
+
+    conv = model._grok_conversation
+
+    # Just send the latest user message — llm handles the whole history internally
+    response = conv.prompt(messages[-1]["content"])
     return response.text().strip()
     
     

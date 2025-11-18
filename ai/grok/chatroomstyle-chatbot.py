@@ -28,8 +28,9 @@ tags provided by tkinter.
 
 After the response is received, the script will
 scroll the chat to 4 lines above the user's
-query line, setting up every query and response
+query line “You: …”), setting up every query and response
 to be read from the top.
+
 
 
 Layout
@@ -353,6 +354,7 @@ class GrokChatBot:
         self.root.grid_rowconfigure(1, weight=0)   # input fixed
         self.root.grid_columnconfigure(0, weight=1)
 
+
         # Chat display
         self.chat_display = scrolledtext.ScrolledText(
             root,
@@ -371,12 +373,18 @@ class GrokChatBot:
         self._setup_context_menu(self.chat_display)
 
         # Input frame (bottom row)
-        input_frame = ttkb.Frame(root, relief="sunken")
+        input_frame = ttkb.Frame(root, relief="flat")
         input_frame.grid(row=1, column=0, padx=10, pady=(5, 10), sticky="ew")
         input_frame.grid_columnconfigure(0, weight=1)  # entry expands
 
         self.entry = ttkb.Entry(input_frame, font=("Consolas", 11))
         self.entry.grid(row=0, column=0, sticky="ew", padx=(0, 10))
+
+
+        # Remove the blue (or theme-colored) focus rectangle completely
+
+        self.entry.configure(background=WINDOW_BG_COLOR)
+
 
         self.entry.bind("<Return>", lambda e: self.send_message() or "break")
 
@@ -409,29 +417,59 @@ class GrokChatBot:
 
         self.last_user_message_index = None   # We'll store "X.Y" where the last "You:" starts
 
+        # === NEW: Keyboard shortcuts ===
+        self.root.bind("<Control-q>", lambda event: self.root.quit())
+        self.root.bind("<Control-Q>", lambda event: self.root.quit())  # for shift+caps
 
+        self.root.bind("<Control-BackSpace>", lambda event: self.clear_conversation())
+        # Also catch the more common Ctrl+W many people use for close
+        self.root.bind("<Control-w>", lambda event: self.root.quit())
+
+        self.root.protocol("WM_DELETE_WINDOW", self.root.quit)
+
+        
     # ------------------------------------------------------------------
 
+    def clear_conversation(self) -> None:
+        """Clear the chat display and reset conversation history."""
+        # Clear the text widget
+        self.chat_display.config(state="normal")
+        self.chat_display.delete("1.0", tk.END)
+        self.chat_display.config(state="disabled")
+
+        # Reset internal history
+        self.conversation.clear()
+
+        # Optional: add a fresh system message or welcome again
+        self.add_to_chat(
+            "Grok",
+            "Conversation cleared. Hello again! How can I help you?",
+        )
+
+        # Reset scrolling tracker
+        if hasattr(self, "last_user_message_start"):
+            del self.last_user_message_start
+            
     def add_to_chat(self, sender: str, message: str) -> None:
+        self.chat_display.config(state="normal")
+
         if sender == "You":
-            # ←←← CAPTURE THE EXACT INDEX RIGHT BEFORE inserting "You:" ←←←
-            self.last_user_message_index = self.chat_display.index(tk.END)
-
-            # Truncate to two lines max (your existing logic)
-            lines = message.splitlines()
-            if len(lines) > 2:
-                truncated = '\n'.join(lines[:2]) + "\n..."
-            else:
-                truncated = message
-
-            self.chat_display.config(state="normal")
+            # Insert first, THEN capture the exact index of the newly inserted line
+            truncated = message if len(message.splitlines()) <= 2 else '\n'.join(message.splitlines()[:2]) + "\n..."
             self.chat_display.insert(tk.END, f"You: {truncated}\n\n")
-            self.chat_display.config(state="disabled")
-            self.chat_display.see(tk.END)
+
+            # Now we know exactly where the "You:" line starts
+            self.last_user_message_start = self.chat_display.index(tk.END + "-3l linestart")
+            # Explanation: "-3l" = go back 3 lines from end → lands on the empty line after the message
+            # "linestart" → start of that line → which is exactly the start of "You: …"
 
         else:
-            # Grok messages = full Markdown rendering
             render_markdown_message(self.chat_display, sender, message)
+
+        self.chat_display.config(state="disabled")
+
+#        if sender == "Grok":
+ #           self.root.after(100, self._scroll_to_last_user_message)
             
             
     def send_message(self, event=None) -> None:
@@ -492,26 +530,21 @@ class GrokChatBot:
         widget.bind("<<SelectAll>>", lambda e: widget.select_range(0, tk.END))
 
     def _scroll_to_last_user_message(self):
-        """Scroll so the last 'You:' line is exactly 4 lines below the top"""
-        if not self.last_user_message_index:
-            #print("[ScrollDebug] No saved user index → falling back to end")
+        if not hasattr(self, "last_user_message_start"):
             self.chat_display.see(tk.END)
             return
 
-        self.chat_display.update_idletasks()  # ensure layout is final
+        self.chat_display.update_idletasks()
 
-        # Get the line number of the saved "You:" position
-        line_num = int(self.chat_display.index(self.last_user_message_index).split('.')[0])
-        #print(f"[ScrollDebug] Last 'You:' saved at line {line_num}")
+        user_line = int(self.chat_display.index(self.last_user_message_start).split('.')[0])
+        target_line = max(1, user_line - 4)   # show ~4 lines above the user's message
 
-        total_lines = int(self.chat_display.index(tk.END).split('.')[0])
-        target_line = max(1, line_num - 4)
-
-        fraction = (target_line - 1) / total_lines if total_lines > 1 else 0.0
-        #print(f"[ScrollDebug] Scrolling to fraction {fraction:.4f} (target line {target_line})")
-
-        self.chat_display.yview_moveto(fraction)
-        
+        total_lines = int(self.chat_display.index('end-1c').split('.')[0])
+        if total_lines > 1:
+            fraction = (target_line - 1) / (total_lines - 1)
+            self.chat_display.yview_moveto(max(0.0, fraction))
+        else:
+            self.chat_display.yview_moveto(0)        
         
 if __name__ == "__main__":
     root = ttkb.Window(themename="cosmo")

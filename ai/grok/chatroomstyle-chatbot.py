@@ -366,18 +366,33 @@ class GrokChatBot:
         self.chat_display.tag_config("h3", font=("Consolas", 12, "bold"), foreground="#58f5ab")
         self.chat_display.tag_config("h4", font=("Consolas", 12, "bold"), foreground="#58f5ab")
 
+        self.last_user_message_index = None   # We'll store "X.Y" where the last "You:" starts
+
 
     # ------------------------------------------------------------------
+
     def add_to_chat(self, sender: str, message: str) -> None:
         if sender == "You":
-            # User messages = plain text
+            # ←←← CAPTURE THE EXACT INDEX RIGHT BEFORE inserting "You:" ←←←
+            self.last_user_message_index = self.chat_display.index(tk.END)
+
+            # Truncate to two lines max (your existing logic)
+            lines = message.splitlines()
+            if len(lines) > 2:
+                truncated = '\n'.join(lines[:2]) + "\n..."
+            else:
+                truncated = message
+
             self.chat_display.config(state="normal")
-            self.chat_display.insert(tk.END, f"You: {message}\n\n")
+            self.chat_display.insert(tk.END, f"You: {truncated}\n\n")
             self.chat_display.config(state="disabled")
             self.chat_display.see(tk.END)
+
         else:
             # Grok messages = full Markdown rendering
             render_markdown_message(self.chat_display, sender, message)
+            
+            
     def send_message(self, event=None) -> None:
         user_input = self.entry.get().strip()
         if not user_input:
@@ -405,10 +420,15 @@ class GrokChatBot:
             while True:
                 typ, msg = self.response_queue.get_nowait()
                 self.add_to_chat("Grok", msg)
+
+                # Tiny delay so markdown rendering finishes
+                self.root.after(50, self._scroll_to_last_user_message)
         except queue.Empty:
             pass
         self.root.after(100, self.check_queue)
-
+        
+        
+                        
     def _setup_context_menu(self, widget: tk.Widget) -> None:
         """Setup right-click context menu for copy/paste/select all."""
         menu = Menu(widget, tearoff=0)
@@ -430,7 +450,28 @@ class GrokChatBot:
         # Bind SelectAll for convenience
         widget.bind("<<SelectAll>>", lambda e: widget.select_range(0, tk.END))
 
+    def _scroll_to_last_user_message(self):
+        """Scroll so the last 'You:' line is exactly 4 lines below the top"""
+        if not self.last_user_message_index:
+            print("[ScrollDebug] No saved user index → falling back to end")
+            self.chat_display.see(tk.END)
+            return
 
+        self.chat_display.update_idletasks()  # ensure layout is final
+
+        # Get the line number of the saved "You:" position
+        line_num = int(self.chat_display.index(self.last_user_message_index).split('.')[0])
+        print(f"[ScrollDebug] Last 'You:' saved at line {line_num}")
+
+        total_lines = int(self.chat_display.index(tk.END).split('.')[0])
+        target_line = max(1, line_num - 4)
+
+        fraction = (target_line - 1) / total_lines if total_lines > 1 else 0.0
+        print(f"[ScrollDebug] Scrolling to fraction {fraction:.4f} (target line {target_line})")
+
+        self.chat_display.yview_moveto(fraction)
+        
+        
 if __name__ == "__main__":
     root = ttkb.Window(themename="cosmo")
     GrokChatBot(root)

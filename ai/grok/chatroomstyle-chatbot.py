@@ -8,9 +8,12 @@ import threading
 import queue
 import re
 from typing import List, Dict, Tuple
-import markdown2
+#import markdown2
 from tkinter import Tk, font
 import webbrowser
+import atexit
+import openai
+
 
 # ======================================================================
 # SETTINGS AND CONFIG —
@@ -20,10 +23,12 @@ GROK_MODEL = "grok-4-fast-non-reasoning-latest"   # ← edit this one line!
 # "grok-4"                         # full reasoning model
 # "grok-beta"                      # previous generation
 
-FONT_SIZE = 14
+FONT_SIZE = 15
 H1_SIZE = 18
 HEADER_COLOR = "#7a4213"
 BASE_FONT = "Consolas"
+INITIAL_WINDOW_WIDTH = 700
+INITIAL_WINDOW_HEIGHT = 980
 
 GRAY_COLOR_1= "#F0F0F0" #Classic Windows gray
 GRAY_COLOR_2= "#E8E8E8" #A touch darker
@@ -36,27 +41,26 @@ WINDOW_BG_COLOR= GRAY_COLOR_2
 # ======================================================================
 
 
-# ----------------------------------------------------------------------
-# --------------------------  USER HOOKS  -------------------------------
-# ----------------------------------------------------------------------
-def generate_response_raw(messages: List[Dict[str, str]]) -> str:
-    model = llm.get_model(GROK_MODEL)
+# Persistent conversation storage — survives even if the model object changes
+_GROK_CONVERSATION = None
 
-    # Create (or reuse) a persistent conversation object
-    # We store it on the model itself so it survives across calls
-    if not hasattr(model, "_grok_conversation"):
-        conv = model.conversation()
-        
-        # Set the system prompt ONCE
-        conv.system = (
-            """
-You are a knowledgeable tech person residing in a chat room.
-You are in a chat window that looks like IRC so your responses
-should be one or two paragraphs. You want the dialogue to flow naturally
+
+
+# Put your xAI key in llm keys as "grok" or set XAI_API_KEY env var
+client = openai.OpenAI(
+    base_url="https://api.x.ai/v1",
+    api_key=llm.get_key("grok") or os.getenv("XAI_API_KEY")
+)
+
+SYSTEM_PROMPT1 = """
+You are Grok, a helpful and maximally truthful AI built by xAI.
+You are in a chat window that looks like IRC, so your responses
+should be one, two, or three paragraphs. You want the dialogue to flow naturally
 between you and the user and this is what you are interested in.
-Don't ask questions that are designed just to prolong the discussion,
+Don't ask questions at the end of a response
+that are designed just to prolong the discussion,
 for example, because that is unnatural.
-The user is asking questions, so you will reply with one or two
+The user is asking questions, so you will reply with one, two, or three
 paragraphs. Don't answer with full page responses
 unless the user requests that you do that or carry out a task. For example,
 if your response in the chat would include lots of code,
@@ -68,18 +72,56 @@ own response length and whether to ask a question or not.
 Respond naturally and conversationally, asking questions at the very
 end of replies only if they're genuinely relevant to clarifying or advancing the topic.
 You can ask nothing at the end.
-When explaining concepts, avoid the phrase 'Think [analogy/example]'.
+Don't use the phrase 'Think [of]... [analogy/example]' when explaining concepts.
 Avoid using 'super' as an intensifier.
-            """.strip()
-        )
+            
+""".strip()
+
+SYSTEM_PROMPT2 = """
+You are Grok, a helpful and maximally truthful AI built by xAI.
+You are in a chat window that looks like IRC, so your responses
+should be one, two, or three paragraphs. You want the dialogue to flow naturally
+between you and the user and this is what you are interested in.
+Don't ask questions at the end of a response
+that are designed just to prolong the discussion,
+for example, because that is unnatural.
+The user is asking questions, so you will reply with one, two, or three
+paragraphs. Don't answer with full page responses
+unless the user requests that you do that or carry out a task. For example,
+if your response in the chat would include lots of code,
+you ask before showing it or any long response.
+You determine your
+own response length and whether to ask a question or not.
+Respond naturally and conversationally, asking questions at the very
+end of replies only if they're genuinely relevant to clarifying or advancing the topic.
+You can ask nothing at the end.
+Don't use the phrase 'Think [of]... [analogy/example]' when explaining concepts.
+Don't use 'super' as an intensifier.     
+""".strip()
+
+
+def generate_response_raw(messages: List[Dict[str, str]]) -> str:
+    # Prepend the real system message if it's not already there
+    full_messages = [{"role": "system", "content": SYSTEM_PROMPT2}]
+    for msg in messages:
+        if msg["role"] == "assistant":  # llm library uses "assistant", xAI accepts it
+            full_messages.append(msg)
+        else:
+            full_messages.append({"role": "user", "content": msg["content"]})
+
+    response = client.chat.completions.create(
+        model=GROK_MODEL,
+        #.replace("-non-reasoning-latest", ""),  # e.g. "grok-4"
+        messages=full_messages,
+        temperature=0.5,
+        max_tokens=2048,
+    )
+    return response.choices[0].message.content.strip()
         
-        model._grok_conversation = conv
+# ----------------------------------------------------------------------
+# --------------------------  USER HOOKS  -------------------------------
+# ----------------------------------------------------------------------
 
-    conv = model._grok_conversation
-
-    # Just send the latest user message — llm handles the whole history internally
-    response = conv.prompt(messages[-1]["content"])
-    return response.text().strip()
     
     
 
@@ -261,7 +303,7 @@ class GrokChatBot:
     def __init__(self, root):
         self.root = root
         self.root.title("Grok Chatbot (Powered by xAI & Python LLM Library)")
-        self.root.geometry("700x850")
+        self.root.geometry(f"{INITIAL_WINDOW_WIDTH}x{INITIAL_WINDOW_HEIGHT}")
         ttkb.Style("cosmo")
         self.root.configure(bg=WINDOW_BG_COLOR)
 
@@ -318,10 +360,11 @@ class GrokChatBot:
         # Markdown tag styles
         self.chat_display.tag_config("bold", font=("Consolas", 11, "bold"))
         self.chat_display.tag_config("italic", font=("Consolas", 11, "italic"))
-        self.chat_display.tag_config("code", background="#3d3d3d", relief="solid", borderwidth=1, lmargin1=8, lmargin2=8, spacing1=4, spacing3=4, selectbackground="#357abd", selectforeground="white")
+        self.chat_display.tag_config("code", background="#3d3d3d", relief="solid", borderwidth=1, lmargin1=4, lmargin2=4, spacing1=4, spacing3=4, selectbackground="#357abd", selectforeground="white")
         self.chat_display.tag_config("h1", font=("Consolas", 16, "bold"), foreground="#ff6b6b")
         self.chat_display.tag_config("h2", font=("Consolas", 14, "bold"), foreground="#ffa500")
         self.chat_display.tag_config("h3", font=("Consolas", 12, "bold"), foreground="#58f5ab")
+        self.chat_display.tag_config("h4", font=("Consolas", 12, "bold"), foreground="#58f5ab")
 
 
     # ------------------------------------------------------------------

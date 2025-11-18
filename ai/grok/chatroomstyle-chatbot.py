@@ -501,7 +501,7 @@ class GrokChatBot:
                 self.add_to_chat("Grok", msg)
 
                 # Tiny delay so markdown rendering finishes
-                self.root.after(50, self._scroll_to_last_user_message)
+               # self.root.after(50, self._scroll_to_last_user_message)
         except queue.Empty:
             pass
         self.root.after(100, self.check_queue)

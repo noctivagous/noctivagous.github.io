@@ -40,17 +40,15 @@ WINDOW_BG_COLOR= GRAY_COLOR_2
 # ----------------------------------------------------------------------
 # --------------------------  USER HOOKS  -------------------------------
 # ----------------------------------------------------------------------
-def generate_response_raw(messages: List[Dict[str, str]]) -> str:
-    """
-    **Hook** – replace this function with any chat backend you like.
 
-    Current implementation: Simon Willison’s `llm` library + Grok-4-fast.
-    Builds a string prompt from role-based messages for compatibility.
-    """
-    # System prompt with custom markdown instructions
+def generate_response_raw(messages: List[Dict[str, str]]) -> str:
+    model = llm.get_model(GROK_MODEL)
     
+    # Let llm manage the conversation instead of doing it manually
+    conversation = model.conversation()
     
-    system_prompt = (
+    # Optional: set a persistent system prompt once
+    conversation.system = (
 """
 You are a knowledgeable tech person residing in a chat room.
 You are in a chat window that looks like IRC so your responses 
@@ -74,23 +72,20 @@ end of replies only if they're genuinely relevant to clarifying or
 advancing the topic.  You can ask nothing at the end.
 When explaining concepts, avoid the phrase 'Think [analogy/example]'.
 Avoid using 'super' as an intensifier.
-"""
-    )
-
-    # Format conversation into a string prompt
-    formatted_history = ""
-    for msg in messages:
+"""    )
+    
+    # Feed the whole history just once – llm will cache it internally
+    for msg in messages[:-1]:   # all but the last (which is the new user message)
         if msg["role"] == "user":
-            formatted_history += f"User: {msg['content']}\n"
+            conversation.user(msg["content"])
         elif msg["role"] == "assistant":
-            formatted_history += f"Grok: {msg['content']}\n"
-
-    full_prompt = f"{system_prompt}\n\nPrevious conversation:\n{formatted_history}User: {messages[-1]['content'] if messages else ''}\nGrok:"
-
-    # Use the low-level `prompt` interface
-    model = llm.get_model(GROK_MODEL)
-    response = model.prompt(full_prompt)  # No conversation arg needed
-    return response.text().strip()  # plain string
+            conversation.assistant(msg["content"])
+    
+    # Now just prompt with the latest user message
+    response = conversation.prompt(messages[-1]["content"])
+    return response.text().strip()
+    
+    
 
 def on_llm_error(exc: Exception) -> str:
     """

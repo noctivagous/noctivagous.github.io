@@ -39,10 +39,37 @@ way and setting up pseudo-directories that
 compile a listing of all files and directories
 of a certain tag or tags.
 
+
 3. EVENTS
 
 When a directory's contents changes and it is
 registered as an observed directory, an action
 is triggered, such as a script (or system action).
+
+
+
+4. DIRECTORY NAMING EXTENSIONS FOR UI PRESENTATION
+
+Appending a directory with 
+    -images 
+    -videos
+    -text 
+    
+will make it automatically set up the presentation 
+for it according to filetype. Adding a second extension such
+as 
+
+    -images-album
+    -videos-grid  
+    -images-grid
+    
+will default it to a specific view within
+that presentation.
+
+
+
+
+
+
 
 

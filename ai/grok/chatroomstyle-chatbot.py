@@ -31,6 +31,7 @@ scroll the chat to 4 lines above the user's
 query line “You: …”), setting up every query and response
 to be read from the top.
 
+What we're going for is to have the "You:" of the latest at the top of the scrollview after a response is received.  This way the user doesn't have to scroll up if the response exceeds the height of the scrollview
 
 
 Layout
@@ -55,6 +56,7 @@ from tkinter import Tk, font
 import webbrowser
 import atexit
 import openai
+import os   # add missing import
 
 
 # ======================================================================
@@ -116,7 +118,11 @@ end of replies only if they're genuinely relevant to clarifying or advancing the
 You can ask nothing at the end.
 Don't use the phrase 'Think [of]... [analogy/example]' when explaining concepts.
 Avoid using 'super' as an intensifier.
-            
+        Make explicit [code]...[/code] markers for code blocks
+        such as [code]
+def hello():
+    print("hello")
+[/code]    
 """.strip()
 
 SYSTEM_PROMPT2 = """
@@ -138,7 +144,12 @@ Respond naturally and conversationally, asking questions at the very
 end of replies only if they're genuinely relevant to clarifying or advancing the topic.
 You can ask nothing at the end.
 Don't use the phrase 'Think [of]... [analogy/example]' when explaining concepts.
-Don't use 'super' as an intensifier.     
+Don't use 'super' as an intensifier.   
+Make explicit [code]...[/code] markers for code blocks
+such as [code]
+def hello():
+    print("hello")
+[/code]
 """.strip()
 
 
@@ -199,7 +210,22 @@ def render_markdown_message(widget: scrolledtext.ScrolledText, sender: str, text
     
     # Sender label (bold + color)
     widget.insert(tk.END, f"{sender}: ", "sender")
-    widget.tag_config("sender", font=("Consolas", FONT_SIZE, "bold"), foreground=GROK_NAME_COLOR if sender == "Grok" else "#ffffff")
+
+    # Prefer explicit [code]...[/code] markers for code blocks.
+    # Convert any case-variant of [code] and [/code] to temporary tokens,
+    # strip all existing triple-backtick markers (which are often left
+    # unterminated and cause rendering problems), then restore our
+    # canonical fences so the downstream parser treats only the
+    # [code]...[/code] regions as code blocks.
+    START_TOKEN = "___CUSTOM_CODE_START___"
+    END_TOKEN = "___CUSTOM_CODE_END___"
+    # make [code] handling case-insensitive
+    text = re.sub(r"\[code\]", START_TOKEN, text, flags=re.IGNORECASE)
+    text = re.sub(r"\[/code\]", END_TOKEN, text, flags=re.IGNORECASE)
+    # remove any stray triple-backticks to avoid accidental unclosed blocks
+    text = text.replace("```", "")
+    # restore our canonical fences for only the [code] blocks
+    text = text.replace(START_TOKEN, "```").replace(END_TOKEN, "```")
 
     # Define tags (move to __init__ if configuring once globally)
     widget.tag_config("bold", font=("Consolas", FONT_SIZE, "bold"))
@@ -211,8 +237,8 @@ def render_markdown_message(widget: scrolledtext.ScrolledText, sender: str, text
     widget.tag_config("h3", font=("Consolas", 13, "bold"), foreground=HEADER_COLOR) 
     widget.tag_config("h4", font=("Consolas", 12, "bold"), foreground=HEADER_COLOR) 
     
-    
-    widget.tag_config("sender", font=("Consolas", FONT_SIZE, "bold"), foreground="#4b5651" if sender == "Grok" else "#000000")
+    # hardcoded for Grok (only sender using "sender" tag)
+    widget.tag_config("sender", font=("Consolas", FONT_SIZE, "bold"), foreground=GROK_NAME_COLOR)
 
 
 
@@ -331,8 +357,8 @@ def render_markdown_message(widget: scrolledtext.ScrolledText, sender: str, text
 
     widget.insert(tk.END, "\n")
     widget.config(state="disabled")
-    widget.see(tk.END)
-    
+    # widget.see(tk.END)  # remove to allow custom scrolling
+
 def __open_url(url: str) -> None:
     webbrowser.open(url)    
 
@@ -415,7 +441,7 @@ class GrokChatBot:
         self.chat_display.tag_config("h3", font=("Consolas", 12, "bold"), foreground="#58f5ab")
         self.chat_display.tag_config("h4", font=("Consolas", 12, "bold"), foreground="#58f5ab")
 
-        self.last_user_message_index = None   # We'll store "X.Y" where the last "You:" starts
+        self.last_user_start = None  # consistent name, was unused index
 
         # === NEW: Keyboard shortcuts ===
         self.root.bind("<Control-q>", lambda event: self.root.quit())
@@ -447,30 +473,30 @@ class GrokChatBot:
         )
 
         # Reset scrolling tracker
-        if hasattr(self, "last_user_message_start"):
-            del self.last_user_message_start
-            
+        self.last_user_start = None  # set to None instead of del
+
+        # add scroll to end after clear
+        self.chat_display.see(tk.END)
+
     def add_to_chat(self, sender: str, message: str) -> None:
         self.chat_display.config(state="normal")
 
         if sender == "You":
-            # Insert first, THEN capture the exact index of the newly inserted line
+            # capture the insertion line (normalize to start of line) before inserting
+            insert_index = self.chat_display.index(tk.END)
+            line_num = int(insert_index.split('.')[0])
+            self.last_user_start = f"{line_num}.0"
+
+            # Insert first, truncated for display
             truncated = message if len(message.splitlines()) <= 2 else '\n'.join(message.splitlines()[:2]) + "\n..."
             self.chat_display.insert(tk.END, f"You: {truncated}\n\n")
-
-            # Now we know exactly where the "You:" line starts
-            self.last_user_message_start = self.chat_display.index(tk.END + "-3l linestart")
-            # Explanation: "-3l" = go back 3 lines from end → lands on the empty line after the message
-            # "linestart" → start of that line → which is exactly the start of "You: …"
 
         else:
             render_markdown_message(self.chat_display, sender, message)
 
         self.chat_display.config(state="disabled")
 
-#        if sender == "Grok":
- #           self.root.after(100, self._scroll_to_last_user_message)
-            
+       
             
     def send_message(self, event=None) -> None:
         user_input = self.entry.get().strip()
@@ -480,6 +506,9 @@ class GrokChatBot:
         self.add_to_chat("You", user_input)
         self.conversation.append({"role": "user", "content": user_input})
         self.entry.delete(0, tk.END)
+
+        # add scroll to end after user message
+        self.chat_display.see(tk.END)
 
         threading.Thread(target=self._worker, daemon=True).start()
 
@@ -500,8 +529,21 @@ class GrokChatBot:
                 typ, msg = self.response_queue.get_nowait()
                 self.add_to_chat("Grok", msg)
 
-                # Tiny delay so markdown rendering finishes
-               # self.root.after(50, self._scroll_to_last_user_message)
+                # custom scrolling after adding Grok message
+                if typ == "success" and self.last_user_start is not None:
+                    # Schedule scrolling to run after the widget has laid out the
+                    # new text. Using `after_idle` ensures the Text widget's
+                    # display line counts are up-to-date, which fixes the case
+                    # where the first response arrives and immediate scrolling
+                    # can't locate the saved "You:" position correctly.
+                    try:
+                        self.root.after_idle(self._scroll_to_last_user)
+                    except tk.TclError:
+                        self.chat_display.see(self.last_user_start)
+                else:
+                    # for error or initial (no last_user)
+                    self.chat_display.see(tk.END)
+
         except queue.Empty:
             pass
         self.root.after(100, self.check_queue)
@@ -529,22 +571,35 @@ class GrokChatBot:
         # Bind SelectAll for convenience
         widget.bind("<<SelectAll>>", lambda e: widget.select_range(0, tk.END))
 
-    def _scroll_to_last_user_message(self):
-        if not hasattr(self, "last_user_message_start"):
-            self.chat_display.see(tk.END)
+    def _scroll_to_last_user(self) -> None:
+        """Scroll the chat so the saved `You:` line appears at the top.
+
+        Uses display (wrapped) line counts so wrapped lines are handled
+        correctly. Falls back to `see()` on error or when counts are not
+        meaningful (e.g. very small content).
+        """
+        if self.last_user_start is None:
             return
+        try:
+            num_display_lines = int(self.chat_display.tk.call(
+                self.chat_display._w, 'count', '-displaylines', '1.0', self.last_user_start
+            ))
+            total_display_lines = int(self.chat_display.tk.call(
+                self.chat_display._w, 'count', '-displaylines', '1.0', 'end-1c'
+            ))
 
-        self.chat_display.update_idletasks()
+            # If counts are zero or very small, just use `see` to ensure
+            # the target is visible — this is safer on initial responses.
+            if total_display_lines <= 0 or num_display_lines <= 1:
+                self.chat_display.see(self.last_user_start)
+                return
 
-        user_line = int(self.chat_display.index(self.last_user_message_start).split('.')[0])
-        target_line = max(1, user_line - 4)   # show ~4 lines above the user's message
+            fraction = (num_display_lines - 1) / max(total_display_lines, 1)
+            fraction = max(0.0, min(1.0, fraction))
+            self.chat_display.yview_moveto(fraction)
+        except tk.TclError:
+            self.chat_display.see(self.last_user_start)
 
-        total_lines = int(self.chat_display.index('end-1c').split('.')[0])
-        if total_lines > 1:
-            fraction = (target_line - 1) / (total_lines - 1)
-            self.chat_display.yview_moveto(max(0.0, fraction))
-        else:
-            self.chat_display.yview_moveto(0)        
         
 if __name__ == "__main__":
     root = ttkb.Window(themename="cosmo")

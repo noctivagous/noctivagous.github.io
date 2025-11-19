@@ -14,6 +14,16 @@ Large Language Models are trained on massive amounts of unstructured text data s
 Perhaps a dictionary would be provided for a different type of neural network and thereby use much less compute during training and provide a more structured neural net that has more efficient representation.
 
 
+UNSTRUCTURED TRAINING AS TOO LOOSE, LIKE UNGUIDED WATER
+
+The cybernetic angle fits here: unstructured training is like Walter's tortoises adapting through environmental feedback alone. The results of the feedback will be emergent but unpredictable, while a structured schema acts as homeostasis—providing stable anchors for adaptation.
+
+In the Wuxing (Five Phases) system, Earth acts as the mediator and stabilizer for Water's fluid, adaptive flow—nurturing it while preventing chaos, much like a structured schema could guide the probabilistic "currents" of LLM training. In Wuxing cosmology, Earth (土) generates Metal but also controls Water by damming and channeling its movement, transforming potential floods into fertile irrigation; without this grounding, Water dissipates aimlessly. Similarly, unstructured training lets language patterns ebb and flow freely, yielding versatile but erratic outputs—hallucinations or biases like unchecked waters—while a schema (Earth) imposes relational frameworks, entity hierarchies, or logical constraints to direct that learning toward coherence, factual accuracy, and ethical flow, without stifling anything emergent.  This is normal and natural in life and the world.
+
+This interplay echoes the Taiji balance: Water's yin essence (receptive, intuitive correlations) tempered by Earth's yang stability (structured boundaries), fostering a cybernetic harmony where the AI adapts robustly, like Walter's tortoises navigating with sensory feedback anchored in homeostasis. In practice, hybrid models already hint at this—e.g., using knowledge graphs to "earth" token predictions—potentially leading to more reliable intelligence that evolves without eroding its foundational dynamism.
+
+
+
 ANCIENT CHINESE SCIENCE AS TRAINING FRAMEWORK
 
 Luoshu provides a means of organizing the information trained, into 9 interconnected categories, still allowing interconnection and across the trigrams.  It provides a framework to start with for the training and one for query.  It also carries the possibility of always-running neural network, one that can adapt and change its contents in response to outside interactions.
@@ -27,3 +37,16 @@ Structure the net as a dynamic 3x3 grid where each cell represents a yin-yang po
 HIGHER LEVEL ABSTRACTION
 
 Neural nets stem from the perceptron, a 1950s computer science proposal: two inputs and an output. Today, it could be possible to produce an AI at a higher level of abstraction where units are larger and processed differently.  
+
+
+
+SELF-CHANGING STATE MACHINE NET (STATE MUTATION)
+
+You: So let's say we make state machine based AI but we have the management or supervisory layer fixed but other parts can change the state machine in response to conditions.  Then we have adaptation.
+
+Grok: Yeah, that's a solid way to introduce adaptation without jumping straight to full machine learning—essentially layering a meta-controller on top of a traditional finite state machine (FSM) where the core supervisory logic stays rigid, but subordinate states or transitions can dynamically reconfigure based on runtime conditions. For instance, in a video game enemy AI, the top-level FSM might enforce overarching rules like "defend territory" or "prioritize high-threat targets," while lower-level behaviors (e.g., patrol routes or attack patterns) could self-modify: if the player dodges attacks repeatedly, the AI swaps to a more evasive state, or if environmental hazards appear, it reroutes paths on the fly.
+
+This setup mimics hierarchical control systems seen in robotics or even early adaptive AI experiments from the '90s, like subsumption architecture, but tuned for games. The adaptation could be rule-driven—thresholds for player behavior triggering state mutations—or even lightly probabilistic, pulling from a pool of pre-defined variants to keep it efficient on hardware. It adds replayability and challenge without the unpredictability of neural nets, making foes feel smarter over time, like in an RTS where unit AI evolves tactics mid-battle based on losses.
+
+The beauty is scalability: start simple with conditionals flipping states, then layer in more complexity like genetic algorithms to evolve the FSM itself across sessions. It's a bridge from static '90s scripting to modern procedural AI, keeping things deterministic where it counts.
+

@@ -1,0 +1,82 @@
+nct-bimodal-notesoninputconventions
+
+nct-bimodal-notesoninputconventions
+
+Differentiate between the hardware input convention
+(click or momentary press of mouse button) 
+and the activated function (Select).
+
+    Mouse Click - Select
+    Mouse Double-click - Open
+    
+But a click could be placed into a mode where it
+activates a sticky-drag.    
+    
+    Hold Down Mouse Button And Move Mouse - Drag
+    Mouse Right-Click - Contexual Menu
+
+--
+
+Keys that should be included on the keyboard
+    - A "Save" key.
+    - A "Sleep" key.
+    - A "Close Window" key that closes the window under the cursor
+    - A "Minimize" key.
+
+Close Keys And Their Hierarchy
+    - Close 1 - Close the current tab.
+    - Close 2 - Close the current window.
+    - Close 3 - Close the current app (Quit/Exit).
+
+    - New 1 - New Tab
+    - New 2 - New Window
+    
+Back And Forward
+
+    - History: Back And Forward
+    - GUI Traversal: Up And Down Tabs
+    
+
+Hardware that should be included on a keyboard
+    - A vertical touch strip on the left edge of
+    the keyboard, for scrolling. (capacitive touch strip or linear touch sensor).
+    any scrollview under the mouse cursor.
+    - A wide button that is the equivalent to
+    the mouse left click, on the edge
+    of the keyboard facing the user, perpendicular
+    to the spacebar key. It would be split with
+    - A horizontal scroll wheel at the top edge, above the
+    function keys, for moving across tabs.
+
+
+
+ASK WHAT DRAG AND DROP IS
+
+Serves different functions:    
+        - For document dropped onto Application icons:
+            "Open this document"
+        - For text: mouse-driven cut and paste.
+        - For files dropped onto upload drop regions
+        of a web page:
+            "Here is the file's path (URL)"
+    
+    
+
+COPY LINE / CUT-AND-PASTE LINE
+
+    Copy line - Uses a drag-line to copy and paste
+    between windows.  Acts as copy version of drag
+    and drop.
+    
+    1) User selects some text (see nct-bimodal-selectclicks)
+    in the source window and presses the copy line key.  The highlighted
+    box for the text has a green outline indicating the copy line has begun.
+    2) As the user moves the mouse, a line extends from the 
+    point where the copy line was pressed to the point located at the cursor.
+    It updates on every mouse move. It will activate any receiving 
+    areas for text to show that they can receive text.
+    3) After the user finds the destination drop area, he
+    presses the copy line key a second time
+    and it moves there as a clone (animated).
+        - If it is a cut-and-paste operation, this action, of
+        course, deletes the text selection in the source window.

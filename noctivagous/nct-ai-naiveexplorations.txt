@@ -16,12 +16,37 @@ Perhaps a dictionary would be provided for a different type of neural network an
 
 UNSTRUCTURED TRAINING AS TOO LOOSE, LIKE UNGUIDED WATER
 
-The cybernetic angle fits here: unstructured training is like Walter's tortoises adapting through environmental feedback alone. The results of the feedback will be emergent but unpredictable, while a structured schema acts as homeostasis—providing stable anchors for adaptation.
+The cybernetic angle fits here: unstructured training found in today's neural nets is like Walter's tortoises adapting through environmental feedback alone. The results of the feedback will be emergent but they will be unpredictable, while a structured schema acts as homeostasis—providing stable anchors for adaptation.
 
-In the Wuxing (Five Phases) system, Earth acts as the mediator and stabilizer for Water's fluid, adaptive flow—nurturing it while preventing chaos, much like a structured schema could guide the probabilistic "currents" of LLM training. In Wuxing cosmology, Earth (土) generates Metal but also controls Water by damming and channeling its movement, transforming potential floods into fertile irrigation; without this grounding, Water dissipates aimlessly. Similarly, unstructured training lets language patterns ebb and flow freely, yielding versatile but erratic outputs—hallucinations or biases like unchecked waters—while a schema (Earth) imposes relational frameworks, entity hierarchies, or logical constraints to direct that learning toward coherence, factual accuracy, and ethical flow, without stifling anything emergent.  This is normal and natural in life and the world.
+There is a way to conceptualize the current situation. In the Wuxing (Five Phases) system, Earth acts as the mediator and stabilizer for Water's fluid, adaptive flow. A river is a guide for flowing water.  Thus Earth sets up the form for Water to be valuable for the ecosystem while preventing chaos, much like a structured schema could guide the probabilistic "currents" of LLM training.  In Wuxing cosmology, Earth (土) generates Metal but also controls Water by damming and channeling its movement, transforming potential floods into fertile irrigation, manmade or shaped by nature.  Without this grounding, Water dissipates aimlessly. Similarly, unstructured training lets language patterns ebb and flow freely, yielding versatile but erratic outputs—"hallucinations" or biases like unchecked waters—while a schema (Earth) imposes relational frameworks, entity hierarchies, or logical constraints to direct that learning toward coherence and ethical flow.  This is normal and natural in life and the world.
 
-This interplay echoes the Taiji balance: Water's yin essence (receptive, intuitive correlations) tempered by Earth's yang stability (structured boundaries), fostering a cybernetic harmony where the AI adapts robustly, like Walter's tortoises navigating with sensory feedback anchored in homeostasis. In practice, hybrid models already hint at this—e.g., using knowledge graphs to "earth" token predictions—potentially leading to more reliable intelligence that evolves without eroding its foundational dynamism.
+This implies establishing a balance of Taiji: Water's yin essence (receptive, intuitive correlations) tempered by Earth's yang stability (structured boundaries), fostering a cybernetic harmony where the AI adapts robustly, like Walter's tortoises navigating with sensory feedback anchored in homeostasis. In practice, hybrid models already hint at this—e.g., using knowledge graphs to "earth" token predictions—potentially leading to more reliable artificial intelligence that evolves.
 
+
+PRIMING CONCEPTS
+
+With "character, word, sentence, paragraph, page, division, volume, error, fragment, unknown," don't you already
+have a lot of concepts for a different kind of LM?
+
+
+EXTENDING PLANTUML WITH GRAPH-MODIFYING FEATURES
+
+Features of the graph that can modify the feedback loops.
+
+
+
+OTHER TYPES OF AI ARCHITECTURES BESIDES NEURAL NETS
+
+You don't have to do neural nets to get AI, but then it is assumed today that if you aren't you are doing
+rule-based AI.  It is important instead to focus on what is "emergent phenomena" and what causes it?
+What hasn't been discussed to begin with is that a FSM can modify itself and not actually be a FSM.  
+You could do a relatively large (thousands of states and levels), include a node graph, make it 
+hierarchical, and custom style of FSM with feedback loops inside feedback loops, 
+with mutation features that FSMs don't have. The key would be to demonstrate a different 
+AI architecture utterly independent of current approaches, to show that AI exists 
+as a thing in the world by itself, not tied to statistics-based 
+machine learning.  Once you store information at the state or feedback loop level, 
+you are levels above abstraction of a neural net and perhaps this could be good.
 
 
 ANCIENT CHINESE SCIENCE AS TRAINING FRAMEWORK

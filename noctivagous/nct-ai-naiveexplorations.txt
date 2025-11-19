@@ -1,15 +1,28 @@
 NAIVE EXPLORATIONS INTO ALTERNATIVE AI ARCHITECURES
 
-For today's LLM, each time a token is generated, the model must perform a full forward pass through the entire neural network.  To generate even one token, all parameters—from the first embedding layer through every transformer block—must be engaged. The computation does not shortcut or “partially” activate the model; every forward pass traverses the entire depth of the network.  Techniques such as quantization, pruning, distillation, and speculative decoding attempt to mitigate the inefficiency, but the core architecture remains inherently exhaustive with nothing economical.
+In today's LLM, each time a token is generated, the model must perform a full forward pass through the entire neural network.  To generate even one token, all parameters—from the first embedding layer through every transformer block—must be engaged. The computation does not shortcut or “partially” activate the model; every forward pass traverses the entire depth of the network.  Techniques such as quantization, pruning, distillation, and speculative decoding attempt to mitigate the inefficiency, but the core architecture remains inherently exhaustive with nothing economical.
 
 This is why LLM inference requires specialized parallel hardware: the model is large, the operations are dense, and each token generation step is a full, end-to-end computation.
 
 In effect, these models trade selective computation (doing only what’s needed) for universal applicability (being able to represent virtually any linguistic or semantic pattern). 
 
 
+A TRAINING FRAMEWORK
+
+Large Language Models are trained on massive amounts of unstructured text data scraped from the internet, books, and other sources. There's no explicit schema or logical framework provided during training; instead, the model learns patterns, correlations, and probabilistic associations through statistical methods like next-token prediction. 
+
+Perhaps a dictionary would be provided for a different type of neural network and thereby use much less compute during training and provide a more structured neural net that has more efficient representation.
+
+
 ANCIENT CHINESE SCIENCE AS TRAINING FRAMEWORK
 
 Luoshu provides a means of organizing the information trained, into 9 interconnected categories, still allowing interconnection and across the trigrams.  It provides a framework to start with for the training and one for query.  It also carries the possibility of always-running neural network, one that can adapt and change its contents in response to outside interactions.
+
+"For the AI, we could mirror this with a recursive architecture: transformer blocks that not only process inputs but embed sub-modules where "yin" paths (e.g., introspective, contextual layers) nest inside "yang" ones (e.g., generative, action-oriented), and flip dynamically. During inference, it routes tokens through these nests based on query polarity, activating only relevant depths—slashing that full-pass inefficiency by letting yin "absorb" and yang "emit" in tandem. Training on datasets with balanced dualities (e.g., paired scientific/philosophical texts) would reinforce it, making outputs more holistic and less prone to one-sided biases.
+
+Structure the net as a dynamic 3x3 grid where each cell represents a yin-yang polarity, and the whole thing reconfigures recursively during inference. Inputs get classified into grid positions (e.g., via an initial router layer), then the model adapts by fluxing activations—yin cells "absorbing" and nesting yang sub-nets for deeper exploration, or vice versa. This isn't fixed; it could use lightweight meta-learning (like MAML in TensorFlow.js) to tweak weights on-the-fly for each query, making adaptation feel organic without full retraining. Efficiency bonus: Only active grid paths fire, dodging that exhaustive pass.
+"
+
 
 HIGHER LEVEL ABSTRACTION
 

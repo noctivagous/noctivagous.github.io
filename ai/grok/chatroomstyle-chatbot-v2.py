@@ -838,6 +838,7 @@ class GrokChatBot:
         self._setup_buttons()
         self._setup_chat_display()
         self._setup_input_area()
+        self.buttons_visible = True
         self._setup_tags()
         self._setup_bindings()
 
@@ -1013,6 +1014,10 @@ class GrokChatBot:
 
         # Cogitate toggle
         self.root.bind("<Control-g>", lambda e: (self.cogitate_var.set(not self.cogitate_var.get()), "break")[1])
+
+        # Toggle button groups
+        self.root.bind("<Control-h>", self.toggle_button_groups)
+        self.root.bind("<Control-H>", self.toggle_button_groups)
 
         # Form submission
         self.root.bind_all("<Control-Shift-S>", self.submit_active_form)
@@ -1415,6 +1420,11 @@ The [reasoning] section will not be shown to the user.
         edit_menu.add_command(label="Copy Last Exchange (Ctrl+K)", command=self.copy_last_exchange)
         edit_menu.add_command(label="Copy Entire Session (Ctrl+Shift+K)", command=self.copy_entire_session)
 
+        # View menu
+        self.view_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="View", menu=self.view_menu)
+        self.view_menu.add_command(label="Hide Button Groups (Ctrl+H)", command=self.toggle_button_groups)
+
     def clear_conversation(self, event=None):
         """Clear the conversation history and chat display."""
         self.conversation.clear()
@@ -1630,6 +1640,21 @@ The [reasoning] section will not be shown to the user.
         except Exception:
             self._flash_message("Error submitting form.")
         return "break"
+
+    def toggle_button_groups(self, event=None):
+        if self.buttons_visible:
+            self.buttons_frame.grid_remove()
+            self.modes_frame.grid_remove()
+            self.buttons_visible = False
+            self.view_menu.entryconfig('end', label="Show Button Groups (Ctrl+H)")
+        else:
+            self.buttons_frame.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="ew")
+            self.modes_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(5, 0))
+            self.buttons_visible = True
+            self.view_menu.entryconfig('end', label="Hide Button Groups (Ctrl+H)")
+        return "break" if event is not None else None
+
+# ...existing code...
 
 # Add main entry point at end of file
 if __name__ == "__main__":

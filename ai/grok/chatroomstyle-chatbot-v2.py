@@ -915,7 +915,7 @@ class GrokChatBot:
         ).grid(row=0, column=0, padx=5, pady=2, sticky="ew")
 
         ttkb.Button(
-            self.buttons_frame, text="Copy Entire Session (Ctrl+Shift+K)", command=self.copy_entire_session,
+            self.buttons_frame, text="Copy Session (Ctrl+Shift+K)", command=self.copy_entire_session,
             bootstyle=BUTTON_INFO_STYLE, width=BUTTON_WIDTH
         ).grid(row=0, column=1, padx=5, pady=2, sticky="ew")
 
@@ -926,12 +926,12 @@ class GrokChatBot:
 
         # Row 1: New Session and Clear
         ttkb.Button(
-            self.buttons_frame, text="New Session (Ctrl+N)", command=self.new_session,
+            self.buttons_frame, text="New Window (Ctrl+N)", command=self.new_session,
             bootstyle=BUTTON_PRIMARY_STYLE, width=BUTTON_WIDTH
         ).grid(row=1, column=0, padx=5, pady=2, sticky="ew")
 
         ttkb.Button(
-            self.buttons_frame, text="Clear Conversation (Ctrl+Backspace)", command=self.clear_conversation,
+            self.buttons_frame, text="Clear Session (Ctrl+Backspace)", command=self.clear_conversation,
             bootstyle=BUTTON_DANGER_STYLE, width=BUTTON_WIDTH
         ).grid(row=1, column=1, padx=5, pady=2, sticky="ew")
 
@@ -1055,7 +1055,7 @@ class GrokChatBot:
         self._setup_context_menu(self.entry)
 
         self.send_btn = ttkb.Button(
-            self.input_frame, text="Send", command=lambda: self.send_with_mode("QA"), bootstyle="submitByLength2"
+            self.input_frame, text="Send", command=lambda: self.send_with_mode("QA"), bootstyle="primary"
         )
         self.send_btn.grid(row=0, column=1)
 
@@ -1094,12 +1094,12 @@ class GrokChatBot:
 
         # Row 0
         create_mode_button("Short", "Short", "Ctrl+1", 0, 0, "submitByLength")
-        create_mode_button("Ask Questions", "Ask Questions", "Ctrl+4", 0, 1, MODE_STYLE)
-        create_mode_button("Collect Info.", "Collect Info.", "Ctrl+5", 0, 2, MODE_STYLE)
+        create_mode_button("Medium", "Medium", "Ctrl+2", 0, 1, "submitByLength")  # Swapped position with Ask Questions
+        create_mode_button("Long", "Long", "Ctrl+3", 0, 2, "submitByLength")      # Swapped position with Collect Info.
 
         # Row 1
-        create_mode_button("Medium", "Medium", "Ctrl+2", 1, 0, "submitByLength")
-        create_mode_button("Long", "Long", "Ctrl+3", 1, 1, "submitByLength")
+        create_mode_button("Ask Questions", "Ask Questions", "Ctrl+4", 1, 0, MODE_STYLE)  # Swapped position with Medium
+        create_mode_button("Collect Info.", "Collect Info.", "Ctrl+5", 1, 1, MODE_STYLE)   # Swapped position with Long
 
         # Cogitate checkbox
         ttkb.Checkbutton(
@@ -1402,8 +1402,8 @@ The [reasoning] section will not be shown to the user.
         # File menu
         file_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="New Session (Ctrl+N)", command=self.new_session)
-        file_menu.add_command(label="Clear Conversation (Ctrl+Backspace)", command=self.clear_conversation)
+        file_menu.add_command(label="New Window (Ctrl+N)", command=self.new_session)
+        file_menu.add_command(label="Clear Session (Ctrl+Backspace)", command=self.clear_conversation)
         file_menu.add_separator()
         file_menu.add_command(label="Export Session (Ctrl+E)", command=self.export_session)
         file_menu.add_separator()

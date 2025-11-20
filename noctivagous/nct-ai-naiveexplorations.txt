@@ -11,14 +11,23 @@ A TRAINING FRAMEWORK
 
 Large Language Models are trained on massive amounts of unstructured text data scraped from the internet, books, and other sources. There's no explicit schema or logical framework provided during training; instead, the model learns patterns, correlations, and probabilistic associations through statistical methods like next-token prediction. 
 
-Perhaps a dictionary would be provided for a different type of neural network and thereby use much less compute during training and provide a more structured neural net that has more efficient representation.
+Perhaps a dictionary would be provided for a different type of AI or a neural network and thereby use much less compute during training and provide a more structured neural net that has more efficient representation.
+
+
+A TRELLIS VS. UNSTRUCTURED TRAINING (TODAY)
+
+In the Wuxing (Five Phases), Metal serves to control or direct Wood.
+Metal can act as a trellis, guiding the growth of wood. 
+In the destructive level, it cuts through wood.  Since Metal is a hard solid, 
+even though a trellis it is made out of literal wood, 
+is acting as a solid and is playing the role of structure.
 
 
 UNSTRUCTURED TRAINING AS TOO LOOSE, LIKE UNGUIDED WATER
 
 The cybernetic angle fits here: unstructured training found in today's neural nets is like Walter's tortoises adapting through environmental feedback alone. The results of the feedback will be emergent but they will be unpredictable, while a structured schema acts as homeostasis—providing stable anchors for adaptation.
 
-There is a way to conceptualize the current situation. In the Wuxing (Five Phases) system, Earth acts as the mediator and stabilizer for Water's fluid, adaptive flow. A river is a guide for flowing water.  Thus Earth sets up the form for Water to be valuable for the ecosystem while preventing chaos, much like a structured schema could guide the probabilistic "currents" of LLM training.  In Wuxing cosmology, Earth (土) generates Metal but also controls Water by damming and channeling its movement, transforming potential floods into fertile irrigation, manmade or shaped by nature.  Without this grounding, Water dissipates aimlessly. Similarly, unstructured training lets language patterns ebb and flow freely, yielding versatile but erratic outputs—"hallucinations" or biases like unchecked waters—while a schema (Earth) imposes relational frameworks, entity hierarchies, or logical constraints to direct that learning toward coherence and ethical flow.  This is normal and natural in life and the world.
+There is a way to conceptualize the current situation. In the Wuxing (Five Phases) system, Earth acts as the mediator and stabilizer for Water's fluid, adaptive flow. A river is a guide for flowing water.  With a riverbed, Earth can set up the form for Water to be valuable for the ecosystem while preventing chaos, much like a structured schema could guide the probabilistic "currents" of LLM training.  In Wuxing cosmology, Earth (土) generates Metal but also controls Water by damming and channeling its movement, transforming potential floods into fertile irrigation, manmade or shaped by nature.  Without this grounding, Water dissipates aimlessly. Similarly, unstructured training lets language patterns ebb and flow freely, yielding versatile but erratic outputs—"hallucinations" or biases like unchecked waters—while a schema (Earth) imposes relational frameworks, entity hierarchies, or logical constraints to direct that learning toward coherence and ethical flow.  This is normal and natural in life and the world.
 
 This implies establishing a balance of Taiji: Water's yin essence (receptive, intuitive correlations) tempered by Earth's yang stability (structured boundaries), fostering a cybernetic harmony where the AI adapts robustly, like Walter's tortoises navigating with sensory feedback anchored in homeostasis. In practice, hybrid models already hint at this—e.g., using knowledge graphs to "earth" token predictions—potentially leading to more reliable artificial intelligence that evolves.
 
@@ -31,27 +40,35 @@ have a lot of concepts for a different kind of LM?
 
 EXTENDING PLANTUML WITH GRAPH-MODIFYING FEATURES
 
+Diagrams encoding their own structures, graphs, features.
 Features of the graph that can modify the feedback loops.
 
+A self-modifying PlantUML would make a diagram type dynamic—graphs rewire, state machines evolve transitions, sequences refactor calls, classes auto-inherit. This meta-layer would treat PlantUML text as executable AI: rules rewrite the source code itself based on performance, creating an alternative to NNs where models are visual, declarative diagrams. The diagram itself can make rules, too.  No tensors; instead, topology optimization via graph grammars.
 
 
 OTHER TYPES OF AI ARCHITECTURES BESIDES NEURAL NETS
 
+AI is not synonymous with a neural network, but what has been seen today that is the most powerful is
+a neural network.
+
 You don't have to do neural nets to get AI, but then it is assumed today that if you aren't you are doing
-rule-based AI.  It is important instead to focus on what is "emergent phenomena" and what causes it?
-What hasn't been discussed to begin with is that a FSM can modify itself and not actually be a FSM.  
+rule-based AI.  It is important instead to focus on what is "emergent phenomena" and what causes it,
+and then expanding it to include even the spectacle of Walter's tortoises or Shannon's mechanical mouse.
+
+What hasn't been discussed to begin with is that a graph or FSM can modify itself and not actually be a FSM.  
 You could do a relatively large (thousands of states and levels), include a node graph, make it 
 hierarchical, and custom style of FSM with feedback loops inside feedback loops, 
-with mutation features that FSMs don't have. The key would be to demonstrate a different 
-AI architecture utterly independent of current approaches, to show that AI exists 
-as a thing in the world by itself, not tied to statistics-based 
-machine learning.  Once you store information at the state or feedback loop level, 
-you are levels above abstraction of a neural net and perhaps this could be good.
+with mutation features that such graphs don't have. The key would be to demonstrate a different 
+AI architecture utterly independent of current neural net approaches, to show that AI exists 
+as a thing in the world by itself, not tied to statistics-based machine learning.  
+Once you store information at the state or feedback loop level, 
+you are levels above abstraction of a neural net and perhaps this could be beneficial
+for compact.
 
 
 ANCIENT CHINESE SCIENCE AS TRAINING FRAMEWORK
 
-Luoshu provides a means of organizing the information trained, into 9 interconnected categories, still allowing interconnection and across the trigrams.  It provides a framework to start with for the training and one for query.  It also carries the possibility of always-running neural network, one that can adapt and change its contents in response to outside interactions.
+Luoshu provides a means of organizing the information trained, into 9 interconnected categories, still allowing interconnection and across the trigrams.  It provides a framework to start with for the training and one for query.  It also carries the possibility of always-running AI (including if it is a neural network), one that can adapt and change its contents in response to outside interactions.
 
 "For the AI, we could mirror this with a recursive architecture: transformer blocks that not only process inputs but embed sub-modules where "yin" paths (e.g., introspective, contextual layers) nest inside "yang" ones (e.g., generative, action-oriented), and flip dynamically. During inference, it routes tokens through these nests based on query polarity, activating only relevant depths—slashing that full-pass inefficiency by letting yin "absorb" and yang "emit" in tandem. Training on datasets with balanced dualities (e.g., paired scientific/philosophical texts) would reinforce it, making outputs more holistic and less prone to one-sided biases.
 

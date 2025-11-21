@@ -8,3 +8,18 @@ Example: Array brackets ([ and ]) will be two dedicated unicode characters insid
 A separate unicode character set for markup that is used only for markup and program code so that filtering it out of submissions is never necessary and there are no security concerns produced by the markup, programs, and scripts text embedded next to and enclosing regular text, because executable and declarative text has uses separate unicode character set.  The file's contents will also require no parsing to remove executable elements because those reside in a different character set.
 
 - Executable elements (tags, functions, script enclosures, closing character), are made out of a separate unicode character set.  For one, this allows dedicated characters for executable and data storage file formats.  
+
+- characters for states, logic, control flow.
+
+
+Secure operating system: All code characters have to be made out of this separate unicode character set.
+
+New codepoints could be allocated via the Unicode Consortium for "Programming Symbols" (e.g., U+1ABC00–U+1ABCFF for brackets, operators). Programming languages would adopt these via updated lexers
+
+Performance: Faster scanning (range-check vs. regex); OS can block code chars in text contexts.
+
+Security : Zero parsing overhead; inherent sandboxing via charset isolation. No injection risks in text pipelines.
+
+Technical Feasibility
+
+Unicode already supports vast private-use areas (e.g., U+E000–U+F8FF, U+F0000–U+FFFFD) and vendor-specific blocks, which could theoretically host such sets. New codepoints could be allocated via the Unicode Consortium for "Programming Symbols" (e.g., U+1ABC00–U+1ABCFF for brackets, operators).

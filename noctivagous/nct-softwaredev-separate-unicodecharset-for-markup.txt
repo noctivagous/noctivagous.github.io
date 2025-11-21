@@ -1,0 +1,3 @@
+nct-softwaredev-separate-unicodecharset-for-markup
+
+A separate unicode character set for markup that is used only for markup so that filtering it out of submissions is never necessary and there are no security concerns produced by markup, programs, and scripts embedded next to regular text, because executable and declarative text has uses separate unicode character set.

@@ -1,3 +1,10 @@
 nct-softwaredev-separate-unicodecharset-for-markup
 
-A separate unicode character set for markup that is used only for markup so that filtering it out of submissions is never necessary and there are no security concerns produced by markup, programs, and scripts embedded next to regular text, because executable and declarative text has uses separate unicode character set.
+Separate unicode character sets exclusively used by programming languages, declarative files, data file storage specifications, etc.
+So that no conflicts will happen with regular text.
+
+Example: Array brackets ([ and ]) will be two dedicated unicode characters inside an exclusive programming language character set and have no purpose outside of code and executable contexts.  The same for parentheses and other math operations. 
+
+A separate unicode character set for markup that is used only for markup and program code so that filtering it out of submissions is never necessary and there are no security concerns produced by the markup, programs, and scripts text embedded next to and enclosing regular text, because executable and declarative text has uses separate unicode character set.  The file's contents will also require no parsing to remove executable elements because those reside in a different character set.
+
+- Executable elements (tags, functions, script enclosures, closing character), are made out of a separate unicode character set.  For one, this allows dedicated characters for executable and data storage file formats.  

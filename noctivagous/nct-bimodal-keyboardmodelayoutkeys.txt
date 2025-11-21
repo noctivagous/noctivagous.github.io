@@ -1,0 +1,59 @@
+nct-bimodal-keyboardmodekeys
+
+In Bimodal Control Theory, often
+individual keyboard keys are repurposed to
+activated functions and this also
+means that the keyboard's mappings can
+be changed to different sets of functions
+or layouts for them.  It can then 
+return to normal typing.
+
+In this case, the modifier keys can
+be replaced with a different convention
+that is also backwards-compatible.
+
+
+KEYBOARD MODE KEYS INSTEAD OF MODIFIER KEYS
+
+The Function keys could be put into
+a different role.  They could be
+made MODE keys that change the keyboard
+keys into individual actions.
+
+The mode of the keyboard would return
+to TYPING and be backwards compatible
+with old shortcuts by just using the
+Function keys.  And the use of Function
+keys for keyboard modes can be turned
+off with a key sequence.
+
+
+Example: Quitting An App
+
+Instead of Control+Q or Command+Q,
+having to hold down the modifier before
+hitting Q.  To quit an app:
+
+1. PRESS "APP ACTION" MODE KEY (assigned to F1)
+
+2. PRESS "Q" KEY
+
+3. (App quits. The Keyboard mode exits "APP ACTION" mode
+and returns to the "STANDARD" mode, which is how
+computers work today).
+
+The situation of pressing two keys in
+a sequence like this provides the user 
+much superior dexterity for hitting the
+Q button compared to having to
+hold down a modifier key.  This is the
+Bimodal Control Theory aspect to the situation.
+
+The APP ACTION mode key includes actions 
+that pertain to an app.  Paste might be
+assigned to F5 under APP MODE (Press F1, then F5,
+then keyboard mode returns to normal typing).
+
+
+-- for dragging windows with a drag-lock or "sticky drag"
+

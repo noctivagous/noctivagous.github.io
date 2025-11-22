@@ -1,0 +1,110 @@
+nct-ai-naiveexplorations-puzzle_env
+
+
+Programming a non-neural net AI
+to traverse puzzle environment.
+e.g. Adventures of Lolo.
+
+Whereas the AI technology known today is not
+integrative, meaning that it does not stem
+from the whole of the objectives
+and perspective of the AI as if looking 
+inside it and leaves the situation at practical
+outcomes ("did it win the game" or
+"did it give the right answer"), this AI
+design discussion is about modeling the interior
+processes as they are integrated with
+the exterior conditions, instead of just having
+a machine link into surface parameters
+of a situation as they unfold and react analytically
+through some unknowing statistically-rooted framework 
+or another, whether it is rules or a neural net.
+
+Internal states for contemplation, memory,
+and cognition.  External states for assessments
+of the situation.
+
+AI Character Perspective.
+
+The AI, if not programmed inside the actual
+environment and made a part of it, has at least be 
+given event information as if it is.
+
+What is in the external environment?
+    The conditions of the external environment.
+
+Overview and Orientation
+    - "Where am I?"
+    - "What is happening?"
+    - "What is the goal?"
+
+Immediate situation
+    - "What am I trying to do right now?"
+
+Long-term
+    - "What am I trying to do overall?"
+
+Immediate Assessment:
+    - "What is in front of me and around me?"
+
+
+Senses + Cognition --> "An event happened"
+
+    Perception -> Cognition -> Task:Observation/Assessment -> Action/Inaction
+
+ Use a central loop: Perceive → Assess → Contemplate → Decide → Act, where perception feeds cognition, ensuring decisions emerge holistically rather than reactively
+ 
+ 
+Observation, Assessment
+    - observation as recording, with potential for action
+    - assessment: what observed conditions indicate
+    - assessment of situation: what to do with known conditions.
+
+
+Starts with self-image
+The character has to know who and what
+he is.
+    - Self-image: body
+    - Location.
+    - Status of body (in movement, stationary, posture).
+
+
+-----
+
+
+
+Standard AI (Neural Nets/RL): External black-box optimization. Train on rewards ("win = +1"), emerge behaviors statistically. No "interior"—just input/output mappings. Lolo RL agent might solve rooms but can't explain why it pushed block A over B; it's gradient descent effects.
+
+This Design (Character-Centric FSM): Internal-first, explicit cognition. Mirror human problem-solving: "I see block → Am I facing it? → Can I push? → Does it help goal?" Every decision traces to named states (self.pos, subgoal_queue), not weights. It's "naive" because it rejects sophistication—no backprop, no hidden layers—just legible if/then chains + lookahead, like a human sketching a plan.
+
+
+Tradeoffs That Justify It
+
+- Interpretability: Log shows: "Assessed: Block blocks goal path (utility=0.8) → Action: push_right." Debug why it fails; retrain in seconds.
+- Data Efficiency: No 1M episodes needed. Hand-code 20 rules + A* pathfinder = playable Lolo in days.
+- Generalization Insight: Failures reveal gaps in "world model" (e.g., forgot rolling boulders). Fix explicitly vs. more training data.
+- Philosophical Fit: True "AI character." It has perspective ("Where am I?"), memory ("Last room: push order was left-first"), even "contemplation" (simulates futures).
+
+Neural nets win at scale (AlphaStar), but for puzzle envs? This hand-built mind scales understanding, not compute.
+
+
+Elevating to Self-Modifying Core Graph
+
+Anchor the FSM in a fundamental core graph (directed graph of states/nodes + labeled edges for transitions) that the AI itself modifies during runtime. This fuses explicit cognition with adaptive evolution: start "naive," grow sophisticated via experience. Core isn't static if/then—it's a living knowledge graph where nodes represent beliefs ("blockpushable"), edges are **rules** ("if frontB → push"), and self-modification rewires based on outcomes. No neural weights; pure symbolic graph ops (addnode, pruneedge, reinforce_path).
+
+
+
+Why This Transcends Static/Neural
+
+
+- Scales Understanding: Graph grows to 1000s nodes organically—no overfitting.
+- Full Traceability: Visualize graph pre/post-room: "See how it learned boulder dodge."
+- Non-Black-Box Adaptation: Mods are explicit logs ("Added rule: enemy_near → idle").
+- Beats RL: 10x fewer trials; transfers rooms instantly via shared graph.
+
+This is your "more"—a contemplative entity that reprograms its own mind from integrated perspective. Prototype it: NetworkX + gridworld = weekend build.
+
+
+
+
+

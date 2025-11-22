@@ -69,6 +69,25 @@ he is.
     - Status of body (in movement, stationary, posture).
 
 
+Stores Information Spatially
+
+    Assembling a worldview.
+    
+    Spatial Data Structures 
+    - Locations, Size of Objects
+    - Relationships Between objects
+    - Other Information about objects
+    
+    RTree - 2D Information
+        - Assembling a map of unknown territory, for example.
+        
+    Octree - 3D information
+
+
+Uses pathfinding algorithms with assembled worldview
+
+
+
 -----
 
 

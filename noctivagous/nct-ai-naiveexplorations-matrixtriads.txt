@@ -1,4 +1,75 @@
 
+Triadic
+
+Thesis:
+
+Patterns of the world can be assembled 
+into triads and then the application
+of techniques like combinatorics and hypergraph
+can describe a wide range of phenomena, 
+even produce sentence grammar.  This
+document discusses the foundation
+and not entirely the technique.
+
+For concept names, triads are found everywhere from
+Electricity:  Watts, Volts, Amps 
+States of Matter: Solid, Liquid, Gas
+Thermodynamics: Pressure, Volume, Temperature.
+Dimensions: Length, Width, Height
+
+But also, the condition of the whole can
+be assessed according to Taiji:
+
+  Excess, Deficiency, Equilibrium
+
+with generic triads degrees,
+
+  Low, Medium, High
+
+  Small, Medium, Large
+  
+  Mild, Moderate, Severe
+
+The whole of things has phases:
+
+  Formation, Stasis, Degeneration
+ 
+  Beginning, Middle, End
+
+Journey Evaluation:
+
+  Progress, Regress, Stasis    
+
+Affected
+
+  Beneficial, Harmful, Neutral     
+
+  Short-term, Long-term, Immediate
+
+
+
+at locations
+
+  interior, exterior, border  
+  inside, outside, opening
+  internal, external, boundary
+  
+perceived material states:
+
+  Solid, Liquid, Gas
+
+phases of them
+
+  into [e.g. solid], out of [e.g. gas], stays [liquid]
+  
+
+
+
+The structure
+
+  Part, Component, Whole
+
+
 For dissecting events or decisions into triadic categories
 and making sentences too.
 
@@ -14,6 +85,21 @@ Range: [Normal, Unusual, Undetermined] and other labeled triads.
 It's just that (Low,Medium,High) are a generic triad that is reused for other labels,
 such as Height.  All that needs to be added is "Height" to this generic
 triad.
+
+Combinatoric Storage 
+
+Example with [High, Medium, Low].
+
+Medium AND Low -> Medium-Low
+
+    Storage with order.
+    
+Medium-Low (0, 1).   Low-Medium
+
+
+
+
+
 
 Token-Like Processing
 
@@ -285,6 +371,34 @@ Completeness,Full,Partial,Missing-Critical,Did we get the key elements?
 Source-Reliability,Trusted,Unverified,Dubious,Provenance of the text
 Polarity-Resolution,Resolved,Multi-Polar,Unresolvable,Multiple plausible interpretations
 Error-Handling,Proceed,Clarify,Reject-Input,What the system must do right now
+
+
+
+
+For storage of knowledge concepts, triads (groups of three interconnected elements) appear across many domains. Here are some classic examples:
+
+- Electricity: Voltage (V), Current (I), Resistance (R) → related by Ohm’s law: V = I × R
+- Power triangle: Watts (P), Volts (V), Amps (I) → P = V × I (for DC); with power factor in AC
+- States of matter: Solid, Liquid, Gas (plus Plasma as a fourth in some contexts)
+- Thermodynamics: Pressure, Volume, Temperature → linked by the ideal gas law PV = nRT
+- Color models:
+  - Additive (light): Red, Green, Blue (RGB)
+  - Subtractive (pigment): Cyan, Magenta, Yellow (CMY)
+- Primary colors in art (traditional): Red, Yellow, Blue
+- Forces in physics: Often mass, acceleration, force (F = ma)
+- Time: Past, Present, Future
+- Human needs (basic triad): Food, Water, Shelter
+- Rock-paper-scissors: Three options in perfect cyclic balance
+- Logic/philosophy: Thesis, Antithesis, Synthesis (Hegelian dialectic)
+- Religion/theology: Father, Son, Holy Spirit (Christian Trinity); Brahma, Vishnu, Shiva (Hindu Trimurti)
+- Dimensions: Length, Width, Height
+- Audio: Bass, Midrange, Treble
+- Nutrition macronutrients: Carbohydrates, Proteins, Fats
+- Traffic lights: Red, Yellow, Green
+- Government branches (USA): Legislative, Executive, Judicial
+
+
+
 
 
 

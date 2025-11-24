@@ -1,0 +1,50 @@
+nct-apps-videoeditor
+
+LAYOUTS
+
+1. Grid View
+
+    The timeline is laid out on a set
+    of rows and viewing the timeline
+    is a matter of vertical scrolling,
+    allowing the editor to see more of
+    the composition on screen at a time.  
+
+    The cells are an organization convention.    
+    Each grid cell corresponds to
+     a block of time according
+    to the current scale, e.g. 1 minute.
+    Therefore, a grid shown with 
+    rows 5 blocks (cells) wide 
+    would then have 5 minutes shown per row.
+    
+    Option: Clips always snap side to side without
+    gaps.  Any gaps on the timeline require
+    a spacer, title, or transition to be inserted.
+
+    Playhead follows row-major order: 
+    left-to-right, top-to-bottom.
+
+    Clips are added into
+    empty slots on a grid.
+    A clip may end up spanning more than
+    one slot or only take up a portion.
+     
+
+2. Rectangular Spiral View
+
+
+The timeline is a rectangular spiral
+and the playhead starts from the top left
+and moved around clockwise until it reaches
+the center.
+
+FEATURES
+
+    
+    Layers
+    Transitions can be inserted in between
+    clips like today or .
+
+
+

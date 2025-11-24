@@ -45,7 +45,37 @@ LAYOUTS
 The timeline is a rectangular spiral
 and the playhead starts from the top left
 and moved around clockwise until it reaches
-the center.
+the center.  There is a gap between
+each level of the spiral.
+
+    playback modes:
+        a) running filmstrip, stationary playhead frame -
+        all frames of the timeline 
+        run across the rectangular spiral like
+        a conveyor belt, at a
+        provided scale.
+        
+        b) stationary (portion) filmstrip, with moving playhead
+        the timeline shown on the rectangular
+        spiral is a portion of the clip.
+            - allows using the rectangular spiral
+            for trimming clips and seeing more frames
+        
+       
+
+
+3. Fullscreen Playback Imposition Grid
+
+The entire timeline, from beginning until
+end, is shown in a grid fitting as many 
+visible frames inside the grid as available
+at the provide scale.  Plays in row-major. 
+Uses playhead. 
+    - flip between audio and video
+    - default is 0pt gap between rows
+
+
+
 
 FEATURES
 

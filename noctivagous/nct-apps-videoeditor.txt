@@ -22,8 +22,16 @@ LAYOUTS
     gaps.  Any gaps on the timeline require
     a spacer, title, or transition to be inserted.
 
-    Playhead follows row-major order: 
-    left-to-right, top-to-bottom.
+    Playhead follows either
+      - Row-major order: 
+     left-to-right, top-to-bottom.
+        - scrolling is vertical
+        for fixed column count (until resize).
+
+      -Column-major order:
+      Top-to-bottom, left-to-right
+        - scrolling is horizontal
+        for fixed row count (until resize).
 
     Clips are added into
     empty slots on a grid.

@@ -1,0 +1,274 @@
+NIBGLIDER DESIGN DOCUMENT
+
+
+Description
+
+Nibglider is a vector-drawing program in which
+mouse clicks are replaced by keyboard key
+presses (called "key-clicks"). The mouse continues to
+steer the cursor, but its buttons are no longer necessary
+for using the program.  Laying down a polyline, for example,
+involves moving the mouse and pressing the F
+key for each point, terminating the line with the A key,
+and this ends up providing the user much greater fluidity and
+control over the drawing.  The program provides a live, 
+interactive drawing experience that evokes using a mechanical
+device because the user's alternation of key presses and 
+mouse movement (whether to lay down points
+or move vector objects) feels like working
+with a physical machine. It is as if the keyboard has
+been recast as a set of buttons. The user can select 
+from a wide array of  functions while moving the mouse on the keyboard.
+The path tool features multiple keys, one for just
+drawing the hard corners for polylines, another for round
+corners, and more.  Thus, the user may start out with
+a curve and achieve the complex shape by using the different
+path tool keys while moving the mouse. Mid-drawing, the user 
+can adjust drawing parameters, such
+as the stroke width of the path with the - and = keys.
+That is, with a brief amount of practice,
+the user is drawing graphics fluidly like on paper but with
+vector lines.  Because there are many keys avaialble,
+an onscreen keyboard overlayed on top of the drawing canvas 
+provides a reference for the user.
+
+The Tab key is utilized as the select key-click, the
+equivalent to the left mouse button that
+selects objects, and this is much faster.  
+There is also no need to press the mouse button
+to drag objects because after they are selected,
+they are placed into a drag-lock ("sticky drag") 
+when the spacebar is pressed.  
+Objects are selected with the Tab key because it is 
+an easy to hit and then they are
+locked into a drag mode, moving along with the
+cursor, after the spacebar is pressed.  When
+the spacebar is pressed again, the objects are
+released.
+
+Different keys on the keyboard map to commands
+for different functions of various tools.
+There are two Circle tool buttons, B and N,
+B for radius and N for diameter.  But the
+Circle tool, like the Rectangle tool and
+Quad tool, are not designed just for their
+namesake shape.  They are actually drawing
+a container and then these tools have a
+selected shape or other object that fits
+inside their shape frame.
+
+
+
+ DrawingManager
+    drawingState: [idle,isInDrawing]
+    drawingTools: [pathTool,rectangleTool,circleTool,quadTool, arcTool, stampTool]
+    currentDrawingTool : none    // reset after 
+    combinatoricMode: [none, union, subtraction, intersection]
+    drawingLayers : []
+    currentDrawingLayer: layer1
+    snappingModes: [angleSnapping, lengthSnapping, pointSnapping, pathSnapping]
+    snappingModesConfig: {angleSnapping: { snapAngleInDegrees:15, on:false },
+    { on:false },{  on:false },{  on:false }    
+    loadedObject - This is the object loaded by the user, which can be
+    selected by any tool for 
+    
+    
+ DrawingTool - base class
+ 
+ For drawing tools, most interactive sequences
+ serve this purpose: When DrawingManager.drawingState == "idle",
+ the first press of a key associated with a tool, such as
+ the polylinePt key that is part of the Path Tool,
+ will activate the tool.
+ 
+
+  > PathTool
+    interactiveSequence: openEnded
+    inputKeyCommands: [polylinePt,curvePt, roundCornerPt]
+    depositActivities:
+    depositShape: []
+    
+    With the polyline key,
+    
+
+
+
+ ShapeTool - base class for shape-making tools
+
+ 
+    > CircleTool - serves as frame for shapes made with radius or diameter
+        interactiveSequence: twoPoint
+
+        inputCommands:[]
+        drawingToolMode: [radiusFromOrigin,radiusFromCircumference,diameter]
+        depositShapesList: [Circle,Supershape,RegularPolygon]
+        currentDepositShape: null // set when interactiveSequence is active 
+        depositShapesConfig: {
+        
+                }
+        previewIsFinalOutput:true
+
+        
+    > RectangleTool - serves as frame for shapes made with rectangle
+        depositShapesList: [Rectangle, Triangle:Right, Triangle:Regular]
+        currentDepositShape:
+        
+        // different ways for the tool to place a rectangle on the canvas,
+        // corresponding to specific keys:
+        drawingToolMode: diagonal:twoPoint, fromCenter:twoPoint, twoEdges:threePoint, 
+        centerLine:twoPoint
+        aspectRatio: none // square:1:1  
+        // - diagonal is a rectangle drawn from its diagonal, so the
+        // first point is stationary and the moving mouse point
+        // adjusts the rectangle during drawing until it is finalized with a 
+        // termination key (the key itself or another such as the END key).
+        //- from center is drawing the rectangle from its center point outwards
+        //This allows
+        //
+        
+    > ArcTool
+        interactiveSequence: threePoint
+        drawingToolMode: byThreePoints, radiusFromOrigin,radiusFromCircumference
+        // - three
+           
+    QuadTool
+        // Four points deposited make a quadrilateral
+        // that applies a transform to the obj.
+        // If it is a rectangle, it will be a quadrilateral
+        // shape.  If it is a circle, it will be an ellipse
+        // contained in the quadrilateral bounds.
+        // This allows for immediate depiction of perspective
+        // in 2D vector drawing.
+        
+        interactiveSequence: fourPoint
+        symmetryMode:none // horizontal, vertical for making trapezoids.
+
+
+    > StampTool
+        interactiveSequence: sequenceType:continuous
+
+ 
+    > DabTool - deposits and then exits
+        interactiveSequence: onePoint
+        combinatoricMode:none // subtract, union, intersection
+        
+     
+ InteractiveSequence - base class
+ 
+    A drawing tool has one or more interactive sequences
+    corresponding to different drawingToolModes.  The interactive
+    sequence for making an arc by three points of the arc is different
+    than the one starting from the radius.
+ 
+    initWith(name:int e.g. twoPoint, nPointMax:int e.g. 2, tool:DrawingTool)
+    name: // e.g. twoPoint
+    tool:
+    state: isInSequence // idle, isInSequence
+    nPointCount: e.g. 1 // after the first point has been provided by
+    the user, calls interactiveSequenceDidFinish().
+    nPointMax: 2 // e.g. 2 for twoPoint null for requires termination
+    reset() // resets state to idle
+    
+    // callbacks - sent to tool, which follows protocol/interface:
+    
+    nPointDidChange() // sends 2D point info to tool
+    interactiveSequenceWasCanceled() //
+    interactiveSequenceDidFinish() //
+ 
+ 
+ InputManager
+ 
+ InputKeyCommand - e.g. the PathTool has multiple associated keys
+ and on keypress the InputManager sends the command to the DrawingManager which
+ sends it to the current tool.
+ 
+
+
+ NGPath
+    mode: bezier,b-spline,ngComposite
+    
+ NGPathBezier
+    mode: bezier
+    
+    
+ Shape inherits from NGPathBezier
+
+    setters and getters
+    
+        makeFrom
+            circumradius:
+            radius:
+            quadrilateral:
+            rect:
+            rect:withRotation:atVertex:
+        
+        get
+            circumRadius:
+            radius:
+        
+        
+    > Circle
+    > Supershape
+    > Polygon
+        constructors or modes:
+            Regular
+    > Quadrilateral
+        > Rectangle
+            > Grid
+        constructors or modes:
+            Trapezoid
+            Rhombus
+        
+    > Triangle
+        constructors or modes:
+            Right
+            Regular
+            3-4-5
+            Golden
+            
+    > Arc    
+        constructors or modes:
+            Semicircle
+            Quarter
+
+    
+THE KEYBOARD KEYS
+
+The onscreen keyboard changes to reflect the keys
+available when modifier keys are pressed. So,
+for example, the [ and ] keys will scale a selected 
+object.  Shift + [ or ] will scale with a higher
+factor and so when Shift is pressed, the label for
+the [ and ] keys will change to show "Scale Up Upper"
+instead of the baseline "Scale Up".  To achieve
+this, there is a keyboardMappings.plist file
+in which each entry is prefixed with 
+Cocoa keyboard bindings shorthand in front of
+the keycode.  So, $30 is for Shift + A while
+just 30 is A.  Shift + Command + A is entered
+as $@30.
+
+    $ - Shift
+    @ - Command/Super
+    ^ - Control
+    ~ - Option/Alt
+
+Each entry also contains the function to
+call in the program when the key is pressed
+So, when a key is pressed whatever modifier
+combination it is converted to the shorthand
+just mentioned and the entry in the
+dictionary (.plist) file is found and then
+the provided function is called.
+
+
+
+USEFUL REFERENCES
+
+https://mathworld.wolfram.com/Circumradius.html
+
+
+
+
+
+

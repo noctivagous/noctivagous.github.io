@@ -9,53 +9,79 @@ presses (called "key-clicks"). The mouse continues to
 steer the cursor, but its buttons are no longer necessary
 for using the program.  Laying down a polyline, for example,
 involves moving the mouse and pressing the F
-key for each point, terminating the line with the A key,
-and this ends up providing the user much greater fluidity and
+key for each point, terminating the sequence of points 
+with the A key, and this ends up providing the user much greater fluidity and
 control over the drawing.  The program provides a live, 
-interactive drawing experience that evokes using a mechanical
+interactive drawing experience that evokes the use of a mechanical
 device because the user's alternation of key presses and 
 mouse movement (whether to lay down points
 or move vector objects) feels like working
 with a physical machine. It is as if the keyboard has
 been recast as a set of buttons. The user can select 
-from a wide array of  functions while moving the mouse on the keyboard.
-The path tool features multiple keys, one for just
-drawing the hard corners for polylines, another for round
-corners, and more.  Thus, the user may start out with
-a curve and achieve the complex shape by using the different
-path tool keys while moving the mouse. Mid-drawing, the user 
-can adjust drawing parameters, such
+from a wide array of functions while moving the mouse on the keyboard.
+
+During drawing of a path, the path tool is represented by 
+multiple keys on the keyboard, one for just
+depositing the hard corners for polylines, another for round
+corners, and curves.  The user may start out laying down
+curves with keys and transition to different contours, 
+achieving a complex shape in a single sequence by using the different
+path tool keys while moving the mouse-- without ever
+editing any control points of a bezier path.  Because
+this is live drawing and the keyboard provides many
+buttons, in mid-drawing the user can adjust drawing parameters such
 as the stroke width of the path with the - and = keys.
 That is, with a brief amount of practice,
 the user is drawing graphics fluidly like on paper but with
-vector lines.  Because there are many keys avaialble,
+vector lines.  Because there are many keys available,
 an onscreen keyboard overlayed on top of the drawing canvas 
 provides a reference for the user.
 
-The Tab key is utilized as the select key-click, the
-equivalent to the left mouse button that
-selects objects, and this is much faster.  
+The Tab key is utilized as the Select key-click, the
+equivalent to the left mouse button + Shift key that
+selects objects, and this is much faster.  It reveals
+again how mouse button clicks slow down the user
+compared to placing them on the keyboard.
 There is also no need to press the mouse button
 to drag objects because after they are selected,
-they are placed into a drag-lock ("sticky drag") 
-when the spacebar is pressed.  
-Objects are selected with the Tab key because it is 
-an easy to hit and then they are
-locked into a drag mode, moving along with the
+they can be quickly placed into a drag-lock ("sticky drag") 
+when Spacebar is pressed.  The selected objects 
+are locked into a drag mode, moving in lock step the
 cursor, after the spacebar is pressed.  When
 the spacebar is pressed again, the objects are
-released.
+released. The combination of Tab as the Select key 
+and Spacebar as activation and release of drag-lock produces another fluid
+mechanical dynamic for the program and works with
+the other drawing features.  Keys are chosen for their
+location and size: objects are selected with the Tab key 
+because it is easy to hit without looking at the keyboard
+and the Spacebar is the same.  They are easily used in
+rapid alternation.
 
-Different keys on the keyboard map to commands
-for different functions of various tools.
-There are two Circle tool buttons, B and N,
-B for radius and N for diameter.  But the
+A drawing tool may have multiple keys on the 
+keyboards. There are two Circle tool buttons, B and N,
+B for radius and N for diameter.  This program,
+though, takes a different route and goes beyond
+just the shape of the tool. The
 Circle tool, like the Rectangle tool and
 Quad tool, are not designed just for their
 namesake shape.  They are actually drawing
-a container and then these tools have a
-selected shape or other object that fits
-inside their shape frame.
+a container and the user chooses what
+is inside that container, such as either
+a circle or a spiral for the Circle tool.  
+These tools have a selected shape property 
+for the object that fits inside their shape 
+frame.  In this way, the Rectangle tool, if
+it is drawing a rectangle from two points
+of a diagonal, can be using a Grid shape
+for its frame.  These are the shapes provided
+for each of these specific shape tools, but 
+a user can also load a custom shape 
+from the drawing into the Loaded Object slot
+in the app user interface and if "Loaded Object"
+is selected as the selected shape for
+a given tool, such as Quad, that tools will
+draw it live inside the bounds of its frame.
 
 
 

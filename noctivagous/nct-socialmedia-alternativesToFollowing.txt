@@ -1,0 +1,5 @@
+A social media website opens up with just a slight expansion: instead of just "Following," you have two follow categories: "Tracking/Observing" and "Supporting."  Then you allow the user to order these lists.  The user should be able to hide public visibility for any "Tracking/Observed" profile.
+
+---
+
+A social media website where, when you sign up, your follower count is hidden and you establish your reputation and indicators of value over time through other means before (optionally) revealing your follower count and view counts.

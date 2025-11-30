@@ -1,0 +1,40 @@
+nct-socialmedia-userLabeledIntentions
+
+Noctivagous Social Media
+
+USER-LABELED INTENTIONS
+
+On a different kind of social media website, when either a post or comment is made,
+the user can categorize the intention with a label.  The post/comment
+or comment will be color-coded with a label above it or carry other 
+distinguishing features to indicate its purpose.
+
+Benefits:
+  
+
+Here are some intention label categories:
+
+Core
+1. Description of Problem  (For posts, not comments)
+2. Announcement  - (For posts, not comments)
+3. Question – Seeking information or clarification
+4. Answer / Help – Providing assistance or direct response
+5. Friendly Amendment – Pointing out a potential error
+6. Addition / Elaboration – Expanding on the topic.
+7. Recommendation – Suggesting resources, tools, etc.
+
+Potentially Controversial but Useful
+10. Troll / Provocation – Self-identified trolling -- (Comments section only)
+11. Rant – Long emotional outburst  -- (Comments section only, not posts)
+12. Hot Take – Deliberately provocative opinion -- (Comments section only)
+
+Niche or Context-Specific
+13 Source Request – Asking for links/references
+14 Translation – Providing or requesting one
+15 Role-play / In-character – For fandom/gaming communities
+16 Quote / Citation – Direct reference to something. Nothing
+but the quote/ citation
+
+Short Support
+17 Shows Of Support Separated from The Like Button
+

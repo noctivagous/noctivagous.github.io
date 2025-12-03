@@ -5,12 +5,48 @@ Description
 
 Nibglider is a vector-drawing program in which
 mouse clicks are replaced by keyboard key
-presses (called "key-clicks"). The mouse continues to
-steer the cursor, but its buttons are no longer necessary
-for using the program.  Laying down a polyline, for example,
+presses (sometimes called "key-clicks" here). 
+The mouse continues to steer the cursor 
+but its buttons are unused by the program.  
+Laying down a polyline or a series of line segments, for example,
 involves moving the mouse and pressing the F
-key for each point, terminating the sequence of points 
-with the A key, and this ends up providing the user much greater fluidity and
+key to deposit each point.  After the first
+point is deposited, a line extends to the
+cursor of the mouse and adjusts as the user
+moves the cursor, and this continues until
+the user terminates the sequence of points
+with the A key (the termination key for other
+shape and drawing tools as well).  For the
+Polyline Tool, the interaction is the
+same as the Polygon Lasso tool in Adobe Photoshop
+except that the lines drawn onscreen are used 
+to make vectors for the drawing and 
+the F key has been designated to replace the mouse click. 
+We start by mentioning the Polyline Tool because
+the line segment laid down with points like this 
+is the basis for multiple drawing tools and the
+means for drawing for a myriad of shapes in
+different way: a single line segment can
+can be used as either the diameter or radius 
+of a circle.  This is the basis of the Circle Tool,
+which uses the diameter or radius to draw any
+shape that has a radius (e.g. regular polygon). 
+For the Rectangle Tool, it can act as the 
+diagonal of a rectangle or its centerline.
+Two segments allows the user to lay down a rectangle
+from its edges.  Four segments is the basis
+of the Quadrilateral Tool, which will draw
+any configured shape, including just a 
+quadrilateral, inside the bounds of a 
+quadrilateral.  An example includes an ellipse,
+which allows depositing circles in perspective
+quickly.
+
+When the shape tools are located next to each other
+on the keyboard and they share common termination
+keys, A for complete and Q for cancel), the keyboard
+as it is laid out for typing is recast as a set of
+buttons. This ends up providing the user much greater fluidity and
 control over the drawing.  The program provides a live, 
 interactive drawing experience that evokes the use of a mechanical
 device because the user's alternation of key presses and 
@@ -286,6 +322,24 @@ combination it is converted to the shorthand
 just mentioned and the entry in the
 dictionary (.plist) file is found and then
 the provided function is called.
+
+
+
+STROKE VS. STROKED PATH (A PATH OUTLINE OF THE STROKE)
+
+The stroke of the path is differentiated
+from the path made from the stroke, which
+is an outline of the path stroked turned
+into a path.  This is useful for drawing
+strokes.
+    - A stroked path with both ends removed
+    for a rails or two-track result. 
+
+
+COMBINATORICS MODES
+
+    Operation applied after
+    deposit: Union, Subtraction, Intersection
 
 
 

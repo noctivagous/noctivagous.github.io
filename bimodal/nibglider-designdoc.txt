@@ -1,78 +1,93 @@
 NIBGLIDER DESIGN DOCUMENT
 
 
-Description
+Introduction
 
 Nibglider is a vector-drawing program in which
 mouse clicks are replaced by keyboard key
 presses (sometimes called "key-clicks" here). 
 The mouse continues to steer the cursor 
 but its buttons are unused by the program.  
-Laying down a polyline or a series of line segments, for example,
+When key-clicks are implemented comprehensively, 
+with the whole of a vector-drawing program's
+interactions and tools redesigned, 
+an altogether new form of interaction with 
+desktop software drawing occurs.  
+
+Polyline Key As Base Reference
+
+Laying down a polyline, which is a series of line segments
+that can close into a polygon shape or remain open,
 involves moving the mouse and pressing the F
-key-- the Polyline key-- to deposit each point.  After the first
-point is deposited, a line extends to the
-cursor of the mouse and adjusts as the user
+key-- the Polyline key-- to deposit each point.  
+After the first point is deposited, a line extends to the
+cursor of the mouse and adjusts its angle and length as the user
 moves the cursor, and this continues until
-the user terminates the sequence of points
-with the A key (the termination key for other
+the user terminates the entire sequence of points
+with the A key (the main termination key for other
 shape and drawing tools as well).  The interaction is the
 same as the Polygon Lasso tool in Adobe Photoshop
-except that the lines drawn onscreen are used 
-to make vectors for the drawing and 
-the F key has been designated to replace the mouse click. 
+except that the lines drawn onscreen are used 1:1 
+to make vectors for the drawing, and 
+the F key has been designated to replace the mouse click
+for this function.  So, the user does not have to
+switch to the Path tool because it is implicitly
+activate as soon as the F key is pressed. 
 The Polyline key, F, belongs to the Path tool,
-and there are multiple keys associated with the Path
-tool, including Curve and Rounded Corner.  (They 
-are color-coded the same on the keyboard.)  So:
-instead of the user manipulating a Bezier Path
-directly (its mathematical control points), he
-constructs a path in real-time with different
+and there are other keys that are also associated with the Path
+tool to deposit specific contours on the live path (spline), 
+including Curve and Rounded Corner.  They 
+are color-coded the same on the keyboard to indicate they
+belong to the Path Tool.  So: instead of the user switching
+to a Path tool and clicking and dragging with the mouse to manipulate 
+a Bezier Path directly, he constructs a path in real time with different
 keys, which means that real drawing can occur
-with the mouse and keyboard  used in alternation.
+with the mouse and keyboard used in alternation.
 
-We started by mentioning the Polyline key because
-one or more line segments laid down with points like this 
-is the basis for most drawing tools. It is the
+We start by mentioning the Polyline key because depositing
+one or more line segments with points like this 
+is the basis for most drawing tools.  It is the
 means for drawing for a myriad of shapes in
 different ways: a single line segment can
 can be used as either the diameter or radius 
 of a circle and as the line adjusts the circle
 resizes accordingly.  This is the basis of the Circle Tool,
-which uses the diameter or radius to draw more than
-just circles; any shape that has a radius (e.g. 
-a regular polygon) or has been made to use one
-will sit inside a circle. For the Rectangle Tool, the
-single line segment is set up to act as the 
-diagonal of a rectangle for the Rectangle By Diagonal key and 
-its centerline for the Rectangle By Centerline key.  
+which uses the diameter or radius to draw circles and 
+any shape that has a radius (e.g. a regular polygon) 
+or has been made to use one. As it is drawn it will sit 
+inside a circle. The individual line segment assists
+in sizing and making premade shapes. For the Rectangle Tool, the
+single line segment is set up to act as the live 
+diagonal of a rectangle in the Rectangle By Diagonal key.
+It acts as the centerline for the Rectangle By Centerline key.  
 A third key belonging to the Rectangle Tool is the
 Rectangle by Two Edges key: laying down two segments
-as if using the Polyline key, allows the user to lay 
-down the bounds of a rectangle at any needed angle or size.  
-Four line segments is the basis of the Quadrilateral Tool, which will draw
-inside the bounds of a quadrilateral any configured shape, including just 
-a quadrilateral.  An example usage includes an ellipse,
-which allows depositing circles in perspective
-quickly.
+as if using the Polyline key allows the user to lay 
+down the bounds of a rectangle at any needed angle or size
+whereas drawing a rectangle by its diagonal is set up
+to be an upright rectangle and drawing it by its centerline
+requires the width parameter.  Then, four line segments 
+is the basis of the Quadrilateral Tool, which will draw
+inside the bounds of a quadrilateral any configured shape, 
+including just a quadrilateral.  An example usage includes an ellipse,
+which allows depositing circles in perspective quickly.
 
-When the shape tools are located next to each other
-on the keyboard and they share common termination
-keys, A for complete and Q for cancel), the keyboard
-as it is laid out for typing is recast as a set of
+When the shape tools are naturally located next to each other
+on the keyboard and they utilize the same termination
+keys, A for complete and Q for cancel, the keyboard
+as it is provided for typing is recast as a set of
 buttons. This ends up providing the user much greater fluidity and
 control over the drawing.  The program provides a live, 
-interactive drawing experience that evokes the use of a mechanical
+interactive drawing experience that effects the use of a mechanical
 device because the user's alternation of key presses and 
-mouse movement (whether to lay down points
-or move vector objects) feels like working
-with a physical machine. It is as if the keyboard has
-been recast as a set of buttons. The user can select 
-from a wide array of functions while moving the mouse on the keyboard.
+mouse movement, whether to lay down points for paths and shapes
+or move vector objects, feels like working with a physical machine. 
+The user can select from a wide array of functions while moving 
+the mouse on the keyboard.
 
-During drawing of a path, the path tool is represented by 
+As mentioned, during drawing of a path, the path tool is represented by 
 multiple keys on the keyboard, one for just
-depositing the hard corners for polylines, another for round
+depositing the hard corners for polylines (the Polyline key) another for round
 corners, and curves.  The user may start out laying down
 curves with keys and transition to different contours, 
 achieving a complex shape in a single sequence by using the different

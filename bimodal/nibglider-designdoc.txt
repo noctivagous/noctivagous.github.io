@@ -5,14 +5,14 @@ Introduction
 
 Nibglider is a vector-drawing program in which
 mouse clicks are replaced by keyboard key
-presses (sometimes called "key-clicks" here). 
+presses (called "key-clicks" here). 
 The mouse continues to steer the cursor 
-but its buttons are unused by the program.  
+but its buttons are left unused by the program.  
 When key-clicks are implemented comprehensively, 
 with the whole of a vector-drawing program's
 interactions and tools redesigned, 
-an altogether new form of interaction with 
-desktop software drawing occurs.  
+an altogether elevated form of interaction with 
+desktop software drawing occurs.
 
 Polyline Key As Base Reference
 
@@ -22,66 +22,84 @@ involves moving the mouse and pressing the F
 key-- the Polyline key-- to deposit each point.  
 After the first point is deposited, a line extends to the
 cursor of the mouse and adjusts its angle and length as the user
-moves the cursor, and this continues until
+moves the cursor and this continues until
 the user terminates the entire sequence of points
-with the A key (the main termination key for other
-shape and drawing tools as well).  The interaction is the
-same as the Polygon Lasso tool in Adobe Photoshop
+with the A key ("End", the primary, finalizing termination key for all 
+drawing tools and interactive sequences).  
+The appearance of the line is the same as 
+the Polygon Lasso tool in Adobe Photoshop
 except that the lines drawn onscreen are used 1:1 
-to make vectors for the drawing, and 
-the F key has been designated to replace the mouse click
-for this function.  So, the user does not have to
-switch to the Path tool because it is implicitly
-activate as soon as the F key is pressed. 
-The Polyline key, F, belongs to the Path tool,
-and there are other keys that are also associated with the Path
-tool to deposit specific contours on the live path (spline), 
-including Curve and Rounded Corner.  They 
-are color-coded the same on the keyboard to indicate they
-belong to the Path Tool.  So: instead of the user switching
+to make vectors for the drawing and the mouse click
+has been replaced by the F key for this function.  
+
+What this does is eliminate the toolbar panel for
+using tools.  The user does not have to
+"switch to the Path tool" because it is implicitly
+activated as soon as the Polyline ('F') key is 
+pressed.  The Polyline key, F, does belong to the Path tool
+but in this case there are other keys that are also associated 
+with the tool in order to deposit specific contours on the 
+live path, including Curve and Rounded Corner. So, while
+the user is making a path to make a shape, he may press the Polyline key
+a few times and then use others like Curve before finalizing
+the shape with 'A' ("End").  Path keys are color-coded the 
+same on the keyboard to indicate they belong to the Path Tool.  
+In summary, instead of the user switching
 to a Path tool and clicking and dragging with the mouse to manipulate 
 a Bezier Path directly, he constructs a path in real time with different
-keys, which means that real drawing can occur
-with the mouse and keyboard used in alternation.
+keys belonging to the Path tool while moving the mouse, 
+which means that real drawing occurs with the mouse 
+and keyboard used in alternation.
 
 We start by mentioning the Polyline key because depositing
 one or more line segments with points like this 
-is the basis for most drawing tools.  It is the
+is the basis for most of the app's drawing tools.  It is the
 means for drawing for a myriad of shapes in
-different ways: a single line segment can
+different ways because, to start, a single line segment 
+is resized and oriented live in this setup and it can
 can be used as either the diameter or radius 
-of a circle and as the line adjusts the circle
-resizes accordingly.  This is the basis of the Circle Tool,
-which uses the diameter or radius to draw circles and 
+of a circle.  As the line's length and angle are adjusted 
+the circle resizes accordingly.  This is the basis of the Circle Tool,
+which uses the diameter or radius to draw not just circles but 
 any shape that has a radius (e.g. a regular polygon) 
-or has been made to use one. As it is drawn it will sit 
-inside a circle. The individual line segment assists
-in sizing and making premade shapes. For the Rectangle Tool, the
-single line segment is set up to act as the live 
-diagonal of a rectangle in the Rectangle By Diagonal key.
-It acts as the centerline for the Rectangle By Centerline key.  
-A third key belonging to the Rectangle Tool is the
-Rectangle by Two Edges key: laying down two segments
-as if using the Polyline key allows the user to lay 
-down the bounds of a rectangle at any needed angle or size
-whereas drawing a rectangle by its diagonal is set up
-to be an upright rectangle and drawing it by its centerline
-requires the width parameter.  Then, four line segments 
-is the basis of the Quadrilateral Tool, which will draw
-inside the bounds of a quadrilateral any configured shape, 
+and also a custom shape that has been made to use one. 
+As the shape is drawn it will sit inside the circle
+that would be drawn if the setting were just "circle". 
+The Circle Tool is one tool where an individual line segment assists 
+in sizing and making shapes from their object components. 
+For the Rectangle Tool too, the single line segment is utilized, 
+to act as the live diagonal of a rectangle on the 
+Rectangle By Diagonal key. It acts as the centerline 
+for the Rectangle By Centerline key (width is adjusted live
+by the [ and ] keys used as stepper keys).  Another key 
+belonging to the Rectangle Tool is the
+Rectangle by Two Edges key: laying down two segments,
+still as if using the Polyline key, allows the user to lay 
+down the bounds of a rectangle at any desired angle or size on
+the page whereas drawing a rectangle by its diagonal is configured
+to deposit an upright rectangle. A fourth key is Rectangle From Center
+and it uses two segments starting from the center. 
+Then, four line segments is the basis of the Quadrilateral Tool, 
+which will draw inside the bounds of a quadrilateral any configured shape, 
 including just a quadrilateral.  An example usage includes an ellipse,
-which allows depositing circles in perspective quickly.
+which allows depositing circles in perspective quickly.  Tools
+have extra settings, such as adhering a rectangle to a certain aspect
+ratio or constraining the Quadrilateral Tool to a trapezoid.
 
-When the shape tools are naturally located next to each other
+When the shape tools are placed next to each other
 on the keyboard and they utilize the same termination
 keys, A for complete and Q for cancel, the keyboard
 as it is provided for typing is recast as a set of
-buttons. This ends up providing the user much greater fluidity and
+buttons. The user knows already how to place fingers on
+the home row and now the home row is for mechanical buttons.
+This ends up providing the user much greater fluidity and
 control over the drawing.  The program provides a live, 
 interactive drawing experience that effects the use of a mechanical
 device because the user's alternation of key presses and 
 mouse movement, whether to lay down points for paths and shapes
 or move vector objects, feels like working with a physical machine. 
+Not only shape-making uses the keyboard and mouse this way but
+also the selection and movement (dragging) of objects too.
 The user can select from a wide array of functions while moving 
 the mouse on the keyboard.
 

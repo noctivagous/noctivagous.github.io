@@ -166,6 +166,43 @@ is selected as the selected shape for
 a given tool, such as Quad, that tools will
 draw it live inside the bounds of its frame.
 
+Placing Text on The Page
+
+The Text Tool can be activated with more than one
+key.  First we'll talk about the mode for entering
+and placing a single line of text on the canvas. 
+If an path is selected, that will be the baseline for the text, the text object
+will acquire it and typing will follow the path.  If a closed
+path is selected, like a circle, the text entered will
+flow inside it.  If no path or object is selected, as soon 
+as the key is pressed, a baseline extends
+from the cursor that can move around. The keyboard
+is set into "typing" meta mode that only takes
+characters for typing and adds them to the baseline. 
+The [ and ] keys, usually used for scaling selected
+objects in the drawing, change the font height.  The keys
+';' and ''' rotate.  Control + T stamps
+the text as it exists.  This time, the Escape key serves as termination
+of the "typing" meta mode and returns it to
+the "drawing" meta mode. For example, since the A key is 
+sending text characters for A and a, Escape or a key combo
+has to be made the termination characters.
+
+Text usually takes two forms: rectangle and a single line.
+
+
+The Property Slot
+
+The Property Slot replaces the usual color fill / stroke
+control in vector-drawing programs.
+It is that if the Property Slot is set to "Fill",
+the key-click Derive [Property] 
+will take the fill property of the vector object
+underneath the cursor and load it into the Property 
+Slot in the GUI.  Other properties include stroke, 
+fill and stroke, etc.  The "Apply" key-click, which pairs with
+"Derive" will then apply the property in the Property Slot 
+to the object underneath the cursor.  
 
 
  DrawingManager
@@ -349,7 +386,15 @@ for example, the [ and ] keys will scale a selected
 object.  Shift + [ or ] will scale with a higher
 factor and so when Shift is pressed, the label for
 the [ and ] keys will change to show "Scale Up Upper"
-instead of the baseline "Scale Up".  To achieve
+instead of the baseline "Scale Up".  The same
+applies to rotate, which is ";" and "'", which rotates
+forward and backwards.  Normally these buttons 
+are for operating on selections, but they are are also 
+sometimes utilized by drawing tools, such as the Text Tool,
+in which the [ and ] keys scale down and scale up
+the font height of the typed text.
+
+To achieve
 this, there is a keyboardMappings.plist file
 in which each entry is prefixed with 
 Cocoa keyboard bindings shorthand in front of

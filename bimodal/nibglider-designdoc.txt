@@ -303,7 +303,7 @@ to the object underneath the cursor.
 
   > PathTool
     interactiveSequence: openEnded
-    inputKeyCommands: [polylinePt,curvePt, roundCornerPt]
+    inputKeyCommands: [polylinePt,softPt1, softPt2 roundCornerPt, arcPt]
     depositActivities:
     depositShape: []
     
@@ -365,13 +365,20 @@ to the object underneath the cursor.
 
     > StampTool
         interactiveSequence: sequenceType:continuous
-
+        > Vector Texture Mode    
+            - A preset of grass that randomizes after
+            each deposit. GrassRandomizing
+            inherits from RandomizingParametricShapeComponent
+            
+        
  
     > DabTool - deposits and then exits
         interactiveSequence: onePoint
         combinatoricMode:none // subtract, union, intersection
-        
-     
+    
+ 
+
+    
  InteractiveSequence - base class
  
     A drawing tool has one or more interactive sequences
@@ -427,13 +434,16 @@ to the object underneath the cursor.
         
         
     > Circle
+    
     > Supershape
+    
     > Polygon
         constructors or modes:
             Regular
+            
     > Quadrilateral
         > Rectangle
-            > Grid
+            aspect ratio constraint
         constructors or modes:
             Trapezoid
             Rhombus
@@ -449,7 +459,31 @@ to the object underneath the cursor.
         constructors or modes:
             Semicircle
             Quarter
+    
+    
+    > ParametricShapeComponent
+        Allows for parametrically-controlled
+        shapes components, including those that respond
+        to specific sizes.
 
+       
+        example: A RoundedRectangle shape object
+        inherits from ParametricShapeComponent
+        so that it preserves the corner radius on size.
+        
+        > RepeatingShapeComponent subclass
+        example: GridOfShapes component
+        inherits from RepeatingShapeComponent < ParametricShapeComponent
+        repeats shape(s) on grid according to
+        the component's parameters.
+        
+        > RandomizingParametricShapeComponent subclass
+            example: depositing a grass vector
+            shape can be randomized each time
+            randomizing rules.
+           
+            
+    
     
 THE KEYBOARD KEYS
 
@@ -500,6 +534,9 @@ strokes.
     - A stroked path with both ends removed
     for a rails or two-track result. 
 
+SHAPES
+
+RandomizingParametricShapeComponent
 
 COMBINATORICS MODES
 

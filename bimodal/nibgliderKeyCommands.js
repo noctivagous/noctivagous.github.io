@@ -1,5 +1,3 @@
-
-
 function changeStrokeWidth(strokeVal) {
   var localStrokeVal = strokeVal;
 
@@ -15,7 +13,9 @@ function changeStrokeWidth(strokeVal) {
   if (path) {
     path.strokeWidth = localStrokeVal;
   }
-
+  if (previewShape) {
+    previewShape.strokeWidth = localStrokeVal;
+  }
 }
 
 function thinStrokeWidth() {
@@ -43,23 +43,29 @@ function stampItems(itemsToStamp) {
 
 function cancelCurrentDrawingOperation()
 {
-  if (isDrawing)
-  {
-
-
+  if (isDrawingPath && path) {
+    path.remove();
+    path = null;
+    isDrawingPath = false;
   }
-
+  if (isDrawingShape && previewShape) {
+    previewShape.remove();
+    if (previewLine) previewLine.remove();
+    previewShape = null;
+    previewLine = null;
+    isDrawingShape = false;
+    shapeType = null;
+    shapeStartPoint = null;
+  }
 }
 
 function endPathAsStroke() {
   if (path) {
     path.selected = false;
     project.activeLayer.addChild(path);
-
-    isDrawing = false;
+    isDrawingPath = false;  // renamed
     path = null;
   }
-
 }
 
 function closeShapeAndEnd() {
@@ -68,7 +74,7 @@ function closeShapeAndEnd() {
     path.closed = true;
     path.selected = false;
     project.activeLayer.addChild(path);
-    isDrawing = false;
+    isDrawingPath = false;  // renamed
     path = null;
   }
 
@@ -82,7 +88,7 @@ function closeShapeAndEndWithFillOnly() {
     path.strokeWidth = 0;
     path.fillColor = new paper.Color(0, 0, 0);
     project.activeLayer.addChild(path);
-    isDrawing = false;
+    isDrawingPath = false;  // renamed
     path = null;
   }
 
@@ -96,7 +102,7 @@ function closeShapeAndEndWithFillStroke() {
     path.selected = false;
     path.fillColor = new paper.Color(0, 0, 0);
     project.activeLayer.addChild(path);
-    isDrawing = false;
+    isDrawingPath = false;  // renamed
     path = null;
   }
 
@@ -106,7 +112,7 @@ function closeShapeAndEndWithFillStroke() {
 
 
 function polyLineKC() {
-
+  if (!mousePt) return;
   if (!path) {
     // Create a new path and set its stroke color to black:
     path = new paper.Path({
@@ -119,11 +125,186 @@ function polyLineKC() {
 
   } else {
     path.add(mousePt);
+  }
+  if (isDrawingPath == false) {  // renamed
+    isDrawingPath = true;  // renamed
+  }
+}
 
+function circleKC(mode) {
+  if (shapeType && shapeType.startsWith('circle_')) {
+    endShapeAsStroke();
+    return;
   }
-  if (isDrawing == false) {
-    isDrawing = true;
+  if (isDrawingShape || !mousePt) return;
+  shapeStartPoint = mousePt.clone();
+  shapeType = 'circle_' + mode;
+  isDrawingShape = true;
+  previewShape = new paper.Shape.Circle(shapeStartPoint, 0);
+  previewShape.strokeColor = 'black';
+  previewShape.strokeWidth = globalStrokeWidth;
+  project.activeLayer.addChild(previewShape);
+  previewLine = new paper.Path({
+    segments: [shapeStartPoint, shapeStartPoint],
+    strokeColor: new paper.Color(0.5),
+    strokeWidth: 1,
+    strokeDashArray: [4, 4]
+  });
+  project.activeLayer.addChild(previewLine);
+}
+
+function rectDiagonalKC() {
+  if (shapeType === 'rectangle_diagonal') {
+    endShapeAsStroke();
+    return;
   }
+  if (isDrawingShape || !mousePt) return;
+  shapeStartPoint = mousePt.clone();
+  shapeType = 'rectangle_diagonal';
+  isDrawingShape = true;
+  previewShape = new paper.Shape.Rectangle(shapeStartPoint, new paper.Size(0, 0));
+  previewShape.strokeColor = 'black';
+  previewShape.strokeWidth = globalStrokeWidth;
+  project.activeLayer.addChild(previewShape);
+  previewLine = new paper.Path({
+    segments: [shapeStartPoint, shapeStartPoint],
+    strokeColor: new paper.Color(0.5),
+    strokeWidth: 1,
+    strokeDashArray: [4, 4]
+  });
+  project.activeLayer.addChild(previewLine);
+}
+
+function endShapeAsStroke() {
+  if (!isDrawingShape || !previewShape) return;
+  var finalPath;
+  if (shapeType.startsWith('circle_')) {
+    finalPath = new paper.Path.Circle({
+      center: previewShape.position,
+      radius: previewShape.radius,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  } else if (shapeType === 'rectangle_diagonal') {
+    finalPath = new paper.Path.Rectangle({
+      center: previewShape.position,
+      size: previewShape.size,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  }
+  if (finalPath) {
+    finalPath.selected = false;
+    project.activeLayer.addChild(finalPath);
+  }
+  previewShape.remove();
+  if (previewLine) previewLine.remove();
+  isDrawingShape = false;
+  shapeType = null;
+  shapeStartPoint = null;
+  previewShape = null;
+  previewLine = null;
+}
+
+function endShapeFillOnly() {
+  if (!isDrawingShape || !previewShape) return;
+  var finalPath;
+  if (shapeType.startsWith('circle_')) {
+    finalPath = new paper.Path.Circle({
+      center: previewShape.position,
+      radius: previewShape.radius,
+      strokeWidth: 0,
+      fillColor: new paper.Color(0, 0, 0)
+    });
+  } else if (shapeType === 'rectangle_diagonal') {
+    finalPath = new paper.Path.Rectangle({
+      center: previewShape.position,
+      size: previewShape.size,
+      strokeWidth: 0,
+      fillColor: new paper.Color(0, 0, 0)
+    });
+  }
+  if (finalPath) {
+    finalPath.selected = false;
+    project.activeLayer.addChild(finalPath);
+  }
+  previewShape.remove();
+  if (previewLine) previewLine.remove();
+  isDrawingShape = false;
+  shapeType = null;
+  shapeStartPoint = null;
+  previewShape = null;
+  previewLine = null;
+}
+
+function endShapeFillStroke() {
+  if (!isDrawingShape || !previewShape) return;
+  var finalPath;
+  if (shapeType.startsWith('circle_')) {
+    finalPath = new paper.Path.Circle({
+      center: previewShape.position,
+      radius: previewShape.radius,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      fillColor: new paper.Color(0, 0, 0),
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  } else if (shapeType === 'rectangle_diagonal') {
+    finalPath = new paper.Path.Rectangle({
+      center: previewShape.position,
+      size: previewShape.size,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      fillColor: new paper.Color(0, 0, 0),
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  }
+  if (finalPath) {
+    finalPath.selected = false;
+    project.activeLayer.addChild(finalPath);
+  }
+  previewShape.remove();
+  if (previewLine) previewLine.remove();
+  isDrawingShape = false;
+  shapeType = null;
+  shapeStartPoint = null;
+  previewShape = null;
+  previewLine = null;
+}
+
+function stampCurrentShape() {
+  if (!isDrawingShape || !previewShape) return;
+  var finalPath;
+  if (shapeType.startsWith('circle_')) {
+    finalPath = new paper.Path.Circle({
+      center: previewShape.position,
+      radius: previewShape.radius,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  } else if (shapeType === 'rectangle_diagonal') {
+    finalPath = new paper.Path.Rectangle({
+      center: previewShape.position,
+      size: previewShape.size,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  }
+  if (finalPath) {
+    finalPath.selected = false;
+    project.activeLayer.addChild(finalPath);
+  }
+  // preview state continues
 }
 
 
@@ -169,4 +350,4 @@ function addItemToSelection(item) {
   
   
   }
-  
+

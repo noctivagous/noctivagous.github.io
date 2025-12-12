@@ -181,7 +181,7 @@ is set into "typing" meta mode that only takes
 characters for typing and adds them to the baseline. 
 The [ and ] keys, usually used for scaling selected
 objects in the drawing, change the font height.  The keys
-';' and ''' rotate.  Control + T stamps
+';' and ''' rotate.  Control + w stamps
 the text as it exists.  This time, the Escape key serves as termination
 of the "typing" meta mode and returns it to
 the "drawing" meta mode. For example, since the A key is 
@@ -189,6 +189,22 @@ sending text characters for A and a, Escape or a key combo
 has to be made the termination characters.
 
 Text usually takes two forms: rectangle and a single line.
+
+
+The Stamp Key And Multiple Contexts for The Same Key
+
+While a shape is being dragged, pressing the
+stamp key, W, and this will stamp it.  The stamp
+key is an example of how the same keys are used in multiple
+contexts: during live drawing of a shape, such as a circle,
+the stamp key will stamp the shape as it has been sized
+and oriented but the live drawing state of the tool will 
+be unaffected.  Some tools use the scale by increment 
+([ and ]) and rotate by increment (; and ') keys and
+other keys to adjust parameters of the drawing.  Additionally,
+parameters like stroke width, controlled by the - and = keys,
+will apply to the current drawing tool in its live drawing
+state and also apply to a selected object.
 
 
 The Property Slot

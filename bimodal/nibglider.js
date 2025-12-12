@@ -1,10 +1,11 @@
-
 // Initialize Paper.js
 // Ensure Paper.js is properly initialized
 paper.install(window);
 
 var canvas = document.getElementById('nibgliderCanvas');
 paper.setup(canvas);
+
+mousePt = new paper.Point(paper.view.size.width / 2, paper.view.size.height / 2);
 
 
 
@@ -70,12 +71,16 @@ function handleImageDrop(event) {
 // Your existing variables and code with paper. as a prefix where needed
 var globalStrokeWidth = 4.0;
 var maxStrokeWidth = 40.0;
-var isDrawing = false;
+var isDrawingPath = false;  // renamed from isDrawing
 var mousePt;
 var lastMousePt = null;
 var path;
 
-
+var isDrawingShape = false;
+var shapeType = null;  // 'circle_radius' or 'circle_diameter'
+var shapeStartPoint = null;
+var previewShape = null;
+var previewLine = null;
 
 // Variables to track selected items and drag-lock status
 var selectedItems = [];
@@ -104,14 +109,27 @@ function updateTextContent() {
   textItem1.content = 'Stroke Width: ' + globalStrokeWidth + 'pt';
   textItem1.content += selectedCount ? '\nSelected Objects: ' + selectedCount : '';
   textItem1.content += _isInDragLock ? '\nDrag-Lock On' : '';
-
-
+  if (isDrawingPath) {
+    textItem1.content += '\nDrawing Polyline';
+  }
+  if (isDrawingShape) {
+    var mode = '';
+    if (shapeType === 'circle_radius' || shapeType === 'circle_diameter') {
+      mode = shapeType === 'circle_radius' ? 'radius' : 'diameter';
+      textItem1.content += '\nDrawing Circle (' + mode + ')';
+    } else if (shapeType === 'rectangle_diagonal') {
+      textItem1.content += '\nRectangle Diagonal';
+    }
+  }
 }
 
 
 paper.view.onMouseDown = onMouseDown;
 
 function onMouseDown(event) {
+  if (isDrawingPath || isDrawingShape) {
+    return;
+  }
   hitTestUnderCursor();
 }
 
@@ -132,7 +150,9 @@ function hitTestUnderCursor() {
   // if(isDrawing == false)
   // otherwise it will select 
   // the line or shape being drawn.
-  if (isDrawing == false) {
+  if (isDrawingPath || isDrawingShape) {
+    return;
+  }
 
     // Hit test to find object under cursor
     let hitResult = project.hitTest(mousePt, {
@@ -159,21 +179,19 @@ function hitTestUnderCursor() {
       clearOutSelection();
     }
 
-  }
 }
 
 paper.view.onMouseMove = onMouseMove;
 
 // Note that "function onMouseMove(event)" becomes:
 function onMouseMove(event) {
-  //var paperEvent = new paper.ToolEvent(event, paper.view);
   mousePt = event.point;
 
   handleDragLock(event);
 
 
 
-  if (isDrawing) {
+  if (isDrawingPath) {
 
 
     if (path) {
@@ -196,18 +214,45 @@ function onMouseMove(event) {
 
   }
 
-
-
-
-
+  if (isDrawingShape) {
+    updateShapePreview();
+  }
 }
 
+function updateShapePreview() {
+  if (!isDrawingShape || !previewShape || !shapeStartPoint) return;
 
+  var endPt = mousePt;
+  var center, radius;
+  if (shapeType === 'circle_radius') {
+    center = shapeStartPoint;
+    radius = shapeStartPoint.getDistance(endPt);
+    previewShape.position = center;
+    previewShape.radius = radius;
+  } else if (shapeType === 'circle_diameter') {
+    center = shapeStartPoint.add(endPt).divide(2);
+    radius = shapeStartPoint.getDistance(endPt) / 2;
+    previewShape.position = center;
+    previewShape.radius = radius;
+  } else if (shapeType === 'rectangle_diagonal') {
+    var dx = endPt.x - shapeStartPoint.x;
+    var dy = endPt.y - shapeStartPoint.y;
+    var width = Math.abs(dx);
+    var height = Math.abs(dy);
+    center = shapeStartPoint.add(endPt).divide(2);
+    previewShape.position = center;
+    previewShape.size = new paper.Size(width, height);
+  }
 
-
+  if (previewLine) {
+    previewLine.firstSegment.point = shapeStartPoint;
+    previewLine.lastSegment.point = endPt;
+  }
+}
 
 // Similarly, for onKeyDown
 document.addEventListener('keydown', function (event) {
+  var keyLower = event.key.toLowerCase();
 
 
   var center = collectiveCenter(selectedItems);
@@ -265,71 +310,75 @@ document.addEventListener('keydown', function (event) {
   }
 
     // close and end shape
-    if (event.key == 'w') {
+    if (keyLower == 'w') {
+      if (isDrawingShape) {
+        stampCurrentShape();
+      } else {
+        stampItems(selectedItems);
+      }
+    }
 
-      stampItems(selectedItems);
-
-
-
+    if (keyLower == 'i') {
+      rectDiagonalKC();
     }
 
 
-  if (event.key == 'f') {
-
+  var keyLower = event.key.toLowerCase();
+  if (keyLower == 'f') {
     polyLineKC();
-
   }
-
-  if (event.key == 'j') {
+  if (keyLower == 'n') {
+    circleKC('diameter');
+  }
+  if (keyLower == 'm') {
+    circleKC('radius');
+  }
+  if (keyLower == 'j') {
     changeStrokeWidth(1);
   }
-  if (event.key == 'k') {
+  if (keyLower == 'k') {
     changeStrokeWidth(2);
   }
-  if (event.key == 'l') {
+  if (keyLower == 'l') {
     changeStrokeWidth(3);
   }
-  if (event.key == ';') {
-    changeStrokeWidth(4);
-  }
-
-  if (event.key == 'c') {
+  if (keyLower == 'c') {
     thinStrokeWidth();
   }
-  if (event.key == 'v') {
+  if (keyLower == 'v') {
     thickenStrokeWidth();
   }
 
 
-  if (isDrawing) {
-    // close and end shape
-    if (event.key == 'r') {
-
-      closeShapeAndEnd();
+  if (isDrawingPath || isDrawingShape) {
+    if (keyLower == 'r') {
+      if (isDrawingPath) {
+        closeShapeAndEnd();
+      } else {
+        endShapeAsStroke();
+      }
     }
-
-
-
-  if (event.key === 'e')/* && _isInDragLock)*/ {
-    
-    closeShapeAndEndWithFillOnly();
-  }
-
-        // close and end shape
-        if (event.key == 's') {
-          closeShapeAndEndWithFillStroke();
-
-    
-    
-        }
-
-    // close path and end
-    if (event.key == 'a') {
-      endPathAsStroke();
-
-
+    if (event.key === 'e') {
+      if (isDrawingPath) {
+        closeShapeAndEndWithFillOnly();
+      } else {
+        endShapeFillOnly();
+      }
     }
-
+    if (keyLower == 's') {
+      if (isDrawingPath) {
+        closeShapeAndEndWithFillStroke();
+      } else {
+        endShapeFillStroke();
+      }
+    }
+    if (keyLower == 'a') {
+      if (isDrawingPath) {
+        endPathAsStroke();
+      } else {
+        endShapeAsStroke();
+      }
+    }
   }
 
   if (event.key === 'q') {

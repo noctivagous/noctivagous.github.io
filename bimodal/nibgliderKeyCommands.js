@@ -51,9 +51,13 @@ function cancelCurrentDrawingOperation()
     path = null;
     isDrawingPath = false;
   }
-  if (isDrawingShape && previewShape) {
-    previewShape.remove();
-    if (previewLine) previewLine.remove();
+  if (isDrawingShape) {
+    if (previewShape) {
+      previewShape.remove();
+    }
+    if (previewLine) {
+      previewLine.remove();
+    }
     previewShape = null;
     previewLine = null;
     isDrawingShape = false;

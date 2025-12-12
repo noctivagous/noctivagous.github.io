@@ -16,6 +16,9 @@ function changeStrokeWidth(strokeVal) {
   if (previewShape) {
     previewShape.strokeWidth = localStrokeVal;
   }
+  if (quadPath) {
+    quadPath.strokeWidth = localStrokeVal;
+  }
 }
 
 function thinStrokeWidth() {
@@ -64,6 +67,12 @@ function cancelCurrentDrawingOperation()
   if (previewRect) {
     previewRect.remove();
     previewRect = null;
+  }
+  if (isDrawingQuad && quadPath) {
+    quadPath.remove();
+    quadPath = null;
+    isDrawingQuad = false;
+    quadPointCount = 0;
   }
   shapePt2 = null;
 }
@@ -621,6 +630,33 @@ function stampCurrentShape() {
   // preview state continues
 }
 
+function quadPointKC() {
+  if (!mousePt) return;
+  if (!quadPath) {
+    quadPath = new paper.Path({
+      segments: [mousePt],
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      fullySelected: true
+    });
+    quadPointCount = 1;
+    isDrawingQuad = true;
+  } else {
+    quadPath.add(mousePt);
+    quadPointCount++;
+    if (quadPointCount === 4) {
+      quadPath.closed = true;
+      quadPath.selected = false;
+      project.activeLayer.addChild(quadPath);
+      quadPath = null;
+      isDrawingQuad = false;
+      quadPointCount = 0;
+      updateTextContent();
+      return;
+    }
+  }
+  updateTextContent();
+}
 
 // When adding an item to selectedItems
 function addItemToSelection(item) {

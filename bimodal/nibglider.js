@@ -85,6 +85,11 @@ var previewPath = null;
 var previewRect = null;
 var shapePt2 = null;
 
+// New variables for quadrilateral drawing
+var isDrawingQuad = false;
+var quadPath;
+var quadPointCount = 0;
+
 // Variables to track selected items and drag-lock status
 var selectedItems = [];
 
@@ -157,6 +162,10 @@ function updateTextContent() {
       instruction = 'Y: finish, W: stamp, [: thin width, ]: thicken width, Q: cancel';
     }
   }
+  if (isDrawingQuad) {
+    lines.push('Drawing Quadrilateral (' + quadPointCount + '/4)');
+    instruction = 'Press O to add next point. Q: cancel';
+  }
   if (instruction) {
     lines.push(instruction);
   }
@@ -167,7 +176,7 @@ function updateTextContent() {
 paper.view.onMouseDown = onMouseDown;
 
 function onMouseDown(event) {
-  if (isDrawingPath || isDrawingShape) {
+  if (isDrawingPath || isDrawingShape || isDrawingQuad) {
     return;
   }
   hitTestUnderCursor();
@@ -190,7 +199,7 @@ function hitTestUnderCursor() {
   // if(isDrawing == false)
   // otherwise it will select 
   // the line or shape being drawn.
-  if (isDrawingPath || isDrawingShape) {
+  if (isDrawingPath || isDrawingShape || isDrawingQuad) {
     return;
   }
 
@@ -256,6 +265,17 @@ function onMouseMove(event) {
 
   if (isDrawingShape) {
     updateShapePreview();
+  }
+  if (isDrawingQuad) {
+    if (quadPath) {
+      if (quadPath.segments.length == 1) {
+        quadPath.add(mousePt);
+      }
+      if (quadPath.segments.length > 1) {
+        quadPath.removeSegment(quadPath.segments.length - 1);
+        quadPath.add(mousePt);
+      }
+    }
   }
 }
 
@@ -438,6 +458,10 @@ document.addEventListener('keydown', function (event) {
     circleKC('radius');
     return;
   }
+  if (keyLower == 'o') {
+    quadPointKC();
+    return;
+  }
   if (keyLower == 'j') {
     changeStrokeWidth(1);
   }
@@ -448,7 +472,7 @@ document.addEventListener('keydown', function (event) {
     changeStrokeWidth(3);
   }
   if (keyLower == 'c') {
-    if (isDrawingPath || isDrawingShape) {
+    if (isDrawingPath || isDrawingShape || isDrawingQuad) {
       thinStrokeWidth();
     } else if (selectedItems.length > 0) {
       for (var i = 0; i < selectedItems.length; i++) {
@@ -460,7 +484,7 @@ document.addEventListener('keydown', function (event) {
     return;
   }
   if (keyLower == 'v') {
-    if (isDrawingPath || isDrawingShape) {
+    if (isDrawingPath || isDrawingShape || isDrawingQuad) {
       thickenStrokeWidth();
     } else if (selectedItems.length > 0) {
       for (var i = 0; i < selectedItems.length; i++) {
@@ -473,7 +497,7 @@ document.addEventListener('keydown', function (event) {
   }
 
 
-  if (isDrawingPath || isDrawingShape) {
+  if (isDrawingPath || isDrawingShape || isDrawingQuad) {
     if (keyLower == 'r') {
       if (isDrawingPath) {
         closeShapeAndEnd();

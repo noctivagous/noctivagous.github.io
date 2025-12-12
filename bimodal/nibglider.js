@@ -116,6 +116,9 @@ var shapeWidth = 90;
 var maxShapeWidth = 200;
 var lastCenterlineWidth = 80;
 
+var splineTensionDefault = 0.4;
+var splineTension = 0.4;
+
 function updateTextContent() {
   let lines = ['Stroke Width: ' + globalStrokeWidth + 'pt'];
   var selectedCount = selectedItems.length;
@@ -128,7 +131,8 @@ function updateTextContent() {
   let instruction = '';
   if (isDrawingPath) {
     lines.push('Drawing Polyline');
-    instruction = 'Repeat F to add polyline points. End with A';
+    instruction = 'F=sharp, G=spline(tension:' + splineTension.toFixed(1) + ') ';
+    instruction += 'J/K= adjust tension, A=end';
   }
   if (isDrawingShape) {
     let shapeInfo = '';
@@ -159,7 +163,7 @@ function updateTextContent() {
         instruction = 'Moving the line adjusts the second edge.\nPress U to finish or W to stamp.';
       }
     } else if (shapeType === 'rectangle_centerline') {
-      instruction = '[: thin width, ]: thicken width, Y: finish, W: stamp, Q: cancel';
+      instruction = '\'[\': thin width, \']\': thicken width, Y: finish, W: stamp, Q: cancel';
     }
   }
   if (isDrawingQuad) {
@@ -433,7 +437,7 @@ document.addEventListener('keydown', function (event) {
       }
     }
 
-  // Drawing keys
+  // Drawing keys - ADD G KEY FOR SPLINE
   if (keyLower == 'y') {
     rectCenterlineKC();
     return;
@@ -447,7 +451,11 @@ document.addEventListener('keydown', function (event) {
     return;
   }
   if (keyLower == 'f') {
-    polyLineKC();
+    polyLineKC(); // Hard corner point
+    return;
+  }
+  if (keyLower == 'g') {
+    splinePointKC(); // Smooth spline point
     return;
   }
   if (keyLower == 'n') {
@@ -462,13 +470,34 @@ document.addEventListener('keydown', function (event) {
     quadPointKC();
     return;
   }
-  if (keyLower == 'j') {
+
+  // NEW: Spline tension controls (MUST come BEFORE stroke width)
+  if (isDrawingPath) {
+    if (keyLower == 'j') {
+      splineTension = Math.max(0.1, splineTension - 0.1);
+      updateTextContent();
+      return;
+    }
+    if (keyLower == 'k') {
+      splineTension = Math.min(1.0, splineTension + 0.1);
+      updateTextContent();
+      return;
+    }
+    if (keyLower == 'l') {
+      splineTension = splineTensionDefault; // reset to default
+      updateTextContent();
+      return;
+    }
+  }
+
+  // OLD stroke width mappings - now only work when NOT drawing path
+  if (keyLower == 'j' && !isDrawingPath) {
     changeStrokeWidth(1);
   }
-  if (keyLower == 'k') {
+  if (keyLower == 'k' && !isDrawingPath) {
     changeStrokeWidth(2);
   }
-  if (keyLower == 'l') {
+  if (keyLower == 'l' && !isDrawingPath) {
     changeStrokeWidth(3);
   }
   if (keyLower == 'c') {

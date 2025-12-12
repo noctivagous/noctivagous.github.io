@@ -184,10 +184,9 @@ margin:auto;
         <tr>
           <td style="vertical-align: top; color:rgb(146, 106, 106);padding: 10px;">
             <h3 style="margin-top: 0px;">DRAWING:</h3>
-            1. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key to deposit a point.
+            1. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key for hard corners or <kbd style="color:rgb(234, 171, 171)">G</kbd> for smooth curves.
             <br /> 2. Move the mouse. <br />
-            3. Press the <kbd style="color:rgb(234, 171, 171)">F</kbd> key
-            again to deposit another point.
+            3. Press <kbd style="color:rgb(234, 171, 171)">F</kbd> or <kbd style="color:rgb(234, 171, 171)">G</kbd> again to deposit another point.
             <br />
 
             4. Repeat until you wish to press an END key:
@@ -292,7 +291,7 @@ margin:auto;
 
             <button tabindex="-1" data-key="tab" id="Tab" class="keyboardkey tabKey OtherKey enabledButton">Select Objects</button>
 
-            <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey KeyQ operationButton enabledButton" style="transform: translate(-45%, 0%)">
+            <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey KeyQ operationButton enabledButton cancelButton" style="transform: translate(-45%, 0%)">
 cancel
 </button>
             <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey operationButton enabledButton">stamp</button>
@@ -301,14 +300,14 @@ cancel
             <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey endButton"><b>END:</b><br />close
               stroke</button>
             <button data-key="t" tabindex="-1" id="KeyT" class="keyboardkey tKey"></button>
-            <button data-key="y" tabindex="-1" id="KeyY" class="keyboardkey yKey drawingButton enabledButton" style="transform: translate(-45%, 0%)">
+            <button data-key="y" tabindex="-1" id="KeyY" class="keyboardkey yKey drawingButton enabledButton rectangleButton" style="transform: translate(-45%, 0%)">
   Rect.<br/>by centerline</button>
-<button data-key="u" tabindex="-1" id="KeyU" class="keyboardkey uKey drawingButton enabledButton"
+<button data-key="u" tabindex="-1" id="KeyU" class="keyboardkey uKey drawingButton enabledButton rectangleButton"
   style="transform: translate(-45%, 0%)">Rect.<br/>by 2 edges</button>
   
-            <button data-key="i" tabindex="-1" id="KeyI" class="keyboardkey iKey drawingButton enabledButton"
+            <button data-key="i" tabindex="-1" id="KeyI" class="keyboardkey iKey drawingButton enabledButton rectangleButton"
   style="transform: translate(-47%, 0%)">Rect.<br/>by diag.</button>
-            <button data-key="o" tabindex="-1" id="KeyO" class="keyboardkey oKey drawingButton enabledButton" style="transform: translate(-45%, 0%)">
+            <button data-key="o" tabindex="-1" id="KeyO" class="keyboardkey oKey drawingButton enabledButton quadButton" style="transform: translate(-45%, 0%)">
 Quad<br/>4 pts
 </button>
             <button data-key="p" tabindex="-1" id="KeyP" class="keyboardkey pKey "></button>
@@ -346,9 +345,9 @@ Quad<br/>4 pts
             <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey "
               style="transform: translate(-27%, 0%)"></button>
             <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"
-              style="transform: translate(-27%, 0%)">add</br>point</button>
-            <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey"
-              style="transform: translate(-27%, 0%)"></button>
+              style="transform: translate(-27%, 0%)">sharp</br>point</button>
+            <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey drawingButton enabledButton"
+              style="transform: translate(-27%, 0%)">spline<br/>point</button>
             <button data-key="h" tabindex="-1" id="KeyH" class="keyboardkey hKey "
               style="transform: translate(-27%, 0%)"></button>
             <button data-key="j" tabindex="-1" id="KeyJ" class="keyboardkey jKey "
@@ -397,9 +396,9 @@ Quad<br/>4 pts
             <button data-key="b" tabindex="-1" id="KeyB" class="keyboardkey bKey "
               style="transform: translate(38%, 0%)">
               </button>
-            <button data-key="n" tabindex="-1" id="KeyN" class="keyboardkey nKey drawingButton enabledButton"
+            <button data-key="n" tabindex="-1" id="KeyN" class="keyboardkey nKey drawingButton enabledButton circleButton"
               style="transform: translate(38%, 0%)">Circle<br/>by diameter</button>
-            <button data-key="m" tabindex="-1" id="KeyM" class="keyboardkey mKey drawingButton enabledButton"
+            <button data-key="m" tabindex="-1" id="KeyM" class="keyboardkey mKey drawingButton enabledButton circleButton"
               style="transform: translate(38%, 0%)">Circle<br/>by radius</button>
             <button data-key="," tabindex="-1" id="Comma" class="keyboardkey commaKey "
               style="transform: translate(38%, 0%)"></button>

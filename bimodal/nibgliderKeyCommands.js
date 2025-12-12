@@ -133,25 +133,96 @@ function closeShapeAndEndWithFillStroke() {
 
 
 
+// GLOBAL SPLINE TENSION (affects new segments only)
+var splineTension = 0.5; // 0.0=straight, 1.0=very curved
+
 function polyLineKC() {
   if (!mousePt) return;
   if (!path) {
-    // Create a new path and set its stroke color to black:
     path = new paper.Path({
       segments: [mousePt],
       strokeColor: 'black',
       strokeWidth: globalStrokeWidth,
-      // Select the path, so we can see its segment points:
       fullySelected: true
     });
-
   } else {
-    path.add(mousePt);
+    // Add sharp corner (no smoothing)
+    var newSegment = path.add(mousePt);
+    if (newSegment) {
+      newSegment.handleIn = new paper.Point(0, 0);
+      newSegment.handleOut = new paper.Point(0, 0);
+    }
   }
   if (isDrawingPath == false) {
     isDrawingPath = true;
   }
-  updateTextContent(); // ADD: Show drawing instructions
+  updateTextContent();
+}
+
+function splinePointKC() {
+  if (!mousePt) return;
+  if (!path) {
+    path = new paper.Path({
+      segments: [mousePt],
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      fullySelected: true
+    });
+  } else {
+    // Add new point
+    var newSegment = path.add(mousePt);
+    
+    // Only smooth THIS segment using local Catmull-Rom calculation
+    if (newSegment && path.segments.length >= 3) {
+      var prev = path.segments[path.segments.length - 3];
+      var curr = path.segments[path.segments.length - 2];
+      var next = newSegment;
+      
+      // Local Catmull-Rom handles (tension-controlled)
+      var tension = splineTension;
+      
+      // Calculate handle positions based on neighbors
+      var p0 = prev.point;
+      var p1 = curr.point;
+      var p2 = next.point;
+      
+      // Incoming handle
+      var d01 = p1.subtract(p0);
+      var d12 = p2.subtract(p1);
+      next.handleIn = d12.multiply(tension * 0.5);
+      
+      // Outgoing handle  
+      curr.handleOut = d01.multiply(tension * 0.5);
+      
+      // Smooth previous segment too for continuity
+      if (curr.handleIn) {
+        curr.handleIn = curr.handleOut.multiply(-1);
+      }
+    }
+  }
+  if (isDrawingPath == false) {
+    isDrawingPath = true;
+  }
+  updateTextContent();
+}
+
+// NEW: Spline tension control during drawing
+function decreaseSplineTension() {
+  if (isDrawingPath) {
+    splineTension = Math.max(0.1, splineTension - 0.1);
+    updateTextContent();
+  }
+}
+
+function increaseSplineTension() {
+  if (isDrawingPath) {
+    splineTension = Math.min(1.0, splineTension + 0.1);
+    updateTextContent();
+  }
+}
+
+function setSplineTension(val) {
+  splineTension = Math.max(0.1, Math.min(1.0, val));
 }
 
 function circleKC(mode) {

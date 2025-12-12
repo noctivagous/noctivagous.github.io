@@ -156,10 +156,10 @@ function updateTextContent() {
       if (shapePt2 === null) {
         instruction = 'Press U again to finish the first edge';
       } else {
-        instruction = 'Moving the line adjusts the second edge. Press U to finish or W to stamp.';
+        instruction = 'Moving the line adjusts the second edge.\nPress U to finish or W to stamp.';
       }
     } else if (shapeType === 'rectangle_centerline') {
-      instruction = 'Y: finish, W: stamp, [: thin width, ]: thicken width, Q: cancel';
+      instruction = '[: thin width, ]: thicken width, Y: finish, W: stamp, Q: cancel';
     }
   }
   if (isDrawingQuad) {

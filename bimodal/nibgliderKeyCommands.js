@@ -135,14 +135,16 @@ function polyLineKC() {
   } else {
     path.add(mousePt);
   }
-  if (isDrawingPath == false) {  // renamed
-    isDrawingPath = true;  // renamed
+  if (isDrawingPath == false) {
+    isDrawingPath = true;
   }
+  updateTextContent(); // ADD: Show drawing instructions
 }
 
 function circleKC(mode) {
   if (shapeType && shapeType.startsWith('circle_')) {
     endShapeAsStroke();
+    updateTextContent();
     return;
   }
   if (isDrawingShape || !mousePt) return;
@@ -160,11 +162,13 @@ function circleKC(mode) {
     strokeDashArray: [4, 4]
   });
   project.activeLayer.addChild(previewLine);
+  updateTextContent(); // ADD: Show drawing instructions
 }
 
 function rectDiagonalKC() {
   if (shapeType === 'rectangle_diagonal') {
     endShapeAsStroke();
+    updateTextContent();
     return;
   }
   if (isDrawingShape || !mousePt) return;
@@ -182,6 +186,7 @@ function rectDiagonalKC() {
     strokeDashArray: [4, 4]
   });
   project.activeLayer.addChild(previewLine);
+  updateTextContent(); // ADD: Show drawing instructions
 }
 
 function rectTwoEdgesKC() {
@@ -208,7 +213,9 @@ function rectTwoEdgesKC() {
     } else {
       // Third press: end
       endShapeAsStroke();
+      updateTextContent();
     }
+    updateTextContent(); // ADD: Show drawing instructions
     return;
   }
   if (isDrawingShape || !mousePt) return;
@@ -228,13 +235,57 @@ function rectTwoEdgesKC() {
     segments: [shapeStartPoint, shapeStartPoint],
     strokeColor: new paper.Color(0.5),
     strokeWidth: 1,
-    strokeDashArray: [4, 4]
+    strokeDasharray: [4, 4]
   });
   project.activeLayer.addChild(previewLine);
+  updateTextContent(); // ADD: Show drawing instructions
+}
+
+function rectCenterlineKC() {
+  // FIX: Don't cancel if already drawing this shape
+  if (shapeType === 'rectangle_centerline') {
+    endShapeAsStroke();
+    updateTextContent();
+    return;
+  }
+  if (isDrawingShape) {
+    cancelCurrentDrawingOperation();
+  }
+  if (!mousePt) return;
+  shapeStartPoint = mousePt.clone();
+  shapeType = 'rectangle_centerline';
+  shapeWidth = lastCenterlineWidth;
+  isDrawingShape = true;
+  previewShape = null;
+  previewPath = null;
+  previewLine = new paper.Path({
+    segments: [shapeStartPoint, shapeStartPoint],
+    strokeColor: new paper.Color(0.5),
+    strokeWidth: 1,
+    strokeDasharray: [4, 4]
+  });
+  project.activeLayer.addChild(previewLine);
+  previewRect = new paper.Path({
+    segments: [
+      shapeStartPoint,
+      shapeStartPoint,
+      shapeStartPoint,
+      shapeStartPoint
+    ],
+    closed: true,
+    strokeColor: 'black',
+    strokeWidth: globalStrokeWidth,
+    fullySelected: true
+  });
+  project.activeLayer.addChild(previewRect);
+  previewRect.fullySelected = false;
+  previewRect.strokeCap = 'round';
+  previewRect.strokeJoin = 'round';
+  updateTextContent(); // ADD: Show drawing instructions
 }
 
 function endShapeAsStroke() {
-  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
+  if (!isDrawingShape || shapeType === null) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -274,6 +325,31 @@ function endShapeAsStroke() {
       strokeCap: 'round',
       strokeJoin: 'round'
     });
+  } else if (shapeType === 'rectangle_centerline') {
+    var pt1 = shapeStartPoint;
+    var pt2 = mousePt;
+    var center = pt1.add(pt2).divide(2);
+    var dir = pt2.subtract(pt1);
+    var length = dir.length;
+    var halfLen = length / 2;
+    var unitDir = dir.normalize();
+    var perp = new paper.Point(-unitDir.y, unitDir.x);
+    var halfW = shapeWidth / 2;
+    var ptA = center.add(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptB = center.add(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    var ptC = center.subtract(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptD = center.subtract(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    finalPath = new paper.Path({
+      segments: [ptA, ptB, ptD, ptC],
+      closed: true,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  }
+  if (shapeType === 'rectangle_centerline') {
+    lastCenterlineWidth = shapeWidth;
   }
   if (finalPath) {
     finalPath.selected = false;
@@ -298,7 +374,7 @@ function endShapeAsStroke() {
 }
 
 function endShapeFillOnly() {
-  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
+  if (!isDrawingShape || shapeType === null) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -332,6 +408,30 @@ function endShapeFillOnly() {
       strokeWidth: 0,
       fillColor: new paper.Color(0, 0, 0)
     });
+  } else if (shapeType === 'rectangle_centerline') {
+    // Same computation as above
+    var pt1 = shapeStartPoint;
+    var pt2 = mousePt;
+    var center = pt1.add(pt2).divide(2);
+    var dir = pt2.subtract(pt1);
+    var length = dir.length;
+    var halfLen = length / 2;
+    var unitDir = dir.normalize();
+    var perp = new paper.Point(-unitDir.y, unitDir.x);
+    var halfW = shapeWidth / 2;
+    var ptA = center.add(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptB = center.add(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    var ptC = center.subtract(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptD = center.subtract(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    finalPath = new paper.Path({
+      segments: [ptA, ptB, ptD, ptC],
+      closed: true,
+      strokeWidth: 0,
+      fillColor: new paper.Color(0, 0, 0)
+    });
+  }
+  if (shapeType === 'rectangle_centerline') {
+    lastCenterlineWidth = shapeWidth;
   }
   if (finalPath) {
     finalPath.selected = false;
@@ -356,7 +456,7 @@ function endShapeFillOnly() {
 }
 
 function endShapeFillStroke() {
-  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
+  if (!isDrawingShape || shapeType === null) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -399,6 +499,33 @@ function endShapeFillStroke() {
       strokeCap: 'round',
       strokeJoin: 'round'
     });
+  } else if (shapeType === 'rectangle_centerline') {
+    // Same computation
+    var pt1 = shapeStartPoint;
+    var pt2 = mousePt;
+    var center = pt1.add(pt2).divide(2);
+    var dir = pt2.subtract(pt1);
+    var length = dir.length;
+    var halfLen = length / 2;
+    var unitDir = dir.normalize();
+    var perp = new paper.Point(-unitDir.y, unitDir.x);
+    var halfW = shapeWidth / 2;
+    var ptA = center.add(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptB = center.add(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    var ptC = center.subtract(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptD = center.subtract(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    finalPath = new paper.Path({
+      segments: [ptA, ptB, ptD, ptC],
+      closed: true,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      fillColor: new paper.Color(0, 0, 0),
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  }
+  if (shapeType === 'rectangle_centerline') {
+    lastCenterlineWidth = shapeWidth;
   }
   if (finalPath) {
     finalPath.selected = false;
@@ -423,7 +550,7 @@ function endShapeFillStroke() {
 }
 
 function stampCurrentShape() {
-  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
+  if (!isDrawingShape || shapeType === null) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -457,6 +584,29 @@ function stampCurrentShape() {
     var ptD = pt1.add(perp_vec);
     finalPath = new paper.Path({
       segments: [pt1, pt2, ptC, ptD],
+      closed: true,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  } else if (shapeType === 'rectangle_centerline') {
+    // Same computation as endShapeAsStroke
+    var pt1 = shapeStartPoint;
+    var pt2 = mousePt;
+    var center = pt1.add(pt2).divide(2);
+    var dir = pt2.subtract(pt1);
+    var length = dir.length;
+    var halfLen = length / 2;
+    var unitDir = dir.normalize();
+    var perp = new paper.Point(-unitDir.y, unitDir.x);
+    var halfW = shapeWidth / 2;
+    var ptA = center.add(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptB = center.add(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    var ptC = center.subtract(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptD = center.subtract(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    finalPath = new paper.Path({
+      segments: [ptA, ptB, ptD, ptC],
       closed: true,
       strokeColor: 'black',
       strokeWidth: globalStrokeWidth,

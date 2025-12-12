@@ -107,6 +107,10 @@ var textItem1 = new paper.PointText({
 });
 
 
+var shapeWidth = 90;
+var maxShapeWidth = 200;
+var lastCenterlineWidth = 80;
+
 function updateTextContent() {
   let lines = ['Stroke Width: ' + globalStrokeWidth + 'pt'];
   var selectedCount = selectedItems.length;
@@ -125,19 +129,21 @@ function updateTextContent() {
     let shapeInfo = '';
     if (shapeType === 'circle_radius' || shapeType === 'circle_diameter') {
       let mode = shapeType === 'circle_radius' ? 'radius' : 'diameter';
-      shapeInfo = 'Drawing Circle (' + mode + ')';
+      shapeInfo = 'Circle by (' + mode + ')';
     } else if (shapeType === 'rectangle_diagonal') {
-      shapeInfo = 'Rectangle Diagonal';
+      shapeInfo = 'Rectangle by Diagonal';
     } else if (shapeType === 'rectangle_two_edges') {
-      shapeInfo = 'Rectangle Two Edges';
+      shapeInfo = 'Rectangle by Two Edges';
       if (shapePt2 !== null) {
       //  lines.push(' (width)');
       }
+    } else if (shapeType === 'rectangle_centerline') {
+      shapeInfo = 'Rectangle by Centerline';
+      lines.push('Width: ' + Math.round(shapeWidth) + 'pt');
     }
     lines.push(shapeInfo);
-    let finishKey;
     if (shapeType.startsWith('circle_')) {
-      finishKey = shapeType === 'circle_diameter' ? 'N' : 'M';
+      let finishKey = shapeType === 'circle_diameter' ? 'N' : 'M';
       instruction = `Press ${finishKey} to finish or W to stamp.`;
     } else if (shapeType === 'rectangle_diagonal') {
       instruction = 'Press I to finish or W to stamp.';
@@ -147,8 +153,9 @@ function updateTextContent() {
       } else {
         instruction = 'Moving the line adjusts the second edge. Press U to finish or W to stamp.';
       }
+    } else if (shapeType === 'rectangle_centerline') {
+      instruction = 'Y: finish, W: stamp, [: thin width, ]: thicken width, Q: cancel';
     }
-    instruction += ' Q: cancel';
   }
   if (instruction) {
     lines.push(instruction);
@@ -285,6 +292,27 @@ function updateShapePreview() {
       previewRect.segments[3].point = ptD;
     }
     return;
+  } else if (shapeType === 'rectangle_centerline') {
+    var pt1 = shapeStartPoint;
+    var pt2 = mousePt;
+    previewLine.firstSegment.point = pt1;
+    previewLine.lastSegment.point = pt2;
+    var center = pt1.add(pt2).divide(2);
+    var dir = pt2.subtract(pt1);
+    var length = dir.length;
+    var halfLen = length / 2;
+    var unitDir = dir.normalize();
+    var perp = new paper.Point(-unitDir.y, unitDir.x);
+    var halfW = shapeWidth / 2;
+    var ptA = center.add(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptB = center.add(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    var ptC = center.subtract(unitDir.multiply(halfLen)).add(perp.multiply(halfW));
+    var ptD = center.subtract(unitDir.multiply(halfLen)).subtract(perp.multiply(halfW));
+    previewRect.segments[0].point = ptA;
+    previewRect.segments[1].point = ptB;
+    previewRect.segments[2].point = ptD;
+    previewRect.segments[3].point = ptC;
+    return;
   }
 
   var endPt = mousePt;
@@ -320,37 +348,27 @@ document.addEventListener('keydown', function (event) {
   var keyLower = event.key.toLowerCase();
 
 
-  var center = collectiveCenter(selectedItems);
-
-  if (event.key === '[') {
-    var center = collectiveCenter(selectedItems);
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].scale(0.9, center);
-    }
-  }
-
-  if (event.key === ']') {
-    var center = collectiveCenter(selectedItems);
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].scale(1.1, center);
-    }
-  }
-
-  if (event.key === ';') {
-    var center = collectiveCenter(selectedItems);
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].rotate(-15, center);
-    }
-  }
-
-  if (event.key === "'") {
-    var center = collectiveCenter(selectedItems);
-
-    for (var i = 0; i < selectedItems.length; i++) {
-      selectedItems[i].rotate(15, center);
+  // Bracket keys - centerline width OR selection scale
+  if (event.key === '[' || event.key === ']') {
+    if (isDrawingShape && shapeType === 'rectangle_centerline') {
+      if (event.key === '[') {
+        shapeWidth = Math.max(1, (shapeWidth || globalStrokeWidth * 2) - 2);
+      } else {
+        shapeWidth = Math.min(maxShapeWidth, (shapeWidth || globalStrokeWidth * 2) + 2);
+      }
+      updateTextContent();
+      updateShapePreview();
+      return;
+    } else if (selectedItems.length > 0) {
+      var center = collectiveCenter(selectedItems);
+      for (var i = 0; i < selectedItems.length; i++) {
+        if (event.key === '[') {
+          selectedItems[i].scale(0.9, center);
+        } else {
+          selectedItems[i].scale(1.1, center);
+        }
+      }
+      return;
     }
   }
 
@@ -383,24 +401,30 @@ document.addEventListener('keydown', function (event) {
       }
     }
 
-    if (keyLower == 'i') {
-      rectDiagonalKC();
-    }
-
-    if (keyLower == 'u') {
-      rectTwoEdgesKC();
-    }
-
-
-  var keyLower = event.key.toLowerCase();
+  // Drawing keys
+  if (keyLower == 'y') {
+    rectCenterlineKC();
+    return;
+  }
+  if (keyLower == 'i') {
+    rectDiagonalKC();
+    return;
+  }
+  if (keyLower == 'u') {
+    rectTwoEdgesKC();
+    return;
+  }
   if (keyLower == 'f') {
     polyLineKC();
+    return;
   }
   if (keyLower == 'n') {
     circleKC('diameter');
+    return;
   }
   if (keyLower == 'm') {
     circleKC('radius');
+    return;
   }
   if (keyLower == 'j') {
     changeStrokeWidth(1);

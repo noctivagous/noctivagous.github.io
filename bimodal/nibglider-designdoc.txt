@@ -109,13 +109,23 @@ resizing of the the rectangle until the third point is deposited.
   
 
 A fourth key is Rectangle From Center
+and it uses a single segment, the inradius
+of a corner (by default) to draw the rectangle
+from its center.
+
+A fifth key is Rectangle from Interior Edges
 and it uses two segments starting from the center. 
+
+
+The Quadrilateral Tool
 Then, four line segments is the basis of the Quadrilateral Tool, 
 which will draw inside the bounds of a quadrilateral any configured shape, 
 including just a quadrilateral.  An example usage includes an ellipse,
 which allows depositing circles in perspective quickly.  Tools
 have extra settings, such as adhering a rectangle to a certain aspect
 ratio or constraining the Quadrilateral Tool to a trapezoid.
+#codebase  Implement the Quatrilateral key as O.  To begin with, the quadrilateral key will just draw a quadrilateral and later we will allow it to contain a shape. This means that it will be four poly line steps, with the fourth one finishing the quadrilateral.  Of course, a quadrilateral cannot have overlapping edges.  The three line segments should be previewed and when the fourth point is provided the quadrilateral is finished.
+
 
 When the shape tools are placed next to each other
 on the keyboard and they utilize the same termination
@@ -497,6 +507,72 @@ COMBINATORICS MODES
     deposit: Union, Subtraction, Intersection
 
 
+TODO
+
+
+- instructions text moved to separate instructions bar (overlay)
+- spline:
+    - soft 1 - S key - tension low
+    - sharp - F key - sharp point
+    - soft 2 - D key - tension high
+    - round corner - G - made from arc function (arc from tangent) 
+            with radius parameter default at 10pt
+    - arc by three points - X
+    
+- panel gui boxes:
+ - tool panels:
+  - menu options displayed in grid, not single column list
+    - rectangle tool
+        - shape: rectangle
+    - circle tool
+        - shape: circle, regular polygon
+        
+ - fill and stroke
+    - fill: color,pattern,shading
+    - stroke: dashing, line cap, line join, miter limit
+
+- document view
+    - document sizes (A4, US Letter, etc.)
+    - magnification. 
+    
+    
+- draglock
+    - show instructions
+    - spacebar as instant select + drag-lock
+    if no other activity on canvas
+    
+- spline operations
+    - alt + j - add point on spline underneath cursor
+    - alt + k - drag-lock point underneath cursor
+    
+- selection
+    - ` (backquote) key: 
+        - select-click from either fill or stroke
+        - polyline stroke select: overlaps line segments
+        - polyline fill-stroke select: overlaps fill of polyline
+    - capslock key: selection from live rectangle
+    
+    
+- additional tool modes
+    - rectangle by two edges:
+        - first segment as diagonal, then edge as sizing adjustment.
+            - 1. diagonal of rectangle is established by the first
+            segment and there is a live rectangle made that is fixed
+            and it will be a portion or the whole of the final rectangle.
+              2. the third point that makes the second segment, 
+              as it is adjusted, will end up depositing 
+              the fixed rectangle only if it stays inside its bounds.  
+              if it goes outside of the interior of the rectangle, it will expand
+              the final rectangle to be deposited according to which excess it
+              produces.  so if it goes above the rectangle, it will expand
+              it upwards.  if it goes to the left, it will expand it leftward.
+              if to the left and up, it will expand it in both dimensions.
+              and then, as said, if it stays inside the rectange, then no change
+              occurs on the original fixed rectangle. 
+        - edges as interior: the same interaction as the "rectangle by two exterior edges", 
+        but the rectangle that is made is this time interior edges-- is one quadrant,
+        and so the deposited rectangle is 4x the result of the rectangle.
+       
 
 USEFUL REFERENCES
 

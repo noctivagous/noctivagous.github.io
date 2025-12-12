@@ -67,17 +67,48 @@ As the shape is drawn it will sit inside the circle
 that would be drawn if the setting were just "circle". 
 The Circle Tool is one tool where an individual line segment assists 
 in sizing and making shapes from their object components. 
-For the Rectangle Tool too, the single line segment is utilized, 
-to act as the live diagonal of a rectangle on the 
-Rectangle By Diagonal key. It acts as the centerline 
-for the Rectangle By Centerline key (width is adjusted live
-by the [ and ] keys used as stepper keys).  Another key 
-belonging to the Rectangle Tool is the
-Rectangle by Two Edges key: laying down two segments,
-still as if using the Polyline key, allows the user to lay 
-down the bounds of a rectangle at any desired angle or size on
-the page whereas drawing a rectangle by its diagonal is configured
-to deposit an upright rectangle. A fourth key is Rectangle From Center
+
+For the Rectangle Tool too, the single line segment is utilized
+for some of its keys. It acts as the live diagonal of a rectangle on the 
+Rectangle By Diagonal key. Drawing a rectangle by its diagonal is configured
+by default to deposit an upright rectangle (since from a diagonal
+you don't have enough information to determine the rotation or the orientation
+of the rectangle).  When the line segment instead acts as the centerline 
+for the rectangle with the Rectangle By Centerline key, the centerline
+determines its length while the width is adjusted live from this centerline
+by the [ and ] keys used as stepper keys)  
+
+
+Rectangle by Two Edges (two line segements) key: 
+
+Another key  belonging to the Rectangle Tool is the Rectangle by Two Edges 
+key.  Whereas the previously mentioned keys use just one line segment, 
+it uses a total of two line segments or a total of three points.  
+So we say that they are like the Polyline key used for one segment
+whereas this key is as if using it for two segments and that allows
+laying down the bounds of a rectangle at any desired angle or size on
+the page.  The first line segment deposited is the actual first edge of the rectangle
+that will be deposited on the page.  The tool doesn't stop after
+the first segment this time: the second edge of the rectangle
+is inferred from the second line segment that the user lays down. 
+The tool does not actually use the line segment that the user lays
+down for the second edge because it is very unlikely to be exactly
+the edge. The second live edge is used in the following way: it is the 
+hypoteneuse of a right triangle and its base will determine the length of 
+the edge. To recap: the first edge establishes 
+the first edge of the rectangle after the second point is deposited and 
+then after that the length of the live line is used to adjust the perpendicular 
+edges' length.  So this is more than just two points, for a total of three, 
+with the third point not likely being colinear on a rectangle edge and is
+discarded after being utilized.
+
+There is a preview rectangle for "rectangle by two edges" and the second 
+key press of this key, the u key, will deposit the shape and terminate,
+just like pressing the a Circle Tool key a second time.  So, we see the live 
+resizing of the the rectangle until the third point is deposited.
+  
+
+A fourth key is Rectangle From Center
 and it uses two segments starting from the center. 
 Then, four line segments is the basis of the Quadrilateral Tool, 
 which will draw inside the bounds of a quadrilateral any configured shape, 
@@ -205,6 +236,22 @@ other keys to adjust parameters of the drawing.  Additionally,
 parameters like stroke width, controlled by the - and = keys,
 will apply to the current drawing tool in its live drawing
 state and also apply to a selected object.
+
+The Spacebar will act as the "Bounce" key during
+live drawing of shapes so that, for example,
+the drawing tool will complete the existing
+shape and then start a new shape at the terminating
+point.  So, if a circle is being drawn by its radius
+from the origin to the circumference, pressing the 
+Spacebar will complete it (deposit it onto the canvas) 
+and start a new circle from the point on the circumference.
+
+Tool Submodes
+
+Submodes of a tool relate to the tool itself.
+The Circle tool has a submode called "Ellipse mode"
+and this allows the user to reduce and expand
+the height of the circle.
 
 
 The Property Slot

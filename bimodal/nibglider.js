@@ -81,6 +81,9 @@ var shapeType = null;  // 'circle_radius' or 'circle_diameter'
 var shapeStartPoint = null;
 var previewShape = null;
 var previewLine = null;
+var previewPath = null;
+var previewRect = null;
+var shapePt2 = null;
 
 // Variables to track selected items and drag-lock status
 var selectedItems = [];
@@ -119,6 +122,11 @@ function updateTextContent() {
       textItem1.content += '\nDrawing Circle (' + mode + ')';
     } else if (shapeType === 'rectangle_diagonal') {
       textItem1.content += '\nRectangle Diagonal';
+    } else if (shapeType === 'rectangle_two_edges') {
+      textItem1.content += '\nRectangle Two Edges';
+      if (shapePt2 !== null) {
+        textItem1.content += ' (width)';
+      }
     }
   }
 }
@@ -220,7 +228,39 @@ function onMouseMove(event) {
 }
 
 function updateShapePreview() {
-  if (!isDrawingShape || !previewShape || !shapeStartPoint) return;
+  if (!isDrawingShape || !shapeStartPoint) return;
+
+  if (shapeType === 'rectangle_two_edges') {
+    if (shapePt2 === null) {
+      // Phase 1: live first edge
+      previewLine.firstSegment.point = shapeStartPoint;
+      previewLine.lastSegment.point = mousePt;
+      if (previewPath.segments.length > 1) {
+        previewPath.removeSegment(1);
+      }
+      previewPath.add(mousePt);
+    } else {
+      // Phase 2: live second drag, preview rect
+      previewLine.firstSegment.point = shapePt2;
+      previewLine.lastSegment.point = mousePt;
+      var pt1 = shapeStartPoint;
+      var pt2 = shapePt2;
+      var pt3 = mousePt;
+      var V1 = pt2.subtract(pt1);
+      var dir1 = V1.normalize();
+      var V2 = pt3.subtract(pt2);
+      var proj_scalar = V2.dot(dir1);
+      var proj_vec = dir1.multiply(proj_scalar);
+      var perp_vec = V2.subtract(proj_vec);
+      var ptC = pt2.add(perp_vec);
+      var ptD = pt1.add(perp_vec);
+      previewRect.segments[0].point = pt1;
+      previewRect.segments[1].point = pt2;
+      previewRect.segments[2].point = ptC;
+      previewRect.segments[3].point = ptD;
+    }
+    return;
+  }
 
   var endPt = mousePt;
   var center, radius;
@@ -320,6 +360,10 @@ document.addEventListener('keydown', function (event) {
 
     if (keyLower == 'i') {
       rectDiagonalKC();
+    }
+
+    if (keyLower == 'u') {
+      rectTwoEdgesKC();
     }
 
 

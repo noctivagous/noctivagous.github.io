@@ -57,6 +57,15 @@ function cancelCurrentDrawingOperation()
     shapeType = null;
     shapeStartPoint = null;
   }
+  if (previewPath) {
+    previewPath.remove();
+    previewPath = null;
+  }
+  if (previewRect) {
+    previewRect.remove();
+    previewRect = null;
+  }
+  shapePt2 = null;
 }
 
 function endPathAsStroke() {
@@ -175,8 +184,57 @@ function rectDiagonalKC() {
   project.activeLayer.addChild(previewLine);
 }
 
+function rectTwoEdgesKC() {
+  if (shapeType === 'rectangle_two_edges') {
+    if (shapePt2 === null) {
+      // Second press: fix pt2, enter phase 2
+      shapePt2 = mousePt.clone();
+      previewPath.segments[1].point = shapePt2;
+      previewLine.firstSegment.point = shapePt2;
+      previewLine.lastSegment.point = shapePt2;
+      previewRect = new paper.Path({
+        segments: [
+          shapeStartPoint,
+          shapePt2,
+          shapePt2,
+          shapeStartPoint
+        ],
+        closed: true,
+        strokeColor: 'black',
+        strokeWidth: globalStrokeWidth,
+        fullySelected: true
+      });
+      project.activeLayer.addChild(previewRect);
+    } else {
+      // Third press: end
+      endShapeAsStroke();
+    }
+    return;
+  }
+  if (isDrawingShape || !mousePt) return;
+  shapeStartPoint = mousePt.clone();
+  shapeType = 'rectangle_two_edges';
+  shapePt2 = null;
+  isDrawingShape = true;
+  previewShape = null;
+  previewPath = new paper.Path({
+    segments: [shapeStartPoint],
+    strokeColor: 'black',
+    strokeWidth: globalStrokeWidth,
+    fullySelected: true
+  });
+  project.activeLayer.addChild(previewPath);
+  previewLine = new paper.Path({
+    segments: [shapeStartPoint, shapeStartPoint],
+    strokeColor: new paper.Color(0.5),
+    strokeWidth: 1,
+    strokeDashArray: [4, 4]
+  });
+  project.activeLayer.addChild(previewLine);
+}
+
 function endShapeAsStroke() {
-  if (!isDrawingShape || !previewShape) return;
+  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -196,22 +254,51 @@ function endShapeAsStroke() {
       strokeCap: 'round',
       strokeJoin: 'round'
     });
+  } else if (shapeType === 'rectangle_two_edges') {
+    var pt1 = shapeStartPoint;
+    var pt2 = shapePt2;
+    var pt3 = mousePt;
+    var V1 = pt2.subtract(pt1);
+    var dir1 = V1.normalize();
+    var V2 = pt3.subtract(pt2);
+    var proj_scalar = V2.dot(dir1);
+    var proj_vec = dir1.multiply(proj_scalar);
+    var perp_vec = V2.subtract(proj_vec);
+    var ptC = pt2.add(perp_vec);
+    var ptD = pt1.add(perp_vec);
+    finalPath = new paper.Path({
+      segments: [pt1, pt2, ptC, ptD],
+      closed: true,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
   }
   if (finalPath) {
     finalPath.selected = false;
     project.activeLayer.addChild(finalPath);
   }
-  previewShape.remove();
+  if (previewShape) previewShape.remove();
   if (previewLine) previewLine.remove();
+  if (previewPath) {
+    previewPath.remove();
+    previewPath = null;
+  }
+  if (previewRect) {
+    previewRect.remove();
+    previewRect = null;
+  }
   isDrawingShape = false;
   shapeType = null;
   shapeStartPoint = null;
+  shapePt2 = null;
   previewShape = null;
   previewLine = null;
 }
 
 function endShapeFillOnly() {
-  if (!isDrawingShape || !previewShape) return;
+  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -227,22 +314,49 @@ function endShapeFillOnly() {
       strokeWidth: 0,
       fillColor: new paper.Color(0, 0, 0)
     });
+  } else if (shapeType === 'rectangle_two_edges') {
+    var pt1 = shapeStartPoint;
+    var pt2 = shapePt2;
+    var pt3 = mousePt;
+    var V1 = pt2.subtract(pt1);
+    var dir1 = V1.normalize();
+    var V2 = pt3.subtract(pt2);
+    var proj_scalar = V2.dot(dir1);
+    var proj_vec = dir1.multiply(proj_scalar);
+    var perp_vec = V2.subtract(proj_vec);
+    var ptC = pt2.add(perp_vec);
+    var ptD = pt1.add(perp_vec);
+    finalPath = new paper.Path({
+      segments: [pt1, pt2, ptC, ptD],
+      closed: true,
+      strokeWidth: 0,
+      fillColor: new paper.Color(0, 0, 0)
+    });
   }
   if (finalPath) {
     finalPath.selected = false;
     project.activeLayer.addChild(finalPath);
   }
-  previewShape.remove();
+  if (previewShape) previewShape.remove();
   if (previewLine) previewLine.remove();
+  if (previewPath) {
+    previewPath.remove();
+    previewPath = null;
+  }
+  if (previewRect) {
+    previewRect.remove();
+    previewRect = null;
+  }
   isDrawingShape = false;
   shapeType = null;
   shapeStartPoint = null;
+  shapePt2 = null;
   previewShape = null;
   previewLine = null;
 }
 
 function endShapeFillStroke() {
-  if (!isDrawingShape || !previewShape) return;
+  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -258,6 +372,27 @@ function endShapeFillStroke() {
     finalPath = new paper.Path.Rectangle({
       center: previewShape.position,
       size: previewShape.size,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      fillColor: new paper.Color(0, 0, 0),
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  } else if (shapeType === 'rectangle_two_edges') {
+    var pt1 = shapeStartPoint;
+    var pt2 = shapePt2;
+    var pt3 = mousePt;
+    var V1 = pt2.subtract(pt1);
+    var dir1 = V1.normalize();
+    var V2 = pt3.subtract(pt2);
+    var proj_scalar = V2.dot(dir1);
+    var proj_vec = dir1.multiply(proj_scalar);
+    var perp_vec = V2.subtract(proj_vec);
+    var ptC = pt2.add(perp_vec);
+    var ptD = pt1.add(perp_vec);
+    finalPath = new paper.Path({
+      segments: [pt1, pt2, ptC, ptD],
+      closed: true,
       strokeColor: 'black',
       strokeWidth: globalStrokeWidth,
       fillColor: new paper.Color(0, 0, 0),
@@ -269,17 +404,26 @@ function endShapeFillStroke() {
     finalPath.selected = false;
     project.activeLayer.addChild(finalPath);
   }
-  previewShape.remove();
+  if (previewShape) previewShape.remove();
   if (previewLine) previewLine.remove();
+  if (previewPath) {
+    previewPath.remove();
+    previewPath = null;
+  }
+  if (previewRect) {
+    previewRect.remove();
+    previewRect = null;
+  }
   isDrawingShape = false;
   shapeType = null;
   shapeStartPoint = null;
+  shapePt2 = null;
   previewShape = null;
   previewLine = null;
 }
 
 function stampCurrentShape() {
-  if (!isDrawingShape || !previewShape) return;
+  if (!isDrawingShape || (!previewShape && shapePt2 === null)) return;
   var finalPath;
   if (shapeType.startsWith('circle_')) {
     finalPath = new paper.Path.Circle({
@@ -294,6 +438,26 @@ function stampCurrentShape() {
     finalPath = new paper.Path.Rectangle({
       center: previewShape.position,
       size: previewShape.size,
+      strokeColor: 'black',
+      strokeWidth: globalStrokeWidth,
+      strokeCap: 'round',
+      strokeJoin: 'round'
+    });
+  } else if (shapeType === 'rectangle_two_edges') {
+    var pt1 = shapeStartPoint;
+    var pt2 = shapePt2;
+    var pt3 = mousePt;
+    var V1 = pt2.subtract(pt1);
+    var dir1 = V1.normalize();
+    var V2 = pt3.subtract(pt2);
+    var proj_scalar = V2.dot(dir1);
+    var proj_vec = dir1.multiply(proj_scalar);
+    var perp_vec = V2.subtract(proj_vec);
+    var ptC = pt2.add(perp_vec);
+    var ptD = pt1.add(perp_vec);
+    finalPath = new paper.Path({
+      segments: [pt1, pt2, ptC, ptD],
+      closed: true,
       strokeColor: 'black',
       strokeWidth: globalStrokeWidth,
       strokeCap: 'round',

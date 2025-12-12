@@ -372,6 +372,18 @@ document.addEventListener('keydown', function (event) {
     }
   }
 
+  // Rotate keys - selection rotate
+  if (event.key === ';' || event.key === "'") {
+    if (selectedItems.length > 0) {
+      var center = collectiveCenter(selectedItems);
+      var angle = event.key === ';' ? -10 : 10;
+      for (var i = 0; i < selectedItems.length; i++) {
+        selectedItems[i].rotate(angle, center);
+      }
+      return;
+    }
+  }
+
   // Spacebar for drag-lock
   if (event.key === ' ' && (selectedItems.length > 0)) {
     setIsInDragLock(!_isInDragLock); // Toggle drag-lock status
@@ -436,10 +448,28 @@ document.addEventListener('keydown', function (event) {
     changeStrokeWidth(3);
   }
   if (keyLower == 'c') {
-    thinStrokeWidth();
+    if (isDrawingPath || isDrawingShape) {
+      thinStrokeWidth();
+    } else if (selectedItems.length > 0) {
+      for (var i = 0; i < selectedItems.length; i++) {
+        if (selectedItems[i].strokeWidth) {
+          selectedItems[i].strokeWidth = Math.max(1, selectedItems[i].strokeWidth - 1);
+        }
+      }
+    }
+    return;
   }
   if (keyLower == 'v') {
-    thickenStrokeWidth();
+    if (isDrawingPath || isDrawingShape) {
+      thickenStrokeWidth();
+    } else if (selectedItems.length > 0) {
+      for (var i = 0; i < selectedItems.length; i++) {
+        if (selectedItems[i].strokeWidth) {
+          selectedItems[i].strokeWidth = Math.min(maxStrokeWidth, selectedItems[i].strokeWidth + 1);
+        }
+      }
+    }
+    return;
   }
 
 

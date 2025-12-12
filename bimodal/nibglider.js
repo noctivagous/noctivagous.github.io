@@ -108,27 +108,52 @@ var textItem1 = new paper.PointText({
 
 
 function updateTextContent() {
+  let lines = ['Stroke Width: ' + globalStrokeWidth + 'pt'];
   var selectedCount = selectedItems.length;
-  textItem1.content = 'Stroke Width: ' + globalStrokeWidth + 'pt';
-  textItem1.content += selectedCount ? '\nSelected Objects: ' + selectedCount : '';
-  textItem1.content += _isInDragLock ? '\nDrag-Lock On' : '';
+  if (selectedCount) {
+    lines.push('Selected Objects: ' + selectedCount);
+  }
+  if (_isInDragLock) {
+    lines.push('Drag-Lock On');
+  }
+  let instruction = '';
   if (isDrawingPath) {
-    textItem1.content += '\nDrawing Polyline';
+    lines.push('Drawing Polyline');
+    instruction = 'Repeat F to add polyline points. End with A';
   }
   if (isDrawingShape) {
-    var mode = '';
+    let shapeInfo = '';
     if (shapeType === 'circle_radius' || shapeType === 'circle_diameter') {
-      mode = shapeType === 'circle_radius' ? 'radius' : 'diameter';
-      textItem1.content += '\nDrawing Circle (' + mode + ')';
+      let mode = shapeType === 'circle_radius' ? 'radius' : 'diameter';
+      shapeInfo = 'Drawing Circle (' + mode + ')';
     } else if (shapeType === 'rectangle_diagonal') {
-      textItem1.content += '\nRectangle Diagonal';
+      shapeInfo = 'Rectangle Diagonal';
     } else if (shapeType === 'rectangle_two_edges') {
-      textItem1.content += '\nRectangle Two Edges';
+      shapeInfo = 'Rectangle Two Edges';
       if (shapePt2 !== null) {
-        textItem1.content += ' (width)';
+      //  lines.push(' (width)');
       }
     }
+    lines.push(shapeInfo);
+    let finishKey;
+    if (shapeType.startsWith('circle_')) {
+      finishKey = shapeType === 'circle_diameter' ? 'N' : 'M';
+      instruction = `Press ${finishKey} to finish or W to stamp.`;
+    } else if (shapeType === 'rectangle_diagonal') {
+      instruction = 'Press I to finish or W to stamp.';
+    } else if (shapeType === 'rectangle_two_edges') {
+      if (shapePt2 === null) {
+        instruction = 'Press U again to finish the first edge';
+      } else {
+        instruction = 'Moving the line adjusts the second edge. Press U to finish or W to stamp.';
+      }
+    }
+    instruction += ' Q: cancel';
   }
+  if (instruction) {
+    lines.push(instruction);
+  }
+  textItem1.content = lines.join('\n');
 }
 
 
@@ -186,7 +211,7 @@ function hitTestUnderCursor() {
       // If nothing is underneath the cursor, clear the selection
       clearOutSelection();
     }
-
+    updateTextContent();
 }
 
 paper.view.onMouseMove = onMouseMove;

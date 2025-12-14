@@ -24,6 +24,8 @@ padding:0pt;
 
 #canvasContainer{
 outline:3pt solid black;
+position: relative;
+height: calc(100vh - 200px); /* Adjust based on your layout needs */
 }
 
 
@@ -53,7 +55,8 @@ article{
 width:80%;
 margin:auto;
 }
-</style>
+
+  </style>
   <script>
     window.addEventListener('keydown', function (event) {
       if (event.key === ' ' || event.key === 'Tab') {
@@ -234,18 +237,93 @@ margin:auto;
     </div>
 
 
-    <div id="canvasContainer">
+<div id="controlPanel" style="
+  width: 100%;
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: Monospace;
+  font-size: 14px;
+  box-sizing: border-box;
+">
 
-      <div style="z-index: 1;">
-        <canvas id="nibgliderCanvas" tabindex="0" resize></canvas>
-      </div>
-      <div class="corner-div">
-        
-        
+<div id="rectangleFrameControls" style="background:rgb(22, 138, 126); 
+padding: 5px; margin: 5px; border-radius: 5px; display:none; ">
+  <div style="margin-right: 20px;">
+    Rectangle Keys:
+    <select id="rectangleInnerShapeSelect">
+      <option value="rectangle">Rectangle</option>
+      <option value="rightTriangle">Triangle: Right A</option>
+      <option value="rightTriangleB">Triangle: Right B</option>
+      <option value="regularTriangle">Triangle: Equilateral</option>
+    </select>
+  </div>
+  </div>
 
-        <div id="keyboardContainer">
+<!-- Replace the circleFrameControls div in controlPanel: -->
+<div id="circleFrameControls" style="background: rgb(14, 77, 148); 
+padding: 5px; margin: 5px; border-radius: 5px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
+  <label>Circle Keys:</label>
+  <select id="circleInnerShapeSelect">
+    <option value="circle">Circle</option>
+    <option value="polygon" selected>Regular Polygon</option>
+    <option value="supershape">Supershape</option>
+  </select>
+  <div id="shapePreviewContainer" style="width: 120px; height: 80px;">
+    <svg id="shapePreview" viewBox="-1.2 -1.2 2.4 2.4" width="120" height="80" style="background: rgba(0,0,0,0.4); border-radius: 3px;">
+      <path id="shapePreviewPath" fill="#ddd" stroke="#444" stroke-width="0.015" stroke-linejoin="round" stroke-linecap="round" d="M 1,0 L 1,0"/>
+    </svg>
+  </div>
+  <span id="regularPolygonParametersForPanel" class="panelParameters">
+    <span class="param-item">
+      <label id="circlePolySidesLabel">Sides: 6</label>
+      <input type="range" id="circlePolySides" min="3" max="12" value="6">
+    </span>
+  </span>
+  <span id="supershapeParametersForPanel" class="panelParameters" style="display: none;">
+    <span class="param-item">
+      <label id="supershapeM1Label">M: 4.0</label>
+      <input type="range" id="supershapeM1" min="1.0" max="20" step="1.0" value="4.0">
+    </span>
+    <span class="param-item">
+      <label id="supershapeN1Label">N1: 1.0</label>
+      <input type="range" id="supershapeN1" min="0.1" max="10" step="0.1" value="1.0">
+    </span>
+    <span class="param-item">
+      <label id="supershapeN2Label">N2: 1.0</label>
+      <input type="range" id="supershapeN2" min="0.1" max="10" step="0.1" value="1.0">
+    </span>
+    <span class="param-item">
+      <label id="supershapeN3Label">N3: 1.0</label>
+      <input type="range" id="supershapeN3" min="0.1" max="10" step="0.1" value="1.0">
+    </span>
+    <span class="param-item">
+      <label id="supershapeA1Label">A1: 1.0</label>
+      <input type="range" id="supershapeA1" min="0.1" max="5" step="0.1" value="1.0">
+    </span>
+    <span class="param-item">
+      <label id="supershapeA2Label">A2: 1.0</label>
+      <input type="range" id="supershapeA2" min="0.1" max="5" step="0.1" value="1.0">
+    </span>
+  </span>
+</div>
 
-          <div id="keyboardKeysContainer">
+</div>
+<div id="canvasContainer" style="outline: 3pt solid black; position: relative; height: 800px;">
+  <canvas id="nibgliderCanvas" style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+  "></canvas>
+  
+  <div class="corner-div">
+    <div id="keyboardContainer">
+      <div id="keyboardKeysContainer">
 
 
 
@@ -880,10 +958,12 @@ is used for copying an object into multiple folders.</p>-->
 
   </div>
 
-
+  <script src="globalvars.js"></script>
+  <script src="nibgliderKeyCommands.js"></script>
   <script src="nibglider.js"></script>
   <script src="keyboard.js"></script>
-  <script src="nibgliderKeyCommands.js"></script>
+
+
 
 
 </body>

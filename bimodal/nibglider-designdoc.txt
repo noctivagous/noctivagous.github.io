@@ -182,6 +182,22 @@ because it is easy to hit without looking at the keyboard
 and the Spacebar is the same.  They are easily used in
 rapid alternation.
 
+Using The Tools As Frames
+
+We are using the shape that is normally produced 
+by any given shape tool key, whether it is a 
+rectangle or a circle, and placing a shape inside 
+it as the program settings have configured by the user. 
+We call this the frame for the keys/the tool. 
+If the rectangle frame is configured that it is the same
+as its shape name, such as a rectangle for the rectangle
+tool (the rectangle keys), then it will do that.  
+We can draw a supershape inside a circle, for example, 
+or a regular polygon, so we go ahead and use the circle as a frame.  
+That's why we call it the frame for these keys and
+this takes priority in how we program the app in the code.
+
+
 A drawing tool may have multiple keys on the 
 keyboards. There are two Circle tool buttons, B and N,
 B for radius and N for diameter.  This program,
@@ -206,6 +222,9 @@ in the app user interface and if "Loaded Object"
 is selected as the selected shape for
 a given tool, such as Quad, that tools will
 draw it live inside the bounds of its frame.
+
+
+
 
 Placing Text on The Page
 
@@ -279,17 +298,45 @@ to the object underneath the cursor.
 
 
  DrawingManager
+    drawingDimensions (pt units)
+    drawingLayers : {layer1: {visibility:visible, name: "name", etc.}, }
+    currentDrawingLayer: layer1
+    drawingBoardBackgroundColor: #cccccc
+
     drawingState: [idle,isInDrawing]
     drawingTools: [pathTool,rectangleTool,circleTool,quadTool, arcTool, stampTool]
     currentDrawingTool : none    // reset after 
+    
+    Drawing Transformations
     combinatoricMode: [none, union, subtraction, intersection]
-    drawingLayers : []
-    currentDrawingLayer: layer1
-    snappingModes: [angleSnapping, lengthSnapping, pointSnapping, pathSnapping]
+    repeatMode: conwaySymmetryNotation // replicates shapes live according to conway symmetry notation.
+    noise: // perline noise settings for the paths of shapes and paths being deposited.
+
+    Snapping
+    For live drawing, these are snapping applied to the path,
+    so if angleSnapping is on and its angle is 15 degrees, then
+    lines being drawn will only be in 15 degree intervals.
+    If lengthSnapping is on and the setting is 10pt, the lines drawn
+    will only move back and forth in 10pt increments.
+    Alignment Snapping shows guidelines across the canvas from rectangles with edges
+    on the same x or y axes as the cursor, allowing for drawing on
+    that guideline or aligning drawing of a shape on the same x or y coordinate
+    of a nearby rectangle or other shape.  A rectangle rotated will show its edge 
+    guidelines too.  
+    When the background grid is visible, the snapping can be on its
+    intersections, guidelines, or both.
+    snappingModes: [angleSnapping, lengthSnapping, pointSnapping, pathSnapping, alignSnapping, gridSnapping]
     snappingModesConfig: {angleSnapping: { snapAngleInDegrees:15, on:false },
-    { on:false },{  on:false },{  on:false }    
+    { on:false },{  on:false },{ gridSnapping:10, on:false, snappingType:guidelines,
+    gridtype:rectangle }    
+    
+    
+    
+    Loaded Object
     loadedObject - This is the object loaded by the user, which can be
-    selected by any tool for 
+    selected by any tool's GUI panel for its frame contents.  So, for the Circle tool,
+    if the Circle tool's GUI panel has "Loaded Object" selected for the contents
+    of the circle, it will draw that object. 
     
     
  DrawingTool - base class
@@ -476,11 +523,16 @@ to the object underneath the cursor.
         inherits from RepeatingShapeComponent < ParametricShapeComponent
         repeats shape(s) on grid according to
         the component's parameters.
+            > GridRepeat
+            > CircleRepeat
+            > 
         
         > RandomizingParametricShapeComponent subclass
             example: depositing a grass vector
             shape can be randomized each time
-            randomizing rules.
+            randomizing rules.  An individual
+            shape can be randomized or a group.
+            
            
             
     
@@ -546,9 +598,26 @@ COMBINATORICS MODES
 
 TODO
 
+    instructions bar:
+    - instructions text moved to separate instructions bar (overlay)
+    at top.
 
-- instructions text moved to separate instructions bar (overlay)
+    document:
+        - document size (default: US Legal)
+        - document orientation (default:landscape)
+        - left and top ruler.
+        - manually implemented scrollbars for document
+
+- instant select + draglock
+
+- control + i : import image/file
+- control + e : export file
+
 - spline:
+    note: rather than individual spline points
+    for rounded points, it is sometimes better
+    to insert multiple points.
+
     - soft 1 - S key - tension low
     - sharp - F key - sharp point
     - soft 2 - D key - tension high
@@ -562,7 +631,8 @@ TODO
     - rectangle tool
         - shape: rectangle
     - circle tool
-        - shape: circle, regular polygon
+        - shape: circle, regular polygon, supershape
+        - inradius or circumradius
         
  - fill and stroke
     - fill: color,pattern,shading
@@ -584,9 +654,9 @@ TODO
     
 - selection
     - ` (backquote) key: 
-        - select-click from either fill or stroke
         - polyline stroke select: overlaps line segments
         - polyline fill-stroke select: overlaps fill of polyline
+        - select-click from either fill or stroke
     - capslock key: selection from live rectangle
     
     

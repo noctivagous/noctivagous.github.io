@@ -1,12 +1,71 @@
-// Initialize Paper.js
-// Ensure Paper.js is properly initialized
-paper.install(window);
+init();
 
-var canvas = document.getElementById('nibgliderCanvas');
-paper.setup(canvas);
+function init(){
 
-mousePt = new paper.Point(paper.view.size.width / 2, paper.view.size.height / 2);
+    // Initialize Paper.js
+  // Ensure Paper.js is properly initialized
+  paper.install(window);
 
+  canvas = document.getElementById('nibgliderCanvas');
+  paper.setup(canvas);
+
+  mousePt = new paper.Point(paper.view.size.width / 2, paper.view.size.height / 2);
+
+  registerEventListeners();
+
+}
+
+function registerEventListeners() {
+  // Event listeners will be added here
+}
+
+
+// Add circle-specific globals after existing innerShape globals:
+var circleInnerShapeType = 'polygon';
+var circleInnerShapeParams = {
+  sides: 6,
+  m: 3,
+  n1: 0.2,
+  n2: 1.7,
+  n3: 1.7
+};
+
+// Update global after definition:
+circleInnerShapeParams.a1 = 1.0;
+circleInnerShapeParams.a2 = 1.0;
+
+
+circleInnerShapeSelect.addEventListener('change', function() {
+  circleInnerShapeType = this.value;
+  updateTextContent();
+});
+
+circlePolySidesSlider.addEventListener('input', function() {
+  circleInnerShapeParams.sides = parseInt(this.value);
+  circlePolySidesLabel.textContent = 'Sides: ' + this.value;
+  updateTextContent();
+});
+
+// Init
+circleInnerShapeSelect.value = circleInnerShapeType;
+circlePolySidesSlider.value = circleInnerShapeParams.sides;
+circlePolySidesLabel.textContent = 'Sides: ' + circleInnerShapeParams.sides;
+
+
+// ...existing previews...
+previewInner = null;
+innerShapeType = 'polygon';  // 'none', 'circle', 'polygon', 'supershape'
+innerShapeParams = {
+  sides: 6,     // for polygon
+  m: 3,         // for supershape
+  n1: 0.2,
+  n2: 1.7,
+  n3: 1.7
+};
+
+
+// Add global:
+shapeGuideAngle = 0;
 
 
 // Attach a mousemove event to the canvas
@@ -120,6 +179,7 @@ var splineTensionDefault = 0.4;
 var splineTension = 0.4;
 
 function updateTextContent() {
+
   let lines = ['Stroke Width: ' + globalStrokeWidth + 'pt'];
   var selectedCount = selectedItems.length;
   if (selectedCount) {
@@ -173,6 +233,7 @@ function updateTextContent() {
   if (instruction) {
     lines.push(instruction);
   }
+
   textItem1.content = lines.join('\n');
 }
 
@@ -346,11 +407,13 @@ function updateShapePreview() {
     radius = shapeStartPoint.getDistance(endPt);
     previewShape.position = center;
     previewShape.radius = radius;
+shapeGuideAngle = mousePt.subtract(previewShape.position).angle;
   } else if (shapeType === 'circle_diameter') {
     center = shapeStartPoint.add(endPt).divide(2);
     radius = shapeStartPoint.getDistance(endPt) / 2;
     previewShape.position = center;
     previewShape.radius = radius;
+shapeGuideAngle = mousePt.subtract(previewShape.position).angle;
   } else if (shapeType === 'rectangle_diagonal') {
     var dx = endPt.x - shapeStartPoint.x;
     var dy = endPt.y - shapeStartPoint.y;
@@ -364,6 +427,42 @@ function updateShapePreview() {
   if (previewLine) {
     previewLine.firstSegment.point = shapeStartPoint;
     previewLine.lastSegment.point = endPt;
+  }
+
+  if (shapeType === 'rectangle_diagonal') return;  // ← ADD: skip inner preview
+
+  // At end of updateShapePreview():
+  if (previewInner) {
+    previewInner.remove();
+    previewInner = null;
+  }
+  if (isDrawingShape && innerShapeType !== 'none') {
+    let framePreview = null;
+    if (shapeType.startsWith('circle_') && previewShape && previewShape.radius > 0) {
+      const pradius = previewShape.radius - previewShape.strokeWidth / 2;
+      if (pradius > 0) {
+        previewInner = createInnerShape(previewShape.position, pradius, 'preview', shapeGuideAngle);
+        if (previewInner) project.activeLayer.addChild(previewInner);
+      }
+    } else if (shapeType === 'rectangle_centerline' || (shapeType === 'rectangle_two_edges' && shapePt2 !== null)) {
+      framePreview = previewRect;
+    } else if (previewShape) {
+      framePreview = previewShape;
+    }
+    if (framePreview && framePreview.bounds && framePreview.bounds.width > 0 && framePreview.bounds.height > 0) {
+      const inset = globalStrokeWidth * 1.5;
+      const bx = framePreview.bounds.x + inset;
+      const by = framePreview.bounds.y + inset;
+      const bw = framePreview.bounds.width - 2 * inset;
+      const bh = framePreview.bounds.height - 2 * inset;
+      let pBounds = new paper.Rectangle(bx, by, bw, bh);
+      if (pBounds.width > 0 && pBounds.height > 0) {
+        const center = pBounds.center;
+        const radius = Math.min(pBounds.width, pBounds.height) / 2 * 0.9;
+        previewInner = createInnerShape(center, radius, 'preview');
+        if (previewInner) project.activeLayer.addChild(previewInner);
+      }
+    }
   }
 }
 
@@ -500,8 +599,10 @@ document.addEventListener('keydown', function (event) {
   if (keyLower == 'l' && !isDrawingPath) {
     changeStrokeWidth(3);
   }
+
   if (keyLower == 'c') {
-    if (isDrawingPath || isDrawingShape || isDrawingQuad) {
+    if (isDrawingPath || isDrawingShape || isDrawingQuad) 
+      {
       thinStrokeWidth();
     } else if (selectedItems.length > 0) {
       for (var i = 0; i < selectedItems.length; i++) {
@@ -510,6 +611,11 @@ document.addEventListener('keydown', function (event) {
         }
       }
     }
+else{
+
+  thinStrokeWidth();
+}
+
     return;
   }
   if (keyLower == 'v') {
@@ -521,6 +627,9 @@ document.addEventListener('keydown', function (event) {
           selectedItems[i].strokeWidth = Math.min(maxStrokeWidth, selectedItems[i].strokeWidth + 1);
         }
       }
+    }
+    else{
+      thickenStrokeWidth();
     }
     return;
   }
@@ -633,4 +742,241 @@ function onMouseUp(event) {
 
 }
 
+// Circle shape controls
+const circleSelect = document.getElementById('circleInnerShapeSelect');
+const polygonParams = document.getElementById('regularPolygonParametersForPanel');
+const supershapeParams = document.getElementById('supershapeParametersForPanel');
 
+// Hide supershape params initially
+supershapeParams.style.display = 'none';
+
+// Toggle parameter panels based on selection
+circleSelect.addEventListener('change', function() {
+  const selectedShape = this.value;
+  
+  // Hide both parameter spans first
+  polygonParams.style.display = 'none';
+  supershapeParams.style.display = 'none';
+  
+  if (selectedShape === 'polygon') {
+    polygonParams.style.display = 'inline';
+  } else if (selectedShape === 'supershape') {
+    supershapeParams.style.display = 'inline';
+  }
+  // For 'circle', show nothing extra
+});
+
+// Supershape parameter label updates and value storage
+const supershapeParamsObj = {
+  n1: { slider: document.getElementById('supershapeN1'), label: document.getElementById('supershapeN1Label') },
+  n2: { slider: document.getElementById('supershapeN2'), label: document.getElementById('supershapeN2Label') },
+  n3: { slider: document.getElementById('supershapeN3'), label: document.getElementById('supershapeN3Label') },
+  m: { slider: document.getElementById('supershapeM1'), label: document.getElementById('supershapeM1Label') },
+  a1: { slider: document.getElementById('supershapeA1'), label: document.getElementById('supershapeA1Label') },
+  a2: { slider: document.getElementById('supershapeA2'), label: document.getElementById('supershapeA2Label') }
+};
+
+// Initialize supershape parameters
+const supershapeValues = {
+  n1: 1.0, n2: 1.0, n3: 1.0, m: 4.0, a1: 1.0, a2: 1.0
+};
+
+// In supershape init section, sync initial values before slider loop:
+supershapeValues.n1 = circleInnerShapeParams.n1;
+supershapeValues.n2 = circleInnerShapeParams.n2;
+supershapeValues.n3 = circleInnerShapeParams.n3;
+supershapeValues.m = circleInnerShapeParams.m;
+supershapeValues.a1 = circleInnerShapeParams.a1;
+supershapeValues.a2 = circleInnerShapeParams.a2;
+
+// Update labels when sliders change
+Object.keys(supershapeParamsObj).forEach(param => {
+  const { slider, label } = supershapeParamsObj[param];
+  slider.value = supershapeValues[param];
+  
+  const updateLabel = () => {
+    const value = parseFloat(slider.value).toFixed(1);
+    label.textContent = `${param.toUpperCase()}: ${value}`;
+    supershapeValues[param] = parseFloat(value);
+    circleInnerShapeParams[param] = parseFloat(value);  // Sync to shape params
+    // Trigger supershape redraw if needed (call your supershape rendering function)
+    updateCurrentSupershape();
+  };
+  
+  slider.addEventListener('input', updateLabel);
+  updateLabel(); // Initial update
+});
+
+// Function to get current supershape parameters
+window.getSupershapeParams = function() {
+  return supershapeValues;
+};
+
+// Placeholder for supershape update function - replace with your actual rendering logic
+function updateCurrentSupershape() {
+  // This should regenerate the current supershape preview/shape using supershapeValues
+  // Example: if you have a currentCircleShape variable:
+  // if (currentCircleShape && circleSelect.value === 'supershape') {
+  //   regenerateSupershape(currentCircleShape, supershapeValues);
+  // }
+  
+  // For now, just log the values
+  console.log('Supershape params updated:', supershapeValues);
+}
+
+// Also handle polygon sides label update (if not already implemented)
+const polySidesSlider = document.getElementById('circlePolySides');
+const polySidesLabel = document.getElementById('circlePolySidesLabel');
+if (polySidesSlider && polySidesLabel) {
+  polySidesSlider.addEventListener('input', function() {
+    polySidesLabel.textContent = `Sides: ${this.value}`;
+  });
+}
+
+
+
+function generateCirclePath(segments = 72) {
+  let d = '';
+  for (let i = 0; i <= segments; i++) {
+    const theta = (i / segments) * Math.PI * 2;
+    const x = Math.cos(theta);
+    const y = Math.sin(theta);
+    if (i === 0) {
+      d += `M${x.toFixed(4)},${y.toFixed(4)}`;
+    } else {
+      d += ` L${x.toFixed(4)},${y.toFixed(4)}`;
+    }
+  }
+  return d;
+}
+
+function generateRegularPolygonPath(sides) {
+  let d = '';
+  for (let i = 0; i <= sides; i++) {
+    const theta = (i / sides) * Math.PI * 2;
+    const x = Math.cos(theta);
+    const y = Math.sin(theta);
+    if (i === 0) {
+      d += `M${x.toFixed(4)},${y.toFixed(4)}`;
+    } else {
+      d += ` L${x.toFixed(4)},${y.toFixed(4)}`;
+    }
+  }
+  return d;
+}
+
+function generateSupershapePath(n1, n2, n3, m, a1, a2, segments = 180) {
+  let d = '';
+  for (let i = 0; i <= segments; i++) {
+    const theta = (i / segments) * Math.PI * 2;
+    const phi = m * theta / 4;
+    const cos_phi = Math.cos(phi);
+    const sin_phi = Math.sin(phi);
+    const term1 = Math.pow(Math.abs(cos_phi / a1), n2);
+    const term2 = Math.pow(Math.abs(sin_phi / a2), n3);
+    const r = Math.pow(term1 + term2, -1 / n1);
+    const x = r * Math.cos(theta);
+    const y = r * Math.sin(theta);
+    if (i === 0) {
+      d += `M${x.toFixed(4)},${y.toFixed(4)}`;
+    } else {
+      d += ` L${x.toFixed(4)},${y.toFixed(4)}`;
+    }
+  }
+  d += ' Z';
+  return d;
+}
+
+
+
+function updatePreviewBox() {
+  const selectVal = document.getElementById('circleInnerShapeSelect').value;
+  let pathD;
+  if (selectVal === 'circle') {
+    pathD = generateCirclePath();
+  } else if (selectVal === 'polygon') {
+    const sides = parseInt(document.getElementById('circlePolySides').value);
+    pathD = generateRegularPolygonPath(sides);
+    document.getElementById('circlePolySidesLabel').textContent = `Sides: ${sides}`;
+  } else if (selectVal === 'supershape') {
+    const n1 = parseFloat(document.getElementById('supershapeN1').value);
+    const n2 = parseFloat(document.getElementById('supershapeN2').value);
+    const n3 = parseFloat(document.getElementById('supershapeN3').value);
+    const m = parseFloat(document.getElementById('supershapeM1').value);
+    const a1 = parseFloat(document.getElementById('supershapeA1').value);
+    const a2 = parseFloat(document.getElementById('supershapeA2').value);
+    pathD = generateSupershapePath(n1, n2, n3, m, a1, a2);
+    // Update supershape labels
+    document.getElementById('supershapeN1Label').textContent = `N1: ${n1.toFixed(1)}`;
+    document.getElementById('supershapeN2Label').textContent = `N2: ${n2.toFixed(1)}`;
+    document.getElementById('supershapeN3Label').textContent = `N3: ${n3.toFixed(1)}`;
+    document.getElementById('supershapeM1Label').textContent = `M: ${m.toFixed(1)}`;
+    document.getElementById('supershapeA1Label').textContent = `A1: ${a1.toFixed(1)}`;
+    document.getElementById('supershapeA2Label').textContent = `A2: ${a2.toFixed(1)}`;
+  }
+  document.getElementById('shapePreviewPath').setAttribute('d', pathD);
+}
+
+
+
+// Replace the DOMContentLoaded block at the end:
+document.addEventListener('DOMContentLoaded', function() {
+  // Circle shape controls
+  const circleSelect = document.getElementById('circleInnerShapeSelect');
+  const polygonParams = document.getElementById('regularPolygonParametersForPanel');
+  const supershapeParams = document.getElementById('supershapeParametersForPanel');
+  
+  if (!circleSelect) {
+    console.warn('circleInnerShapeSelect not found');
+    return;
+  }
+  
+  // Initially hide both parameter panels
+  if (polygonParams) polygonParams.style.display = 'none';
+  if (supershapeParams) supershapeParams.style.display = 'none';
+
+  // CRITICAL: Generate initial preview FIRST
+  updatePreviewBox();
+
+  // Toggle parameter panels based on selection
+  circleSelect.addEventListener('change', function() {
+    const value = this.value;
+    
+    // Hide all parameter panels first
+    if (polygonParams) polygonParams.style.display = 'none';
+    if (supershapeParams) supershapeParams.style.display = 'none';
+    
+    // Show the correct panel
+    if (value === 'polygon' && polygonParams) {
+      polygonParams.style.display = 'inline';
+    } else if (value === 'supershape' && supershapeParams) {
+      supershapeParams.style.display = 'inline';
+    }
+    
+    updatePreviewBox();
+  });
+
+  // Add input listeners for live updates
+  const circlePolySides = document.getElementById('circlePolySides');
+  if (circlePolySides) {
+    circlePolySides.addEventListener('input', function() {
+      document.getElementById('circlePolySidesLabel').textContent = `Sides: ${this.value}`;
+      updatePreviewBox();
+    });
+  }
+  
+  const supershapeSliders = document.querySelectorAll('#supershapeParametersForPanel input[type="range"]');
+  supershapeSliders.forEach(slider => {
+    slider.addEventListener('input', updatePreviewBox);
+  });
+
+  // Show initial panel based on selection and trigger change for consistency
+  const initialValue = circleSelect.value;
+  if (initialValue === 'polygon' && polygonParams) {
+    polygonParams.style.display = 'inline';
+  } else if (initialValue === 'supershape' && supershapeParams) {
+    supershapeParams.style.display = 'inline';
+  }
+  
+  circleSelect.dispatchEvent(new Event('change'));
+});

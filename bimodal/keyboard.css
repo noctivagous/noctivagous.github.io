@@ -13,7 +13,7 @@ UNUSED:
     
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
+    grid-template-rows: repeat(4, calc(100% / 6.2));
     gap: .5vmin .5vmin;
     grid-auto-flow: row;
     grid-template-areas:
@@ -32,6 +32,7 @@ UNUSED:
     
     align-content: end;
 }
+
 
 #keyboardKeysContainer button.hidden{
     visibility: hidden;
@@ -79,7 +80,7 @@ UNUSED:
 #keyboardContainer {
 
     position: absolute;
-    bottom: -110px;
+    bottom: 10px;
     left: 0;
     z-index: 9999;
     background-color: black;

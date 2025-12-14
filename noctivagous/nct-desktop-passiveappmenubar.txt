@@ -1,0 +1,22 @@
+nct-desktop-passiveappmenubar
+
+Opening an app always seems to
+involve opening one of its windows.
+A passive app menu bar extends
+from the application icon of the Dock
+and it remains until closed once opened. 
+It iss a menu of functions for immediate
+entry into the app's features, including
+drop destination areas for files for opening
+or operating on them.
+An image editor might have a "convert in
+place to [format]" function and dropping
+a file on this drop destination
+will copy a .JPG to a .PNG in its 
+same directory, for example.
+Other uses include immediate access
+to favorite websites on a web browser
+or the URL bar.  The URL bar can
+extend from the Dock, in other words.
+It is another access point to the
+functions of a program.

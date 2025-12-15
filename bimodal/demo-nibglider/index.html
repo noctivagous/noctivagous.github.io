@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/keyboard.css">
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+  <title>NibGlider Demo</title>
+</head>
+
+<body>
+  <div id="mainLayout">
+    <div id="controlPanel" class="control-panel-fixed">
+      <!-- Replace the circleFrameControls div in controlPanel: -->
+    
+
+      <!-- NEW: Stroke controls fieldset -->
+      <fieldset id="strokeControls"
+        style="background: rgb(100, 50, 100); padding: 8px; margin: 5px; border-radius: 3pt; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.1);">
+        <legend style="font-weight: bold; color: white;">
+          <label class="toggle-switch square-knob">
+            <input type="checkbox" id="strokeEnabledCheckbox">
+            <span class="slider" style="border-radius: 3px;"></span>
+          </label>
+          Stroke <kbd>R</kbd>
+        </legend>
+        <input type="color" id="strokeColorWell" value="#000000" title="Stroke Color">
+        <div
+          style="display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.1); padding: 4px 8px; 
+          border-radius: 4px;">
+          <label style="color: white; font-size: 0.875rem;"> Width:</label>
+          <input type="range" id="strokeWidthSlider" min="1" max="40" step="0.5" value="4"
+            style="width: 80px;">
+          <span id="strokeWidthDisplay"
+            style="font-family: monospace; font-weight: bold; color: #fff; min-width: 45px;">4.0 pt</span>
+        </div>
+      </fieldset>
+
+      <!-- NEW: Fill controls fieldset -->
+      <fieldset id="fillControls"
+        style="background: rgb(50, 100, 50); padding: 8px; margin: 5px; border-radius: 3pt; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.1);">
+        <legend style="font-weight: bold; color: white;">
+          <label class="toggle-switch square-knob">
+            <input type="checkbox" id="fillEnabledCheckbox">
+            <span class="slider" style="border-radius: 3px;"></span>
+          </label>
+          Fill <kbd>T</kbd>
+        </legend>
+        <input type="color" id="fillColorWell" value="#000000" title="Fill Color"
+          style="width: 44px; height: 44px; border: none; border-radius: 6px; cursor: pointer;">
+      </fieldset>
+
+  <fieldset id="circleFrameControls"
+        style="background: rgb(14, 77, 148); padding: 5px; margin: 5px; border-radius: 3px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.1);">
+        <legend>Circle Keys:</legend>
+        <select id="circleInnerShapeSelect">
+          <option value="circle">Circle</option>
+          <option value="polygon" selected>Regular Polygon</option>
+          <option value="supershape">Supershape</option>
+        </select>
+        <div id="shapePreviewContainer" style="width: 120px; height: 80px;">
+          <svg id="shapePreview" viewBox="-1.2 -1.2 2.4 2.4" width="120" height="80"
+            style="background: rgba(0,0,0,0.4); border-radius: 3px;">
+            <path id="shapePreviewPath" fill="#ddd" stroke="#444" stroke-width="0.015" stroke-linejoin="round"
+              stroke-linecap="round" d="M 1,0 L 1,0" />
+          </svg>
+        </div>
+        <span id="regularPolygonParametersForPanel" class="panelParameters">
+          <span class="param-item">
+            <label id="circlePolySidesLabel">Sides: 6</label>
+            <input type="range" id="circlePolySides" min="3" max="12" value="6">
+          </span>
+        </span>
+        <span id="supershapeParametersForPanel" class="panelParameters" style="display: none;">
+          <span class="param-block">
+          
+          <span class="param-item">
+            <label id="supershapeM1Label">M: 4.0</label>
+            <input type="range" id="supershapeM1" min="1.0" max="20" step="1.0" value="4.0">
+          </span>
+          <span class="param-item">
+            <label id="supershapeN1Label">N1: 1.0</label>
+            <input type="range" id="supershapeN1" min="0.1" max="10" step="0.1" value="1.0">
+          </span>
+          <span class="param-item">
+            <label id="supershapeN2Label">N2: 1.0</label>
+            <input type="range" id="supershapeN2" min="0.1" max="10" step="0.1" value="1.0">
+          </span>
+        </span>
+
+
+          <span class="param-block">
+            <span class="param-item">
+              <label id="supershapeN3Label">N3: 1.0</label>
+              <input type="range" id="supershapeN3" min="0.1" max="10" step="0.1" value="1.0">
+            </span>
+            <span class="param-item">
+              <label id="supershapeA1Label">A1: 1.0</label>
+              <input type="range" id="supershapeA1" min="0.1" max="5" step="0.1" value="1.0">
+            </span>
+            <span class="param-item">
+              <label id="supershapeA2Label">A2: 1.0</label>
+              <input type="range" id="supershapeA2" min="0.1" max="5" step="0.1" value="1.0">
+            </span>
+            </span>
+
+
+        </span>
+      </fieldset>
+      
+    </div>
+    <div id="canvasContainer">
+      <canvas id="nibgliderCanvas" class="nibglider-canvas"></canvas>
+
+      <div class="corner-div">
+        <div id="keyboardContainer">
+          <div id="keyboardKeysContainer">
+
+
+
+            <!-- 
+                █████████████████████ BEGIN TOP ROW:█████████████████████
+                esc F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 F13 F14
+              -->
+
+            <!--
+            
+              <button tabindex="-1" id="Escape" class="escKey keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F1" class="f1Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F2"  class="f2Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F3"  class="f3Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F4"  class="f4Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F5"  class="f5Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F6"  class="f6Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F7"  class="f7Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F8"  class="f8Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F9"  class="f9Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F10"  class="f10Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F11"  class="f11Key keyboardkey functionRow "></button>
+              <button tabindex="-1" id="F12"  class="f12Key keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F13"  class="f13Key keyboardkey functionRow"></button>
+              <button tabindex="-1" id="F14"  class="f14Key keyboardkey functionRow"></button>
+        
+            -->
+
+            <!-- 
+                END TOP ROW 
+              -->
+
+
+
+
+
+
+
+
+            <!-- 
+                ██████████████BEGIN SECOND ROW: █████████████████████
+                      tab Q W E R T Y U I O P [ ] \ 
+                -->
+
+                <button tabindex="-1" data-key="tab" id="Tab" class="keyboardkey tabKey OtherKey enabledButton">Select Objects</button>
+
+                <button data-key="q" tabindex="-1" id="KeyQ" class="keyboardkey KeyQ operationButton enabledButton cancelButton" style="transform: translate(-45%, 0%)">
+      cancel
+    </button>
+                <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey operationButton enabledButton">stamp</button>
+                <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey endButton">              <b>END:</b> <br />fill
+              </button>
+                <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey toggleButton enabledButton" style="transform: translate(-45%, 0%)">
+  toggle<br/>stroke
+</button>
+                <button data-key="t" tabindex="-1" id="KeyT" class="keyboardkey tKey toggleButton enabledButton" style="transform: translate(-45%, 0%)">
+  toggle<br/>fill
+</button>
+                <button data-key="y" tabindex="-1" id="KeyY" class="keyboardkey yKey drawingButton enabledButton rectangleButton" style="transform: translate(-45%, 0%)">
+      Rect.<br/>by centerline</button>
+    <button data-key="u" tabindex="-1" id="KeyU" class="keyboardkey uKey drawingButton enabledButton rectangleButton"
+      style="transform: translate(-45%, 0%)">Rect.<br/>by 2 edges</button>
+      
+                <button data-key="i" tabindex="-1" id="KeyI" class="keyboardkey iKey drawingButton enabledButton rectangleButton"
+      style="transform: translate(-47%, 0%)">Rect.<br/>by diag.</button>
+                <button data-key="o" tabindex="-1" id="KeyO" class="keyboardkey oKey drawingButton enabledButton quadButton" style="transform: translate(-45%, 0%)">
+      Quad<br/>4 pts
+    </button>
+                <button data-key="p" tabindex="-1" id="KeyP" class="keyboardkey pKey "></button>
+
+
+                <button data-key="[" tabindex="-1" id="BracketLeft"
+                  class="keyboardkey  bracketLeftKey operationButton enabledButton">scale
+                  -</button>
+                <button data-key="]" tabindex="-1" id="BracketRight"
+                  class="keyboardkey  bracketRightKey operationButton enabledButton">scale
+                  +</button>
+                <button data-key="\" tabindex="-1" id="Backslash" class="keyboardkey  backslashKey"></button>
+                <!-- 
+                    END SECOND ROW 
+                  -->
+
+
+
+
+              <!-- 
+                ██████████████  BEGIN THIRD ROW: ██████████████
+                     capslock a s d f g h j k l ; '
+                -->
+
+                <button data-key="capslock" tabindex="-1" id="CapsLock"
+                  class="keyboardkey capsLockKey OtherKey hidden"></button>
+
+
+                <button data-key="a" tabindex="-1" id="KeyA" class="keyboardkey KeyA endButton"
+                  style="transform: translate(-27%, 0%)"><b>END:</b><br />stroke</button>
+                <button data-key="s" tabindex="-1" id="KeyS" class="keyboardkey sKey endButton"
+                  style="transform: translate(-27%, 0%)">
+               
+                  <b>END:</b><br/>fill & stroke</button>
+                <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey "
+                  style="transform: translate(-27%, 0%)"></button>
+                <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"
+                  style="transform: translate(-27%, 0%)">sharp</br>point</button>
+                <button data-key="g" tabindex="-1" id="KeyG" class="keyboardkey gKey drawingButton enabledButton"
+                  style="transform: translate(-27%, 0%)">spline<br/>point</button>
+                <button data-key="h" tabindex="-1" id="KeyH" class="keyboardkey hKey "
+                  style="transform: translate(-27%, 0%)"></button>
+                <button data-key="j" tabindex="-1" id="KeyJ" class="keyboardkey jKey "
+                  style="transform: translate(-27%, 0%)"></button>
+                <button data-key="k" tabindex="-1" id="KeyK" class="keyboardkey kKey "
+                  style="transform: translate(-27%, 0%)"></button>
+                <button data-key="l" tabindex="-1" id="KeyL" class="keyboardkey lKey "
+                  style="transform: translate(-27%, 0%)"></button>
+                <button data-key=";" tabindex="-1" id="Semicolon" class="keyboardkey semicolonKey operationButton enabledButton"
+                  style="transform: translate(-27%, 0%)">rotate <span style="font-size:30px">⥀</span></button>
+                <button data-key="'" tabindex="-1" id="Quote" class="keyboardkey  singleQuoteKey operationButton enabledButton"
+                  style="transform: translate(-27%, 0%)">rotate <span style="font-size:30px">⥁</span></button>
+                <button data-key="return" tabindex="-1" id="Enter" class="keyboardkey returnKey OtherKey hidden"
+                  style="transform: translate(-5%, 0%)">return</button>
+
+
+
+              <!-- 
+                  END THIRD ROW 
+                -->
+
+
+
+
+              <!-- 
+                  ██████████████ BEGIN FOURTH ROW: █████████████████████
+                  shiftleft Z X C V B N M , . / shiftright
+                -->
+                <button data-key="shift" tabindex="-1" id="ShiftLeft"
+                  class="keyboardkey shiftKeyLeft OtherKey hidden"></button>
+
+                <button data-key="z" tabindex="-1" id="KeyZ" class="keyboardkey KeyZ "
+                  style="transform: translate(38%, 0%)"></button>
+                <button data-key="x" tabindex="-1" id="KeyX" class="keyboardkey xKey "
+                  style="transform: translate(38%, 0%)"></button>
+
+                <button data-key="c" tabindex="-1" id="KeyC" class="keyboardkey cKey stepper1Decrement enabledButton"
+                  style="transform: translate(38%, 0%)">-
+                  <br />stroke<br />width</button>
+
+
+
+                <button data-key="v" tabindex="-1" id="KeyV" class="keyboardkey vKey stepper1Increment enabledButton"
+                  style="transform: translate(38%, 0%)">+
+                  <br />stroke<br />width</button>
+                <button data-key="b" tabindex="-1" id="KeyB" class="keyboardkey bKey "
+                  style="transform: translate(38%, 0%)">
+                  </button>
+                <button data-key="n" tabindex="-1" id="KeyN" class="keyboardkey nKey drawingButton enabledButton circleButton"
+                  style="transform: translate(38%, 0%)">Circle<br/>by diameter</button>
+                <button data-key="m" tabindex="-1" id="KeyM" class="keyboardkey mKey drawingButton enabledButton circleButton"
+                  style="transform: translate(38%, 0%)">Circle<br/>by radius</button>
+                <button data-key="," tabindex="-1" id="Comma" class="keyboardkey commaKey "
+                  style="transform: translate(38%, 0%)"></button>
+                <button data-key="." tabindex="-1" id="Period" class="keyboardkey periodKey "
+                  style="transform: translate(38%, 0%)"></button>
+                <button data-key="/" tabindex="-1" id="Slash" class="keyboardkey forwardSlashKey OtherKey"
+                  style="transform: translate(38%, 0%)"></button>
+
+                <button data-key="shift" tabindex="-1" id="ShiftRight" class="keyboardkey shiftKeyRight OtherKey hidden"
+                  style="transform: translate(15%, 0%)"></button>
+
+                <!-- 
+                    END FOURTH ROW 
+                  -->
+
+
+
+
+              <!-- 
+                  BEGIN FIFTH ROW:
+                  █████████████████████ spacebarKey █████████████████████
+                 -->
+
+                <button tabindex="-1" data-key="spacebar" id="Space"
+                  class="keyboardkey spacebarKey OtherKey enabledButton selectionButton">Drag Lock</button>
+
+                <!-- END FIFTH ROW -->
+
+
+              </div>
+            </div><!-- END keyboardContainer-->
+
+          </div>
+        </div>
+
+
+        <script src="globalvars.js"></script>
+        <script src="nibgliderKeyCommands.js"></script>
+        <script src="shapeGenerators.js"></script>
+        <script src="drawingTools.js"></script>
+        <script src="keyboard.js"></script>
+        <script src="undomanager.js"></script>
+        <script src="NibGliderApp.js"></script>
+
+
+
+
+</body>
+
+</html>

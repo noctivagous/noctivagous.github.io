@@ -1,0 +1,621 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #2d3748;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  min-height: 100vh;
+}
+
+#intro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Typography */
+h1 {
+  font-family: 'Inter', 'Arial Narrow', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #1a202c, #2d3748);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: #2d3748;
+  margin: 4rem 0 1.5rem;
+  position: relative;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #4299e1, #63b3ed);
+  border-radius: 2px;
+}
+
+h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 3rem 0 1rem;
+}
+
+p, li {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* Article layout */
+article {
+  max-width: 900px;
+  margin: 0 auto 4rem;
+  padding: 0 1rem;
+}
+
+/* Canvas container */
+#canvasContainer {
+  position: relative;
+  max-width: 100%;
+  height: clamp(600px, 70vh, 800px);
+  margin: 3rem auto;
+  border-radius: 24px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  background: #1a202c;
+  outline: 3pt solid black;
+  height: calc(100vh - 100pt);
+  width: 100vw;
+  margin-top: 100px;
+  box-sizing: border-box;
+}
+
+
+
+#nibgliderCanvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  cursor: crosshair;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #ccc;
+}
+
+#nibgliderCanvas:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+/* Control panel */
+#controlPanel {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: rgba(45, 55, 72, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  width: 100%;
+  background: #333;
+  color: white;
+  padding: 0 20px;
+  font-family: Monospace;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+#controlPanel > div {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+#controlPanel label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+#controlPanel select,
+#controlPanel input[type="range"] {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+}
+
+#controlPanel input[type="range"] {
+  padding: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+#rectangleFrameControls {
+  background: rgb(22, 138, 126);
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  display: none;
+}
+
+#circleFrameControls {
+  background: rgb(14, 77, 148);
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#shapePreviewContainer {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#shapePreview {
+  background: rgba(0,0,0,0.4);
+  border-radius: 3px;
+}
+
+.param-block{
+  display: inline-block;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.param-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panelParameters .param-item label {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Instructions panel */
+.instructions-panel {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.instructions-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.instructions-panel td {
+  padding: 1.5rem;
+  vertical-align: top;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.instructions-panel td:last-child {
+  border-right: none;
+}
+
+.instructions-panel h3 {
+  margin-top: 0;
+  color: #2d3748;
+  font-size: 1.25rem;
+}
+
+/* Keyboard styling integration */
+#keyboardContainer {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+/* NEW: Main layout container */
+#mainLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Updated Canvas Container for flex layout */
+#canvasContainer {
+  flex: 1;
+  position: relative;
+  outline: 3pt solid black;
+  box-sizing: border-box;
+  background: #1a202c;
+}
+
+/* Updated Control Panel - now fixed top */
+#controlPanel {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  flex: none;
+  width: 100%;
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: Monospace;
+  font-size: 14px;
+  box-sizing: border-box;
+  border-radius: 0;
+  z-index: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Toggle switch styles for stroke/fill checkboxes */
+#controlPanel .toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  margin-right: 8px;
+}
+
+#controlPanel .toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#controlPanel .toggle-switch .slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #555;
+  border-radius: 30px;
+  transition: 0.4s;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+#controlPanel .toggle-switch .slider::before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 3pt;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+#controlPanel .toggle-switch input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+#controlPanel .toggle-switch input:checked + .slider::before {
+  transform: translateX(30px);
+}
+
+/* ON/OFF text */
+#controlPanel .toggle-switch .slider::after {
+  content: "OFF";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: 'Monaco', monospace;
+  z-index: 1;
+  transition: 0.3s;
+}
+
+#controlPanel .toggle-switch input:checked + .slider::after {
+  content: "ON";
+  right: auto;
+  left: 10px;
+  color: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #intro {
+    padding: 1rem;
+  }
+  
+  #controlPanel {
+    top: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .instructions-panel {
+    padding: 1.5rem;
+    margin: 1rem -1rem;
+    border-radius: 0;
+  }
+  
+  .instructions-panel td {
+    display: block;
+    padding: 1rem 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .instructions-panel td:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 480px) {
+  #canvasContainer {
+    height: 60vh;
+    margin: 1rem auto;
+  }
+}
+
+/* Custom kbd styling */
+kbd {
+  display: inline-block;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  background: linear-gradient(135deg, #f7fafc, #edf2f7);
+  color: #4a5568;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.875em;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 0 0.125rem;
+}
+
+/* Video iframe */
+iframe {
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 100%;
+  height: auto;
+}
+
+/* NEW: Canvas Container Inline Styles */
+#canvasContainer {
+  outline: 3pt solid black;
+  position: relative;
+  height: calc(100vh - 100pt);
+  width: 100vw;
+  margin-top: 100px;
+  box-sizing: border-box;
+}
+
+/* NEW: Control Panel Inline Styles */
+#controlPanel {
+  width: 100%;
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: Monospace;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+#rectangleFrameControls {
+  background: rgb(22, 138, 126);
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  display: none;
+}
+
+#circleFrameControls {
+  background: rgb(14, 77, 148);
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#shapePreviewContainer {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#shapePreview {
+  background: rgba(0,0,0,0.4);
+  border-radius: 3px;
+}
+
+.param-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panelParameters .param-item label {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* NEW: Canvas Inline Styles */
+#nibgliderCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+}
+
+/* NEW: Instructions Table Inline Styles */
+.instructions-table {
+  border: 2px dashed black;
+  font-size: 80%;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.instructions-table-content {
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.instructions-table td {
+  vertical-align: top;
+  color: rgb(146, 106, 106);
+  padding: 10px;
+}
+
+.instructions-table h3 {
+  margin-top: 0px;
+}
+
+/* Full viewport app layout - Bimodal Control Demo */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+#mainLayout {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+#controlPanel.control-panel-fixed {
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#canvasContainer {
+  flex: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  display: flex !important;
+  position: relative !important;
+  outline: 3pt solid black !important;
+  box-sizing: border-box !important;
+  background: #1a202c !important;
+}
+
+#nibgliderCanvas.nibglider-canvas {
+  flex: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  border: 1px solid #ccc !important;
+}
+
+/* Stroke Controls */
+#strokeControls {
+  background: rgb(100, 50, 100) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#strokeColorWell {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#strokeWidthSlider {
+  width: 100px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+#strokeWidthDisplay {
+  font-family: 'Monaco', monospace;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  min-width: 45px;
+  text-align: center;
+}
+
+/* Fill Controls */
+#fillControls {
+  background: rgb(50, 100, 50) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}

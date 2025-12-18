@@ -93,7 +93,7 @@ var splineTension = 0.4;
 var innerShapeType = 'polygon';  // 'none', 'circle', 'polygon', 'supershape'
 var innerShapeParams = {
   sides: 6,     // for polygon
-  m: 5,         // for supershape
+  m: 3,         // for supershape
   n1: 0.2,
   n2: 1.7,
   n3: 1.7
@@ -103,7 +103,7 @@ var innerShapeParams = {
 var circleInnerShapeType = 'polygon';
 var circleInnerShapeParams = {
   sides: 6,
-  m: 5,
+  m: 3,
   n1: 0.2,
   n2: 1.7,
   n3: 1.7

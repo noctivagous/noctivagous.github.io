@@ -14,12 +14,13 @@ interactions and tools redesigned,
 an altogether elevated form of interaction with 
 desktop software drawing occurs.
 
-Polyline Key As Base Reference
+Polyline or Hard Corner Point Key As Base Reference
 
-Laying down a polyline, which is a series of line segments
-that can close into a polygon shape or remain open,
+Laying down a polyline or sharp points, 
+which is a series of line segments that, in the tool, can 
+close into a polygon shape or remain open,
 involves moving the mouse and pressing the F
-key-- the Polyline key-- to deposit each point.  
+key-- the Polyline / Hard Corner key-- to deposit each sharp point.  
 After the first point is deposited, a line extends to the
 cursor of the mouse and adjusts its angle and length as the user
 moves the cursor and this continues until
@@ -36,12 +37,12 @@ What this does is eliminate the toolbar panel for
 using tools.  The user does not have to
 "switch to the Path tool" because it is implicitly
 activated as soon as the Polyline ('F') key is 
-pressed.  The Polyline key, F, does belong to the Path tool
+pressed.  The Polyline / Sharp Point key, F, does belong to the Path tool
 but in this case there are other keys that are also associated 
 with the tool in order to deposit specific contours on the 
 live path, including Curve and Rounded Corner. So, while
-the user is making a path to make a shape, he may press the Polyline key
-a few times and then use others like Curve before finalizing
+the user is making a path to make a shape, he may press the Polyline 
+/ Sharp Point key a few times and then use others like Curve before finalizing
 the shape with 'A' ("End").  Path keys are color-coded the 
 same on the keyboard to indicate they belong to the Path Tool.  
 In summary, instead of the user switching
@@ -51,7 +52,7 @@ keys belonging to the Path tool while moving the mouse,
 which means that real drawing occurs with the mouse 
 and keyboard used in alternation.
 
-We start by mentioning the Polyline key because depositing
+We start by mentioning the Polyline / Hard Corner key because depositing
 one or more line segments with points like this 
 is the basis for most of the app's drawing tools.  It is the
 means for drawing for a myriad of shapes in
@@ -84,7 +85,7 @@ Rectangle by Two Edges (two line segements) key:
 Another key  belonging to the Rectangle Tool is the Rectangle by Two Edges 
 key.  Whereas the previously mentioned keys use just one line segment, 
 it uses a total of two line segments or a total of three points.  
-So we say that they are like the Polyline key used for one segment
+So we say that they are like the Hard Corner key used for one segment
 whereas this key is as if using it for two segments and that allows
 laying down the bounds of a rectangle at any desired angle or size on
 the page.  The first line segment deposited is the actual first edge of the rectangle
@@ -623,20 +624,86 @@ TODO
     - soft 2 - D key - tension high
     - round corner - G - made from arc function (arc from tangent) 
             with radius parameter default at 10pt
-    - arc by three points - X
+    - arc by three points 
     
 - panel gui boxes:
  - tool panels:
   - menu options displayed in grid, not single column list
+    - spline tool
+        - polyline mode: subsegments by ratio
+         - assists in drawing lines with proportion built in.
+         -  single segment has points added
+         according to the configured ratio.
+         2:1 will place a point two parts in from
+         the left with one part to the right. 1:2 will
+         do the reverse.  1:1:1 will make two additional
+         points on the segment for three equal segments.  
+         - optional mode with 10pt perpendicular extensions
+         for more visible divisions.
+         - optional mode: ruler mode.
+         
     - rectangle tool
-        - shape: rectangle
+        - shape: rectangle, trapezoid, parallelogram, 
+        - constraints: ratio, ratio presets.
     - circle tool
-        - shape: circle, regular polygon, supershape
+        - shape: circle, regular polygon, supershape, supershape presets,
+        cross, starburst
         - inradius or circumradius
-        
+        - repeat ring - 
+            - ; and ' rotate shapes on the ring
+            - [ and ] and scale shapes on the ring
+            - - and = increase or decrease count
+            - property: increase-count-on-scale-up
+            ties repeat count to scale.
+            - repeat ring algorithm (geometric scaling, etc.)
+         - construction circles, just like construction rectangles
+         that have snappable lines and points for constructing
+         shapes.
+         
+    - stamp tool modes - stamp tool is a 
+        mode for stamping with different settings and submodes
+        - repeat mode: repeat loaded shape 
+        and control repeat with keyboard.
+        - horizontal line (snapping = 12pt)
+        - vertical line  (snapping = 12pt)
+        - diagonal at degrees altered by rotation ; and ' keys
+    
+    
+    - onscreen keyboard modes:
+    onscreen keyboard keys can act like loupedeck or streamdeck
+    and load properties for configuration as keyboard layouts.
+        - colorpicker
+            - enter color picker mode
+            and keyboard becomes filled color keys
+            - tint, tone, shade keys add corresponding
+            to the selected color.
+
+            - onscreen keyboard layout as color picker
+        - gradient picker 
+            - selection of gradients.
+        - clip art browsing on the onscreen keyboard keys,
+        with arrow keys flipping through pages.
+        - selecting an object can have two steps where
+        the object is selected and then the return key
+        finalizes the selection.  the escape key can
+        exit the onscreen keyboard mode.
+        - (possibility of bringing properties from the
+        config panels into the keyboard keys)
+    
+    - vector brush - like stamp except parametric and randomizable contents
+        - brush shapes : square, circle, regular polygon
+        - textures with randomization after each deposit. randomziation rule
+        for predictable.
+        - loaded object rule: shape distribution rule
+        - union, subtraction, intersection.
+    
  - fill and stroke
     - fill: color,pattern,shading
     - stroke: dashing, line cap, line join, miter limit
+    - the r key toggles stroke. the t key toggles fill
+    - If the stroke is turned off, the fill cannot be off as well, but stroke can be off if fill is on and both can be on.
+    - The END key for A will just be called "END" and it will make the object according to the settings in the control panel for fill and stroke.  Live drawing will reflect the settings in the control panel for fill and stroke.
+    - convert the appearance of the checkboxes in the fill and stroke control panels to look like switches, with "on" and "off" in the tabs.
 
 - document view
     - document sizes (A4, US Letter, etc.)
@@ -680,6 +747,8 @@ TODO
         but the rectangle that is made is this time interior edges-- is one quadrant,
         and so the deposited rectangle is 4x the result of the rectangle.
        
+
+
 
 USEFUL REFERENCES
 

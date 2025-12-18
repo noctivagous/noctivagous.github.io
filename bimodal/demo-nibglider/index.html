@@ -26,7 +26,7 @@
           </label>
           Stroke <kbd>R</kbd>
         </legend>
-        <input type="color" id="strokeColorWell" value="#000000" title="Stroke Color">
+        <input type="color" id="strokeColorWell" value="#107cff" title="Stroke Color">
         <div
           style="display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.1); padding: 4px 8px; 
           border-radius: 4px;">
@@ -77,24 +77,24 @@
           <span class="param-block">
           
           <span class="param-item">
-            <label id="supershapeM1Label">M: 4.0</label>
-            <input type="range" id="supershapeM1" min="1.0" max="20" step="1.0" value="4.0">
+            <label id="supershapeM1Label">M: 3.0</label>
+            <input type="range" id="supershapeM1" min="1.0" max="20" step="1.0" value="3.0">
           </span>
           <span class="param-item">
-            <label id="supershapeN1Label">N1: 1.0</label>
-            <input type="range" id="supershapeN1" min="0.1" max="10" step="0.1" value="1.0">
+            <label id="supershapeN1Label">N1: 0.2</label>
+            <input type="range" id="supershapeN1" min="0.1" max="10" step="0.1" value="0.2">
           </span>
           <span class="param-item">
-            <label id="supershapeN2Label">N2: 1.0</label>
-            <input type="range" id="supershapeN2" min="0.1" max="10" step="0.1" value="1.0">
+            <label id="supershapeN2Label">N2: 1.7</label>
+            <input type="range" id="supershapeN2" min="0.1" max="10" step="0.1" value="1.7">
           </span>
         </span>
 
 
           <span class="param-block">
             <span class="param-item">
-              <label id="supershapeN3Label">N3: 1.0</label>
-              <input type="range" id="supershapeN3" min="0.1" max="10" step="0.1" value="1.0">
+              <label id="supershapeN3Label">N3: 1.7</label>
+              <input type="range" id="supershapeN3" min="0.1" max="10" step="0.1" value="1.7">
             </span>
             <span class="param-item">
               <label id="supershapeA1Label">A1: 1.0</label>
@@ -167,7 +167,8 @@
       cancel
     </button>
                 <button data-key="w" tabindex="-1" id="KeyW" class="keyboardkey wKey operationButton enabledButton">stamp</button>
-                <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey endButton">              <b>END:</b> <br />fill
+                <button data-key="e" tabindex="-1" id="KeyE" class="keyboardkey eKey ">
+                                
               </button>
                 <button data-key="r" tabindex="-1" id="KeyR" class="keyboardkey rKey toggleButton enabledButton" style="transform: translate(-45%, 0%)">
   toggle<br/>stroke
@@ -213,10 +214,9 @@
 
                 <button data-key="a" tabindex="-1" id="KeyA" class="keyboardkey KeyA endButton"
                   style="transform: translate(-27%, 0%)"><b>END:</b><br />stroke</button>
-                <button data-key="s" tabindex="-1" id="KeyS" class="keyboardkey sKey endButton"
+                <button data-key="s" tabindex="-1" id="KeyS" class="keyboardkey sKey "
                   style="transform: translate(-27%, 0%)">
-               
-                  <b>END:</b><br/>fill & stroke</button>
+               </button>
                 <button data-key="d" tabindex="-1" id="KeyD" class="keyboardkey dKey "
                   style="transform: translate(-27%, 0%)"></button>
                 <button data-key="f" tabindex="-1" id="KeyF" class="keyboardkey fKey drawingButton"

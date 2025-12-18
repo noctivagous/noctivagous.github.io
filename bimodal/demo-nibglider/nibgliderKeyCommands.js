@@ -25,7 +25,7 @@ function changeStrokeColor(colorVal) {
   window.globalStrokeColor = colorVal;
   // SYNC: UI color well if exists
   var colorWell = document.getElementById('strokeColorWell');
-  if (colorWell) colorWell.value = window.globalStrokeColor;
+  if (colorWell) colorWell.value = window.globalStrokeColor;  // FIXED: now valid hex
   updateTextContent();
 
   // Apply current styles respecting flags
@@ -148,7 +148,7 @@ function polyLineKC() {
   if (!path) {
     path = new paper.Path({
       segments: [mousePt],
-      strokeColor: window.globalStrokeColor,
+      strokeColor: window.globalStrokeColor,  // Uses corrected #107cff
       strokeWidth: globalStrokeWidth,
       fullySelected: true
     });
@@ -171,7 +171,7 @@ function splinePointKC() {
   if (!path) {
     path = new paper.Path({
       segments: [mousePt],
-      strokeColor: window.globalStrokeColor,
+      strokeColor: window.globalStrokeColor,  // Uses corrected #107cff
       strokeWidth: globalStrokeWidth,
       fullySelected: true
     });
@@ -248,14 +248,14 @@ function circleKC(mode) {
   
   // FIX: Create proper preview with initial radius 0
   previewShape = new paper.Shape.Circle(shapeStartPoint, 0);
-  previewShape.strokeColor = new paper.Color(0.5);  // Guide: unchanged
+  previewShape.strokeColor = new paper.Color(0.5);  // Guide: unchanged (gray)
   previewShape.strokeWidth = 1;
   previewShape.strokeDasharray = [4, 4];
   project.activeLayer.addChild(previewShape);
   
   previewLine = new paper.Path({
     segments: [shapeStartPoint, shapeStartPoint],
-    strokeColor: new paper.Color(0.5),
+    strokeColor: new paper.Color(0.5),  // Guide line: unchanged (gray)
     strokeWidth : 1,
     strokeDashArray: [4, 4]
   });
@@ -277,7 +277,7 @@ function rectDiagonalKC() {
   
   // FIX: Proper initial preview
   previewShape = new paper.Shape.Rectangle(shapeStartPoint, new paper.Size(0, 0));
-  previewShape.strokeColor = window.globalStrokeColor;  // Thick preview
+  previewShape.strokeColor = window.globalStrokeColor;  // Uses corrected #107cff
   previewShape.strokeWidth = globalStrokeWidth;
   previewShape.strokeDasharray = [4, 4];
   project.activeLayer.addChild(previewShape);
@@ -496,7 +496,7 @@ function createSupershape(center, radius, params, rotationAngle = 0) {
   var rotationRad = rotationAngle * Math.PI / 180;
   const path = new paper.Path();
   const steps = 360;
-  const { m = 5, n1 = 0.2, n2 = 1.7, n3 = 1.7 } = params;
+  const { m = 3, n1 = 0.2, n2 = 1.7, n3 = 1.7 } = params;
   
   for (let i = 0; i <= steps; i++) {
     let phi = (i / steps) * Math.PI * 2;
@@ -592,8 +592,8 @@ function createInnerShape(center, radius, styleOrPreview = 'stroke', rotationAng
   if (path) {
     if (isPreview) {
       // Preview: thin black dashed (matches global stroke style, not gray)
-      path.strokeColor = 'black';
-      path.strokeWidth = 1;
+      path.strokeColor = window.globalStrokeColor;
+      path.strokeWidth = window.globalStrokeWidth;
       path.strokeDasharray = [3, 3];
       path.opacity = 0.7;
       path.fillColor = null;
@@ -712,7 +712,7 @@ function rectCenterlineKC() {
   previewRect = new paper.Path({
     segments: [shapeStartPoint, shapeStartPoint, shapeStartPoint, shapeStartPoint],
     closed: true,
-    strokeColor: window.globalStrokeColor,
+    strokeColor: window.globalStrokeColor,  // Uses corrected #107cff
     strokeWidth: globalStrokeWidth
   });
   project.activeLayer.addChild(previewRect);
@@ -744,7 +744,7 @@ function rectTwoEdgesKC() {
       previewRect = new paper.Path({
         segments: [pt1, pt2, ptC, ptD],
         closed: true,
-        strokeColor: window.globalStrokeColor,
+        strokeColor: window.globalStrokeColor,  // Uses corrected #107cff
         strokeWidth: globalStrokeWidth
       });
       project.activeLayer.addChild(previewRect);
@@ -760,7 +760,7 @@ function rectTwoEdgesKC() {
   isDrawingShape = true;
   previewPath = new paper.Path({
     segments: [shapeStartPoint],
-    strokeColor: window.globalStrokeColor,
+    strokeColor: window.globalStrokeColor,  // Uses corrected #107cff
     strokeWidth: globalStrokeWidth
   });
   project.activeLayer.addChild(previewPath);
@@ -780,7 +780,7 @@ function quadPointKC() {
   if (!quadPath) {
     quadPath = new paper.Path({
       segments: [mousePt],
-      strokeColor: window.globalStrokeColor,
+      strokeColor: window.globalStrokeColor,  // Uses corrected #107cff
       strokeWidth: globalStrokeWidth,
       fullySelected: true
     });

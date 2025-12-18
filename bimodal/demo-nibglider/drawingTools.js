@@ -92,7 +92,7 @@ function polyLineKC() {
   if (!path) {
     path = new paper.Path({
       segments: [mousePt],
-      strokeColor: 'black',
+      strokeColor: window.globalStrokeColor, // FIXED: use global stroke color
       strokeWidth: globalStrokeWidth,
       fullySelected: true
     });
@@ -112,7 +112,7 @@ function splinePointKC() {
   if (!path) {
     path = new paper.Path({
       segments: [mousePt],
-      strokeColor: 'black',
+      strokeColor: window.globalStrokeColor, // FIXED: use global stroke color
       strokeWidth: globalStrokeWidth,
       fullySelected: true
     });
@@ -149,7 +149,7 @@ function circleKC(mode) {
   shapeType = 'circle_' + mode;
   isDrawingShape = true;
   previewShape = new paper.Shape.Circle(shapeStartPoint, 0);
-  previewShape.strokeColor = new paper.Color(0.5);
+  previewShape.strokeColor = window.globalStrokeColor; // FIXED: use global stroke color
   previewShape.strokeWidth = 1;
   previewShape.strokeDasharray = [4, 4];
   project.activeLayer.addChild(previewShape);
@@ -174,7 +174,7 @@ function rectDiagonalKC() {
   shapeType = 'rectangle_diagonal';
   isDrawingShape = true;
   previewShape = new paper.Shape.Rectangle(shapeStartPoint, new paper.Size(0, 0));
-  previewShape.strokeColor = new paper.Color(0.0);
+  previewShape.strokeColor = window.globalStrokeColor; // FIXED: use global stroke color
   previewShape.strokeWidth = globalStrokeWidth;
   previewShape.strokeDasharray = [4, 4];
   project.activeLayer.addChild(previewShape);
@@ -198,7 +198,7 @@ function rectTwoEdgesKC() {
       previewRect = new paper.Path({
         segments: [shapeStartPoint, shapePt2, shapePt2, shapeStartPoint],
         closed: true,
-        strokeColor: 'black',
+        strokeColor: window.globalStrokeColor, // FIXED: use global stroke color
         strokeWidth: globalStrokeWidth,
         fullySelected: true
       });
@@ -218,7 +218,7 @@ function rectTwoEdgesKC() {
   previewShape = null;
   previewPath = new paper.Path({
     segments: [shapeStartPoint],
-    strokeColor: 'black',
+    strokeColor: window.globalStrokeColor, // FIXED: use global stroke color
     strokeWidth: globalStrokeWidth,
     fullySelected: true
   });
@@ -257,7 +257,7 @@ function rectCenterlineKC() {
   previewRect = new paper.Path({
     segments: [shapeStartPoint, shapeStartPoint, shapeStartPoint, shapeStartPoint],
     closed: true,
-    strokeColor: 'black',
+    strokeColor: window.globalStrokeColor, // FIXED: use global stroke color
     strokeWidth: globalStrokeWidth,
     fullySelected: true
   });
@@ -273,7 +273,7 @@ function quadPointKC() {
   if (!quadPath) {
     quadPath = new paper.Path({
       segments: [mousePt],
-      strokeColor: 'black',
+      strokeColor: window.globalStrokeColor, // FIXED: use global stroke color
       strokeWidth: globalStrokeWidth,
       fullySelected: true
     });

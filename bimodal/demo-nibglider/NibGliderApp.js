@@ -44,6 +44,7 @@ function registerEventListeners() {
     });
     // NEW: Sync global to UI on load
     strokeColorWell.value = window.globalStrokeColor;
+    console.log('Stroke color well initialized to:', window.globalStrokeColor);
   }
 
   // NEW: Fill UI control
@@ -54,6 +55,7 @@ function registerEventListeners() {
     });
     // INIT: Sync UI to global on load
     fillColorWell.value = window.globalFillColor;
+    console.log('Fill color well initialized to:', window.globalFillColor);
   }
 
   // NEW: Stroke/fill checkboxes
@@ -146,8 +148,14 @@ function registerEventListeners() {
   // INIT: Sync UI to globals (expanded)
   if (strokeWidthSlider) strokeWidthSlider.value = globalStrokeWidth;
   if (strokeWidthDisplay) strokeWidthDisplay.textContent = globalStrokeWidth.toFixed(1) + ' pt';
-  if (strokeColorWell) strokeColorWell.value = window.globalStrokeColor;
-  if (fillColorWell) fillColorWell.value = window.globalFillColor;
+  if (strokeColorWell) {
+    strokeColorWell.value = window.globalStrokeColor;  // FIXED: now valid #107cff
+    console.log('Stroke color well initialized to:', window.globalStrokeColor);
+  }
+  if (fillColorWell) {
+    fillColorWell.value = window.globalFillColor;
+    console.log('Init sync: Fill color well set to:', window.globalFillColor);
+  }
 
   // NEW: Circle controls sync
   if (circleInnerShapeSelect) circleInnerShapeSelect.value = circleInnerShapeType;
@@ -1109,30 +1117,12 @@ function updateCurrentDrawingStyles() {
   const strokeColor = strokeEnabled ? window.globalStrokeColor : null;
   const fillColor = fillEnabled ? window.globalFillColor : null;
 
-  if (path) {
-    path.strokeWidth = strokeWidth;
-    path.strokeColor = strokeColor;
-    path.fillColor = fillColor;
-  }
-  if (previewShape) {
-    previewShape.strokeWidth = strokeWidth;
-    previewShape.strokeColor = strokeColor;
-    previewShape.fillColor = fillColor;
-  }
-  if (quadPath) {
-    quadPath.strokeWidth = strokeWidth;
-    quadPath.strokeColor = strokeColor;
-    quadPath.fillColor = fillColor;
-  }
-  if (previewPath) {
-    previewPath.strokeWidth = strokeWidth;
-    previewPath.strokeColor = strokeColor;
-    previewPath.fillColor = fillColor;
-  }
-  if (previewRect) {
-    previewRect.strokeWidth = strokeWidth;
-    previewRect.strokeColor = strokeColor;
-    previewRect.fillColor = fillColor;
-  }
-  updateTextContent();
+  // Apply to ALL live previews consistently
+  [path, previewShape, quadPath, previewPath, previewRect].forEach(item => {
+    if (item) {
+      item.strokeWidth = strokeWidth;
+      item.strokeColor = strokeColor;
+      item.fillColor = fillColor;
+    }
+  });
 }

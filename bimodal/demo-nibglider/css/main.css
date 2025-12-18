@@ -168,6 +168,11 @@ article {
   font-size: 0.875rem;
 }
 
+#controlPanel select option {
+  
+  color: rgb(27, 27, 27);
+}   
+
 #controlPanel input[type="range"] {
   padding: 0;
   height: 4px;

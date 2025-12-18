@@ -26,7 +26,7 @@ shapeGuideAngle = 0;
 
 var globalStrokeWidth = 4.0;
 var maxStrokeWidth = 40.0;
-window.globalStrokeColor = '#107c4fff';
+window.globalStrokeColor = '#107cff';  // FIXED: valid 6-digit hex color
 window.globalFillColor = '#000000';
 var strokeEnabled = true;
 var fillEnabled = false;
@@ -143,3 +143,4 @@ var shapePt2 = null;
 var quadPath;
 var quadPointCount = 0;
 var path;
+

@@ -1,3 +1,7 @@
+
+
+
+
 // NEW: Update SVG preview box for circle frame controls
 window.updatePreviewBox = function() {
   const svgPath = document.getElementById('shapePreviewPath');
@@ -38,3 +42,68 @@ window.updatePreviewBox = function() {
   
   svgPath.setAttribute('d', pathData);
 };
+
+
+
+// Update createRegularPolygon() to align vertex with mouse direction:
+function createRegularPolygon(center, radius, sides, mouseAngle = 0) {
+  const path = new paper.Path();
+  const angleStep = (Math.PI * 2) / sides;
+  // Start first vertex at mouse direction (convert degrees to radians)
+  const startAngleRad = mouseAngle * Math.PI / 180;
+  
+  for (let i = 0; i < sides; i++) {
+    let angle = startAngleRad + (angleStep * i);
+    path.add(new paper.Point(
+      center.x + radius * Math.cos(angle),
+      center.y + radius * Math.sin(angle)
+    ));
+  }
+  path.closed = true;
+  path.strokeCap = 'round';
+  path.strokeJoin = 'round';
+  return path;
+}
+
+// ADD: Supershape radius calculation function (before createSupershape)
+function supershapeRadius(phi, m, n1, n2, n3) {
+  const abs = Math.abs;
+  const cos = Math.cos;
+  const sin = Math.sin;
+  const pow = Math.pow;
+  
+  let r1 = abs(cos(m * phi / 4));
+  let r2 = abs(sin(m * phi / 4));
+  r1 = pow(r1, n2);
+  r2 = pow(r2, n3);
+  let r = pow(r1 + r2, -1 / n1);
+  
+  return r || 0;
+}
+
+// Update createSupershape():
+function createSupershape(center, radius, params, rotationAngle = 0) {
+ 
+  var rotationRad = rotationAngle * Math.PI / 180;
+  const path = new paper.Path();
+  const steps = 360;
+  const { m = 3, n1 = 0.2, n2 = 1.7, n3 = 1.7 } = params;
+  
+  for (let i = 0; i <= steps; i++) {
+    let phi = (i / steps) * Math.PI * 2;
+    
+    const r = supershapeRadius(phi, m, n1, n2, n3);
+    // FIX: Proper scaling - multiply by radius parameter
+    const scaledR = radius * (r || 0);
+    path.add(new paper.Point(
+      center.x + scaledR * Math.cos(phi + rotationRad),
+      center.y + scaledR * Math.sin(phi + rotationRad)
+    ));
+  }
+  path.closed = true;
+  path.strokeCap = 'round';
+  path.strokeJoin = 'round';
+  return path;
+}
+
+

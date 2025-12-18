@@ -1,0 +1,63 @@
+nct-softwaredev-positioningThroughGuidelinesAndPoints
+
+Positioning Windows And UI Elements Through Guidelines
+
+Take a box and apply the function.
+
+var box = rootViewport //(800 x 200)
+
+// this returns three boxes flowing horizontally
+horizontalSubdivisionBoxes = box.subdivideHorizontally(3);
+
+// this returns four boxes flowing vertically,
+// not connected to the horizontal boxes.
+verticalSubdivisionBoxes = box.subdivideVertically(4);
+
+
+// POINT BASED ALIGNMENT AND SIZING
+// Make the array to get intersection points
+var intersectionArray = [horizontalSubdivisionBoxes, verticalSubdivisionBoxes];
+
+// Get the intersection points from two boxes.
+// Returned points flow from left to right, row major order.
+var intersectionPointsArray = intersectionPoints(intersectionArray);
+
+var topLeftPoint =intersectionPointsArray[0];
+
+// center an existing box, box1 on the point
+box1.centerOnPoint(topLeftPoint);
+
+// use 
+box2.topLeftCornerOnPoint(point1);
+box2.topRightCornerOnPoint(point2);
+    box2.bottomRightCornerOnPoint(point3);
+ box2.bottomRightCornerOnPoint(point4);
+
+
+// GUIDELINE BASED ALIGNMENT AND SIZING
+
+The subdivision operation makes not only the
+subdivision rectangles (boxes) but edges, 
+which double as guidelines in the guidelines array.
+
+boxes.guidelinesArray
+
+The indices for edges guidelines flow
+from left to right and you get two guidelines 
+
+var sectionOneRightEdge = boxes.guidelines.vertical[0]; 
+var sectionTwoLeftEdge = boxes.guidelines.vertical[1];
+
+// Center a window on the
+guidelines.horizontalGuidelineIndex(1).centerElement(window).
+guidelines.verticalGuidelineIndex(1).centerElement(window).
+
+
+// convenience functions:
+
+// Vertical guideline in direct center of box
+box1.interiorXGuidelineAt(0.5);
+
+// Horizontal guideline in 1/4 down from the top
+box1.interiorYGuidelineAt(0.25);
+

@@ -61,3 +61,20 @@ box1.interiorXGuidelineAt(0.5);
 // Horizontal guideline in 1/4 down from the top
 box1.interiorYGuidelineAt(0.25);
 
+// the frame of box2 brought in by 10pt.
+var box3 = box2.inset(10pt);
+ 
+// use the top edge of box3.  Edges carry guideline functionality
+var guideline = box3.topEdge;
+
+// the left edge of box4 brought in by 10pt
+var guidelineInset = box4.leftEdge.insetBy(10pt);
+
+// get the first point, from left to right
+var leftPoint = box3.topEdge.pointA;
+
+
+
+ 
+
+

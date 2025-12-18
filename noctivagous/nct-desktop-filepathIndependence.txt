@@ -1,0 +1,50 @@
+nct-desktop-filepathIndependence
+
+One thing is for certain on computers
+and that is referencing a file or directory should
+not depend on having the right file path.
+This is the cause of so many unnecessary errors.
+When code projects are loaded by a code editor,
+traversing what they contain should exist independent
+of their file paths, with the project loading
+everything as a whole into a database where every
+element or object has a unique ID independent of
+its file location.  If a variable is in one file
+or another it is tracked by its hidden ID
+and not its flat name.  This also happens
+ on the file system when apps are working
+ with files and documents. If a file is open, it should
+be given a unique ID and then if it is
+moved or changed on the file system, the app should
+be notified.  This happens on Mac OS
+But really the app shouldn't write to the file system 
+or read from it but instead an intermediate database that doesn't
+depend on file paths but instead contains a mass of
+file/document IDs. That's because as far as a program is 
+concerned, in effect but not formally stated, 
+at any time a file or directory's path *is*
+its ID, and the location of a variable inside
+a file is that variable's ID.  The first step
+for addressing that issue is to made code documents
+out of a format like XML but even still those
+documents, as part of a project, should reside in a 
+database and be storied by unique IDs, even if it
+is a unique string suffix appended to their
+filenames.
+This is also applicable to the web, because if
+a document is made with a unique internal ID,
+it won't matter that it isn't located in a certain
+directory on the web server anymore, such as 
+if it moved, because it will be referenced by its
+unique id.  The web browser also follows the
+pattern just described, that it in effect
+treats a file or directory's file path as its ID
+and then if that file path changes, it can't
+be accessed anymore.  So, a new world wide web
+would have to work differently and not tie
+access of documents to their filesystem paths.
+file system paths of documents change regularly,
+so this is an absurd problem that is everywhere
+in computing.
+
+

@@ -12,6 +12,7 @@ body {
   color: #2d3748;
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   min-height: 100vh;
+  background-color: black;
 }
 
 #intro {
@@ -81,7 +82,6 @@ article {
   max-width: 100%;
   height: clamp(600px, 70vh, 800px);
   margin: 3rem auto;
-  border-radius: 24px;
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -99,7 +99,6 @@ article {
 #nibgliderCanvas {
   width: 100%;
   height: 100%;
-  border-radius: 20px;
   cursor: crosshair;
   display: block;
   position: absolute;
@@ -119,7 +118,8 @@ article {
   top: 1rem;
   left: 1rem;
   right: 1rem;
-  background: rgba(45, 55, 72, 0.95);
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #1f1f1f 100%), linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(0,0,0,0.1) 100%) inset;
   backdrop-filter: blur(20px);
   border-radius: 16px;
   padding: 1rem 1.5rem;
@@ -127,11 +127,10 @@ article {
   gap: 1rem;
   align-items: center;
   flex-wrap: wrap;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   z-index: 100;
   width: 100%;
-  background: #333;
   color: white;
   padding: 0 20px;
   font-family: Monospace;
@@ -140,10 +139,10 @@ article {
 }
 
 #controlPanel > div {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%), linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.1) 100%) inset;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: white;
   font-family: 'Monaco', 'Menlo', monospace;
   font-size: 0.875rem;
@@ -151,6 +150,7 @@ article {
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 #controlPanel label {
@@ -160,12 +160,14 @@ article {
 
 #controlPanel select,
 #controlPanel input[type="range"] {
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
+  background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%), linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%) inset;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
   padding: 0.25rem 0.5rem;
   color: white;
   font-size: 0.875rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 #controlPanel select option {
@@ -176,7 +178,8 @@ article {
 #controlPanel input[type="range"] {
   padding: 0;
   height: 4px;
-  background: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #5a5a5a 0%, #4a4a4a 100%);
+  background: linear-gradient(135deg, #5a5a5a 0%, #4a4a4a 100%), linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%) inset;
 }
 
 #rectangleFrameControls {
@@ -188,7 +191,8 @@ article {
 }
 
 #circleFrameControls {
-  background: rgb(14, 77, 148);
+  background: linear-gradient(135deg, #0e4d94 0%, #0a3a6b 100%);
+  background: linear-gradient(135deg, #0e4d94 0%, #0a3a6b 100%), linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%) inset;
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
@@ -196,6 +200,7 @@ article {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 #shapePreviewContainer {
@@ -297,7 +302,8 @@ article {
   right: auto !important;
   flex: none;
   width: 100%;
-  background: #333;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%), linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(0,0,0,0.1) 100%) inset;
   color: white;
   display: flex;
   align-items: center;
@@ -307,7 +313,7 @@ article {
   box-sizing: border-box;
   border-radius: 0;
   z-index: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* Toggle switch styles for stroke/fill checkboxes */
@@ -331,7 +337,7 @@ article {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #555;
+  background-color: #222;
   border-radius: 30px;
   transition: 0.4s;
   cursor: pointer;
@@ -345,14 +351,14 @@ article {
   width: 24px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
+  background-color: rgb(51, 50, 50);
   transition: 0.4s;
   border-radius: 3pt;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 #controlPanel .toggle-switch input:checked + .slider {
-  background-color: #4CAF50;
+  background-color: #111;
 }
 
 #controlPanel .toggle-switch input:checked + .slider::before {
@@ -423,16 +429,26 @@ article {
 /* Custom kbd styling */
 kbd {
   display: inline-block;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 0.25rem 0.5rem;
-  background: linear-gradient(135deg, #f7fafc, #edf2f7);
-  color: #4a5568;
+  border: 1px solid #555;
+  border-radius: 4px;
+aspect-ratio: 1 / 1;
+  
+  background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
+  background: linear-gradient(90deg, #4a4a4a 0%, #3a3a3a 100%), linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 50%, rgba(0,0,0,0.15) 100%) inset;
+  color: #252525;
+  padding: 0.15rem 0.45rem;
   font-family: 'Monaco', 'Menlo', monospace;
   font-size: 0.875em;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 300;
+  font-style: italic;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.5),
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   margin: 0 0.125rem;
+  position: relative;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Video iframe */
@@ -456,7 +472,8 @@ iframe {
 /* NEW: Control Panel Inline Styles */
 #controlPanel {
   width: 100%;
-  background: #333;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #1a1a1a 100%), linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(0,0,0,0.1) 100%) inset;
   color: white;
   display: flex;
   align-items: center;
@@ -475,7 +492,8 @@ iframe {
 }
 
 #circleFrameControls {
-  background: rgb(14, 77, 148);
+  background: linear-gradient(135deg, #0e4d94 0%, #0a3a6b 100%);
+  background: linear-gradient(135deg, #0e4d94 0%, #0a3a6b 100%), linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%) inset;
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
@@ -483,6 +501,7 @@ iframe {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 #shapePreviewContainer {
@@ -590,8 +609,10 @@ html, body {
 
 /* Stroke Controls */
 #strokeControls {
-  background: rgb(100, 50, 100) !important;
+  background: linear-gradient(135deg, #404040 0%, #2a2a2a 100%) !important;
+  background: linear-gradient(135deg, #404040 0%, #2a2a2a 100%), linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%) inset !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
 #strokeColorWell {
@@ -621,6 +642,8 @@ html, body {
 
 /* Fill Controls */
 #fillControls {
-  background: rgb(50, 100, 50) !important;
+  background: linear-gradient(135deg, #404040 0%, #2a2a2a 100%) !important;
+  background: linear-gradient(135deg, #404040 0%, #2a2a2a 100%), linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%) inset !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }

@@ -26,13 +26,13 @@
           </label>
           Stroke <kbd>R</kbd>
         </legend>
-        <input type="color" id="strokeColorWell" value="#107cff" title="Stroke Color">
+        <input type="color" id="strokeColorWell" value="#107cff" title="Stroke Color" onkeydown="event.preventDefault();">
         <div
           style="display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.1); padding: 4px 8px; 
           border-radius: 4px;">
           <label style="color: white; font-size: 0.875rem;"> Width:</label>
           <input type="range" id="strokeWidthSlider" min="1" max="40" step="0.5" value="4"
-            style="width: 80px;">
+            style="width: 80px;" onkeydown="event.preventDefault();">
           <span id="strokeWidthDisplay"
             style="font-family: monospace; font-weight: bold; color: #fff; min-width: 45px;">4.0 pt</span>
         </div>
@@ -43,7 +43,7 @@
         style="background: rgb(50, 100, 50); padding: 8px; margin: 5px; border-radius: 3pt; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.1);">
         <legend style="font-weight: bold; color: white;">
           <label class="toggle-switch square-knob">
-            <input type="checkbox" id="fillEnabledCheckbox">
+            <input type="checkbox" id="fillEnabledCheckbox" onkeydown="event.preventDefault();">
             <span class="slider" style="border-radius: 3px;"></span>
           </label>
           Fill <kbd>T</kbd>
@@ -55,7 +55,7 @@
   <fieldset id="circleFrameControls"
         style="background: rgb(14, 77, 148); padding: 5px; margin: 5px; border-radius: 3px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.1);">
         <legend>Circle Keys:</legend>
-        <select id="circleInnerShapeSelect">
+        <select id="circleInnerShapeSelect" onkeydown="event.preventDefault();">
           <option value="circle">Circle</option>
           <option value="polygon" selected>Regular Polygon</option>
           <option value="supershape">Supershape</option>
@@ -70,7 +70,7 @@
         <span id="regularPolygonParametersForPanel" class="panelParameters">
           <span class="param-item">
             <label id="circlePolySidesLabel">Sides: 6</label>
-            <input type="range" id="circlePolySides" min="3" max="12" value="6">
+            <input type="range" id="circlePolySides" min="3" max="12" value="6" onkeydown="event.preventDefault();">
           </span>
         </span>
         <span id="supershapeParametersForPanel" class="panelParameters" style="display: none;">

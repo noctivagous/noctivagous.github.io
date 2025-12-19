@@ -739,14 +739,14 @@ function endShapeAsStroke() {
   if (finalPath) {
     finalPath.selected = false;
     project.activeLayer.addChild(finalPath);
-    if (previewInner) {
-      previewInner.remove();
-      previewInner = null;
-    }
     drawInnerShape(finalPath, 'stroke');
   }
-  
-  // Cleanup (unchanged)
+
+  // Cleanup (moved previewInner cleanup here so it happens for all shape types)
+  if (previewInner) {
+    previewInner.remove();
+    previewInner = null;
+  }
   if (previewShape) previewShape.remove();
   if (previewLine) previewLine.remove();
   if (previewPath) {

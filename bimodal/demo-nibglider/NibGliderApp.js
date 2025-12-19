@@ -315,7 +315,7 @@ function updateTextContent() {
   let instruction = '';
   if (isDrawingPath) {
     lines.push('Drawing Polyline');
-    instruction = 'F=sharp, G=spline(tension:' + splineTension.toFixed(1) + ') ';
+    instruction = 'F = sharp point, G = spline(tension:' + splineTension.toFixed(1) + ') ';
     instruction += 'J/K= adjust tension, A=end';
   }
   if (isDrawingShape) {
@@ -328,7 +328,6 @@ function updateTextContent() {
     } else if (shapeType === 'rectangle_two_edges') {
       shapeInfo = 'Rectangle by Two Edges';
       if (shapePt2 !== null) {
-      //  lines.push(' (width)');
       }
     } else if (shapeType === 'rectangle_centerline') {
       shapeInfo = 'Rectangle by Centerline';

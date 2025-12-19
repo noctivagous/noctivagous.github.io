@@ -45,25 +45,7 @@ window.updatePreviewBox = function() {
 
 
 
-// Update createRegularPolygon() to align vertex with mouse direction:
-function createRegularPolygon(center, radius, sides, mouseAngle = 0) {
-  const path = new paper.Path();
-  const angleStep = (Math.PI * 2) / sides;
-  // Start first vertex at mouse direction (convert degrees to radians)
-  const startAngleRad = mouseAngle * Math.PI / 180;
-  
-  for (let i = 0; i < sides; i++) {
-    let angle = startAngleRad + (angleStep * i);
-    path.add(new paper.Point(
-      center.x + radius * Math.cos(angle),
-      center.y + radius * Math.sin(angle)
-    ));
-  }
-  path.closed = true;
-  path.strokeCap = 'round';
-  path.strokeJoin = 'round';
-  return path;
-}
+
 
 // ADD: Supershape radius calculation function (before createSupershape)
 function supershapeRadius(phi, m, n1, n2, n3) {

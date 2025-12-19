@@ -1,4 +1,3 @@
-
 // Drawing mode flags
 var isDrawingPath = false;
 var isDrawingShape = false;
@@ -10,6 +9,8 @@ var shapeStartPoint = null;
 var shapePt2 = null;
 var shapeWidth = 90;
 var maxShapeWidth = 200;
+var quadPath;
+var quadPointCount = 0;
 
 // Add global:
 shapeGuideAngle = 0;
@@ -33,18 +34,11 @@ innerShapeParams = {
   n3: 1.7
 };
 
+var polygonRadiusMode = 'inradius';  // 'circumradius' or 'inradius' (default: circumradius)
 
 
-// Additional drawing state
-var isDrawingPath = false;
-var isDrawingShape = false;
-var isDrawingQuad = false;
-var quadPath;
-var quadPointCount = 0;
 
-var shapeType = null;
-var shapeStartPoint = null;
-var shapePt2 = null;
+
 
 
 // Path objects
@@ -188,12 +182,17 @@ function createInnerShape(center, radius, styleOrPreview = 'stroke', rotationAng
       break;
     case 'regularTriangle':
       path = createRegularPolygon(center, radius, 3, rotationAngle);
+       
       break;
     case 'regularPolygon':
-      path = createRegularPolygon(center, radius, currentInnerParams.sides || 6, rotationAngle);
-      break;
     case 'polygon':
-      path = createRegularPolygon(center, radius, currentInnerParams.sides || 6, rotationAngle);
+      path = createRegularPolygon(center, radius, currentInnerParams.sides || 6, rotationAngle, polygonRadiusMode);
+       // Add 180° rotation for circle_diameter mode
+       // for the benefit of the circle tool when it makes
+       // regular polygons
+      if (shapeType === 'circle_diameter') {
+        path.rotate(180, center);
+      }
       break;
     case 'supershape':
       path = createSupershape(center, radius, currentInnerParams, rotationAngle);
@@ -359,6 +358,7 @@ function rectTwoEdgesKC() {
         strokeWidth: globalStrokeWidth
       });
       project.activeLayer.addChild(previewRect);
+      updateTextContent();  // Update instruction to show "Moving the line adjusts the second edge"
     } else {
       endShapeAsStroke();
     }
@@ -763,5 +763,67 @@ function endShapeAsStroke() {
   shapePt2 = null;
   previewShape = null;
   previewLine = null;
+  updateTextContent();  // Update UI after finishing shape
 }
+
+// Replace the existing createRegularPolygon function:
+
+//radiusMode: 'circumradius' or 'inradius'
+// circumradius (vertex-to-center) vs. apothem (center-to-side)
+// circumradius (vertex-to-center) vs. inradius (center-to-side)
+
+// circumradius belongs to circumcircle, inradius belongs to incircle
+
+// circumcircle is the smallest circle that can enclose the polygon
+// --- circumradius belongs to circumcircle
+// circumradius is the radius of the circumcircle
+
+// incircle is the largest circle that can fit inside the polygon
+// --- apothem / inradius belongs to incircle
+// inradius is the radius of the incircle
+
+function createRegularPolygon(center, radius, sides, rotationAngle = 0, radiusMode = 'circumradius') {
+  const angleStep = (Math.PI * 2) / sides;
+  const startAngle = rotationAngle * Math.PI / 180;
+  
+  let actualRadius;
+  if (radiusMode === 'circumradius') {
+    actualRadius = radius;  // Use radius directly as circumradius (vertex-to-center)
+  } else  if (radiusMode === 'inradius') {  // 'inradius'
+    // Convert to inradius: R = r / cos(π/n)
+    let inradius = radius / Math.cos(Math.PI / sides);
+    actualRadius = inradius; 
+  
+  }
+  
+  const path = new paper.Path();
+  for (let i = 0; i < sides; i++) {
+    const angle = startAngle + i * angleStep;
+    const point = center.add(
+      new paper.Point(
+        Math.cos(angle) * actualRadius,
+        Math.sin(angle) * actualRadius
+      )
+    );
+    path.add(point);
+  }
+
+   if (radiusMode === 'inradius') {
+   path.rotate(360 / sides / 2, center);
+   }
+
+  path.closed = true;
+  return path;
+}
+
+
+function togglePolygonRadiusMode() {
+  polygonRadiusMode = polygonRadiusMode === 'circumradius' ? 'inradius' : 'circumradius';
+  updateTextContent();  // Shows "Poly: circumradius" or "Poly: inradius"
+}
+
+function setPolygonRadiusMode(mode) {
+  polygonRadiusMode = mode === 'inradius' ? 'inradius' : 'circumradius';
+}
+
 

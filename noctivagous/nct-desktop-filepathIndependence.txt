@@ -2,8 +2,44 @@ nct-desktop-filepathIndependence
 
 One thing is for certain on computers
 and that is referencing a file or directory should
-not depend on having the right file path.
-This is the cause of so many unnecessary errors.
+no longer depend on providing the right file path.
+Certainly a better software architecture for the operating
+system and filesystem involves assigning the files and directories unique IDs
+that are separate from their displayed filenames and 
+their paths (locations) on the filesystem.  It is absurd that
+they are the axes of working with everything-- two properties,
+location and filename, which are subject to change
+except in the system directories.  Files can move.  
+They can have their names changed.  Yet the entire system rests
+on these being stable everywhere and there is no
+alternative yet.
+
+If stored in metadata, the user could assign multiple additional IDs with
+more user-friendly and shorter names
+while the original one might be long and rarely used
+directly.  These IDs which could be referenced
+in shell scripts, for example, and the operating system
+would be able to find the file even if it had
+been moved or renamed.  
+
+The metadata containing unique IDs could also 
+contain information about where
+the file is allowed to travel so that, for example,
+if it is moved on the file system and it is part
+of a code project it cannot move outside of
+the directory (which also has a unique ID) for
+the project.  This adds another layer of relationships
+where the files and directories have relationships
+to each other in metadata.
+
+
+This is the cause of many unnecessary errors
+because the file can have been moved or renamed.
+Like many problems, it is a vestige and byproduct
+of the early days of computing. The computers
+of today outgrew the conditions of those times
+but these aspects were never updated. 
+
 When code projects are loaded by a code editor,
 traversing what they contain should exist independent
 of their file paths, with the project loading

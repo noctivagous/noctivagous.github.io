@@ -1,0 +1,80 @@
+nct-ai-SelfModifyingSystems
+
+A system that changes itself would certainly carry
+rules by which to add, modify, or remove components and
+functionality, in multiple areas where this applies for
+the system. It would possess mechanisms designed to 
+change its structures and contents, and the system itself would be designed for
+modification unlike a typical deterministic machine.
+The variations in design for such a system
+extend in many directions because what is changed
+and how it gets changed is up to the engineer.
+
+Generally systems attempt to maintain equillibrium in
+their operations. Even if they
+are designed for intense periods of operation, they strive to
+recover or prevent excess. They have components that
+cool off the heat or warm what is getting too cold.
+Their components and arrangements often adjust for
+excess and deficiency in real time but also operate to
+prevent long-term wear. They may have maintenance components that
+remove waste or re-order the result of drift over time.
+
+In many respects, self-modifying machines are an
+unchartered area, even in conventional computer programs.
+The software produced sits at two extremes: 
+deterministic object-oriented or procedural programs and 
+neural nets, even though the procedural and object-oriented
+kind could move towards greater self-mutability
+without the need for a neural net.  It just hasn't
+happened very often.
+
+A self-modifying feature would have to respect similar
+principles to regular machines (in this area called
+self-modification) to be stable, even if different
+self-modifying systems are designed for different
+levels of mutability in different areas. An unchanging
+core surrounded by self-modifiable features is the
+first natural design. What features are allowed to
+change and what it takes for one to be allowed to (what
+threshold) is a major set of considerations: should it
+be the information delivered, the mechanisms that
+deliver the information, the format? What is fixed?
+What is mutable? What should the machine be equipped to
+know? There are no definite conclusions, just like
+there are no conclusions as to what a machine would be.
+It depends on the application. It is expected that
+whatever is mutable by the system itself might produce
+phenomena unanticipated by the designer. This is where
+rooting the system in solid principles comes into play.
+As long as equilibrium is respected as a guiding
+principle and the process of self-change is monitored
+and balanced, it should be possible to do this without
+too much anxiety.
+
+Very high levels of mutation amount to hallucinations
+of reality, which might be equated by some with
+perceptual garbage. Metamorphosis has to have a
+purpose. A system might metamorphosize or it just might
+gradually change what is needed to carry out its
+objectives.
+
+As for what is modifiable in the system, this can be
+classified according to different areas. The first and
+most common already are the most flat: the settings or
+configuration information and the logs of activity.
+These two are the most direct expressions of stored
+memory. For the first category, settings, the machine
+draws from the settings to determine its operations.
+For the second, the machine makes a record of events.
+If equipped it will make use of these records, these
+logs, for its future operations. It might change
+configurations or settings based on its mechanical
+analysis of the logs.
+
+For a clock all internal efforts end up at the clock
+face. If that clock is used to log events, its position
+is used when the events occur to mark them.
+
+
+

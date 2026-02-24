@@ -1,0 +1,47 @@
+nct-altterminal-theTerminalAsAMultiProgramPortal
+
+The Terminal Discussed As A Multi-Program Portal
+
+Originally the terminal was the whole computer experience, hence the name 
+terminal since it was a CRT monitor connected to the mainframe with a keyboard.  
+In actuality, how the terminal is use today relies on GUI conventions and
+is placed in a hybrid setup.  The user will open up one or
+more terminal windows concurrent with other GUI applications.  That of
+course wasn't what the CLI was about, but it does work.  It is like opening
+up different virtual computers from the past.
+
+If we are to upgrade the CLI, the terminal, we can identify what causes it
+to still be indispensable that isn't recognized. Then we can move that into the next 
+generation. First, we would call it a multi-program portal, an incidentally
+timeless interactive scheme because it hosts programs that all follow the same 
+rules, have to fit inside the same container, and have to be controlled
+by keyboard. Though this interactive scheme was in no way designed, programs
+all have to follow the same appearance which means there is consistency.
+It is like the camping multi-tool with all of the utensils that fold out of the 
+same holder. 
+
+In contrast with this, every GUI software application launches and manages its own user 
+interfaces and exists separately. Each one will have its own GUI organization
+and interactive schemes that are particular to the situation. 
+Meanwhile, all terminal apps must behave in the same way 
+and if they do provide any kind of persistent GUI the rules are the same because 
+there is no way to do anything but update characters in the display. The CLI 
+is then acting as a single portal for the programs, and this is the focus, 
+analogous to a multi video game arcade machine that can load different games 
+on the same upright cabinet, all of which use the same joystick and buttons. 
+The other machines might have customized controls.  No program can actually
+go outside of the rules because the functionality to do it just isn't there.
+
+Then there is an important aspect which is that the programs that run inside the 
+terminal, if they don't specially exist as persistent GUI, will terminate after 
+execution. (They are transient by default.) With everything driven by text, 
+the limited UI for programs links into the ease of typing out commands to 
+navigate the file system and manipulate the files with the programs that run 
+and then exit. It produces an altogether different dynamic, but since it is old, 
+it is often recognized that an upgrade is due.  Everything is keyboard-driven and mouse has no role in
+the CLI. If the mouse is to have a role, it should make use of key-clicks where 
+the click of the mouse takes place because a keyboard key served as the click 
+button.
+
+
+

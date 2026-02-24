@@ -1,0 +1,71 @@
+nct-ai-naive-ancientChineseScienceStart
+
+We think then this has potential for an AI:
+
+Yin and yang, Wuxing, and the trigrams
+provide an immediate functional knowledge base 
+that can be represented by direct language 
+from the outset because of all of the
+associations that already have a status
+as being general.
+
+Truths about the world are inherently present
+in any knowledge graph of yin-yang and Wuxing.
+For this reason, the following sentences could be easily
+formed from a knowledgebase with all
+of the concepts from ancient Chinese science:
+
+- In the winter, it is colder, darker,
+and more still.
+- Midday is when there is the most
+daylight.
+
+These sentences would be generated from
+the truths of yin and yang whereas in an
+AI normally they would have to be manually
+placed as rules or result from
+statistical associations from training.
+They demonstrate the potential of this
+approach
+
+Then when modern knowledge is added to the
+truths and mapped to yin-yang and Wuxing
+accurately, it can continue:
+
+- "When a high pressure system (yang)
+arrives, it disperses clouds and inclement
+weather. High pressure systems feature sinking air
+(yin). Low pressure systems, by contrast — with rising air
+(yang), cloud formation, precipitation, instability, 
+and "gathering" of weather are yin (receptive, condensing, moist)."
+    - This is the kind of statement that the
+    AI based on Wuxing and yin-yang may be
+    able to generate by itself, just by
+    having concepts provided.
+
+Since in electromagnetism magnetic poles correspond
+to north and south, with electrical
+charges being positive and negative
+and there is conceptual interdependence of
+electricity and magnetism, discussions of
+this topic will naturally be balanced.
+
+Negative, both in math and electrical charges
+would be mapped to yin.  Positive, both in
+math and electrical charges would be mapped
+to yang.  Then in discussions these would
+be naturally integrated in the generated answers.
+
+Wu-xing does map to the Periodic Table as well,
+as the metals are predominantly made of Metal,
+the noble gases can be said to be predominantly
+made of Earth (stable, not needing anything), 
+elements like Sulphur and Oxygen
+map to being predominantly Fire, Nitrogen
+predominantly made of Water.  They could
+be placed in the knowledge graph as compositions.
+
+
+
+
+

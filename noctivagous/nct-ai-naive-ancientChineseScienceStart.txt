@@ -4,57 +4,144 @@ We think then this has potential for an AI:
 
 Yin and yang, Wuxing, and the trigrams
 provide an immediate functional knowledge base 
-that can be represented by direct language 
-from the outset because of all of the
-associations that already have a status
-as being general.
+that can be represented from the outset 
+in language because all of the associations that 
+already have a status as being general or
+factually accurate.
 
 Truths about the world are inherently present
-in any knowledge graph of yin-yang and Wuxing.
-For this reason, the following sentences could be easily
-formed from a knowledgebase with all
-of the concepts from ancient Chinese science:
+in any knowledge graph of yin-yang and Wuxing
+(The Five Elements).  The following sentences 
+could be easily formed from a graph of the
+interconnected concepts from ancient Chinese science:
 
-- In the winter, it is colder, darker,
-and more still.
-- Midday is when there is the most
-daylight.
+- "In the winter, it is colder, darker,
+and more still."
+- "Midday is when there is the most
+daylight."
 
 These sentences would be generated from
 the truths of yin and yang whereas in an
 AI normally they would have to be manually
-placed as rules or result from
+placed either as rules or result from
 statistical associations from training.
-They demonstrate the potential of this
-approach
+They are demonstrations of the potential of this
+approach.
 
-Then when modern knowledge is added to the
-truths and mapped to yin-yang and Wuxing
-accurately, it can continue:
+We have an interconnected basis for
+the seasons, time, astronomy, the human body,
+temperature, emotions, and even geographic
+features and phenomena because of the Eight Trigrams
+(wind, mountain, lake, etc.). In reality
+these do all link together cohesively.  Then
+when we want the AI to be able to receive
+and respond to situations, we have the 64 Hexagrams
+that describe everything while being composed
+of the Eight Trigrams.
+
+When modern knowledge is added next to the
+truths of the knowledge graph and 
+mapped to yin-yang and Wuxing accurately, 
+the system can fit into the modern world:
 
 - "When a high pressure system (yang)
 arrives, it disperses clouds and inclement
 weather. High pressure systems feature sinking air
-(yin). Low pressure systems, by contrast — with rising air
+(yin). Low pressure systems (yin), by contrast — with rising air
 (yang), cloud formation, precipitation, instability, 
 and "gathering" of weather are yin (receptive, condensing, moist)."
     - This is the kind of statement that the
-    AI based on Wuxing and yin-yang may be
+    AI based on Wuxing and yin-yang would be
     able to generate by itself, just by
-    having concepts provided.
+    having concepts linked into the knowledge graph.  
+    Additionally, once they are linked into the knowledge graph
+    they truly represent the truths of the situation.
 
-Since in electromagnetism magnetic poles correspond
-to north and south, with electrical
-charges being positive and negative
-and there is conceptual interdependence of
-electricity and magnetism, discussions of
-this topic will naturally be balanced.
+- The knowledge graph would contain a base of interconnected
+concepts from ancient Chinese science, but there would be 
+a mechanism for it to recognize and process concepts
+in the future.  Some statements would give it a correct
+framework and head start for placing modern knowledge
+into yin and yang:
 
-Negative, both in math and electrical charges
-would be mapped to yin.  Positive, both in
-math and electrical charges would be mapped
-to yang.  Then in discussions these would
-be naturally integrated in the generated answers.
+    - We can say that the Four Temperaments in the West 
+    contain yin and yang and map to the Wuxing.  
+    Phlegmatic (Water): max yin, min yang.  
+    Sanguine (Wood): low-to-middle yin high-to-middle yang (flux, rising yang).  
+    Choleric (Fire): min yin, max yang.
+    Melancholic (Metal):  high-to-middle yin low-to-middle yang (flux, rising yin).
+    and in some diagrams in the center is where Earth resides.
+    - We can say that Heraclitus' Logos is talking about Taiji.
+    - In the tropics, in the winter it is wettest, 
+    corresponding to Water in Wuxing, for example,
+    even though the warmth of the tropical climate
+    corresponds to Fire.  Making this clear will avoid
+    a misconception of the Wuxing Wuxing as fixed
+    groups of concept.
+    - Since in electromagnetism magnetic poles are
+    north and south and electrical charges are 
+    positive and negative, Taiji allows representing
+    their duality interdependence, along with the
+    conceptual interdependence of electricity and magnetism
+    itself. Discussions of this topic will naturally be balanced.
+    - Negative, both in integers and electrical charges
+    would be mapped to yin.  Positive, both in
+    integers and electrical charges would be mapped
+    to yang.  Then in discussions these would
+    be naturally integrated in the cognition and the
+    generated answers.
+    - More mappings:
+    derivative vs. integral also maps,
+    roots vs. exponents.  This indicates we can 
+map a large range of modern knowledge on 
+our graph.   
+
+Derivative ↔ Yang, Integral ↔ Yin
+not only maps, it makes sense based on the
+features of the two, with an integral
+being receptive, containing, wholeness
+and the derivative being instantaneous,
+breaking apart, etc.
+
+{
+  "subject": "derivative",
+  "polarity": "Yang",
+  "relation": "mutuallyRootedWith",
+  "object": "integral",
+  "polarity": "Yin",
+  "wuxing_layer": "Fire (peak action) → Water (accumulation)"
+}
+
+Knowledge graphs can act as the reasoning backbone.
+
+Once mapped accurately, modern mathematics, 
+physics (velocity vs. position, 
+force (yang) vs. potential energy (yin), divergence vs. curl, etc.), 
+computing (differentiation in backprop vs. accumulation 
+in forward pass), even economics 
+(marginal vs. total utility) all start generating 
+balanced, internally consistent explanations 
+without hand-coded rules.
+
+
+Probability and statistics map directly onto the Yin-Yang duality 
+and Wuxing cycles because they embody the same fundamentals: 
+polarity (certainty vs. uncertainty), 
+interdependence (observed vs. hidden), 
+transformation (update via evidence), 
+balance (between extremes), 
+and cyclic regulation (convergence/divergence, concentration/dispersion).
+
+Wuxing layering — five phases as modes of statistical process / transformation:
+Using the generative cycle (Wood → Fire → Earth → Metal → Water → Wood) and 
+controlling cycle for regulation:
+
+Wood (growth, expansion, branching possibilities) → Exploratory / branching phase — hypothesis generation, model complexity increase, increasing variance / degrees of freedom
+Fire (climax, illumination, peak activity) → Inference / peaking phase — maximum likelihood estimation, mode finding, sharpest Yang concentration
+Earth (centering, stabilization, harmonization) → Equilibrium / averaging phase — central tendency, regression to mean, Bayesian posterior centering
+Metal (contraction, refinement, precision) → Reduction / regularization phase — pruning, sparsity, variance reduction, Occam's razor, controlling excess complexity (Wood)
+Water (storage, depth, potential, flow) → Latent / foundational phase — priors, hidden variables, uncertainty reservoir, generative models feeding back into new cycles
+
 
 Wu-xing does map to the Periodic Table as well,
 as the metals are predominantly made of Metal,
@@ -64,6 +151,28 @@ elements like Sulphur and Oxygen
 map to being predominantly Fire, Nitrogen
 predominantly made of Water.  They could
 be placed in the knowledge graph as compositions.
+States of matter correspond to the Five Elements,
+with liquid being Water, Fire being gas,
+solid being Metal, with Earth being less solid.
+
+The meta-concepts of the AI include
+yin-yang as well: action and generation 
+map to yang and reception map to yin,
+such as taking in a text prompt.
+
+A paragraph or page of text can be taken
+in and then conclusions can be made
+as a result of the AI's knowledge base with all of
+the ancient Chinese cosmological associations,
+including statements of emotion, gender
+of the subject and objects in the sentences,
+etc.  This is then leads to a different
+process that does not exist in AI today
+which is that at a later point it may
+decide how to process the information provided
+for storage and react to it.
+
+
 
 
 

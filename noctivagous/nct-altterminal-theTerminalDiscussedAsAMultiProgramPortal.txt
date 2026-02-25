@@ -8,8 +8,15 @@ with a keyboard.  In actuality, how the terminal is used today relies on
 GUI conventions and is placed inside a hybrid setup.  The user will open up one 
 or more terminal windows concurrent with other GUI applications.  That of
 course wasn't what the CLI was about, but it does work well, like opening
-up different virtual computers from the past.  It has a lot of versatility
-and often bypasses the friction of the GUI for professional computer work.
+up different virtual computers from the past.  It has a lot of versatility,
+often bypasses the friction of the GUI for professional computer work,
+and allows certain kinds of work to be done that cannot be done anywhere else.
+Every usage of the shell starts at the shell prompt.
+From this, two keys type the program to 
+list the current directory ls and three keys, ssh, let the user open
+a remote shell.  This is a central aspect of its speed, that each new
+line of the shell can go in any functional direction by typing out program
+names that are often 4 characters or less.
 
 If we are to upgrade the CLI, the terminal, we can identify what still makes it
 indispensable, specifally what isn't recognized. Then we can move from that 
@@ -52,8 +59,8 @@ make use of key-clicks where the click of the mouse takes place because a
 keyboard key served as the click button.
 
 
-The terminal or UNIX shell centers on the filesystem as its focus.  A program
-executed is affected by or affects the current working directory.
+The terminal or UNIX shell focuses on the filesystem as its constant reference.  
+A program executed is possibly affected by or affects the current working directory.
 Some programs in the terminal play a role of commands for this shell even
 thought they are necessarily executable programs, such as ls, mv, cp, cd, pwd.  
 This distinction isn't made in discussions of UNIX shell, but it is this way 

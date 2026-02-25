@@ -5,8 +5,8 @@ The Terminal Discussed As A Multi-Program Portal
 Originally the terminal was the whole computer experience, hence the name 
 terminal since it was just a CRT monitor connected to the mainframe 
 with a keyboard.  In actuality, how the terminal is used today relies on 
-GUI conventions and is placed inside a hybrid setup.  The user will open up one or
-more terminal windows concurrent with other GUI applications.  That of
+GUI conventions and is placed inside a hybrid setup.  The user will open up one 
+or more terminal windows concurrent with other GUI applications.  That of
 course wasn't what the CLI was about, but it does work well, like opening
 up different virtual computers from the past.  It has a lot of versatility
 and often bypasses the friction of the GUI for professional computer work.
@@ -51,5 +51,43 @@ and mouse has no role in the CLI. If the mouse is to have a role, it should
 make use of key-clicks where the click of the mouse takes place because a 
 keyboard key served as the click button.
 
+
+The terminal or UNIX shell centers on the filesystem as its focus.  A program
+executed is affected by or affects the current working directory.
+Some programs in the terminal play a role of commands for this shell even
+thought they are necessarily executable programs, such as ls, mv, cp, cd, pwd.  
+This distinction isn't made in discussions of UNIX shell, but it is this way 
+in practice, with the user typing out a small subset of available programs
+most frequently.  A command like "cd" (change directory), when it is 
+treated as a command in a next generation of UNIX shell/terminal, can then be mapped 
+to a keyboard key or a physical button located to the side of the screen, just to 
+give an example.  A conversion of the UNIX terminal to a touchscreen app
+might start by placing ls, cd, mv, etc. as buttons to the side of the
+text screen (with line break added for "ls").  As soon as you make this
+change you then have the opportunity to make a target GUI region for "ls", such
+as a tray that slides out.  It then gives you the opportunity to let the user
+touch one of the directories or files in that tray.  All of this implies that
+the conversion to a different context will lead to and require a lot of
+changes, adaptations and revisions.
+
+If there is to be an upgrade to the UNIX shell or terminal it would account for 
+classifications of programs' functionality.  In GUI apps, this already takes 
+place, where individual functions that would be programs in the UNIX shell are 
+made into menu items.
+
+It is worth noting that the required manual use of "ls" adds some occasional
+speed to the UNIX shell / terminal because it is always optional for the user
+to view the current directory's contents.  Along with this, pressing
+the tab key after typing part of a filename means that a destination can be
+accessed quickly.
+
+Strictly speaking, calling it "the terminal" is more accurate than 
+"command line interface" because it is just an implementation of old terminal
+screens for UNIX shells and the interface wasn't exactly the topic at the time. 
+We're talking about the terminal because it was the computer interface
+and personal computers often were built upon this, which is encoded
+characters.  
+
+All of the programs made inside the terminal shell.
 
 

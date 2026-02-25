@@ -3,27 +3,39 @@ nct-altterminal-theTerminalDiscussedAsAMultiProgramPortal
 The Terminal Discussed As A Multi-Program Portal
 
 Originally the terminal was the whole computer experience, hence the name 
-terminal since it was just a CRT monitor connected to the mainframe 
-with a keyboard.  In actuality, how the terminal is used today relies on 
-GUI conventions and is placed inside a hybrid setup.  The user will open up one 
-or more terminal windows concurrent with other GUI applications.  That of
-course wasn't what the CLI was about, but it does work well, like opening
-up different virtual computers from the past.  It has a lot of versatility,
-often bypasses the friction of the GUI for professional computer work,
-and allows certain kinds of work to be done that cannot be done anywhere else.
-Every usage of the shell starts at the shell prompt.
-From this, two keys type the program to 
-list the current directory ls and three keys, ssh, let the user open
-a remote shell.  This is a central aspect of its speed, that each new
-line of the shell can go in any functional direction by typing out program
-names that are often 4 characters or less.
+terminal since it was a CRT monitor connected to the mainframe 
+with a keyboard.  In actuality, what makes the terminal feel powerful today 
+relies on GUI conventions. It is utilized most often inside the hybrid setup
+of modern GUI that provides additional conveniences.  The user will 
+open up one or more terminal windows concurrent with other GUI applications.  That of
+course wasn't what the terminal was about, but it does happen to work well, 
+like opening up multiple virtual computer monitors from the UNIX past.  
+The terminal provides a lot of versatility, it often bypasses the friction of 
+the GUI for professional computer work, and it also allows certain kinds of 
+tasks to be accomplished that cannot be done anywhere else.  An entire kit
+of programs comes with it, many of which were developed at Bell Labs, so it.
+Every usage of the UNIX shell, what is actually inside the terminal frame, 
+starts at a single line of text, the shell prompt, and this is the limited but
+quick convention provided.  The speed comes from the kit of programs being 
+available at the shell prompt.  At the shell line, just two keys type ls, the 
+program to list the current directory, and three keys, ssh, let the user open 
+a remote shell.  Interactions after that are usually basic before the program 
+terminates. This is a central aspect of the terminal's perceived agility and power, that each new
+line of the shell can go in any functional direction because all that is needed
+is typing out program names that are often 4 characters or less.  But generally
+no one  would care if the terminal was used the way it originally was, which was 
+the whole computer experience.  In that case it would be felt as too limiting.
 
 If we are to upgrade the CLI, the terminal, we can identify what still makes it
-indispensable, specifally what isn't recognized. Then we can move from that 
-to the next generation. First, we would call it a multi-program portal, an 
-incidentally timeless interactive scheme because it hosts programs that all 
-follow the same rules.  They all have to fit inside the same container. 
-They have to be controlled by keyboard in the same way.
+indispensable, specifically what isn't recognized as part of its user interaction
+dynamic. Then we can move from that to the next generation. 
+First, we would call it a multi-program portal, an incidentally timeless 
+interactive scheme because it hosts programs that all follow the same rules.  
+It originally hosted all programs that follow the same rules because that is
+all that the computer experience could provide from the times.  Brought into
+the present, it becomes a convention that is a kit.  The programs 
+all have to fit inside the same container. They have to be controlled by 
+keyboard in the same way.
 
 The CLI acts as the portal for the programs and this is  
 analogous to a multi video game arcade machine that can load different games 
@@ -33,24 +45,25 @@ No program can actually go outside of the rules of the terminal
 because the functionality to do it just isn't provided.
 
 Though this interactive scheme was in no way designed to provide these
-modern benefits, when programs all have to follow the same appearance,
-there is consistency across everything used inside it.  It is like the 
-camping multi-tool with all of the utensils that fold out of the 
-same holder. 
+benefits for modern computing, when programs all have to follow the same 
+appearance, there is consistency across everything used inside the terminal.  
+It is like the camping multi-tool with all of the utensils that fold out of 
+the same holder.
 
 In contrast with this, every GUI software application launches and manages its 
-own user interface and exists separately in multiple aspects, apart from 
-emphasizing the graphical analogies of buttons and physical controls.  
-Each one will carry wit it its own GUI organization and interactive schemes 
-that are particular to its style and purpose.
- 
+own user interface and exists separately in multiple respects. Apart from 
+emphasizing the graphics-based analogies of buttons and physical controls
+and using the mouse to activate them, each software application will carry with 
+it its own GUI organization and interactive schemes that are particular to its 
+style and purpose.
+
 Meanwhile, all terminal apps must behave in the same way,
 and if they do provide any kind of persistent GUI the rules are inherited because 
 there is no way to do anything but update characters in the display. 
 Then there is an important aspect which is that the programs that run inside the 
 terminal, if they don't specially exist as persistent GUI, will terminate after 
-execution. They are transient by default. With everything driven by text, 
-the limited UI for programs links into the ease of typing out commands to 
+execution. They are transient by default.  With everything driven by text 
+characters, the limited UI for programs links into the ease of typing out commands to 
 navigate the file system and manipulate the files with the programs that run 
 and then exit. It produces an altogether different dynamic, but since it is old, 
 it is often recognized that an upgrade is due.  Everything is keyboard-driven 

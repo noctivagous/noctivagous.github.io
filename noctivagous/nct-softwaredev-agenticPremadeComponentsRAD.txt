@@ -32,48 +32,74 @@ with this LLM-centric RAD editor:
 - REST request and response controller
 --- subclass: AI chat API component
 
-When modules are too defined and narrow, 
+app feature kits: 
+- scene tree
+- timeline 
+
+The less unnecessary micro-level work the AI
+has to do, the better, and modular kits enable
+this. At the same time, though 
+if modules are too defined and narrow, 
 they become problematic because they are 
-inflexible and limited.  If very low level, such as
-the notion of an object class, they will
-require more management.  The balance
+inflexible and limited.  If a module is 
+very low level, such as the object class, it 
+will require more construction effort by
+the AI agent, which is the issue we
+are addressing.  The balance
 can be genericity, where there are categories
 of activities in software development
-identified (the use of a state machine)
-and the components facilitate that activity
-such that they don't need much customization.
+identified (e.g. the use of a state machine)
+and the components facilitate common
+scenarios such that it is about depth of 
+customization by the AI agent, 
+not full-time construction.
 
 The test case might be: what would it take
 to produce a versatile publication system
-like WordPress.  What premade components, on
+like WordPress?  What premade components, on
 the programmatic side and the GUI side
-would be provided to the AI?  These are
+would be provided to the AI?  Many relevant
 components and kits that haven't existed before,
 both because AI wasn't involved and
-software engineers just didn't make them.
+software engineers just didn't make them as
+part of official programming libraries.
+
 It would be the task of the AI to mix, connect,
 configure, and sometimes customize these
 modules.  Since they are at the code
 level, they allow more granular control
 than, say, a conventional patch-based 
-programming system.  The AI can choose
-to subclass or modify these pre-made
-components when necessary.
+programming system where the common
+complaint is lack of control inside
+the input-output box.  The AI agent can choose
+to subclass or modify pre-made
+components code when necessary while
+they stay ready-made.
 
 A calculator would be built with premade
-logic components that accept OOP messaging.
+logic components that accept OOP messaging
+and then change the display.
 When the LLM makes the calculator,
 it might only require a few instances
 of premade components on the logic, data storage,
-and presentation sides.
+and presentation sides.  These kinds of
+components would certainly be different
+in architecture or offer more specific
+features for AI agent than what is
+presently available.
 
 It isn't that the LLM would never write
-code, but it would write far less
-and thereby stay within guidelines
-that prevent excessive code.
-The LLM can customize when necessary
-and work at a low level for features
-and needs specific to the app.
+code, but it would write far less for the
+larger level and thereby stay within 
+schematics that prevent excessive code.
+The code that it makes would be more
+viewable in a schematics view as well.
+The LLM can customize premade components
+when necessary and work at a low level 
+for features and needs specific to the app.
+Meanwhile, at present the AI agent is
+handing lines of code for everything,
+from top to bottom.
 
 Such a system would integrate more aspects,
 such as a design style guide, so that

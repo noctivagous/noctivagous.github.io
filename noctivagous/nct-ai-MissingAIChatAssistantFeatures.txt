@@ -1,0 +1,45 @@
+nct-ai-MissingAIChatAssistantFeatures
+
+
+- AI chat sessions are not automatically 
+tagged or categorized.  This makes it difficult
+to browse them and make use of old chats, which
+will get lost or forgotten unless they are searched 
+for specifically.   The AI chats also only show up in
+a sidebar and don't have a grid view.
+
+- AI chats generate too much text for many responses,
+and they never decide to answer with just two paragraphs.
+There is no way to control the length of a response
+(E.g. length slider: short, medium, long).
+
+- The AI chat assistants don't place any portions 
+of their responses inside GUI controls, like tab views or
+slideshow viewers, to compact the information.
+They don't make use of multi-column layouts
+on desktop web browsers.  They don't paginate
+any aspects of the response.  It is one long flow
+and tiring to scroll through.
+
+- They don't let you delete any of the responses
+or edit them.  Because you can't delete
+them, the chat feeds the LLM.
+
+- The AI assistants lack any second level
+of action.  For example, they cannot go out and download
+a podcast and transcribe it for you.  In the case
+that one could, and it didn't have a transcription
+tool available, i would have to be able to go out
+and install one.  So, the capabilities of an AI
+chat should match that of an AI agentic code editor.
+They need to be able to take actions outside of
+the chat. They have to be able to acquire capabilities 
+not given to them in their initial state.
+They have to be able to take action on the
+information obtained from research.
+
+
+
+
+
+

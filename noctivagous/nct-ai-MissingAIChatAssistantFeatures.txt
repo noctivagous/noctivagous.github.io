@@ -38,6 +38,21 @@ not given to them in their initial state.
 They have to be able to take action on the
 information obtained from research.
 
+- Chat sessions should be treated as documents,
+in their own document format, such as .aichat.
+It is acknowledged in the document whether
+the AI chat has been edited.  The document
+format should be flexible enough to allow the
+user to slowly change it into a work document.  
+That is, the user can edit the chat session 
+and adds images and other components
+until it is finished or turned into a draft.
+
+    - The AI chat assistant should accept commands
+    about its own contents and filesystem, such as
+    "combine chat session 1 and session 2".  It
+    should accept commands about design and layout
+    of the .aichat document
 
 
 

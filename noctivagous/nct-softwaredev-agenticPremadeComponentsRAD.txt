@@ -36,6 +36,10 @@ app feature kits:
 - scene tree
 - timeline 
 
+conventions
+- dashboards
+- admin panels
+
 The less unnecessary micro-level work the AI
 has to do, the better, and modular kits enable
 this. At the same time, though 

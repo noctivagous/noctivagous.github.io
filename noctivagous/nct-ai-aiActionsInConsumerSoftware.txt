@@ -7,41 +7,47 @@ some additional concepts will be necessary.
 The AI chat is usually the sole GUI gateway 
 to AI today instead of AI being integrated 
 inside existing, traditional software GUI conventions.
-In other words, the AI chat is an interactive 
+In other words, the AI chat is a specific interactive 
 GUI setup but is not acknowledged as such.
 Many GUI equivalents can be made for what
-is typewritten in a chat.  If AI is to be
-perceived as actually valuable, it should be
-integrated into what people have today. An immediate example 
-is that data tables in software should in many cases 
-be able  to receive dropped documents of any 
+is typewritten in an AI chat.  If AI is to be
+perceived as generally valuable, it should be
+integrated into what people have been using
+for decades. An immediate example 
+is that data tables in software should, in many cases, 
+be able to receive dropped documents of any 
 file type, or take in any kind of pasted text, 
 and convert the data to populate the table.
 In this case, the AI is actually playing a helpful
-role.
+role within traditional software.
 
 There is also the important issue that typing out
 commands is not always desirable for interacting with a machine.
 Drag and drop, double-click are all real-time, non-verbal 
-conventions for interacting with a computer. Typewritten words can 
+conventions for interacting with a computer. Typewritten sentences can 
 certainly specify commands to the AI with clarity, but there are
 some costs, namely that not all users are oriented
 this way, not all people want to be typing
 commands to a computer as natural language sentences, and finally
-natural language sentences take a lot to compose
-at the same time that making any kind of alternative, 
-abbreviated sentences also takes work because there is no 
-convention for it.  Before the GUI was popular,
-the commands did have brevity and syntax even though they were 
-inflexible.
+natural language sentences take a lot of mental effort
+to compose at the same time that having the user make 
+any kind of alternative, abbreviated sentences is inadequate 
+because it feels strange and there is no convention for it.  
+Before the GUI became available, the commands did feature 
+brevity and syntax even though they were too inflexible.  
+Radio shorthand is preferred for radio.  The CLI syntax
+is too rigid but natural language can be on the other extreme.
 
 Before addressing these issues, the concept of a prompt and a tool
 can be unified in a usable package called an AI action.
+At the moment, in a chat the user types a prompt that
+will activate a tool.
 
 AI Actions
     - Currently, prompts are not bundled together 
     with tools and workflows.  The user is left to
-    come up with prompts and type them out manually.
+    come up with prompts and type them out manually
+    to activate tools.
     - AI actions bundle prompts that activate tools
     in specific ways.  They can carry a flow.
     - Instead of the user having to type out prompts to activate 

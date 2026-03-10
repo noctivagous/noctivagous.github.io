@@ -1,0 +1,15 @@
+nct-socialmedia-remoteDataMarkup
+
+At the current time, a social media post is completely static and 
+cannot update its information, such as a progress bar for a crowdfunding 
+project.
+
+A social media post might contain sports scores or a leaderboard and 
+they would be able to receive updates because the post embedded template markup.  
+Live updates would be fetched by the client while other kinds might 
+be fetched by the website.
+
+Posts with dynamic content allow embedding remote data sources, 
+such as for a progress bar for a crowdfunding project that is always 
+current.
+

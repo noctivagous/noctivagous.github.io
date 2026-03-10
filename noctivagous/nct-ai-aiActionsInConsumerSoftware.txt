@@ -3,10 +3,40 @@ nct-ai-aiActionsInConsumerSoftware
 
 AI agents and tools have not been integrated
 into consumer software adequately and so
-some additional concepts will be of use.
+some additional concepts will be necessary.
 The AI chat is usually the sole GUI gateway 
 to AI today instead of AI being integrated 
-into existing, traditional software GUI conventions.
+inside existing, traditional software GUI conventions.
+In other words, the AI chat is an interactive 
+GUI setup but is not acknowledged as such.
+Many GUI equivalents can be made for what
+is typewritten in a chat.  If AI is to be
+perceived as actually valuable, it should be
+integrated into what people have today. An immediate example 
+is that data tables in software should in many cases 
+be able  to receive dropped documents of any 
+file type, or take in any kind of pasted text, 
+and convert the data to populate the table.
+In this case, the AI is actually playing a helpful
+role.
+
+There is also the important issue that typing out
+commands is not always desirable for interacting with a machine.
+Drag and drop, double-click are all real-time, non-verbal 
+conventions for interacting with a computer. Typewritten words can 
+certainly specify commands to the AI with clarity, but there are
+some costs, namely that not all users are oriented
+this way, not all people want to be typing
+commands to a computer as natural language sentences, and finally
+natural language sentences take a lot to compose
+at the same time that making any kind of alternative, 
+abbreviated sentences also takes work because there is no 
+convention for it.  Before the GUI was popular,
+the commands did have brevity and syntax even though they were 
+inflexible.
+
+Before addressing these issues, the concept of a prompt and a tool
+can be unified in a usable package called an AI action.
 
 AI Actions
     - Currently, prompts are not bundled together 
@@ -45,14 +75,18 @@ Drop regions also allow many options such
 as subdiving the drop region on hover for
 different functions.
 
-    - In an agentic code editor, you drop pieces
+
+    - In an agentic code editor, you drop components
     onto drop regions of a schematic, whether empty spaces
     or components of the diagram, and the code editor
     can ask you what you want to do such as 
-    have you fill out a questionnaire.
-    This is much faster than typing out
-    in a chat.
+    have you fill out a form. This is much faster than 
+    typing out specifications in a chat.
     
+A desktop computing environment can provide settings
+for the user to display AI actions as contextual (right-click)
+menu options.  
+
     
 AI-Enabled Tables And Areas
 

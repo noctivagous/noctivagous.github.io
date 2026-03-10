@@ -41,5 +41,42 @@ What this does is allow a bridge between
 the traditional consumer software GUI conventions 
 and AI functionality.
 
-Buttons. 
+Drop regions also allow many options such
+as subdiving the drop region on hover for
+different functions.
+
+    - In an agentic code editor, you drop pieces
+    onto drop regions of a schematic, whether empty spaces
+    or components of the diagram, and the code editor
+    can ask you what you want to do such as 
+    have you fill out a questionnaire.
+    This is much faster than typing out
+    in a chat.
+    
+    
+AI-Enabled Tables And Areas
+
+    Data Conversions:
+
+    - The user drops a .txt file
+    onto a GUI table and since
+    the GUI table was AI-enabled
+    it can convert the contents
+    to the table.
+    
+    - Dropping a .PPT file onto
+    a web page editor will ask
+    the user what to do with it
+    and one option is to convert
+    it to a web page native format.
+    
+
+
+Buttons
+
+    In conventional software buttons
+    are all defined, but in AI-enabled
+    software the user may be able
+    to add and configure buttons
+    and drop regions with AI functionality.
 

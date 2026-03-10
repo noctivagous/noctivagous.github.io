@@ -1,0 +1,45 @@
+
+nct-ai-aiActionsInConsumerSoftware
+
+AI agents and tools have not been integrated
+into consumer software adequately and so
+some additional concepts will be of use.
+The AI chat is usually the sole GUI gateway 
+to AI today instead of AI being integrated 
+into existing, traditional software GUI conventions.
+
+AI Actions
+    - Currently, prompts are not bundled together 
+    with tools and workflows.  The user is left to
+    come up with prompts and type them out manually.
+    - AI actions bundle prompts that activate tools
+    in specific ways.  They can carry a flow.
+    - Instead of the user having to type out prompts to activate 
+    specific tools in specific ways, these
+    actions are dragged into an action
+    script or the AI chat.  A given AI action 
+    may require configuration before use.   
+    - AI Action Script: A list of actions with their
+    tools that can be lined up in a sequence,
+    provided logic and control flows.
+    - The benefit of an AI action or action
+    script is that the conditional logic can be written
+    in natural language and the AI's response
+    will accommodate any situation.
+    
+Drop Regions: 
+
+The AI acts on the dropped file or directory according 
+to the configured action. A drop region may only have one
+AI action or it may have accompanying controls
+for configuring it.  Example drop region for directory
+that makes use of AI: "organize directory tree."
+That drop region can be configured as to whether it
+renames files or inspects file contents to do something.
+Another might be "optimize code in folder."
+What this does is allow a bridge between
+the traditional consumer software GUI conventions 
+and AI functionality.
+
+Buttons. 
+

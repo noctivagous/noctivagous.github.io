@@ -13,37 +13,70 @@ Many GUI equivalents can be made for what
 is typewritten in an AI chat.  If AI is to be
 perceived as generally valuable, it should be
 integrated into what people have been using
-for decades. An immediate example 
-is that data tables in software should, in many cases, 
-be able to receive dropped documents of any 
-file type, or take in any kind of pasted text, 
-and convert the data to populate the table.
-In this case, the AI is actually playing a helpful
-role within traditional software.
+for decades.  What is wrong is an assumed
+future obsolescence of everything because of 
+AI rather than adapting AI to existing 
+software conditions.
+
+Examples of Integrating Into Existing GUI Controls
+
+Since there is now AI, data tables in software 
+should, in many cases, be able to receive dropped documents of any 
+data format, or take in any kind of pasted text, 
+and the AI model will convert the data to populate the 
+table.  A scanned image with tabular data would be OCR'ed first
+by the AI model.  In this case, the AI is playing a helpful
+role from inside traditional software instead of
+being tacked on top of it.  Another example:
+it's often easier to type in a text file a list of dates
+and what will happen on them than it is
+to enter them one at a time in a calendar grid,
+so a calendar GUI grid would accept a dropped
+text file and convert its contents.  It would
+even be able to OCR a handwritten set of dates. 
+A todo list app could provide the same functionality for
+text files or other documents containing todos.
+The data on the computer does not have to originate
+in the specific format of its destination but instead
+can have AI acting as a bridge.
+
+GUI Is Non-Verbal User Action Vs. AI's Chat Prompts
 
 There is also the important issue that typing out
 commands is not always desirable for interacting with a machine.
 Drag and drop, double-click are all real-time, non-verbal 
-conventions for interacting with a computer. Typewritten sentences can 
-certainly specify commands to the AI with clarity, but there are
-some costs, namely that not all users are oriented
+conventions for interacting with a computer.  It means
+that GUI controls should become AI-capable; a drop region
+will have an AI action that happens after the drop occurs.
+After a slider is moved, it might trigger an AI action.
+
+Typewritten sentences can certainly specify commands to 
+the AI with full clarity, but there are
+some costs, namely that not all users are predisposed to work
 this way, not all people want to be typing
 commands to a computer as natural language sentences, and finally
 natural language sentences take a lot of mental effort
-to compose at the same time that having the user make 
-any kind of alternative, abbreviated sentences is inadequate 
-because it feels strange and there is no convention for it.  
+to compose. Also, expecting the user to use strategies like 
+abbreviated sentences is inadequate because it feels strange 
+and there is no convention for it.  
+
 Before the GUI became available, the commands did feature 
-brevity and syntax even though they were too inflexible.  
+brevity and syntax even though they are too unforgiving.
+The natural language prompts are almost totally forgiving
+but they require too much verbosity for commands.  
 Radio shorthand is preferred for radio.  The CLI syntax
-is too rigid but natural language can be on the other extreme.
+relates to that but with an unforgiving syntax and too many
+flags and parameters to memorize.  GUI is real-time action.
+
+
+AI Actions
 
 Before addressing these issues, the concept of a prompt and a tool
 can be unified in a usable package called an AI action.
 At the moment, in a chat the user types a prompt that
 will activate a tool.
 
-AI Actions
+
     - Currently, prompts are not bundled together 
     with tools and workflows.  The user is left to
     come up with prompts and type them out manually

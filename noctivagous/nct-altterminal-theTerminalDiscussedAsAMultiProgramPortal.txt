@@ -1,48 +1,71 @@
 nct-altterminal-theTerminalDiscussedAsAMultiProgramPortal
 
+The command line interface or terminal should be examined for what
+conveniences and benefits it provides over the GUI so that a later generation can 
+be devised that originates from within the GUI that is keyboard-driven
+and also just as nimble.  To investigate the differences, consider the following. 
+In a GUI desktop computer environment, any window on the screen belongs 
+to only one software application.  A window will only ever contain interface
+controls for its parent GUI application.  Switching to another 
+software application involves moving to a different set of windows 
+that belong to it. The single exception to this, and a reason it is preferred sometimes for
+work, is the Terminal app, which not only allows opening up 
+different programs inside the same window consecutively, it
+allows using more than program one at a time in a line sent to the shell.  
+In addition to this, the parent GUI window allows opening up tabs.  
+Multiple programs can be open inside the same command line terminal or window.
+It can then be regarded as a flexible, multi-program portal.
+
+
 The Terminal Discussed As A Multi-Program Portal
 
 Originally the terminal was the whole computer experience, hence the name 
-terminal since it was a CRT monitor connected to the mainframe 
-with a keyboard.  In actuality, what makes the terminal feel powerful today 
+terminal since it was a CRT monitor connected to the mainframe computer 
+with a keyboard.  Much of what makes the terminal feel powerful today 
 relies on GUI conventions. It is utilized most often inside the hybrid setup
-of modern GUI that provides additional conveniences.  The user will 
+of modern GUI that provides it additional GUI wrapper conveniences.  The user will 
 open up one or more terminal windows concurrent with other GUI applications.  That of
 course wasn't what the terminal was about, but it does happen to work well, 
-like opening up multiple virtual computer monitors from the UNIX past.  
-The terminal provides a lot of versatility, it often bypasses the friction of 
+like opening up multiple virtual computer monitors from the UNIX past. In this setup, 
+the terminal provides a lot of versatility, it often bypasses the friction of 
 the GUI for professional computer work, and it also allows certain kinds of 
 tasks to be accomplished that cannot be done anywhere else.  An entire kit
-of programs comes with it, many of which were developed at Bell Labs, so it.
-Every usage of the UNIX shell, what is actually inside the terminal frame, 
+of programs comes with it, many of which were developed at Bell Labs.
+The programs themselves carry a lot of power, even if they aren't all easy
+to memorize. They often make sense within the system.
+Every usage of the UNIX shell, what is actually inside the terminal's rectangle, 
 starts at a single line of text, the shell prompt, and this is the limited but
-quick convention provided.  The speed comes from the kit of programs being 
+agile convention provided.  The speed comes from the kit of programs being 
 available at the shell prompt.  At the shell line, just two keys type ls, the 
 program to list the current directory, and three keys, ssh, let the user open 
-a remote shell.  Interactions after that are usually basic before the program 
-terminates. This is a central aspect of the terminal's perceived agility and power, that each new
+a remote shell. This is a central aspect of the terminal's perceived agility and power, that each new
 line of the shell can go in any functional direction because all that is needed
-is typing out program names that are often 4 characters or less.  But generally
+is typing out program names that are often 4 characters or less. 
+Interactions after that are usually basic before the program 
+terminates, so the user is often using many small programs consecutively 
+that execute and terminate rapidly.   But generally
 no one  would care if the terminal was used the way it originally was, which was 
 the whole computer experience.  In that case it would be felt as too limiting.
 
 If we are to upgrade the CLI, the terminal, we can identify what still makes it
 indispensable, specifically what isn't recognized as part of its user interaction
-dynamic. Then we can move from that to the next generation. 
+dynamic.  Then we can move from that to the next generation. 
 First, we would call it a multi-program portal, an incidentally timeless 
 interactive scheme because it hosts programs that all follow the same rules.  
 It originally hosted all programs that follow the same rules because that is
 all that the computer experience could provide from the times.  Brought into
-the present, it becomes a convention that is a kit.  The programs 
-all have to fit inside the same container. They have to be controlled by 
-keyboard in the same way.
+the present, it becomes a convention that is a self-contained kit woven
+into the system.  The programs all have to fit inside the same container. 
+They have to be controlled by keyboard in the same way.
 
 The CLI acts as the portal for the programs and this is  
 analogous to a multi video game arcade machine that can load different games 
 on the same upright cabinet, all of which use the same joystick and buttons. 
 The other machines might have customized controls for their games.  
 No program can actually go outside of the rules of the terminal 
-because the functionality to do it just isn't provided.
+because the functionality to do it just isn't provided.  You cannot
+show an image inside the terminal window because it won't let you.
+You cannot draw a GUI because it won't let you.
 
 Though this interactive scheme was in no way designed to provide these
 benefits for modern computing, when programs all have to follow the same 

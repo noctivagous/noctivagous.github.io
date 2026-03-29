@@ -1,0 +1,19 @@
+nct-ui-ScrollUpOrDownWithAnyMouseMovement-Mode
+
+Scroll Up Or Down With Any Mouse Movement
+
+Once the up or down arrow scroll lock key
+is pressed, any mouse move will scroll
+the document in that direction.
+ 
+Let's say there is a different set of
+arrow down and arrow up keys. When this kind of arrow down
+key is pressed, any mouse movement will scroll
+the document down, corresponding to the mouse movement.  
+This way the user can continuously scroll a document 
+by moving the mouse back and forth vertically.
+Pressing any key will stop the mode, including
+Control, Spacebar, etc.
+
+These keys might sit to the left of the keyboard
+while the user uses the mouse to the right of the keyboard.

@@ -1,0 +1,423 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollUpOrDownWithAnyMouseMovement Mode Demo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500&amp;display=swap');
+        
+        :root {
+            --accent: #00d4ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #333;
+            color: #f0f0f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #222;
+            z-index: 1000;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: -1px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent);
+        }
+        
+        .title {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        #mode-status {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111;
+            border: 2px solid #222;
+            border-radius: 9999px;
+            padding: 12px 32px;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+        
+        #mode-status.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .demo-container {
+            max-width: 860px;
+            margin: 160px auto 80px;
+            padding: 0 40px;
+        }
+        
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #aaa;
+            margin-bottom: 60px;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .instructions {
+            background: #111;
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 80px;
+            border: 1px solid #222;
+        }
+        
+        .instructions h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .key {
+            background: #222;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .content {
+            background: #111;
+            border-radius: 20px;
+            padding: 60px 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            line-height: 1.8;
+        }
+        
+        .content h2 {
+            font-size: 28px;
+            margin: 60px 0 20px;
+            border-bottom: 2px solid #222;
+            padding-bottom: 16px;
+        }
+        
+        .content p {
+            margin-bottom: 24px;
+            font-size: 18px;
+        }
+        
+        .content ul {
+            margin: 30px 0;
+            padding-left: 30px;
+        }
+        
+        .content li {
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #555;
+            font-size: 14px;
+            border-top: 1px solid #222;
+        }
+        
+        .active-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+        }
+        
+        .mouse-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent);
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 3000;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .mouse-hint.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            noctivagous
+        </div>
+        <div class="title">Vertical Scroll With Any Mouse Movement</div>
+        <div style="font-size:13px; color:#666; font-family:monospace;">
+            DEMO • Single-page interactive prototype
+        </div>
+    </header>
+
+    <!-- Mode Status Banner -->
+    <div id="mode-status">
+        <span id="status-text">Mode: <strong>Inactive</strong></span>
+        <span id="status-detail" style="font-size:13px; color:#888;"></span>
+    </div>
+
+    <div class="demo-container">
+
+
+        <div class="instructions">
+            <h2>🎮 How to use this demo</h2>
+            <p><strong>1.</strong> Press <span class="key">↓ ArrowDown</span>.  This turns on the DOWN scroll mode</p>
+        
+            <p><strong>2.</strong> Move your mouse <strong>up and down</strong> (back and forth) — the page scrolls continuously in the direction
+            of the mode.
+            </p>
+            <p><strong>3.</strong> The scroll amount matches the distance you move the mouse.</p>
+            <p><strong>4.</strong> Press <strong>any key</strong> (Space, Ctrl, Esc, letters, etc.) to instantly exit the mode.</p>
+         
+        </div>
+
+        <div class="content" id="scroll-content">
+            <h2>Welcome to the demo document</h2>
+            <p>This is a long scrollable page designed to showcase the nct-ui ScrollUpOrDownWithAnyMouseMovement-Mode.</p>
+            
+            <p>Imagine you are reading a massive research paper, a long technical specification, or a very tall webpage. Normally you would use the scroll wheel, scrollbar, or Page Down. With this mode you simply press one key and then move your mouse vertically — no more reaching for the wheel, no more hitting the edge of your mousepad.</p>
+            
+            <h2>Why back-and-forth works so well</h2>
+            <ul>
+                <li>Mouse movement is measured by distance only (absolute value).</li>
+                <li>Direction is locked to the mode you chose (↑ or ↓).</li>
+                <li>Move the mouse down → scroll down.</li>
+                <li>Move the mouse back up → still scrolls down (by the same distance).</li>
+                <li>Repeat the motion as long as you want. No need to lift the mouse or reset position.</li>
+            </ul>
+
+            <h2>Section 1 — Feature Details</h2>
+            <p>Once activated, the system captures every pixel of vertical mouse movement and converts it into smooth document scrolling in the fixed direction. Horizontal movement is completely ignored.</p>
+            <p>This mode is perfect for users who want to keep their hand on the mouse while using a special hardware key on the left side of the keyboard.</p>
+
+            <h2>Section 2 — Real-world use cases</h2>
+            <p>• Reading long articles or books in browser<br>
+               • Browsing technical documentation<br>
+               • Reviewing code repositories<br>
+               • Infinite social feeds or timelines<br>
+               • Accessibility mode for users with limited wrist movement</p>
+
+            <h2>Section 3 — More content to scroll through</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            
+            <h2>Section 4 — Even more content</h2>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+            
+            <h2>Section 5 — Keep scrolling…</h2>
+            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+            <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+            
+            <h2>Section 6 — Final demo section</h2>
+            <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+            <p style="text-align:center; margin-top:60px; font-size:15px; color:#666;">
+                ↓ Keep scrolling with mouse movement in demo mode ↓<br>
+                <span style="font-size:13px;">(You’ve reached the end of the demo content)</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        nct-ui ScrollUpOrDownWithAnyMouseMovement-Mode • Interactive HTML Demo<br>
+        Press ArrowUp or ArrowDown to begin • Any key exits mode
+    </div>
+
+    <!-- Mouse movement hint -->
+    <div id="mouse-hint" class="mouse-hint">
+        <span>🖱️</span>
+        <span id="hint-text">Move mouse vertically — page will scroll continuously</span>
+    </div>
+
+    <script>
+        // Core variables
+        let currentMode = 'inactive' // 'inactive' | 'up' | 'down'
+        let lastMouseY = 0
+        let sensitivity = 0.5   // Feels very natural — adjust if you want
+
+        // DOM elements
+        const statusEl = document.getElementById('mode-status')
+        const statusTextEl = document.getElementById('status-text')
+        const statusDetailEl = document.getElementById('status-detail')
+        const mouseHintEl = document.getElementById('mouse-hint')
+        const hintTextEl = document.getElementById('hint-text')
+
+        function updateUI() {
+            if (currentMode === 'inactive') {
+                statusEl.classList.remove('active')
+                statusTextEl.innerHTML = `Mode: <strong style="color:#888">Inactive</strong>`
+                statusDetailEl.innerHTML = `Press <span style="color:#00d4ff">↓ ArrowDown</span> `
+                mouseHintEl.classList.remove('show')
+            } 
+            else if (currentMode === 'up') {
+                statusEl.classList.add('active')
+                statusTextEl.innerHTML = `🡅 <strong style="color:#00d4ff">UP SCROLL MODE ACTIVE</strong>`
+                statusDetailEl.textContent = 'Move mouse up and down to scroll UP • Press any key to stop'
+                mouseHintEl.classList.add('show')
+                hintTextEl.innerHTML = `🡅 Moving mouse up or down scrolls the page UP`
+            } 
+            else if (currentMode === 'down') {
+                statusEl.classList.add('active')
+                statusTextEl.innerHTML = `🡇 <strong style="color:#00d4ff">DOWN SCROLL MODE ACTIVE</strong>`
+                statusDetailEl.textContent = 'Move mouse up and down to scroll DOWN • Press any key to stop'
+                mouseHintEl.classList.add('show')
+                hintTextEl.innerHTML = `🡇 Moving mouse up or down scrolls the page DOWN`
+            }
+        }
+
+        // Keyboard handler — exactly as described in the spec
+        function handleKeyDown(e) {
+            // If mode is already active → any key exits the mode
+            if (currentMode !== 'inactive') {
+                currentMode = 'inactive'
+                updateUI()
+                return
+            }
+
+            // Activation keys (simulating the special "arrow scroll lock keys")
+            if (e.key === 'ArrowUp') {
+                currentMode = 'up'
+                e.preventDefault() // prevent normal browser scrolling
+                updateUI()
+            } 
+            else if (e.key === 'ArrowDown') {
+                currentMode = 'down'
+                e.preventDefault()
+                updateUI()
+            }
+            // Other keys do nothing while inactive (normal browser behavior)
+        }
+
+        // Mouse movement handler — the core of the mode
+        function handleMouseMove(e) {
+            // Always keep the last known Y position updated
+            const deltaY = e.clientY - lastMouseY
+
+            // Only act when mode is active
+            if (currentMode !== 'inactive' && Math.abs(deltaY) > 0) {
+                // Scroll amount = absolute movement × sensitivity
+                // This enables the "back and forth" continuous scrolling
+                const scrollAmount = Math.abs(deltaY) * sensitivity
+
+                if (currentMode === 'down') {
+                    window.scrollBy({
+                        left: 0,
+                        top: scrollAmount,
+                        behavior: 'instant'
+                    })
+                } 
+                else if (currentMode === 'up') {
+                    window.scrollBy({
+                        left: 0,
+                        top: -scrollAmount,
+                        behavior: 'instant'
+                    })
+                }
+            }
+
+            // Update last position for next delta calculation
+            lastMouseY = e.clientY
+        }
+
+        // Initialize everything
+        function initializeDemo() {
+            // Set initial mouse Y to middle of screen
+            lastMouseY = window.innerHeight / 2
+
+            // Attach listeners
+            document.addEventListener('keydown', handleKeyDown)
+            document.addEventListener('mousemove', handleMouseMove)
+
+            // Initial UI state
+            updateUI()
+
+            console.log('%c✅ nct-ui ScrollUpOrDownWithAnyMouseMovement-Mode demo ready!', 'color:#00d4ff; font-family:monospace')
+            console.log('Press ↑ or ↓ arrow keys to activate the mode')
+        }
+
+        // Boot the demo
+        window.onload = initializeDemo
+    </script>
+</body>
+</html>
+```

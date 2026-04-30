@@ -1,0 +1,25 @@
+paperjs ai chatbot
+    - interactive workspace where AI generates
+    anything for the interactive canvas.
+        - different means of generating 
+        and interacting with contents of paperjs canvas.
+            - text box at bottom included.
+        - alternative to text-based chatbot.  
+        - responses are updates on the paperjs canvas.
+    
+    - AI returns data for paperjs canvas
+        - shorthand commands for the client, not full markup
+        - is provided layout container, gui controls and list of 
+        commands.
+        
+    - allows AI to return executable code (such as for buttons)
+    for the paperjs canvas instance.
+    - each query sends the current canvas and
+        info. about it to the paperjs ai chatbot
+    - can interact with the contents of the convas
+    with clicking, right-clicking to send ai queries.       
+        - gui then sends the queries, not typing out
+        text prompts.
+    - versatile usage can include text responses on the canvas
+    using layout containers.
+    - interaction history.

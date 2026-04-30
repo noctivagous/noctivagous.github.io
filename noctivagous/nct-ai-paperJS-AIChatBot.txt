@@ -8,18 +8,23 @@ paperjs ai chatbot
         - responses are updates on the paperjs canvas.
     
     - AI returns data for paperjs canvas
-        - shorthand commands for the client, not full markup
-        - is provided layout container, gui controls and list of 
+        - shorthand commands for the client, not full markup.
+        - AI is provided layout container, gui controls and list of 
         commands.
         
     - allows AI to return executable code (such as for buttons)
     for the paperjs canvas instance.
     - each query sends the current canvas and
         info. about it to the paperjs ai chatbot
-    - can interact with the contents of the convas
+    - user can interact with the contents of the convas
     with clicking, right-clicking to send ai queries.       
         - gui then sends the queries, not typing out
         text prompts.
+        - AI is able to attach AI queries as callbacks to events on
+        objects on the canvas, so that, e.g., dragging
+        an object and dropping it on another 
+        sends an AI query about what to do next.
+        
     - versatile usage can include text responses on the canvas
     using layout containers.
     - interaction history.

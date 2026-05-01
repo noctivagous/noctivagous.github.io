@@ -3,9 +3,13 @@ nct-guiHardware-sideTrayKeys
 On desktop computers, on keyboards
 that have some thickness, there can be four
 tray keys places on the sides of the keyboard
-that activate the functions for sliding out and in
+that activate functions for sliding out and in
 GUI trays from the sides of the screen,
 for quick access to resources and information.
+
+Tapping a side of an existing desktop keyboard
+while envisioning a tray sliding out and in will
+give a feeling of what this is about.
 
 These keys can be configured with more than one purpose, such
 as assigning the right tray to what is provided
@@ -13,8 +17,10 @@ by the current software application while the left
 tray shows open applications.
 
 The bottom one could be configured to show a centered
-window with information and controls. 
+window with information and controls.
 
-Tapping the sides of an existing desktop keyboard
-while envisioning trays sliding out and in while
-give the impression of what this is about.
+Going further, there can be variations where
+there are three buttons on each side of the keyboard 
+so that the user has even more options.
+
+

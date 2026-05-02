@@ -1,0 +1,27 @@
+nct-socialMedia-badgesFirst
+
+The social media notion of "followers" has played a dual role: 
+as subscription (for those following) and a display of social proof, 
+muddying the situation.  Instead of followers, 
+the user can put badges on the profile for social proof and identification, 
+of any kind.   In that case, follower count ceases to have relevance for 
+users evaluating a profile, because if a profile has expended a lot of effort
+putting together a badge section it indicates the profile owner has commitment
+to the profile versus a newly registered profile with no followers on the old 
+type of website.  In this way, it solves a certain problem.
+(Clicking on a badge will show other users with the same badge).
+The user can choose from thousands of badges or make a custom one like 
+"home gardener" so that the user knows what the person 
+is about, not only gets social proof.  This way something humble like 
+"home gardener" has value.  The badges would not need to be tied to achieving 
+a thing but can be descriptive or self-identifying. Badges would not cost money 
+but be part of the service.
+
+Then it will play out that a profile can also be evaluated based on what
+kinds of badges are followed.
+
+Follower counts still exist behind the scenes only as subscription tools 
+(you follow a “Home Gardener” because you want plant tips, not because 
+you’re impressed by their number).
+
+

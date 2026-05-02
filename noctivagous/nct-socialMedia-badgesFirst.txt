@@ -30,4 +30,16 @@ Follower counts still exist behind the scenes only as subscription tools
 (you follow a “Home Gardener” because you want plant tips, not because 
 you’re impressed by their number).
 
+BADGE SECTIONS
+
+What will be important is organization of the badges by the website,
+such as "Can be hired for" badges would be separate from other badge sections.
+
+
+MESSAGING FROM A BADGE
+
+Badges also provide a way for users to message each other from the badge,
+so a person might click on the "has run an all-or-nothing crowdfunding project" 
+badge and send a message asking about the user's experience.
+
 

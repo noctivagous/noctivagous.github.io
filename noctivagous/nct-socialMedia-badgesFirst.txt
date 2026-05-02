@@ -17,6 +17,12 @@ is about, not only gets social proof.  This way something humble like
 a thing but can be descriptive or self-identifying. Badges would not cost money 
 but be part of the service.
 
+You can know a lot about a person from some badges, like if you have seen a
+"has run an all-or-nothing crowdfunding project" badge, but you would
+normally have to come across a post that says this or read more about
+the person.  This way you can get a better picture of people using the
+website at first glance.
+
 Then it will play out that a profile can also be evaluated based on what
 kinds of badges are followed.
 

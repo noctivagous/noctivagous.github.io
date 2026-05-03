@@ -1,26 +1,39 @@
-paperjs ai chatbot
+paperjs ai chatbot (workspace)
 
+    - responses from the AI are updates on the paperjs canvas.
+  
     - interactive workspace where AI generates
-    anything for the interactive canvas.
+    anything for the interactive canvas by sending commands
+    to the paperjs canvas.
+  
         - this is a different means of generating 
-        and interacting with contents of paperjs canvas.
+        and interacting with AI with the contents of paperjs canvas.
             - text input box at bottom included.
             - user can modify the canvas after the
             AI changes it.
+            - produces very versatile interactive,
+            programmatic environment that could
+            be used to prototype apps all the way to
+            just getting text responses.
  
 
-        - alternative to text-based chatbot.
-            - a chatbot interacts with text input queries.
+        - alternative to text-based chatbot:
+            - a conventional chatbot interacts with text input queries.
                 - everything is typed out.
-             - allows typed prompts but also user actions on
+             - this workspace allows typed prompts but also user actions on
              the canvas will send AI queries.
                 - user actions as prompts.  e.g. the user's
                 cursor enters a square region and it triggers
                 an event that sends an AI query. 
+                    - but it was the AI that made the square
+                    region and the event to send an AI query.
              - user can enter instruction mode and type
                 a prompt at any place on the canvas or about
                 a selection to modify it. 
-        - responses are updates on the paperjs canvas.
+                    - e.g. multiple notes are made about
+                    changes to what is on the canvas and then
+                    they are submitted at once.
+        - responses from the AI are updates on the paperjs canvas.
     
     - AI returns data for paperjs canvas
         - shorthand commands for the client, not full markup.
@@ -46,7 +59,7 @@ paperjs ai chatbot
     - AI can return (and test) new programming modules so that it
           can make different shapes, interactive schemes,
           etc., as the situation needs.
-           
+        
                
     - versatile usage can include text responses on the canvas
     using layout containers.

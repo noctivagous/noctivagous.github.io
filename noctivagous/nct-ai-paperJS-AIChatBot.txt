@@ -1,16 +1,33 @@
 paperjs ai chatbot
+
     - interactive workspace where AI generates
     anything for the interactive canvas.
-        - different means of generating 
+        - this is a different means of generating 
         and interacting with contents of paperjs canvas.
-            - text box at bottom included.
-        - alternative to text-based chatbot.  
+            - text input box at bottom included.
+            - user can modify the canvas after the
+            AI changes it.
+ 
+
+        - alternative to text-based chatbot.
+            - a chatbot interacts with text input queries.
+                - everything is typed out.
+             - allows typed prompts but also user actions on
+             the canvas will send AI queries.
+                - user actions as prompts.  e.g. the user's
+                cursor enters a square region and it triggers
+                an event that sends an AI query. 
+             - user can enter instruction mode and type
+                a prompt at any place on the canvas or about
+                a selection to modify it. 
         - responses are updates on the paperjs canvas.
     
     - AI returns data for paperjs canvas
         - shorthand commands for the client, not full markup.
-        - AI is provided layout container, gui controls and list of 
+        - AI is provided layout containers, gui controls in its list of 
         commands.
+       - comes with access to database, whether IndexDB or external
+       database, so that AI can make complex apps.
         
     - allows AI to return executable code (such as for buttons)
     for the paperjs canvas instance.
@@ -24,7 +41,15 @@ paperjs ai chatbot
         objects on the canvas, so that, e.g., dragging
         an object and dropping it on another 
         sends an AI query about what to do next.
-        
+    
+    
+    - AI can return (and test) new programming modules so that it
+          can make different shapes, interactive schemes,
+          etc., as the situation needs.
+           
+               
     - versatile usage can include text responses on the canvas
     using layout containers.
+    
     - interaction history.
+

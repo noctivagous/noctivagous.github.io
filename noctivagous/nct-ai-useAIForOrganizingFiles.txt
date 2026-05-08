@@ -1,0 +1,49 @@
+nct-ai-useAIForOrganizingFiles
+
+AI should be used to assist in sorting files and folders on the filesystem, reading the documents and images and suggesting tags, generating hierarchy and category bins.  
+
+a combination of manual sorting by the user with AI assistance.
+
+First screen for the app while examining a folder is the user going through each file (and folder) and typing out descriptions or assigning tags to the current file, one at a time.  The AI will serve to automatically place these files into folders or bins.  The descriptions for the files provided by the user will also let the AI know what projects exist and what the user is doing, to recognize other files automatically and assign tags.
+“Part of my online apparel store” and tagged scrapbook.  
+
+Directories also get descriptions, categories, and tags added to them so that the AI can know what a directory is for and how to use it.  (Related to this, the File Navigator should be able to browse the user’s directories through categories and subcategory trees as well as tags.  The File Navigator has been very limited and has never shown different information diagrams (e.g. as seen in d3.js gallery) that would provide different means of viewing and organizing files.)
+
+Files are hard to organize and so the user will have access to the “find place for this file” function (right-click) so that the AI can organize it.  The AI will be able to organize a hierarchy as well and stick to it.
+
+The AI can make suggestions for files that don’t have any specific place.  The AI could also “know the filesystem” through a vector database of filenames and descriptions and then when it comes across a file it would know where to put it.  It would be able to suggest merging different folders of files.
+
+What the AI will want to know, and the user can provide, is the intended purpose behind any file or group of files.  When the AI is told what kinds of projects the user is working on and what it is about, this can inform the AI aout the sorting and organization of any new files.  When the AI is told the person’s name and the name of the person’s business, it can organize the filesystem and recognize what the files are for and where they would go much easier.  Of course, the AI can be given organization preferences as well.
+
+All planned set of file moves (preliminary moves) could be listed for approval, as well as any file name changes, before they are carried out.
+
+A lot of this should be preventative, such as when a file is saved from the internet or a screenshot is taken, an optional dialog appears for organizing it on the file system right away with AI or manually.
+
+
+steps:
+1. AI generates one to two descriptions for 10-40 files at a time in a directory
+2. AI decides where each file should go based on existing directories, tags, categories.
+	2a. AI provides options for where the file should go to the user, who selects.
+3. AI assigns tags and categories to each file in the metadata.
+4. AI decides whether some files should prompt the creation of new directories.
+
+	user has the ability to inform and intervene.
+
+Example UI on the filesystem: a pane to the right of what is QuickLook on MacOS for putting the file in the right place.  If directories have descriptions for their purpose and contents, this will make it easier for an AI, especially one working from a guiding database, to sort files.  In File Navigators there is always a shortcut for deleting a file and there can be a shortcut for sending a file to a suitable location.
+
+The AI could also put a unique ID in every file so that even if the user changes its location and name, it can be found later from a database.
+
+A first version might take the form of a web app that is a drive for organizing personal files.
+
+The first action a desktop app might take is to analyze the file system and set up the vector database and then make suggestions.
+
+A program in the File Navigator, where the user drops files and directories, could exist for the purpose of sorting or organizing a certain category of file, based on a prompt, and will send the file into one of several locations based on its analysis of the file or directory.  This would be an .aiaction file. 
+
+Especially helpful would be that the AI can generate icons for the folders.
+
+The benefit of this system is also that the user can use the AI to organize in a custom way, to reorganize folders and their hierarchies and naming, get a list of actions for approval, then approve.
+
+(Interestingly, this AI-driven app would reveal that files are all treated the same on the system, such as files that have sensitive names and locations for use by programs or the system, while personal or work files and documents do not.  It’s a distinction that could be made in a future file system.)
+
+
+

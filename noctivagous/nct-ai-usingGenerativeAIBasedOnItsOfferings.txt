@@ -1,0 +1,66 @@
+nct-ai-usingGenerativeAIBasedOnItsOfferings
+
+For production of text, code, or other
+media, the AI should foremost serve
+as a bootstrap or cold start tool
+that sets up the scaffolding that will 
+be modified and added to by the user
+during the project.
+
+The AI accounts for and fills 
+in many details and important considerations
+that take a lot of time and effort 
+to list off for one person.  It is here
+where it can be used to do the job that
+previously took one or more assistants
+or co-workers.  If it is this aspect
+that is emphasized, there won't be a loss
+of participation for the user.  Neither 
+will there be the issue of
+the user making common looking products
+that were single prompt generations from AI.
+In other words, nothing has changed
+and what you put in is what you get out,
+it's just that the AI is doing a lot more
+upfront.
+
+For example, for app development, what are all of the 
+features, settings, and menus needed for 
+a given kind of app?  The AI can
+list these off for the software developer, who 
+then modifies that list, reorganizes it, and adds
+to it.  This is the right way to use AI.
+After that, the AI can right away place them into initial 
+spots of a GUI temporarily.  Let's say it is
+an app being made for AI video. 
+There are many considerations
+for videos, from lighting to camera
+movement settings.  Based on the list the software
+developer made, the AI fills in all of these
+in a GUI and this does not take away from the
+software developer but instead does the
+work that wouldn't have even been feasible.
+The level of abstraction has gone higher,
+generally.
+
+It is after this point that the real
+work comes in for the app developer,
+who has to customize the GUI and redesign
+what was provided by the AI and manually
+moves elements around and changes the
+GUI.  This stage is when the person is using
+generative AI for software development 
+properly, as a tool, if discipline is
+enforced.  The AI provided the base that would take too
+much to bootstrap alone, but the software
+developer didn't leave the output in its given
+state.  He provided the AI different
+digital resources and instructed how they
+go together.
+
+If the AI finds icons for the app, this
+isn't a problem for an indie software developer,
+as long as the indie software developer
+is choosing or guiding the icons.
+
+

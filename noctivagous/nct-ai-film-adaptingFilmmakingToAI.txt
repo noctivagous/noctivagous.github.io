@@ -1,0 +1,148 @@
+Adapting Filmmaking to AI
+
+
+Bringing in conventions from traditional filmmaking
+can make the transition to an AI app make sense.  Since the
+AI video generation environment has few production limitations
+(any environment, any scene or camera) and 
+just technical issues to tend to, production terms
+still can be used but differently. The GUI can't be 
+constrained by conventional filmmaking production order
+but it is likely to benefit from many of the terms.
+
+The filmmaker would work in a hierarchy of interaction with the program, 
+with the top layers being closer to how movies are made.  
+Having terms like Coverage and Master Shot driving the program at top levels of the app's 
+interface hierarchy means that the features of the program 
+are not just parameters in panes but instead the app is driven 
+by the mental model of filmmaking, which will likely produce
+better results than if people are making clips for films
+without a traditional guide.  AI is generating products from real
+world film production.  For this reason, the UI can be organized by 
+filmmaking logic, not by technical layers (prompts, 
+motion strength, seeds, etc.).
+
+
+Traditional Term          | AI Adaptation                             | Purpose
+--------------------------|-------------------------------------------|---------------------
+Scene                     | Scene (groups shots in same time/place)   | Narrative unit
+Coverage                  | Coverage (all angles for a dialogue scene)| Ensures editing options
+Master Shot               | Master Shot                               | Primary wide take everything else cuts from
+B-Roll                    | B-Roll / Cutaways                         | Supplemental generative footage
+Pickups                   | Pickups / Reshoots                        | Regenerate specific problematic seconds
+Director's Notes          | Notes / Prompt Notes                      | Attached to any level (location/shot/take)
+Continuity                | Continuity Lock / Reference Frame         | Enforce character appearance across shots
+Call Sheet                | Generation Queue / Batch Sheet            | Overview of what's rendering
+
+
+The user interface would be both scalable and
+cross-referenced.  It would be scalable because 
+if the person wants to make a 30 second clip, 
+the interface is scaled down such that many settings 
+meant for a longer project are hidden and the interface 
+reflects this mode.  It would be interconnected in that resources 
+are accessible from wherever they are relevant, 
+such as the location's building assets are accessible 
+from the Shot generation window for that location.
+
+
+USER INTERFACE HIERARCHY
+
+Project
+├── Pre-Production
+│   ├── Script + Storyboard (side-by-side, linked)
+│   ├── Breakdown
+│   └── Virtual Location Scout (module) - 
+│
+├── Scenes (Top-level navigation — the heart of the app)
+│   ├── Scene 1 – “INT. ABANDONED WAREHOUSE - NIGHT”
+│   │   ├── Master Shot
+│   │   ├── Coverage
+│   │   │   ├── Shot 1 – Wide Establishing
+│   │   │   ├── Shot 2 – Medium Two-Shot
+│   │   │   │   └── Takes (1, 2, 3… “Best”)
+│   │   │   ├── Shot 3 – Close-Up (Character A)
+│   │   │   ├── Shot 4 – Over-the-Shoulder (Character B)
+│   │   │   └── ... (any additional angles)
+│   │   ├── B-Roll / Cutaways
+│   │   │   └── Shot … → Takes
+│   │   ├── Pickups
+│   │   │   └── Short targeted regenerations → Takes
+│   │   └── Notes (Director’s Notes)
+│   │
+│   ├── Scene 2 – ...
+│   └── ...
+│
+├── Sequence / Assembly (Post-Production view)
+│   └── Timeline built by dragging Shots/Takes from Scenes
+│
+└── Global Assets (enable/disable subsections in each category)
+    ├── Characters / Casting
+    ├── Shooting Locations (cross-scene references)
+    └── Style / Look Library
+
+
+
+Pre-Production Features
+
+	Breakdown: Traditional script breakdown by scenes/locations. AI can auto-suggest 
+	breakdowns.
+	
+	Location Scout (or Virtual Location Scout): A dedicated module 
+	where users browse/generate/search reference locations, mood boards, 
+	or 3D environments. Even if fully AI-generated, the term "Location" 
+	grounds the user in spatial thinking.
+	
+
+
+
+	
+
+
+Global Assets (Full List. Enable/disable subsections in each category)
+├── Characters / Casting
+│   ├── Actor Models (face, body, voice)
+│   ├── Wardrobe / Costumes
+│   │   ├── Outfit Sets (per character or per scene)
+│   │   ├── Individual Clothing Items
+│   │   └── Accessories
+│   ├── Makeup / Hair / Prosthetics
+│   └── Performance References (mannerisms, voice style)
+│
+├── Shooting Locations
+│   ├── Location Library (reusable environments)
+│   ├── Set Extensions / Backgrounds
+│   └── Location Mood References (lighting, weather, time of day)
+│
+├── Props
+│   ├── Prop Library (reusable objects)
+│   ├── Set Dressing (furniture, decorations, etc.)
+│   └── Interactive / Hero Props (with special handling)
+│
+├── Vehicles
+│   ├── Cars, Aircraft, Boats, etc.
+│   └── Vehicle States (damaged, clean, moving, parked)
+│
+├── Art Direction & Design
+│   ├── Color Palette / Grading LUTs
+│   ├── Overall Visual Style / Look Library
+│   ├── Texture & Material Library
+│   └── Architectural / Historical References
+│
+├── Camera, Lighting & Atmosphere
+│   ├── Lighting Presets (Golden Hour, Neon Night, etc.)
+│   ├── Atmospheric Effects (fog, rain, god rays, dust)
+│   └── Camera Movements
+│
+├── Audio & Sound
+│   ├── Voice Models / Clones
+│   ├── Sound Effects Library
+│   └── Music & Score Cues
+│
+└── VFX & Technical
+    ├── Particle Systems / Simulations
+    ├── CGI Elements
+    └── Consistency References (face locks, object anchors)
+    
+     
+        

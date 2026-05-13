@@ -1,0 +1,84 @@
+nct-apps-restoreGUINormalcyAfteriOS
+
+GUIs in desktop software in the mid 2000s for pro
+apps can only feel outdated when the person using them
+has been affected by a notion of our times, one in which supposedly
+minimalism came in and eliminated unnecessary clutter and
+progress has been made compared to the outdated GUIs of the pre-touch UI
+past.  Apps from that era are certainly superior in terms of graphic design
+because they followed graphic design principles that
+have existed for a long time, in print.  Their window layouts were
+planned out, they are comprehensible at first glance, the sections are distinct 
+from one another, and the buttons stand out from their surrounding
+controls and parent containers.  Importantly, buttons carrying icons
+are actually labeled with text-- not left for the user to guess
+as to what they mean deranged minimalist mentality that doesn't care
+about the actual consequences of doing something, just the perceived
+impressiveness of doing it.  Even if the person objects to the 
+skeuomorphism of the times, which usually wasn't that intense, that isn't
+all there was that was happening before deranged minimalism
+came in and damaged normal GUI design and software and now has made
+it so that companies everywhere, staffed by a later generation
+of tech and software developers, no longer know what consumer and pro 
+software should look like.  This is something made evident by 
+all of the software released in the last few years, 
+especially from AI companies, who instead of making software
+that looks normal to interact with for getting work done, 
+like Excel or a database program from the past,
+keep putting mobile touchscreen style GUIs in their web and desktop
+apps, which cannot possibly accommodate nested features and parameter
+panels needed for complex applications.   A good example of 
+well-designed, quality software was iLife, the Numbers, Pages, and other apps,
+including Final Cut Pro (before Final Cut Pro X), that had 
+normal arrangements of GUI controls.  Change is inevitable but
+in the last few years it is really bad changes that have been
+happening because most of the software community doesn't know what it's doing
+anymore. Because it doesn't know what it's doing, it has come up with
+the TUI-- the so-called terminal user interface-- and this has
+actually become preferred for some people. VS Code, the most popular
+code editor in use today, has a combination of very tiny text tabs
+that are hard to click and interface panes that blend into
+one another because they have no hints of lighting, just flat fills.  
+At present, the confusion and adoption of
+fake principles from touchscreen device software like iOS has resulted in 
+design moves that are not-- the increasing corner radius of 
+Mac OS Sequoia where the windows are so ugly that even
+long-time Apple fans who use websites don't want it. 
+
+Trends in GUI became broken after 2010 because of the iPad
+and increasing popularity of smartphones, because the truth
+is that Apple did not have real or substantial UI theory
+behind the iPhone and iPad, it just started removing things
+that existed on desktop GUI and make things bigger for touch input.
+What occurred in the 2010s to the present was
+not only stylistic evolution but the incorporation of non-principles
+from GUI touch, from Apple, which has resulted in a loss
+of coherence and usability for software GUI.  
+The increase in text size for the interfaces was a gain, actually, 
+as a rare exception to what was just said.
+But take the example of tabs in tab view controls, in which there is
+an accepted trend where they are made minimalist and just have
+a line underneath the tab's text label.  This is an example of
+something broken: they cannot look the same as 
+underlined text, which is an act of deranged minimalism without 
+regard to its impact.  Buttons, in this trend, are now without outlines and
+they can be confused with text.  What has been
+prioritized is the trendiness of minimalism to make everyone
+feel like a GUI fits in with the times, at the expense
+of usable GUI designs.  The buttons are also now all flat and without
+any hint of shadow or highlight and so they have no contrast and the
+so the designs are just bad.  It's a major degradation of GUI, 
+and the only reason it has been accepted is because of a 
+notion of feeling current and with the times that is actually
+nonsense.  Invoice page designs don't have dividers between
+lines of text in tables, so the items on the invoice read like
+paragraphs.  That would, earlier, be equated with someone
+who doesn't know what he's doing.
+
+
+
+Returning to principles found in 2000s desktop UI,
+not necessarily all of the styles of the time, 
+is fixing the situation. Doing so is not a matter of
+nostalgia because actually people don't know what 
+they are doing with GUI. 

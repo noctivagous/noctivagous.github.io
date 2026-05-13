@@ -1,0 +1,62 @@
+nct-ai-apps-walkthroughApp
+
+The issue with the current trend
+of AI's use as an assistant is that 
+the interaction with the user
+stops after a single prompt given, It 
+it doesn't have the capability, like a "wizard"
+of the past, to continue the interaction, to make 
+consecutive interactions 
+with the user for a task where it collects 
+information before taking action or asking questions,
+give instructions to the user for how to accomplish
+a thing, act inside software to do something for the user, 
+and verify that the task was accomplished
+successfully. It can show the user how
+to do things.  This was in the past
+called a "wizard" or walkthrough,
+but when these walkthroughs are made with AI they
+are all custom for the specific app and there
+is not one yet that can be used across different domains.  
+The AI model is not domain specific,
+so there can be a walkthrough app that
+covers a broad range of activities.
+
+A multi-purpose, general walkthrough app
+that has the ability to work with the
+entire GUI desktop OS will be able to
+interact with any software package,
+launch tutorials, guide, etc. for
+any app and be utilized for any purpose.  
+It means that, if given a PDF or told to 
+research the topic on the web, 
+it can teach the user how to 
+use any involved or complex app and it can 
+carry out any task.  The key is that it
+is able to serve its own forms 
+to the user to collect information 
+and it will adapt to any task.
+It can ask questions of the user
+to verify that something was accomplished
+to satisfaction or whether it needs revision.
+
+A walkthrough app can walk the user 
+through any number of tasks and implement 
+them, including making a budget.
+
+The AI model is knowledgeable about
+a very wide range of issues and as long
+as it has specific information given
+to it for accurate instruction and executive, 
+as well as utilities or resources that
+let it carry out tasks, it will be able
+to collect data.
+
+Uses:
+-- Building apps, with the AI collecting
+information on project requirements and
+design specifications, with its custom 
+generated forms along the way.
+-- Designing songs, with the AI.
+-- Walkthrough questionnaire for
+getting projects started.

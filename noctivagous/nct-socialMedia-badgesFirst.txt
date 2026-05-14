@@ -80,6 +80,7 @@ can include tab views.  Each badge has its own URL for the user username/badge/b
 A badge on the profile page has a symbol or graphical representation paired with its text.  
 Clicking on it can have different outcomes.  
 
+
 CUSTOMIZATION OF THE PROFILE
 
 The profile can be customized in such a way that the user
@@ -93,6 +94,7 @@ This would not be the level of customization of the
 web page makers but more along the lines of predefined slots 
 and the slots can be moved around or their sizes adjusted.
 
+
 CROSS-REFERENCING OF DATA POSTED
 
 A badge can be inserted inside a post's text.  Someone else's badge
@@ -103,6 +105,26 @@ features (not AI term used here).
 The design of the website does not reward how many times
 a badge has been posted by one person or how much interaction
 or acknowledgment a person has received in one form or another.
+
+
+PROFILE PAGE WIDGETS
+
+The user can place conditionals on the page for whether
+the user has seen the page before.
+
+Some widgets include remote data template markup so
+that widgets can be updated with remote information.
+
+We want it so that mini apps and games that the user
+has made can be inserted into slots on the page.
+
+For people who don't do that, there can be different
+presentations widgets, like a slideshow widget
+that transitions between photos every 2 seconds.
+
+
+
+
 
 
 

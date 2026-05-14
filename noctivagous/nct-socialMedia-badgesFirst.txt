@@ -43,3 +43,43 @@ so a person might click on the "has run an all-or-nothing crowdfunding project"
 badge and send a message asking about the user's experience.
 
 
+BADGE MODAL VIEW 
+
+Badges act as mini-page hyperlink buttons.  After getting clicked, a badge modal 
+view, chosen by the user can be a short modal box with some text or it
+can be a composition page with photo galleries, text clippings, and hyperlink 
+lists custom arranged  by the user.  The badge indicates what kind of badge view 
+will appear after tapping it or clicking on it, whether it is a simple modal or a 
+collage view.  Hovering over a badge with a mouse will show a preview of it
+on desktop.
+
+	1) modal view - easy for the user to make, consists of a chosen 
+	modal box layout template and the user fills in the slots by tapping
+	them / clicking them to configure.
+	2) collage view - freeform arrangement
+	3) data table - badges that just are a list, like links.
+
+CONSISTENT UI FOR USABILITY AT A TOP LEVEL OF UI BUT AVOIDING THE COOKIE CUTTER
+DATABASE VIEW OF PEOPLE THAT IS SOCIAL MEDIA
+
+What we don't want is a cookie cutter looking profile like any of the 
+social media websites, from the 2000s to the present, where it looks like an 
+identification page and no one can customize anything.  The difference is that
+we will let the user customize positioning and styling of 
+certain elements on the profile page to the extent that major customization
+can occure but not everything is moved around, meaning there is still some
+stability in the page design.  We want to use grid-based designs for a purpose, which
+is laying out information for presentation and 
+not putting people in what look like (today) database views.  There should be a balance
+between UI consistency of the website and letting the user customize that UI, and
+the collage pages do this at the badge level view and the profile pages allow
+customization at the profile page veiw.  In the modal view of the badge, the user 
+can position big preview button links on the page like a collage, so that 
+each badge is a mini personal page.  The elements placed on the page
+can include tab views.  Each badge has its own URL for the user username/badge/badgeName.
+A badge on the profile page has a symbol or graphical representation paired with its text.  
+Clicking on it can have different outcomes.  
+
+
+
+

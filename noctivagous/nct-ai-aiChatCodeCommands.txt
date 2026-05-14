@@ -1,0 +1,26 @@
+nct-ai-aiChatCodeCommands
+
+In the AI chat assistant, whenever a change
+is made to a file the.
+
+What is interesting is how wasteful the AI companies 
+are with tokens when producing HTML-- they generate 
+the whole page from scratch each time, one token at a time, 
+when they could send a list of commands to the 
+web client and have it construct / update the page.
+
+They don't need to generate a new GUI each time 
+but can update it in place with commands sent 
+to the web client (the browser) from the AI model. 
+
+As a matter of fact, this could be accomplished
+for code as well in a convention not done yet
+which is that on the web client side there are predefined
+commands in the client library for generating code 
+from templates for common cases, such that the AI
+only has to send instructions for binding.  
+That is, not only can the AI send back code, html tags,
+images, and CSS for updating a web page (like a GUI
+on a web page), it can work with a comprehensive
+library on the front end for rapid updates to
+the GUI in response to prompts.

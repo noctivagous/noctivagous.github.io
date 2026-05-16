@@ -1,0 +1,61 @@
+nct-gui-ThereIsNoSuchThingAsASkeuomorphicGUIDesign
+
+All GUI Controls Are Already Skeuomorphs
+
+
+- Speaking in terms of skeuomorphism,
+which is the borrowing from the old 
+and placing it inside the new referentially, that is
+what all GUI controls are already, and always have
+been-- which is taking references from physical 
+machines and putting them into pixels,
+and then using the mouse (or touchscreen)
+to activate them.
+
+- Sliders are the most clear example:
+sliders come from physical machine
+hardware, specifically mixer panels.  The "radio buttons"
+on app forms were named after buttons on radios. 
+Any toggle switch, whether on a touchscreen
+or app, is borrowing from an actual toggle switch.
+
+- There is confusion about what a software GUI 
+actually is because a GUI historically has blended print design
+(form checkboxes that only show up on
+printed forms to be filled out) with machine controls
+(sliders that appear on mixer panels) with
+controls that don't have an exact reference,
+such as dropdown menus.  In print design,
+a page may have containers that don't have
+outlines and just flat fills.
+
+- But there is no such thing as a skeuomorphism
+GUI because the whole of a GUI is to imitate
+physical hardware controls on a pixel screen.
+--- Interacting with a machine's screen can
+exist differently, without skeuomorphism,
+such as with the microfiche machines where
+the hardware is physical.
+
+- What people objected to were situations
+where textures from the real world were
+applied, but initially this wasn't possible
+until the 2000s, when the average screen monitor 
+became higher resolutions.
+
+- Confusion comes about because early
+GUI controls in the 1980s and 1990s had few pixels to work with
+so there were just light hints of shading
+and light, with there being little materiality
+felt.
+
+- Stripping away shading strips away
+coherency, then, as.
+
+An AI said, "'Flat design' didn’t remove skeuomorphism. 
+It just changed which physical materials 
+[were imitated], from brushed metal to [printed media.]"
+
+
+
+

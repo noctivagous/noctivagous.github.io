@@ -1,0 +1,160 @@
+nct-ai-aiBuildsOutFromTheFrontToTheBack
+
+Build it out while trying to use it.
+
+Go through the app (AI interacts with it via tools) one step
+at a time and try to do things, see what should be there and
+build it out.  When you encounter things that aren't there
+such as panels that should be there or are necessary, put
+them there in the code.
+
+- AI is given a photo editor GUI shell by the software
+developer with toolbar with empty buttons or buttons with
+tool names, an editing area for the photos, and a window
+where GUI panels. 
+-- AI says, "I wanted to go back in action
+history but 'history' didn't exist, so I built that out."
+---- Example setup: Chrome Dev Tools MCP Server, Vite.
+
+The AI then works towards building out features of the app
+as it comes across the need for them while attempting to use
+the program.
+
+AI says, "To start with, I couldn't even open an image, so I
+built out the function to open an image and I put in a
+toolbar with 'Open', 'New', 'Save' buttons."
+
+Wherever the AI can't do what it wants to do, it makes notes
+for that and will try to build it out. If the AI takes on
+the role of a certain kind of user, it will make choices
+like that.  The AI is to take on the role of a user while
+interacting with the software.
+
+We would have you try to make a film with the app and then
+build out features that don't let you do that as you
+encounter them.
+
+----------------
+
+HOT RELOAD SETUP
+
+The blanket over both sides of the fence for fast
+code edits and feedback for an AI, with one side
+of the fence being the web server codebase
+and the other being the web browser.
+This is a Vite server, so every code addition
+to the Node JS and the web pages and CSS
+is a hot module reload.  That's one hot reload
+side of the fence.  Then when you use Chrome Dev Tools MCP server
+you don't have to reload the web page with the mcp tool.  
+You can add or edit code in the JS/ TS code pages and then
+wait 2 seconds and see the changes with the MCP tools-- without
+doing an npm run build. It will appear in the
+web browser for the Vite server.  5173 is
+the default port.  You might only do an npm run build
+after a series of changes.
+
+----------------
+
+"At every step:
+1. **State intent** (e.g., "Now I want to create a new project").
+2. **Interact** via MCP (`simulate_event`, `click`, `evaluate_script`) and inspect via `wireframe_snapshot_live_editing` / `svg_snapshot_live_editing`.
+3. **If blocked:** Announce the blocker, propose the minimal upstream fix, build it, and commit.
+4. **If working:** Proceed to the next workflow step.
+5. **Always refresh** the browser after code changes before continuing.
+(not necessary when using Vite.)
+"
+
+The AI naturally goes through all of the process where small things
+are missing or are placeholders and it notices them and implements 
+them  in the code in response.  This reduces the number of
+individual prompts required to build out every small thing.
+
+-------------------------
+
+Usual: Software developer makes prompt:
+"I tried to open a new project but the project hierarchy area was blank"
+
+AI: "Try new project function. *Clicks New Project [With tools controlling
+web browser]* The project hierarchy is blank.  Let me see what is going on with that.
+*Inspects code*  Oh, the ... isn't hooked up.  *Inserts code*.  And it
+looks like ... is missing.  *Inserts code*.  *Continues."  The
+AI incidentally debugs issues along the way.
+
+
+
+-------------------------
+
+AI Response:
+
+"That strategy is often called “use-driven development” or
+“dogfooding + scaffolding”. You’re basically having the AI
+act as the first power user and simultaneously the
+developer. It works really well for GUI apps where the
+interaction flow matters."
+
+"deep-dive and build one missing feature at a time in
+real-time as you encounter them"
+
+
+AI says, ""
+
+
+Why this strategy works:
+
+1. You get the real dependency chain
+Most features in a photo/video editor depend on others: you
+can't test "adjust exposure" until you can "open image".
+Going step-by-step surfaces the true critical path instead
+of guessing from a roadmap.
+
+2. UX drives architecture When AI says “I wanted history but
+it didn’t exist”, you’re capturing a user frustration before
+writing code around the wrong abstraction. The GUI shell
+forces you to confront missing affordances immediately.
+
+3. Fast feedback loop With something like Chrome Dev Tools
+MCP + Vite, the AI can: try action → hit missing piece →
+edit code → hot reload → retry. That loop is minutes, not
+sprint cycles.
+
+4. Persona-based coverage If the AI takes on "indie
+filmmaker" persona, it will prioritize timeline, keyframes,
+audio sync. As "meme creator" it hits text overlay + quick
+export first. You build what matters to actual workflows.
+
+
+Making it work with your setup Chrome Dev Tools MCP + Vite
+is perfect for this because:
+
+AI can introspect Via MCP, AI reads DOM, sees
+button[aria-label="Open"] does nothing, and knows to wire it
+up. It can also console.error → fix → reload. AI can
+manipulate It can click buttons, drag sliders, and log what
+failed: "Tried to drag layer, no onDragStart handler
+exists." Hot reload = tight loop Vite means the AI’s code
+change is testable in <1s. So "build history panel" →
+refresh → "okay, now test undo".
+
+Best practices if you run this Start with a mission, not a
+feature list "Make a film" beats "implement layers". The
+mission exposes missing features naturally. Keep an "attempt
+log" Have the AI dump a JSONL of {attempt: "export MP4",
+blocked_by: "no encoder", action: "added ffmpeg.wasm stub"}.
+That becomes your roadmap. 
+
+Rotate personas 
+
+One run: "YouTube
+editor needs speed". 
+Next: "Wedding videographer needs
+reliability". 
+Third: "VFX artist needs compositing". 
+
+You cover breadth. Add a "refactor gate" Every 5 features, make
+AI stop and ask: "If I built this for real, what would I
+regret about the code structure?" Prevents tech debt
+explosion. Use the GUI shell wisely Put empty buttons in
+deliberately: "Export", "Effects", "History". They’re
+prompts. But also let AI add buttons when it discovers need.
+Hybrid works best.

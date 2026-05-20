@@ -2,21 +2,33 @@ nct-softwaredev-activeCode
 
 In what we are calling "active code" files,
 the code that is available for editing
-is a product of executed code so that,
+is a product of executed code, so that,
 for example, an object graph is in place.
-The editable code is a layer.
+The editable code is a layer on top of
+code underneath.
+
 Code has to execute in order to provide
 the code that can be read by
 a code editor and the execution
-of that code sets up a dynamic
+of that code sets up a dynamic programming
 situation where, if the person or
 an AI starts editing it, the insertion,
 deletion, or addition of code
 requires re-execution of the code
 file(s) or portions of them
-just to render and provide the
+just to provide the
 editable layer again.  The result
 is that the code files provide immediate
 feedback after changes are made to them
 and their effects at runtime are known
-and available inside the code files.
+and available inside the code files
+and the code editors.  It means not
+only will there be no typographic errors,
+what the program does in terms of behavior
+and its states will all be known inside
+the code files instead of requiring
+inspection of the program or app at
+runtime.
+
+just like how
+a PostScript file.

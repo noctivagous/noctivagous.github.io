@@ -1,0 +1,87 @@
+AI models for code are kludge handlers for our
+degenerating software world where improper moves
+are becoming the norm and accepted in the new
+generation of software developers whereas 
+they would not have been a couple decades ago. 
+
+
+1. TYPESCRIPT 
+
+-> Need typed variables in JavaScript?  Understandable. 
+Does the W3C know?  They do but they didn't want to
+do anything to add variable typing, as far as we know.  
+You needed it, so someone wrote a programming language on top of JavaScript
+called TypeScript.  On top of JS and made out of JS, because
+the JS committee won't put in typed variables, there is TypeScript. 
+People use TypeScript everywhere, but JS itself never gets the upgrade.  
+Also, TypeScript breaks from one version to the next when 
+the TypeScript team feels like making 
+code-breaking changes-- a programming language extension 
+written out of the programming language.
+
+KLUDGE: TypeScript itself and the different code-breaking
+changes.
+
+
+2. NODE.JS
+-> Need a good backend programming system?  Someone
+hacked with JavaScript-- an already controversial programming
+language for the web-- and turned it into a backend programming
+system, even though it wasn't designed for that.  
+Go ahead and avoid that if you wish, but its package manager, 
+npm, is used everywhere.  Well, someone else thought npm was 
+too slow, so they made a new, faster drop-in replacement 
+for npm called bun.
+
+3. PYTHON VERSIONS AND PACKAGE MANAGEMENT
+
+-> You thought you could get away from this by using Python,
+but Python changed at lot from version 2.
+You haven't heard of PEP 668, which makes you play
+hopscotch just to run a basic script whereas previously it
+was really simple, you just typed python scriptname. The pip 
+(Pythong package manager) team doesn't want you install packages system-wide because
+that was causing problems because of bad software design.  
+Now re-install them again and again for every individual project!  
+Someone came up with a solution for this, called uv.  It is written in Rust.
+
+KLUDGE: The Python script can't be run directly anymore,
+its packages aren't systemwide, and the supporting
+package manager overcomes what the Python organization
+didn't handle well to avoid inconveniencing Python users.
+
+
+KLUDGE -->   Wrap HTML with functions 
+to make reusable components. A system
+where you put HTML template code 
+as return values inside functions.  It's messy,
+it's official, and now widely accepted, but it isn't
+proper.
+
+KLUDGE: Use some trendy HTML/JS/CSS 
+third party solution because the web browser doesn't have
+utilities for what it.  The W3C won't put it in there ever, or maybe
+next decade.
+
+FACT: CSS, HTML, and JS  were already a hodgepodge of 
+separately made tech, never revised together to add
+features and unify them in response to emerging needs 
+and the W3C hardly acts as the web software development
+environment balloons out of control.
+
+-> jQuery's functionality that was enthusiastically embraced
+by web developers was ignored by W3C as a sign to
+to incorporate those needs into the browser itself, but instead
+those same capabilities have been rewritten in different forms.
+
+At least the AI models should be cognizant of the situation
+that there have always been things written out of things 
+they were not designed for, with Objective-C, for example,
+being written out of C and C++ being a set of add-ons to C
+for implementing OOP.  It's that in recent years, especially
+the last decade, it has for some reason happened less often
+that people start over when they should or work on the
+fundamental codebase of the programming language or system
+to implement features instead of writing add-ons and workarounds.
+
+

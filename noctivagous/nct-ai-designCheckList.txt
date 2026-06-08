@@ -152,6 +152,19 @@ Use this list as a living audit: open the design (or screenshot), go through eac
   - Standard web controls are supplemented or replaced by domain-specific widgets (sliders with fine increments, multi-handle controls, contextual inspectors, advanced pickers, etc.).  
   - Custom controls are crafted to feel native to the app’s workflow rather than generic, yet they still follow the same visual language (consistent lighting, radii, depth treatment, and typography) so the interface remains coherent.  
   - This variety gives experts powerful, direct manipulation while the underlying consistency prevents the experience from fracturing into disconnected parts.
+
+- **Established harmonious color palette**  
+  Color is chosen and applied with intention rather than assembled from trendy defaults or isolated picks.  
+  - A core palette is defined upfront and consistently used across the interface, giving the design a cohesive identity.  
+  - Classic color-wheel relationships (analogous for calm unity, complementary or split-complementary for energetic contrast, triadic for balanced variety) guide the choices so hues support rather than fight one another.  
+  - When grayscale or near-grayscale is used, the value relationships (light to dark steps) are deliberate and clear, preserving hierarchy, depth, and readability even without hue.  
+  - Accent colors are applied sparingly and purposefully to draw attention or signal state, always balanced against the supporting neutrals so nothing feels arbitrary or overpowering.
+
+- **Intentional use of proportional ratios**  
+  Sizing, spacing, and layout divisions follow classic mathematical ratios instead of arbitrary or purely functional measurements.  
+  - Common ratios such as 3:2, 2:1, 4:3, golden ratio (≈1.618), or √2 are applied to column widths, image crops, card proportions, module spacing, and typographic scales.  
+  - These ratios create pleasing visual relationships that feel naturally balanced and rhythmic across the interface.  
+  - Proportional systems provide a quiet restraint against random sizing while still allowing flexibility for content needs, resulting in layouts that feel harmonious rather than assembled.
   
 
   

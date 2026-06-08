@@ -141,5 +141,17 @@ Use this list as a living audit: open the design (or screenshot), go through eac
   - Raised elements show clear separation from the background plane through soft shadows or bevels; sunken elements show containment through inner shadows or inset borders.  
   - The amount of lift or recession is purposeful and consistent within similar component types, so users develop an intuitive feel for what can be pressed, dragged, or simply read.
 
+- **Purpose-appropriate density**  
+  The amount of information and controls on screen is deliberately matched to the app’s purpose and the user’s expertise.  
+  - Professional or power-user applications use higher density so experts can see more data and options at once without constant scrolling or navigation.  
+  - Simpler or more intuitive consumer-facing apps use generous spacing to reduce cognitive load and support quick, confident decisions.  
+  - Density is never uniform across every screen; it flexes intelligently so complex tasks feel efficient while lighter tasks feel calm and uncluttered.
+
+- **Rich variety of specialized and custom GUI controls in pro applications**  
+  Professional tools employ a wide palette of interface elements, many of them custom-built for the specific tasks the app performs.  
+  - Standard web controls are supplemented or replaced by domain-specific widgets (sliders with fine increments, multi-handle controls, contextual inspectors, advanced pickers, etc.).  
+  - Custom controls are crafted to feel native to the app’s workflow rather than generic, yet they still follow the same visual language (consistent lighting, radii, depth treatment, and typography) so the interface remains coherent.  
+  - This variety gives experts powerful, direct manipulation while the underlying consistency prevents the experience from fracturing into disconnected parts.
+  
 
   

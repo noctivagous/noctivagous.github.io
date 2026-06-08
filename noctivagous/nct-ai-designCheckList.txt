@@ -1,0 +1,145 @@
+
+When avoiding the trendy flat minimalism.
+
+Checklist began with this short list:
+
+- contrast between the foreground elements and the background.
+	means of contrast:
+   - outlines.
+   - foreground elements lighter than background.
+   - shadows and glows.
+   - background textures or lighting
+   
+- alignment 
+	- elements are not off to the side without a common
+	underlying grid or column line.  e.g. a baseline grid
+	based design has all text and elements 
+	aligned to the baseline grid or using it as the reference.
+	
+- hierarchy
+
+
+-----
+
+Extended Checklist for AI to look at files.
+
+
+DESIGN
+
+- **Contrast between the foreground elements and the background**  
+  Creates clear separation so content reads effortlessly while still feeling connected to the whole.  
+  Means of contrast:  
+  - Outlines or borders that crisply define edges and prevent elements from dissolving into one another.  
+  - Foreground elements set lighter (or darker) than the background to generate immediate visual lift.  
+  - Shadows and glows that add gentle dimension, letting key items advance without shouting.  
+  - Subtle texture or material shifts (soft grain against smooth, matte against slight gloss) that give each layer its own presence while the whole remains unified.  
+  - Scale or weight differences that let primary elements lead and supporting ones quietly hold their ground.
+
+- **Alignment**  
+  Every element sits on a shared structure instead of drifting.  
+  - Nothing floats off to the side without a clear relationship to a column, grid line, or baseline.  
+  - Baseline-grid or column-grid discipline keeps text, icons, buttons, and images locked into the same rhythmic reference, so the eye travels smoothly.  
+  - Consistent left/right margins and gutter widths across sections so the layout feels intentional rather than patched together.
+
+- **Hierarchy**  
+  The design tells you what matters most at a glance, then gently guides you deeper.  
+  - Primary content (headlines, main calls-to-action) receives clear visual weight through size, weight, color, or placement.  
+  - Secondary and supporting elements are deliberately quieter in scale or intensity, so they reinforce rather than compete.  
+  - A natural scanning path emerges: the eye moves from dominant to subordinate elements in a balanced rhythm, never lost or overwhelmed.
+
+- **Depth and layering**  
+  The interface feels like it has actual space and substance rather than sitting flat on a screen.  
+  - Elements overlap or cast soft shadows so some advance and others recede in a controlled way.  
+  - Backgrounds gently recede (subtle gradients or textures) while foreground content steps forward.  
+  - Interactive states (hover, active, focus) add a tangible press or lift, giving feedback that feels physical.
+
+- **Spacing and visual rhythm**  
+  Space is used with purpose: enough to let content breathe, never so much that sections feel disconnected.  
+  - Consistent spacing increments create a quiet internal harmony across the page.  
+  - Related items sit close together; distinct sections receive generous but measured separation.  
+  - Vertical rhythm stays steady through aligned baselines and proportional gaps, so reading feels like a natural flow rather than stops and starts.
+
+- **Typography and readability**  
+  Type works as both information and visual architecture.  
+  - Clear scale steps (headings, subheads, body) establish hierarchy without relying on color alone.  
+  - Line heights and paragraph spacing support comfortable reading while keeping the overall texture tight.  
+  - Font pairings or weights create contrast where needed, yet stay harmonious across the whole system.
+
+- **Color and tonal balance**  
+  Color supports meaning and hierarchy rather than decorating for its own sake.  
+  - A restrained palette with one or two accents that have enough weight to guide attention.  
+  - Sufficient lightness/darkness differences so text and interactive elements remain legible even when color is removed.  
+  - Background and foreground tones work together so nothing feels isolated or floating.
+
+- **Visual balance and composition**  
+  The page feels stable and intentional from edge to edge.  
+  - Weight is distributed so no single area feels heavy or empty without reason.  
+  - Asymmetry, when used, is deliberate and counterbalanced by other elements so the whole still feels settled.  
+  - Margins and negative space act as active participants, framing content rather than simply surrounding it.
+
+- **Responsiveness and graceful adaptation**  
+  The same principles hold as the viewport changes.  
+  - Grid and alignment reflow cleanly; hierarchy and contrast survive at every breakpoint.  
+  - Spacing and depth scale proportionally instead of collapsing into cramped or overly sparse states.  
+  - Touch targets and interactive feedback remain comfortable and clear on every device.
+
+- **Consistency and pattern integrity**  
+  Repeated elements behave the same way everywhere, building trust and reducing cognitive load.  
+  - Buttons, cards, navigation, and form fields follow the same visual rules across the site.  
+  - Spacing, shadows, and border treatments stay predictable so the user learns the system once and feels at home everywhere.
+
+Use this list as a living audit: open the design (or screenshot), go through each point in order, and note where the work feels strong, where it drifts toward flatness, and where small adjustments in contrast, alignment, or depth would restore balance and presence.
+
+
+- **Clear icon + label pairing on interactive elements**  
+  Unless known convention shorthand or rarely used (e.g. gear is known to be settings),
+  buttons, links, and controls combine an icon with readable text so meaning 
+  is immediate at a glance rather than hidden behind hover.  
+  - Icons deliver fast visual recognition and speed up scanning across the layout.  
+  - Labels supply precise, unambiguous meaning so nothing relies on guesswork or tooltips.  
+  - The pairing creates mutual support: the icon gives quick context while the label grounds it, letting the interface feel both efficient and trustworthy.
+
+- **Distinct visual language for GUI controls**  
+  Buttons, inputs, selects, and other controls stand clearly apart from body text and headings instead of blending into them.  
+  - They use their own font weight, size treatment, or subtle outlines/fills rather than defaulting to the same type as surrounding text.  
+  - No reliance on faint underlines or minimalist tricks that make controls disappear until you’re already interacting with them.  
+  - This separation lets controls serve their purpose (action) while text serves its purpose (reading), each strengthening the other through clear distinction.
+
+- **Purposeful, measured corner radii**  
+  Corners receive intentional radii that feel natural to the element and context rather than oversized defaults applied everywhere.  
+  - Normal, context-appropriate radii maintain a sense of solidity and definition without the “everything is a pill” uniformity that often comes from quick code choices.  
+  - Radii scale with element size and importance so larger containers feel grounded while smaller controls stay crisp.  
+  - The result is a restrained softness that supports the overall composition instead of flattening it into trend.
+
+- **Thoughtful use of established GUI patterns**  
+  Common, proven templates such as master-detail views, card grids, tabbed sections, or structured lists are applied where they genuinely fit the content and task.  
+  - These patterns leverage existing user expectations so people move through the interface with confidence and less learning friction.  
+  - Custom layouts are reserved for moments where a standard pattern would actually get in the way; otherwise the familiar structure provides a stable foundation.  
+  - The patterns generate clarity and flow while restraining unnecessary reinvention.
+
+- **System-wide consistency in every element**  
+  Colors, typography, spacing, borders, shadows, radii, and interactive states follow the same rules across the entire design.  
+  - Similar components look and behave the same everywhere so users quickly learn the system and trust it.  
+  - Inconsistencies are removed so no element feels like an outlier that breaks the rhythm.  
+  - The whole becomes greater than its parts: each consistent choice reinforces the others, creating a coherent experience that feels deliberate and calm rather than assembled.
+
+- **Varied yet coherent depth treatments across elements**  
+  Buttons, panels, cards, and controls use a range of elevations and surface treatments instead of uniform flatness.  
+  - Sunken panels or inset controls evoke physical hardware states, giving a sense of containment or pressed-in depth.  
+  - Beveled or raised cards create gentle lift and separation; shallower treatments keep supporting content grounded.  
+  - This controlled variation adds visual interest and subtle hierarchy while restraint prevents the layout from feeling busy or arbitrary.
+
+- **Consistent implied lighting and light source**  
+  Every shadow, highlight, and bevel follows the same lighting direction so the entire interface feels like it exists in one believable space.  
+  - Decide early whether light comes from top-left, top-center, or another consistent angle and apply it uniformly to all raised or recessed elements.  
+  - Highlights and shadows reinforce one another rather than fighting; a button’s top edge catches light while its bottom edge casts shadow in the same system used for panels and cards.  
+  - Inconsistent lighting breaks the illusion of depth and makes the design feel assembled instead of whole.
+
+- **Clear sense of mass and surface relationship**  
+  Each interactive or container element communicates how much it sits on, above, or into the surface.  
+  - Ask: Does this button rest flat, float slightly, or press inward? How thick is its visual “mass”?  
+  - Raised elements show clear separation from the background plane through soft shadows or bevels; sunken elements show containment through inner shadows or inset borders.  
+  - The amount of lift or recession is purposeful and consistent within similar component types, so users develop an intuitive feel for what can be pressed, dragged, or simply read.
+
+
+  

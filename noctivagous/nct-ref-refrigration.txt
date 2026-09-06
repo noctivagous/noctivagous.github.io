@@ -1,0 +1,158 @@
+Refrigeration 
+
+Refrigeration technology takes advantage of the 
+physical properties of gas and liquid states as 
+they transform between high and low pressure and temperature.
+It is a process of manipulating a refrigerant's
+state, pressure, and temperature.  To do this for cooling, 
+a chemical with properties different than water is utilized.
+
+There are four stages happening in a cycle
+continuously. What is key is that they correspond 
+to four devices and each acts on this special
+chemical called the refrigerant.  Their names describe
+what they do to the refrigerant.
+
+- compressor - the only component that adds energy.
+the other three are passive heat exchangers or flow restrictions.
+- condensor
+- restrictor
+- evaporator
+
+We will start at the stage before the compressor, in
+the house so that it makes sense why the compressor
+does what it does.
+
+  - evaporator - this is the actual point that cools
+  the air inside the house.  inside the pipe the refrigerant comes in
+  as low temperature and low pressure. device ends up turning the
+  refrigerant into a vapor again because it takes
+  the inside air that is hotter than it and runs
+  it over the pipes.  the refrigerant is absorbing the
+  interior air's heat to a small extent.  we usually think of evaporation
+  in terms of water where it disappears but it is just the 
+  state change of liquid to vapor inside the pipe.
+  it turns the refrigerant liquid to gas (vaporizes it) by sitting
+  there while the a/c fan runs interior air over it (which
+  then flows through the house).  The evaporator warms it up a little, 
+  but not enough to make it "high temperature" — that's the compressor's job.
+  It's still well below ambient (~70 °F), so it can keep pulling heat in
+  in the next stage.
+  
+  - compressor - compresses the refrigerant vapor
+  so that it is hot and has high pressure.
+  This prepares it for the next stage of manipulation
+  where its heat is lowered but its high pressure will remain.
+    The compressor takes the low-pressure, low-temperature vapor 
+  coming out of the evaporator and squeezes it, 
+  raising both its pressure and temperature.
+  
+  - condensor - 
+  The condenser is condensing the high-pressure, high-temperature 
+  gas back into a liquid. Heat flows towards cooler areas
+  and this takes advantage of this property.
+   The outside air is the heat sink — it's cooler than the 
+   refrigerant (which is why compression was necessary to make 
+   the refrigerant hot enough to dump heat outward). 
+   
+  The refrigerant rejects heat to the outside air.  
+  It still has high pressure but is now a liquid.
+
+  - restrictor -  the temperature has been lowered
+  but high pressure is reduced by the device called
+  a restrictor.  because the restrictor lowers pressure, 
+  it lowers the temperature of the refrigerant a lot.
+  The restrictor dropped the temperature dramatically (e.g., from ~120 °F down to ~30 °F).
+   it is a cold, low-pressure liquid/vapor mixture.
+Technically this is called a two-phase flash — a portion of the liquid 
+instantly vaporizes (flashes) during the pressure drop, which is 
+what causes the dramatic temperature drop. The rest remains liquid. 
+Both phases then enter the evaporator together.
+
+
+
+The entire cycle is really just moving heat from a cold place to a 
+hot place — which is thermodynamically "uphill" and requires work input 
+(the compressor).  Everything else — the condenser, restrictor, evaporator — 
+is just setting up the conditions so that heat flows in the right 
+direction at the right point. The compressor is the only component 
+that adds energy; the other three are passive heat exchangers or flow restrictions. 
+
+
+The whole point of the restrictor is to create that large temperature drop, and the evaporator only partially recovers from it. The compressor then has to bridge the remaining gap back up to condensing temperature.
+
+Evaporator out:  ~35 °F   (low P, low T)
+Compressor out:  ~120 °F  (high P, high T)
+Condenser out:   ~90 °F   (high P, still warm liquid)
+Restrictor out:  ~30 °F   (low P, cold — ready to absorb heat again)   
+
+
+  next it flows outside to the compressor to start
+  the cycle again.
+
+
+This is a different explanation of
+refrigeration technology.
+
+Refrigeration technology focuses on 
+manipulating the physical condition of
+a chemical, called the refrigerant, in a four-stage
+continuous process,  The refrigerant 
+resides and flows continuously through metal pipework
+that is gated by four devices, at different
+locations, and each device will alter one or
+more properties of temperature and pressure.  This refrigerant
+has a lower boiling point.  It is not consumed in 
+the cycle like a fuel.
+
+Understanding the physics (thermodynamics)
+is essential to understanding why the refrigeration
+cycle is set up the way it is and how it is supposed
+to work.
+
+What is key is that they correspond 
+to four devices and each acts on a special
+chemical called the refrigerant: 
+
+Compressor - compresses the refrigerant
+to increase its pressure and temperature.
+physical property utilized:
+Condensor - decreases the temperature by
+running air across it where the refrigerant
+rejects heat.
+physical property utilized: heat flows 
+the cause of the outside unit's fan running
+Metering Device/Restrictor
+Evaporator
+
+changing the temperature, phase 
+in a continuous loop.  It principally
+makes use of what is called Boyle's Law
+where.
+
+
+
++-------------+---------------------------+--------------------------------------------------------------+
+| STAGE       | COMPONENT                 | WHAT HAPPENS TO THE REFRIGERANT                              |
++-------------+---------------------------+--------------------------------------------------------------+
+
++-------------+---------------------------+--------------------------------------------------------------+
+| Compression | Compressor                | Low-pressure, low-temp vapor is compressed to high-pressure, |
+|             |                           | high-temp vapor                                              |
++-------------+---------------------------+--------------------------------------------------------------+
+
+
++-------------+---------------------------+--------------------------------------------------------------+
+| Condensation| Condenser                 | High-pressure vapor releases heat to surroundings and        |
+|             |                           | condenses into a high-pressure liquid                        |
++-------------+---------------------------+--------------------------------------------------------------+
+
++-------------+---------------------------+--------------------------------------------------------------+
+| Expansion   | Metering device /         | High-pressure liquid passes through a restriction,           |
+|             | Restrictor (e.g. TXV)     | dropping sharply in pressure and temperature                 |
++-------------+---------------------------+--------------------------------------------------------------+
+
++-------------+---------------------------+--------------------------------------------------------------+
+| Evaporation | Evaporator                | Low-pressure liquid absorbs heat from the space being        |
+|             |                           | cooled and evaporates back into vapor, completing the loop   |
++-------------+---------------------------+--------------------------------------------------------------+   

@@ -91,6 +91,22 @@ Restrictor out:  ~30 °F   (low P, cold — ready to absorb heat again)
   the cycle again.
 
 
+Note: The T–P relationship is not a fixed property of the substance.  
+It's a property of the state, specifically of how many phases are present.
+
+| Phases present | F | What that means for T and P |
+|---|---|---|
+| 1 (single phase) | **2** | T and P are both free — pick either, the other is unconstrained |
+| 2 (two-phase) | **1** | Only one is free — pick T, P is forced; pick P, T is forced |
+| 3 (triple point) | **0** | Neither is free — both locked to a single point |
+
+The mechanism behind the lock: when two phases coexist in equilibrium, their 
+chemical potentials must be equal (μ_liquid = μ_vapor).  That equality is an 
+extra constraint equation that couples T and P. In a single phase, there's 
+no such equality to satisfy — T and P are unconstrained by each other 
+(the equation of state relates them to v, not to each other).
+
+
 This is a different explanation of
 refrigeration technology.
 
@@ -156,3 +172,19 @@ where.
 | Evaporation | Evaporator                | Low-pressure liquid absorbs heat from the space being        |
 |             |                           | cooled and evaporates back into vapor, completing the loop   |
 +-------------+---------------------------+--------------------------------------------------------------+   
+
+
+----
+
+Qualities of Yin and Yang
+
+Yang: high pressure, high temperature, dry, bright
+Yin : low pressure, low temperature, wet, dark
+
+
+Compression - yang action : higher pressure and higher temperature
+Condensation - yin action : lower the temperature, pressure left high
+Restriction - yin action : velocity increase comes at the expense of pressure
+as fluid passes through a smaller area
+
+

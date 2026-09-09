@@ -1,4 +1,123 @@
-Refrigeration 
+Refrigeration
+
+
+
+REVIEW
+
+Review: Temperature
+
+Hot, Cold, Heat, and Temperature are not the same thing
+
+Temperature is a measurement — the average kinetic energy 
+(how fast the molecules are moving) in a substance.
+
+A thermometer works by getting hit by molecules. 
+Faster molecules = harder hits = higher temperature.
+
+But a molecule has two places to store energy:
+
+1. Kinetic energy — how fast it's moving/vibrating. 
+This is what temperature measures. This is sensible heat — 
+you can sense it with a thermometer.
+
+2. Potential energy — how it is arranged relative to other 
+molecules, how stretched the bonds between them are. This 
+is invisible to a thermometer. This is latent heat.
+
+	-Take 1 lb of ice at 32°F. Add heat slowly. 
+	The thermometer stays at 32°F until all the ice melts. 
+    When ice at 32°F melts to water at 32°F, the molecules 
+	are moving at the same average speed — so the thermometer 
+	reads 32°F for both. What changed is potential energy: 
+	you used ∼144 BTU/lb to pull the molecules out of their 
+	locked crystal lattice so they can slide past each other.
+	 The total energy you had to add to make it all melt, while 
+	 the temperature stayed flat, is 144 BTU. So latent heat 
+	 of fusion = 144 BTU/lb.
+	 
+	
+	- When water at 212°F boils to steam at 212°F, same thing — 
+	same speed, same thermometer reading, but you used ∼970 BTU/lb 
+	to pull the molecules completely apart against their attraction.
+
+Heat flows spontaneously from hot to cold, never the reverse on its own. 
+(Refrigeration forces it to go uphill from cold to hot, which is why it 
+requires work input — called the compressor.)
+
+- Heat flows spontaneously from hot to cold.
+Fluid / pressure flows spontaneously from high pressure 
+to low pressure.  Both are downhill flows toward equilibrium. 
+
+
+Review : Matter
+
+1. Phases of Matter: Solid, Liquid, Gas
+
+   Solid: Molecules are locked in place. They
+   vibrate but don't move past each other. Fixed
+   shape, fixed volume. Low energy. Example: ice
+   in the freezer.
+
+   Liquid: Molecules are still close together, but
+   they can slide past each other. Fixed volume,
+   but takes the shape of its container. More
+   energy than solid. Example: liquid refrigerant
+   in the pipe after the condenser.
+
+   Gas (Vapor): Molecules far apart, flying
+   freely, bouncing off each other and the walls.
+   No fixed shape, no fixed volume — fills
+   whatever it's in. High energy. Example:
+   refrigerant vapor after the evaporator.
+
+
+2. Phase Changes
+
+	Liquid to Gas 
+	
+	- Evaporation / Boiling:
+	Molecules escape the liquid and become gas.
+	This requires energy to pull them apart —
+	latent heat of vaporization.
+
+	- Evaporation happens at the surface at any
+	temperature. Puddle drying. Low-energy
+	molecules stay, high-energy ones escape. -
+	Boiling happens through the whole volume when
+	its vapor pressure = surrounding pressure.
+	Bubbles can form inside the liquid. Boiling
+	point is not fixed — it moves with pressure.
+	In the system: Evaporator. Cold, low-pressure
+	liquid boils into vapor by absorbing heat from
+	your house. It uses that heat to change phase,
+	not to get hotter.
+
+	Gas to Liquid 
+	
+	- Condensation: Molecules lose
+	energy, slow down, and clump back together as
+	liquid. This releases the same energy that
+	evaporation took — latent heat of
+	condensation.
+
+	Same molecule, same pipe, two directions:
+	Liquid + heat in → Gas Gas - heat out → Liquid
+
+
+- There Is a Relationship That Manifests Between Temperature and Pressure
+  - Boiling point is not fixed — it depends on pressure
+  - Temperature and pressure are linked, but how they are linked 
+  depends on what state the subtance is in.
+
+- Heat Does Not Show Up on Thermometers When It Is Latent
+
+
+we don't use water as a refrigerant. Its boiling point is too high. 
+Refrigerants like R-410A are chosen because at atmospheric pressure 
+they boil at around -40°F to -60°F. They can boil and absorb heat 
+even when they are ice-cold.
+
+----
 
 Refrigeration technology takes advantage of the 
 physical properties of gas and liquid states as 
@@ -18,6 +137,10 @@ the other three are passive heat exchangers or flow restrictions.
 - condensor
 - restrictor
 - evaporator
+
+High to low pressure flows on its own — condenser → restrictor → evaporator. 
+No work needed.
+
 
 We will start at the stage before the compressor, in
 the house so that it makes sense why the compressor
@@ -176,15 +299,19 @@ where.
 
 ----
 
-Qualities of Yin and Yang
+Related: Qualities of Yin and Yang
 
-Yang: high pressure, high temperature, dry, bright
-Yin : low pressure, low temperature, wet, dark
+Yang: high pressure, high temperature, dry, bright, active
+Yin : low pressure, low temperature, wet, dark, passive
 
 
 Compression - yang action : higher pressure and higher temperature
 Condensation - yin action : lower the temperature, pressure left high
 Restriction - yin action : velocity increase comes at the expense of pressure
 as fluid passes through a smaller area
+
+
+Solid ice conducts charge via protons hopping between water molecules (the Grotthuss mechanism).
+Electrons flow.  Protons hop.
 
 

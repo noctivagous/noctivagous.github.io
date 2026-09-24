@@ -1,0 +1,40 @@
+This is from **Herbert A. Giles**, *The Civilization of China* (1911). Giles, who served as British Consul at Ningpo (now Ningbo), is describing how the Chinese practiced **natural ice harvesting and cold storage** long before mechanical refrigeration.
+
+The passage covers three points:
+
+1. **River ice in Peking (Beijing).** Northern Chinese winters produce several feet of ice on rivers (Giles notes this earlier in the same chapter). Blocks were cut in winter, stored in insulated underground ice houses (*lingyin*), and sold in summer. By Giles's era the supply was so abundant that even a laborer ("coolie") could buy an iced drink for almost nothing.
+
+2. **Grape preservation.** A bunch of grapes, with its stalk inserted into a large hard pear (which acts as a moisture reservoir and anchor), was placed in the ice house. The cool, humid environment kept the grapes edible from autumn harvest until the following May–June — roughly 8 months.
+
+3. **Ningpo (Ningbo), on the eastern coast.** Even in the milder southern climate, where rivers don't freeze solid, thin sheets of ice could form on shallow pools and ditches in winter. These were collected and stored well enough to survive until the next hot summer.
+
+The broader context: this practice dates back to at least the **Zhou dynasty** (c. 1046–256 BCE), when the imperial court maintained a dedicated "ice administration" (*bingzheng*) with 80 employees who harvested river ice each December and stored it in underground cellars. By the Tang dynasty (618–907) the trade had become commercialized, and by the time Giles was writing in the late 19th century, iced drinks were a common, cheap summer commodity for ordinary people.
+
+
+> how is it they didn't melt in the underground cellars over time without additional refrigeration?
+
+It's a combination of several factors working together:
+
+**1. Depth and thermal mass of the earth**
+The cellars were buried 3–5.5 m deep. At that depth, soil temperature is roughly constant year-round (around 10–15 °C / 50–59 °F depending on latitude). The surrounding earth acts as a massive thermal buffer — it doesn't spike to 35 °C in summer the way the surface does.
+
+**2. Very thick walls, deliberately asymmetrical**
+Archaeological evidence from the Changle Palace *lingyin* (Han Dynasty) shows rammed-earth walls **3.5–4.6 m thick**, with the south wall (sun-facing) the thickest and the north wall the thinnest. That's not accidental — it's thermal engineering.
+
+**3. Straw-and-mud insulation on top**
+The cellar was covered with multiple layers of thick straw sealed with mud, confirmed by humus soil layers found at excavation sites. This is essentially the same principle as a straw-bale roof: trapped air is an excellent insulator.
+
+**4. Air-lock entrances**
+The Zheng-Han ruin has **five channel doors**, each spaced 1–1.2 m apart, forming a series of airlocks that prevent hot summer air from rushing directly into the storage chamber.
+
+**5. Drainage to remove meltwater**
+Sandy-schist or brick floors sloped toward drainage channels. Meltwater was pumped out rather than pooling around the ice (which would accelerate melting through conduction).
+
+**6. Over-harvesting**
+The sources note they stored "far more ice than the demand." Some loss was expected and budgeted for — you'd harvest, say, 1,200 blocks to have 800 usable by mid-summer.
+
+**7. The physics of large ice blocks**
+A solid block of ice has enormous thermal inertia. The latent heat of fusion (334 kJ/kg) means a lot of energy must flow in before even a small amount melts. When blocks are packed tightly with straw between them, the rate of heat transfer is low enough that only the outer layers degrade over months.
+
+In short: it's not that no heat got in — it's that the heat got in *slowly enough* that the ice survived the season, with a deliberate surplus to absorb the losses.
+

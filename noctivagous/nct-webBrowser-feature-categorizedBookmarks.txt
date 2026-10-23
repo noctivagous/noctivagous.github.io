@@ -1,0 +1,9 @@
+nct-webBrowser-feature-categorizedBookmarks
+
+auto-tagged, categorized bookmarks.  AI looks at each URL
+and tags, categorizes.  currently no tagging or category feature
+for web browser bookmarks.
+
+in keypilot: Random Bookmark key allows the user to
+trigger a random bookmark and load it, making the bookmarks
+library useful again..

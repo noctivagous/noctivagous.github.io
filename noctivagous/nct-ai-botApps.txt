@@ -11,6 +11,17 @@ widgets rather than in the chat log.  if the activity takes
 place in the widgets it is transient data, not logged, so
 not as exhausting for the user as following a chat log.
 
+
+Dashboard and Control Panel Pages for Bots, Alongside Chat Log Page
+
+	Each bot might have a dashboard and control panel pages.
+	The control panel page would allow the bot to set up buttons
+	that the user can click as well as forms (that it can make)
+	where the user can enter the data and the bot receives
+	the command.  This is another avenue to interacting with
+	the bot outside of typed commands.
+	
+
 global app level.
 
 	monitor modules - get callbacks, send to bots.

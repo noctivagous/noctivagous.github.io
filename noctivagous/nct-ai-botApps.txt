@@ -1,0 +1,29 @@
+nct-ai-botApps
+
+valuable to have a mixture of procedurally updated widgets
+and stationary dashboard widgets alongside the chats.
+
+bot activity does not have to be limited to chats
+but can be outside of the chats in stationary dashboard widgets
+that sit next to the chat flow.  in this way the bot might be
+doing multiple things at once and they would be visible on
+widgets rather than in the chat log.  if the activity takes
+place in the widgets it is transient data, not logged, so
+not as exhausting for the user as following a chat log.
+
+global app level.
+
+	monitor modules - get callbacks, send to bots.
+		- global resource module.  e.g. remote database, email acct.
+	    - can be connected to individual bots by user.  
+	    - will be known by all of the bots
+
+	individual bot level: 
+			stationary UI next to the chat.
+		  	- dashboard feature - for individual items to monitor. e.g. a dashboard with different
+		  greenhouse and plant monitor widgets.
+			- email widget that shows the email box that the bot controls.
+
+		 web views
+		   - bots should open up web pages within web view tabs inside the app
+		   window instead of opening external web browser.

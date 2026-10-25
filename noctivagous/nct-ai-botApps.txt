@@ -1,20 +1,56 @@
 nct-ai-botApps
 
-valuable to have a mixture of procedurally updated widgets
+first, in these apps, the user doesn't really know where to start or
+what to do with the app and uses it like a regular AI chat bot, 
+so there should be a built-in browsable library of categorized
+stock actions and templates.  Additionally, the app has to be
+redesigned away from chat.  
+
+Widgets
+
+Widgets here refer to the established convention of 
+interactive panels and panels that show update data.
+It would be valuable to have a mixture of procedurally 
+updated widgets (not necessarily updated by the AI)
 and stationary dashboard widgets alongside the chats.
 
-bot activity does not have to be limited to chats
-but can be outside of the chats in stationary dashboard widgets
-that sit next to the chat flow.  in this way the bot might be
-doing multiple things at once and they would be visible on
-widgets rather than in the chat log.  if the activity takes
-place in the widgets it is transient data, not logged, so
+The AI bots shouldn't be treated as chatting workers but rather
+the workers behind a developed UI for interacting with them
+and monitoring the status of things.
+
+The reporting of bot activity does not have to be limited to the chat log
+but can be placed outside of the chats in stationary dashboard widgets
+that sit on the edge of the chat log.  In this way the bot might be
+carrying out multiple tasks at once and they would be visible on
+widgets rather than in the chat log.  Additionally, the bot could
+spawn widgets according to the current activity and then remove them
+from the side of the chat lot when they are no longer relevant. 
+
+widgets:
+   - can report on the purpose of having the app (monitoring the plants and greenhouses)
+   - can report live on the activity of the bots (monitoring what the bot is doing, e.g. adjusting devices in the greenhouse)
+
+
+If activity that is reflected in the widgets is transient data, not logged, so
 not as exhausting for the user as following a chat log.
 
+ui data:
+   - logged: logs.  the chat log with the user, log tabs and panes that the
+   bot opens up for itself.
+   - transient: the live activity of what the bot is doing in real time.  can be
+   logged but in the UI is transient.
+   - monitor: the status of a thing, a collection of data monitors placed in a 
+   room, weather conditions, vehicle location on a mini map, etc.
 
 Dashboard and Control Panel Pages for Bots, Alongside Chat Log Page
 
-	Each bot might have a dashboard and control panel pages.
+	In the app, the user should be able to see
+	all of what a bot has scheduled and this could be viewed
+	as a gantt chart or calendar built into the app rather than
+	in an external service.
+
+	Each bot might supervise its own dashboard and control panel pages
+	in addition to the dashboard and control panel pages that exist at the app level.
 	The control panel page would allow the bot to set up buttons
 	that the user can click as well as forms (that it can make)
 	where the user can enter the data and the bot receives
@@ -28,7 +64,7 @@ Dashboard and Control Panel Pages for Bots, Alongside Chat Log Page
    calendar, gantt chart, kanban, task lists, contacts, etc. rather than
    relying on "connectors" to external services, or at least
    using synced data from them and using the app's own modules.  
-   i.e. it should have built in email client
+   e.g. it should have built in email client
    so that the user can tell the bot to open up the email client
    app (inside a webview tab of the app), the user can edit.
  
@@ -49,3 +85,5 @@ global app level.
 		 web views
 		   - bots should open up web pages within web view tabs inside the app
 		   window instead of opening external web browser.
+		   
+		   

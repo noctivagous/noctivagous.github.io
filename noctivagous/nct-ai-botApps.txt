@@ -2,9 +2,13 @@ nct-ai-botApps
 
 first, in these apps, the user doesn't really know where to start or
 what to do with the app and uses it like a regular AI chat bot, 
-so there should be a built-in browsable library of categorized
-stock actions and templates.  Additionally, the app has to be
-redesigned away from chat.  
+so there should be a built-in, browsable library of categorized
+stock actions, wizard templates.  Additionally, the app has to be
+redesigned away from chat.  For example, when the user tells
+the bot to do something periodically, there is no designated
+place in UI where the user can review this.  The bot just says
+"OK".  This indicates that the UI needs to be more developed
+and we are explaining this here.
 
 Widgets
 

@@ -8,7 +8,20 @@ redesigned away from chat.  For example, when the user tells
 the bot to do something periodically, there is no designated
 place in UI where the user can review this.  The bot just says
 "OK".  This indicates that the UI needs to be more developed
-and we are explaining this here.
+and we are explaining this here.  It should have various
+sub-apps for common tasks, like budget tracking.
+
+Establishing the User's Identity
+
+It would be valuable for the app to establish who
+the user is so that the bots can talk to the person
+with first name, know the email address, know
+the user's cell phone number, so that the user 
+can just say "call my cell" and the bot will do
+that.  That is, the bots might have different login
+users with different identities and this makes
+the assistant situation more realistic.
+
 
 Widgets
 
@@ -91,3 +104,22 @@ global app level.
 		   window instead of opening external web browser.
 		   
 		   
+The Setup of The App And Its Capabilities
+
+There are two major sides: the setup of the app
+and its capabilities.  The setup refers to that it can
+put things in the cloud for scheduling even if the app
+is closed.  The capabilities means what it can do.
+If the user doesn't have access to either, then there will
+be not only an unnecessary period where he or she has
+to find these things out but also an added overall strain to the
+user experience.  Then with the capabilities, if
+they are available but hardly revealed in the UI,
+then the user will struggle to use it, always having
+to recall what the app can do.   If there are tasks
+that the user wants to do but have been done by
+others then those should exist as template workflows 
+and wizards, like collecting bill and budget information.
+
+It's worth noting also, that in a chat log, the chat responses
+from the AI could in theory be annotated on the side.

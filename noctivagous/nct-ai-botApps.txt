@@ -16,6 +16,17 @@ Consequently, UI of software that needs a lot of controls is a mess:
 buttons don't have outlines or any indication that they are buttons and 
 are indistinguishable from text.
 
+
+AI Chat Session Button Grid - Command Palette Above The Chat Text Field
+
+A fatiguing aspect of the AI chatbot is that they have abandoned the
+normalcy of an app that has buttons, opting to receive commands entirely
+through text.  They make the user type every computer command out in 
+full sentences.  Many commands could exist in a categorized tab view 
+(tabs sitting above a grid view of buttons), a place where the user can click on them,
+above the text entry box for the chat.
+
+
 Pathways
 
 In these apps, the user doesn't really know where to start or

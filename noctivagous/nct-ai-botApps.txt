@@ -1,26 +1,54 @@
 nct-ai-botApps
 
-first, in these apps, the user doesn't really know where to start or
+Apps like Photoshop and InDesign inherit from an earlier era.
+The new generation of software developers
+didn't grow up around normal, traditional software product environment
+and so they tend to make UI-deficient apps that are
+minimalist and ignorant of established processes that came through 
+experience.  They end up redoing, in weird and inconsistent ways,
+what already exist in normal ones. It would be
+impossible for them to make a Microsoft Excel, for example,
+given how little they know about this.  What people made in the 1980s, 1990s,
+and 2000s in desktop software developed into a tradition but that
+was damaged severely by the iPad and iPhone software
+excitement that tried to bring touchscreen successes to desktop.  
+Consequently, UI of software that needs a lot of controls is a mess: 
+buttons don't have outlines or any indication that they are buttons and 
+are indistinguishable from text.
+
+Pathways
+
+In these apps, the user doesn't really know where to start or
 what to do with the app and uses it like a regular AI chat bot, 
 so there should be a built-in, browsable library of categorized
 stock actions, wizard templates.  Additionally, the app has to be
-redesigned away from chat.  For example, when the user tells
+intentionally redesigned away from simple chat.  For example, when the user tells
 the bot to do something periodically, there is no designated
 place in UI where the user can review this.  The bot just says
 "OK".  This indicates that the UI needs to be more developed
-and we are explaining this here.  It should have various
-sub-apps for common tasks, like budget tracking.
+and we are explaining this issue here.  It should have various
+sub-apps for common tasks, like budget tracking.  Since it
+schedules things, it should have its own project trackers,
+calendars, task lists, etc.
+
 
 Establishing the User's Identity
 
-It would be valuable for the app to establish who
-the user is so that the bots can talk to the person
-with first name, know the email address, know
+It is never good to place the user in a forced situation 
+where he or she has to go along with a charade 
+and treat a robot or AI as a real person or entity
+while knowing it is a charade (e.g. Clippy), at least
+not at this stage of AI. But depending on how the user wants it to work
+it could be valuable for the app to establish, during the setup
+process, who the user is so that the bots can talk to the person
+knowing the user's first name, know the email address, know
 the user's cell phone number, so that the user 
 can just say "call my cell" and the bot will do
-that.  That is, the bots might have different login
-users with different identities and this makes
-the assistant situation more realistic.
+that.  That is, the bots might allow different login
+users with different identities, configured in Settings, 
+and this could make the assistant situation more convenient.  
+The key issue is whether the user trusts the AI service
+with this information during use of the app.  
 
 
 Widgets
@@ -56,8 +84,18 @@ ui data:
    bot opens up for itself.
    - transient: the live activity of what the bot is doing in real time.  can be
    logged but in the UI is transient.
-   - monitor: the status of a thing, a collection of data monitors placed in a 
-   room, weather conditions, vehicle location on a mini map, etc.
+       - A queue.  Let's say the bot spins up multiple subagents then
+       this would be a group of queues showing the user what is
+       happening.
+   - monitor: the status of an external thing, e.g. a collection of data monitors 
+   for measurement devices placed in a room, weather conditions, 
+   vehicle location on a mini map, bank account balances, etc.
+
+Many APIs are available to users for services they use and 
+they are non-AI, procedural endpoints Then within the system that is 
+an AI bot app a bot can set up a monitor widget for any of them 
+upon receiving instructions from the user.
+
 
 Dashboard and Control Panel Pages for Bots, Alongside Chat Log Page
 
@@ -90,8 +128,9 @@ global app level.
 
 	monitor modules - get callbacks, send to bots.
 		- global resource module.  e.g. remote database, email acct.
-	    - can be connected to individual bots by user.  
-	    - will be known by all of the bots
+	    - will be known by all of the bots ahead of time
+	    - can be connected to individual bots by user.
+	    
 
 	individual bot level: 
 			stationary UI next to the chat.
@@ -123,3 +162,5 @@ and wizards, like collecting bill and budget information.
 
 It's worth noting also, that in a chat log, the chat responses
 from the AI could in theory be annotated on the side.
+
+
